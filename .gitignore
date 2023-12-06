@@ -20,7 +20,7 @@
 
 # IntelliJ
 *.iml
-.idea/modules.xml
+.idea/
 
 npm-debug.log*
 yarn-debug.log*
