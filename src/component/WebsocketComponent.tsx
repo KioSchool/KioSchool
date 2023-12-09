@@ -1,24 +1,24 @@
 import React, { useEffect } from 'react';
 import * as StompJs from '@stomp/stompjs';
 
-function WebsocketComponent() {
+interface Props {
+  workspaceId: number;
+}
+
+function WebsocketComponent({ workspaceId }: Props) {
   useEffect(() => {
     const client = new StompJs.Client({
       brokerURL: 'ws://localhost:8080/ws',
-      connectHeaders: {
-        Authorization:
-          'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0Iiwicm9sZXMiOlsiU1VQRVJfQURNSU4iXSwiZXhwIjoxNzAyNTU5NTUzfQ.LEomLzKbeqjXbtBmcbSjDF1ABOrXw-ZVy10z865cjuc',
-      },
       debug: (str) => {
         console.log(str);
       },
-      reconnectDelay: 5000, // 자동 재 연결
+      reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
     });
 
     client.onConnect = function () {
-      client.subscribe('/sub/order/38', (message) => {
+      client.subscribe(`/sub/order/${workspaceId}`, (message) => {
         console.log(message.body);
       });
     };

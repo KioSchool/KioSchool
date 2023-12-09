@@ -1,10 +1,10 @@
 import React from 'react';
-import WebsocketComponent from './WebsocketComponent';
+import WebsocketComponent from './component/WebsocketComponent';
 
 function App() {
   return (
     <div className="App">
-      <WebsocketComponent />
+      <WebsocketComponent workspaceId={38} />
     </div>
   );
 }
