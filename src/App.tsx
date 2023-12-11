@@ -10,8 +10,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/admin" element={<AdminHome />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/admin/*" element={<AdminHome />} />
         <Route path="/websocket-test" element={<WebsocketComponent workspaceId={38} />} />
       </Routes>
     </BrowserRouter>
