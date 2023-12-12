@@ -1,6 +1,5 @@
 import React from 'react';
-import { Route, Routes, useParams } from 'react-router-dom';
-import AdminOrder from './AdminOrder';
+import { useParams } from 'react-router-dom';
 
 function AdminWorkspace() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
@@ -8,9 +7,6 @@ function AdminWorkspace() {
   return (
     <div>
       <div>workspaceId: {workspaceId}</div>
-      <Routes>
-        <Route path="orders" element={<AdminOrder />} />
-      </Routes>
     </div>
   );
 }
