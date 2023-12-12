@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import axios from 'axios';
+import { userApi } from '../../axios';
 
 function Login() {
   useEffect(() => {
-    axios
+    userApi
       .post(
-        'http://localhost:8080/login',
+        '/login',
         {
           id: 'test',
           password: 'test',
@@ -14,7 +14,7 @@ function Login() {
           withCredentials: true,
         },
       )
-      .then((r) => console.log(r));
+      .then((r) => alert(r.data));
   }, []);
 
   return <div>Login</div>;
