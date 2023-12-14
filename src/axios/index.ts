@@ -7,6 +7,7 @@ const adminApi = axios.create({
 
 const userApi = axios.create({
   baseURL: process.env.REACT_APP_ENVIRONMENT == 'development' ? 'http://localhost:8080' : 'https://kio-school.fly.dev',
+  withCredentials: true,
 });
 
 export { adminApi, userApi };
