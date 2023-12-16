@@ -6,7 +6,10 @@ function AdminOrder() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
 
   useEffect(() => {
-    adminApi.get(`/${workspaceId}/orders`).then((res) => {
+    const url = new URL(`${adminApi.defaults.baseURL}/orders`);
+    if (typeof workspaceId === 'string') url.searchParams.append('workspaceId', workspaceId);
+
+    adminApi.get(url.href).then((res) => {
       console.log(res);
     });
   }, []);
