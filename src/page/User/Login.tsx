@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { userApi } from '../../axios';
+import { Link } from 'react-router-dom';
 
 function Login() {
   useEffect(() => {
@@ -17,7 +18,12 @@ function Login() {
       .then((r) => alert(r.data));
   }, []);
 
-  return <div>Login</div>;
+  return (
+    <Fragment>
+      <div>Login</div>
+      <Link to={'/'}>Go Home</Link>
+    </Fragment>
+  );
 }
 
 export default Login;
