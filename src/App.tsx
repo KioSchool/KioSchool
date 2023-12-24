@@ -6,6 +6,7 @@ import Login from './page/User/Login';
 import WebsocketComponent from './component/WebsocketComponent';
 import AdminWorkspace from './page/Admin/AdminWorkspace';
 import AdminOrder from './page/Admin/AdminOrder';
+import Register from './page/User/Register';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/admin" element={<AdminHome />} />
         <Route path="/admin/workspace/:workspaceId" element={<AdminWorkspace />} />
         <Route path="/admin/workspace/:workspaceId/orders" element={<AdminOrder />} />
