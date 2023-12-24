@@ -7,7 +7,6 @@ function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [register, setRegister] = useState(false);
 
   useEffect(() => {
     // Clear any previous error message on component re-render
@@ -42,7 +41,6 @@ function Login() {
         navigate('/admin'); // Redirect to "/admin"
       } else {
         setErrorMessage('Invalid username or password'); // Handle unsuccessful login
-        setRegister(true);
       }
     } catch (error) {
       console.error('login error:', error);
@@ -54,11 +52,7 @@ function Login() {
     <Fragment>
       <h2>Login</h2>
       {errorMessage && <div className="error-message">{errorMessage}</div>}
-      {register && (
-        <div>
-          <Link to={'/register'}>Register</Link>
-        </div>
-      )}
+      <Link to={'/register'}>Register</Link>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Username:</label>
