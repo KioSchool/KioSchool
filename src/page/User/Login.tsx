@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
+  const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -15,7 +15,7 @@ function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!username || !password) {
+    if (!userId || !password) {
       setErrorMessage('Both fields are required.');
       return;
     }
@@ -23,7 +23,7 @@ function Login() {
       const response = await userApi.post<any>(
         '/login',
         {
-          id: username,
+          id: userId,
           password: password,
         },
         {
@@ -34,7 +34,7 @@ function Login() {
       console.log('Login successful:', response.data);
 
       setPassword('');
-      setUsername('');
+      setUserId('');
 
       if (response.data === 'login success') {
         // 로그인을 성공적으로 했을때
@@ -55,8 +55,8 @@ function Login() {
       <Link to={'/register'}>Register</Link>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="username">Username:</label>
-          <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} autoFocus />
+          <label htmlFor="userId">ID:</label>
+          <input type="text" id="userId" value={userId} onChange={(e) => setUserId(e.target.value)} autoFocus />
         </div>
         <div>
           <label htmlFor="password">Password:</label>
