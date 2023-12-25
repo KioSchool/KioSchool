@@ -1,7 +1,7 @@
 import { useSetRecoilState } from 'recoil';
 import { ordersAtom } from '../recoil/atoms';
 import * as StompJs from '@stomp/stompjs';
-import { adminApi, userApi } from '../axios';
+import { adminApi } from '../axios';
 import { Order } from '../type';
 
 function useOrdersWebsocket(workspaceId: string | undefined) {
@@ -14,8 +14,9 @@ function useOrdersWebsocket(workspaceId: string | undefined) {
   };
 
   const subscribeOrders = () => {
+    const url = process.env.REACT_APP_ENVIRONMENT === 'development' ? 'ws://localhost:8080/ws' : 'wss://kio-school.fly.dev/ws';
     const client = new StompJs.Client({
-      brokerURL: `ws://${userApi.defaults.baseURL}/ws`,
+      brokerURL: url,
       debug: (str) => {
         console.log(str);
       },
