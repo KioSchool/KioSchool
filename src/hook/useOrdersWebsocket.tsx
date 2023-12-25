@@ -1,10 +1,10 @@
 import { useSetRecoilState } from 'recoil';
 import { ordersAtom } from '../recoil/atoms';
-import * as StompJs from '@stomp/stompjs/esm6';
+import * as StompJs from '@stomp/stompjs';
 import { adminApi, userApi } from '../axios';
 import { Order } from '../type';
 
-function UseOrdersWebsocket(workspaceId: string) {
+function useOrdersWebsocket(workspaceId: string | undefined) {
   const setOrders = useSetRecoilState(ordersAtom);
 
   const fetchOrders = () => {
@@ -36,4 +36,4 @@ function UseOrdersWebsocket(workspaceId: string) {
   return { fetchOrders, subscribeOrders };
 }
 
-export default UseOrdersWebsocket;
+export default useOrdersWebsocket;
