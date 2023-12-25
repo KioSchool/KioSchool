@@ -5,6 +5,7 @@ interface Props {
   workspaceId: number;
 }
 
+// todo 삭제 예정
 function WebsocketComponent({ workspaceId }: Props) {
   useEffect(() => {
     const client = new StompJs.Client({
