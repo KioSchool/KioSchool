@@ -19,7 +19,7 @@ function OrderCard({ order }: Props) {
       <div>{order.tableNumber}번 테이블</div>
       <div>{order.totalPrice}원</div>
       {order.orderProducts.map((it) => (
-        <div>
+        <div key={it.id}>
           {it.product.name} - {it.quantity}개
         </div>
       ))}
