@@ -14,13 +14,6 @@ function Register() {
   const [isVeryfied, setIsVeryfied] = useState<boolean | null>(false);
   const navigate = useNavigate();
 
-  const validateEmailAddress = (): boolean => {
-    // 이메일 검증
-    let regex = new RegExp(
-      "([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|[[\t -Z^-~]*])",
-    );
-    return regex.test(userEmail);
-  };
   const checkDuplicate = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); // 버튼 클릭 시 페이지 새로고침 방지
     if (!userId) {
@@ -49,6 +42,7 @@ function Register() {
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
     const nameLength: number = userName.trim().length;
+
     if (ableId === true && isVeryfied === true && nameLength > 0) {
       // 사용가능한 id, 이메일 인증 완료, 이름이 공백이 아닌 경우 가입 진행
       userApi
@@ -66,15 +60,16 @@ function Register() {
           setErrorMessage('send email error');
         });
     } else {
-      setErrorMessage('Please check userId duplicate');
+      if (ableId === false) {
+        setErrorMessage('Please check userId duplicate');
+      } else if (isVeryfied === false) {
+        setErrorMessage('Please verify your email address');
+      }
     }
   };
 
-  const sendCode = () => {
-    if (validateEmailAddress() === false) {
-      setErrorMessage('Email is not validate');
-      return;
-    }
+  const sendCode = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setErrorMessage('');
     userApi
       .post<any>('/user/email', {
@@ -124,7 +119,7 @@ function Register() {
 
         <div>
           <label htmlFor="userPassword">password:</label>
-          <input type="text" id="userPassword" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} required />
+          <input type="password" id="userPassword" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} required />
         </div>
 
         <div>
@@ -139,7 +134,7 @@ function Register() {
         {isSendCode && (
           <div>
             <label htmlFor="code">인증번호</label>
-            <input id="code" type="text" onChange={(e) => setInputCode(e.target.value)} required />
+            <input id="code" type="text" onChange={(e) => setInputCode(e.target.value)} />
 
             <button onClick={sendCode}>재전송</button>
             <button onClick={checkCode}>코드 확인</button>
