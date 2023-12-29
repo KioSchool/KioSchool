@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { userApi } from '../../axios';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import useApi from '../../hook/useApi';
 
 function Login() {
+  const { userApi } = useApi();
   const navigate = useNavigate();
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');

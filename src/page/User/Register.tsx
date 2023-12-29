@@ -1,8 +1,10 @@
 import React, { Fragment, useState } from 'react';
-import { userApi } from '../../axios';
 import { useNavigate } from 'react-router-dom';
+import useApi from '../../hook/useApi';
+
 // input에 관한거 ref로 바꾸는게 좋음
 function Register() {
+  const { userApi } = useApi();
   const [userName, setUserName] = useState<string>('');
   const [userId, setUserId] = useState<string>('');
   const [userPassword, setUserPassword] = useState<string>('');
