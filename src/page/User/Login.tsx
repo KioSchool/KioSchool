@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { userApi } from '../../axios';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -13,14 +13,14 @@ function Login() {
     setErrorMessage('');
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!userId || !password) {
       setErrorMessage('Both fields are required.');
       return;
     }
-    try {
-      const response = await userApi.post<any>(
+    userApi
+      .post<any>(
         '/login',
         {
           id: userId,
@@ -29,27 +29,24 @@ function Login() {
         {
           withCredentials: true,
         },
-      );
+      )
+      .then((response) => {
+        console.log('Login successful:', response.data);
 
-      console.log('Login successful:', response.data);
+        setPassword('');
+        setUserId('');
 
-      setPassword('');
-      setUserId('');
-
-      if (response.data === 'login success') {
         // 로그인을 성공적으로 했을때
         navigate('/admin'); // Redirect to "/admin"
-      } else {
-        setErrorMessage('Invalid username or password'); // Handle unsuccessful login
-      }
-    } catch (error) {
-      console.error('login error:', error);
-      setErrorMessage('Invalid username or password');
-    }
+      })
+      .catch((error) => {
+        console.error('login error:', error);
+        setErrorMessage('Invalid username or password');
+      });
   };
 
   return (
-    <Fragment>
+    <>
       <h2>Login</h2>
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       <Link to={'/register'}>Register</Link>
@@ -65,7 +62,7 @@ function Login() {
         <button type="submit">Login</button>
       </form>
       <Link to={'/'}>Go Home</Link>
-    </Fragment>
+    </>
   );
 }
 
