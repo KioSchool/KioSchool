@@ -14,91 +14,86 @@ function Register() {
   const [isVeryfied, setIsVeryfied] = useState<boolean | null>(false);
   const navigate = useNavigate();
 
-  const checkDuplicate = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const checkDuplicate = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); // 버튼 클릭 시 페이지 새로고침 방지
     if (!userId) {
       setErrorMessage('The userId is null');
       return;
     }
-    try {
-      const response = await userApi.post<any>('/user/duplicate', {
-        id: userId,
-      });
 
-      console.log(response);
-      if (response.data !== true) {
-        setErrorMessage('');
-        setAbleId(true);
-        return;
-      }
-      setErrorMessage('The userId is already in use');
-      setAbleId(false);
-    } catch (error) {
-      console.error('duplicate check error:', error);
-    }
+    userApi
+      .post<any>('/user/duplicate', {
+        id: userId,
+      })
+      .then((response) => {
+        if (response.data !== true) {
+          setErrorMessage('');
+          setAbleId(true);
+          return;
+        }
+        setErrorMessage('The userId is already in use');
+        setAbleId(false);
+      })
+      .catch((error) => {
+        console.error('duplicate check error:', error);
+      });
   };
 
-  const submitHandler = async (e: React.FormEvent) => {
+  const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
     const nameLength: number = userName.trim().length;
     if (ableId === true && isVeryfied === true && nameLength > 0) {
       // 사용가능한 id, 이메일 인증 완료, 이름이 공백이 아닌 경우 가입 진행
-      try {
-        const response = await userApi.post<any>('/register', {
+      userApi
+        .post<any>('/register', {
           id: userId,
           password: userPassword,
           name: userName,
           email: userEmail,
+        })
+        .then(() => {
+          navigate('/login');
+        })
+        .catch(() => {
+          setIsSendCode(false);
+          setErrorMessage('send email error');
         });
-
-        console.log(response);
-        //성공
-        navigate('/login');
-      } catch (error) {
-        //실패
-        setIsSendCode(false);
-        setErrorMessage('send email error');
-      }
     } else {
       setErrorMessage('Please check userId duplicate');
     }
   };
 
-  const sendCode = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const sendCode = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); // 버튼 클릭 시 페이지 새로고침 방지
 
-    try {
-      const response = await userApi.post<any>('/user/email', {
+    userApi
+      .post<any>('/user/email', {
         email: userEmail,
+      })
+      .then(() => {
+        setIsSendCode(true);
+      })
+      .catch((err) => {
+        setErrorMessage('send email error');
+        console.error(err.code);
       });
-
-      console.log(response);
-      //성공
-      setIsSendCode(true);
-    } catch (error) {
-      //실패
-      setIsSendCode(false);
-      setErrorMessage('send email error');
-    }
   };
 
   const checkCode = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); // 버튼 클릭 시 페이지 새로고침 방지
 
-    try {
-      const response = await userApi.post<any>('/user/verify', {
+    userApi
+      .post<any>('/user/verify', {
         email: userEmail,
         code: inputCode,
+      })
+      .then(() => {
+        setIsVeryfied(true);
+      })
+      .catch(() => {
+        setIsVeryfied(false);
+        setErrorMessage('check email error');
       });
-
-      console.log(response);
-      //성공
-      setIsVeryfied(true);
-    } catch (error) {
-      //실패
-      setIsVeryfied(false);
-      setErrorMessage('check email error');
-    }
   };
   return (
     <Fragment>
@@ -107,24 +102,24 @@ function Register() {
       <form onSubmit={submitHandler}>
         <div>
           <label htmlFor="name">Name:</label>
-          <input type="text" id="name" value={userName} onChange={(e) => setUserName(e.target.value)} autoFocus />
+          <input type="text" id="name" value={userName} onChange={(e) => setUserName(e.target.value)} autoFocus required />
         </div>
 
         <div>
           <label htmlFor="userId">userId:</label>
-          <input type="text" id="userId" value={userId} onChange={(e) => setUserId(e.target.value)} />
+          <input type="text" id="userId" value={userId} onChange={(e) => setUserId(e.target.value)} required />
           <button onClick={checkDuplicate}>ID 중복체크</button>
           {ableId === true && <div>사용가능한 ID입니다!</div>}
         </div>
 
         <div>
           <label htmlFor="userPassword">password:</label>
-          <input type="text" id="userPassword" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} />
+          <input type="text" id="userPassword" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} required />
         </div>
 
         <div>
           <label htmlFor="email">Email:</label>
-          <input type="email" id="email" value={userEmail} onChange={(e) => setUserEmail(e.target.value)} />
+          <input type="email" id="email" value={userEmail} onChange={(e) => setUserEmail(e.target.value)} required />
         </div>
 
         <div>
@@ -134,7 +129,7 @@ function Register() {
         {isSendCode && (
           <div>
             <label htmlFor="code">인증번호</label>
-            <input id="code" type="text" onChange={(e) => setInputCode(e.target.value)} />
+            <input id="code" type="text" onChange={(e) => setInputCode(e.target.value)} required />
 
             <button onClick={sendCode}>재전송</button>
             <button onClick={checkCode}>코드 확인</button>
