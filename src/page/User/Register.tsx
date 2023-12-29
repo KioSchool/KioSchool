@@ -14,6 +14,13 @@ function Register() {
   const [isVeryfied, setIsVeryfied] = useState<boolean | null>(false);
   const navigate = useNavigate();
 
+  const validateEmailAddress = (): boolean => {
+    // 이메일 검증
+    let regex = new RegExp(
+      "([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|[[\t -Z^-~]*])",
+    );
+    return regex.test(userEmail);
+  };
   const checkDuplicate = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); // 버튼 클릭 시 페이지 새로고침 방지
     if (!userId) {
@@ -63,9 +70,12 @@ function Register() {
     }
   };
 
-  const sendCode = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // 버튼 클릭 시 페이지 새로고침 방지
-
+  const sendCode = () => {
+    if (validateEmailAddress() === false) {
+      setErrorMessage('Email is not validate');
+      return;
+    }
+    setErrorMessage('');
     userApi
       .post<any>('/user/email', {
         email: userEmail,
@@ -74,8 +84,8 @@ function Register() {
         setIsSendCode(true);
       })
       .catch((err) => {
-        setErrorMessage('send email error');
-        console.error(err.code);
+        setErrorMessage('send email error! please check your email address');
+        console.error(err);
       });
   };
 
