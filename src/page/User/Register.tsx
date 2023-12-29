@@ -9,9 +9,9 @@ function Register() {
   const [userEmail, setUserEmail] = useState<string>('');
   const [inputCode, setInputCode] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [ableId, setAbleId] = useState<boolean | null>(null);
-  const [isSendCode, setIsSendCode] = useState<boolean | null>(null);
-  const [isVeryfied, setIsVeryfied] = useState<boolean | null>(null);
+  const [ableId, setAbleId] = useState<boolean | null>(false);
+  const [isSendCode, setIsSendCode] = useState<boolean | null>(false);
+  const [isVeryfied, setIsVeryfied] = useState<boolean | null>(false);
   const navigate = useNavigate();
 
   const checkDuplicate = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -26,13 +26,13 @@ function Register() {
       });
 
       console.log(response);
-      if (response.data === true) {
-        setErrorMessage('The userId is already in use');
-        setAbleId(false);
-      } else {
+      if (response.data !== true) {
         setErrorMessage('');
         setAbleId(true);
+        return;
       }
+      setErrorMessage('The userId is already in use');
+      setAbleId(false);
     } catch (error) {
       console.error('duplicate check error:', error);
     }
