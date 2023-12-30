@@ -4,16 +4,16 @@ import useApi from '../../hook/useApi';
 
 function Register() {
   const { userApi } = useApi();
+  const navigate = useNavigate();
   const userNameInputRef = useRef<HTMLInputElement>(null);
   const userIdInputRef = useRef<HTMLInputElement>(null);
   const userPasswordInputRef = useRef<HTMLInputElement>(null);
-  const [userEmail, setUserEmail] = useState<string>('');
+  const userEmailInputRef = useRef<HTMLInputElement>(null);
   const [inputCode, setInputCode] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [ableId, setAbleId] = useState<boolean | null>(false);
   const [isSendCode, setIsSendCode] = useState<boolean | null>(false);
   const [isVerified, setIsVerified] = useState<boolean | null>(false);
-  const navigate = useNavigate();
 
   const checkDuplicate = () => {
     const userId = userIdInputRef.current?.value;
@@ -59,6 +59,12 @@ function Register() {
       return;
     }
 
+    const userEmail = userEmailInputRef.current?.value;
+    if (!userEmail) {
+      setErrorMessage('The userEmail is null');
+      return;
+    }
+
     const nameLength = userName.trim().length;
     if (ableId === true && isVerified === true && nameLength && nameLength > 0) {
       // 사용가능한 id, 이메일 인증 완료, 이름이 공백이 아닌 경우 가입 진행
@@ -85,9 +91,10 @@ function Register() {
     }
   };
 
-  const sendCode = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const sendCode = () => {
     setErrorMessage('');
+    const userEmail = userEmailInputRef.current?.value;
+
     userApi
       .post<any>('/user/email', {
         email: userEmail,
@@ -102,6 +109,8 @@ function Register() {
   };
 
   const checkCode = () => {
+    const userEmail = userEmailInputRef.current?.value;
+
     userApi
       .post<any>('/user/verify', {
         email: userEmail,
@@ -140,7 +149,7 @@ function Register() {
 
         <div>
           <label htmlFor="email">Email:</label>
-          <input type="email" id="email" value={userEmail} onChange={(e) => setUserEmail(e.target.value)} required />
+          <input type="email" id="email" ref={userEmailInputRef} required />
         </div>
 
         <div>
