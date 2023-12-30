@@ -12,7 +12,7 @@ function Register() {
   const [inputCode, setInputCode] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [ableId, setAbleId] = useState<boolean | null>(false);
-  const [isCodeSended, setIsCodeSended] = useState<boolean | null>(false);
+  const [isCodeSent, setIsCodeSent] = useState<boolean | null>(false);
   const [isVerified, setIsVerified] = useState<boolean | null>(false);
 
   const checkDuplicate = () => {
@@ -79,7 +79,7 @@ function Register() {
           navigate('/login');
         })
         .catch(() => {
-          setIsCodeSended(false);
+          setIsCodeSent(false);
           setErrorMessage('send email error');
         });
     } else {
@@ -100,7 +100,7 @@ function Register() {
         email: userEmail,
       })
       .then(() => {
-        setIsCodeSended(true);
+        setIsCodeSent(true);
       })
       .catch((err) => {
         setErrorMessage('send email error! please check your email address');
@@ -156,7 +156,7 @@ function Register() {
           <button onClick={sendCode}>이메일 인증 코드 받기</button>
         </div>
 
-        {isCodeSended && (
+        {isCodeSent && (
           <div>
             <label htmlFor="code">인증번호</label>
             <input id="code" type="text" onChange={(e) => setInputCode(e.target.value)} />
