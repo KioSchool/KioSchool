@@ -1,10 +1,10 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useApi from '../../hook/useApi';
 
 function Register() {
   const { userApi } = useApi();
-  const [userName, setUserName] = useState<string>('');
+  const userNameInputRef = useRef<HTMLInputElement>(null);
   const [userId, setUserId] = useState<string>('');
   const [userPassword, setUserPassword] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
@@ -40,9 +40,14 @@ function Register() {
   };
 
   const submitHandler = () => {
-    const nameLength: number = userName.trim().length;
+    const userName = userNameInputRef.current?.value;
+    if (!userName) {
+      setErrorMessage('The userName is null');
+      return;
+    }
 
-    if (ableId === true && isVerified === true && nameLength > 0) {
+    const nameLength = userName.trim().length;
+    if (ableId === true && isVerified === true && nameLength && nameLength > 0) {
       // 사용가능한 id, 이메일 인증 완료, 이름이 공백이 아닌 경우 가입 진행
       userApi
         .post<any>('/register', {
@@ -104,7 +109,7 @@ function Register() {
       <form onSubmit={submitHandler}>
         <div>
           <label htmlFor="name">Name:</label>
-          <input type="text" id="name" value={userName} onChange={(e) => setUserName(e.target.value)} autoFocus required />
+          <input type="text" id="name" ref={userNameInputRef} autoFocus required />
         </div>
 
         <div>
