@@ -91,7 +91,8 @@ function Register() {
       });
   };
 
-  const sendCode = () => {
+  const sendCode = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
     setErrorMessage('');
     const userEmail = userEmailInputRef.current?.value;
 
