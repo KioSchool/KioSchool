@@ -95,7 +95,7 @@ function Register() {
       });
   };
 
-  const checkCode = async () => {
+  const checkCode = () => {
     userApi
       .post<any>('/user/verify', {
         email: userEmail,
