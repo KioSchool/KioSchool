@@ -6,7 +6,7 @@ function Register() {
   const { userApi } = useApi();
   const userNameInputRef = useRef<HTMLInputElement>(null);
   const userIdInputRef = useRef<HTMLInputElement>(null);
-  const [userPassword, setUserPassword] = useState<string>('');
+  const userPasswordInputRef = useRef<HTMLInputElement>(null);
   const [userEmail, setUserEmail] = useState<string>('');
   const [inputCode, setInputCode] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -50,6 +50,12 @@ function Register() {
     const userId = userIdInputRef.current?.value;
     if (!userId) {
       setErrorMessage('The userId is null');
+      return;
+    }
+
+    const userPassword = userPasswordInputRef.current?.value;
+    if (!userPassword) {
+      setErrorMessage('The userPassword is null');
       return;
     }
 
@@ -109,6 +115,7 @@ function Register() {
         setErrorMessage('check email error');
       });
   };
+
   return (
     <Fragment>
       <h1>THIS IS REGISTER PAGE</h1>
@@ -128,7 +135,7 @@ function Register() {
 
         <div>
           <label htmlFor="userPassword">password:</label>
-          <input type="password" id="userPassword" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} required />
+          <input type="password" id="userPassword" ref={userPasswordInputRef} required />
         </div>
 
         <div>
