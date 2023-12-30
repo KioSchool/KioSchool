@@ -5,6 +5,7 @@ import AdminHome from './page/Admin/AdminHome';
 import Login from './page/User/Login';
 import AdminWorkspace from './page/Admin/AdminWorkspace';
 import AdminOrder from './page/Admin/AdminOrder';
+import Register from './page/User/Register';
 import { RecoilRoot } from 'recoil';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/admin" element={<AdminHome />} />
           <Route path="/admin/workspace/:workspaceId" element={<AdminWorkspace />} />
           <Route path="/admin/workspace/:workspaceId/orders" element={<AdminOrder />} />

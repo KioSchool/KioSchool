@@ -1,23 +1,69 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { userApi } from '../../axios';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
+  const navigate = useNavigate();
+  const [userId, setUserId] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
   useEffect(() => {
+    // Clear any previous error message on component re-render
+    setErrorMessage('');
+  }, []);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!userId || !password) {
+      setErrorMessage('Both fields are required.');
+      return;
+    }
     userApi
-      .post(
+      .post<any>(
         '/login',
         {
-          id: 'test',
-          password: 'test',
+          id: userId,
+          password: password,
         },
         {
           withCredentials: true,
         },
       )
-      .then((r) => alert(r.data));
-  }, []);
+      .then((response) => {
+        console.log('Login successful:', response.data);
 
-  return <div>Login</div>;
+        setPassword('');
+        setUserId('');
+
+        // 로그인을 성공적으로 했을때
+        navigate('/admin'); // Redirect to "/admin"
+      })
+      .catch((error) => {
+        console.error('login error:', error);
+        setErrorMessage('Invalid username or password');
+      });
+  };
+
+  return (
+    <>
+      <h2>Login</h2>
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
+      <Link to={'/register'}>Register</Link>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="userId">ID:</label>
+          <input type="text" id="userId" value={userId} onChange={(e) => setUserId(e.target.value)} autoFocus />
+        </div>
+        <div>
+          <label htmlFor="password">Password:</label>
+          <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        </div>
+        <button type="submit">Login</button>
+      </form>
+      <Link to={'/'}>Go Home</Link>
+    </>
+  );
 }
 
 export default Login;
