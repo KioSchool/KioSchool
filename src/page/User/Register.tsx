@@ -40,7 +40,8 @@ function Register() {
       });
   };
 
-  const submitHandler = () => {
+  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!ableId) {
       setErrorMessage('Please check userId duplicate');
       return;
@@ -91,8 +92,7 @@ function Register() {
       });
   };
 
-  const sendCode = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
+  const sendCode = () => {
     setErrorMessage('');
     const userEmail = userEmailInputRef.current?.value;
 
@@ -140,7 +140,9 @@ function Register() {
         <div>
           <label htmlFor="userId">userId:</label>
           <input type="text" id="userId" ref={userIdInputRef} onChange={() => setAbleId(false)} required />
-          <button onClick={checkDuplicate}>ID 중복체크</button>
+          <button type={'button'} onClick={checkDuplicate}>
+            ID 중복체크
+          </button>
           {ableId && <div>사용가능한 ID입니다!</div>}
         </div>
 
@@ -155,7 +157,9 @@ function Register() {
         </div>
 
         <div>
-          <button onClick={sendCode}>이메일 인증 코드 받기</button>
+          <button type={'button'} onClick={sendCode}>
+            이메일 인증 코드 받기
+          </button>
         </div>
 
         {isCodeSent && (
@@ -163,8 +167,12 @@ function Register() {
             <label htmlFor="code">인증번호</label>
             <input id="code" type="text" ref={inputCodeInputRef} />
 
-            <button onClick={sendCode}>재전송</button>
-            <button onClick={checkCode}>코드 확인</button>
+            <button type={'button'} onClick={sendCode}>
+              재전송
+            </button>
+            <button type={'button'} onClick={checkCode}>
+              코드 확인
+            </button>
           </div>
         )}
 
