@@ -11,9 +11,9 @@ function Register() {
   const userEmailInputRef = useRef<HTMLInputElement>(null);
   const [inputCode, setInputCode] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [ableId, setAbleId] = useState<boolean | null>(false);
-  const [isCodeSent, setIsCodeSent] = useState<boolean | null>(false);
-  const [isVerified, setIsVerified] = useState<boolean | null>(false);
+  const [ableId, setAbleId] = useState<boolean>(false);
+  const [isCodeSent, setIsCodeSent] = useState<boolean>(false);
+  const [isVerified, setIsVerified] = useState<boolean>(false);
 
   const checkDuplicate = () => {
     const userId = userIdInputRef.current?.value;
