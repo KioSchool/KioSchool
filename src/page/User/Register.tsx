@@ -9,7 +9,7 @@ function Register() {
   const userIdInputRef = useRef<HTMLInputElement>(null);
   const userPasswordInputRef = useRef<HTMLInputElement>(null);
   const userEmailInputRef = useRef<HTMLInputElement>(null);
-  const [inputCode, setInputCode] = useState<string>('');
+  const inputCodeInputRef = useRef<HTMLInputElement>(null);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [ableId, setAbleId] = useState<boolean>(false);
   const [isCodeSent, setIsCodeSent] = useState<boolean>(false);
@@ -110,6 +110,7 @@ function Register() {
 
   const checkCode = () => {
     const userEmail = userEmailInputRef.current?.value;
+    const inputCode = inputCodeInputRef.current?.value;
 
     userApi
       .post<any>('/user/verify', {
@@ -159,7 +160,7 @@ function Register() {
         {isCodeSent && (
           <div>
             <label htmlFor="code">인증번호</label>
-            <input id="code" type="text" onChange={(e) => setInputCode(e.target.value)} />
+            <input id="code" type="text" ref={inputCodeInputRef} />
 
             <button onClick={sendCode}>재전송</button>
             <button onClick={checkCode}>코드 확인</button>
