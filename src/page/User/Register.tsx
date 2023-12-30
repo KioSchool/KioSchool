@@ -16,8 +16,7 @@ function Register() {
   const [isVeryfied, setIsVeryfied] = useState<boolean | null>(false);
   const navigate = useNavigate();
 
-  const checkDuplicate = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // 버튼 클릭 시 페이지 새로고침 방지
+  const checkDuplicate = () => {
     if (!userId) {
       setErrorMessage('The userId is null');
       return;
@@ -41,8 +40,7 @@ function Register() {
       });
   };
 
-  const submitHandler = (e: React.FormEvent) => {
-    e.preventDefault();
+  const submitHandler = () => {
     const nameLength: number = userName.trim().length;
 
     if (ableId === true && isVeryfied === true && nameLength > 0) {
@@ -86,9 +84,7 @@ function Register() {
       });
   };
 
-  const checkCode = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // 버튼 클릭 시 페이지 새로고침 방지
-
+  const checkCode = async () => {
     userApi
       .post<any>('/user/verify', {
         email: userEmail,
