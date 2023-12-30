@@ -66,7 +66,7 @@ function Register() {
     }
 
     const nameLength = userName.trim().length;
-    if (ableId === true && isVerified === true && nameLength && nameLength > 0) {
+    if (ableId && isVerified && nameLength && nameLength > 0) {
       // 사용가능한 id, 이메일 인증 완료, 이름이 공백이 아닌 경우 가입 진행
       userApi
         .post<any>('/register', {
@@ -140,7 +140,7 @@ function Register() {
           <label htmlFor="userId">userId:</label>
           <input type="text" id="userId" ref={userIdInputRef} onChange={() => setAbleId(false)} required />
           <button onClick={checkDuplicate}>ID 중복체크</button>
-          {ableId === true && <div>사용가능한 ID입니다!</div>}
+          {ableId && <div>사용가능한 ID입니다!</div>}
         </div>
 
         <div>
