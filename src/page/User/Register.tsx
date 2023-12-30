@@ -2,7 +2,6 @@ import React, { Fragment, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useApi from '../../hook/useApi';
 
-// input에 관한거 ref로 바꾸는게 좋음
 function Register() {
   const { userApi } = useApi();
   const [userName, setUserName] = useState<string>('');
@@ -13,7 +12,7 @@ function Register() {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [ableId, setAbleId] = useState<boolean | null>(false);
   const [isSendCode, setIsSendCode] = useState<boolean | null>(false);
-  const [isVeryfied, setIsVeryfied] = useState<boolean | null>(false);
+  const [isVerified, setIsVerified] = useState<boolean | null>(false);
   const navigate = useNavigate();
 
   const checkDuplicate = () => {
@@ -43,7 +42,7 @@ function Register() {
   const submitHandler = () => {
     const nameLength: number = userName.trim().length;
 
-    if (ableId === true && isVeryfied === true && nameLength > 0) {
+    if (ableId === true && isVerified === true && nameLength > 0) {
       // 사용가능한 id, 이메일 인증 완료, 이름이 공백이 아닌 경우 가입 진행
       userApi
         .post<any>('/register', {
@@ -62,7 +61,7 @@ function Register() {
     } else {
       if (ableId === false) {
         setErrorMessage('Please check userId duplicate');
-      } else if (isVeryfied === false) {
+      } else if (isVerified === false) {
         setErrorMessage('Please verify your email address');
       }
     }
@@ -91,10 +90,10 @@ function Register() {
         code: inputCode,
       })
       .then(() => {
-        setIsVeryfied(true);
+        setIsVerified(true);
       })
       .catch(() => {
-        setIsVeryfied(false);
+        setIsVerified(false);
         setErrorMessage('check email error');
       });
   };
@@ -139,7 +138,7 @@ function Register() {
           </div>
         )}
 
-        {isVeryfied && isVeryfied ? '인증 성공' : '인증 실패'}
+        {isVerified && isVerified ? '인증 성공' : '인증 실패'}
         <button type="submit">Register</button>
       </form>
     </Fragment>
