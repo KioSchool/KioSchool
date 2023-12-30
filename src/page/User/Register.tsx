@@ -41,6 +41,16 @@ function Register() {
   };
 
   const submitHandler = () => {
+    if (!ableId) {
+      setErrorMessage('Please check userId duplicate');
+      return;
+    }
+
+    if (!isVerified) {
+      setErrorMessage('Please verify your email address');
+      return;
+    }
+
     const userName = userNameInputRef.current?.value;
     if (!userName) {
       setErrorMessage('The userName is null');
@@ -65,30 +75,20 @@ function Register() {
       return;
     }
 
-    const nameLength = userName.trim().length;
-    if (ableId && isVerified && nameLength && nameLength > 0) {
-      // 사용가능한 id, 이메일 인증 완료, 이름이 공백이 아닌 경우 가입 진행
-      userApi
-        .post<any>('/register', {
-          id: userId,
-          password: userPassword,
-          name: userName,
-          email: userEmail,
-        })
-        .then(() => {
-          navigate('/login');
-        })
-        .catch(() => {
-          setIsCodeSent(false);
-          setErrorMessage('send email error');
-        });
-    } else {
-      if (ableId === false) {
-        setErrorMessage('Please check userId duplicate');
-      } else if (isVerified === false) {
-        setErrorMessage('Please verify your email address');
-      }
-    }
+    userApi
+      .post<any>('/register', {
+        id: userId,
+        password: userPassword,
+        name: userName,
+        email: userEmail,
+      })
+      .then(() => {
+        navigate('/login');
+      })
+      .catch(() => {
+        setIsCodeSent(false);
+        setErrorMessage('send email error');
+      });
   };
 
   const sendCode = () => {
