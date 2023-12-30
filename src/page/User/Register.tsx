@@ -5,7 +5,7 @@ import useApi from '../../hook/useApi';
 function Register() {
   const { userApi } = useApi();
   const userNameInputRef = useRef<HTMLInputElement>(null);
-  const [userId, setUserId] = useState<string>('');
+  const userIdInputRef = useRef<HTMLInputElement>(null);
   const [userPassword, setUserPassword] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
   const [inputCode, setInputCode] = useState<string>('');
@@ -16,6 +16,7 @@ function Register() {
   const navigate = useNavigate();
 
   const checkDuplicate = () => {
+    const userId = userIdInputRef.current?.value;
     if (!userId) {
       setErrorMessage('The userId is null');
       return;
@@ -43,6 +44,12 @@ function Register() {
     const userName = userNameInputRef.current?.value;
     if (!userName) {
       setErrorMessage('The userName is null');
+      return;
+    }
+
+    const userId = userIdInputRef.current?.value;
+    if (!userId) {
+      setErrorMessage('The userId is null');
       return;
     }
 
@@ -114,7 +121,7 @@ function Register() {
 
         <div>
           <label htmlFor="userId">userId:</label>
-          <input type="text" id="userId" value={userId} onChange={(e) => setUserId(e.target.value)} required />
+          <input type="text" id="userId" ref={userIdInputRef} onChange={() => setAbleId(false)} required />
           <button onClick={checkDuplicate}>ID 중복체크</button>
           {ableId === true && <div>사용가능한 ID입니다!</div>}
         </div>
