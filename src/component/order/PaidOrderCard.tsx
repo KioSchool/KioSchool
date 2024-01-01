@@ -1,6 +1,9 @@
 import React from 'react';
 import { Order } from '../../type';
 import styled from '@emotion/styled';
+import { useParams } from 'react-router-dom';
+import useApi from '../../hook/useApi';
+import useOrdersWebsocket from '../../hook/useOrdersWebsocket';
 
 interface Props {
   order: Order;
@@ -14,6 +17,16 @@ const Container = styled.div`
 `;
 
 function PaidOrderCard({ order }: Props) {
+  const { workspaceId } = useParams<{ workspaceId: string }>();
+  const { fetchOrders } = useOrdersWebsocket(workspaceId);
+  const { adminApi } = useApi();
+
+  const serveOrder = () => {
+    adminApi.post<Order>('/order/serve', { orderId: order.id, workspaceId: Number(workspaceId) }).then(() => {
+      fetchOrders();
+    });
+  };
+
   return (
     <Container>
       <div>주문번호: {order.id}번</div>
@@ -24,6 +37,9 @@ function PaidOrderCard({ order }: Props) {
           {it.product.name} - {it.quantity}개
         </div>
       ))}
+      <button type={'button'} onClick={serveOrder}>
+        서빙 완료
+      </button>
     </Container>
   );
 }
