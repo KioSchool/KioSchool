@@ -1,22 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useApi from '../../hook/useApi';
 
 function Login() {
   const { userApi } = useApi();
   const navigate = useNavigate();
-  const [userId, setUserId] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const userIdInputRef = useRef<HTMLInputElement>(null);
+  const userPasswordInputRef = useRef<HTMLInputElement>(null);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   useEffect(() => {
-    // Clear any previous error message on component re-render
     setErrorMessage('');
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!userId || !password) {
+
+    const userId = userIdInputRef.current?.value;
+    const userPassword = userPasswordInputRef.current?.value;
+    if (!userId || !userPassword) {
       setErrorMessage('Both fields are required.');
       return;
     }
@@ -25,20 +27,14 @@ function Login() {
         '/login',
         {
           id: userId,
-          password: password,
+          password: userPassword,
         },
         {
           withCredentials: true,
         },
       )
-      .then((response) => {
-        console.log('Login successful:', response.data);
-
-        setPassword('');
-        setUserId('');
-
-        // 로그인을 성공적으로 했을때
-        navigate('/admin'); // Redirect to "/admin"
+      .then(() => {
+        navigate('/admin');
       })
       .catch((error) => {
         console.error('login error:', error);
@@ -54,11 +50,11 @@ function Login() {
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="userId">ID:</label>
-          <input type="text" id="userId" value={userId} onChange={(e) => setUserId(e.target.value)} autoFocus />
+          <input type="text" id="userId" ref={userIdInputRef} autoFocus required />
         </div>
         <div>
           <label htmlFor="password">Password:</label>
-          <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input type="password" id="password" ref={userPasswordInputRef} required />
         </div>
         <button type="submit">Login</button>
       </form>
