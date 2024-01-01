@@ -16,9 +16,19 @@ const Container = styled.div`
 `;
 
 function OrderListContainer({ orders }: Props) {
+  const notPaidOrders = orders.filter((it) => it.status === 'NOT_PAID');
+  const paidOrders = orders.filter((it) => it.status === 'PAID');
+  const servedOrders = orders.filter((it) => it.status === 'SERVED');
+
   return (
     <Container>
-      {orders.map((it) => (
+      {notPaidOrders.map((it) => (
+        <OrderCard order={it} key={it.id} />
+      ))}
+      {paidOrders.map((it) => (
+        <OrderCard order={it} key={it.id} />
+      ))}
+      {servedOrders.map((it) => (
         <OrderCard order={it} key={it.id} />
       ))}
     </Container>
