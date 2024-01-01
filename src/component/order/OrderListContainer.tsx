@@ -1,7 +1,7 @@
 import React from 'react';
 import { Order } from '../../type';
 import styled from '@emotion/styled';
-import OrderCard from './OrderCard';
+import PaidOrderCard from './PaidOrderCard';
 import NotPaidOrderCard from './NotPaidOrderCard';
 
 interface Props {
@@ -11,6 +11,7 @@ interface Props {
 const Container = styled.div`
   padding: 24px;
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   gap: 24px;
   width: 100%;
@@ -23,15 +24,21 @@ function OrderListContainer({ orders }: Props) {
 
   return (
     <Container>
-      {notPaidOrders.map((it) => (
-        <NotPaidOrderCard order={it} key={it.id} />
-      ))}
-      {paidOrders.map((it) => (
-        <OrderCard order={it} key={it.id} />
-      ))}
-      {servedOrders.map((it) => (
-        <OrderCard order={it} key={it.id} />
-      ))}
+      <div>
+        {notPaidOrders.map((it) => (
+          <NotPaidOrderCard order={it} key={it.id} />
+        ))}
+      </div>
+      <div>
+        {paidOrders.map((it) => (
+          <PaidOrderCard order={it} key={it.id} />
+        ))}
+      </div>
+      <div>
+        {servedOrders.map((it) => (
+          <PaidOrderCard order={it} key={it.id} />
+        ))}
+      </div>
     </Container>
   );
 }

@@ -13,7 +13,7 @@ const Container = styled.div`
   width: 240px;
 `;
 
-function OrderCard({ order }: Props) {
+function PaidOrderCard({ order }: Props) {
   return (
     <Container>
       <div>주문번호: {order.id}번</div>
@@ -28,4 +28,4 @@ function OrderCard({ order }: Props) {
   );
 }
 
-export default OrderCard;
+export default PaidOrderCard;
