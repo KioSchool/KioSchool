@@ -1,6 +1,7 @@
 export interface Order {
   tableNumber: number;
   phoneNumber: string;
+  customerName: string;
   orderProducts: Array<OrderProduct>;
   totalPrice: number;
   status: string;

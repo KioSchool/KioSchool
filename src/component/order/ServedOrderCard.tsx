@@ -11,20 +11,16 @@ const Container = styled.div`
   border: 1px solid black;
   border-radius: 8px;
   width: 240px;
+  background: gray;
 `;
 
-function OrderCard({ order }: Props) {
+function ServedOrderCard({ order }: Props) {
   return (
     <Container>
-      <div>{order.tableNumber}번 테이블</div>
+      <div>주문번호: {order.id}번</div>
       <div>{order.totalPrice}원</div>
-      {order.orderProducts.map((it) => (
-        <div key={it.id}>
-          {it.product.name} - {it.quantity}개
-        </div>
-      ))}
     </Container>
   );
 }
 
-export default OrderCard;
+export default ServedOrderCard;
