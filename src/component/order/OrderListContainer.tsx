@@ -3,6 +3,7 @@ import { Order } from '../../type';
 import styled from '@emotion/styled';
 import PaidOrderCard from './PaidOrderCard';
 import NotPaidOrderCard from './NotPaidOrderCard';
+import ServedOrderCard from './ServedOrderCard';
 
 interface Props {
   orders: Order[];
@@ -36,7 +37,7 @@ function OrderListContainer({ orders }: Props) {
       </div>
       <div>
         {servedOrders.map((it) => (
-          <PaidOrderCard order={it} key={it.id} />
+          <ServedOrderCard order={it} key={it.id} />
         ))}
       </div>
     </Container>
