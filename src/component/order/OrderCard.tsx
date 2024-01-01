@@ -16,6 +16,7 @@ const Container = styled.div`
 function OrderCard({ order }: Props) {
   return (
     <Container>
+      <div>주문번호: {order.id}번</div>
       <div>{order.tableNumber}번 테이블</div>
       <div>{order.totalPrice}원</div>
       {order.orderProducts.map((it) => (
