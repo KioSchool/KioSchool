@@ -7,6 +7,7 @@ import AdminWorkspace from './page/Admin/AdminWorkspace';
 import AdminOrder from './page/Admin/AdminOrder';
 import Register from './page/User/Register';
 import { RecoilRoot } from 'recoil';
+import Logout from './page/User/Logout';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/logout" element={<Logout />} />
           <Route path="/register" element={<Register />} />
           <Route path="/admin" element={<AdminHome />} />
           <Route path="/admin/workspace/:workspaceId" element={<AdminWorkspace />} />

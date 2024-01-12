@@ -17,7 +17,7 @@ function Home() {
       <Link to={'/admin'}>Admin</Link>
       <br></br>
       {`${isLoggedIn}`}
-      {isLoggedIn ? <p>Logout</p> : <Link to={'/login'}>Login</Link>}
+      {isLoggedIn ? <Link to={'/logout'}>Logout</Link> : <Link to={'/login'}>Login</Link>}
     </Fragment>
   );
 }
