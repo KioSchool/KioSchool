@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import ShowLogin from './ShowLogin';
+import AuthenticationButton from './AuthenticationButton ';
 
 function Home() {
   return (
@@ -8,7 +8,7 @@ function Home() {
       <h1>Home</h1>
       <Link to={'/admin'}>Admin</Link>
       <br></br>
-      <ShowLogin />
+      <AuthenticationButton />
     </Fragment>
   );
 }

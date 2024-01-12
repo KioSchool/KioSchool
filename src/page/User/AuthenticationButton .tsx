@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useApi from '../../hook/useApi';
 
-function ShowLogin() {
+function AuthenticationButton() {
   const { sessionApi } = useApi();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -18,4 +18,4 @@ function ShowLogin() {
   return <Fragment>{isLoggedIn ? <Link to={'/logout'}>Logout</Link> : <Link to={'/login'}>Login</Link>}</Fragment>;
 }
 
-export default ShowLogin;
+export default AuthenticationButton;
