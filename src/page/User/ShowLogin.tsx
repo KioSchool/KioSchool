@@ -15,7 +15,6 @@ function ShowLogin() {
       });
   }, []);
 
-  console.log(isLoggedIn);
   return <Fragment>{isLoggedIn ? <Link to={'/logout'}>Logout</Link> : <Link to={'/login'}>Login</Link>}</Fragment>;
 }
 
