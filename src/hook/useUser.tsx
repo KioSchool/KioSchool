@@ -2,22 +2,15 @@ import useApi from './useApi';
 import { Workspace } from '../type';
 import { useSetRecoilState } from 'recoil';
 import { workspacesAtom } from '../recoil/atoms';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 function useUser() {
-  const { adminApi, loginAPi } = useApi();
+  const { adminApi } = useApi();
   const setWorkspaces = useSetRecoilState(workspacesAtom);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    loginAPi
-      .get('/user')
-      .then(() => setIsLoggedIn(true))
-      .catch((error) => {
-        console.error('error! -> ' + error);
-        setIsLoggedIn(false);
-      });
-  }, [loginAPi]);
+    adminApi.get('/user');
+  }, [adminApi]);
 
   const fetchWorkspaces = () => {
     adminApi
@@ -26,7 +19,7 @@ function useUser() {
       .catch((error) => console.error('Failed to fetch workspaces:', error));
   };
 
-  return { isLoggedIn, fetchWorkspaces };
+  return { fetchWorkspaces };
 }
 
 export default useUser;
