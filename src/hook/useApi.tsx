@@ -9,6 +9,11 @@ function useApi() {
     withCredentials: true,
   });
 
+  const sessionApi = axios.create({
+    baseURL: process.env.REACT_APP_ENVIRONMENT == 'development' ? 'http://localhost:8080/admin' : 'https://kio-school.fly.dev/admin',
+    withCredentials: true,
+  });
+
   adminApi.interceptors.response.use(
     (response) => response,
     (error) => {
@@ -25,7 +30,7 @@ function useApi() {
     withCredentials: true,
   });
 
-  return { adminApi, userApi };
+  return { adminApi, userApi, sessionApi };
 }
 
 export default useApi;

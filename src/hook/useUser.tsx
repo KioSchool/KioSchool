@@ -13,9 +13,10 @@ function useUser() {
   };
 
   const fetchWorkspaces = () => {
-    adminApi.get<Workspace[]>('/workspaces').then((res) => {
-      setWorkspaces(res.data);
-    });
+    adminApi
+      .get<Workspace[]>('/workspaces')
+      .then((res) => setWorkspaces(res.data))
+      .catch((error) => console.error('Failed to fetch workspaces:', error));
   };
 
   return { isLoggedIn, fetchWorkspaces };

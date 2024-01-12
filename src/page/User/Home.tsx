@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
+import AuthenticationButton from '../../component/user/AuthenticationButton';
 
 function Home() {
   return (
@@ -7,7 +8,7 @@ function Home() {
       <h1>Home</h1>
       <Link to={'/admin'}>Admin</Link>
       <br></br>
-      <Link to={'/login'}>Login</Link>
+      <AuthenticationButton />
     </Fragment>
   );
 }
