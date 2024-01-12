@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import useApi from '../../hook/useApi';
+import useApi from '../hook/useApi';
 
 function AuthenticationButton() {
   const { sessionApi } = useApi();
