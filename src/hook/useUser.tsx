@@ -5,19 +5,19 @@ import { workspacesAtom } from '../recoil/atoms';
 import { useState, useEffect } from 'react';
 
 function useUser() {
-  const { adminApi } = useApi();
+  const { adminApi, loginAPi } = useApi();
   const setWorkspaces = useSetRecoilState(workspacesAtom);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    adminApi
+    loginAPi
       .get('/user')
       .then(() => setIsLoggedIn(true))
       .catch((error) => {
         console.error('error! -> ' + error);
         setIsLoggedIn(false);
       });
-  }, [adminApi]);
+  }, [loginAPi]);
 
   const fetchWorkspaces = () => {
     adminApi
