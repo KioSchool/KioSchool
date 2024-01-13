@@ -12,6 +12,9 @@ function AdminWorkspace() {
       <button type={'button'} onClick={() => appendPath('/orders')}>
         주문 조회
       </button>
+      <button type={'button'} onClick={() => appendPath('/products')}>
+        상품 조회
+      </button>
     </div>
   );
 }
