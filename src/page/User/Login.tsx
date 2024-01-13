@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import useApi from '../../hook/useApi';
+import { Link } from 'react-router-dom';
 import useLogin from '../../hook/useLogin';
 
 function Login() {
