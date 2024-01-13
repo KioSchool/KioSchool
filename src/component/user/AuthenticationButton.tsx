@@ -1,10 +1,10 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useApi from '../../hook/useApi';
-import useLogout from '../../hook/useLogout';
+import useAuthentication from '../../hook/useAuthentication';
 
 function AuthenticationButton() {
-  const { logoutHandler } = useLogout();
+  const { logout } = useAuthentication();
   const { sessionApi } = useApi();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -15,9 +15,9 @@ function AuthenticationButton() {
       .catch(() => {
         setIsLoggedIn(false);
       });
-  }, [logoutHandler]);
+  }, [logout]);
 
-  return <Fragment>{isLoggedIn ? <p onClick={logoutHandler}>Logout</p> : <Link to={'/login'}>Login</Link>}</Fragment>;
+  return <Fragment>{isLoggedIn ? <p onClick={logout}>Logout</p> : <Link to={'/login'}>Login</Link>}</Fragment>;
 }
 
 export default AuthenticationButton;

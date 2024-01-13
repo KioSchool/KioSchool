@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import useLogin from '../../hook/useLogin';
+import useAuthentication from '../../hook/useAuthentication';
 
 function Login() {
-  const { login } = useLogin();
+  const { login } = useAuthentication();
   const userIdInputRef = useRef<HTMLInputElement>(null);
   const userPasswordInputRef = useRef<HTMLInputElement>(null);
   const [errorMessage, setErrorMessage] = useState<string>('');

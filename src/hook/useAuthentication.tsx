@@ -1,13 +1,22 @@
 import { useNavigate } from 'react-router-dom';
 import useApi from './useApi';
 
-function useLogin() {
+function useAuthentication() {
   const { userApi } = useApi();
   const navigate = useNavigate();
 
+  const logout = () => {
+    userApi
+      .post<any>('/logout')
+      .catch(() => {
+        alert('Logout Failed!');
+      })
+      .finally(() => navigate('/'));
+  };
+
   const login = (userId: string, userPassword: string) => {
     userApi
-      .post<any>(
+      .post(
         '/login',
         {
           id: userId,
@@ -25,7 +34,7 @@ function useLogin() {
       });
   };
 
-  return { login };
+  return { login, logout };
 }
 
-export default useLogin;
+export default useAuthentication;
