@@ -7,7 +7,7 @@ function useAuthentication() {
 
   const logout = () => {
     userApi
-      .post<any>('/logout')
+      .post('/logout')
       .catch(() => {
         alert('Logout Failed!');
       })
