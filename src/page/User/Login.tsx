@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useApi from '../../hook/useApi';
+import useLogin from '../../hook/useLogin';
 
 function Login() {
-  const { userApi } = useApi();
-  const navigate = useNavigate();
+  const { login } = useLogin();
   const userIdInputRef = useRef<HTMLInputElement>(null);
   const userPasswordInputRef = useRef<HTMLInputElement>(null);
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -22,24 +22,8 @@ function Login() {
       setErrorMessage('Both fields are required.');
       return;
     }
-    userApi
-      .post<any>(
-        '/login',
-        {
-          id: userId,
-          password: userPassword,
-        },
-        {
-          withCredentials: true,
-        },
-      )
-      .then(() => {
-        navigate('/admin');
-      })
-      .catch((error) => {
-        console.error('login error:', error);
-        setErrorMessage('Invalid username or password');
-      });
+
+    login(userId, userPassword);
   };
 
   return (
