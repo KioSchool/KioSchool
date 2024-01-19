@@ -1,7 +1,7 @@
 import React, { ForwardedRef, forwardRef } from 'react';
 import styled from '@emotion/styled';
 
-interface AppInputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+export interface AppInputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
 const Container = styled.input`
   border: 1px solid black;
