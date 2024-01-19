@@ -23,7 +23,11 @@ function useUser() {
     adminApi.post('/workspace', { name: sapceName }).catch((error) => console.error('Failed to create workspace: ', error));
   };
 
-  return { isLoggedIn, fetchWorkspaces, createWorkspaces };
+  const leaveWorkspaces = (id: string) => {
+    adminApi.post('/workspace/leave', { workspaceId: id }).catch((error) => console.error('Failed to leave workspace: ', error));
+  };
+
+  return { isLoggedIn, fetchWorkspaces, createWorkspaces, leaveWorkspaces };
 }
 
 export default useUser;
