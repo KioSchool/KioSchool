@@ -23,8 +23,8 @@ function useUser() {
     adminApi.post('/workspace', { name: sapceName }).catch((error) => console.error('Failed to create workspace: ', error));
   };
 
-  const leaveWorkspaces = (id: string) => {
-    adminApi.post('/workspace/leave', { workspaceId: id }).catch((error) => console.error('Failed to leave workspace: ', error));
+  const leaveWorkspaces = (id: number) => {
+    adminApi.post('/workspace/leave', { workspaceId: id as unknown as string }).catch((error) => console.error('Failed to leave workspace: ', error));
   };
 
   return { isLoggedIn, fetchWorkspaces, createWorkspaces, leaveWorkspaces };
