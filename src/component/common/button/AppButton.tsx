@@ -6,6 +6,8 @@ interface AppButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 const Container = styled.button`
   background: black;
   color: white;
+  font-size: 18px;
+  border: none;
   border-radius: 15px;
   width: 500px;
   height: 50px;
