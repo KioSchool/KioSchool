@@ -30,12 +30,9 @@ function Login() {
     <>
       <h2>Login</h2>
       {errorMessage && <div className="error-message">{errorMessage}</div>}
-      <Link to={'/register'}>Register</Link>
       <form onSubmit={handleSubmit}>
         <div>
           <AppInputWithLabel label={'아이디'} type={'text'} id={'userId'} ref={userIdInputRef} required />
-        </div>
-        <div>
           <AppInputWithLabel label={'비밀번호'} type={'password'} id={'password'} ref={userPasswordInputRef} required />
         </div>
         <button type="submit">Login</button>
