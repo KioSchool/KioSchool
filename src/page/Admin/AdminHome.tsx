@@ -1,20 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import { adminApi } from '../../axios';
+import React, { useEffect } from 'react';
+import useUser from '../../hook/useUser';
+import { useRecoilValue } from 'recoil';
+import { workspacesAtom } from '../../recoil/atoms';
+import useCustomNavigate from '../../hook/useCustomNavigate';
 
 function AdminHome() {
-  const [url, setUrl] = useState();
+  const { fetchWorkspaces } = useUser();
+  const { appendPath } = useCustomNavigate();
+  const workspaces = useRecoilValue(workspacesAtom);
 
   useEffect(() => {
-    adminApi.get('/user').then((res) => {
-      setUrl(res.data.accountUrl);
-    });
+    fetchWorkspaces();
   }, []);
+
+  if (workspaces?.length === 0) {
+    return <div>워크스페이스가 없습니다.</div>;
+  }
 
   return (
     <div>
-      <div>AdminHome 여기가 헤더가 되어야 할듯?</div>
-      <div>{url}</div>
-      <button onClick={() => window.open(`${url}&amount=5000`)}>test</button>
+      {workspaces.map((it) => (
+        <div key={it.id}>
+          {it.id} - {it.name}
+          <button
+            type={'button'}
+            onClick={() => {
+              appendPath(`/workspace/${it.id}`);
+            }}
+          >
+            이동
+          </button>
+        </div>
+      ))}
     </div>
   );
 }
