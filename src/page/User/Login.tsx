@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useAuthentication from '../../hook/useAuthentication';
-import AppInput from '../../component/common/button/AppInput';
+import AppInput from '../../component/common/input/AppInput';
 
 function Login() {
   const { login } = useAuthentication();
