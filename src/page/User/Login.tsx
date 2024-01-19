@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useAuthentication from '../../hook/useAuthentication';
+import AppInput from '../../component/common/button/AppInput';
 
 function Login() {
   const { login } = useAuthentication();
@@ -33,11 +34,11 @@ function Login() {
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="userId">ID:</label>
-          <input type="text" id="userId" ref={userIdInputRef} autoFocus required />
+          <AppInput type={'text'} id={'userId'} ref={userIdInputRef} required />
         </div>
         <div>
           <label htmlFor="password">Password:</label>
-          <input type="password" id="password" ref={userPasswordInputRef} required />
+          <AppInput type={'password'} id={'password'} ref={userPasswordInputRef} required />
         </div>
         <button type="submit">Login</button>
       </form>
