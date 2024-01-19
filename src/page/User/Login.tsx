@@ -23,8 +23,20 @@ const SubContainer = styled.div`
 `;
 
 const LoginContainer = styled.div`
-  display: block;
-  position: relative;
+  display: grid;
+  row-gap: 46px;
+`;
+
+const InputContainer = styled.div`
+  display: grid;
+  row-gap: 20px;
+`;
+
+const ButtonContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 13px;
+  text-align: center;
 `;
 
 function Login() {
@@ -55,15 +67,19 @@ function Login() {
       <SubContainer>
         <LoginContainer>
           <AppLabel size={'large'}>로그인</AppLabel>
-          {errorMessage && <div className="error-message">{errorMessage}</div>}
-          <form onSubmit={handleSubmit}>
-            <div>
-              <AppInputWithLabel label={'아이디'} type={'text'} id={'userId'} ref={userIdInputRef} required />
-              <AppInputWithLabel label={'비밀번호'} type={'password'} id={'password'} ref={userPasswordInputRef} required />
-            </div>
-            <AppButton type={'submit'}>로그인</AppButton>
-          </form>
-          <Link to={'/'}>Go Home</Link>
+          <InputContainer>
+            <AppInputWithLabel label={'아이디'} type={'text'} id={'userId'} ref={userIdInputRef} />
+            <AppInputWithLabel label={'비밀번호'} type={'password'} id={'password'} ref={userPasswordInputRef} />
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
+          </InputContainer>
+          <ButtonContainer>
+            <AppButton style={{ gridColumn: '1/3' }} type={'button'} onClick={handleSubmit}>
+              로그인
+            </AppButton>
+            <AppLabel size={'small'}>
+              <Link to={'/'}>비밀번호를 잊어버렸나요?</Link> <Link to={'/register'}>회원가입하기</Link>
+            </AppLabel>
+          </ButtonContainer>
         </LoginContainer>
       </SubContainer>
     </Container>
