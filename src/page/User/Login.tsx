@@ -3,6 +3,13 @@ import { Link } from 'react-router-dom';
 import useAuthentication from '../../hook/useAuthentication';
 import AppInputWithLabel from '../../component/common/input/AppInputWithLabel';
 import AppButton from '../../component/common/button/AppButton';
+import styled from '@emotion/styled';
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 function Login() {
   const { login } = useAuthentication();
@@ -28,7 +35,7 @@ function Login() {
   };
 
   return (
-    <>
+    <Container>
       <h2>Login</h2>
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       <form onSubmit={handleSubmit}>
@@ -39,7 +46,7 @@ function Login() {
         <AppButton type={'submit'}>로그인</AppButton>
       </form>
       <Link to={'/'}>Go Home</Link>
-    </>
+    </Container>
   );
 }
 
