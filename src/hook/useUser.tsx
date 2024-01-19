@@ -19,7 +19,11 @@ function useUser() {
       .catch((error) => console.error('Failed to fetch workspaces:', error));
   };
 
-  return { isLoggedIn, fetchWorkspaces };
+  const createWorkspaces = (sapceName: string) => {
+    adminApi.post('/workspace', { name: sapceName }).catch((error) => console.error('Failed to create workspace: ', error));
+  };
+
+  return { isLoggedIn, fetchWorkspaces, createWorkspaces };
 }
 
 export default useUser;
