@@ -54,7 +54,7 @@ function Login() {
     <Container>
       <SubContainer>
         <LoginContainer>
-          <AppLabel>로그인</AppLabel>
+          <AppLabel size={'large'}>로그인</AppLabel>
           {errorMessage && <div className="error-message">{errorMessage}</div>}
           <form onSubmit={handleSubmit}>
             <div>
