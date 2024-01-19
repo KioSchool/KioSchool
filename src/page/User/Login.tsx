@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useAuthentication from '../../hook/useAuthentication';
 import AppInputWithLabel from '../../component/common/input/AppInputWithLabel';
+import AppButton from '../../component/common/button/AppButton';
 
 function Login() {
   const { login } = useAuthentication();
@@ -35,7 +36,7 @@ function Login() {
           <AppInputWithLabel label={'아이디'} type={'text'} id={'userId'} ref={userIdInputRef} required />
           <AppInputWithLabel label={'비밀번호'} type={'password'} id={'password'} ref={userPasswordInputRef} required />
         </div>
-        <button type="submit">Login</button>
+        <AppButton type={'submit'}>로그인</AppButton>
       </form>
       <Link to={'/'}>Go Home</Link>
     </>
