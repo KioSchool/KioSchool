@@ -19,7 +19,25 @@ function useUser() {
       .catch((error) => console.error('Failed to fetch workspaces:', error));
   };
 
-  return { isLoggedIn, fetchWorkspaces };
+  const createWorkspaces = (sapceName: string) => {
+    adminApi
+      .post('/workspace', { name: sapceName })
+      .then((res) => {
+        setWorkspaces((prev) => [...prev, res.data]);
+      })
+      .catch((error) => console.error('Failed to create workspace: ', error));
+  };
+
+  const leaveWorkspaces = (id: number) => {
+    adminApi
+      .post('/workspace/leave', { workspaceId: id as unknown as string })
+      .then(() => {
+        setWorkspaces((prev) => prev.filter((itm) => itm.id != id));
+      })
+      .catch((error) => console.error('Failed to leave workspace: ', error));
+  };
+
+  return { isLoggedIn, fetchWorkspaces, createWorkspaces, leaveWorkspaces };
 }
 
 export default useUser;
