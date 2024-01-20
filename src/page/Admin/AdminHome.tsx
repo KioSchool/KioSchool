@@ -9,7 +9,6 @@ function AdminHome() {
   const { appendPath } = useCustomNavigate();
   const userInputRef = useRef<HTMLInputElement>(null);
   const workspaces = useRecoilValue(workspacesAtom);
-  let showWorkspaces = workspaces?.length !== 0;
 
   useEffect(() => {
     fetchWorkspaces();
@@ -31,24 +30,22 @@ function AdminHome() {
 
   return (
     <>
-      {showWorkspaces && (
-        <div>
-          {workspaces.map((it) => (
-            <div key={it.id}>
-              {it.id} - {it.name}
-              <button
-                type={'button'}
-                onClick={() => {
-                  appendPath(`/workspace/${it.id}`);
-                }}
-              >
-                이동
-              </button>
-              <button onClick={() => leaveHandler(it.id)}>탈퇴하기</button>
-            </div>
-          ))}
-        </div>
-      )}
+      <div>
+        {workspaces.map((it) => (
+          <div key={it.id}>
+            {it.id} - {it.name}
+            <button
+              type={'button'}
+              onClick={() => {
+                appendPath(`/workspace/${it.id}`);
+              }}
+            >
+              이동
+            </button>
+            <button onClick={() => leaveHandler(it.id)}>탈퇴하기</button>
+          </div>
+        ))}
+      </div>
 
       <form onSubmit={createHandler}>
         <input ref={userInputRef} type="text"></input>
