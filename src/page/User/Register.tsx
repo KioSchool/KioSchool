@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import AppLabel from '../../component/common/label/AppLabel';
 import AppInputWithLabel from '../../component/common/input/AppInputWithLabel';
 import AppButton from '../../component/common/button/AppButton';
+import { keyframes } from '@emotion/react';
 
 const Container = styled.div`
   display: block;
@@ -39,6 +40,34 @@ const IdContainer = styled.div`
   flex-wrap: wrap;
 `;
 
+const EmailContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+`;
+
+const fadeIn = keyframes`
+  from { opacity: 0; }
+  to { opacity: 1; }
+`;
+
+const CodeContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  animation: ${fadeIn} 0.5s ease-in-out;
+`;
+
+const SendCodeMove = { marginTop: '23px', width: '160px', marginLeft: '10px' };
+const ReSendCode = { marginTop: '23px', width: '90px', marginLeft: '10px' };
+const CheckCode = { marginTop: '23px', width: '120px', marginLeft: '5px' };
+const RegisterMove = { marginTop: '25px' };
 function Register() {
   const { userApi } = useApi();
   const navigate = useNavigate();
@@ -125,6 +154,7 @@ function Register() {
       })
       .catch(() => {
         setIsCodeSent(false);
+        alert('send email error');
         setErrorMessage('send email error');
       });
   };
@@ -137,13 +167,11 @@ function Register() {
       .post<any>('/user/email', {
         email: userEmail,
       })
-      .then(() => {
-        setIsCodeSent(true);
-      })
-      .catch((err) => {
+      .catch(() => {
+        alert('send email error');
         setErrorMessage('send email error! please check your email address');
-        console.error(err);
       });
+    setIsCodeSent(true);
   };
 
   const checkCode = () => {
@@ -185,7 +213,7 @@ function Register() {
                 onChange={() => setAbleId(false)}
                 required
               />
-              <AppButton style={{ marginTop: '41px', width: '160px', marginLeft: '10px' }} type={'button'} onClick={checkDuplicate}>
+              <AppButton style={{ marginTop: '23px', width: '160px', marginLeft: '10px' }} type={'button'} onClick={checkDuplicate}>
                 ID 중복체크
               </AppButton>
             </IdContainer>
@@ -193,27 +221,26 @@ function Register() {
 
             <AppInputWithLabel label={'비밀번호'} type={'password'} id={'userPassword'} ref={userPasswordInputRef} required />
 
-            <AppInputWithLabel label={'이메일'} type={'email'} id={'userEmail'} ref={userEmailInputRef} required />
-            <AppButton style={{ display: 'box', margin: '15px 0' }} type={'button'} onClick={sendCode}>
-              인증코드 전송
-            </AppButton>
-
-            {isCodeSent && (
-              <div>
-                <label htmlFor="code">인증번호</label>
-                <input id="code" type="text" ref={inputCodeInputRef} />
-
-                <button type={'button'} onClick={sendCode}>
-                  재전송
-                </button>
-                <button type={'button'} onClick={checkCode}>
-                  코드 확인
-                </button>
-              </div>
-            )}
+            <EmailContainer>
+              <AppInputWithLabel style={{ width: '330px' }} label={'이메일'} type={'email'} id={'userEmail'} ref={userEmailInputRef} required />
+              <AppButton style={SendCodeMove} type={'button'} onClick={sendCode}>
+                인증코드 전송
+              </AppButton>
+              {isCodeSent && (
+                <CodeContainer>
+                  <AppInputWithLabel style={{ width: '275px' }} label={'인증번호'} type={'text'} id={'code'} ref={inputCodeInputRef} required />
+                  <AppButton style={ReSendCode} type={'button'} onClick={sendCode}>
+                    재전송
+                  </AppButton>
+                  <AppButton style={CheckCode} type={'button'} onClick={checkCode}>
+                    확인
+                  </AppButton>
+                </CodeContainer>
+              )}
+            </EmailContainer>
 
             {isVerified && isCodeSent ? '인증 성공' : ''}
-            <AppButton style={{ display: 'box' }} type={'submit'}>
+            <AppButton style={RegisterMove} type={'submit'}>
               회원가입
             </AppButton>
           </FormContainer>
