@@ -30,6 +30,14 @@ const FormContainer = styled.form`
   flex-direction: column;
   flex-wrap: wrap;
 `;
+const IdContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+`;
 
 function Register() {
   const { userApi } = useApi();
@@ -160,18 +168,27 @@ function Register() {
     <Fragment>
       <Container>
         <SubContainer>
-          <AppLabel size={'large'} style={{ margin: '0 352px 37px 0' }}>
+          <AppLabel size={'large'} style={{ margin: '0 352px 30px 0' }}>
             회원가입
           </AppLabel>
 
           {errorMessage && <div className="error-message">{errorMessage}</div>}
           <FormContainer onSubmit={submitHandler}>
             <AppInputWithLabel label={'이름'} type={'text'} id={'name'} ref={userNameInputRef} required />
-
-            <AppInputWithLabel label={'아이디'} type={'text'} id={'userId'} ref={userIdInputRef} onChange={() => setAbleId(false)} required />
-            <AppButton style={{ display: 'inline-box', margin: '15px 0', width: '150px' }} type={'button'} onClick={checkDuplicate}>
-              ID 중복체크
-            </AppButton>
+            <IdContainer>
+              <AppInputWithLabel
+                style={{ width: '330px' }}
+                label={'아이디'}
+                type={'text'}
+                id={'userId'}
+                ref={userIdInputRef}
+                onChange={() => setAbleId(false)}
+                required
+              />
+              <AppButton style={{ marginTop: '21px', width: '160px', marginLeft: '10px' }} type={'button'} onClick={checkDuplicate}>
+                ID 중복체크
+              </AppButton>
+            </IdContainer>
             {ableId && <div>사용가능한 ID입니다!</div>}
 
             <AppInputWithLabel label={'비밀번호'} type={'password'} id={'userPassword'} ref={userPasswordInputRef} required />
