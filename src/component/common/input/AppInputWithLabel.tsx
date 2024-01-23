@@ -16,6 +16,7 @@ const Container = styled.div`
 const TitleLabel = styled.label`
   font-size: 14px;
   font-weight: 500;
+  margin: 8px 0;
 `;
 
 const AppInputWithLabel = forwardRef<HTMLInputElement, AppInputWithLabelProps>((props: AppInputWithLabelProps, ref: ForwardedRef<HTMLInputElement>) => {
