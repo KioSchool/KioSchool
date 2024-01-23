@@ -208,7 +208,7 @@ function Register() {
                 </div>
               )}
 
-              {isVerified && isVerified ? '인증 성공' : '인증 실패'}
+              {isVerified && isCodeSent ? '인증 성공' : ''}
               <button type="submit">Register</button>
             </form>
           </RegisterContainer>
