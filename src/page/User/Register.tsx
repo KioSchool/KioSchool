@@ -2,6 +2,8 @@ import React, { Fragment, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useApi from '../../hook/useApi';
 import styled from '@emotion/styled';
+import AppLabel from '../../component/common/label/AppLabel';
+import NameLabel from '../../component/common/label/NameLabel';
 
 const Container = styled.div`
   display: block;
@@ -16,22 +18,12 @@ const SubContainer = styled.div`
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   height: inherit;
 `;
 
 const RegisterContainer = styled.div``;
-const NameLabel = styled.label`
-  display: block;
-`;
-const IdLabel = styled.label`
-  display: block;
-`;
-const PasswordLabel = styled.label`
-  display: block;
-`;
-const EmailLabel = styled.label`
-  display: block;
-`;
+
 function Register() {
   const { userApi } = useApi();
   const navigate = useNavigate();
@@ -161,16 +153,17 @@ function Register() {
     <Fragment>
       <Container>
         <SubContainer>
+          <AppLabel size={'large'}>회원가입</AppLabel>
           <RegisterContainer>
             {errorMessage && <div className="error-message">{errorMessage}</div>}
             <form onSubmit={submitHandler}>
               <div>
-                <NameLabel htmlFor="name">Name</NameLabel>
+                <NameLabel htmlFor="name">이름</NameLabel>
                 <input type="text" id="name" ref={userNameInputRef} autoFocus required />
               </div>
 
               <div>
-                <IdLabel htmlFor="userId">userId</IdLabel>
+                <NameLabel htmlFor="userId">아이디</NameLabel>
                 <input type="text" id="userId" ref={userIdInputRef} onChange={() => setAbleId(false)} required />
                 <button type={'button'} onClick={checkDuplicate}>
                   ID 중복체크
@@ -179,12 +172,12 @@ function Register() {
               </div>
 
               <div>
-                <PasswordLabel htmlFor="userPassword">password</PasswordLabel>
+                <NameLabel htmlFor="userPassword">비밀번호</NameLabel>
                 <input type="password" id="userPassword" ref={userPasswordInputRef} required />
               </div>
 
               <div>
-                <EmailLabel htmlFor="email">Email</EmailLabel>
+                <NameLabel htmlFor="email">이메일 주소</NameLabel>
                 <input type="email" id="email" ref={userEmailInputRef} required />
               </div>
 
