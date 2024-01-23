@@ -1,7 +1,9 @@
 import React, { ForwardedRef, forwardRef } from 'react';
 import styled from '@emotion/styled';
 
-export interface AppInputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+export interface AppInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  enterHandler?: () => void;
+}
 
 const Container = styled.input`
   border: 1px solid black;
@@ -13,7 +15,13 @@ const Container = styled.input`
 `;
 
 const AppInput = forwardRef<HTMLInputElement, AppInputProps>((props: AppInputProps, ref: ForwardedRef<HTMLInputElement>) => {
-  return <Container {...props} ref={ref} />;
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      props.enterHandler?.();
+    }
+  };
+
+  return <Container {...props} ref={ref} onKeyDown={onKeyDown} />;
 });
 
 export default AppInput;
