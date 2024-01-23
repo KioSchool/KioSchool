@@ -9,14 +9,17 @@ interface AppInputWithLabelProps extends AppInputProps {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 5px;
   margin: 5px 0;
 `;
 
 const TitleLabel = styled.label`
-  font-size: 14px;
+  color: #000;
+  font-family: Inter;
+  font-size: 14.33px;
+  font-style: normal;
   font-weight: 500;
-  margin: 10px 0;
+  line-height: normal;
 `;
 
 const AppInputWithLabel = forwardRef<HTMLInputElement, AppInputWithLabelProps>((props: AppInputWithLabelProps, ref: ForwardedRef<HTMLInputElement>) => {
