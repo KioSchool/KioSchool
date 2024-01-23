@@ -160,7 +160,9 @@ function Register() {
     <Fragment>
       <Container>
         <SubContainer>
-          <AppLabel size={'large'}>회원가입</AppLabel>
+          <AppLabel size={'large'} style={{ margin: '0 352px 37px 0' }}>
+            회원가입
+          </AppLabel>
 
           {errorMessage && <div className="error-message">{errorMessage}</div>}
           <FormContainer onSubmit={submitHandler}>
