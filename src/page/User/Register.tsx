@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useApi from '../../hook/useApi';
 import styled from '@emotion/styled';
 import AppLabel from '../../component/common/label/AppLabel';
-import NameLabel from '../../component/common/label/NameLabel';
+import AppInputWithLabel from '../../component/common/input/AppInputWithLabel';
 
 const Container = styled.div`
   display: block;
@@ -158,13 +158,11 @@ function Register() {
             {errorMessage && <div className="error-message">{errorMessage}</div>}
             <form onSubmit={submitHandler}>
               <div>
-                <NameLabel htmlFor="name">이름</NameLabel>
-                <input type="text" id="name" ref={userNameInputRef} autoFocus required />
+                <AppInputWithLabel label={'이름'} type={'text'} id={'name'} ref={userNameInputRef} required />
               </div>
 
               <div>
-                <NameLabel htmlFor="userId">아이디</NameLabel>
-                <input type="text" id="userId" ref={userIdInputRef} onChange={() => setAbleId(false)} required />
+                <AppInputWithLabel label={'아이디'} type={'text'} id={'userId'} ref={userIdInputRef} onChange={() => setAbleId(false)} required />
                 <button type={'button'} onClick={checkDuplicate}>
                   ID 중복체크
                 </button>
@@ -172,13 +170,11 @@ function Register() {
               </div>
 
               <div>
-                <NameLabel htmlFor="userPassword">비밀번호</NameLabel>
-                <input type="password" id="userPassword" ref={userPasswordInputRef} required />
+                <AppInputWithLabel label={'비밀번호'} type={'password'} id={'userPassword'} ref={userPasswordInputRef} required />
               </div>
 
               <div>
-                <NameLabel htmlFor="email">이메일 주소</NameLabel>
-                <input type="email" id="email" ref={userEmailInputRef} required />
+                <AppInputWithLabel label={'이메일'} type={'email'} id={'userEmail'} ref={userEmailInputRef} required />
               </div>
 
               <div>
