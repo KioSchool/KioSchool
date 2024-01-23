@@ -183,8 +183,9 @@ function Register() {
         email: userEmail,
         code: inputCode,
       })
-      .then(() => {
-        setIsVerified(true);
+      .then((res) => {
+        setIsVerified(res.data);
+        if (res.data === false) setErrorMessage('틀린 인증 코드입니다.');
       })
       .catch(() => {
         setIsVerified(false);
