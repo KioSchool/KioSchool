@@ -4,6 +4,7 @@ import useApi from '../../hook/useApi';
 import styled from '@emotion/styled';
 import AppLabel from '../../component/common/label/AppLabel';
 import AppInputWithLabel from '../../component/common/input/AppInputWithLabel';
+import AppButton from '../../component/common/button/AppButton';
 
 const Container = styled.div`
   display: block;
@@ -22,7 +23,13 @@ const SubContainer = styled.div`
   height: inherit;
 `;
 
-const RegisterContainer = styled.div``;
+const FormContainer = styled.form`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+`;
 
 function Register() {
   const { userApi } = useApi();
@@ -154,53 +161,43 @@ function Register() {
       <Container>
         <SubContainer>
           <AppLabel size={'large'}>회원가입</AppLabel>
-          <RegisterContainer>
-            {errorMessage && <div className="error-message">{errorMessage}</div>}
-            <form onSubmit={submitHandler}>
-              <div>
-                <AppInputWithLabel label={'이름'} type={'text'} id={'name'} ref={userNameInputRef} required />
-              </div>
 
-              <div>
-                <AppInputWithLabel label={'아이디'} type={'text'} id={'userId'} ref={userIdInputRef} onChange={() => setAbleId(false)} required />
-                <button type={'button'} onClick={checkDuplicate}>
-                  ID 중복체크
-                </button>
-                {ableId && <div>사용가능한 ID입니다!</div>}
-              </div>
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
+          <FormContainer onSubmit={submitHandler}>
+            <AppInputWithLabel label={'이름'} type={'text'} id={'name'} ref={userNameInputRef} required />
 
-              <div>
-                <AppInputWithLabel label={'비밀번호'} type={'password'} id={'userPassword'} ref={userPasswordInputRef} required />
-              </div>
+            <AppInputWithLabel label={'아이디'} type={'text'} id={'userId'} ref={userIdInputRef} onChange={() => setAbleId(false)} required />
+            <AppButton style={{ display: 'inline-box', margin: '15px 0', width: '150px' }} type={'button'} onClick={checkDuplicate}>
+              ID 중복체크
+            </AppButton>
+            {ableId && <div>사용가능한 ID입니다!</div>}
 
-              <div>
-                <AppInputWithLabel label={'이메일'} type={'email'} id={'userEmail'} ref={userEmailInputRef} required />
-              </div>
+            <AppInputWithLabel label={'비밀번호'} type={'password'} id={'userPassword'} ref={userPasswordInputRef} required />
 
+            <AppInputWithLabel label={'이메일'} type={'email'} id={'userEmail'} ref={userEmailInputRef} required />
+            <AppButton style={{ display: 'box', margin: '15px 0' }} type={'button'} onClick={sendCode}>
+              인증코드 전송
+            </AppButton>
+
+            {isCodeSent && (
               <div>
+                <label htmlFor="code">인증번호</label>
+                <input id="code" type="text" ref={inputCodeInputRef} />
+
                 <button type={'button'} onClick={sendCode}>
-                  이메일 인증 코드 받기
+                  재전송
+                </button>
+                <button type={'button'} onClick={checkCode}>
+                  코드 확인
                 </button>
               </div>
+            )}
 
-              {isCodeSent && (
-                <div>
-                  <label htmlFor="code">인증번호</label>
-                  <input id="code" type="text" ref={inputCodeInputRef} />
-
-                  <button type={'button'} onClick={sendCode}>
-                    재전송
-                  </button>
-                  <button type={'button'} onClick={checkCode}>
-                    코드 확인
-                  </button>
-                </div>
-              )}
-
-              {isVerified && isCodeSent ? '인증 성공' : ''}
-              <button type="submit">Register</button>
-            </form>
-          </RegisterContainer>
+            {isVerified && isCodeSent ? '인증 성공' : ''}
+            <AppButton style={{ display: 'box' }} type={'submit'}>
+              회원가입
+            </AppButton>
+          </FormContainer>
         </SubContainer>
       </Container>
     </Fragment>
