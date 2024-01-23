@@ -185,7 +185,7 @@ function Register() {
                 onChange={() => setAbleId(false)}
                 required
               />
-              <AppButton style={{ marginTop: '21px', width: '160px', marginLeft: '10px' }} type={'button'} onClick={checkDuplicate}>
+              <AppButton style={{ marginTop: '41px', width: '160px', marginLeft: '10px' }} type={'button'} onClick={checkDuplicate}>
                 ID 중복체크
               </AppButton>
             </IdContainer>
