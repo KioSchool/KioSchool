@@ -19,6 +19,19 @@ const SubContainer = styled.div`
   height: inherit;
 `;
 
+const RegisterContainer = styled.div``;
+const NameLabel = styled.label`
+  display: block;
+`;
+const IdLabel = styled.label`
+  display: block;
+`;
+const PasswordLabel = styled.label`
+  display: block;
+`;
+const EmailLabel = styled.label`
+  display: block;
+`;
 function Register() {
   const { userApi } = useApi();
   const navigate = useNavigate();
@@ -148,55 +161,57 @@ function Register() {
     <Fragment>
       <Container>
         <SubContainer>
-          {errorMessage && <div className="error-message">{errorMessage}</div>}
-          <form onSubmit={submitHandler}>
-            <div>
-              <label htmlFor="name">Name:</label>
-              <input type="text" id="name" ref={userNameInputRef} autoFocus required />
-            </div>
-
-            <div>
-              <label htmlFor="userId">userId:</label>
-              <input type="text" id="userId" ref={userIdInputRef} onChange={() => setAbleId(false)} required />
-              <button type={'button'} onClick={checkDuplicate}>
-                ID 중복체크
-              </button>
-              {ableId && <div>사용가능한 ID입니다!</div>}
-            </div>
-
-            <div>
-              <label htmlFor="userPassword">password:</label>
-              <input type="password" id="userPassword" ref={userPasswordInputRef} required />
-            </div>
-
-            <div>
-              <label htmlFor="email">Email:</label>
-              <input type="email" id="email" ref={userEmailInputRef} required />
-            </div>
-
-            <div>
-              <button type={'button'} onClick={sendCode}>
-                이메일 인증 코드 받기
-              </button>
-            </div>
-
-            {isCodeSent && (
+          <RegisterContainer>
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
+            <form onSubmit={submitHandler}>
               <div>
-                <label htmlFor="code">인증번호</label>
-                <input id="code" type="text" ref={inputCodeInputRef} />
+                <NameLabel htmlFor="name">Name</NameLabel>
+                <input type="text" id="name" ref={userNameInputRef} autoFocus required />
+              </div>
 
-                <button type={'button'} onClick={sendCode}>
-                  재전송
+              <div>
+                <IdLabel htmlFor="userId">userId</IdLabel>
+                <input type="text" id="userId" ref={userIdInputRef} onChange={() => setAbleId(false)} required />
+                <button type={'button'} onClick={checkDuplicate}>
+                  ID 중복체크
                 </button>
-                <button type={'button'} onClick={checkCode}>
-                  코드 확인
+                {ableId && <div>사용가능한 ID입니다!</div>}
+              </div>
+
+              <div>
+                <PasswordLabel htmlFor="userPassword">password</PasswordLabel>
+                <input type="password" id="userPassword" ref={userPasswordInputRef} required />
+              </div>
+
+              <div>
+                <EmailLabel htmlFor="email">Email</EmailLabel>
+                <input type="email" id="email" ref={userEmailInputRef} required />
+              </div>
+
+              <div>
+                <button type={'button'} onClick={sendCode}>
+                  이메일 인증 코드 받기
                 </button>
               </div>
-            )}
 
-            {isVerified && isVerified ? '인증 성공' : '인증 실패'}
-            <button type="submit">Register</button>
-          </form>
+              {isCodeSent && (
+                <div>
+                  <label htmlFor="code">인증번호</label>
+                  <input id="code" type="text" ref={inputCodeInputRef} />
+
+                  <button type={'button'} onClick={sendCode}>
+                    재전송
+                  </button>
+                  <button type={'button'} onClick={checkCode}>
+                    코드 확인
+                  </button>
+                </div>
+              )}
+
+              {isVerified && isVerified ? '인증 성공' : '인증 실패'}
+              <button type="submit">Register</button>
+            </form>
+          </RegisterContainer>
         </SubContainer>
       </Container>
     </Fragment>
