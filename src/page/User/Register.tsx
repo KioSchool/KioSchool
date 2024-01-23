@@ -68,6 +68,12 @@ const SendCodeMove = { marginTop: '23px', width: '160px', marginLeft: '10px' };
 const ReSendCode = { marginTop: '23px', width: '90px', marginLeft: '10px' };
 const CheckCode = { marginTop: '23px', width: '120px', marginLeft: '5px' };
 const RegisterMove = { marginTop: '25px' };
+
+const ErrorMessage = styled.div`
+  color: #ff0000;
+  animation: ${fadeIn} 0.5s ease-in-out;
+`;
+
 function Register() {
   const { userApi } = useApi();
   const navigate = useNavigate();
@@ -189,7 +195,7 @@ function Register() {
       })
       .catch(() => {
         setIsVerified(false);
-        setErrorMessage('check email error');
+        setErrorMessage('check code error');
       });
   };
 
@@ -201,7 +207,7 @@ function Register() {
             회원가입
           </AppLabel>
 
-          {errorMessage && <div className="error-message">{errorMessage}</div>}
+          {errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}
           <FormContainer onSubmit={submitHandler}>
             <AppInputWithLabel label={'이름'} type={'text'} id={'name'} ref={userNameInputRef} required />
             <IdContainer>
