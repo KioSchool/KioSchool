@@ -64,10 +64,10 @@ const CodeContainer = styled.div`
   animation: ${fadeIn} 0.5s ease-in-out;
 `;
 
-const SendCodeMove = { marginTop: '23px', width: '160px', marginLeft: '10px' };
-const ReSendCode = { marginTop: '23px', width: '90px', marginLeft: '10px' };
-const CheckCode = { marginTop: '23px', width: '120px', marginLeft: '5px' };
-const RegisterMove = { marginTop: '25px' };
+const SendCodeStyle = { marginTop: '23px', width: '160px', marginLeft: '10px' };
+const ReSendCodeStyle = { marginTop: '23px', width: '90px', marginLeft: '10px' };
+const CheckCodeStyle = { marginTop: '23px', width: '120px', marginLeft: '5px' };
+const RegisterStyle = { marginTop: '25px' };
 
 const ErrorMessage = styled.div`
   color: #ff0000;
@@ -230,16 +230,16 @@ function Register() {
 
             <EmailContainer>
               <AppInputWithLabel style={{ width: '330px' }} label={'이메일'} type={'email'} id={'userEmail'} ref={userEmailInputRef} required />
-              <AppButton style={SendCodeMove} type={'button'} onClick={sendCode}>
+              <AppButton style={SendCodeStyle} type={'button'} onClick={sendCode}>
                 인증코드 전송
               </AppButton>
               {isCodeSent && (
                 <CodeContainer>
                   <AppInputWithLabel style={{ width: '275px' }} label={'인증번호'} type={'text'} id={'code'} ref={inputCodeInputRef} required />
-                  <AppButton style={ReSendCode} type={'button'} onClick={sendCode}>
+                  <AppButton style={ReSendCodeStyle} type={'button'} onClick={sendCode}>
                     재전송
                   </AppButton>
-                  <AppButton style={CheckCode} type={'button'} onClick={checkCode}>
+                  <AppButton style={CheckCodeStyle} type={'button'} onClick={checkCode}>
                     확인
                   </AppButton>
                 </CodeContainer>
@@ -247,7 +247,7 @@ function Register() {
             </EmailContainer>
 
             {isVerified && isCodeSent ? '인증 성공' : ''}
-            <AppButton style={RegisterMove} type={'submit'}>
+            <AppButton style={RegisterStyle} type={'submit'}>
               회원가입
             </AppButton>
           </FormContainer>
