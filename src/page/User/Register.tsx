@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import AppLabel from '../../component/common/label/AppLabel';
 import AppInputWithLabel from '../../component/common/input/AppInputWithLabel';
 import AppButton from '../../component/common/button/AppButton';
+import AppInput from '../../component/common/input/AppInput';
 
 const Container = styled.div`
   display: flex;
@@ -76,13 +77,18 @@ function Register() {
   const navigate = useNavigate();
   const userNameInputRef = useRef<HTMLInputElement>(null);
   const userIdInputRef = useRef<HTMLInputElement>(null);
-  const userPasswordInputRef = useRef<HTMLInputElement>(null);
+  const checkUserPasswordInputRef = useRef<HTMLInputElement>(null);
+  const [userPasswordInput, setUserPasswordInput] = useState('');
   const userEmailInputRef = useRef<HTMLInputElement>(null);
   const inputCodeInputRef = useRef<HTMLInputElement>(null);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [ableId, setAbleId] = useState<boolean>(false);
   const [isCodeSent, setIsCodeSent] = useState<boolean>(false);
   const [isVerified, setIsVerified] = useState<boolean>(false);
+
+  const onChnageHandler = (event: any) => {
+    setUserPasswordInput(event.target.value);
+  };
 
   const checkDuplicate = () => {
     const userId = userIdInputRef.current?.value;
@@ -133,8 +139,7 @@ function Register() {
       return;
     }
 
-    const userPassword = userPasswordInputRef.current?.value;
-    if (!userPassword) {
+    if (!userPasswordInput) {
       setErrorMessage('The userPassword is null');
       return;
     }
@@ -148,7 +153,7 @@ function Register() {
     userApi
       .post<any>('/register', {
         id: userId,
-        password: userPassword,
+        password: userPasswordInput,
         name: userName,
         email: userEmail,
       })
@@ -223,7 +228,8 @@ function Register() {
               </AppButton>
             </IdContainer>
 
-            <AppInputWithLabel titleLabel={'비밀번호'} type={'password'} id={'userPassword'} ref={userPasswordInputRef} required />
+            <AppInputWithLabel titleLabel={'비밀번호'} type={'password'} id={'userPassword'} onChange={onChnageHandler} required />
+            <AppInput ref={checkUserPasswordInputRef}></AppInput>
 
             <EmailContainer>
               <AppInputWithLabel style={{ width: '330px' }} titleLabel={'이메일'} type={'email'} id={'userEmail'} ref={userEmailInputRef} required />
