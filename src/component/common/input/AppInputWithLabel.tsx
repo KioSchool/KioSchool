@@ -14,12 +14,9 @@ const Container = styled.div`
 `;
 
 const TitleLabel = styled.label`
-  color: #000;
   font-family: Inter;
-  font-size: 14.33px;
-  font-style: normal;
+  font-size: 14px;
   font-weight: 500;
-  line-height: normal;
 `;
 
 const AppInputWithLabel = forwardRef<HTMLInputElement, AppInputWithLabelProps>((props: AppInputWithLabelProps, ref: ForwardedRef<HTMLInputElement>) => {
