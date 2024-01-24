@@ -18,4 +18,20 @@ export const productsAtom = atom<Product[]>({
 
 export const userWorkspaceAtom = atom<Workspace>({
   key: 'userWorkspaceAtom',
+  default: {
+    name: '',
+    owner: {
+      name: '',
+      email: '',
+      role: '',
+      accountUrl: '',
+      id: 0,
+      createdAt: '',
+      updatedAt: '',
+    },
+    products: [],
+    id: 0,
+    createdAt: '',
+    updatedAt: '',
+  },
 });
