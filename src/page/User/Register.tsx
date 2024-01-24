@@ -90,8 +90,15 @@ function Register() {
   const isSamePassword = userPasswordInput === checkUserPasswordInput;
 
   const setUserPassword = (event: any) => {
-    setUserPasswordInput(event.target.value);
-    setIsPasswordEntered(true);
+    const input: string = event.target.value;
+
+    setUserPasswordInput(input);
+
+    if (input.length > 0) {
+      setIsPasswordEntered(true);
+    } else {
+      setIsPasswordEntered(false);
+    }
   };
   const setCheckUserPassword = (event: any) => {
     setCheckUserPasswordInput(event.target.value);
@@ -217,7 +224,7 @@ function Register() {
           </AppLabel>
 
           {errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}
-          <FormContainer onSubmit={submitHandler}>
+          <FormContainer id={'form'} onSubmit={submitHandler}>
             <AppInputWithLabel titleLabel={'이름'} type={'text'} id={'name'} ref={userNameInputRef} required />
             <IdContainer>
               <AppInputWithLabel
