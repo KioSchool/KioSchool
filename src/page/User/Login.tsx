@@ -49,9 +49,7 @@ function Login() {
     setErrorMessage('');
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSubmit = () => {
     const userId = userIdInputRef.current?.value;
     const userPassword = userPasswordInputRef.current?.value;
     if (!userId || !userPassword) {
@@ -69,7 +67,7 @@ function Login() {
           <AppLabel size={'large'}>로그인</AppLabel>
           <InputContainer>
             <AppInputWithLabel label={'아이디'} type={'text'} id={'userId'} ref={userIdInputRef} />
-            <AppInputWithLabel label={'비밀번호'} type={'password'} id={'password'} ref={userPasswordInputRef} />
+            <AppInputWithLabel label={'비밀번호'} type={'password'} id={'password'} ref={userPasswordInputRef} enterHandler={handleSubmit} />
             {errorMessage && <div className="error-message">{errorMessage}</div>}
           </InputContainer>
           <ButtonContainer>
