@@ -9,7 +9,7 @@ interface AppInputWithLabelProps extends AppInputProps {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 12px;
   margin: 5px 0;
 `;
 
