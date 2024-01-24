@@ -50,6 +50,7 @@ const EmailContainer = styled.div`
   justify-content: space-between;
   flex-direction: row;
   flex-wrap: wrap;
+  gap: 12px;
 `;
 
 const CodeContainer = styled.div`
