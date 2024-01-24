@@ -42,7 +42,7 @@ const IdContainer = styled.div`
 const EmailContainer = styled.div`
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   flex-direction: row;
   flex-wrap: wrap;
@@ -57,7 +57,7 @@ const CodeContainer = styled.div`
   flex-wrap: wrap;
 `;
 
-const SendCodeStyle = { marginTop: '23px', width: '160px', marginLeft: '10px' };
+const SendCodeStyle = { width: '160px', marginLeft: '10px' };
 const ReSendCodeStyle = { marginTop: '23px', width: '90px', marginLeft: '10px' };
 const CheckCodeStyle = { marginTop: '23px', width: '120px', marginLeft: '5px' };
 const RegisterStyle = { marginTop: '25px' };
