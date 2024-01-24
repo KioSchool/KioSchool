@@ -63,7 +63,7 @@ const CodeContainer = styled.div`
   flex-wrap: wrap;
 `;
 
-const ReSendCodeStyle = { width: '90px' };
+const CodeReSendStyle = { width: '90px' };
 
 const RegisterStyle = { marginTop: '25px' };
 
@@ -79,29 +79,18 @@ function Register() {
   const userIdInputRef = useRef<HTMLInputElement>(null);
   const userEmailInputRef = useRef<HTMLInputElement>(null);
   const inputCodeInputRef = useRef<HTMLInputElement>(null);
-  const [userPasswordInput, setUserPasswordInput] = useState('');
+  const userPasswordInputRef = useRef<HTMLInputElement>(null);
   const [checkUserPasswordInput, setCheckUserPasswordInput] = useState('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [ableId, setAbleId] = useState<boolean>(false);
-  const [isPasswordEntered, setIsPasswordEntered] = useState<boolean>(false);
+
   const [isCodeSent, setIsCodeSent] = useState<boolean>(false);
   const [isVerified, setIsVerified] = useState<boolean>(false);
 
-  const isSamePassword = userPasswordInput === checkUserPasswordInput;
-  const showCheckPasswordLabel = isPasswordEntered ? (isSamePassword ? '비밀번호가 동일합니다!' : '비밀번호가 서로 다릅니다.') : undefined;
-  const setUserPassword = (event: any) => {
-    const input: string = event.target.value;
-
-    setUserPasswordInput(input);
-
-    if (input.length > 0) {
-      setIsPasswordEntered(true);
-    } else {
-      setIsPasswordEntered(false);
-    }
-  };
-  const setCheckUserPassword = (event: any) => {
-    setCheckUserPasswordInput(event.target.value);
+  const isSamePassword = userPasswordInputRef.current?.value === checkUserPasswordInput;
+  const showCheckPasswordLabel = () => {
+    if (!checkUserPasswordInput) return undefined;
+    return isSamePassword ? '비밀번호가 동일합니다!' : '비밀번호가 서로 다릅니다.';
   };
 
   const checkDuplicate = () => {
@@ -152,8 +141,8 @@ function Register() {
       setErrorMessage('The userId is null');
       return;
     }
-
-    if (!userPasswordInput) {
+    const password = userPasswordInputRef.current?.value;
+    if (!password) {
       setErrorMessage('The userPassword is null');
       return;
     }
@@ -167,7 +156,7 @@ function Register() {
     userApi
       .post<any>('/register', {
         id: userId,
-        password: userPasswordInput,
+        password: password,
         name: userName,
         email: userEmail,
       })
@@ -244,13 +233,21 @@ function Register() {
 
             <AppInputWithLabel
               titleLabel={'비밀번호'}
-              messageLabel={showCheckPasswordLabel}
+              messageLabel={showCheckPasswordLabel()}
               type={'password'}
               id={'userPassword'}
-              onChange={setUserPassword}
+              onChange={() => {
+                setCheckUserPasswordInput('');
+              }}
+              ref={userPasswordInputRef}
               required
             />
-            <AppInput onChange={setCheckUserPassword} type={'password'} required></AppInput>
+            <AppInput
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setCheckUserPasswordInput(event.target.value)}
+              type={'password'}
+              value={checkUserPasswordInput}
+              required
+            ></AppInput>
 
             <EmailContainer>
               <AppInputWithLabel style={{ width: '330px' }} titleLabel={'이메일'} type={'email'} id={'userEmail'} ref={userEmailInputRef} required />
@@ -260,7 +257,7 @@ function Register() {
               {isCodeSent && (
                 <CodeContainer>
                   <AppInputWithLabel style={{ width: '275px' }} titleLabel={'인증번호'} type={'text'} id={'code'} ref={inputCodeInputRef} required />
-                  <AppButton style={ReSendCodeStyle} type={'button'} onClick={sendCode}>
+                  <AppButton style={CodeReSendStyle} type={'button'} onClick={sendCode}>
                     재전송
                   </AppButton>
                   <AppButton size={'small'} type={'button'} onClick={checkCode}>
