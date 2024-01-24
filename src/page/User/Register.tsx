@@ -211,6 +211,7 @@ function Register() {
               <AppInputWithLabel
                 style={{ width: '330px' }}
                 titleLabel={'아이디'}
+                messageLabel={ableId ? '사용가능한 ID입니다!' : undefined}
                 type={'text'}
                 id={'userId'}
                 ref={userIdInputRef}
@@ -221,7 +222,6 @@ function Register() {
                 ID 중복체크
               </AppButton>
             </IdContainer>
-            {ableId && <div>사용가능한 ID입니다!</div>}
 
             <AppInputWithLabel titleLabel={'비밀번호'} type={'password'} id={'userPassword'} ref={userPasswordInputRef} required />
 

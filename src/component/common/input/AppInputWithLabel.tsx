@@ -13,13 +13,22 @@ const Container = styled.div`
   gap: 12px;
 `;
 
+const LabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+`;
+
 const TitleLabel = styled.label`
+  display: inline-block;
   font-family: Inter;
   font-size: 14px;
   font-weight: 500;
 `;
 
 const MessageLabel = styled.label`
+  display: inline-block;
+  padding: 0 10px 0;
   font-family: Inter;
   font-size: 12px;
   font-weight: 500;
@@ -28,8 +37,10 @@ const MessageLabel = styled.label`
 const AppInputWithLabel = forwardRef<HTMLInputElement, AppInputWithLabelProps>((props: AppInputWithLabelProps, ref: ForwardedRef<HTMLInputElement>) => {
   return (
     <Container>
-      <TitleLabel htmlFor={props.id}>{props.titleLabel}</TitleLabel>
-      <MessageLabel htmlFor={props.id}>{props.messageLabel}</MessageLabel>
+      <LabelContainer>
+        <TitleLabel htmlFor={props.id}>{props.titleLabel}</TitleLabel>
+        <MessageLabel htmlFor={props.id}>{props.messageLabel}</MessageLabel>
+      </LabelContainer>
       <AppInput {...props} ref={ref} />
     </Container>
   );
