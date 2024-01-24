@@ -6,20 +6,21 @@ import AppLabel from '../../component/common/label/AppLabel';
 import AppInputWithLabel from '../../component/common/input/AppInputWithLabel';
 import AppButton from '../../component/common/button/AppButton';
 
-const RegisterLabel = { padding: '0 352px 30px 0' };
-
 const Container = styled.div`
-  display: block;
+  display: flex;
   width: 100vw;
   height: 100vh;
   box-sizing: border-box;
+  flex-wrap: wrap;
+  justify-content: center;
 `;
 
 const SubContainer = styled.div`
+  width: 500px;
   display: flex;
   flex-basis: 0;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   flex-direction: column;
   height: inherit;
@@ -36,7 +37,7 @@ const IdContainer = styled.div`
   width: 100%;
   display: flex;
   align-items: flex-end;
-  justify-content: center;
+  justify-content: space-between;
   flex-direction: row;
   flex-wrap: wrap;
 `;
@@ -45,7 +46,7 @@ const EmailContainer = styled.div`
   width: 100%;
   display: flex;
   align-items: flex-end;
-  justify-content: center;
+  justify-content: space-between;
   flex-direction: row;
   flex-wrap: wrap;
 `;
@@ -54,17 +55,17 @@ const CodeContainer = styled.div`
   width: 100%;
   display: flex;
   align-items: flex-end;
-  justify-content: center;
+  justify-content: space-between;
   flex-direction: row;
   flex-wrap: wrap;
 `;
 
-const SendCodeStyle = { marginLeft: '10px' };
-const ReSendCodeStyle = { width: '90px', marginLeft: '10px' };
-const CheckCodeStyle = { marginLeft: '5px' };
+const ReSendCodeStyle = { width: '90px' };
+
 const RegisterStyle = { marginTop: '25px' };
 
 const ErrorMessage = styled.div`
+  padding: 0 0 5px;
   color: #ff0000;
 `;
 
@@ -197,7 +198,7 @@ function Register() {
     <Fragment>
       <Container>
         <SubContainer>
-          <AppLabel size={'large'} style={RegisterLabel}>
+          <AppLabel size={'large'} style={{ padding: '0 0 10px' }}>
             회원가입
           </AppLabel>
 
@@ -214,7 +215,7 @@ function Register() {
                 onChange={() => setAbleId(false)}
                 required
               />
-              <AppButton size={'medium'} style={{ marginLeft: '10px' }} type={'button'} onClick={checkDuplicate}>
+              <AppButton size={'medium'} type={'button'} onClick={checkDuplicate}>
                 ID 중복체크
               </AppButton>
             </IdContainer>
@@ -224,7 +225,7 @@ function Register() {
 
             <EmailContainer>
               <AppInputWithLabel style={{ width: '330px' }} label={'이메일'} type={'email'} id={'userEmail'} ref={userEmailInputRef} required />
-              <AppButton style={SendCodeStyle} type={'button'} onClick={sendCode}>
+              <AppButton type={'button'} onClick={sendCode}>
                 인증코드 전송
               </AppButton>
               {isCodeSent && (
@@ -233,7 +234,7 @@ function Register() {
                   <AppButton style={ReSendCodeStyle} type={'button'} onClick={sendCode}>
                     재전송
                   </AppButton>
-                  <AppButton size={'small'} style={CheckCodeStyle} type={'button'} onClick={checkCode}>
+                  <AppButton size={'small'} type={'button'} onClick={checkCode}>
                     확인
                   </AppButton>
                 </CodeContainer>
