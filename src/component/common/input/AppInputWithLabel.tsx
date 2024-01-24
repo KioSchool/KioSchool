@@ -10,7 +10,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin: 5px 0;
 `;
 
 const TitleLabel = styled.label`

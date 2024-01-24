@@ -33,7 +33,7 @@ const FormContainer = styled.form`
 const IdContainer = styled.div`
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   flex-direction: row;
   flex-wrap: wrap;
@@ -212,7 +212,7 @@ function Register() {
                 onChange={() => setAbleId(false)}
                 required
               />
-              <AppButton style={{ marginTop: '23px', width: '160px', marginLeft: '10px' }} type={'button'} onClick={checkDuplicate}>
+              <AppButton style={{ marginLeft: '10px', width: '160px' }} type={'button'} onClick={checkDuplicate}>
                 ID 중복체크
               </AppButton>
             </IdContainer>
