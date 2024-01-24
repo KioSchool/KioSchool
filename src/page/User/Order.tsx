@@ -1,5 +1,12 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
+import styled from '@emotion/styled';
+
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+  padding-top: 60px;
+`;
 
 function Order() {
   const [searchParams] = useSearchParams();
@@ -7,9 +14,9 @@ function Order() {
   const tableNo = searchParams.get('tableNo');
 
   return (
-    <div>
+    <Container>
       {workspaceId}-{tableNo} 테이블
-    </div>
+    </Container>
   );
 }
 
