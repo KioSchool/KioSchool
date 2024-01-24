@@ -51,15 +51,15 @@ const EmailContainer = styled.div`
 const CodeContainer = styled.div`
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   flex-direction: row;
   flex-wrap: wrap;
 `;
 
 const SendCodeStyle = { width: '160px', marginLeft: '10px' };
-const ReSendCodeStyle = { marginTop: '23px', width: '90px', marginLeft: '10px' };
-const CheckCodeStyle = { marginTop: '23px', width: '120px', marginLeft: '5px' };
+const ReSendCodeStyle = { width: '90px', marginLeft: '10px' };
+const CheckCodeStyle = { width: '120px', marginLeft: '5px' };
 const RegisterStyle = { marginTop: '25px' };
 
 const ErrorMessage = styled.div`
