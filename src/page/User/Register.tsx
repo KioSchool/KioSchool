@@ -200,17 +200,17 @@ function Register() {
     <Fragment>
       <Container>
         <SubContainer>
-          <AppLabel size={'large'} style={{ padding: '0 0 10px' }}>
+          <AppLabel size={'large'} style={{ padding: '0 0 30px' }}>
             회원가입
           </AppLabel>
 
           {errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}
           <FormContainer onSubmit={submitHandler}>
-            <AppInputWithLabel label={'이름'} type={'text'} id={'name'} ref={userNameInputRef} required />
+            <AppInputWithLabel titleLabel={'이름'} type={'text'} id={'name'} ref={userNameInputRef} required />
             <IdContainer>
               <AppInputWithLabel
                 style={{ width: '330px' }}
-                label={'아이디'}
+                titleLabel={'아이디'}
                 type={'text'}
                 id={'userId'}
                 ref={userIdInputRef}
@@ -223,16 +223,16 @@ function Register() {
             </IdContainer>
             {ableId && <div>사용가능한 ID입니다!</div>}
 
-            <AppInputWithLabel label={'비밀번호'} type={'password'} id={'userPassword'} ref={userPasswordInputRef} required />
+            <AppInputWithLabel titleLabel={'비밀번호'} type={'password'} id={'userPassword'} ref={userPasswordInputRef} required />
 
             <EmailContainer>
-              <AppInputWithLabel style={{ width: '330px' }} label={'이메일'} type={'email'} id={'userEmail'} ref={userEmailInputRef} required />
+              <AppInputWithLabel style={{ width: '330px' }} titleLabel={'이메일'} type={'email'} id={'userEmail'} ref={userEmailInputRef} required />
               <AppButton type={'button'} onClick={sendCode}>
                 인증코드 전송
               </AppButton>
               {isCodeSent && (
                 <CodeContainer>
-                  <AppInputWithLabel style={{ width: '275px' }} label={'인증번호'} type={'text'} id={'code'} ref={inputCodeInputRef} required />
+                  <AppInputWithLabel style={{ width: '275px' }} titleLabel={'인증번호'} type={'text'} id={'code'} ref={inputCodeInputRef} required />
                   <AppButton style={ReSendCodeStyle} type={'button'} onClick={sendCode}>
                     재전송
                   </AppButton>
