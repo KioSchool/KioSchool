@@ -32,6 +32,7 @@ const FormContainer = styled.form`
   justify-content: center;
   flex-direction: column;
   flex-wrap: wrap;
+  gap: 14px;
 `;
 const IdContainer = styled.div`
   width: 100%;
