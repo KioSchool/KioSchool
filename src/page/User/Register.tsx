@@ -77,17 +77,24 @@ function Register() {
   const navigate = useNavigate();
   const userNameInputRef = useRef<HTMLInputElement>(null);
   const userIdInputRef = useRef<HTMLInputElement>(null);
-  const checkUserPasswordInputRef = useRef<HTMLInputElement>(null);
-  const [userPasswordInput, setUserPasswordInput] = useState('');
   const userEmailInputRef = useRef<HTMLInputElement>(null);
   const inputCodeInputRef = useRef<HTMLInputElement>(null);
+  const [userPasswordInput, setUserPasswordInput] = useState('');
+  const [checkUserPasswordInput, setCheckUserPasswordInput] = useState('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [ableId, setAbleId] = useState<boolean>(false);
+  const [isPasswordEntered, setIsPasswordEntered] = useState<boolean>(false);
   const [isCodeSent, setIsCodeSent] = useState<boolean>(false);
   const [isVerified, setIsVerified] = useState<boolean>(false);
 
-  const onChnageHandler = (event: any) => {
+  const isSamePassword = userPasswordInput === checkUserPasswordInput;
+
+  const setUserPassword = (event: any) => {
     setUserPasswordInput(event.target.value);
+    setIsPasswordEntered(true);
+  };
+  const setCheckUserPassword = (event: any) => {
+    setCheckUserPasswordInput(event.target.value);
   };
 
   const checkDuplicate = () => {
@@ -228,8 +235,15 @@ function Register() {
               </AppButton>
             </IdContainer>
 
-            <AppInputWithLabel titleLabel={'비밀번호'} type={'password'} id={'userPassword'} onChange={onChnageHandler} required />
-            <AppInput ref={checkUserPasswordInputRef}></AppInput>
+            <AppInputWithLabel
+              titleLabel={'비밀번호'}
+              messageLabel={isPasswordEntered ? (isSamePassword ? '비밀번호가 동일합니다!' : '비밀번호가 서로 다릅니다.') : undefined}
+              type={'password'}
+              id={'userPassword'}
+              onChange={setUserPassword}
+              required
+            />
+            <AppInput onChange={setCheckUserPassword} type={'password'} required></AppInput>
 
             <EmailContainer>
               <AppInputWithLabel style={{ width: '330px' }} titleLabel={'이메일'} type={'email'} id={'userEmail'} ref={userEmailInputRef} required />
