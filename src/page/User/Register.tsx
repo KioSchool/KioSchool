@@ -5,7 +5,6 @@ import styled from '@emotion/styled';
 import AppLabel from '../../component/common/label/AppLabel';
 import AppInputWithLabel from '../../component/common/input/AppInputWithLabel';
 import AppButton from '../../component/common/button/AppButton';
-import { keyframes } from '@emotion/react';
 
 const Container = styled.div`
   display: block;
@@ -49,11 +48,6 @@ const EmailContainer = styled.div`
   flex-wrap: wrap;
 `;
 
-const fadeIn = keyframes`
-  from { opacity: 0; }
-  to { opacity: 1; }
-`;
-
 const CodeContainer = styled.div`
   width: 100%;
   display: flex;
@@ -61,7 +55,6 @@ const CodeContainer = styled.div`
   justify-content: center;
   flex-direction: row;
   flex-wrap: wrap;
-  animation: ${fadeIn} 0.5s ease-in-out;
 `;
 
 const SendCodeStyle = { marginTop: '23px', width: '160px', marginLeft: '10px' };
@@ -71,7 +64,6 @@ const RegisterStyle = { marginTop: '25px' };
 
 const ErrorMessage = styled.div`
   color: #ff0000;
-  animation: ${fadeIn} 0.5s ease-in-out;
 `;
 
 function Register() {
