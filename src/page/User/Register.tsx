@@ -88,7 +88,7 @@ function Register() {
   const [isVerified, setIsVerified] = useState<boolean>(false);
 
   const isSamePassword = userPasswordInput === checkUserPasswordInput;
-
+  const showCheckPasswordLabel = isPasswordEntered ? (isSamePassword ? '비밀번호가 동일합니다!' : '비밀번호가 서로 다릅니다.') : undefined;
   const setUserPassword = (event: any) => {
     const input: string = event.target.value;
 
@@ -244,7 +244,7 @@ function Register() {
 
             <AppInputWithLabel
               titleLabel={'비밀번호'}
-              messageLabel={isPasswordEntered ? (isSamePassword ? '비밀번호가 동일합니다!' : '비밀번호가 서로 다릅니다.') : undefined}
+              messageLabel={showCheckPasswordLabel}
               type={'password'}
               id={'userPassword'}
               onChange={setUserPassword}
