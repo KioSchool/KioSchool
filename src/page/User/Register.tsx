@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import AppLabel from '../../component/common/label/AppLabel';
 import AppInputWithLabel from '../../component/common/input/AppInputWithLabel';
 import AppButton from '../../component/common/button/AppButton';
-
+const RegisterLabel = { padding: '0 352px 30px 0' };
 const Container = styled.div`
   display: block;
   width: 100vw;
@@ -195,7 +195,7 @@ function Register() {
     <Fragment>
       <Container>
         <SubContainer>
-          <AppLabel size={'large'} style={{ margin: '0 352px 30px 0' }}>
+          <AppLabel size={'large'} style={RegisterLabel}>
             회원가입
           </AppLabel>
 
