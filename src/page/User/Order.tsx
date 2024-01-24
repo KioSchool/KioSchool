@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import AppLabel from '../../component/common/label/AppLabel';
+import useWorkspace from '../../hook/useWorkspace';
 
 const Container = styled.div`
   width: 100vw;
@@ -21,6 +22,12 @@ function Order() {
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
+
+  const { fetchWorkspace } = useWorkspace();
+
+  useEffect(() => {
+    fetchWorkspace(workspaceId);
+  }, []);
 
   return (
     <Container>
