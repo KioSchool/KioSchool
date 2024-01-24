@@ -66,12 +66,12 @@ function Login() {
         <LoginContainer>
           <AppLabel size={'large'}>로그인</AppLabel>
           <InputContainer>
-            <AppInputWithLabel label={'아이디'} type={'text'} id={'userId'} ref={userIdInputRef} />
-            <AppInputWithLabel label={'비밀번호'} type={'password'} id={'password'} ref={userPasswordInputRef} enterHandler={handleSubmit} />
+            <AppInputWithLabel titleLabel={'아이디'} type={'text'} id={'userId'} ref={userIdInputRef} />
+            <AppInputWithLabel titleLabel={'비밀번호'} type={'password'} id={'password'} ref={userPasswordInputRef} enterHandler={handleSubmit} />
             {errorMessage && <div className="error-message">{errorMessage}</div>}
           </InputContainer>
           <ButtonContainer>
-            <AppButton style={{ gridColumn: '1/3' }} type={'button'} onClick={handleSubmit}>
+            <AppButton size={'large'} style={{ gridColumn: '1/3' }} type={'button'} onClick={handleSubmit}>
               로그인
             </AppButton>
             <AppLabel size={'small'}>
