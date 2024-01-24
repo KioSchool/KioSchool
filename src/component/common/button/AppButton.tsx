@@ -4,11 +4,13 @@ import styled from '@emotion/styled';
 export interface AppButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'small' | 'medium' | 'large';
 }
+
 const sizeMap = {
   small: '120px',
   medium: '160px',
   large: '500px',
 };
+
 const Container = styled.button`
   width: ${(props: AppButtonProps) => sizeMap[props.size || 'medium']};
   background: black;

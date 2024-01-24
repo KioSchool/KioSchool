@@ -5,7 +5,9 @@ import styled from '@emotion/styled';
 import AppLabel from '../../component/common/label/AppLabel';
 import AppInputWithLabel from '../../component/common/input/AppInputWithLabel';
 import AppButton from '../../component/common/button/AppButton';
+
 const RegisterLabel = { padding: '0 352px 30px 0' };
+
 const Container = styled.div`
   display: block;
   width: 100vw;
@@ -57,9 +59,9 @@ const CodeContainer = styled.div`
   flex-wrap: wrap;
 `;
 
-const SendCodeStyle = { width: '160px', marginLeft: '10px' };
+const SendCodeStyle = { marginLeft: '10px' };
 const ReSendCodeStyle = { width: '90px', marginLeft: '10px' };
-const CheckCodeStyle = { width: '120px', marginLeft: '5px' };
+const CheckCodeStyle = { marginLeft: '5px' };
 const RegisterStyle = { marginTop: '25px' };
 
 const ErrorMessage = styled.div`
@@ -212,7 +214,7 @@ function Register() {
                 onChange={() => setAbleId(false)}
                 required
               />
-              <AppButton style={{ marginLeft: '10px', width: '160px' }} type={'button'} onClick={checkDuplicate}>
+              <AppButton size={'medium'} style={{ marginLeft: '10px' }} type={'button'} onClick={checkDuplicate}>
                 ID 중복체크
               </AppButton>
             </IdContainer>
@@ -231,7 +233,7 @@ function Register() {
                   <AppButton style={ReSendCodeStyle} type={'button'} onClick={sendCode}>
                     재전송
                   </AppButton>
-                  <AppButton style={CheckCodeStyle} type={'button'} onClick={checkCode}>
+                  <AppButton size={'small'} style={CheckCodeStyle} type={'button'} onClick={checkCode}>
                     확인
                   </AppButton>
                 </CodeContainer>
@@ -239,7 +241,7 @@ function Register() {
             </EmailContainer>
 
             {isVerified && isCodeSent ? '인증 성공' : ''}
-            <AppButton style={RegisterStyle} type={'submit'}>
+            <AppButton size={'large'} style={RegisterStyle} type={'submit'}>
               회원가입
             </AppButton>
           </FormContainer>
