@@ -61,15 +61,9 @@ function Order() {
           this is table {tableNo}
         </AppLabel>
         <CategoryBadges>
-          <AppBadge>test</AppBadge>
-          <AppBadge>test</AppBadge>
-          <AppBadge>test</AppBadge>
-          <AppBadge>test</AppBadge>
-          <AppBadge>test</AppBadge>
-          <AppBadge>test</AppBadge>
-          <AppBadge>test</AppBadge>
-          <AppBadge>test</AppBadge>
-          <AppBadge>test</AppBadge>
+          {workspace.productCategories.map((category) => (
+            <AppBadge>{category.name}</AppBadge>
+          ))}
         </CategoryBadges>
       </Header>
       {workspace.products.map((product) => (
