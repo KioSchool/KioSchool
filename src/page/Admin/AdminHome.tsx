@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
-import useUser from '../../hook/useUser';
+import useAdminUser from '../../hook/useAdminUser';
 import { useRecoilValue } from 'recoil';
 import { workspacesAtom } from '../../recoil/atoms';
 import useCustomNavigate from '../../hook/useCustomNavigate';
 
 function AdminHome() {
-  const { fetchWorkspaces, createWorkspaces, leaveWorkspaces } = useUser();
+  const { fetchWorkspaces, createWorkspaces, leaveWorkspaces } = useAdminUser();
   const { appendPath } = useCustomNavigate();
   const userInputRef = useRef<HTMLInputElement>(null);
   const workspaces = useRecoilValue(workspacesAtom);

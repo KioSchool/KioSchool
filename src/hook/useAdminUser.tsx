@@ -3,7 +3,7 @@ import { Workspace } from '../type';
 import { useSetRecoilState } from 'recoil';
 import { workspacesAtom } from '../recoil/atoms';
 
-function useUser() {
+function useAdminUser() {
   const { adminApi } = useApi();
   const setWorkspaces = useSetRecoilState(workspacesAtom);
 
@@ -40,4 +40,4 @@ function useUser() {
   return { isLoggedIn, fetchWorkspaces, createWorkspaces, leaveWorkspaces };
 }
 
-export default useUser;
+export default useAdminUser;

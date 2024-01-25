@@ -28,12 +28,22 @@ export interface Product {
   id: number;
   createdAt: string;
   updatedAt: string;
+  productCategory: ProductCategory;
+}
+
+export interface ProductCategory {
+  id: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  workspace: Workspace;
 }
 
 export interface Workspace {
   name: string;
   owner: User;
   products: Array<Product>;
+  productCategories: Array<ProductCategory>;
   id: number;
   createdAt: string;
   updatedAt: string;
