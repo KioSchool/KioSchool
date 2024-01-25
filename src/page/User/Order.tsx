@@ -13,6 +13,8 @@ const Container = styled.div`
 `;
 
 const Header = styled.div`
+  position: sticky;
+  top: 0;
   width: 100vw;
   height: 110px;
   flex-basis: 0;
