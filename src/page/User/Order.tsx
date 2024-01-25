@@ -9,7 +9,6 @@ import AppBadge from '../../component/common/badge/AppBadge';
 
 const Container = styled.div`
   width: 100vw;
-  height: 100vh;
   padding-top: 60px;
 `;
 
