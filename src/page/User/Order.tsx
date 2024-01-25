@@ -6,6 +6,8 @@ import useWorkspace from '../../hook/useWorkspace';
 import { userWorkspaceAtom } from '../../recoil/atoms';
 import { useRecoilValue } from 'recoil';
 import AppBadge from '../../component/common/badge/AppBadge';
+import ProductCard from '../../component/product/ProductCard';
+import HorizontalDivider from '../../component/common/divider/HorizontalDivider';
 
 const Container = styled.div`
   width: 100vw;
@@ -70,6 +72,12 @@ function Order() {
           <AppBadge>test</AppBadge>
         </CategoryBadges>
       </Header>
+      {workspace.products.map((product) => (
+        <>
+          <ProductCard product={product} />
+          <HorizontalDivider />
+        </>
+      ))}
     </Container>
   );
 }
