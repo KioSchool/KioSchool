@@ -5,6 +5,7 @@ import AppLabel from '../../component/common/label/AppLabel';
 import useWorkspace from '../../hook/useWorkspace';
 import { userWorkspaceAtom } from '../../recoil/atoms';
 import { useRecoilValue } from 'recoil';
+import AppBadge from '../../component/common/badge/AppBadge';
 
 const Container = styled.div`
   width: 100vw;
@@ -14,11 +15,24 @@ const Container = styled.div`
 
 const Header = styled.div`
   width: 100vw;
-  height: 60px;
+  height: 110px;
+  flex-basis: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const CategoryBadges = styled.div`
+  width: 100vw;
+  height: 50px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  overflow: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 function Order() {
@@ -41,6 +55,17 @@ function Order() {
         <AppLabel size={'small'} style={{ color: 'gray' }}>
           this is table {tableNo}
         </AppLabel>
+        <CategoryBadges>
+          <AppBadge>test</AppBadge>
+          <AppBadge>test</AppBadge>
+          <AppBadge>test</AppBadge>
+          <AppBadge>test</AppBadge>
+          <AppBadge>test</AppBadge>
+          <AppBadge>test</AppBadge>
+          <AppBadge>test</AppBadge>
+          <AppBadge>test</AppBadge>
+          <AppBadge>test</AppBadge>
+        </CategoryBadges>
       </Header>
     </Container>
   );
