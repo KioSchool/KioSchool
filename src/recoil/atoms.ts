@@ -30,6 +30,7 @@ export const userWorkspaceAtom = atom<Workspace>({
       updatedAt: '',
     },
     products: [],
+    productCategories: [],
     id: 0,
     createdAt: '',
     updatedAt: '',
