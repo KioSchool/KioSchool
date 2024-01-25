@@ -62,15 +62,15 @@ function Order() {
         </AppLabel>
         <CategoryBadges>
           {workspace.productCategories.map((category) => (
-            <AppBadge>{category.name}</AppBadge>
+            <AppBadge key={`category${category.id}`}>{category.name}</AppBadge>
           ))}
         </CategoryBadges>
       </Header>
       {workspace.products.map((product) => (
-        <>
+        <div key={`product${product.id}`}>
           <ProductCard product={product} />
           <HorizontalDivider />
-        </>
+        </div>
       ))}
     </Container>
   );
