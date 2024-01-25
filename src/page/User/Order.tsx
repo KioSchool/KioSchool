@@ -13,6 +13,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.div`
+  background: white;
   position: sticky;
   top: 0;
   width: 100vw;
@@ -22,6 +23,7 @@ const Header = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-bottom: 1px solid gray;
 `;
 
 const CategoryBadges = styled.div`
