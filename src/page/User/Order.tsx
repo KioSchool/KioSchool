@@ -68,6 +68,7 @@ function Order() {
           {workspace.productCategories.map((category) => (
             <AppBadge key={`category${category.id}`}>{category.name}</AppBadge>
           ))}
+          <AppBadge key={`categorynull`}>기본 메뉴</AppBadge>
         </CategoryBadges>
       </Header>
       {_.keys(productsByCategory).map((categoryId) => (
