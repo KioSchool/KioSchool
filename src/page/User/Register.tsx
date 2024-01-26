@@ -214,7 +214,7 @@ function Register() {
 
           {errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}
           <FormContainer id={'form'} onSubmit={submitHandler}>
-            <AppInputWithLabel titleLabel={'이름'} type={'text'} id={'name'} ref={userNameInputRef} required />
+            <AppInputWithLabel titleLabel={'이름'} type={'text'} id={'name'} ref={userNameInputRef} placeholder="이름을 입력해주세요" required />
             <IdContainer>
               <AppInputWithLabel
                 style={{ width: '330px' }}
@@ -224,6 +224,7 @@ function Register() {
                 id={'userId'}
                 ref={userIdInputRef}
                 onChange={() => setAbleId(false)}
+                placeholder="아이디를 입력해주세요"
                 required
               />
               <AppButton size={'medium'} type={'button'} onClick={checkDuplicate}>
@@ -240,23 +241,41 @@ function Register() {
                 setCheckUserPasswordInput('');
               }}
               ref={userPasswordInputRef}
+              placeholder="비밀번호를 입력해주세요"
               required
             />
             <AppInput
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => setCheckUserPasswordInput(event.target.value)}
               type={'password'}
               value={checkUserPasswordInput}
+              placeholder="입력한 비밀번호를 똑같이 입력해주세요"
               required
             ></AppInput>
 
             <EmailContainer>
-              <AppInputWithLabel style={{ width: '330px' }} titleLabel={'이메일'} type={'email'} id={'userEmail'} ref={userEmailInputRef} required />
+              <AppInputWithLabel
+                style={{ width: '330px' }}
+                titleLabel={'이메일'}
+                type={'email'}
+                id={'userEmail'}
+                ref={userEmailInputRef}
+                placeholder="인증코드를 받을 이메일을 입력해주세요"
+                required
+              />
               <AppButton type={'button'} onClick={sendCode}>
                 인증코드 전송
               </AppButton>
               {isCodeSent && (
                 <CodeContainer>
-                  <AppInputWithLabel style={{ width: '275px' }} titleLabel={'인증번호'} type={'text'} id={'code'} ref={inputCodeInputRef} required />
+                  <AppInputWithLabel
+                    style={{ width: '275px' }}
+                    titleLabel={'인증코드'}
+                    type={'text'}
+                    id={'code'}
+                    ref={inputCodeInputRef}
+                    placeholder="받은 인증코드를 입력해주세요"
+                    required
+                  />
                   <AppButton style={CodeReSendStyle} type={'button'} onClick={sendCode}>
                     재전송
                   </AppButton>
