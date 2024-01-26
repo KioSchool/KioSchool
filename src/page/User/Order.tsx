@@ -8,6 +8,8 @@ import { useRecoilValue } from 'recoil';
 import AppBadge from '../../component/common/badge/AppBadge';
 import ProductCard from '../../component/product/ProductCard';
 import HorizontalDivider from '../../component/common/divider/HorizontalDivider';
+import { Product } from '../../type';
+import _ from 'lodash';
 
 const Container = styled.div`
   width: 100vw;
@@ -42,6 +44,8 @@ const CategoryBadges = styled.div`
 
 function Order() {
   const workspace = useRecoilValue(userWorkspaceAtom);
+  const productsByCategory = _.groupBy<Product>(workspace.products, (product) => product.productCategory?.id);
+  const categoryMap = _.keyBy(workspace.productCategories, 'id');
 
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
@@ -64,12 +68,19 @@ function Order() {
           {workspace.productCategories.map((category) => (
             <AppBadge key={`category${category.id}`}>{category.name}</AppBadge>
           ))}
+          <AppBadge key={`categorynull`}>기본 메뉴</AppBadge>
         </CategoryBadges>
       </Header>
-      {workspace.products.map((product) => (
-        <div key={`product${product.id}`}>
-          <ProductCard product={product} />
+      {_.keys(productsByCategory).map((categoryId) => (
+        <div key={`product_category${categoryId}`}>
+          <AppLabel size={'large'}>{categoryMap[categoryId]?.name || '기본 메뉴'}</AppLabel>
           <HorizontalDivider />
+          {productsByCategory[categoryId].map((product) => (
+            <div key={`product${product.id}`}>
+              <ProductCard product={product} />
+              <HorizontalDivider />
+            </div>
+          ))}
         </div>
       ))}
     </Container>
