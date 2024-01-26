@@ -75,14 +75,16 @@ const ErrorMessage = styled.div`
 function Register() {
   const { userApi } = useApi();
   const navigate = useNavigate();
+
   const userNameInputRef = useRef<HTMLInputElement>(null);
   const userIdInputRef = useRef<HTMLInputElement>(null);
-  const userEmailInputRef = useRef<HTMLInputElement>(null);
-  const inputCodeInputRef = useRef<HTMLInputElement>(null);
   const userPasswordInputRef = useRef<HTMLInputElement>(null);
   const [checkUserPasswordInput, setCheckUserPasswordInput] = useState('');
+  const userEmailInputRef = useRef<HTMLInputElement>(null);
+  const userCodeInputRef = useRef<HTMLInputElement>(null);
+
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [ableId, setAbleId] = useState<boolean>(false);
+  const [isAbleId, setisAbleId] = useState<boolean>(false);
 
   const [isCodeSent, setIsCodeSent] = useState<boolean>(false);
   const [isVerified, setIsVerified] = useState<boolean>(false);
@@ -107,11 +109,11 @@ function Register() {
       .then((response) => {
         if (response.data !== true) {
           setErrorMessage('');
-          setAbleId(true);
+          setisAbleId(true);
           return;
         }
         setErrorMessage('The userId is already in use');
-        setAbleId(false);
+        setisAbleId(false);
       })
       .catch((error) => {
         console.error('duplicate check error:', error);
@@ -120,7 +122,7 @@ function Register() {
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!ableId) {
+    if (!isAbleId) {
       setErrorMessage('Please check userId duplicate');
       return;
     }
@@ -187,7 +189,7 @@ function Register() {
 
   const checkCode = () => {
     const userEmail = userEmailInputRef.current?.value;
-    const inputCode = inputCodeInputRef.current?.value;
+    const inputCode = userCodeInputRef.current?.value;
 
     userApi
       .post<any>('/user/verify', {
@@ -219,11 +221,11 @@ function Register() {
               <AppInputWithLabel
                 style={{ width: '330px' }}
                 titleLabel={'아이디'}
-                messageLabel={ableId ? '사용가능한 ID입니다!' : undefined}
+                messageLabel={isAbleId ? '사용가능한 ID입니다!' : undefined}
                 type={'text'}
                 id={'userId'}
                 ref={userIdInputRef}
-                onChange={() => setAbleId(false)}
+                onChange={() => setisAbleId(false)}
                 placeholder="아이디를 입력해주세요"
                 required
               />
@@ -272,7 +274,7 @@ function Register() {
                     titleLabel={'인증코드'}
                     type={'text'}
                     id={'code'}
-                    ref={inputCodeInputRef}
+                    ref={userCodeInputRef}
                     placeholder="받은 인증코드를 입력해주세요"
                     required
                   />
