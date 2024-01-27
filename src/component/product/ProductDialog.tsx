@@ -5,6 +5,7 @@ import AppLabel from '../common/label/AppLabel';
 import AppButton from '../common/button/AppButton';
 import { useSetRecoilState } from 'recoil';
 import { orderBasketAtom } from '../../recoil/atoms';
+import CloseSvg from '../../resource/svg/CloseSvg';
 
 interface ProductDialogProps {
   product: Product;
@@ -81,6 +82,7 @@ function ProductDialog(props: ProductDialogProps) {
   return (
     <Container>
       <ModalContainer>
+        <CloseSvg onClick={props.closeDialog} />
         <ProductImage src={props.product.imageUrl} />
         <AppLabel size={'large'}>{props.product.name}</AppLabel>
         <AppLabel size={'medium'}>{props.product.description}</AppLabel>
