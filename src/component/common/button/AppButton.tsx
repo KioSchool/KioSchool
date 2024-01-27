@@ -7,7 +7,7 @@ export interface AppButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEle
 
 const sizeMap = {
   small: '120px',
-  medium: '155px',
+  medium: '270px',
   large: '500px',
 };
 
