@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { Order, Product, Workspace } from '../type';
+import { Order, OrderProductBase, Product, Workspace } from '../type';
 
 export const ordersAtom = atom<Order[]>({
   key: 'ordersAtom',
@@ -35,4 +35,9 @@ export const userWorkspaceAtom = atom<Workspace>({
     createdAt: '',
     updatedAt: '',
   },
+});
+
+export const orderBasketAtom = atom<OrderProductBase[]>({
+  key: 'orderBasketAtom',
+  default: [],
 });
