@@ -12,6 +12,7 @@ import Order from './page/User/Order';
 import LoadingModal from './component/common/modal/LoadingModal';
 import { Global } from '@emotion/react';
 import { globalStyles } from './style/globalStyles';
+import AdminAccount from './page/Admin/AdminAccount';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/add-account" element={<AdminAccount />} />
           <Route path="/orders" element={<Order />} />
           <Route path="/admin" element={<AdminHome />} />
           <Route path="/admin/workspace/:workspaceId" element={<AdminWorkspace />} />

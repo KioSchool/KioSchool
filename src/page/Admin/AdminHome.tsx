@@ -3,6 +3,7 @@ import useAdminUser from '../../hook/useAdminUser';
 import { useRecoilValue } from 'recoil';
 import { workspacesAtom } from '../../recoil/atoms';
 import useCustomNavigate from '../../hook/useCustomNavigate';
+import { Link } from 'react-router-dom';
 
 function AdminHome() {
   const { fetchWorkspaces, createWorkspaces, leaveWorkspaces } = useAdminUser();
@@ -51,6 +52,7 @@ function AdminHome() {
         <input ref={userInputRef} type="text"></input>
         <button type="submit">생성하기</button>
       </form>
+      <Link to={'/add-account'}>계좌 연결하기</Link>
     </>
   );
 }
