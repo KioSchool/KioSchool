@@ -24,16 +24,12 @@ function AdminAccount() {
   const submitHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    const formData = new FormData();
-
     if (file) {
-      formData.append('file', file[0]);
-
       const image = new Image();
       const canvas = document.createElement('canvas');
       const context = canvas.getContext('2d');
 
-      image.onload = function () {
+      image.onload = () => {
         canvas.width = image.width;
         canvas.height = image.height;
 
