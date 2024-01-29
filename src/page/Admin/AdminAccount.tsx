@@ -3,16 +3,24 @@ import jsQR from 'jsqr';
 import useAdminUser from '../../hook/useAdminUser';
 
 function AdminAccount() {
+  const { addAccount } = useAdminUser();
   const [fileURL, setFileURL] = useState<string>('');
   const [file, setFile] = useState<FileList | null>();
   const imgUploadInput = useRef<HTMLInputElement | null>(null);
-  const { addAccount } = useAdminUser();
+
   const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       setFile(event.target.files);
 
-      const newFileURL = URL.createObjectURL(event.target.files[0]);
-      setFileURL(newFileURL);
+      if (event.target.files[0]) {
+        const newFileURL = URL.createObjectURL(event.target.files[0]);
+        setFileURL(newFileURL);
+      } else {
+        setFileURL('');
+      }
+    }
+    if (imgUploadInput.current) {
+      imgUploadInput.current.click();
     }
   };
 
@@ -48,6 +56,8 @@ function AdminAccount() {
             const decodedUrl: string = code.data;
             const url = applyRegex(decodedUrl);
             addAccount(url);
+          } else {
+            alert('QR코드가 인식되지 않았습니다.\n다시 업로드 바랍니다.');
           }
         }
       };
@@ -63,17 +73,6 @@ function AdminAccount() {
       <div>ADD ACCOUNT</div>;
       <img src={fileURL ? fileURL : 'https://cdn-icons-png.flaticon.com/512/1555/1555492.png'} />
       <input type="file" id="img" accept="image/*" required ref={imgUploadInput} onChange={onImageChange} />
-      <button
-        type="button"
-        onClick={(event) => {
-          event.preventDefault();
-          if (imgUploadInput.current) {
-            imgUploadInput.current.click();
-          }
-        }}
-      >
-        이미지 변경 버튼
-      </button>
       <button type="button" onClick={onImageRemove}>
         제거 버튼
       </button>
