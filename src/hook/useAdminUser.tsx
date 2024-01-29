@@ -38,7 +38,7 @@ function useAdminUser() {
   };
 
   const addAccount = (account: string) => {
-    adminApi.post('/admin/user/toss-account', { accountUrl: account }).catch((error) => console.error('Failed to add account: ', error));
+    adminApi.post('/user/toss-account', { accountUrl: account }).catch((error) => console.error('Failed to add account: ', error));
   };
 
   return { isLoggedIn, fetchWorkspaces, createWorkspaces, leaveWorkspaces, addAccount };
