@@ -73,7 +73,7 @@ function AdminAccount() {
   return (
     <div>
       <div>ADD ACCOUNT</div>;
-      <img src={fileURL ? fileURL : 'https://cdn-icons-png.flaticon.com/512/1555/1555492.png'} />
+      <img src={fileURL || process.env.PUBLIC_URL + '/default-image.png'} />
       <input type="file" id="img" accept="image/*" required ref={imgUploadInput} onChange={onImageChange} />
       <button type="button" onClick={onImageRemove}>
         제거 버튼
