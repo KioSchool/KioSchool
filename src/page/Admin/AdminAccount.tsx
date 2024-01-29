@@ -21,6 +21,11 @@ function AdminAccount() {
     setFile(null);
   };
 
+  const applyRegex = (url: string): string => {
+    const regex = new RegExp(/&?amount=\d+&?/g);
+    return url.replace(regex, '');
+  };
+
   const submitHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
@@ -32,7 +37,6 @@ function AdminAccount() {
       image.onload = () => {
         canvas.width = image.width;
         canvas.height = image.height;
-
         if (context) {
           context.drawImage(image, 0, 0, image.width, image.height);
 
@@ -41,9 +45,14 @@ function AdminAccount() {
 
           if (code) {
             console.log('Found QR code', code.data);
+            const decodedUrl: string = code.data;
+            const url = applyRegex(decodedUrl);
+            console.log('url:' + url);
           }
         }
       };
+
+      image.src = fileURL;
     } else {
       alert('업로드할 이미지가 없습니다');
     }
