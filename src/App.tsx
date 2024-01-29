@@ -9,6 +9,7 @@ import Register from './page/User/Register';
 import { RecoilRoot } from 'recoil';
 import AdminProduct from './page/Admin/AdminProduct';
 import Order from './page/User/Order';
+import LoadingModal from './component/common/modal/LoadingModal';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/admin/workspace/:workspaceId/products" element={<AdminProduct />} />
         </Routes>
       </BrowserRouter>
+      <LoadingModal />
     </RecoilRoot>
   );
 }

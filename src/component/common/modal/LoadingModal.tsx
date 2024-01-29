@@ -11,6 +11,7 @@ const Container = styled.div`
   width: 100vw;
   height: 100vh;
   background: gray;
+  opacity: 0.3;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,7 +39,7 @@ const Circle = styled.div`
 
 function LoadingModal() {
   const isLoading = useRecoilValue(isLoadingAtom);
-  if (!isLoading) return <></>;
+  if (!isLoading) return null;
 
   return (
     <Container>
