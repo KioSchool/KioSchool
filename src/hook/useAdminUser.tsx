@@ -37,7 +37,11 @@ function useAdminUser() {
       .catch((error) => console.error('Failed to leave workspace: ', error));
   };
 
-  return { isLoggedIn, fetchWorkspaces, createWorkspaces, leaveWorkspaces };
+  const addAccount = (account: string) => {
+    adminApi.post('/admin/user/toss-account', { accountUrl: account }).catch((error) => console.error('Failed to add account: ', error));
+  };
+
+  return { isLoggedIn, fetchWorkspaces, createWorkspaces, leaveWorkspaces, addAccount };
 }
 
 export default useAdminUser;
