@@ -69,7 +69,7 @@ function AdminAccount() {
   };
 
   return (
-    <Fragment>
+    <>
       <div>ADD ACCOUNT</div>;
       <img src={fileURL ? fileURL : 'https://cdn-icons-png.flaticon.com/512/1555/1555492.png'} />
       <input type="file" id="img" accept="image/*" required ref={imgUploadInput} onChange={onImageChange} />
@@ -77,7 +77,7 @@ function AdminAccount() {
         제거 버튼
       </button>
       <button onClick={submitHandler}>submit</button>
-    </Fragment>
+    </>
   );
 }
 
