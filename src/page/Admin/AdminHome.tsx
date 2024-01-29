@@ -52,7 +52,7 @@ function AdminHome() {
         <input ref={userInputRef} type="text"></input>
         <button type="submit">생성하기</button>
       </form>
-      <Link to={'/add-account'}>계좌 연결하기</Link>
+      <Link to={'/register-account'}>계좌 연결하기</Link>
     </>
   );
 }
