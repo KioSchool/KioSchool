@@ -41,3 +41,8 @@ export const orderBasketAtom = atom<OrderProductBase[]>({
   key: 'orderBasketAtom',
   default: [],
 });
+
+export const isLoadingAtom = atom<boolean>({
+  key: 'isLoadingAtom',
+  default: false,
+});
