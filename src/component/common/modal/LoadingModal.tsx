@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 import LoadingSvg from '../../../resource/svg/LoadingSvg';
+import { useRecoilValue } from 'recoil';
+import { isLoadingAtom } from '../../../recoil/atoms';
 
 const Container = styled.div`
   z-index: 1000;
@@ -35,6 +37,9 @@ const Circle = styled.div`
 `;
 
 function LoadingModal() {
+  const isLoading = useRecoilValue(isLoadingAtom);
+  if (!isLoading) return <></>;
+
   return (
     <Container>
       <Circle>
