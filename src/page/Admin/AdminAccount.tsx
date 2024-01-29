@@ -45,10 +45,8 @@ function AdminAccount() {
           const code = jsQR(imageData.data, imageData.width, imageData.height);
 
           if (code) {
-            console.log('Found QR code', code.data);
             const decodedUrl: string = code.data;
             const url = applyRegex(decodedUrl);
-            console.log('url:' + url);
             addAccount(url);
           }
         }
