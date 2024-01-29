@@ -24,7 +24,7 @@ function AdminAccount() {
     }
   };
 
-  const onImageRemove = (): void => {
+  const removeImage = (): void => {
     URL.revokeObjectURL(fileURL);
     setFileURL('');
     setFile(null);
@@ -75,7 +75,7 @@ function AdminAccount() {
       <div>ADD ACCOUNT</div>;
       <img src={fileURL || process.env.PUBLIC_URL + '/default-image.png'} />
       <input type="file" id="img" accept="image/*" required ref={imgUploadInput} onChange={onImageChange} />
-      <button type="button" onClick={onImageRemove}>
+      <button type="button" onClick={removeImage}>
         제거 버튼
       </button>
       <button onClick={submitHandler}>submit</button>
