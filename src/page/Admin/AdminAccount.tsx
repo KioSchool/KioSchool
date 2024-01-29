@@ -1,4 +1,5 @@
 import { Fragment, useRef, useState } from 'react';
+import jsQR from 'jsqr';
 
 function AdminAccount() {
   const [fileURL, setFileURL] = useState<string>('');
@@ -27,6 +28,26 @@ function AdminAccount() {
 
     if (file) {
       formData.append('file', file[0]);
+
+      const image = new Image();
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+
+      image.onload = function () {
+        canvas.width = image.width;
+        canvas.height = image.height;
+
+        if (context) {
+          context.drawImage(image, 0, 0, image.width, image.height);
+
+          const imageData = context.getImageData(0, 0, image.width, image.height);
+          const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+          if (code) {
+            console.log('Found QR code', code.data);
+          }
+        }
+      };
     } else {
       alert('업로드할 이미지가 없습니다');
     }
