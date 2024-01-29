@@ -21,7 +21,6 @@ const LabelContainer = styled.div`
 
 const TitleLabel = styled.label`
   display: inline-block;
-  font-family: Inter;
   font-size: 14px;
   font-weight: 500;
 `;
@@ -29,7 +28,6 @@ const TitleLabel = styled.label`
 const MessageLabel = styled.label`
   display: inline-block;
   padding: 0 10px 0;
-  font-family: Inter;
   font-size: 12px;
   font-weight: 500;
 `;
