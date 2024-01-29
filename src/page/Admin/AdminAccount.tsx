@@ -1,11 +1,12 @@
 import { Fragment, useRef, useState } from 'react';
 import jsQR from 'jsqr';
+import useAdminUser from '../../hook/useAdminUser';
 
 function AdminAccount() {
   const [fileURL, setFileURL] = useState<string>('');
   const [file, setFile] = useState<FileList | null>();
   const imgUploadInput = useRef<HTMLInputElement | null>(null);
-
+  const { addAccount } = useAdminUser();
   const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       setFile(event.target.files);
@@ -48,6 +49,7 @@ function AdminAccount() {
             const decodedUrl: string = code.data;
             const url = applyRegex(decodedUrl);
             console.log('url:' + url);
+            addAccount(url);
           }
         }
       };
