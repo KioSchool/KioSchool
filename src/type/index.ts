@@ -10,9 +10,13 @@ export interface Order {
   updatedAt: string;
 }
 
-export interface OrderProduct {
-  product: Product;
+export interface OrderProductBase {
+  productId: number;
   quantity: number;
+}
+
+export interface OrderProduct extends OrderProductBase {
+  product: Product;
   isServed: boolean;
   totalPrice: number;
   id: number;

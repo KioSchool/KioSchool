@@ -1,6 +1,8 @@
 import { Product } from '../../type';
 import styled from '@emotion/styled';
 import AppLabel from '../common/label/AppLabel';
+import React, { useState } from 'react';
+import ProductDialog from './ProductDialog';
 
 interface ProductCardProps {
   product: Product;
@@ -24,23 +26,28 @@ const LabelContainer = styled.div`
 const ImageContainer = styled.div``;
 
 function ProductCard({ product }: ProductCardProps) {
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
+
   if (!product) return <div></div>;
 
   return (
-    <Container>
-      <LabelContainer>
-        <AppLabel size={'medium'}>{product.name}</AppLabel>
-        <AppLabel size={'small'}>{product.description}</AppLabel>
-        <AppLabel size={'small'}>{product.price}원</AppLabel>
-      </LabelContainer>
-      <ImageContainer>
-        <img
-          src={product.imageUrl}
-          alt={product.name}
-          style={{ float: 'right', maxWidth: '140px', maxHeight: '140px', objectFit: 'cover', border: 'none', borderRadius: '10px' }}
-        />
-      </ImageContainer>
-    </Container>
+    <>
+      {openDialog && <ProductDialog product={product} closeDialog={() => setOpenDialog(false)} />}
+      <Container onClick={() => setOpenDialog(true)}>
+        <LabelContainer>
+          <AppLabel size={'medium'}>{product.name}</AppLabel>
+          <AppLabel size={'small'}>{product.description}</AppLabel>
+          <AppLabel size={'small'}>{product.price}원</AppLabel>
+        </LabelContainer>
+        <ImageContainer>
+          <img
+            src={product.imageUrl}
+            alt={product.name}
+            style={{ float: 'right', maxWidth: '140px', maxHeight: '140px', objectFit: 'cover', border: 'none', borderRadius: '10px' }}
+          />
+        </ImageContainer>
+      </Container>
+    </>
   );
 }
 

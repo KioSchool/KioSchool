@@ -3,13 +3,14 @@ import { useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import AppLabel from '../../component/common/label/AppLabel';
 import useWorkspace from '../../hook/useWorkspace';
-import { userWorkspaceAtom } from '../../recoil/atoms';
+import { orderBasketAtom, userWorkspaceAtom } from '../../recoil/atoms';
 import { useRecoilValue } from 'recoil';
 import AppBadge from '../../component/common/badge/AppBadge';
 import ProductCard from '../../component/product/ProductCard';
 import HorizontalDivider from '../../component/common/divider/HorizontalDivider';
 import { Product } from '../../type';
 import _ from 'lodash';
+import AppButton from '../../component/common/button/AppButton';
 
 const Container = styled.div`
   width: 100vw;
@@ -42,9 +43,20 @@ const CategoryBadges = styled.div`
   }
 `;
 
+const OrderButtonContainer = styled.div`
+  position: fixed;
+  bottom: 50px;
+  width: 100vw;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 function Order() {
   const workspace = useRecoilValue(userWorkspaceAtom);
   const productsByCategory = _.groupBy<Product>(workspace.products, (product) => product.productCategory?.id);
+  const productsMap = _.keyBy(workspace.products, 'id');
   const categoryMap = _.keyBy(workspace.productCategories, 'id');
 
   const [searchParams] = useSearchParams();
@@ -52,6 +64,10 @@ function Order() {
   const tableNo = searchParams.get('tableNo');
 
   const { fetchWorkspace } = useWorkspace();
+  const orderBasket = useRecoilValue(orderBasketAtom);
+  const totalAmount = orderBasket.reduce((acc, cur) => {
+    return acc + productsMap[cur.productId].price * cur.quantity;
+  }, 0);
 
   useEffect(() => {
     fetchWorkspace(workspaceId);
@@ -83,6 +99,11 @@ function Order() {
           ))}
         </div>
       ))}
+      {totalAmount > 0 && (
+        <OrderButtonContainer>
+          <AppButton size={'medium'}>{totalAmount}원 주문하기</AppButton>
+        </OrderButtonContainer>
+      )}
     </Container>
   );
 }
