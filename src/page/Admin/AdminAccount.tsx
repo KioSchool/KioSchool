@@ -9,19 +9,16 @@ function AdminAccount() {
   const imgUploadInput = useRef<HTMLInputElement | null>(null);
 
   const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      setFile(event.target.files);
+    if (!event.target.files?.length) {
+      setFileURL('');
+      return;
+    }
 
-      if (event.target.files[0]) {
-        const newFileURL = URL.createObjectURL(event.target.files[0]);
-        setFileURL(newFileURL);
-      } else {
-        setFileURL('');
-      }
-    }
-    if (imgUploadInput.current) {
-      imgUploadInput.current.click();
-    }
+    const newFileURL = URL.createObjectURL(event.target.files[0]);
+
+    setFile(event.target.files);
+    setFileURL(newFileURL);
+    imgUploadInput.current?.click();
   };
 
   const removeImage = (): void => {
@@ -30,14 +27,12 @@ function AdminAccount() {
     setFile(null);
   };
 
-  const applyRegex = (url: string): string => {
+  const removeUsingRegex = (url: string): string => {
     const regex = new RegExp(/&?amount=\d+&?/g);
     return url.replace(regex, '');
   };
 
-  const submitHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-
+  const submitHandler = async () => {
     if (!file) {
       alert('업로드할 이미지가 없습니다');
       return;
@@ -46,28 +41,28 @@ function AdminAccount() {
     const image = new Image();
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
+    image.src = fileURL;
 
     image.onload = () => {
+      if (!context) return;
+
       canvas.width = image.width;
       canvas.height = image.height;
-      if (context) {
-        context.drawImage(image, 0, 0, image.width, image.height);
 
-        const imageData = context.getImageData(0, 0, image.width, image.height);
-        const code = jsQR(imageData.data, imageData.width, imageData.height);
+      context.drawImage(image, 0, 0, image.width, image.height);
 
-        if (!code) {
-          alert('QR코드가 인식되지 않았습니다.\n다시 업로드 바랍니다.');
-          return;
-        }
+      const imageData = context.getImageData(0, 0, image.width, image.height);
+      const code = jsQR(imageData.data, imageData.width, imageData.height);
 
-        const decodedUrl: string = code.data;
-        const url = applyRegex(decodedUrl);
-        addAccount(url);
+      if (!code) {
+        alert('QR코드가 인식되지 않았습니다.\n다시 업로드 바랍니다.');
+        return;
       }
-    };
 
-    image.src = fileURL;
+      const decodedUrl: string = code.data;
+      const url = removeUsingRegex(decodedUrl);
+      addAccount(url);
+    };
   };
 
   return (
