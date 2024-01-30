@@ -1,5 +1,5 @@
 import React from 'react';
-import { Order } from '../../types';
+import { Order } from '@@types/index';
 import styled from '@emotion/styled';
 
 interface Props {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import useCustomNavigate from '../../hooks/useCustomNavigate';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 
 function AdminWorkspace() {
   const { workspaceId } = useParams<{ workspaceId: string }>();

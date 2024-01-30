@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import useAuthentication from '../../hooks/useAuthentication';
-import AppInputWithLabel from '../../components/common/input/AppInputWithLabel';
-import AppButton from '../../components/common/button/AppButton';
+import useAuthentication from '@hooks/useAuthentication';
+import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
+import AppButton from '@components/common/button/AppButton';
+import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
-import AppLabel from '../../components/common/label/AppLabel';
 
 const Container = styled.div`
   display: block;

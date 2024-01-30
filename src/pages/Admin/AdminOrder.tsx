@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import useOrdersWebsocket from '../../hooks/useOrdersWebsocket';
+import useOrdersWebsocket from '@hooks/useOrdersWebsocket';
 import { useRecoilValue } from 'recoil';
-import { ordersAtom } from '../../recoils/atoms';
-import OrderListContainer from '../../components/order/OrderListContainer';
+import { ordersAtom } from '@recoils/atoms';
+import OrderListContainer from '@components/order/OrderListContainer';
 
 function AdminOrder() {
   const { workspaceId } = useParams<{ workspaceId: string }>();

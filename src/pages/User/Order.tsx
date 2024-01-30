@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
-import AppLabel from '../../components/common/label/AppLabel';
-import useWorkspace from '../../hooks/useWorkspace';
-import { orderBasketAtom, userWorkspaceAtom } from '../../recoils/atoms';
+import AppLabel from '@components/common/label/AppLabel';
+import AppBadge from '@components/common/badge/AppBadge';
+import AppButton from '@components/common/button/AppButton';
+import ProductCard from '@components/product/ProductCard';
+import HorizontalDivider from '@components/common/divider/HorizontalDivider';
+import useWorkspace from '@hooks/useWorkspace';
+import { orderBasketAtom, userWorkspaceAtom } from '@recoils/atoms';
 import { useRecoilValue } from 'recoil';
-import AppBadge from '../../components/common/badge/AppBadge';
-import ProductCard from '../../components/product/ProductCard';
-import HorizontalDivider from '../../components/common/divider/HorizontalDivider';
-import { Product } from '../../types';
+import { Product } from '@@types/index';
 import _ from 'lodash';
-import AppButton from '../../components/common/button/AppButton';
 
 const Container = styled.div`
   width: 100vw;

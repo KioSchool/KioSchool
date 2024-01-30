@@ -1,8 +1,8 @@
 import { useSetRecoilState } from 'recoil';
-import { ordersAtom } from '../recoils/atoms';
+import { ordersAtom } from '@recoils/atoms';
 import * as StompJs from '@stomp/stompjs';
-import { Order } from '../types';
-import useApi from './useApi';
+import { Order } from '@@types/index';
+import useApi from '@hooks/useApi';
 
 function useOrdersWebsocket(workspaceId: string | undefined) {
   const { adminApi } = useApi();

@@ -1,18 +1,18 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from './pages/User/Home';
-import AdminHome from './pages/Admin/AdminHome';
-import Login from './pages/User/Login';
-import AdminWorkspace from './pages/Admin/AdminWorkspace';
-import AdminOrder from './pages/Admin/AdminOrder';
-import Register from './pages/User/Register';
+import Home from '@pages/User/Home';
+import AdminHome from '@pages/Admin/AdminHome';
+import Login from '@pages/User/Login';
+import AdminWorkspace from '@pages/Admin/AdminWorkspace';
+import AdminOrder from '@pages/Admin/AdminOrder';
+import Register from '@pages/User/Register';
+import AdminProduct from '@pages/Admin/AdminProduct';
+import Order from '@pages/User/Order';
+import AdminAccount from '@pages/Admin/AdminAccount';
 import { RecoilRoot } from 'recoil';
-import AdminProduct from './pages/Admin/AdminProduct';
-import Order from './pages/User/Order';
-import LoadingModal from './components/common/modal/LoadingModal';
+import LoadingModal from '@components/common/modal/LoadingModal';
 import { Global } from '@emotion/react';
-import { globalStyles } from './styles/globalStyles';
-import AdminAccount from './pages/Admin/AdminAccount';
+import { globalStyles } from '@styles/globalStyles';
 
 function App() {
   return (

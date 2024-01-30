@@ -1,7 +1,7 @@
-import useApi from './useApi';
+import useApi from '@hooks/useApi';
 import { useSetRecoilState } from 'recoil';
-import { productsAtom } from '../recoils/atoms';
-import { Product } from '../types';
+import { productsAtom } from '@recoils/atoms';
+import { Product } from '@@types/index';
 
 function UseProducts(workspaceId: string | undefined) {
   const { adminApi } = useApi();

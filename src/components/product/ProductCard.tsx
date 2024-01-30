@@ -1,8 +1,8 @@
-import { Product } from '../../types';
+import { Product } from '@@types/index';
 import styled from '@emotion/styled';
-import AppLabel from '../common/label/AppLabel';
+import AppLabel from '@components/common/label/AppLabel';
 import React, { useState } from 'react';
-import ProductDialog from './ProductDialog';
+import ProductDialog from '@components/product/ProductDialog';
 
 interface ProductCardProps {
   product: Product;

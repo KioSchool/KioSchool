@@ -1,9 +1,9 @@
 import React from 'react';
-import { Order } from '../../types';
+import { Order } from '@@types/index';
 import styled from '@emotion/styled';
-import PaidOrderCard from './PaidOrderCard';
-import NotPaidOrderCard from './NotPaidOrderCard';
-import ServedOrderCard from './ServedOrderCard';
+import PaidOrderCard from '@components/order/PaidOrderCard';
+import NotPaidOrderCard from '@components/order/NotPaidOrderCard';
+import ServedOrderCard from '@components/order/ServedOrderCard';
 
 interface Props {
   orders: Order[];

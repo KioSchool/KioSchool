@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import useAdminUser from '../../hooks/useAdminUser';
+import useAdminUser from '@hooks/useAdminUser';
 import { useRecoilValue } from 'recoil';
-import { workspacesAtom } from '../../recoils/atoms';
-import useCustomNavigate from '../../hooks/useCustomNavigate';
+import { workspacesAtom } from '@recoils/atoms';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 import { Link } from 'react-router-dom';
 
 function AdminHome() {

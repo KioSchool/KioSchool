@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { isLoadingAtom } from '../recoils/atoms';
+import { isLoadingAtom } from '@recoils/atoms';
 
 interface UseApiProps {
   useLoading?: boolean;

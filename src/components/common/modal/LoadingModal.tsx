@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import LoadingSvg from '../../../resources/svg/LoadingSvg';
 import { useRecoilValue } from 'recoil';
-import { isLoadingAtom } from '../../../recoils/atoms';
+import { isLoadingAtom } from '@recoils/atoms';
 
 const Container = styled.div`
   z-index: 1000;

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import useProducts from '../../hooks/useProducts';
 import { useRecoilValue } from 'recoil';
-import { productsAtom } from '../../recoils/atoms';
+import { productsAtom } from '../@recoils/atoms';
 
 function AdminProduct() {
   const { workspaceId } = useParams<{ workspaceId: string }>();

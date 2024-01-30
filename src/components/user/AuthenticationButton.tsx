@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import useApi from '../../hooks/useApi';
-import useAuthentication from '../../hooks/useAuthentication';
+import useApi from '@hooks/useApi';
+import useAuthentication from '@hooks/useAuthentication';
 
 function AuthenticationButton() {
   const { logout } = useAuthentication();

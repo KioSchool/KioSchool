@@ -1,8 +1,7 @@
 import { useRef, useState } from 'react';
 import jsQR from 'jsqr';
-import useAdminUser from '../../hooks/useAdminUser';
-// @ts-ignore
-import uploadPreview from '../../resources/image/uploadPreview.png';
+import useAdminUser from '@hooks/useAdminUser';
+import uploadPreview from '@resources/image/uploadPreview.png';
 
 function AdminAccount() {
   const { registerAccount } = useAdminUser();

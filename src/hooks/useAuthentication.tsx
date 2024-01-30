@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import useApi from './useApi';
+import useApi from '@hooks/useApi';
 
 function useAuthentication() {
   const { userApi } = useApi();

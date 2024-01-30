@@ -1,5 +1,5 @@
-import useApi from './useApi';
-import { Workspace } from '../types';
+import useApi from '@hooks/useApi';
+import { Workspace } from '@@types/index';
 import { userWorkspaceAtom } from '../recoils/atoms';
 import { useSetRecoilState } from 'recoil';
 

@@ -1,9 +1,9 @@
 import React from 'react';
-import { Order } from '../../types';
+import { Order } from '@@types/index';
 import styled from '@emotion/styled';
-import useApi from '../../hooks/useApi';
+import useApi from '@hooks/useApi';
 import { useParams } from 'react-router-dom';
-import useOrdersWebsocket from '../../hooks/useOrdersWebsocket';
+import useOrdersWebsocket from '@hooks/useOrdersWebsocket';
 
 interface Props {
   order: Order;

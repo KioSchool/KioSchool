@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import AuthenticationButton from '../../components/user/AuthenticationButton';
+import AuthenticationButton from '@components/user/AuthenticationButton';
 
 function Home() {
   return (

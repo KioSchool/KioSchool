@@ -1,11 +1,11 @@
 import React, { Fragment, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useApi from '../../hooks/useApi';
+import useApi from '@hooks/useApi';
 import styled from '@emotion/styled';
-import AppLabel from '../../components/common/label/AppLabel';
-import AppInputWithLabel from '../../components/common/input/AppInputWithLabel';
-import AppButton from '../../components/common/button/AppButton';
-import AppInput from '../../components/common/input/AppInput';
+import AppLabel from '@components/common/label/AppLabel';
+import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
+import AppButton from '@components/common/button/AppButton';
+import AppInput from '@components/common/input/AppInput';
 
 const Container = styled.div`
   display: flex;
