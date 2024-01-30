@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import jsQR from 'jsqr';
 import useAdminUser from '@hooks/useAdminUser';
 import uploadPreview from '@resources/image/uploadPreview.png';
@@ -9,7 +9,7 @@ function AdminAccount() {
   const [file, setFile] = useState<FileList | null>();
   const imgUploadInput = useRef<HTMLInputElement | null>(null);
 
-  const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files?.length) {
       setFileURL('');
       return;
