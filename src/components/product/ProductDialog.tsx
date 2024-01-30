@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Product } from '@@types/index';
 import styled from '@emotion/styled';
-import AppLabel from '../common/label/AppLabel';
-import AppButton from '../common/button/AppButton';
+import AppLabel from '@components/common/label/AppLabel';
+import AppButton from '@components/common/button/AppButton';
 import { useSetRecoilState } from 'recoil';
-import { orderBasketAtom } from '../@recoils/atoms';
-import CloseSvg from '../../resources/svg/CloseSvg';
+import { orderBasketAtom } from '@recoils/atoms';
+import CloseSvg from '@resources/svg/CloseSvg';
 
 interface ProductDialogProps {
   product: Product;
