@@ -6,7 +6,6 @@ import uploadPreview from '@resources/image/uploadPreview.png';
 function AdminAccount() {
   const { registerAccount } = useAdminUser();
   const [fileURL, setFileURL] = useState<string>('');
-  const [file, setFile] = useState<FileList | null>();
   const imgUploadInput = useRef<HTMLInputElement | null>(null);
 
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -17,15 +16,12 @@ function AdminAccount() {
 
     const newFileURL = URL.createObjectURL(event.target.files[0]);
 
-    setFile(event.target.files);
     setFileURL(newFileURL);
-    imgUploadInput.current?.click();
   };
 
   const removeImage = (): void => {
     URL.revokeObjectURL(fileURL);
     setFileURL('');
-    setFile(null);
   };
 
   const removeAmountQuery = (url: string): string => {
@@ -34,7 +30,7 @@ function AdminAccount() {
   };
 
   const submitHandler = async () => {
-    if (!file) {
+    if (!fileURL) {
       alert('업로드할 이미지가 없습니다');
       return;
     }
