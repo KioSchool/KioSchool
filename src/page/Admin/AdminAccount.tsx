@@ -3,7 +3,7 @@ import jsQR from 'jsqr';
 import useAdminUser from '../../hook/useAdminUser';
 
 function AdminAccount() {
-  const { addAccount } = useAdminUser();
+  const { registerAccount } = useAdminUser();
   const [fileURL, setFileURL] = useState<string>('');
   const [file, setFile] = useState<FileList | null>();
   const imgUploadInput = useRef<HTMLInputElement | null>(null);
@@ -39,9 +39,9 @@ function AdminAccount() {
     }
 
     const image = new Image();
+    image.src = fileURL;
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
-    image.src = fileURL;
 
     image.onload = () => {
       if (!context) return;
@@ -61,7 +61,7 @@ function AdminAccount() {
 
       const decodedUrl: string = code.data;
       const url = removeUsingRegex(decodedUrl);
-      addAccount(url);
+      registerAccount(url);
     };
   };
 
