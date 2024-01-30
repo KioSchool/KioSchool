@@ -31,7 +31,7 @@ function NotPaidOrderCard({ order }: Props) {
     <Container>
       <div>주문번호: {order.id}번</div>
       <div>이름: {order.customerName}</div>
-      <div>{order.totalPrice}원</div>
+      <div>{order.totalPrice.toLocaleString()}원</div>
       <button type={'button'} onClick={payOrder}>
         결제 완료
       </button>

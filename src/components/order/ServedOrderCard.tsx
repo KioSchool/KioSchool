@@ -18,7 +18,7 @@ function ServedOrderCard({ order }: Props) {
   return (
     <Container>
       <div>주문번호: {order.id}번</div>
-      <div>{order.totalPrice}원</div>
+      <div>{order.totalPrice.toLocaleString()}원</div>
     </Container>
   );
 }
