@@ -17,6 +17,7 @@
     "@types/react": "^18.0.20",
     "@types/react-dom": "^18.0.6",
     "axios": "^0.27.2",
+    "jsqr": "^1.4.0",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
