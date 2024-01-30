@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import jsQR from 'jsqr';
 import useAdminUser from '../../hook/useAdminUser';
 // @ts-ignore
-import defaultImage from '../../resource/image/defaultImage.png';
+import uploadPreview from '../../resource/image/uploadPreview.png';
 
 function AdminAccount() {
   const { registerAccount } = useAdminUser();
@@ -68,15 +68,15 @@ function AdminAccount() {
   };
 
   return (
-    <div>
-      <div>ADD ACCOUNT</div>;
-      <img src={fileURL || defaultImage} />
+    <>
+      <div>ADD ACCOUNT</div>
+      <img src={fileURL || uploadPreview} />
       <input type="file" id="img" accept="image/*" required ref={imgUploadInput} onChange={onImageChange} />
       <button type="button" onClick={removeImage}>
         제거 버튼
       </button>
       <button onClick={submitHandler}>submit</button>
-    </div>
+    </>
   );
 }
 
