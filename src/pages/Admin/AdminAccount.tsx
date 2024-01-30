@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import jsQR from 'jsqr';
 import useAdminUser from '@hooks/useAdminUser';
 import uploadPreview from '@resources/image/uploadPreview.png';
@@ -6,7 +6,6 @@ import uploadPreview from '@resources/image/uploadPreview.png';
 function AdminAccount() {
   const { registerAccount } = useAdminUser();
   const [fileURL, setFileURL] = useState<string>('');
-  const imgUploadInput = useRef<HTMLInputElement | null>(null);
 
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files?.length) {
@@ -66,7 +65,7 @@ function AdminAccount() {
     <>
       <div>ADD ACCOUNT</div>
       <img src={fileURL || uploadPreview} alt={fileURL} />
-      <input type="file" id="img" accept="image/*" required ref={imgUploadInput} onChange={onImageChange} />
+      <input type="file" id="img" accept="image/*" onChange={onImageChange} />
       <button type="button" onClick={removeImage}>
         제거 버튼
       </button>
