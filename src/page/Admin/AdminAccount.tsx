@@ -27,7 +27,7 @@ function AdminAccount() {
     setFile(null);
   };
 
-  const removeUsingRegex = (url: string): string => {
+  const removeAmountQuery = (url: string): string => {
     const regex = new RegExp(/&?amount=\d+&?/g);
     return url.replace(regex, '');
   };
@@ -60,7 +60,7 @@ function AdminAccount() {
       }
 
       const decodedUrl: string = code.data;
-      const url = removeUsingRegex(decodedUrl);
+      const url = removeAmountQuery(decodedUrl);
       registerAccount(url);
     };
   };
@@ -68,7 +68,7 @@ function AdminAccount() {
   return (
     <div>
       <div>ADD ACCOUNT</div>;
-      <img src={fileURL || 'src/resource/image/default-image.png'} />
+      <img src={fileURL || '/resource/image/default-image.png'} />
       <input type="file" id="img" accept="image/*" required ref={imgUploadInput} onChange={onImageChange} />
       <button type="button" onClick={removeImage}>
         제거 버튼
