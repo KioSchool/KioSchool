@@ -22,7 +22,7 @@ function AdminProduct() {
             <div>{product.id}번 상품</div>
             <div>{product.name}</div>
             <div>{product.description}</div>
-            <div>{product.price}원</div>
+            <div>{product.price.toLocaleString()}원</div>
             <img src={product.imageUrl} />
           </div>
         ))}
