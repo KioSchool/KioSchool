@@ -30,6 +30,10 @@ const Header = styled.div`
   align-items: center;
 `;
 
+const ContentContainer = styled.div`
+  padding: 30px;
+`;
+
 const CategoryBadges = styled.div`
   width: 100vw;
   height: 50px;
@@ -90,17 +94,19 @@ function Order() {
           <AppBadge key={`categorynull`}>기본 메뉴</AppBadge>
         </CategoryBadges>
       </Header>
-      {_.keys(productsByCategory).map((categoryId) => (
-        <div key={`product_category${categoryId}`}>
-          <AppLabel size={'large'}>{categoryMap[categoryId]?.name || '기본 메뉴'}</AppLabel>
-          {productsByCategory[categoryId].map((product) => (
-            <ProductContainer key={`product${product.id}`}>
-              <ProductCard product={product} />
-              <HorizontalDivider />
-            </ProductContainer>
-          ))}
-        </div>
-      ))}
+      <ContentContainer>
+        {_.keys(productsByCategory).map((categoryId) => (
+          <div key={`product_category${categoryId}`}>
+            <AppLabel size={'large'}>{categoryMap[categoryId]?.name || '기본 메뉴'}</AppLabel>
+            {productsByCategory[categoryId].map((product) => (
+              <ProductContainer key={`product${product.id}`}>
+                <ProductCard product={product} />
+                <HorizontalDivider />
+              </ProductContainer>
+            ))}
+          </div>
+        ))}
+      </ContentContainer>
       {totalAmount > 0 && (
         <OrderButtonContainer>
           <AppButton size={'medium'}>{totalAmount.toLocaleString()}원 주문하기</AppButton>
