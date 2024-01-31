@@ -93,7 +93,6 @@ function Order() {
       {_.keys(productsByCategory).map((categoryId) => (
         <div key={`product_category${categoryId}`}>
           <AppLabel size={'large'}>{categoryMap[categoryId]?.name || '기본 메뉴'}</AppLabel>
-          <HorizontalDivider />
           {productsByCategory[categoryId].map((product) => (
             <ProductContainer key={`product${product.id}`}>
               <ProductCard product={product} />
