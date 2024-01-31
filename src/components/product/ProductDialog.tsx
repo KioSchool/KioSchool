@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Product } from '@@types/index';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
@@ -19,35 +19,37 @@ const Container = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(238, 238, 238, 0.8);
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
 const ModalContainer = styled.div`
-  width: 100%;
-  height: 80%;
-  padding: 15px;
+  position: relative;
+  width: 250px;
+  height: 270px;
+  padding: 5px;
   background: white;
-  border-radius: 20px;
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
 `;
 
+const CloseButtonContainer = styled.div`
+  display: flex;
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  background: white;
+  opacity: 0.7;
+  border-radius: 4px;
+`;
+
 const ProductImage = styled.img`
-  padding: 20px;
-  object-fit: contain;
-  border-radius: 10px;
-`;
-
-const CounterContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const CounterButtonContainer = styled.div`
-  display: flex;
+  object-fit: fill;
+  border-radius: 16px 16px 0 0;
+  height: 170px;
 `;
 
 const OrderButtonContainer = styled.div`
@@ -58,13 +60,12 @@ const OrderButtonContainer = styled.div`
 `;
 
 function ProductDialog(props: ProductDialogProps) {
-  const [count, setCount] = useState<number>(1);
   const setOrderBasket = useSetRecoilState(orderBasketAtom);
 
   const addOrderBasket = () => {
     const orderBasket = {
       productId: props.product.id,
-      quantity: count,
+      quantity: 1,
     };
     setOrderBasket((prevState) => {
       const index = prevState.findIndex((it) => it.productId === orderBasket.productId);
@@ -82,23 +83,15 @@ function ProductDialog(props: ProductDialogProps) {
   return (
     <Container>
       <ModalContainer>
-        <CloseSvg onClick={props.closeDialog} />
+        <CloseButtonContainer>
+          <CloseSvg onClick={props.closeDialog} />
+        </CloseButtonContainer>
         <ProductImage src={props.product.imageUrl} />
-        <AppLabel size={'large'}>{props.product.name}</AppLabel>
-        <AppLabel size={'medium'}>{props.product.description}</AppLabel>
-        <CounterContainer>
-          <AppLabel size={'medium'}>수량</AppLabel>
-          <CounterButtonContainer>
-            <button disabled={count == 1} onClick={() => setCount((prevState) => prevState - 1)}>
-              -
-            </button>
-            <AppLabel size={'medium'}>{count}개</AppLabel>
-            <button onClick={() => setCount((prevState) => prevState + 1)}>+</button>
-          </CounterButtonContainer>
-        </CounterContainer>
+        <AppLabel size={'small'}>{props.product.name}</AppLabel>
+        <AppLabel size={12}>{props.product.description}</AppLabel>
         <OrderButtonContainer>
           <AppButton size={'medium'} onClick={addOrderBasket}>
-            {(props.product.price * count).toLocaleString()}원 담기
+            {props.product.price.toLocaleString()}원 담기
           </AppButton>
         </OrderButtonContainer>
       </ModalContainer>

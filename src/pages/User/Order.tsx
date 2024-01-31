@@ -28,12 +28,16 @@ const Header = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-bottom: 1px solid gray;
 `;
 
-const CategoryBadges = styled.div`
+const ContentContainer = styled.div`
+  padding: 30px;
+`;
+
+const CategoryBadgesContainer = styled.div`
   width: 100vw;
   height: 50px;
+  padding-left: 35px;
   display: flex;
   gap: 8px;
   align-items: center;
@@ -51,6 +55,10 @@ const OrderButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const ProductContainer = styled.div`
+  padding: 10px;
 `;
 
 function Order() {
@@ -80,25 +88,26 @@ function Order() {
         <AppLabel size={'small'} style={{ color: 'gray' }}>
           this is table {tableNo}
         </AppLabel>
-        <CategoryBadges>
+        <CategoryBadgesContainer>
           {workspace.productCategories.map((category) => (
             <AppBadge key={`category${category.id}`}>{category.name}</AppBadge>
           ))}
           <AppBadge key={`categorynull`}>기본 메뉴</AppBadge>
-        </CategoryBadges>
+        </CategoryBadgesContainer>
       </Header>
-      {_.keys(productsByCategory).map((categoryId) => (
-        <div key={`product_category${categoryId}`}>
-          <AppLabel size={'large'}>{categoryMap[categoryId]?.name || '기본 메뉴'}</AppLabel>
-          <HorizontalDivider />
-          {productsByCategory[categoryId].map((product) => (
-            <div key={`product${product.id}`}>
-              <ProductCard product={product} />
-              <HorizontalDivider />
-            </div>
-          ))}
-        </div>
-      ))}
+      <ContentContainer>
+        {_.keys(productsByCategory).map((categoryId) => (
+          <div key={`product_category${categoryId}`}>
+            <AppLabel size={22}>{categoryMap[categoryId]?.name || '기본 메뉴'}</AppLabel>
+            {productsByCategory[categoryId].map((product) => (
+              <ProductContainer key={`product${product.id}`}>
+                <ProductCard product={product} />
+                <HorizontalDivider />
+              </ProductContainer>
+            ))}
+          </div>
+        ))}
+      </ContentContainer>
       {totalAmount > 0 && (
         <OrderButtonContainer>
           <AppButton size={'medium'}>{totalAmount.toLocaleString()}원 주문하기</AppButton>
