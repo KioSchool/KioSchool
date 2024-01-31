@@ -10,9 +10,8 @@ interface ProductCardProps {
 
 const Container = styled.div`
   max-width: 100vw;
-  height: 150px;
-  padding: 5px;
-  box-sizing: border-box;
+  height: 90px;
+  padding: 10px;
   display: grid;
   grid-template-columns: 2fr 1fr;
 `;
@@ -21,6 +20,7 @@ const LabelContainer = styled.div`
   display: flex;
   flex-basis: 0;
   flex-direction: column;
+  gap: 3px;
 `;
 
 const ImageContainer = styled.div``;
@@ -35,15 +35,17 @@ function ProductCard({ product }: ProductCardProps) {
       {openDialog && <ProductDialog product={product} closeDialog={() => setOpenDialog(false)} />}
       <Container onClick={() => setOpenDialog(true)}>
         <LabelContainer>
-          <AppLabel size={'medium'}>{product.name}</AppLabel>
-          <AppLabel size={'small'}>{product.description}</AppLabel>
-          <AppLabel size={'small'}>{product.price.toLocaleString()}원</AppLabel>
+          <AppLabel size={20}>{product.name}</AppLabel>
+          <AppLabel size={13}>{product.description}</AppLabel>
+          <AppLabel size={22} style={{ marginTop: 'auto' }}>
+            {product.price.toLocaleString()}원
+          </AppLabel>
         </LabelContainer>
         <ImageContainer>
           <img
             src={product.imageUrl}
             alt={product.name}
-            style={{ float: 'right', maxWidth: '140px', maxHeight: '140px', objectFit: 'cover', border: 'none', borderRadius: '10px' }}
+            style={{ float: 'right', maxWidth: '90px', maxHeight: '90px', objectFit: 'cover', border: 'none', borderRadius: '10px' }}
           />
         </ImageContainer>
       </Container>
