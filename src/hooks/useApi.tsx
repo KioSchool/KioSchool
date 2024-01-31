@@ -51,7 +51,7 @@ function useApi({ useLoading = true }: UseApiProps = {}) {
     withCredentials: true,
   });
   userApi.interceptors.request.use(commonRequestInterceptor, commonErrorInterceptor);
-  userApi.interceptors.response.use(commonResponseInterceptor, commonRequestInterceptor);
+  userApi.interceptors.response.use(commonResponseInterceptor, commonErrorInterceptor);
 
   return { adminApi, userApi, sessionApi };
 }

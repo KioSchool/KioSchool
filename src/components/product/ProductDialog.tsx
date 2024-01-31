@@ -90,7 +90,7 @@ function ProductDialog(props: ProductDialogProps) {
         <AppLabel size={'small'}>{props.product.name}</AppLabel>
         <AppLabel size={12}>{props.product.description}</AppLabel>
         <OrderButtonContainer>
-          <AppButton size={'medium'} onClick={addOrderBasket}>
+          <AppButton size={270} onClick={addOrderBasket}>
             {props.product.price.toLocaleString()}원 담기
           </AppButton>
         </OrderButtonContainer>

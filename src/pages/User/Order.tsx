@@ -38,6 +38,7 @@ const CategoryBadgesContainer = styled.div`
   width: 100vw;
   height: 50px;
   padding-left: 35px;
+  box-sizing: border-box;
   display: flex;
   gap: 8px;
   align-items: center;
@@ -110,7 +111,7 @@ function Order() {
       </ContentContainer>
       {totalAmount > 0 && (
         <OrderButtonContainer>
-          <AppButton size={'medium'}>{totalAmount.toLocaleString()}원 주문하기</AppButton>
+          <AppButton size={270}>{totalAmount.toLocaleString()}원 주문하기</AppButton>
         </OrderButtonContainer>
       )}
     </Container>
