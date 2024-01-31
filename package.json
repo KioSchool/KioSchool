@@ -1,5 +1,5 @@
 {
-  "name": "military-service-company-checker-front",
+  "name": "kio-school",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -12,10 +12,13 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
+    "@types/lodash": "^4.14.202",
     "@types/node": "^16.11.59",
     "@types/react": "^18.0.20",
     "@types/react-dom": "^18.0.6",
     "axios": "^0.27.2",
+    "jsqr": "^1.4.0",
+    "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.20.1",
@@ -56,6 +59,7 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.7.1",
+    "react-app-alias": "^2.2.2",
     "typescript": "^4.8.3"
   }
 }
