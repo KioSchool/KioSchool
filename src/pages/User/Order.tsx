@@ -38,6 +38,7 @@ const CategoryBadgesContainer = styled.div`
   width: 100vw;
   height: 50px;
   padding-left: 35px;
+  box-sizing: border-box;
   display: flex;
   gap: 8px;
   align-items: center;
