@@ -28,7 +28,6 @@ const Header = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-bottom: 1px solid gray;
 `;
 
 const CategoryBadges = styled.div`
