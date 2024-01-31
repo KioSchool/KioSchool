@@ -52,6 +52,10 @@ const OrderButtonContainer = styled.div`
   align-items: center;
 `;
 
+const ProductContainer = styled.div`
+  padding: 10px;
+`;
+
 function Order() {
   const workspace = useRecoilValue(userWorkspaceAtom);
   const productsByCategory = _.groupBy<Product>(workspace.products, (product) => product.productCategory?.id);
@@ -91,10 +95,10 @@ function Order() {
           <AppLabel size={'large'}>{categoryMap[categoryId]?.name || '기본 메뉴'}</AppLabel>
           <HorizontalDivider />
           {productsByCategory[categoryId].map((product) => (
-            <div key={`product${product.id}`}>
+            <ProductContainer key={`product${product.id}`}>
               <ProductCard product={product} />
               <HorizontalDivider />
-            </div>
+            </ProductContainer>
           ))}
         </div>
       ))}
