@@ -110,7 +110,7 @@ function Order() {
       </ContentContainer>
       {totalAmount > 0 && (
         <OrderButtonContainer>
-          <AppButton size={'medium'}>{totalAmount.toLocaleString()}원 주문하기</AppButton>
+          <AppButton size={270}>{totalAmount.toLocaleString()}원 주문하기</AppButton>
         </OrderButtonContainer>
       )}
     </Container>
