@@ -34,9 +34,10 @@ const ContentContainer = styled.div`
   padding: 30px;
 `;
 
-const CategoryBadges = styled.div`
+const CategoryBadgesContainer = styled.div`
   width: 100vw;
   height: 50px;
+  padding-left: 35px;
   display: flex;
   gap: 8px;
   align-items: center;
@@ -87,12 +88,12 @@ function Order() {
         <AppLabel size={'small'} style={{ color: 'gray' }}>
           this is table {tableNo}
         </AppLabel>
-        <CategoryBadges>
+        <CategoryBadgesContainer>
           {workspace.productCategories.map((category) => (
             <AppBadge key={`category${category.id}`}>{category.name}</AppBadge>
           ))}
           <AppBadge key={`categorynull`}>기본 메뉴</AppBadge>
-        </CategoryBadges>
+        </CategoryBadgesContainer>
       </Header>
       <ContentContainer>
         {_.keys(productsByCategory).map((categoryId) => (
