@@ -37,7 +37,7 @@ function ProductCard({ product }: ProductCardProps) {
         <LabelContainer>
           <AppLabel size={'medium'}>{product.name}</AppLabel>
           <AppLabel size={'small'}>{product.description}</AppLabel>
-          <AppLabel size={'small'}>{product.price}원</AppLabel>
+          <AppLabel size={'small'}>{product.price.toLocaleString()}원</AppLabel>
         </LabelContainer>
         <ImageContainer>
           <img

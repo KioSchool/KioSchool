@@ -98,7 +98,7 @@ function ProductDialog(props: ProductDialogProps) {
         </CounterContainer>
         <OrderButtonContainer>
           <AppButton size={'medium'} onClick={addOrderBasket}>
-            {props.product.price * count}원 담기
+            {(props.product.price * count).toLocaleString()}원 담기
           </AppButton>
         </OrderButtonContainer>
       </ModalContainer>
