@@ -45,7 +45,7 @@ function ProductCard({ product }: ProductCardProps) {
           <img
             src={product.imageUrl}
             alt={product.name}
-            style={{ float: 'right', maxWidth: '90px', maxHeight: '90px', objectFit: 'cover', border: 'none', borderRadius: '10px' }}
+            style={{ float: 'right', width: '90px', height: '90px', objectFit: 'cover', border: 'none', borderRadius: '10px' }}
           />
         </ImageContainer>
       </Container>
