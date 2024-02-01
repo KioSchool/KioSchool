@@ -87,7 +87,7 @@ function Order() {
       <Header>
         <AppLabel size={'medium'}>{workspace.name}</AppLabel>
         <AppLabel size={'small'} style={{ color: 'gray' }}>
-          this is table {tableNo}
+          {tableNo}번 테이블
         </AppLabel>
         <CategoryBadgesContainer>
           {workspace.productCategories.map((category) => (
