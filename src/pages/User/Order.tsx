@@ -90,10 +90,10 @@ function Order() {
           {tableNo}번 테이블
         </AppLabel>
         <CategoryBadgesContainer>
-          {workspace.productCategories.map((category) => (
-            <AppBadge key={`category${category.id}`}>{category.name}</AppBadge>
-          ))}
-          <AppBadge key={`categorynull`}>기본 메뉴</AppBadge>
+          {workspace.productCategories.map(
+            (category) => productsByCategory[category.id] && <AppBadge key={`category${category.id}`}>{category.name}</AppBadge>,
+          )}
+          {productsByCategory.undefined && <AppBadge key={`categorynull`}>기본 메뉴</AppBadge>}
         </CategoryBadgesContainer>
       </Header>
       <ContentContainer>
