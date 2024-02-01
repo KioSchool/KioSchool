@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
-import AppBadge from '@components/common/badge/AppBadge';
 import AppButton from '@components/common/button/AppButton';
-import ProductCard from '@components/product/ProductCard';
+import CategoryBadgesContainer from '@components/user/order/CategoryBadgesContainer';
+import ProductCard from '@components/user/product/ProductCard';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import useWorkspace from '@hooks/useWorkspace';
 import { orderBasketAtom, userWorkspaceAtom } from '@recoils/atoms';
@@ -33,20 +33,6 @@ const Header = styled.div`
 
 const ContentContainer = styled.div`
   padding: 30px;
-`;
-
-const CategoryBadgesContainer = styled.div`
-  width: 100vw;
-  height: 50px;
-  padding-left: 35px;
-  box-sizing: border-box;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  overflow: scroll;
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 const OrderButtonContainer = styled.div`
@@ -83,17 +69,6 @@ function Order() {
     fetchWorkspace(workspaceId);
   }, []);
 
-  const scrollToCategory = (categoryId: string) => {
-    const categoryElement = document.getElementById(categoryId);
-    const elementPosition = categoryElement?.getBoundingClientRect().top;
-    const headerHeight = 110;
-    const offsetPosition = elementPosition ? elementPosition + window.scrollY - headerHeight : 0;
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: 'smooth',
-    });
-  };
-
   return (
     <Container>
       <Header>
@@ -101,21 +76,7 @@ function Order() {
         <AppLabel size={'small'} style={{ color: 'gray' }}>
           {tableNo}번 테이블
         </AppLabel>
-        <CategoryBadgesContainer>
-          {workspace.productCategories.map(
-            (category) =>
-              productsByCategory[category.id] && (
-                <AppBadge onClick={() => scrollToCategory(`product_category${category.id}`)} key={`category${category.id}`}>
-                  {category.name}
-                </AppBadge>
-              ),
-          )}
-          {productsByCategory.undefined && (
-            <AppBadge onClick={() => scrollToCategory(`product_categoryundefined`)} key={`categorynull`}>
-              기본 메뉴
-            </AppBadge>
-          )}
-        </CategoryBadgesContainer>
+        <CategoryBadgesContainer workspace={workspace} productsByCategory={productsByCategory} />
       </Header>
       <ContentContainer>
         {_.keys(productsByCategory).map((categoryId) => (
