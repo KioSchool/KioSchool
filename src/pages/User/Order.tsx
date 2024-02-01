@@ -83,6 +83,17 @@ function Order() {
     fetchWorkspace(workspaceId);
   }, []);
 
+  const scrollToCategory = (categoryId: string) => {
+    const categoryElement = document.getElementById(categoryId);
+    const elementPosition = categoryElement?.getBoundingClientRect().top;
+    const headerHeight = 110;
+    const offsetPosition = elementPosition ? elementPosition + window.scrollY - headerHeight : 0;
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <Container>
       <Header>
@@ -92,14 +103,23 @@ function Order() {
         </AppLabel>
         <CategoryBadgesContainer>
           {workspace.productCategories.map(
-            (category) => productsByCategory[category.id] && <AppBadge key={`category${category.id}`}>{category.name}</AppBadge>,
+            (category) =>
+              productsByCategory[category.id] && (
+                <AppBadge onClick={() => scrollToCategory(`product_category${category.id}`)} key={`category${category.id}`}>
+                  {category.name}
+                </AppBadge>
+              ),
           )}
-          {productsByCategory.undefined && <AppBadge key={`categorynull`}>기본 메뉴</AppBadge>}
+          {productsByCategory.undefined && (
+            <AppBadge onClick={() => scrollToCategory(`product_categoryundefined`)} key={`categorynull`}>
+              기본 메뉴
+            </AppBadge>
+          )}
         </CategoryBadgesContainer>
       </Header>
       <ContentContainer>
         {_.keys(productsByCategory).map((categoryId) => (
-          <div key={`product_category${categoryId}`}>
+          <div id={`product_category${categoryId}`} key={`product_category${categoryId}`}>
             <AppLabel size={22}>{categoryMap[categoryId]?.name || '기본 메뉴'}</AppLabel>
             {productsByCategory[categoryId].map((product) => (
               <ProductContainer key={`product${product.id}`}>
