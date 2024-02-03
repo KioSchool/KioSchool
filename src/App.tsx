@@ -24,7 +24,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/register-account" element={<AdminAccount />} />
-          <Route path="/orders" element={<Order />} />
+          <Route path="/order" element={<Order />} />
           <Route path="/orderbasket" element={<OrderBasket />} />
           <Route path="/admin" element={<AdminHome />} />
           <Route path="/admin/workspace/:workspaceId" element={<AdminWorkspace />} />
