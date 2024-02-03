@@ -45,6 +45,13 @@ const OrderButtonContainer = styled.div`
   align-items: center;
 `;
 
+const OrderButtonSubContainer = styled.div`
+  padding: 8px;
+  border-radius: 20px;
+  background: white;
+  box-shadow: 0px 16px 32px 0px rgba(194, 191, 172, 0.6);
+`;
+
 const ProductContainer = styled.div`
   padding: 10px;
 `;
@@ -93,7 +100,9 @@ function Order() {
       </ContentContainer>
       {totalAmount > 0 && (
         <OrderButtonContainer>
-          <AppButton size={270}>{totalAmount.toLocaleString()}원 주문하기</AppButton>
+          <OrderButtonSubContainer>
+            <AppButton size={270}>{totalAmount.toLocaleString()}원 주문하기</AppButton>
+          </OrderButtonSubContainer>
         </OrderButtonContainer>
       )}
     </Container>
