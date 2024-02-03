@@ -11,6 +11,7 @@ const Container = styled.div`
   text-align: center;
   line-height: 30px;
   font-size: 15px;
+  user-select: none;
 
   :active {
     background-color: gray;

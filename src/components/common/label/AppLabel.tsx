@@ -17,6 +17,7 @@ const Container = styled.label`
     return sizeMap[props.size || 'medium'];
   }};
   font-weight: 500;
+  user-select: none;
 `;
 
 function AppLabel(props: AppLabelProps) {
