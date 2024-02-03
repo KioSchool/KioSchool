@@ -11,6 +11,14 @@ const Container = styled.div`
   text-align: center;
   line-height: 30px;
   font-size: 15px;
+
+  :active {
+    background-color: gray;
+  }
+
+  :not(:active) {
+    transition: background-color 600ms ease;
+  }
 `;
 function AppBadge(props: AppBadgeProps) {
   return <Container {...props} />;
