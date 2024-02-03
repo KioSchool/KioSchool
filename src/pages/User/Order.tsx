@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
-import AppBadge from '@components/common/badge/AppBadge';
 import AppButton from '@components/common/button/AppButton';
-import ProductCard from '@components/product/ProductCard';
+import CategoryBadgesContainer from '@components/user/order/CategoryBadgesContainer';
+import ProductCard from '@components/user/product/ProductCard';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import useWorkspace from '@hooks/useWorkspace';
 import { orderBasketAtom, userWorkspaceAtom } from '@recoils/atoms';
@@ -28,24 +28,11 @@ const Header = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  z-index: 100;
 `;
 
 const ContentContainer = styled.div`
   padding: 30px;
-`;
-
-const CategoryBadgesContainer = styled.div`
-  width: 100vw;
-  height: 50px;
-  padding-left: 35px;
-  box-sizing: border-box;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  overflow: scroll;
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 const OrderButtonContainer = styled.div`
@@ -56,6 +43,13 @@ const OrderButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const OrderButtonSubContainer = styled.div`
+  padding: 8px;
+  border-radius: 20px;
+  background: white;
+  box-shadow: 0px 16px 32px 0px rgba(194, 191, 172, 0.6);
 `;
 
 const ProductContainer = styled.div`
@@ -87,18 +81,13 @@ function Order() {
       <Header>
         <AppLabel size={'medium'}>{workspace.name}</AppLabel>
         <AppLabel size={'small'} style={{ color: 'gray' }}>
-          this is table {tableNo}
+          {tableNo}번 테이블
         </AppLabel>
-        <CategoryBadgesContainer>
-          {workspace.productCategories.map((category) => (
-            <AppBadge key={`category${category.id}`}>{category.name}</AppBadge>
-          ))}
-          <AppBadge key={`categorynull`}>기본 메뉴</AppBadge>
-        </CategoryBadgesContainer>
+        <CategoryBadgesContainer workspace={workspace} productsByCategory={productsByCategory} />
       </Header>
       <ContentContainer>
         {_.keys(productsByCategory).map((categoryId) => (
-          <div key={`product_category${categoryId}`}>
+          <div id={`product_category${categoryId}`} key={`product_category${categoryId}`}>
             <AppLabel size={22}>{categoryMap[categoryId]?.name || '기본 메뉴'}</AppLabel>
             {productsByCategory[categoryId].map((product) => (
               <ProductContainer key={`product${product.id}`}>
@@ -111,7 +100,9 @@ function Order() {
       </ContentContainer>
       {totalAmount > 0 && (
         <OrderButtonContainer>
-          <AppButton size={270}>{totalAmount.toLocaleString()}원 주문하기</AppButton>
+          <OrderButtonSubContainer>
+            <AppButton size={270}>{totalAmount.toLocaleString()}원 주문하기</AppButton>
+          </OrderButtonSubContainer>
         </OrderButtonContainer>
       )}
     </Container>
