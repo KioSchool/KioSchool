@@ -1,16 +1,21 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-interface AppBadgeProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface AppBadgeProps extends React.HTMLAttributes<HTMLDivElement> {
+  background?: string;
+  noBorder?: boolean;
+}
 
 const Container = styled.div`
   min-width: 90px;
   height: 30px;
-  border: 1px solid black;
+  border: ${(props: AppBadgeProps) => (props.noBorder ? 'none' : '1px solid black')};
   border-radius: 1000px;
   text-align: center;
   line-height: 30px;
   font-size: 15px;
+  background: ${(props: AppBadgeProps) => props.background || 'white'};
+  user-select: none;
 
   :active {
     background-color: gray;

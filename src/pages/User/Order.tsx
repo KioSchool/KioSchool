@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import AppButton from '@components/common/button/AppButton';
@@ -67,6 +67,7 @@ function Order() {
   const tableNo = searchParams.get('tableNo');
 
   const { fetchWorkspace } = useWorkspace();
+  const navigate = useNavigate();
   const orderBasket = useRecoilValue(orderBasketAtom);
   const totalAmount = orderBasket.reduce((acc, cur) => {
     return acc + productsMap[cur.productId].price * cur.quantity;
@@ -101,7 +102,9 @@ function Order() {
       {totalAmount > 0 && (
         <OrderButtonContainer>
           <OrderButtonSubContainer>
-            <AppButton size={270}>{totalAmount.toLocaleString()}원 주문하기</AppButton>
+            <AppButton size={270} onClick={() => navigate(`/orderbasket?workspaceId=${workspaceId}&tableNo=${tableNo}`)}>
+              {totalAmount.toLocaleString()}원 장바구니
+            </AppButton>
           </OrderButtonSubContainer>
         </OrderButtonContainer>
       )}
