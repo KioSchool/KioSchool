@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import AppBadge from '@components/common/badge/AppBadge';
 import AppLabel from '@components/common/label/AppLabel';
@@ -7,7 +7,7 @@ import { useRecoilValue } from 'recoil';
 import { orderBasketAtom, userWorkspaceAtom } from '@recoils/atoms';
 import ProductCounterBadge from '@components/user/product/ProductCounterBadge';
 import _ from 'lodash';
-import AppButton from '@components/common/button/AppButton';
+import OrderButton from '@components/user/order/OrderButton';
 
 const Container = styled.div`
   width: 100vw;
@@ -35,23 +35,6 @@ const OrderBasketContainer = styled.div`
   gap: 14px;
 `;
 
-const OrderButtonContainer = styled.div`
-  position: fixed;
-  bottom: 50px;
-  width: 100vw;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const OrderButtonSubContainer = styled.div`
-  padding: 8px;
-  border-radius: 20px;
-  background: white;
-  box-shadow: 0px 16px 32px 0px rgba(194, 191, 172, 0.6);
-`;
-
 function OrderBasket() {
   const workspace = useRecoilValue(userWorkspaceAtom);
   const orderBasket = useRecoilValue(orderBasketAtom);
@@ -60,8 +43,9 @@ function OrderBasket() {
     return acc + productsMap[cur.productId].price * cur.quantity;
   }, 0);
 
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  //const workspaceId = searchParams.get('workspaceId');
+  const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
 
   return (
@@ -78,13 +62,11 @@ function OrderBasket() {
           return <ProductCounterBadge product={product} key={product.id} />;
         })}
       </OrderBasketContainer>
-      {totalAmount > 0 && (
-        <OrderButtonContainer>
-          <OrderButtonSubContainer>
-            <AppButton size={270}>{totalAmount.toLocaleString()}원 주문하기</AppButton>
-          </OrderButtonSubContainer>
-        </OrderButtonContainer>
-      )}
+      <OrderButton
+        amount={totalAmount}
+        buttonLabel={`${totalAmount.toLocaleString()}원 주문하기`}
+        onClick={() => navigate(`/order-pay?workspaceId=${workspaceId}&tableNo=${tableNo}`)}
+      />
     </Container>
   );
 }
