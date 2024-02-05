@@ -1,17 +1,17 @@
-import { forwardRef } from 'react';
+import { SelectHTMLAttributes, forwardRef } from 'react';
 
 interface Option {
   name: string;
   val: number | string;
 }
 
-interface SelectWithOptionsProps {
+interface SelectWithOptionsProps extends SelectHTMLAttributes<HTMLSelectElement> {
   options: Option[];
 }
-const SelectWithOptions = forwardRef<HTMLSelectElement, SelectWithOptionsProps>(({ options }, ref) => {
+const SelectWithOptions = forwardRef<HTMLSelectElement, SelectWithOptionsProps>(({ options, value, ...rest }, ref) => {
   return (
     <div>
-      <select ref={ref}>
+      <select ref={ref} value={value} {...rest}>
         {options.map((item, index) => (
           <option key={index} value={item.val}>
             {item.name}
