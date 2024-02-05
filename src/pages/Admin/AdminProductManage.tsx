@@ -15,9 +15,23 @@ function AdminProductManage() {
   const [file, setFile] = useState<File | null>(null);
 
   const AddProduct = () => {
-    const data = new FormData();
-    if (file) data.append('file', file);
-    console.log(workspaceId);
+    const name = productNameRef.current?.value;
+    const description = productDescriptionRef.current?.value;
+    const price = productPriceRef.current?.value;
+    const workspaceid = workspaceId;
+    const cat = productCategoryRef.current?.value;
+
+    const body = {
+      name: name,
+      description: description,
+      price: price,
+      workspaceId: workspaceid,
+      productCategoryId: cat,
+    };
+
+    if (file) {
+      addProduct(body, file);
+    }
   };
 
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -34,9 +48,15 @@ function AdminProductManage() {
       <div>Product manage</div>
       <AppInputWithLabel titleLabel={'상품 이름'} ref={productNameRef} />
       <AppInputWithLabel titleLabel={'상품 설명'} ref={productDescriptionRef} />
-      <AppInputWithLabel titleLabel={'상품 가격'} ref={productPriceRef} />
+      <AppInputWithLabel type={'number'} titleLabel={'상품 가격'} ref={productPriceRef} />
       <input type="file" id="img" accept="image/*" onChange={onImageChange} />
-      <SelectWithOptions options={['기본', '인기']} ref={productCategoryRef}></SelectWithOptions>
+      <SelectWithOptions
+        options={[
+          { name: '기본', val: 'null' },
+          { name: '인기', val: 1 },
+        ]}
+        ref={productCategoryRef}
+      ></SelectWithOptions>
       <AppButton onClick={AddProduct}>추가하기</AppButton>
     </>
   );
