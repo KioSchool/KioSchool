@@ -37,11 +37,20 @@ function useAdminUser() {
       .catch((error) => console.error('Failed to leave workspace: ', error));
   };
 
+  const addProduct = (product: any, file: File) => {
+    adminApi
+      .post('/product', { body: product, file: file })
+      .then(() => {
+        console.log('success!');
+      })
+      .catch((error) => console.error('Failed to add product: ', error));
+  };
+
   const registerAccount = (account: string) => {
     adminApi.post('/user/toss-account', { accountUrl: account }).catch((error) => console.error('Failed to add account: ', error));
   };
 
-  return { isLoggedIn, fetchWorkspaces, createWorkspaces, leaveWorkspaces, registerAccount };
+  return { isLoggedIn, fetchWorkspaces, createWorkspaces, leaveWorkspaces, registerAccount, addProduct };
 }
 
 export default useAdminUser;
