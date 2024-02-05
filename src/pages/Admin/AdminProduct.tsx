@@ -25,7 +25,7 @@ function AdminProduct() {
             <div>{product.name}</div>
             <div>{product.description}</div>
             <div>{product.price.toLocaleString()}원</div>
-            <img src={product.imageUrl} />
+            <img src={product.imageUrl} style={{ width: '300px', height: '300px' }} />
           </div>
         ))}
       </div>
