@@ -14,6 +14,7 @@ import LoadingModal from '@components/common/modal/LoadingModal';
 import { Global } from '@emotion/react';
 import { globalStyles } from '@styles/globalStyles';
 import OrderBasket from '@pages/User/order/OrderBasket';
+import OrderPay from '@pages/User/order/OrderPay';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/register-account" element={<AdminAccount />} />
           <Route path="/order" element={<Order />} />
           <Route path="/orderbasket" element={<OrderBasket />} />
+          <Route path="/order-pay" element={<OrderPay />} />
           <Route path="/admin" element={<AdminHome />} />
           <Route path="/admin/workspace/:workspaceId" element={<AdminWorkspace />} />
           <Route path="/admin/workspace/:workspaceId/orders" element={<AdminOrder />} />
