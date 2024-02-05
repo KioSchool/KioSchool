@@ -2,9 +2,11 @@ import useApi from '@hooks/useApi';
 import { Workspace } from '@@types/index';
 import { useSetRecoilState } from 'recoil';
 import { workspacesAtom } from '@recoils/atoms';
+import { useNavigate } from 'react-router-dom';
 
 function useAdminUser() {
   const { adminApi } = useApi();
+  const navigate = useNavigate();
   const setWorkspaces = useSetRecoilState(workspacesAtom);
 
   const isLoggedIn = () => {
@@ -45,7 +47,7 @@ function useAdminUser() {
     adminApi
       .post('/product', data)
       .then(() => {
-        console.log('success!');
+        navigate(`/admin/workspace/${product.workspaceId}/products`);
       })
       .catch((error) => console.error('Failed to add product: ', error));
   };
