@@ -8,12 +8,15 @@ function AdminProductManage() {
   const productNameRef = useRef<HTMLInputElement>(null);
   const productDescriptionRef = useRef<HTMLInputElement>(null);
   const productPriceRef = useRef<HTMLInputElement>(null);
-  const [file, setFile] = useState<File>();
+  const [file, setFile] = useState<File | null>(null);
 
-  const AddProduct = () => {};
+  const AddProduct = () => {
+    const data = new FormData();
+    file ? data.append('file', file) : data.append('file', '');
+  };
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files?.length) {
-      setFile(undefined);
+      setFile(null);
       return;
     }
 
