@@ -3,11 +3,13 @@ import { useParams } from 'react-router-dom';
 import useProducts from '@hooks/useProducts';
 import { useRecoilValue } from 'recoil';
 import { productsAtom } from '@recoils/atoms';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 
 function AdminProduct() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchProducts } = useProducts(workspaceId);
   const products = useRecoilValue(productsAtom);
+  const { appendPath } = useCustomNavigate();
 
   useEffect(() => {
     fetchProducts();
@@ -27,6 +29,9 @@ function AdminProduct() {
           </div>
         ))}
       </div>
+      <button type={'button'} onClick={() => appendPath('/add-products')}>
+        상품 추가
+      </button>
     </>
   );
 }
