@@ -38,8 +38,12 @@ function useAdminUser() {
   };
 
   const addProduct = (product: any, file: File) => {
+    const data = new FormData();
+    data.append('body', new Blob([JSON.stringify(product)], { type: 'application/json' }));
+    data.append('file', new Blob([file], { type: 'image/jpeg' }));
+
     adminApi
-      .post('/product', { body: product, file: file })
+      .post('/product', data)
       .then(() => {
         console.log('success!');
       })
