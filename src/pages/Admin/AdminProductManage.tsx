@@ -33,14 +33,27 @@ function AdminProductManage() {
   };
 
   const { addProduct } = useAdminUser();
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
   const [state, dispatch] = useReducer(reducer, body);
 
   const AddProduct = () => {
     dispatch({ type: 'PRODUCT_WORKSPACEID_INPUT', payload: workspaceId });
-    if (file) {
-      addProduct(state, file);
+    if (!state.name || !state.description) {
+      setErrorMessage('상품 이름 및 설명을 입력해주세요');
+      return;
     }
+    if (state.price < 0) {
+      setErrorMessage('가격은 음수가 될 수 없습니다.');
+      return;
+    }
+    if (!file) {
+      setErrorMessage('파일을 선택해주세요');
+      return;
+    }
+
+    setErrorMessage('');
+    addProduct(state, file);
   };
 
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -55,6 +68,7 @@ function AdminProductManage() {
   return (
     <>
       <div>Product manage</div>
+      {errorMessage}
       <AppInputWithLabel
         titleLabel={'상품 이름'}
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
