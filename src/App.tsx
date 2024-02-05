@@ -7,13 +7,13 @@ import AdminWorkspace from '@pages/Admin/AdminWorkspace';
 import AdminOrder from '@pages/Admin/AdminOrder';
 import Register from '@pages/User/Register';
 import AdminProduct from '@pages/Admin/AdminProduct';
-import Order from '@pages/User/Order';
+import Order from '@pages/User/order/Order';
 import AdminAccount from '@pages/Admin/AdminAccount';
 import { RecoilRoot } from 'recoil';
 import LoadingModal from '@components/common/modal/LoadingModal';
 import { Global } from '@emotion/react';
 import { globalStyles } from '@styles/globalStyles';
-import OrderBasket from '@pages/User/OrderBasket';
+import OrderBasket from '@pages/User/order/OrderBasket';
 
 function App() {
   return (
