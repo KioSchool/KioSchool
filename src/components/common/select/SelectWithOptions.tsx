@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 
 interface Option {
   name: string;
-  val: number;
+  val: number | string;
 }
 
 interface SelectWithOptionsProps {
