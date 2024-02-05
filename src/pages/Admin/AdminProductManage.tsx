@@ -1,19 +1,27 @@
 import AppButton from '@components/common/button/AppButton';
 import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
-import useAdminUser from '@hooks/useAdminUser';
+// import useAdminUser from '@hooks/useAdminUser';
+import { productsAtom } from '@recoils/atoms';
 import { ChangeEvent, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
 function AdminProductManage() {
-  const { addProduct } = useAdminUser();
+  //   const { addProduct } = useAdminUser();
+  const products = useRecoilValue(productsAtom);
   const productNameRef = useRef<HTMLInputElement>(null);
   const productDescriptionRef = useRef<HTMLInputElement>(null);
   const productPriceRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
+  const { workspaceId } = useParams();
 
   const AddProduct = () => {
     const data = new FormData();
-    file ? data.append('file', file) : data.append('file', '');
+    if (file) data.append('file', file);
+    console.log(workspaceId);
+    console.log(products, file);
   };
+
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files?.length) {
       setFile(null);
