@@ -13,8 +13,6 @@ function reducer(state: any, action: any) {
       return { ...state, description: action.payload };
     case 'PRODUCT_PRICE_INPUT':
       return { ...state, price: action.payload };
-    case 'PRODUCT_WORKSPACEID_INPUT':
-      return { ...state, workspaceId: action.payload };
     case 'PRODUCT_CATEGORY_INPUT':
       return { ...state, productCategoryId: action.payload };
     default:
@@ -38,7 +36,6 @@ function AdminProductManage() {
   const [state, dispatch] = useReducer(reducer, body);
 
   const AddProduct = () => {
-    dispatch({ type: 'PRODUCT_WORKSPACEID_INPUT', payload: workspaceId });
     if (!state.name || !state.description) {
       setErrorMessage('상품 이름 및 설명을 입력해주세요');
       return;
@@ -51,7 +48,6 @@ function AdminProductManage() {
       setErrorMessage('파일을 선택해주세요');
       return;
     }
-
     setErrorMessage('');
     addProduct(state, file);
   };
@@ -71,21 +67,21 @@ function AdminProductManage() {
       {errorMessage}
       <AppInputWithLabel
         titleLabel={'상품 이름'}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => {
-          dispatch({ type: 'PRODUCT_NAME_INPUT', payload: e.target?.value });
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+          dispatch({ type: 'PRODUCT_NAME_INPUT', payload: event.target?.value });
         }}
       />
       <AppInputWithLabel
         titleLabel={'상품 설명'}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => {
-          dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: e.target?.value });
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+          dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: event.target?.value });
         }}
       />
       <AppInputWithLabel
         type={'number'}
         titleLabel={'상품 가격'}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => {
-          dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: e.target?.value });
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+          dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: event.target?.value });
         }}
       />
       <input type="file" id="img" accept="image/*" onChange={onImageChange} />
