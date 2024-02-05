@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
-import AppButton from '@components/common/button/AppButton';
 import CategoryBadgesContainer from '@components/user/order/CategoryBadgesContainer';
 import ProductCard from '@components/user/product/ProductCard';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
@@ -11,6 +10,7 @@ import { orderBasketAtom, userWorkspaceAtom } from '@recoils/atoms';
 import { useRecoilValue } from 'recoil';
 import { Product } from '@@types/index';
 import _ from 'lodash';
+import OrderButton from '@components/user/order/OrderButton';
 
 const Container = styled.div`
   width: 100vw;
@@ -33,23 +33,6 @@ const Header = styled.div`
 
 const ContentContainer = styled.div`
   padding: 30px;
-`;
-
-const OrderButtonContainer = styled.div`
-  position: fixed;
-  bottom: 50px;
-  width: 100vw;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const OrderButtonSubContainer = styled.div`
-  padding: 8px;
-  border-radius: 20px;
-  background: white;
-  box-shadow: 0px 16px 32px 0px rgba(194, 191, 172, 0.6);
 `;
 
 const ProductContainer = styled.div`
@@ -99,15 +82,11 @@ function Order() {
           </div>
         ))}
       </ContentContainer>
-      {totalAmount > 0 && (
-        <OrderButtonContainer>
-          <OrderButtonSubContainer>
-            <AppButton size={270} onClick={() => navigate(`/orderbasket?workspaceId=${workspaceId}&tableNo=${tableNo}`)}>
-              {totalAmount.toLocaleString()}원 장바구니
-            </AppButton>
-          </OrderButtonSubContainer>
-        </OrderButtonContainer>
-      )}
+      <OrderButton
+        amount={totalAmount}
+        buttonLabel={`${totalAmount.toLocaleString()}원 장바구니`}
+        onClick={() => navigate(`/orderbasket?workspaceId=${workspaceId}&tableNo=${tableNo}`)}
+      />
     </Container>
   );
 }
