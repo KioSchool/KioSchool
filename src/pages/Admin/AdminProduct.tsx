@@ -29,7 +29,7 @@ function AdminProduct() {
           </div>
         ))}
       </div>
-      <button type={'button'} onClick={() => appendPath('/add-products')}>
+      <button type={'button'} onClick={() => appendPath('/add-product')}>
         상품 추가
       </button>
     </>

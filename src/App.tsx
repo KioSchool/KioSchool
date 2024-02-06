@@ -33,7 +33,7 @@ function App() {
           <Route path="/admin/workspace/:workspaceId" element={<AdminWorkspace />} />
           <Route path="/admin/workspace/:workspaceId/orders" element={<AdminOrder />} />
           <Route path="/admin/workspace/:workspaceId/products" element={<AdminProduct />} />
-          <Route path="/admin/workspace/:workspaceId/products/add-products" element={<AdminProductManage />} />
+          <Route path="/admin/workspace/:workspaceId/products/add-product" element={<AdminProductManage />} />
         </Routes>
       </BrowserRouter>
       <Global styles={globalStyles} />
