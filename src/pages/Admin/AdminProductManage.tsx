@@ -74,7 +74,6 @@ function AdminProductManage() {
       return;
     }
     setErrorMessage('');
-    console.log(state);
     addProduct(state, file);
   };
 
