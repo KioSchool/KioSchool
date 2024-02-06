@@ -67,7 +67,7 @@ function OrderPay() {
             orderProducts: orderBasket,
             customerName: customerNameRef.current?.value,
           });
-          window.open(tossAccountUrl);
+          window.open(`${tossAccountUrl}&amount=${totalAmount}`);
         }}
       />
     </Container>
