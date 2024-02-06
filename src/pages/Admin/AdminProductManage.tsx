@@ -74,7 +74,7 @@ function AdminProductManage() {
       return;
     }
     setErrorMessage('');
-    console.log(workspace.productCategories);
+    console.log(state);
     addProduct(state, file);
   };
 
@@ -112,10 +112,7 @@ function AdminProductManage() {
       />
       <input type="file" id="img" accept="image/*" onChange={onImageChange} />
       <SelectWithOptions
-        options={[
-          { name: '기본', val: 'null', id: 0 },
-          { name: '인기', val: 1, id: 1 },
-        ]}
+        options={workspace.productCategories}
         onInput={(event: React.ChangeEvent<HTMLSelectElement>) => {
           dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
         }}
