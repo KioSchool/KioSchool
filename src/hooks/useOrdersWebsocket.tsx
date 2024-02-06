@@ -9,9 +9,15 @@ function useOrdersWebsocket(workspaceId: string | undefined) {
   const setOrders = useSetRecoilState(ordersAtom);
 
   const fetchOrders = () => {
-    adminApi.get<Order[]>(`/orders?workspaceId=${workspaceId}`).then((res) => {
-      setOrders(res.data);
-    });
+    adminApi
+      .get<Order[]>('/orders', {
+        params: {
+          workspaceId: workspaceId,
+        },
+      })
+      .then((res) => {
+        setOrders(res.data);
+      });
   };
 
   const subscribeOrders = () => {
