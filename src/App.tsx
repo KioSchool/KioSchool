@@ -7,12 +7,14 @@ import AdminWorkspace from '@pages/Admin/AdminWorkspace';
 import AdminOrder from '@pages/Admin/AdminOrder';
 import Register from '@pages/User/Register';
 import AdminProduct from '@pages/Admin/AdminProduct';
-import Order from '@pages/User/Order';
+import Order from '@pages/User/order/Order';
 import AdminAccount from '@pages/Admin/AdminAccount';
 import { RecoilRoot } from 'recoil';
 import LoadingModal from '@components/common/modal/LoadingModal';
 import { Global } from '@emotion/react';
 import { globalStyles } from '@styles/globalStyles';
+import OrderBasket from '@pages/User/order/OrderBasket';
+import OrderPay from '@pages/User/order/OrderPay';
 
 function App() {
   return (
@@ -23,7 +25,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/register-account" element={<AdminAccount />} />
-          <Route path="/orders" element={<Order />} />
+          <Route path="/order" element={<Order />} />
+          <Route path="/orderbasket" element={<OrderBasket />} />
+          <Route path="/order-pay" element={<OrderPay />} />
           <Route path="/admin" element={<AdminHome />} />
           <Route path="/admin/workspace/:workspaceId" element={<AdminWorkspace />} />
           <Route path="/admin/workspace/:workspaceId/orders" element={<AdminOrder />} />

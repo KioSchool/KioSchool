@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import useOrdersWebsocket from '@hooks/useOrdersWebsocket';
 import { useRecoilValue } from 'recoil';
 import { ordersAtom } from '@recoils/atoms';
-import OrderListContainer from '@components/order/OrderListContainer';
+import OrderListContainer from '@components/admin/order/OrderListContainer';
 
 function AdminOrder() {
   const { workspaceId } = useParams<{ workspaceId: string }>();

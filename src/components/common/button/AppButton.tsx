@@ -23,6 +23,7 @@ const Container = styled.button`
   border-radius: 15px;
   height: 50px;
   padding: 0 18px;
+  user-select: none;
 `;
 
 function AppButton(props: AppButtonProps) {
