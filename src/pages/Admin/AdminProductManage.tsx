@@ -4,6 +4,12 @@ import AppButton from '@components/common/button/AppButton';
 import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import SelectWithOptions from '@components/common/select/SelectWithOptions';
 import useAdminUser from '@hooks/useAdminUser';
+import styled from '@emotion/styled';
+
+const ErrorMessage = styled.div`
+  padding: 0 0 5px;
+  color: #ff0000;
+`;
 
 function reducer(state: any, action: any) {
   switch (action.type) {
@@ -64,7 +70,7 @@ function AdminProductManage() {
   return (
     <>
       <div>Product manage</div>
-      {errorMessage}
+      {errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}
       <AppInputWithLabel
         titleLabel={'상품 이름'}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
