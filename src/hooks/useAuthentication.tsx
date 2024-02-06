@@ -11,7 +11,6 @@ function useAuthentication() {
   };
 
   const logout = () => {
-    document.cookie = 'isLoggedIn=';
     userApi
       .post('/logout')
       .catch(() => {
