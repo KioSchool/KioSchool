@@ -1,11 +1,14 @@
 import useApi from '@hooks/useApi';
 import { useSetRecoilState } from 'recoil';
-import { productsAtom } from '@recoils/atoms';
+import { productsAtom, userWorkspaceAtom } from '@recoils/atoms';
 import { Product } from '@@types/index';
+import { useNavigate } from 'react-router-dom';
 
 function UseProducts(workspaceId: string | undefined) {
   const { adminApi } = useApi();
+  const navigate = useNavigate();
   const setProducts = useSetRecoilState(productsAtom);
+  const setWorksapceCategories = useSetRecoilState(userWorkspaceAtom);
 
   const fetchProducts = () => {
     adminApi.get<Product[]>(`/products?workspaceId=${workspaceId}`).then((res) => {
@@ -13,7 +16,40 @@ function UseProducts(workspaceId: string | undefined) {
     });
   };
 
-  return { fetchProducts };
+  const addProduct = (product: any, file: File) => {
+    const data = new FormData();
+    data.append('body', new Blob([JSON.stringify(product)], { type: 'application/json' }));
+    data.append('file', new Blob([file], { type: 'image/jpeg' }));
+
+    adminApi
+      .post('/product', data)
+      .then(() => {
+        navigate(`/admin/workspace/${product.workspaceId}/products`);
+      })
+      .catch((error) => console.error('Failed to add product: ', error));
+  };
+
+  const fetchCategories = () => {
+    adminApi
+      .get(`/product-categories?workspaceId=${workspaceId}`)
+      .then((res: any) => {
+        setWorksapceCategories((prev) => ({
+          ...prev,
+          productCategories: res.data,
+        }));
+      })
+      .catch((error) => {
+        console.error('Failed to fetch products categories : ', error);
+      });
+  };
+
+  const AddCategories = (name: string) => {
+    adminApi.post('/product-category', { name, workspaceId }).catch((error) => {
+      console.error('Failed to add products categories : ', error);
+    });
+  };
+
+  return { fetchProducts, addProduct, fetchCategories, AddCategories };
 }
 
 export default UseProducts;
