@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useApi from '@hooks/useApi';
 import styled from '@emotion/styled';
@@ -207,7 +207,7 @@ function Register() {
   };
 
   return (
-    <Fragment>
+    <>
       <Container>
         <SubContainer>
           <AppLabel size={'large'} style={{ padding: '0 0 30px' }}>
@@ -295,7 +295,7 @@ function Register() {
           </FormContainer>
         </SubContainer>
       </Container>
-    </Fragment>
+    </>
   );
 }
 
