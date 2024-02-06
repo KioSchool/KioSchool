@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useAuthentication from '@hooks/useAuthentication';
 import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import AppButton from '@components/common/button/AppButton';
@@ -40,12 +40,15 @@ const ButtonContainer = styled.div`
 `;
 
 function Login() {
-  const { login } = useAuthentication();
+  const { login, isLoggedIn } = useAuthentication();
+  const navigate = useNavigate();
   const userIdInputRef = useRef<HTMLInputElement>(null);
   const userPasswordInputRef = useRef<HTMLInputElement>(null);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   useEffect(() => {
+    if (isLoggedIn()) navigate('/');
+
     setErrorMessage('');
   }, []);
 
