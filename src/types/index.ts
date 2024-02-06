@@ -40,7 +40,6 @@ export interface ProductCategory {
   name: string;
   createdAt: string;
   updatedAt: string;
-  workspace: Workspace;
 }
 
 export interface Workspace {
