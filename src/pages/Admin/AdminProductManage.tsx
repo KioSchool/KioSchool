@@ -11,7 +11,20 @@ const ErrorMessage = styled.div`
   color: #ff0000;
 `;
 
-function reducer(state: any, action: any) {
+interface StateType {
+  name: string;
+  description: string;
+  price: number;
+  workspaceId: string | undefined;
+  productCategoryId: string;
+}
+
+interface ActionType {
+  type: string;
+  payload: any;
+}
+
+function reducer(state: StateType, action: ActionType) {
   switch (action.type) {
     case 'PRODUCT_NAME_INPUT':
       return { ...state, name: action.payload };
@@ -28,7 +41,7 @@ function reducer(state: any, action: any) {
 
 function AdminProductManage() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const body = {
+  const body: StateType = {
     name: '',
     description: '',
     price: 0,
