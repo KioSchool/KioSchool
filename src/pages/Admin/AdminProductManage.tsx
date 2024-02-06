@@ -3,8 +3,8 @@ import { useParams } from 'react-router-dom';
 import AppButton from '@components/common/button/AppButton';
 import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import SelectWithOptions from '@components/common/select/SelectWithOptions';
-import useAdminUser from '@hooks/useAdminUser';
 import styled from '@emotion/styled';
+import UseProducts from '@hooks/useProducts';
 
 const ErrorMessage = styled.div`
   padding: 0 0 5px;
@@ -36,7 +36,7 @@ function AdminProductManage() {
     productCategoryId: 'null',
   };
 
-  const { addProduct } = useAdminUser();
+  const { addProduct } = UseProducts(workspaceId);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
   const [state, dispatch] = useReducer(reducer, body);
