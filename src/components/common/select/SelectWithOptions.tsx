@@ -3,6 +3,7 @@ import { SelectHTMLAttributes, forwardRef } from 'react';
 interface Option {
   name: string;
   val: number | string;
+  id: number;
 }
 
 interface SelectWithOptionsProps extends SelectHTMLAttributes<HTMLSelectElement> {
@@ -12,8 +13,8 @@ const SelectWithOptions = forwardRef<HTMLSelectElement, SelectWithOptionsProps>(
   return (
     <div>
       <select ref={ref} value={value} {...rest}>
-        {options.map((item, index) => (
-          <option key={index} value={item.val}>
+        {options.map((item) => (
+          <option key={item.id} value={item.val}>
             {item.name}
           </option>
         ))}
