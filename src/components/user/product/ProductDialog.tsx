@@ -23,6 +23,16 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  animation: fadeIn 0.2s;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 `;
 
 const ModalContainer = styled.div`
