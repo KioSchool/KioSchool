@@ -61,6 +61,12 @@ const OrderButtonContainer = styled.div`
 
 function ProductDialog(props: ProductDialogProps) {
   const setOrderBasket = useSetRecoilState(orderBasketAtom);
+  const dialogRef = React.useRef<HTMLDivElement>(null);
+
+  const closeDialog = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target !== dialogRef.current) return;
+    props.closeDialog();
+  };
 
   const addOrderBasket = () => {
     const orderBasket = {
@@ -81,7 +87,7 @@ function ProductDialog(props: ProductDialogProps) {
   };
 
   return (
-    <Container>
+    <Container onClick={closeDialog} ref={dialogRef}>
       <ModalContainer>
         <CloseButtonContainer>
           <CloseSvg onClick={props.closeDialog} />
