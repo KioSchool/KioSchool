@@ -13,6 +13,18 @@ import { useSearchParams } from 'react-router-dom';
 const Container = styled.div`
   width: 100vw;
   min-height: 100vh;
+  animation: moveInFromRight 0.3s;
+
+  @keyframes moveInFromRight {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
 `;
 
 const Header = styled.div`
