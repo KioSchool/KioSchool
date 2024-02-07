@@ -12,6 +12,8 @@ import OrderButton from '@components/user/order/OrderButton';
 const Container = styled.div`
   width: 100vw;
   min-height: 100vh;
+  padding: 0 0 80px;
+  box-sizing: border-box;
 `;
 
 const Header = styled.div`
