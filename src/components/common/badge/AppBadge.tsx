@@ -8,9 +8,11 @@ interface AppBadgeProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const Container = styled.div`
   min-width: 90px;
+  padding: 0 10px;
   height: 30px;
   border: ${(props: AppBadgeProps) => (props.noBorder ? 'none' : '1px solid black')};
   border-radius: 1000px;
+  box-sizing: border-box;
   text-align: center;
   line-height: 30px;
   font-size: 15px;
