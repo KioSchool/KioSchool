@@ -37,6 +37,21 @@ export const userWorkspaceAtom = atom<Workspace>({
   },
 });
 
+export const userOrderAtom = atom<Order>({
+  key: 'userOrderAtom',
+  default: {
+    tableNumber: 0,
+    phoneNumber: '',
+    customerName: '',
+    orderProducts: [],
+    totalPrice: 0,
+    status: '',
+    id: 0,
+    createdAt: '',
+    updatedAt: '',
+  },
+});
+
 export const orderBasketAtom = atom<OrderProductBase[]>({
   key: 'orderBasketAtom',
   default: [],
