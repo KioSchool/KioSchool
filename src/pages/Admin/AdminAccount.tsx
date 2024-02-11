@@ -26,7 +26,7 @@ const accountReducer = (state: AccountState, action: AccountAction): AccountStat
 function AdminAccount() {
   const { registerAccount } = useAdminUser();
   const [fileURL, setFileURL] = useState<string>('');
-  const adminuser = useRecoilValue(adminUserAtom);
+  const adminUser = useRecoilValue(adminUserAtom);
   const [accountState, dispatchAccount] = useReducer(accountReducer, {
     decodedBank: '',
     accountNo: '',
@@ -47,15 +47,15 @@ function AdminAccount() {
       return null;
     };
 
-    if (adminuser) {
-      const accountInfo = extractAccountInfo(adminuser.accountUrl);
+    if (adminUser) {
+      const accountInfo = extractAccountInfo(adminUser.accountUrl);
       if (accountInfo) {
         const { decodedBank, accountNo } = accountInfo;
         dispatchAccount({ type: 'SET_DECODED_BANK', decodedBank });
         dispatchAccount({ type: 'SET_ACCOUNT_NO', accountNo });
       }
     }
-  }, [adminuser]);
+  }, [adminUser]);
 
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files?.length) {
@@ -119,9 +119,11 @@ function AdminAccount() {
       <button type="button" onClick={removeImage}>
         제거 버튼
       </button>
-      {adminuser && (
+      {adminUser && (
         <div>
-          계좌 정보 - 은행: {accountState.decodedBank}, 계좌번호: {accountState.accountNo}
+          은행: {accountState.decodedBank}
+          <br></br>
+          계좌번호: {accountState.accountNo}
         </div>
       )}
       <button onClick={submitHandler}>submit</button>
