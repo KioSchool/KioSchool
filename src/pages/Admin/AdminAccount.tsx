@@ -115,7 +115,7 @@ function AdminAccount() {
   return (
     <>
       <div>ADD ACCOUNT</div>
-      <img src={fileURL || uploadPreview} alt={fileURL} />
+      <img src={fileURL || uploadPreview} alt={fileURL} style={{ width: '300px', height: '300px' }} />
       <input type="file" id="img" accept="image/*" onChange={onImageChange} />
       <button type="button" onClick={removeImage}>
         제거 버튼
