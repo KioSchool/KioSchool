@@ -24,7 +24,7 @@ const accountReducer = (state: AccountState, action: AccountAction): AccountStat
 };
 
 function AdminAccount() {
-  const { registerAccount } = useAdminUser();
+  const { registerAccount, fetchAdminUser } = useAdminUser();
   const [fileURL, setFileURL] = useState<string>('');
   const adminuser = useRecoilValue(adminUserAtom);
   const [accountState, dispatchAccount] = useReducer(accountReducer, {
@@ -108,6 +108,7 @@ function AdminAccount() {
       const decodedUrl: string = code.data;
       const url = removeAmountQuery(decodedUrl);
       registerAccount(url);
+      fetchAdminUser();
     };
   };
 
