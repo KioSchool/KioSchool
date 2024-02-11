@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import jsQR from 'jsqr';
 import useAdminUser from '@hooks/useAdminUser';
 import uploadPreview from '@resources/image/uploadPreview.png';
@@ -9,6 +9,23 @@ function AdminAccount() {
   const { registerAccount } = useAdminUser();
   const [fileURL, setFileURL] = useState<string>('');
   const adminuser = useRecoilValue(adminUserAtom);
+
+  useEffect(() => {
+    const extractAccountInfo = (url: string): { decodedBank: string; accountNo: string } | null => {
+      const regex = /bank=([^&]+)&accountNo=([^&]+)/;
+      const match = url.match(regex);
+
+      if (match) {
+        const [, bank, accountNo] = match;
+        const decodedBank = decodeURIComponent(bank);
+
+        return { decodedBank, accountNo };
+      }
+
+      return null;
+    };
+    extractAccountInfo(adminuser.accountUrl);
+  }, []);
 
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files?.length) {
