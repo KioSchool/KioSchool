@@ -1,15 +1,23 @@
 import useApi from '@hooks/useApi';
 import { Workspace } from '@@types/index';
 import { useSetRecoilState } from 'recoil';
-import { workspacesAtom } from '@recoils/atoms';
+import { adminUserAtom, workspacesAtom } from '@recoils/atoms';
 
 function useAdminUser() {
   const { adminApi } = useApi();
   const setWorkspaces = useSetRecoilState(workspacesAtom);
+  const setAdminUser = useSetRecoilState(adminUserAtom);
 
   const isLoggedIn = () => {
     adminApi.get('/user');
     return true;
+  };
+
+  const fetchAdminUser = () => {
+    adminApi
+      .get('/user')
+      .then((res) => setAdminUser(res.data))
+      .catch((error) => console.error('Failed to fetch adminUser:', error));
   };
 
   const fetchWorkspaces = () => {
@@ -41,7 +49,7 @@ function useAdminUser() {
     adminApi.post('/user/toss-account', { accountUrl: account }).catch((error) => console.error('Failed to add account: ', error));
   };
 
-  return { isLoggedIn, fetchWorkspaces, createWorkspaces, leaveWorkspaces, registerAccount };
+  return { isLoggedIn, fetchWorkspaces, createWorkspaces, leaveWorkspaces, registerAccount, fetchAdminUser };
 }
 
 export default useAdminUser;

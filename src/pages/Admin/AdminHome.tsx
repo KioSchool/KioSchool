@@ -6,13 +6,14 @@ import useCustomNavigate from '@hooks/useCustomNavigate';
 import { Link } from 'react-router-dom';
 
 function AdminHome() {
-  const { fetchWorkspaces, createWorkspaces, leaveWorkspaces } = useAdminUser();
+  const { fetchWorkspaces, createWorkspaces, leaveWorkspaces, fetchAdminUser } = useAdminUser();
   const { appendPath } = useCustomNavigate();
   const userInputRef = useRef<HTMLInputElement>(null);
   const workspaces = useRecoilValue(workspacesAtom);
 
   useEffect(() => {
     fetchWorkspaces();
+    fetchAdminUser();
   }, []);
 
   const createHandler = (e: React.FormEvent) => {
