@@ -2,10 +2,13 @@ import { ChangeEvent, useState } from 'react';
 import jsQR from 'jsqr';
 import useAdminUser from '@hooks/useAdminUser';
 import uploadPreview from '@resources/image/uploadPreview.png';
+import { useRecoilValue } from 'recoil';
+import { adminUserAtom } from '@recoils/atoms';
 
 function AdminAccount() {
   const { registerAccount } = useAdminUser();
   const [fileURL, setFileURL] = useState<string>('');
+  const adminuser = useRecoilValue(adminUserAtom);
 
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files?.length) {
@@ -69,6 +72,7 @@ function AdminAccount() {
       <button type="button" onClick={removeImage}>
         제거 버튼
       </button>
+      {adminuser && <div>계좌 정보{adminuser.accountUrl}</div>}
       <button onClick={submitHandler}>submit</button>
     </>
   );
