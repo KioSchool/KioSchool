@@ -45,10 +45,8 @@ function AdminAccount() {
   });
 
   useEffect(() => {
-    fetchAdminUser();
-  }, []);
+    if (!adminUser.accountUrl) fetchAdminUser();
 
-  useEffect(() => {
     if (!adminUser || !adminUser.accountUrl) return;
 
     const accountInfo = extractAccountInfo(adminUser.accountUrl);
