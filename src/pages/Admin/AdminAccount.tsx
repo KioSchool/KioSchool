@@ -23,6 +23,20 @@ const accountReducer = (state: AccountState, action: AccountAction): AccountStat
   }
 };
 
+const extractAccountInfo = (url: string): { decodedBank: string; accountNo: string } | null => {
+  const regex = /bank=([^&]+)&accountNo=([^&]+)/;
+  const match = url.match(regex);
+
+  if (match) {
+    const [, bank, accountNo] = match;
+    const decodedBank = decodeURIComponent(bank);
+
+    return { decodedBank, accountNo };
+  }
+
+  return null;
+};
+
 function AdminAccount() {
   const { registerAccount } = useAdminUser();
   const [fileURL, setFileURL] = useState<string>('');
@@ -33,20 +47,6 @@ function AdminAccount() {
   });
 
   useEffect(() => {
-    const extractAccountInfo = (url: string): { decodedBank: string; accountNo: string } | null => {
-      const regex = /bank=([^&]+)&accountNo=([^&]+)/;
-      const match = url.match(regex);
-
-      if (match) {
-        const [, bank, accountNo] = match;
-        const decodedBank = decodeURIComponent(bank);
-
-        return { decodedBank, accountNo };
-      }
-
-      return null;
-    };
-
     if (adminUser) {
       const accountInfo = extractAccountInfo(adminUser.accountUrl);
       if (accountInfo) {
