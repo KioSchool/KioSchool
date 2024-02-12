@@ -10,14 +10,12 @@ interface AccountState {
   accountNo: string;
 }
 
-type AccountAction = { type: 'SET_DECODED_BANK'; decodedBank: string } | { type: 'SET_ACCOUNT_NO'; accountNo: string };
+type AccountAction = { type: 'SET_ACCOUNT_INFO'; payload: { decodedBank: string; accountNo: string } };
 
 const accountReducer = (state: AccountState, action: AccountAction): AccountState => {
   switch (action.type) {
-    case 'SET_DECODED_BANK':
-      return { ...state, decodedBank: action.decodedBank };
-    case 'SET_ACCOUNT_NO':
-      return { ...state, accountNo: action.accountNo };
+    case 'SET_ACCOUNT_INFO':
+      return { ...state, decodedBank: action.payload.decodedBank, accountNo: action.payload.accountNo };
     default:
       return state;
   }
@@ -37,7 +35,6 @@ const extractAccountInfo = (url: string): { decodedBank: string; accountNo: stri
 
   return { decodedBank, accountNo };
 };
-
 function AdminAccount() {
   const { registerAccount, fetchAdminUser } = useAdminUser();
   const [fileURL, setFileURL] = useState<string>('');
@@ -46,21 +43,22 @@ function AdminAccount() {
     decodedBank: '',
     accountNo: '',
   });
+  console.log(accountState.decodedBank);
 
   useEffect(() => {
     fetchAdminUser();
   }, []);
 
   useEffect(() => {
-    if (!adminUser || adminUser.accountUrl == '') return;
+    if (!adminUser || !adminUser.accountUrl) return;
 
     const accountInfo = extractAccountInfo(adminUser.accountUrl);
 
     if (!accountInfo) return;
 
     const { decodedBank, accountNo } = accountInfo;
-    dispatchAccount({ type: 'SET_DECODED_BANK', decodedBank });
-    dispatchAccount({ type: 'SET_ACCOUNT_NO', accountNo });
+
+    dispatchAccount({ type: 'SET_ACCOUNT_INFO', payload: { decodedBank, accountNo } });
   }, [adminUser.accountUrl]);
 
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
