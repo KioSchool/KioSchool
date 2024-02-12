@@ -43,7 +43,6 @@ function AdminAccount() {
     decodedBank: '',
     accountNo: '',
   });
-  console.log(accountState.decodedBank);
 
   useEffect(() => {
     fetchAdminUser();
