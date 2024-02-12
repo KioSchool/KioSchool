@@ -43,6 +43,7 @@ function AdminAccount() {
     decodedBank: '',
     accountNo: '',
   });
+  console.log('j');
 
   useEffect(() => {
     fetchAdminUser();
@@ -58,7 +59,7 @@ function AdminAccount() {
     const { decodedBank, accountNo } = accountInfo;
 
     dispatchAccount({ type: 'SET_ACCOUNT_INFO', payload: { decodedBank, accountNo } });
-  }, [adminUser.accountUrl]);
+  }, []);
 
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files?.length) {
