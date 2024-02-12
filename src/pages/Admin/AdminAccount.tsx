@@ -24,11 +24,14 @@ const accountReducer = (state: AccountState, action: AccountAction): AccountStat
 };
 
 const extractAccountInfo = (url: string): { decodedBank: string; accountNo: string } | null => {
-  const regex = /bank=([^&]+)&accountNo=([^&]+)/;
-  const match = url.match(regex);
+  const bankRegex = /bank=([^&]+)/;
+  const accountNoRegex = /accountNo=([^&]+)/;
+  const bankMatch = url.match(bankRegex);
+  const accountNoMatch = url.match(accountNoRegex);
 
-  if (match) {
-    const [, bank, accountNo] = match;
+  if (bankMatch && accountNoMatch) {
+    const [, bank] = bankMatch;
+    const [, accountNo] = accountNoMatch;
     const decodedBank = decodeURIComponent(bank);
 
     return { decodedBank, accountNo };
