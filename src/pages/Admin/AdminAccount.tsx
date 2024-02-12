@@ -29,15 +29,13 @@ const extractAccountInfo = (url: string): { decodedBank: string; accountNo: stri
   const bankMatch = url.match(bankRegex);
   const accountNoMatch = url.match(accountNoRegex);
 
-  if (bankMatch && accountNoMatch) {
-    const [, bank] = bankMatch;
-    const [, accountNo] = accountNoMatch;
-    const decodedBank = decodeURIComponent(bank);
+  if (!bankMatch || !accountNoMatch) return null;
 
-    return { decodedBank, accountNo };
-  }
+  const [, bank] = bankMatch;
+  const [, accountNo] = accountNoMatch;
+  const decodedBank = decodeURIComponent(bank);
 
-  return null;
+  return { decodedBank, accountNo };
 };
 
 function AdminAccount() {
@@ -51,14 +49,16 @@ function AdminAccount() {
 
   useEffect(() => {
     fetchAdminUser();
-    if (adminUser) {
-      const accountInfo = extractAccountInfo(adminUser.accountUrl);
-      if (accountInfo) {
-        const { decodedBank, accountNo } = accountInfo;
-        dispatchAccount({ type: 'SET_DECODED_BANK', decodedBank });
-        dispatchAccount({ type: 'SET_ACCOUNT_NO', accountNo });
-      }
-    }
+
+    if (!adminUser) return;
+
+    const accountInfo = extractAccountInfo(adminUser.accountUrl);
+
+    if (!accountInfo) return;
+
+    const { decodedBank, accountNo } = accountInfo;
+    dispatchAccount({ type: 'SET_DECODED_BANK', decodedBank });
+    dispatchAccount({ type: 'SET_ACCOUNT_NO', accountNo });
   }, []);
 
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
