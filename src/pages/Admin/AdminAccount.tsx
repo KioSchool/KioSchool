@@ -49,8 +49,10 @@ function AdminAccount() {
 
   useEffect(() => {
     fetchAdminUser();
+  }, []);
 
-    if (!adminUser) return;
+  useEffect(() => {
+    if (!adminUser || adminUser.accountUrl == '') return;
 
     const accountInfo = extractAccountInfo(adminUser.accountUrl);
 
@@ -59,7 +61,7 @@ function AdminAccount() {
     const { decodedBank, accountNo } = accountInfo;
     dispatchAccount({ type: 'SET_DECODED_BANK', decodedBank });
     dispatchAccount({ type: 'SET_ACCOUNT_NO', accountNo });
-  }, []);
+  }, [adminUser.accountUrl]);
 
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files?.length) {
