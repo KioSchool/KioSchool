@@ -41,7 +41,7 @@ const extractAccountInfo = (url: string): { decodedBank: string; accountNo: stri
 };
 
 function AdminAccount() {
-  const { registerAccount } = useAdminUser();
+  const { registerAccount, fetchAdminUser } = useAdminUser();
   const [fileURL, setFileURL] = useState<string>('');
   const adminUser = useRecoilValue(adminUserAtom);
   const [accountState, dispatchAccount] = useReducer(accountReducer, {
@@ -50,6 +50,7 @@ function AdminAccount() {
   });
 
   useEffect(() => {
+    fetchAdminUser();
     if (adminUser) {
       const accountInfo = extractAccountInfo(adminUser.accountUrl);
       if (accountInfo) {
@@ -58,7 +59,7 @@ function AdminAccount() {
         dispatchAccount({ type: 'SET_ACCOUNT_NO', accountNo });
       }
     }
-  }, [adminUser]);
+  }, []);
 
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files?.length) {
