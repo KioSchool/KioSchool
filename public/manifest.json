@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "키오스쿨",
+  "name": "키오스쿨 - 대학교 주점을 위한 키오스크",
   "icons": [
     {
       "src": "favicon.ico",

@@ -12,6 +12,20 @@ import OrderButton from '@components/user/order/OrderButton';
 const Container = styled.div`
   width: 100vw;
   min-height: 100vh;
+  padding: 0 0 80px;
+  box-sizing: border-box;
+  animation: moveInFromBottom 0.3s;
+
+  @keyframes moveInFromBottom {
+    from {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 `;
 
 const Header = styled.div`

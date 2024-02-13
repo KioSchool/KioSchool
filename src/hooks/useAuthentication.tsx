@@ -5,6 +5,11 @@ function useAuthentication() {
   const { userApi } = useApi();
   const navigate = useNavigate();
 
+  const isLoggedIn = () => {
+    const match = document.cookie.match(new RegExp(`(^| )isLoggedIn=([^;]+)`));
+    if (match) return match[2];
+  };
+
   const logout = () => {
     userApi
       .post('/logout')
@@ -34,7 +39,7 @@ function useAuthentication() {
       });
   };
 
-  return { login, logout };
+  return { login, logout, isLoggedIn };
 }
 
 export default useAuthentication;

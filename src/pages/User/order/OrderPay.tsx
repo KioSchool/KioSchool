@@ -8,11 +8,24 @@ import AppBadge from '@components/common/badge/AppBadge';
 import OrderButton from '@components/user/order/OrderButton';
 import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import useApi from '@hooks/useApi';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Order } from '@@types/index';
 
 const Container = styled.div`
   width: 100vw;
   min-height: 100vh;
+  animation: moveInFromRight 0.3s;
+
+  @keyframes moveInFromRight {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
 `;
 
 const Header = styled.div`
@@ -38,6 +51,7 @@ function OrderPay() {
     return acc + productsMap[cur.productId].price * cur.quantity;
   }, 0);
 
+  const navigate = useNavigate();
   const { userApi } = useApi();
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
@@ -61,12 +75,16 @@ function OrderPay() {
         amount={totalAmount}
         buttonLabel={`Toss로 결제하기`}
         onClick={() => {
-          userApi.post('/order', {
-            workspaceId: workspaceId,
-            tableNumber: tableNo,
-            orderProducts: orderBasket,
-            customerName: customerNameRef.current?.value,
-          });
+          userApi
+            .post<Order>('/order', {
+              workspaceId: workspaceId,
+              tableNumber: tableNo,
+              orderProducts: orderBasket,
+              customerName: customerNameRef.current?.value,
+            })
+            .then((res) => {
+              navigate(`/order-complete?orderId=${res.data.id}`);
+            });
           window.open(`${tossAccountUrl}&amount=${totalAmount}`);
         }}
       />

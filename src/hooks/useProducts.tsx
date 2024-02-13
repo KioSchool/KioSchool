@@ -11,9 +11,15 @@ function UseProducts(workspaceId: string | undefined) {
   const setWorksapceCategories = useSetRecoilState(userWorkspaceAtom);
 
   const fetchProducts = () => {
-    adminApi.get<Product[]>(`/products?workspaceId=${workspaceId}`).then((res) => {
-      setProducts(res.data);
-    });
+    adminApi
+      .get<Product[]>('/products', {
+        params: {
+          workspaceId: workspaceId,
+        },
+      })
+      .then((res) => {
+        setProducts(res.data);
+      });
   };
 
   const addProduct = (product: any, file: File) => {
@@ -31,7 +37,11 @@ function UseProducts(workspaceId: string | undefined) {
 
   const fetchCategories = () => {
     adminApi
-      .get(`/product-categories?workspaceId=${workspaceId}`)
+      .get('/product-categories', {
+        params: {
+          workspaceId: workspaceId,
+        },
+      })
       .then((res: any) => {
         setWorksapceCategories((prev) => ({
           ...prev,
