@@ -13,6 +13,9 @@ function useAuthentication() {
   const logout = () => {
     userApi
       .post('/logout')
+      .then(() => {
+        document.cookie = 'isLoggedIn=;';
+      })
       .catch(() => {
         alert('Logout Failed!');
       })
@@ -26,6 +29,7 @@ function useAuthentication() {
         password: userPassword,
       })
       .then(() => {
+        document.cookie = 'isLoggedIn=true';
         navigate('/admin');
       })
       .catch(() => {
