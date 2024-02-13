@@ -21,16 +21,10 @@ function useAuthentication() {
 
   const login = (userId: string, userPassword: string) => {
     userApi
-      .post(
-        '/login',
-        {
-          id: userId,
-          password: userPassword,
-        },
-        {
-          withCredentials: true,
-        },
-      )
+      .post('/login', {
+        id: userId,
+        password: userPassword,
+      })
       .then(() => {
         navigate('/admin');
       })
