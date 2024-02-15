@@ -35,6 +35,21 @@ function UseProducts(workspaceId: string | undefined) {
       .catch((error) => console.error('Failed to add product: ', error));
   };
 
+  const deleteProducts = (productIds: number[]) => {
+    productIds.forEach((id) => {
+      adminApi
+        .delete('/product', {
+          params: {
+            workspaceId: workspaceId,
+            productId: id,
+          },
+        })
+        .catch((error) => {
+          console.error('Failed to delete selected products: ', error);
+        });
+    });
+  };
+
   const fetchCategories = () => {
     adminApi
       .get('/product-categories', {
@@ -59,7 +74,7 @@ function UseProducts(workspaceId: string | undefined) {
     });
   };
 
-  return { fetchProducts, addProduct, fetchCategories, AddCategories };
+  return { fetchProducts, addProduct, fetchCategories, AddCategories, deleteProducts };
 }
 
 export default UseProducts;
