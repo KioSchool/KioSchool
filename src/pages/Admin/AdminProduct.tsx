@@ -15,6 +15,9 @@ function AdminProduct() {
     fetchProducts();
   }, []);
 
+  const deleteChoosenProducts = () => {
+
+  }
   return (
     <>
       <div>상품 조회</div>
@@ -45,6 +48,9 @@ function AdminProduct() {
       </div>
       <button type={'button'} onClick={() => appendPath('/add-product')}>
         상품 추가
+      </button>
+      <button type={'button'} onClick={deleteChoosenProducts}>
+        선택된 상품 삭제
       </button>
     </>
   );
