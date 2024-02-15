@@ -1,7 +1,7 @@
 import useApi from '@hooks/useApi';
 import { useSetRecoilState } from 'recoil';
 import { productsAtom, userWorkspaceAtom } from '@recoils/atoms';
-import { DeleteProps, Product } from '@@types/index';
+import { Product } from '@@types/index';
 import { useNavigate } from 'react-router-dom';
 
 function UseProducts(workspaceId: string | undefined) {
@@ -35,14 +35,13 @@ function UseProducts(workspaceId: string | undefined) {
       .catch((error) => console.error('Failed to add product: ', error));
   };
 
-  const deleteSelectedProducts = (selectedProductInfo: DeleteProps[]) => {
-    selectedProductInfo.forEach((info) => {
-      const parsedWorkspaceId: number = Number(info.workspaceId);
+  const deleteProducts = (productIds: number[]) => {
+    productIds.forEach((id) => {
       adminApi
         .delete('/product', {
-          data: {
-            workspaceId: parsedWorkspaceId,
-            productId: info.productId,
+          params: {
+            workspaceId: workspaceId,
+            productId: id,
           },
         })
         .catch((error) => {
@@ -75,7 +74,7 @@ function UseProducts(workspaceId: string | undefined) {
     });
   };
 
-  return { fetchProducts, addProduct, fetchCategories, AddCategories, deleteSelectedProducts };
+  return { fetchProducts, addProduct, fetchCategories, AddCategories, deleteProducts };
 }
 
 export default UseProducts;

@@ -4,35 +4,34 @@ import useProducts from '@hooks/useProducts';
 import { useRecoilValue } from 'recoil';
 import { productsAtom } from '@recoils/atoms';
 import useCustomNavigate from '@hooks/useCustomNavigate';
-import { DeleteProps } from '@@types/index';
 
 function AdminProduct() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchProducts, AddCategories, deleteSelectedProducts } = useProducts(workspaceId);
+  const { fetchProducts, AddCategories, deleteProducts } = useProducts(workspaceId);
   const products = useRecoilValue(productsAtom);
   const { appendPath } = useCustomNavigate();
   const [input, setInput] = useState<string>('');
-  const [selectedProducts, setSelectedProducts] = useState<DeleteProps[]>([]);
+  const [selectedProductIds, setSelectedProductIds] = useState<number[]>([]);
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
   const deleteChoosenProducts = () => {
-    deleteSelectedProducts(selectedProducts);
+    deleteProducts(selectedProductIds);
   };
 
-  const handleCheckboxChange = (deleteProductInfo: DeleteProps) => {
-    const isSelected = selectedProducts.some((item) => item.productId === deleteProductInfo.productId && item.workspaceId === deleteProductInfo.workspaceId);
+  const handleCheckboxChange = (checkedProductId: number) => {
+    const isSelected = selectedProductIds.includes(checkedProductId);
     let updatedProducts = [];
 
     if (isSelected) {
-      updatedProducts = selectedProducts.filter((item) => item.productId !== deleteProductInfo.productId || item.workspaceId !== deleteProductInfo.workspaceId);
+      updatedProducts = selectedProductIds.filter((id) => id !== checkedProductId);
     } else {
-      updatedProducts = [...selectedProducts, deleteProductInfo];
+      updatedProducts = [...selectedProductIds, checkedProductId];
     }
 
-    setSelectedProducts(updatedProducts);
+    setSelectedProductIds(updatedProducts);
   };
 
   return (
@@ -56,11 +55,7 @@ function AdminProduct() {
       <div>
         {products.map((product) => (
           <div key={product.id}>
-            <input
-              type={'checkbox'}
-              checked={selectedProducts.some((item) => item.productId === product.id && item.workspaceId === workspaceId)}
-              onChange={() => handleCheckboxChange({ productId: product.id, workspaceId: workspaceId })}
-            />
+            <input type={'checkbox'} onChange={() => handleCheckboxChange(product.id)} />
             <div>{product.id}번 상품</div>
             <div>{product.name}</div>
             <div>{product.description}</div>
