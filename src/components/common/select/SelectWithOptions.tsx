@@ -1,4 +1,4 @@
-import { SelectHTMLAttributes, forwardRef } from 'react';
+import { SelectHTMLAttributes } from 'react';
 
 interface Option {
   name: string;
@@ -9,13 +9,13 @@ interface SelectWithOptionsProps extends SelectHTMLAttributes<HTMLSelectElement>
   options: Option[];
 }
 
-const SelectWithOptions = forwardRef<HTMLSelectElement, SelectWithOptionsProps>(({ options, value, ...rest }, ref) => {
+const SelectWithOptions = (props: SelectWithOptionsProps) => {
   const defaultOption = { name: '기본', id: 'null' };
-  const allOptions = [defaultOption, ...options];
+  const allOptions = [defaultOption, ...props.options];
 
   return (
     <div>
-      <select ref={ref} value={value} {...rest}>
+      <select {...props}>
         {allOptions.map((item) => (
           <option key={item.id} value={item.id}>
             {item.name}
@@ -24,6 +24,6 @@ const SelectWithOptions = forwardRef<HTMLSelectElement, SelectWithOptionsProps>(
       </select>
     </div>
   );
-});
+};
 
 export default SelectWithOptions;
