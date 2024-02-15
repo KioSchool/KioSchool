@@ -61,3 +61,8 @@ export interface User {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface DeleteProps {
+  workspaceId: string | undefined;
+  productId: number;
+}
