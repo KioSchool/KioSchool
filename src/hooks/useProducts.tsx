@@ -35,19 +35,20 @@ function UseProducts(workspaceId: string | undefined) {
       .catch((error) => console.error('Failed to add product: ', error));
   };
 
-  const deleteSelectedProducts = (selectedProductInfo: DeleteProps) => {
-    const parsedWorkspaceId: number = Number(selectedProductInfo.workspaceId);
-    console.log(parsedWorkspaceId);
-    adminApi
-      .delete('/product', {
-        data: {
-          workspaceId: Number(selectedProductInfo.workspaceId),
-          productId: selectedProductInfo.productId,
-        },
-      })
-      .catch((error) => {
-        console.error('Failed to delete selected products: ', error);
-      });
+  const deleteSelectedProducts = (selectedProductInfo: DeleteProps[]) => {
+    selectedProductInfo.forEach((info) => {
+      const parsedWorkspaceId: number = Number(info.workspaceId);
+      adminApi
+        .delete('/product', {
+          data: {
+            workspaceId: parsedWorkspaceId,
+            productId: info.productId,
+          },
+        })
+        .catch((error) => {
+          console.error('Failed to delete selected products: ', error);
+        });
+    });
   };
 
   const fetchCategories = () => {
