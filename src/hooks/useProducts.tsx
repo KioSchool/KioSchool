@@ -44,7 +44,7 @@ function UseProducts(workspaceId: string | undefined) {
         },
       })
       .then(() => {
-        setProducts((prev) => prev.filter((itm) => itm.id !== productId));
+        setProducts((prev) => prev.filter((item) => item.id !== productId));
       })
       .catch((error) => {
         console.error('Failed to delete selected products: ', error);
@@ -56,6 +56,7 @@ function UseProducts(workspaceId: string | undefined) {
       deleteProduct(id);
     });
   };
+
   const fetchCategories = () => {
     adminApi
       .get('/product-categories', {
