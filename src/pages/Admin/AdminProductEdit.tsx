@@ -39,7 +39,7 @@ function reducer(state: Product, action: ProductActionType) {
     case 'PRODUCT_PRICE_INPUT':
       return { ...state, price: action.payload };
     case 'PRODUCT_CATEGORY_INPUT':
-      return { ...state, productCategoryId: action.payload };
+      return { ...state, productCategory: action.payload };
     default:
       throw new Error('Unhandled action');
   }
@@ -57,17 +57,17 @@ function AdminProductEdit() {
   const productId = Number(searchParams.get('productId'));
 
   const [product, setProduct] = useState<Product>();
-
   const [productState, dispatch] = useReducer(reducer, initState);
-
+  console.log(product?.imageUrl);
   useEffect(() => {
     (async () => {
-      const ret = await fetchProduct(productId);
-      setProduct(ret);
+      const data = await fetchProduct(productId);
+      setProduct(data);
 
-      dispatch({ type: 'PRODUCT_NAME_INPUT', payload: ret.name });
-      dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: ret.description });
-      dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: ret.price });
+      dispatch({ type: 'PRODUCT_NAME_INPUT', payload: data.name });
+      dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: data.description });
+      dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: data.price });
+      dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: data.productCategory });
     })();
     fetchCategories();
   }, []);
@@ -86,7 +86,11 @@ function AdminProductEdit() {
       return;
     }
     setErrorMessage('');
-    console.log(product);
+    const body: any = {};
+
+    if (product?.name !== productState.name) {
+      body.name = productState.name;
+    }
     // addProduct(state, file);
   };
 
@@ -128,6 +132,7 @@ function AdminProductEdit() {
       <input type="file" id="img" accept="image/*" onChange={onImageChange} />
       <SelectWithOptions
         options={workspace.productCategories}
+        value={productState.productCategory.id}
         onInput={(event: React.ChangeEvent<HTMLSelectElement>) => {
           dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
         }}
