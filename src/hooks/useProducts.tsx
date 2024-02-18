@@ -44,6 +44,9 @@ function UseProducts(workspaceId: string | undefined) {
             productId: id,
           },
         })
+        .then(() => {
+          setProducts((prev) => prev.filter((itm) => itm.id !== id));
+        })
         .catch((error) => {
           console.error('Failed to delete selected products: ', error);
         });
