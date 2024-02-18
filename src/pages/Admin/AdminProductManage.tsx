@@ -7,26 +7,14 @@ import styled from '@emotion/styled';
 import UseProducts from '@hooks/useProducts';
 import { useRecoilValue } from 'recoil';
 import { userWorkspaceAtom } from '@recoils/atoms';
+import { ProductActionType, ProductStateType } from '@@types/index';
 
 const ErrorMessage = styled.div`
   padding: 0 0 5px;
   color: #ff0000;
 `;
 
-interface StateType {
-  name: string;
-  description: string;
-  price: number;
-  workspaceId: string | undefined;
-  productCategoryId: string;
-}
-
-interface ActionType {
-  type: string;
-  payload: any;
-}
-
-function reducer(state: StateType, action: ActionType) {
+function reducer(state: ProductStateType, action: ProductActionType) {
   switch (action.type) {
     case 'PRODUCT_NAME_INPUT':
       return { ...state, name: action.payload };
@@ -43,7 +31,7 @@ function reducer(state: StateType, action: ActionType) {
 
 function AdminProductManage() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const body: StateType = {
+  const body: ProductStateType = {
     name: '',
     description: '',
     price: 0,
