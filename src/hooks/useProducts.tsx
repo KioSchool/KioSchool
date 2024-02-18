@@ -22,6 +22,16 @@ function UseProducts(workspaceId: string | undefined) {
       });
   };
 
+  const fetchProduct = async (productId: number) => {
+    const res = await adminApi.get<Product>('/product', {
+      params: {
+        productId,
+      },
+    });
+
+    return res.data;
+  };
+
   const addProduct = (product: any, file: File) => {
     const data = new FormData();
     data.append('body', new Blob([JSON.stringify(product)], { type: 'application/json' }));
@@ -74,7 +84,7 @@ function UseProducts(workspaceId: string | undefined) {
     });
   };
 
-  return { fetchProducts, addProduct, fetchCategories, AddCategories, deleteProducts };
+  return { fetchProducts, addProduct, fetchCategories, AddCategories, deleteProducts, fetchProduct };
 }
 
 export default UseProducts;

@@ -1,8 +1,19 @@
+import UseProducts from '@hooks/useProducts';
+import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 function AdminProductEdit() {
+  const { fetchProduct } = UseProducts(undefined);
+
   const [searchParams] = useSearchParams();
-  const productId = searchParams.get('productId');
+  const productId = Number(searchParams.get('productId'));
+
+  useEffect(() => {
+    (async () => {
+      const ret = await fetchProduct(productId);
+      console.log(ret);
+    })();
+  }, []);
 
   return (
     <>
