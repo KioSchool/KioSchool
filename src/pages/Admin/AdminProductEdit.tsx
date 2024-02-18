@@ -6,7 +6,7 @@ import styled from '@emotion/styled';
 import UseProducts from '@hooks/useProducts';
 import { userWorkspaceAtom } from '@recoils/atoms';
 import { ChangeEvent, useEffect, useReducer, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 const ErrorMessage = styled.div`
@@ -46,7 +46,8 @@ function reducer(state: Product, action: ProductActionType) {
 }
 
 function AdminProductEdit() {
-  const { fetchProduct } = UseProducts(undefined);
+  const { workspaceId } = useParams<{ workspaceId: string }>();
+  const { fetchProduct, fetchCategories } = UseProducts(workspaceId);
   const workspace = useRecoilValue(userWorkspaceAtom);
 
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -68,6 +69,7 @@ function AdminProductEdit() {
       dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: ret.description });
       dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: ret.price });
     })();
+    fetchCategories();
   }, []);
 
   const EditProduct = () => {
@@ -103,14 +105,14 @@ function AdminProductEdit() {
       {errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}
       <AppInputWithLabel
         titleLabel={'상품 이름'}
-        value={product?.name}
+        value={productState.name}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
           dispatch({ type: 'PRODUCT_NAME_INPUT', payload: event.target?.value });
         }}
       />
       <AppInputWithLabel
         titleLabel={'상품 설명'}
-        value={product?.description}
+        value={productState.description}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
           dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: event.target?.value });
         }}
@@ -118,7 +120,7 @@ function AdminProductEdit() {
       <AppInputWithLabel
         type={'number'}
         titleLabel={'상품 가격'}
-        value={product?.price}
+        value={productState.price}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
           dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: event.target?.value });
         }}
