@@ -1,24 +1,8 @@
-import { useSetRecoilState } from 'recoil';
-import { ordersAtom } from '@recoils/atoms';
 import * as StompJs from '@stomp/stompjs';
-import { Order } from '@@types/index';
-import useApi from '@hooks/useApi';
+import useAdminOrder from '@hooks/useAdminOrder';
 
 function useOrdersWebsocket(workspaceId: string | undefined) {
-  const { adminApi } = useApi();
-  const setOrders = useSetRecoilState(ordersAtom);
-
-  const fetchOrders = () => {
-    adminApi
-      .get<Order[]>('/orders', {
-        params: {
-          workspaceId: workspaceId,
-        },
-      })
-      .then((res) => {
-        setOrders(res.data);
-      });
-  };
+  const { fetchOrders } = useAdminOrder();
 
   const subscribeOrders = () => {
     const url = process.env.REACT_APP_ENVIRONMENT === 'development' ? 'ws://localhost:8080/ws' : 'wss://kio-school.fly.dev/ws';
@@ -41,7 +25,7 @@ function useOrdersWebsocket(workspaceId: string | undefined) {
     client.activate();
   };
 
-  return { fetchOrders, subscribeOrders };
+  return { subscribeOrders };
 }
 
 export default useOrdersWebsocket;
