@@ -27,6 +27,12 @@ function PaidOrderCard({ order }: Props) {
     });
   };
 
+  const cancelOrder = () => {
+    adminApi.post<Order>('/order/cancel', { orderId: order.id, workspaceId: Number(workspaceId) }).then(() => {
+      fetchOrders();
+    });
+  };
+
   return (
     <Container>
       <div>주문번호: {order.id}번</div>
@@ -39,6 +45,9 @@ function PaidOrderCard({ order }: Props) {
       ))}
       <button type={'button'} onClick={serveOrder}>
         서빙 완료
+      </button>
+      <button type={'button'} onClick={cancelOrder}>
+        주문 취소
       </button>
     </Container>
   );

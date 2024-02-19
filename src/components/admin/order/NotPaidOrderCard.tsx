@@ -27,6 +27,12 @@ function NotPaidOrderCard({ order }: Props) {
     });
   };
 
+  const cancelOrder = () => {
+    adminApi.post<Order>('/order/cancel', { orderId: order.id, workspaceId: Number(workspaceId) }).then(() => {
+      fetchOrders();
+    });
+  };
+
   return (
     <Container>
       <div>주문번호: {order.id}번</div>
@@ -34,6 +40,9 @@ function NotPaidOrderCard({ order }: Props) {
       <div>{order.totalPrice.toLocaleString()}원</div>
       <button type={'button'} onClick={payOrder}>
         결제 완료
+      </button>
+      <button type={'button'} onClick={cancelOrder}>
+        주문 취소
       </button>
     </Container>
   );
