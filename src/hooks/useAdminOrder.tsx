@@ -13,25 +13,35 @@ function useAdminOrder(workspaceId: string | undefined) {
     });
   };
 
+  const fetchOrders = (params: any) => {
+    adminApi.get<Order[]>('/orders', { params }).then((response) => {
+      setOrders(response.data);
+    });
+  };
+
+  const fetchTodayOrders = () => {
+    fetchOrders({ startDate: new Date().toISOString() });
+  };
+
   const payOrder = (orderId: number) => {
     adminApi.post<Order>('/order/pay', { orderId: orderId, workspaceId: Number(workspaceId) }).then(() => {
-      fetchAllOrders();
+      fetchTodayOrders();
     });
   };
 
   const serveOrder = (orderId: number) => {
     adminApi.post<Order>('/order/serve', { orderId: orderId, workspaceId: Number(workspaceId) }).then(() => {
-      fetchAllOrders();
+      fetchTodayOrders();
     });
   };
 
   const cancelOrder = (orderId: number) => {
     adminApi.post<Order>('/order/cancel', { orderId: orderId, workspaceId: Number(workspaceId) }).then(() => {
-      fetchAllOrders();
+      fetchTodayOrders();
     });
   };
 
-  return { fetchAllOrders, payOrder, serveOrder, cancelOrder };
+  return { fetchAllOrders, payOrder, serveOrder, cancelOrder, fetchTodayOrders };
 }
 
 export default useAdminOrder;
