@@ -4,7 +4,7 @@ import Home from '@pages/User/Home';
 import AdminHome from '@pages/Admin/AdminHome';
 import Login from '@pages/User/Login';
 import AdminWorkspace from '@pages/Admin/AdminWorkspace';
-import AdminOrder from '@pages/Admin/AdminOrder';
+import AdminOrder from '@pages/Admin/order/AdminOrder';
 import Register from '@pages/User/Register';
 import AdminProduct from '@pages/Admin/AdminProduct';
 import Order from '@pages/User/order/Order';
