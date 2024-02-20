@@ -14,7 +14,7 @@ function useAdminOrder(workspaceId: string | undefined) {
   };
 
   const fetchOrders = (params: any) => {
-    adminApi.get<Order[]>('/orders', { params }).then((response) => {
+    adminApi.get<Order[]>('/orders', { params: { ...params, workspaceId } }).then((response) => {
       setOrders(response.data);
     });
   };
@@ -41,7 +41,7 @@ function useAdminOrder(workspaceId: string | undefined) {
     });
   };
 
-  return { fetchAllOrders, payOrder, serveOrder, cancelOrder, fetchTodayOrders };
+  return { fetchAllOrders, payOrder, serveOrder, cancelOrder, fetchTodayOrders, fetchOrders };
 }
 
 export default useAdminOrder;
