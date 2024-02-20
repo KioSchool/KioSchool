@@ -9,7 +9,7 @@ import useAdminOrder from '@hooks/useAdminOrder';
 function AdminOrder() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { subscribeOrders } = useOrdersWebsocket(workspaceId);
-  const { fetchOrders } = useAdminOrder();
+  const { fetchOrders } = useAdminOrder(workspaceId);
   const orders = useRecoilValue(ordersAtom);
 
   useEffect(() => {

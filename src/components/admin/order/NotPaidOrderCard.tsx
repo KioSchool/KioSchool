@@ -1,7 +1,6 @@
 import React from 'react';
 import { Order } from '@@types/index';
 import styled from '@emotion/styled';
-import useApi from '@hooks/useApi';
 import { useParams } from 'react-router-dom';
 import useAdminOrder from '@hooks/useAdminOrder';
 
@@ -18,30 +17,17 @@ const Container = styled.div`
 
 function NotPaidOrderCard({ order }: Props) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchOrders } = useAdminOrder();
-  const { adminApi } = useApi();
-
-  const payOrder = () => {
-    adminApi.post<Order>('/order/pay', { orderId: order.id, workspaceId: Number(workspaceId) }).then(() => {
-      fetchOrders();
-    });
-  };
-
-  const cancelOrder = () => {
-    adminApi.post<Order>('/order/cancel', { orderId: order.id, workspaceId: Number(workspaceId) }).then(() => {
-      fetchOrders();
-    });
-  };
+  const { payOrder, cancelOrder } = useAdminOrder(workspaceId);
 
   return (
     <Container>
       <div>주문번호: {order.id}번</div>
       <div>이름: {order.customerName}</div>
       <div>{order.totalPrice.toLocaleString()}원</div>
-      <button type={'button'} onClick={payOrder}>
+      <button type={'button'} onClick={() => payOrder(order.id)}>
         결제 완료
       </button>
-      <button type={'button'} onClick={cancelOrder}>
+      <button type={'button'} onClick={() => cancelOrder(order.id)}>
         주문 취소
       </button>
     </Container>
