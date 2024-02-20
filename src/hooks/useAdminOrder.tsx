@@ -20,7 +20,7 @@ function useAdminOrder(workspaceId: string | undefined) {
   };
 
   const fetchTodayOrders = () => {
-    fetchOrders({ startDate: new Date().toISOString() });
+    fetchOrders({ startDate: new Date().toISOString().split('T')[0], endDate: new Date().toISOString().split('T')[0], workspaceId });
   };
 
   const payOrder = (orderId: number) => {
