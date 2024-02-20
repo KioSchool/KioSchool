@@ -2,7 +2,7 @@ import * as StompJs from '@stomp/stompjs';
 import useAdminOrder from '@hooks/useAdminOrder';
 
 function useOrdersWebsocket(workspaceId: string | undefined) {
-  const { fetchAllOrders } = useAdminOrder(workspaceId);
+  const { fetchTodayOrders } = useAdminOrder(workspaceId);
 
   const subscribeOrders = () => {
     const url = process.env.REACT_APP_ENVIRONMENT === 'development' ? 'ws://localhost:8080/ws' : 'wss://kio-school.fly.dev/ws';
@@ -18,7 +18,7 @@ function useOrdersWebsocket(workspaceId: string | undefined) {
 
     client.onConnect = function () {
       client.subscribe(`/sub/order/${workspaceId}`, () => {
-        fetchAllOrders();
+        fetchTodayOrders();
       });
     };
 
