@@ -7,7 +7,7 @@ function useAdminOrder(workspaceId: string | undefined) {
   const { adminApi } = useApi();
   const setOrders = useSetRecoilState(ordersAtom);
 
-  const fetchOrders = () => {
+  const fetchAllOrders = () => {
     adminApi.get<Order[]>('/orders', { params: { workspaceId } }).then((response) => {
       setOrders(response.data);
     });
@@ -15,23 +15,23 @@ function useAdminOrder(workspaceId: string | undefined) {
 
   const payOrder = (orderId: number) => {
     adminApi.post<Order>('/order/pay', { orderId: orderId, workspaceId: Number(workspaceId) }).then(() => {
-      fetchOrders();
+      fetchAllOrders();
     });
   };
 
   const serveOrder = (orderId: number) => {
     adminApi.post<Order>('/order/serve', { orderId: orderId, workspaceId: Number(workspaceId) }).then(() => {
-      fetchOrders();
+      fetchAllOrders();
     });
   };
 
   const cancelOrder = (orderId: number) => {
     adminApi.post<Order>('/order/cancel', { orderId: orderId, workspaceId: Number(workspaceId) }).then(() => {
-      fetchOrders();
+      fetchAllOrders();
     });
   };
 
-  return { fetchOrders, payOrder, serveOrder, cancelOrder };
+  return { fetchAllOrders, payOrder, serveOrder, cancelOrder };
 }
 
 export default useAdminOrder;
