@@ -47,9 +47,12 @@ function reducer(state: ProductEdit, action: ProductActionType) {
     case 'PRODUCT_PRICE_INPUT':
       return { ...state, price: action.payload };
     case 'PRODUCT_CATEGORY_INPUT':
-      return { ...state, productCategory: action.payload };
+      if (typeof action.payload === 'object') return { ...state, productCategory: action.payload };
+      return { ...state, productCategory: { ...state.productCategory, id: action.payload } };
     case 'PRODUCT_IMAGE_INPUT':
       return { ...state, image: action.payload };
+    case 'PRODUCT_ID_INPUT':
+      return { ...state, id: action.payload };
     default:
       throw new Error('Unhandled action');
   }
@@ -57,7 +60,7 @@ function reducer(state: ProductEdit, action: ProductActionType) {
 
 function AdminProductEdit() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchProduct, fetchCategories } = UseProducts(workspaceId);
+  const { fetchProduct, fetchCategories, editProduct } = UseProducts(workspaceId);
   const workspace = useRecoilValue(userWorkspaceAtom);
 
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -65,19 +68,18 @@ function AdminProductEdit() {
   const [searchParams] = useSearchParams();
   const productId = Number(searchParams.get('productId'));
 
-  const [product, setProduct] = useState<Product>();
   const [productState, dispatch] = useReducer(reducer, initState);
 
   useEffect(() => {
     (async () => {
       const data = await fetchProduct(productId);
-      setProduct(data);
-
+      console.log(data.productCategory);
       dispatch({ type: 'PRODUCT_NAME_INPUT', payload: data.name });
       dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: data.description });
       dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: data.price });
       dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: data.productCategory });
-      dispatch({ type: 'PRODUCT_IMAGE_INPUT', payload: { url: data.imageUrl } });
+      dispatch({ type: 'PRODUCT_IMAGE_INPUT', payload: { url: data.imageUrl, file: null } });
+      dispatch({ type: 'PRODUCT_ID_INPUT', payload: data.id });
     })();
     fetchCategories();
   }, []);
@@ -98,6 +100,7 @@ function AdminProductEdit() {
     setErrorMessage('');
 
     const body: any = {
+      productId: productState.id,
       name: productState.name,
       description: productState.description,
       price: productState.price,
@@ -106,7 +109,7 @@ function AdminProductEdit() {
     };
     console.log(body);
 
-    // addProduct(state, file);
+    editProduct(body, productState.image.file);
   };
 
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -146,11 +149,11 @@ function AdminProductEdit() {
           dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: event.target?.value });
         }}
       />
-      <img src={productState.image.url || uploadPreview} alt={product?.imageUrl} style={{ width: '300px', height: '300px' }} />
+      <img src={productState.image.url || uploadPreview} alt={productState.image.url} style={{ width: '300px', height: '300px' }} />
       <input type="file" id="img" accept="image/*" onChange={onImageChange} />
       <SelectWithOptions
         options={workspace.productCategories}
-        value={productState.productCategory.id}
+        value={productState.productCategory ? productState.productCategory.id : 'null'}
         onInput={(event: React.ChangeEvent<HTMLSelectElement>) => {
           dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
         }}
