@@ -45,6 +45,19 @@ function UseProducts(workspaceId: string | undefined) {
       .catch((error) => console.error('Failed to add product: ', error));
   };
 
+  const editProduct = (product: any, file: File | null) => {
+    const data = new FormData();
+    data.append('body', new Blob([JSON.stringify(product)], { type: 'application/json' }));
+    if (file) data.append('file', new Blob([file], { type: 'image/jpeg' }));
+
+    adminApi
+      .put('/product', data)
+      .then(() => {
+        navigate(`/admin/workspace/${product.workspaceId}/products`);
+      })
+      .catch((error) => console.error('Failed to add product: ', error));
+  };
+
   const deleteProduct = (productId: number) => {
     adminApi
       .delete('/product', {
@@ -91,7 +104,7 @@ function UseProducts(workspaceId: string | undefined) {
     });
   };
 
-  return { fetchProducts, addProduct, fetchCategories, AddCategories, deleteProducts, fetchProduct };
+  return { fetchProducts, addProduct, fetchCategories, AddCategories, deleteProducts, fetchProduct, editProduct };
 }
 
 export default UseProducts;
