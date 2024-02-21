@@ -4,6 +4,7 @@ import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import SelectWithOptions from '@components/common/select/SelectWithOptions';
 import styled from '@emotion/styled';
 import UseProducts from '@hooks/useProducts';
+import uploadPreview from '@resources/image/uploadPreview.png';
 import { userWorkspaceAtom } from '@recoils/atoms';
 import { ChangeEvent, useEffect, useReducer, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
@@ -40,6 +41,8 @@ function reducer(state: Product, action: ProductActionType) {
       return { ...state, price: action.payload };
     case 'PRODUCT_CATEGORY_INPUT':
       return { ...state, productCategory: action.payload };
+    case 'PRODUCT_IMAGE_INPUT':
+      return { ...state, imageUrl: action.payload };
     default:
       throw new Error('Unhandled action');
   }
@@ -51,7 +54,6 @@ function AdminProductEdit() {
   const workspace = useRecoilValue(userWorkspaceAtom);
 
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [file, setFile] = useState<File | null>(null);
 
   const [searchParams] = useSearchParams();
   const productId = Number(searchParams.get('productId'));
@@ -68,6 +70,7 @@ function AdminProductEdit() {
       dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: data.description });
       dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: data.price });
       dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: data.productCategory });
+      dispatch({ type: 'PRODUCT_IMAGE_INPUT', payload: data.imageUrl });
     })();
     fetchCategories();
   }, []);
@@ -81,7 +84,7 @@ function AdminProductEdit() {
       setErrorMessage('가격은 음수가 될 수 없습니다.');
       return;
     }
-    if (!file) {
+    if (!productState.imageUrl) {
       setErrorMessage('파일을 선택해주세요');
       return;
     }
@@ -96,11 +99,13 @@ function AdminProductEdit() {
 
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files?.length) {
-      setFile(null);
+      dispatch({ type: 'PRODUCT_IMAGE_INPUT', payload: null });
       return;
     }
 
-    setFile(event.target.files[0]);
+    const newFileURL = URL.createObjectURL(event.target.files[0]);
+
+    dispatch({ type: 'PRODUCT_IMAGE_INPUT', payload: newFileURL });
   };
   return (
     <>
@@ -129,6 +134,7 @@ function AdminProductEdit() {
           dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: event.target?.value });
         }}
       />
+      <img src={productState.imageUrl || uploadPreview} alt={productState.imageUrl} style={{ width: '300px', height: '300px' }} />
       <input type="file" id="img" accept="image/*" onChange={onImageChange} />
       <SelectWithOptions
         options={workspace.productCategories}
