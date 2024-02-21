@@ -73,7 +73,7 @@ function AdminProductEdit() {
   useEffect(() => {
     (async () => {
       const data = await fetchProduct(productId);
-      console.log(data.productCategory);
+
       dispatch({ type: 'PRODUCT_NAME_INPUT', payload: data.name });
       dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: data.description });
       dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: data.price });
@@ -107,7 +107,6 @@ function AdminProductEdit() {
       workspaceId: workspaceId,
       productCategoryId: productState.productCategory.id,
     };
-    console.log(body);
 
     editProduct(body, productState.image.file);
   };
