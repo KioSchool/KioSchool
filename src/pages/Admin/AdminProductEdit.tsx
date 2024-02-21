@@ -15,7 +15,11 @@ const ErrorMessage = styled.div`
   color: #ff0000;
 `;
 
-const initState: Product = {
+interface ProductEdit extends Product {
+  image: {};
+}
+
+const initState: ProductEdit = {
   name: '',
   description: '',
   price: 0,
@@ -23,6 +27,10 @@ const initState: Product = {
   id: 0,
   createdAt: '',
   updatedAt: '',
+  image: {
+    url: '',
+    file: null,
+  },
   productCategory: {
     id: 0,
     name: '',
@@ -30,8 +38,7 @@ const initState: Product = {
     updatedAt: '',
   },
 };
-
-function reducer(state: Product, action: ProductActionType) {
+function reducer(state: ProductEdit, action: ProductActionType) {
   switch (action.type) {
     case 'PRODUCT_NAME_INPUT':
       return { ...state, name: action.payload };
@@ -42,7 +49,7 @@ function reducer(state: Product, action: ProductActionType) {
     case 'PRODUCT_CATEGORY_INPUT':
       return { ...state, productCategory: action.payload };
     case 'PRODUCT_IMAGE_INPUT':
-      return { ...state, imageUrl: action.payload };
+      return { ...state, image: action.payload };
     default:
       throw new Error('Unhandled action');
   }
@@ -60,7 +67,7 @@ function AdminProductEdit() {
 
   const [product, setProduct] = useState<Product>();
   const [productState, dispatch] = useReducer(reducer, initState);
-  console.log(product?.imageUrl);
+
   useEffect(() => {
     (async () => {
       const data = await fetchProduct(productId);
@@ -70,7 +77,7 @@ function AdminProductEdit() {
       dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: data.description });
       dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: data.price });
       dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: data.productCategory });
-      dispatch({ type: 'PRODUCT_IMAGE_INPUT', payload: data.imageUrl });
+      dispatch({ type: 'PRODUCT_IMAGE_INPUT', payload: { url: data.imageUrl } });
     })();
     fetchCategories();
   }, []);
@@ -84,16 +91,21 @@ function AdminProductEdit() {
       setErrorMessage('가격은 음수가 될 수 없습니다.');
       return;
     }
-    if (!productState.imageUrl) {
+    if (!productState.image.url) {
       setErrorMessage('파일을 선택해주세요');
       return;
     }
     setErrorMessage('');
-    const body: any = {};
 
-    if (product?.name !== productState.name) {
-      body.name = productState.name;
-    }
+    const body: any = {
+      name: productState.name,
+      description: productState.description,
+      price: productState.price,
+      workspaceId: workspaceId,
+      productCategoryId: productState.productCategory.id,
+    };
+    console.log(body);
+
     // addProduct(state, file);
   };
 
@@ -105,7 +117,7 @@ function AdminProductEdit() {
 
     const newFileURL = URL.createObjectURL(event.target.files[0]);
 
-    dispatch({ type: 'PRODUCT_IMAGE_INPUT', payload: newFileURL });
+    dispatch({ type: 'PRODUCT_IMAGE_INPUT', payload: { url: newFileURL, file: event.target.files[0] } });
   };
   return (
     <>
@@ -134,7 +146,7 @@ function AdminProductEdit() {
           dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: event.target?.value });
         }}
       />
-      <img src={productState.imageUrl || uploadPreview} alt={productState.imageUrl} style={{ width: '300px', height: '300px' }} />
+      <img src={productState.image.url || uploadPreview} alt={product?.imageUrl} style={{ width: '300px', height: '300px' }} />
       <input type="file" id="img" accept="image/*" onChange={onImageChange} />
       <SelectWithOptions
         options={workspace.productCategories}
