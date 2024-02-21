@@ -1,13 +1,13 @@
-import React from 'react';
-import { Order } from '@@types/index';
-import styled from '@emotion/styled';
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import useOrdersWebsocket from '@hooks/useOrdersWebsocket';
+import { useRecoilValue } from 'recoil';
+import { ordersAtom } from '@recoils/atoms';
 import PaidOrderCard from '@components/admin/order/PaidOrderCard';
 import NotPaidOrderCard from '@components/admin/order/NotPaidOrderCard';
 import ServedOrderCard from '@components/admin/order/ServedOrderCard';
-
-interface Props {
-  orders: Order[];
-}
+import useAdminOrder from '@hooks/useAdminOrder';
+import styled from '@emotion/styled';
 
 const Container = styled.div`
   padding: 24px;
@@ -18,7 +18,17 @@ const Container = styled.div`
   width: 100%;
 `;
 
-function OrderListContainer({ orders }: Props) {
+function AdminOrder() {
+  const { workspaceId } = useParams<{ workspaceId: string }>();
+  const { subscribeOrders } = useOrdersWebsocket(workspaceId);
+  const { fetchTodayOrders } = useAdminOrder(workspaceId);
+  const orders = useRecoilValue(ordersAtom);
+
+  useEffect(() => {
+    subscribeOrders();
+    fetchTodayOrders();
+  }, []);
+
   const notPaidOrders = orders.filter((it) => it.status === 'NOT_PAID');
   const paidOrders = orders.filter((it) => it.status === 'PAID');
   const servedOrders = orders.filter((it) => it.status === 'SERVED');
@@ -44,4 +54,4 @@ function OrderListContainer({ orders }: Props) {
   );
 }
 
-export default OrderListContainer;
+export default AdminOrder;
