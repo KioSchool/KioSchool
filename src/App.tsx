@@ -4,7 +4,7 @@ import Home from '@pages/User/Home';
 import AdminHome from '@pages/Admin/AdminHome';
 import Login from '@pages/User/Login';
 import AdminWorkspace from '@pages/Admin/AdminWorkspace';
-import AdminOrder from '@pages/Admin/AdminOrder';
+import AdminOrder from '@pages/Admin/order/AdminOrder';
 import Register from '@pages/User/Register';
 import AdminProduct from '@pages/Admin/AdminProduct';
 import Order from '@pages/User/order/Order';
@@ -17,6 +17,7 @@ import OrderBasket from '@pages/User/order/OrderBasket';
 import OrderPay from '@pages/User/order/OrderPay';
 import AdminProductManage from '@pages/Admin/AdminProductManage';
 import OrderComplete from '@pages/User/order/OrderComplete';
+import AdminOrderHistory from '@pages/Admin/order/AdminOrderHistory';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="/admin" element={<AdminHome />} />
           <Route path="/admin/workspace/:workspaceId" element={<AdminWorkspace />} />
           <Route path="/admin/workspace/:workspaceId/orders" element={<AdminOrder />} />
+          <Route path="/admin/workspace/:workspaceId/orders-history" element={<AdminOrderHistory />} />
           <Route path="/admin/workspace/:workspaceId/products" element={<AdminProduct />} />
           <Route path="/admin/workspace/:workspaceId/products/add-product" element={<AdminProductManage />} />
         </Routes>
