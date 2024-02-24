@@ -10,7 +10,10 @@ function AdminWorkspace() {
     <div>
       <div>workspaceId: {workspaceId}</div>
       <button type={'button'} onClick={() => appendPath('/orders')}>
-        주문 조회
+        실시간 주문 조회
+      </button>
+      <button type={'button'} onClick={() => appendPath('/orders-history')}>
+        전체 주문 조회
       </button>
       <button type={'button'} onClick={() => appendPath('/products')}>
         상품 조회
