@@ -18,6 +18,7 @@ import OrderPay from '@pages/User/order/OrderPay';
 import AdminProductManage from '@pages/Admin/AdminProductManage';
 import OrderComplete from '@pages/User/order/OrderComplete';
 import AdminOrderHistory from '@pages/Admin/order/AdminOrderHistory';
+import AdminProductEdit from '@pages/Admin/AdminProductEdit';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path="/admin/workspace/:workspaceId/orders-history" element={<AdminOrderHistory />} />
           <Route path="/admin/workspace/:workspaceId/products" element={<AdminProduct />} />
           <Route path="/admin/workspace/:workspaceId/products/add-product" element={<AdminProductManage />} />
+          <Route path="/admin/workspace/:workspaceId/products/edit-product" element={<AdminProductEdit />} />
         </Routes>
       </BrowserRouter>
       <Global styles={globalStyles} />

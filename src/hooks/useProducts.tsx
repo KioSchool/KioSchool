@@ -4,7 +4,7 @@ import { productsAtom, userWorkspaceAtom } from '@recoils/atoms';
 import { Product } from '@@types/index';
 import { useNavigate } from 'react-router-dom';
 
-function UseProducts(workspaceId: string | undefined) {
+function useProducts(workspaceId: string | undefined) {
   const { adminApi } = useApi();
   const navigate = useNavigate();
   const setProducts = useSetRecoilState(productsAtom);
@@ -22,6 +22,16 @@ function UseProducts(workspaceId: string | undefined) {
       });
   };
 
+  const fetchProduct = async (productId: number) => {
+    const res = await adminApi.get<Product>('/product', {
+      params: {
+        productId,
+      },
+    });
+
+    return res.data;
+  };
+
   const addProduct = (product: any, file: File) => {
     const data = new FormData();
     data.append('body', new Blob([JSON.stringify(product)], { type: 'application/json' }));
@@ -31,6 +41,19 @@ function UseProducts(workspaceId: string | undefined) {
       .post('/product', data)
       .then(() => {
         navigate(`/admin/workspace/${product.workspaceId}/products`);
+      })
+      .catch((error) => console.error('Failed to add product: ', error));
+  };
+
+  const editProduct = (parameter: any, file: File | null) => {
+    const data = new FormData();
+    data.append('body', new Blob([JSON.stringify(parameter)], { type: 'application/json' }));
+    if (file) data.append('file', new Blob([file], { type: 'image/jpeg' }));
+
+    adminApi
+      .put('/product', data)
+      .then(() => {
+        navigate(`/admin/workspace/${parameter.workspaceId}/products`);
       })
       .catch((error) => console.error('Failed to add product: ', error));
   };
@@ -81,7 +104,7 @@ function UseProducts(workspaceId: string | undefined) {
     });
   };
 
-  return { fetchProducts, addProduct, fetchCategories, AddCategories, deleteProducts };
+  return { fetchProducts, addProduct, fetchCategories, AddCategories, deleteProducts, fetchProduct, editProduct };
 }
 
-export default UseProducts;
+export default useProducts;

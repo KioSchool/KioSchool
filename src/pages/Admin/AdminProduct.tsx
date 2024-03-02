@@ -60,6 +60,9 @@ function AdminProduct() {
             <div>{product.name}</div>
             <div>{product.description}</div>
             <div>{product.price.toLocaleString()}원</div>
+            <button type={'button'} onClick={() => appendPath(`/edit-product?productId=${product.id}`)}>
+              {product.name} 상품 편집
+            </button>
             <img src={product.imageUrl} style={{ width: '300px', height: '300px' }} />
           </div>
         ))}
