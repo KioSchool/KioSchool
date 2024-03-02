@@ -45,15 +45,15 @@ function UseProducts(workspaceId: string | undefined) {
       .catch((error) => console.error('Failed to add product: ', error));
   };
 
-  const editProduct = (product: any, file: File | null) => {
+  const editProduct = (parameter: any, file: File | null) => {
     const data = new FormData();
-    data.append('body', new Blob([JSON.stringify(product)], { type: 'application/json' }));
+    data.append('body', new Blob([JSON.stringify(parameter)], { type: 'application/json' }));
     if (file) data.append('file', new Blob([file], { type: 'image/jpeg' }));
 
     adminApi
       .put('/product', data)
       .then(() => {
-        navigate(`/admin/workspace/${product.workspaceId}/products`);
+        navigate(`/admin/workspace/${parameter.workspaceId}/products`);
       })
       .catch((error) => console.error('Failed to add product: ', error));
   };
