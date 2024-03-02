@@ -84,7 +84,7 @@ function AdminProductEdit() {
     fetchCategories();
   }, []);
 
-  const EditProduct = () => {
+  const submitEditProduct = () => {
     if (!productState.name || !productState.description) {
       setErrorMessage('상품 이름 및 설명을 입력해주세요');
       return;
@@ -157,7 +157,7 @@ function AdminProductEdit() {
           dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
         }}
       />
-      <AppButton onClick={EditProduct}>변경하기</AppButton>
+      <AppButton onClick={submitEditProduct}>변경하기</AppButton>
     </>
   );
 }
