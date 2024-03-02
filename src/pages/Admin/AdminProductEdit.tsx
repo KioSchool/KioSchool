@@ -47,7 +47,8 @@ function reducer(state: ProductEdit, action: ProductActionType) {
     case 'PRODUCT_PRICE_INPUT':
       return { ...state, price: action.payload };
     case 'PRODUCT_CATEGORY_INPUT':
-      if (typeof action.payload === 'object') return { ...state, productCategory: action.payload };
+      const isFirstRendered = typeof action.payload === 'object';
+      if (isFirstRendered) return { ...state, productCategory: action.payload };
       return { ...state, productCategory: { ...state.productCategory, id: action.payload } };
     case 'PRODUCT_IMAGE_INPUT':
       return { ...state, image: action.payload };
