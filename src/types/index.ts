@@ -61,16 +61,3 @@ export interface User {
   createdAt: string;
   updatedAt: string;
 }
-
-export interface ProductStateType {
-  name: string;
-  description: string;
-  price: number;
-  workspaceId: string | undefined;
-  productCategoryId: string;
-}
-
-export interface ProductActionType {
-  type: string;
-  payload: any;
-}

@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 import useProducts from '@hooks/useProducts';
 import { useRecoilValue } from 'recoil';
 import { userWorkspaceAtom } from '@recoils/atoms';
-import { ProductActionType, ProductStateType } from '@@types/index';
+import { ProductActionType, ProductStateType } from '@@types/productTypes';
 
 const ErrorMessage = styled.div`
   padding: 0 0 5px;

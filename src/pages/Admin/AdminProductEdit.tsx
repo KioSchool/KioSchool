@@ -1,4 +1,3 @@
-import { ProductActionType } from '@@types/index';
 import AppButton from '@components/common/button/AppButton';
 import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import SelectWithOptions from '@components/common/select/SelectWithOptions';
@@ -9,7 +8,7 @@ import { userWorkspaceAtom } from '@recoils/atoms';
 import { ChangeEvent, useEffect, useReducer, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { initState, ProductEdit } from '@@types/productTypes';
+import { initState, ProductActionType, ProductEdit } from '@@types/productTypes';
 
 const ErrorMessage = styled.div`
   padding: 0 0 5px;

@@ -21,3 +21,16 @@ export const initState: ProductEdit = {
     updatedAt: '',
   },
 };
+
+export interface ProductStateType {
+  name: string;
+  description: string;
+  price: number;
+  workspaceId: string | undefined;
+  productCategoryId: string;
+}
+
+export interface ProductActionType {
+  type: string;
+  payload: any;
+}
