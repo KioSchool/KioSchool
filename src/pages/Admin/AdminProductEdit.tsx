@@ -9,32 +9,13 @@ import { userWorkspaceAtom } from '@recoils/atoms';
 import { ChangeEvent, useEffect, useReducer, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { ProductEdit } from '@@types/productTypes';
+import { initState, ProductEdit } from '@@types/productTypes';
 
 const ErrorMessage = styled.div`
   padding: 0 0 5px;
   color: #ff0000;
 `;
 
-const initState: ProductEdit = {
-  name: '',
-  description: '',
-  price: 0,
-  imageUrl: '',
-  id: 0,
-  createdAt: '',
-  updatedAt: '',
-  image: {
-    url: '',
-    file: null,
-  },
-  productCategory: {
-    id: 0,
-    name: '',
-    createdAt: '',
-    updatedAt: '',
-  },
-};
 function reducer(state: ProductEdit, action: ProductActionType) {
   switch (action.type) {
     case 'PRODUCT_NAME_INPUT':
