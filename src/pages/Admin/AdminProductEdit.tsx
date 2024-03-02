@@ -8,7 +8,7 @@ import { userWorkspaceAtom } from '@recoils/atoms';
 import { ChangeEvent, useEffect, useReducer, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { initState, ProductActionType, ProductEdit } from '@@types/productTypes';
+import { initState, ProductActionType, ProductEdit, ProductStateType } from '@@types/productTypes';
 
 const ErrorMessage = styled.div`
   padding: 0 0 5px;
@@ -25,6 +25,7 @@ function reducer(state: ProductEdit, action: ProductActionType) {
       return { ...state, price: action.payload };
     case 'PRODUCT_CATEGORY_INPUT':
       const isFirstRendered = typeof action.payload === 'object';
+
       if (isFirstRendered) return { ...state, productCategory: action.payload };
       return { ...state, productCategory: { ...state.productCategory, id: action.payload } };
     case 'PRODUCT_IMAGE_INPUT':
@@ -77,7 +78,7 @@ function AdminProductEdit() {
     }
     setErrorMessage('');
 
-    const body: any = {
+    const body: ProductStateType = {
       productId: productState.id,
       name: productState.name,
       description: productState.description,

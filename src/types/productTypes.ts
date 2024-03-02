@@ -26,6 +26,7 @@ export interface ProductStateType {
   name: string;
   description: string;
   price: number;
+  productId?: string;
   workspaceId: string | undefined;
   productCategoryId: string;
 }
