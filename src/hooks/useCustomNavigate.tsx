@@ -5,7 +5,8 @@ function useCustomNavigate() {
   const navigate = useNavigate();
 
   const appendPath = (path: string) => {
-    navigate(location.pathname + path);
+    const url = location.pathname.replace(/\/$/, '') + path;
+    navigate(url);
   };
 
   return { appendPath };

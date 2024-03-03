@@ -15,6 +15,7 @@ const Container = styled.div`
   padding: 0 0 80px;
   box-sizing: border-box;
   animation: moveInFromBottom 0.3s;
+  overscroll-behavior: contain;
 
   @keyframes moveInFromBottom {
     from {

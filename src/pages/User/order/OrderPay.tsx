@@ -15,6 +15,7 @@ const Container = styled.div`
   width: 100vw;
   min-height: 100vh;
   animation: moveInFromRight 0.3s;
+  overscroll-behavior: contain;
 
   @keyframes moveInFromRight {
     from {

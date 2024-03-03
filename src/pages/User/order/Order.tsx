@@ -16,6 +16,7 @@ const Container = styled.div`
   width: 100vw;
   padding: 60px 0 80px;
   box-sizing: border-box;
+  overscroll-behavior: contain;
 `;
 
 const Header = styled.div`
