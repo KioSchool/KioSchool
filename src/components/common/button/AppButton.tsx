@@ -16,7 +16,7 @@ const Container = styled.button`
     if (typeof props.size === 'number') return `${props.size}px`;
     return sizeMap[props.size || 'medium'];
   }};
-  background: black;
+  background: #eb6d09;
   color: white;
   font-size: 18px;
   border: none;
