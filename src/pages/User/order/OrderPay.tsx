@@ -59,8 +59,6 @@ function OrderPay() {
   const tableNo = searchParams.get('tableNo');
 
   const tossAccountUrl = workspace.owner.accountUrl;
-  const accountName = /bank=(.*?)&/g.exec(tossAccountUrl)?.[1] || 'test';
-  const accountNumber = /accountNo=(.*?)&/g.exec(tossAccountUrl)?.[1] || 'test';
 
   return (
     <Container>
@@ -69,9 +67,6 @@ function OrderPay() {
         <AppBadge>{totalAmount.toLocaleString()}원</AppBadge>
       </Header>
       <AppInputWithLabel titleLabel={'입금자명'} style={{ width: '80%' }} placeholder={'입금자명을 입력해주세요.'} ref={customerNameRef} />
-      <AppLabel>{decodeURI(accountName)}</AppLabel>
-      <br />
-      <AppLabel>{accountNumber}</AppLabel>
       <OrderButton
         amount={totalAmount}
         buttonLabel={`Toss로 결제하기`}
