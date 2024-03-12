@@ -163,7 +163,7 @@ function Register() {
         email: userEmail,
       })
       .then(() => {
-        navigate('/login');
+        navigate('/register-account');
       })
       .catch(() => {
         setIsCodeSent(false);
