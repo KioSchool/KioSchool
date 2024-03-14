@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useApi from '@hooks/useApi';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
@@ -61,6 +61,14 @@ const CodeContainer = styled.div`
   justify-content: space-between;
   flex-direction: row;
   flex-wrap: wrap;
+`;
+
+const LoginLabelContainer = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0 0;
 `;
 
 const CodeReSendStyle = { width: '90px' };
@@ -163,7 +171,7 @@ function Register() {
         email: userEmail,
       })
       .then(() => {
-        navigate('/login');
+        navigate('/register-account');
       })
       .catch(() => {
         setIsCodeSent(false);
@@ -293,6 +301,11 @@ function Register() {
               회원가입
             </AppButton>
           </FormContainer>
+          <LoginLabelContainer>
+            <AppLabel size={'small'}>
+              <Link to={'/login'}>로그인하기</Link>
+            </AppLabel>
+          </LoginLabelContainer>
         </SubContainer>
       </Container>
     </>

@@ -16,7 +16,7 @@ const Container = styled.button`
     if (typeof props.size === 'number') return `${props.size}px`;
     return sizeMap[props.size || 'medium'];
   }};
-  background: black;
+  background: #eb6d09;
   color: white;
   font-size: 18px;
   border: none;
@@ -24,6 +24,7 @@ const Container = styled.button`
   height: 50px;
   padding: 0 18px;
   user-select: none;
+  box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.25);
 `;
 
 function AppButton(props: AppButtonProps) {
