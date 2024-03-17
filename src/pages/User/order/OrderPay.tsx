@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
 import { orderBasketAtom, userWorkspaceAtom } from '@recoils/atoms';
 import _ from 'lodash';
@@ -58,6 +58,13 @@ function OrderPay() {
   const tableNo = searchParams.get('tableNo');
 
   const tossAccountUrl = workspace.owner.accountUrl;
+
+  useEffect(() => {
+    if (orderBasket.length === 0) {
+      alert('잘못된 접근입니다.');
+      navigate(1);
+    }
+  }, []);
 
   return (
     <Container>

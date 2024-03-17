@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import useOrder from '@hooks/useOrder';
-import { useRecoilValue } from 'recoil';
-import { userOrderAtom } from '@recoils/atoms';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { orderBasketAtom, userOrderAtom } from '@recoils/atoms';
 import { useSearchParams } from 'react-router-dom';
 
 function OrderComplete() {
@@ -9,9 +9,15 @@ function OrderComplete() {
   const orderId = searchParams.get('orderId');
 
   const { fetchOrder } = useOrder();
+  const setOrderBasket = useSetRecoilState(orderBasketAtom);
   const order = useRecoilValue(userOrderAtom);
 
+  const resetRecoilState = () => {
+    setOrderBasket([]);
+  };
+
   useEffect(() => {
+    resetRecoilState();
     fetchOrder(orderId);
   }, []);
 
