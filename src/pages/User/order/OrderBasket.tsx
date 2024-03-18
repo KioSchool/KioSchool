@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import AppBadge from '@components/common/badge/AppBadge';
@@ -62,6 +62,12 @@ function OrderBasket() {
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
 
+  const basketRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    basketRef.current?.scroll({ top: 0, behavior: 'smooth' });
+  }, []);
+
   return (
     <Container>
       <Header>
@@ -70,7 +76,7 @@ function OrderBasket() {
         </AppBadge>
         <AppLabel size={'small'}>{workspace.name}</AppLabel>
       </Header>
-      <OrderBasketContainer>
+      <OrderBasketContainer ref={basketRef}>
         {orderBasket.map((basket) => {
           const product = productsMap[basket.productId];
           return <ProductCounterBadge product={product} key={product.id} />;
