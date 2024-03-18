@@ -36,7 +36,39 @@ const WorkspaceContainer = styled.div`
 `;
 
 const TitleContainer = styled.div`
-  width: 300px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 220px;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+const SubTitle = styled.div`
+  padding: 26px 0 0 22px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 198px;
+  flex-shrink: 0;
+  color: #fff;
+  font-family: Inter;
+  font-size: 32px;
+  font-weight: 100;
+`;
+
+const Title = styled.div`
+  padding: 5px 0 0 22px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 188px;
+  height: 45px;
+  flex-shrink: 0;
+  color: #fff;
+
+  font-family: Inter;
+  font-size: 40.329px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 `;
 function AdminHome() {
   const { fetchWorkspaces, createWorkspaces, leaveWorkspaces } = useAdminUser();
@@ -69,7 +101,8 @@ function AdminHome() {
           {workspaces.map((it) => (
             <WorkspaceContainer key={it.id}>
               <TitleContainer>
-                {it.id} - {it.name}
+                <SubTitle>아주 재미있는 농사 활동</SubTitle>
+                <Title>키오스쿨</Title>
               </TitleContainer>
 
               <button
