@@ -33,14 +33,27 @@ const WorkspaceContainer = styled.div`
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
 `;
 
+const MenuTitle = styled.div`
+  padding: 0 0 25px 22px;
+  width: 164px;
+  height: 27px;
+  flex-shrink: 0;
+  color: #fff;
+  font-family: Inter;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+`;
 const TitleContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 220px;
   flex-direction: column;
-  align-items: flex-start;
 `;
 
 const SubTitle = styled.div`
@@ -101,7 +114,7 @@ function AdminHome() {
           {workspaces.map((it) => (
             <WorkspaceContainer key={it.id}>
               <TitleContainer>
-                <SubTitle>아주 재미있는 농사 활동</SubTitle>
+                <SubTitle>건국대학교 컴퓨터공학부 주점</SubTitle>
                 <Title>키오스쿨</Title>
               </TitleContainer>
 
@@ -114,6 +127,7 @@ function AdminHome() {
                 이동
               </button>
               <button onClick={() => leaveHandler(it.id)}>탈퇴하기</button>
+              <MenuTitle>메뉴 총 22개</MenuTitle>
             </WorkspaceContainer>
           ))}
 
