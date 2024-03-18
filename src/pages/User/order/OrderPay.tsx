@@ -66,6 +66,27 @@ function OrderPay() {
     }
   }, []);
 
+  const payOrder = () => {
+    const costumerName = customerNameRef.current?.value;
+
+    if (!costumerName) {
+      alert('입금자명을 입력해주세요.');
+      return;
+    }
+
+    userApi
+      .post<Order>('/order', {
+        workspaceId: workspaceId,
+        tableNumber: tableNo,
+        orderProducts: orderBasket,
+        customerName: costumerName,
+      })
+      .then((res) => {
+        navigate(`/order-complete?orderId=${res.data.id}`);
+      });
+    window.open(`${tossAccountUrl}&amount=${totalAmount}`);
+  };
+
   return (
     <Container>
       <Header>
@@ -73,23 +94,7 @@ function OrderPay() {
         <AppBadge>{totalAmount.toLocaleString()}원</AppBadge>
       </Header>
       <AppInputWithLabel titleLabel={'입금자명'} style={{ width: '80%' }} placeholder={'입금자명을 입력해주세요.'} ref={customerNameRef} />
-      <OrderButton
-        amount={totalAmount}
-        buttonLabel={`Toss로 결제하기`}
-        onClick={() => {
-          userApi
-            .post<Order>('/order', {
-              workspaceId: workspaceId,
-              tableNumber: tableNo,
-              orderProducts: orderBasket,
-              customerName: customerNameRef.current?.value,
-            })
-            .then((res) => {
-              navigate(`/order-complete?orderId=${res.data.id}`);
-            });
-          window.open(`${tossAccountUrl}&amount=${totalAmount}`);
-        }}
-      />
+      <OrderButton amount={totalAmount} buttonLabel={`Toss로 결제하기`} onClick={payOrder} />
     </Container>
   );
 }
