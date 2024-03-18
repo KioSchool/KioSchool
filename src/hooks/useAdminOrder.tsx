@@ -19,29 +19,31 @@ function useAdminOrder(workspaceId: string | undefined) {
     });
   };
 
-  const fetchTodayOrders = () => {
-    fetchOrders({ startDate: new Date().toISOString().split('T')[0], endDate: new Date().toISOString().split('T')[0], workspaceId });
+  const fetchRealTimeOrders = () => {
+    adminApi.get<Order[]>('/orders/realtime', { params: { workspaceId } }).then((response) => {
+      setOrders(response.data);
+    });
   };
 
   const payOrder = (orderId: number) => {
     adminApi.post<Order>('/order/pay', { orderId: orderId, workspaceId: Number(workspaceId) }).then(() => {
-      fetchTodayOrders();
+      fetchRealTimeOrders();
     });
   };
 
   const serveOrder = (orderId: number) => {
     adminApi.post<Order>('/order/serve', { orderId: orderId, workspaceId: Number(workspaceId) }).then(() => {
-      fetchTodayOrders();
+      fetchRealTimeOrders();
     });
   };
 
   const cancelOrder = (orderId: number) => {
     adminApi.post<Order>('/order/cancel', { orderId: orderId, workspaceId: Number(workspaceId) }).then(() => {
-      fetchTodayOrders();
+      fetchRealTimeOrders();
     });
   };
 
-  return { fetchAllOrders, payOrder, serveOrder, cancelOrder, fetchTodayOrders, fetchOrders };
+  return { fetchAllOrders, payOrder, serveOrder, cancelOrder, fetchTodayOrders: fetchRealTimeOrders, fetchOrders };
 }
 
 export default useAdminOrder;
