@@ -25,6 +25,13 @@ const SubContainer = styled.div`
   height: 500px;
 `;
 
+const NavContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
 const WorkspaceContainer = styled.div`
   width: 321px;
   height: 332px;
@@ -138,6 +145,10 @@ function AdminHome() {
     <>
       <Container>
         <SubContainer>
+          <NavContainer>
+            <h1>키오스쿨 로고</h1>
+            <Link to={'/register-account'}>계좌 연결하기</Link>
+          </NavContainer>
           {workspaces.map((it) => (
             <WorkspaceContainer
               key={it.id}
@@ -164,7 +175,6 @@ function AdminHome() {
             <input ref={userInputRef} type="text"></input>
             <button type="submit">생성하기</button>
           </AddWorkspaceContainer>
-          <Link to={'/register-account'}>계좌 연결하기</Link>
         </SubContainer>
       </Container>
     </>
