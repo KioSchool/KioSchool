@@ -121,20 +121,17 @@ function AdminHome() {
       <Container>
         <SubContainer>
           {workspaces.map((it) => (
-            <WorkspaceContainer key={it.id}>
+            <WorkspaceContainer
+              key={it.id}
+              onClick={() => {
+                appendPath(`/workspace/${it.id}`);
+              }}
+            >
               <TitleContainer>
                 <SubTitle>건국대학교 컴퓨터공학부 주점</SubTitle>
                 <Title>키오스쿨</Title>
               </TitleContainer>
 
-              <button
-                type={'button'}
-                onClick={() => {
-                  appendPath(`/workspace/${it.id}`);
-                }}
-              >
-                이동
-              </button>
               <button onClick={() => leaveHandler(it.id)}>탈퇴하기</button>
               <MenuTitle>메뉴 총 22개</MenuTitle>
             </WorkspaceContainer>
