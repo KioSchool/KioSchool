@@ -83,6 +83,15 @@ const Title = styled.div`
   font-weight: 700;
   line-height: normal;
 `;
+
+const AddWorkspaceContainer = styled.div`
+  width: 321px;
+  height: 332px;
+  flex-shrink: 0;
+  border-radius: 25px;
+  border: 1px solid #000;
+  background: #fff;
+`;
 function AdminHome() {
   const { fetchWorkspaces, createWorkspaces, leaveWorkspaces } = useAdminUser();
   const { appendPath } = useCustomNavigate();
@@ -131,10 +140,10 @@ function AdminHome() {
             </WorkspaceContainer>
           ))}
 
-          <form onSubmit={createHandler}>
+          <AddWorkspaceContainer onSubmit={createHandler}>
             <input ref={userInputRef} type="text"></input>
             <button type="submit">생성하기</button>
-          </form>
+          </AddWorkspaceContainer>
           <Link to={'/register-account'}>계좌 연결하기</Link>
         </SubContainer>
       </Container>
