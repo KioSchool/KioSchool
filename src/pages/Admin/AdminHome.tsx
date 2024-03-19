@@ -56,8 +56,13 @@ const DeleteContainer = styled.div`
   color: #fff;
   padding: 16px 23px 0 0;
 `;
-
 const TitleContainer = styled.div`
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  flex-direction: column;
+`;
+const MainTitleContainer = styled.div`
   display: flex;
   width: 100%;
   flex-wrap: wrap;
@@ -141,13 +146,15 @@ function AdminHome() {
               }}
             >
               <TitleContainer>
-                <SubTitle>건국대학교 컴퓨터공학부 주점</SubTitle>
-                <DeleteContainer onClick={(e: React.FormEvent) => leaveHandler(e, it.id)}> 탈퇴하기</DeleteContainer>
+                <MainTitleContainer>
+                  <SubTitle>건국대학교 컴퓨터공학부 주점</SubTitle>
+                  <DeleteContainer onClick={(e: React.FormEvent) => leaveHandler(e, it.id)}> 탈퇴하기</DeleteContainer>
+                </MainTitleContainer>
+                <SubTitleContainer>
+                  {' '}
+                  <Title>키오스쿨</Title>
+                </SubTitleContainer>
               </TitleContainer>
-              <SubTitleContainer>
-                {' '}
-                <Title>키오스쿨</Title>
-              </SubTitleContainer>
 
               <MenuTitle>메뉴 총 22개</MenuTitle>
             </WorkspaceContainer>
