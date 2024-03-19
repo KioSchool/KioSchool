@@ -48,14 +48,25 @@ const MenuTitle = styled.div`
   font-style: normal;
   font-weight: 300;
   line-height: normal;
-`;
-const TitleContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  width: 220px;
-  flex-direction: column;
+  flex-direction: row;
 `;
 
+const DeleteContainer = styled.div`
+  color: #fff;
+  padding: 16px 23px 0 0;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+const SubTitleContainer = styled.div`
+  display: block;
+`;
 const SubTitle = styled.div`
   padding: 26px 0 0 22px;
   display: flex;
@@ -84,7 +95,7 @@ const Title = styled.div`
   line-height: normal;
 `;
 
-const AddWorkspaceContainer = styled.div`
+const AddWorkspaceContainer = styled.form`
   width: 321px;
   height: 332px;
   flex-shrink: 0;
@@ -104,6 +115,7 @@ function AdminHome() {
 
   const createHandler = (e: React.FormEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     const userInput = userInputRef.current?.value;
     if (!userInput) {
       alert('workspace 이름을 입력해주세요');
@@ -112,7 +124,8 @@ function AdminHome() {
     createWorkspaces(userInput);
   };
 
-  const leaveHandler = (id: number) => {
+  const leaveHandler = (e: React.FormEvent, id: number) => {
+    e.stopPropagation();
     leaveWorkspaces(id);
   };
 
@@ -129,10 +142,13 @@ function AdminHome() {
             >
               <TitleContainer>
                 <SubTitle>건국대학교 컴퓨터공학부 주점</SubTitle>
-                <Title>키오스쿨</Title>
+                <DeleteContainer onClick={(e: React.FormEvent) => leaveHandler(e, it.id)}> 탈퇴하기</DeleteContainer>
               </TitleContainer>
+              <SubTitleContainer>
+                {' '}
+                <Title>키오스쿨</Title>
+              </SubTitleContainer>
 
-              <button onClick={() => leaveHandler(it.id)}>탈퇴하기</button>
               <MenuTitle>메뉴 총 22개</MenuTitle>
             </WorkspaceContainer>
           ))}
