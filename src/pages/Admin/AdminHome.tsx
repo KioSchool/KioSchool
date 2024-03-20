@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import useAdminUser from '@hooks/useAdminUser';
 import { useRecoilValue } from 'recoil';
 import { workspacesAtom } from '@recoils/atoms';
@@ -40,6 +40,7 @@ const LinkItem = styled(Link)`
   height: 60px;
 `;
 const WorkspaceContainer = styled.div`
+  cursor: pointer;
   width: 321px;
   height: 332px;
   border-radius: 25px;
@@ -67,6 +68,7 @@ const MenuTitle = styled.div`
 `;
 
 const DeleteContainer = styled.div`
+  cursor: pointer;
   color: #fff;
   padding: 16px 23px 0 0;
 `;
@@ -122,11 +124,34 @@ const AddWorkspaceContainer = styled.form`
   border: 1px solid #000;
   background: #fff;
 `;
+
+const ModalOverlay = styled.div`
+  cursor: pointer;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 5px;
+  padding: 20px;
+  z-index: 1010;
+`;
 function AdminHome() {
   const { fetchWorkspaces, createWorkspaces, leaveWorkspaces } = useAdminUser();
   const { appendPath } = useCustomNavigate();
   const userInputRef = useRef<HTMLInputElement>(null);
   const workspaces = useRecoilValue(workspacesAtom);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     fetchWorkspaces();
@@ -184,8 +209,18 @@ function AdminHome() {
             <input ref={userInputRef} type="text"></input>
             <button type="submit">생성하기</button>
           </AddWorkspaceContainer>
+          <button onClick={() => setModalOpen(true)}>test</button>
         </SubContainer>
       </Container>
+      {modalOpen && (
+        <>
+          <ModalOverlay onClick={() => setModalOpen(false)} />
+          <ModalContent>
+            MODAL OPEN!
+            <button onClick={() => setModalOpen(false)}>close</button>
+          </ModalContent>
+        </>
+      )}
     </>
   );
 }
