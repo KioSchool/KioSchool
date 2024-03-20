@@ -120,12 +120,14 @@ const Title = styled.div`
 `;
 
 const AddWorkspaceContainer = styled.form`
-  height: 150px;
+  cursor: pointer;
   display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
   justify-content: center;
-  align-item: center;
+  align-items: center;
+  width: 321px;
+  height: 332px;
+  border-radius: 25px;
+  border: 1px solid #000;
 `;
 
 const ModalOverlay = styled.div`
@@ -139,7 +141,7 @@ const ModalOverlay = styled.div`
   z-index: 1000;
 `;
 
-const ModalContent = styled.div`
+const ModalContent = styled.form`
   position: fixed;
   top: 50%;
   left: 50%;
@@ -148,6 +150,12 @@ const ModalContent = styled.div`
   border-radius: 25px;
   padding: 20px;
   z-index: 1010;
+  height: 150px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 function AdminHome() {
   const { fetchWorkspaces, createWorkspaces, leaveWorkspaces } = useAdminUser();
@@ -210,19 +218,19 @@ function AdminHome() {
               <MenuTitle>메뉴 총 22개</MenuTitle>
             </WorkspaceContainer>
           ))}
-          <img src={plusLogo} onClick={() => setModalOpen(true)}></img>
+          <AddWorkspaceContainer onClick={() => setModalOpen(true)}>
+            <img src={plusLogo} width={'51px'} height={'51px'}></img>
+          </AddWorkspaceContainer>
         </SubContainer>
       </Container>
       {modalOpen && (
         <>
           <ModalOverlay onClick={() => setModalOpen(false)} />
-          <ModalContent>
-            <AddWorkspaceContainer onSubmit={createHandler}>
-              <AppInputWithLabel titleLabel={'워크스페이스 이름'} type={'text'} id={'workspaceName'} ref={userInputRef} />
-              <AppButton size={'large'} style={{ marginTop: '15px' }} type={'submit'}>
-                생성하기
-              </AppButton>
-            </AddWorkspaceContainer>
+          <ModalContent onSubmit={createHandler}>
+            <AppInputWithLabel titleLabel={'워크스페이스 이름'} type={'text'} id={'workspaceName'} ref={userInputRef} />
+            <AppButton size={'large'} style={{ marginTop: '15px' }} type={'submit'}>
+              생성하기
+            </AppButton>
           </ModalContent>
         </>
       )}
