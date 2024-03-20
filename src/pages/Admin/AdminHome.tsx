@@ -16,13 +16,13 @@ const Container = styled.div`
 `;
 const SubContainer = styled.div`
   display: flex;
-  width: 70vw;
+  width: 60vw;
   flex-basis: 0;
   flex-wrap: wrap;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
   height: 500px;
+  justify-content: space-between;
 `;
 
 const NavContainer = styled.div`
@@ -162,7 +162,6 @@ function AdminHome() {
                   <DeleteContainer onClick={(e: React.FormEvent) => leaveHandler(e, it.id)}> 탈퇴하기</DeleteContainer>
                 </MainTitleContainer>
                 <SubTitleContainer>
-                  {' '}
                   <Title>키오스쿨</Title>
                 </SubTitleContainer>
               </TitleContainer>
