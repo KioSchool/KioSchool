@@ -4,9 +4,12 @@ import { useRecoilValue } from 'recoil';
 import { workspacesAtom } from '@recoils/atoms';
 import userDefaultProfileImage from '@resources/image/userDefaultProfileImage.png';
 import kioLogo from '@resources/image/kioLogo.png';
+import plusLogo from '@resources/image/plusLogo.png';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
+import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
+import AppButton from '@components/common/button/AppButton';
 
 const Container = styled.div`
   display: flex;
@@ -117,12 +120,12 @@ const Title = styled.div`
 `;
 
 const AddWorkspaceContainer = styled.form`
-  width: 321px;
-  height: 332px;
-  flex-shrink: 0;
-  border-radius: 25px;
-  border: 1px solid #000;
-  background: #fff;
+  height: 150px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-item: center;
 `;
 
 const ModalOverlay = styled.div`
@@ -142,7 +145,7 @@ const ModalContent = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
-  border-radius: 5px;
+  border-radius: 25px;
   padding: 20px;
   z-index: 1010;
 `;
@@ -166,6 +169,7 @@ function AdminHome() {
       return;
     }
     createWorkspaces(userInput);
+    setModalOpen(false);
   };
 
   const leaveHandler = (e: React.FormEvent, id: number) => {
@@ -204,20 +208,19 @@ function AdminHome() {
               <MenuTitle>메뉴 총 22개</MenuTitle>
             </WorkspaceContainer>
           ))}
-
-          <AddWorkspaceContainer onSubmit={createHandler}>
-            <input ref={userInputRef} type="text"></input>
-            <button type="submit">생성하기</button>
-          </AddWorkspaceContainer>
-          <button onClick={() => setModalOpen(true)}>test</button>
+          <img src={plusLogo} onClick={() => setModalOpen(true)}></img>
         </SubContainer>
       </Container>
       {modalOpen && (
         <>
           <ModalOverlay onClick={() => setModalOpen(false)} />
           <ModalContent>
-            MODAL OPEN!
-            <button onClick={() => setModalOpen(false)}>close</button>
+            <AddWorkspaceContainer onSubmit={createHandler}>
+              <AppInputWithLabel titleLabel={'워크스페이스 이름'} type={'text'} id={'workspaceName'} ref={userInputRef} />
+              <AppButton size={'large'} style={{ marginTop: '15px' }} type={'submit'}>
+                생성하기
+              </AppButton>
+            </AddWorkspaceContainer>
           </ModalContent>
         </>
       )}
