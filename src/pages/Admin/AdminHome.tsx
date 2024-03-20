@@ -71,9 +71,12 @@ const MenuTitle = styled.div`
 `;
 
 const DeleteContainer = styled.div`
+  padding: 16px 23px 0 0;
+`;
+
+const DeleteText = styled.div`
   cursor: pointer;
   color: #fff;
-  padding: 16px 23px 0 0;
 `;
 const TitleContainer = styled.div`
   display: flex;
@@ -130,6 +133,16 @@ const AddWorkspaceContainer = styled.form`
   border: 1px solid #000;
 `;
 
+const DummyWorkspaceContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 321px;
+  height: 332px;
+  border-radius: 25px;
+  border: 1px solid #000;
+`;
+
 const ModalOverlay = styled.div`
   cursor: pointer;
   position: fixed;
@@ -163,7 +176,7 @@ function AdminHome() {
   const userInputRef = useRef<HTMLInputElement>(null);
   const workspaces = useRecoilValue(workspacesAtom);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-
+  console.log(workspaces.length);
   useEffect(() => {
     fetchWorkspaces();
   }, []);
@@ -208,7 +221,16 @@ function AdminHome() {
               <TitleContainer>
                 <MainTitleContainer>
                   <SubTitle>건국대학교 컴퓨터공학부 주점</SubTitle>
-                  <DeleteContainer onClick={(e: React.FormEvent) => leaveHandler(e, it.id)}> 탈퇴하기</DeleteContainer>
+                  <DeleteContainer>
+                    <DeleteText
+                      onClick={(e: React.FormEvent) => {
+                        leaveHandler(e, it.id);
+                        window.location.reload();
+                      }}
+                    >
+                      탈퇴하기
+                    </DeleteText>
+                  </DeleteContainer>
                 </MainTitleContainer>
                 <SubTitleContainer>
                   <Title>키오스쿨</Title>
@@ -218,9 +240,14 @@ function AdminHome() {
               <MenuTitle>메뉴 총 22개</MenuTitle>
             </WorkspaceContainer>
           ))}
-          <AddWorkspaceContainer onClick={() => setModalOpen(true)}>
-            <img src={plusLogo} width={'51px'} height={'51px'}></img>
-          </AddWorkspaceContainer>
+
+          {workspaces.length < 3 && (
+            <AddWorkspaceContainer onClick={() => setModalOpen(true)}>
+              <img src={plusLogo} width={'51px'} height={'51px'}></img>
+            </AddWorkspaceContainer>
+          )}
+          {workspaces.length < 2 &&
+            Array.from({ length: 2 - workspaces.length }, (_, index) => <DummyWorkspaceContainer key={`dummy_${index}`}></DummyWorkspaceContainer>)}
         </SubContainer>
       </Container>
       {modalOpen && (
