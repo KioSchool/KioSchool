@@ -182,7 +182,9 @@ function AdminHome() {
       <Container>
         <SubContainer>
           <NavContainer>
-            <img src={kioLogo} width="170px" height="80px"></img>
+            <Link to={'/'}>
+              <img src={kioLogo} width="170px" height="80px"></img>
+            </Link>
 
             <LinkItem to={'/register-account'}>
               <img src={userDefaultProfileImage} width="60px" height="60px"></img>
