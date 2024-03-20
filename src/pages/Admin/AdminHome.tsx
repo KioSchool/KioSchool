@@ -233,11 +233,11 @@ function AdminHome() {
                   </DeleteContainer>
                 </MainTitleContainer>
                 <SubTitleContainer>
-                  <Title>키오스쿨</Title>
+                  <Title>{it.name}</Title>
                 </SubTitleContainer>
               </TitleContainer>
 
-              <MenuTitle>메뉴 총 22개</MenuTitle>
+              <MenuTitle>메뉴 개수 {it.products.length} 개</MenuTitle>
             </WorkspaceContainer>
           ))}
 
