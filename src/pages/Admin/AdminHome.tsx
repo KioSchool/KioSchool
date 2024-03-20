@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import useAdminUser from '@hooks/useAdminUser';
 import { useRecoilValue } from 'recoil';
 import { workspacesAtom } from '@recoils/atoms';
+import userDefaultProfileImage from '@resources/image/userDefaultProfileImage.png';
+import kioLogo from '@resources/image/kioLogo.png';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
@@ -26,12 +28,17 @@ const SubContainer = styled.div`
 `;
 
 const NavContainer = styled.div`
+  padding-bottom: 40px;
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
 `;
-
+const LinkItem = styled(Link)`
+  width: 60px;
+  height: 60px;
+`;
 const WorkspaceContainer = styled.div`
   width: 321px;
   height: 332px;
@@ -146,8 +153,11 @@ function AdminHome() {
       <Container>
         <SubContainer>
           <NavContainer>
-            <h1>키오스쿨 로고</h1>
-            <Link to={'/register-account'}>계좌 연결하기</Link>
+            <img src={kioLogo} width="170px" height="80px"></img>
+
+            <LinkItem to={'/register-account'}>
+              <img src={userDefaultProfileImage} width="60px" height="60px"></img>
+            </LinkItem>
           </NavContainer>
           {workspaces.map((it) => (
             <WorkspaceContainer
