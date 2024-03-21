@@ -163,7 +163,7 @@ const ModalContent = styled.form`
   border-radius: 25px;
   padding: 20px;
   z-index: 1010;
-  height: 150px;
+  height: 300px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -173,7 +173,8 @@ const ModalContent = styled.form`
 function AdminHome() {
   const { fetchWorkspaces, createWorkspaces, leaveWorkspaces } = useAdminUser();
   const { appendPath } = useCustomNavigate();
-  const userInputRef = useRef<HTMLInputElement>(null);
+  const workspaceNameRef = useRef<HTMLInputElement>(null);
+  const workspaceDescriptionRef = useRef<HTMLInputElement>(null);
   const workspaces = useRecoilValue(workspacesAtom);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   console.log(workspaces.length);
@@ -184,12 +185,18 @@ function AdminHome() {
   const createHandler = (e: React.FormEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    const userInput = userInputRef.current?.value;
-    if (!userInput) {
+    const workspaceName = workspaceNameRef.current?.value;
+    if (!workspaceName) {
       alert('workspace 이름을 입력해주세요');
       return;
     }
-    createWorkspaces(userInput);
+
+    const workspaceDescription = workspaceDescriptionRef.current?.value;
+    if (!workspaceDescription) {
+      alert('workspace 설명 입력해주세요');
+      return;
+    }
+    createWorkspaces(workspaceName, workspaceDescription);
     setModalOpen(false);
   };
 
@@ -220,7 +227,7 @@ function AdminHome() {
             >
               <TitleContainer>
                 <MainTitleContainer>
-                  <SubTitle>건국대학교 컴퓨터공학부 주점</SubTitle>
+                  <SubTitle>{it.description}</SubTitle>
                   <DeleteContainer>
                     <DeleteText
                       onClick={(e: React.FormEvent) => {
@@ -254,7 +261,8 @@ function AdminHome() {
         <>
           <ModalOverlay onClick={() => setModalOpen(false)} />
           <ModalContent onSubmit={createHandler}>
-            <AppInputWithLabel titleLabel={'워크스페이스 이름'} type={'text'} id={'workspaceName'} ref={userInputRef} />
+            <AppInputWithLabel titleLabel={'워크스페이스 이름'} type={'text'} id={'workspaceName'} ref={workspaceNameRef} />
+            <AppInputWithLabel titleLabel={'워크스페이스 설명'} type={'text'} id={'workspaceDescription'} ref={workspaceDescriptionRef} />
             <AppButton size={'large'} style={{ marginTop: '15px' }} type={'submit'}>
               생성하기
             </AppButton>

@@ -44,6 +44,7 @@ export interface ProductCategory {
 
 export interface Workspace {
   name: string;
+  description: string;
   owner: User;
   products: Array<Product>;
   productCategories: Array<ProductCategory>;
