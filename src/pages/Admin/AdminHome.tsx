@@ -53,6 +53,16 @@ const WorkspaceContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
+
+  &:hover {
+    background: linear-gradient(140deg, #ffe3cc -165.17%, #eb6d09 92.63%);
+  }
+
+  &:active {
+    border-radius: 25px;
+    background: #eb6d09;
+    box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.25) inset;
+  }
 `;
 
 const MenuTitle = styled.div`
@@ -177,7 +187,7 @@ function AdminHome() {
   const workspaceDescriptionRef = useRef<HTMLInputElement>(null);
   const workspaces = useRecoilValue(workspacesAtom);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  console.log(workspaces.length);
+
   useEffect(() => {
     fetchWorkspaces();
   }, []);
@@ -232,7 +242,6 @@ function AdminHome() {
                     <DeleteText
                       onClick={(e: React.FormEvent) => {
                         leaveHandler(e, it.id);
-                        window.location.reload();
                       }}
                     >
                       탈퇴하기
