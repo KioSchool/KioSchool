@@ -4,16 +4,16 @@ import { useRecoilValue } from 'recoil';
 import { workspacesAtom } from '@recoils/atoms';
 import userDefaultProfileImage from '@resources/image/userDefaultProfileImage.png';
 import kioLogo from '@resources/image/kioLogo.png';
-import plusLogo from '@resources/image/plusLogo.png';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import AppButton from '@components/common/button/AppButton';
 import InputModal from '@components/common/modal/InputModal';
-import { AddWorkspaceContainer, WorkspaceContainer } from '@components/common/workspace/Container';
+import { WorkspaceContainer } from '@components/common/workspace/Container';
 import Container from '@components/common/Container/Container';
 import DummyWorkspace from '@components/common/workspace/DummyWorkspace';
+import AddWorkspace from '@components/common/workspace/AddWorkspace';
 
 const NavContainer = styled.div`
   padding-bottom: 40px;
@@ -147,6 +147,10 @@ function AdminHome() {
     setModalOpen(false);
   };
 
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
   const content = (
     <>
       <NavContainer>
@@ -189,19 +193,15 @@ function AdminHome() {
         </WorkspaceContainer>
       ))}
 
-      {workspaces.length < 3 && (
-        <AddWorkspaceContainer onClick={() => setModalOpen(true)}>
-          <img src={plusLogo} width={'51px'} height={'51px'}></img>
-        </AddWorkspaceContainer>
-      )}
-
+      <AddWorkspace workspaces={workspaces} modalOpen={openModal}></AddWorkspace>
       <DummyWorkspace workspaces={workspaces}></DummyWorkspace>
     </>
   );
+
   return (
     <>
-      <Container content={content} justifyValue={'space-between'}></Container>
-      {modalOpen && <InputModal onClick={setModalClose} onSubmit={createHandler} content={modalContent}></InputModal>}
+      <Container content={content} justifyValue={'space-between'} />
+      {modalOpen && <InputModal onClick={setModalClose} onSubmit={createHandler} content={modalContent} />}
     </>
   );
 }
