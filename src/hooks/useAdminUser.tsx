@@ -38,7 +38,7 @@ function useAdminUser() {
       .catch((error) => console.error('Failed to create workspace: ', error));
   };
 
-  const leaveWorkspaces = (id: number) => {
+  const leaveWorkspace = (id: number) => {
     adminApi
       .post('/workspace/leave', { workspaceId: id as unknown as string })
       .then(() => {
@@ -58,7 +58,7 @@ function useAdminUser() {
       .catch((error) => console.error('Failed to add account: ', error));
   };
 
-  return { isLoggedIn, fetchWorkspaces, createWorkspaces, leaveWorkspaces, registerAccount, fetchAdminUser };
+  return { isLoggedIn, fetchWorkspaces, createWorkspaces, leaveWorkspace, registerAccount, fetchAdminUser };
 }
 
 export default useAdminUser;

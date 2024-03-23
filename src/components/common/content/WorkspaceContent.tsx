@@ -92,13 +92,13 @@ interface Props {
 }
 
 const WorkspaceContent = ({ workspaces }: Props) => {
-  const { leaveWorkspaces } = useAdminUser();
+  const { leaveWorkspace } = useAdminUser();
   const { appendPath } = useCustomNavigate();
 
   const leaveHandler = (e: React.FormEvent, id: number) => {
     e.stopPropagation();
     const userInput = window.confirm('정말 삭제하시겠습니까?');
-    if (userInput) leaveWorkspaces(id);
+    if (userInput) leaveWorkspace(id);
   };
 
   return (
