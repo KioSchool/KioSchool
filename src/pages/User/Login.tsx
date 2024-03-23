@@ -5,7 +5,7 @@ import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import AppButton from '@components/common/button/AppButton';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
-import Container from '@components/common/Container/Container';
+import Container from '@components/common/container/Container';
 
 const LoginContainer = styled.div`
   display: grid;

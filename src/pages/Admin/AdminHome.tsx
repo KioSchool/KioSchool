@@ -11,7 +11,7 @@ import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import AppButton from '@components/common/button/AppButton';
 import InputModal from '@components/common/modal/InputModal';
 import { WorkspaceContainer } from '@components/common/workspace/Container';
-import Container from '@components/common/Container/Container';
+import Container from '@components/common/container/Container';
 import DummyWorkspace from '@components/common/workspace/DummyWorkspace';
 import AddWorkspace from '@components/common/workspace/AddWorkspace';
 
