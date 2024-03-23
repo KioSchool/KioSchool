@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import AppButton from '@components/common/button/AppButton';
+import InputModal from '@components/common/modal/InputModal';
 
 const Container = styled.div`
   display: flex;
@@ -149,33 +150,6 @@ const DummyWorkspaceContainer = styled.div`
   border: 1px solid #000;
 `;
 
-const ModalOverlay = styled.div`
-  cursor: pointer;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-`;
-
-const ModalContent = styled.form`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  border-radius: 25px;
-  padding: 20px;
-  z-index: 1010;
-  height: 300px;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
 function AdminHome() {
   const { fetchWorkspaces, createWorkspaces, leaveWorkspaces } = useAdminUser();
   const { appendPath } = useCustomNavigate();
@@ -183,6 +157,22 @@ function AdminHome() {
   const workspaceDescriptionRef = useRef<HTMLInputElement>(null);
   const workspaces = useRecoilValue(workspacesAtom);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+
+  const modalContent = (
+    <>
+      <AppInputWithLabel titleLabel={'워크스페이스 이름'} style={{ marginBottom: '25px' }} type={'text'} id={'workspaceName'} ref={workspaceNameRef} />
+      <AppInputWithLabel
+        titleLabel={'워크스페이스 설명'}
+        style={{ marginBottom: '20px' }}
+        type={'text'}
+        id={'workspaceDescription'}
+        ref={workspaceDescriptionRef}
+      />
+      <AppButton size={'large'} style={{ marginTop: '15px' }} type={'submit'}>
+        생성하기
+      </AppButton>
+    </>
+  );
 
   useEffect(() => {
     fetchWorkspaces();
@@ -211,6 +201,9 @@ function AdminHome() {
     leaveWorkspaces(id);
   };
 
+  const setModalClose = () => {
+    setModalOpen(false);
+  };
   return (
     <>
       <Container>
@@ -262,24 +255,7 @@ function AdminHome() {
             Array.from({ length: 2 - workspaces.length }, (_, index) => <DummyWorkspaceContainer key={`dummy_${index}`}></DummyWorkspaceContainer>)}
         </SubContainer>
       </Container>
-      {modalOpen && (
-        <>
-          <ModalOverlay onClick={() => setModalOpen(false)} />
-          <ModalContent onSubmit={createHandler}>
-            <AppInputWithLabel titleLabel={'워크스페이스 이름'} style={{ marginBottom: '25px' }} type={'text'} id={'workspaceName'} ref={workspaceNameRef} />
-            <AppInputWithLabel
-              titleLabel={'워크스페이스 설명'}
-              style={{ marginBottom: '20px' }}
-              type={'text'}
-              id={'workspaceDescription'}
-              ref={workspaceDescriptionRef}
-            />
-            <AppButton size={'large'} style={{ marginTop: '15px' }} type={'submit'}>
-              생성하기
-            </AppButton>
-          </ModalContent>
-        </>
-      )}
+      {modalOpen && <InputModal onClick={setModalClose} onSubmit={createHandler} content={modalContent}></InputModal>}
     </>
   );
 }
