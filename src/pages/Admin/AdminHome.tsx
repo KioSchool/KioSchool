@@ -98,22 +98,6 @@ function AdminHome() {
   const workspaces = useRecoilValue(workspacesAtom);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
-  const modalContent = (
-    <>
-      <AppInputWithLabel titleLabel={'워크스페이스 이름'} style={{ marginBottom: '25px' }} type={'text'} id={'workspaceName'} ref={workspaceNameRef} />
-      <AppInputWithLabel
-        titleLabel={'워크스페이스 설명'}
-        style={{ marginBottom: '20px' }}
-        type={'text'}
-        id={'workspaceDescription'}
-        ref={workspaceDescriptionRef}
-      />
-      <AppButton size={'large'} style={{ marginTop: '15px' }} type={'submit'}>
-        생성하기
-      </AppButton>
-    </>
-  );
-
   useEffect(() => {
     fetchWorkspaces();
   }, []);
@@ -199,7 +183,24 @@ function AdminHome() {
           <DummyWorkspace workspaces={workspaces}></DummyWorkspace>
         </>
       </Container>
-      {modalOpen && <InputModal onClick={setModalClose} onSubmit={createHandler} content={modalContent} />}
+
+      {modalOpen && (
+        <InputModal onClick={setModalClose} onSubmit={createHandler}>
+          <>
+            <AppInputWithLabel titleLabel={'워크스페이스 이름'} style={{ marginBottom: '25px' }} type={'text'} id={'workspaceName'} ref={workspaceNameRef} />
+            <AppInputWithLabel
+              titleLabel={'워크스페이스 설명'}
+              style={{ marginBottom: '20px' }}
+              type={'text'}
+              id={'workspaceDescription'}
+              ref={workspaceDescriptionRef}
+            />
+            <AppButton size={'large'} style={{ marginTop: '15px' }} type={'submit'}>
+              생성하기
+            </AppButton>
+          </>
+        </InputModal>
+      )}
     </>
   );
 }

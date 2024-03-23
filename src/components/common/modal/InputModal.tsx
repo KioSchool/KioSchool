@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { FormEventHandler, MouseEventHandler } from 'react';
 
 const ModalOverlay = styled.div`
   cursor: pointer;
@@ -26,12 +27,17 @@ const ModalContent = styled.form`
   justify-content: center;
   align-items: center;
 `;
+type WrapperProps = {
+  children: JSX.Element;
+  onClick: MouseEventHandler<HTMLDivElement>;
+  onSubmit: FormEventHandler<HTMLFormElement>;
+};
 
-const InputModal = (props: any) => {
+const InputModal = ({ children, onClick, onSubmit }: WrapperProps) => {
   return (
     <>
-      <ModalOverlay onClick={props.onClick} />
-      <ModalContent onSubmit={props.onSubmit}>{props.content}</ModalContent>
+      <ModalOverlay onClick={onClick} />
+      <ModalContent onSubmit={onSubmit}>{children}</ModalContent>
     </>
   );
 };
