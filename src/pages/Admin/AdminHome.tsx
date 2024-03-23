@@ -69,7 +69,7 @@ const SubTitleContainer = styled.div`
   display: block;
 `;
 
-const SubTitle = styled.div`
+const Description = styled.div`
   padding: 26px 0 0 22px;
   display: flex;
   flex-wrap: wrap;
@@ -172,7 +172,7 @@ function AdminHome() {
         >
           <TitleContainer>
             <MainTitleContainer>
-              <SubTitle>{it.description}</SubTitle>
+              <Description>{it.description}</Description>
               <DeleteContainer>
                 <DeleteText
                   onClick={(e: React.FormEvent) => {
