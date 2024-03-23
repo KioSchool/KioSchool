@@ -20,6 +20,7 @@ export const userWorkspaceAtom = atom<Workspace>({
   key: 'userWorkspaceAtom',
   default: {
     name: '',
+    description: '',
     owner: {
       name: '',
       email: '',
