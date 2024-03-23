@@ -47,26 +47,27 @@ function Login() {
 
     login(userId, userPassword);
   };
-  const content = (
-    <LoginContainer>
-      <AppLabel size={'large'}>로그인</AppLabel>
-      <InputContainer>
-        <AppInputWithLabel titleLabel={'아이디'} type={'text'} id={'userId'} ref={userIdInputRef} />
-        <AppInputWithLabel titleLabel={'비밀번호'} type={'password'} id={'password'} ref={userPasswordInputRef} enterHandler={handleSubmit} />
-        {errorMessage && <div className="error-message">{errorMessage}</div>}
-      </InputContainer>
-      <ButtonContainer>
-        <AppButton size={'large'} style={{ gridColumn: '1/3' }} type={'button'} onClick={handleSubmit}>
-          로그인
-        </AppButton>
-        <AppLabel size={'small'}>
-          <Link to={'/'}>비밀번호를 잊어버렸나요?</Link> <Link to={'/register'}>회원가입하기</Link>
-        </AppLabel>
-      </ButtonContainer>
-    </LoginContainer>
-  );
 
-  return <Container content={content} justifyValue={'center'} />;
+  return (
+    <Container justifyValue={'center'}>
+      <LoginContainer>
+        <AppLabel size={'large'}>로그인</AppLabel>
+        <InputContainer>
+          <AppInputWithLabel titleLabel={'아이디'} type={'text'} id={'userId'} ref={userIdInputRef} />
+          <AppInputWithLabel titleLabel={'비밀번호'} type={'password'} id={'password'} ref={userPasswordInputRef} enterHandler={handleSubmit} />
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
+        </InputContainer>
+        <ButtonContainer>
+          <AppButton size={'large'} style={{ gridColumn: '1/3' }} type={'button'} onClick={handleSubmit}>
+            로그인
+          </AppButton>
+          <AppLabel size={'small'}>
+            <Link to={'/'}>비밀번호를 잊어버렸나요?</Link> <Link to={'/register'}>회원가입하기</Link>
+          </AppLabel>
+        </ButtonContainer>
+      </LoginContainer>
+    </Container>
+  );
 }
 
 export default Login;

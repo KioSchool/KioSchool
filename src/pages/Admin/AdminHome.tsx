@@ -151,56 +151,54 @@ function AdminHome() {
     setModalOpen(true);
   };
 
-  const content = (
-    <>
-      <NavContainer>
-        <Link to={'/'}>
-          <img src={kioLogo} width="170px" height="80px"></img>
-        </Link>
-
-        <LinkItem to={'/register-account'}>
-          <img src={userDefaultProfileImage} width="60px" height="60px"></img>
-        </LinkItem>
-      </NavContainer>
-
-      {workspaces.map((it) => (
-        <WorkspaceContainer
-          key={it.id}
-          onClick={() => {
-            appendPath(`/workspace/${it.id}`);
-          }}
-        >
-          <TitleContainer>
-            <MainTitleContainer>
-              <Description>{it.description}</Description>
-              <DeleteContainer>
-                <DeleteText
-                  onClick={(e: React.FormEvent) => {
-                    leaveHandler(e, it.id);
-                  }}
-                >
-                  탈퇴하기
-                </DeleteText>
-              </DeleteContainer>
-            </MainTitleContainer>
-
-            <SubTitleContainer>
-              <Title>{it.name}</Title>
-            </SubTitleContainer>
-          </TitleContainer>
-
-          <MenuTitle>메뉴 개수 {it.products.length} 개</MenuTitle>
-        </WorkspaceContainer>
-      ))}
-
-      <AddWorkspace workspaces={workspaces} modalOpen={openModal}></AddWorkspace>
-      <DummyWorkspace workspaces={workspaces}></DummyWorkspace>
-    </>
-  );
-
   return (
     <>
-      <Container content={content} justifyValue={'space-between'} />
+      <Container justifyValue={'space-between'}>
+        <>
+          <NavContainer>
+            <Link to={'/'}>
+              <img src={kioLogo} width="170px" height="80px"></img>
+            </Link>
+
+            <LinkItem to={'/register-account'}>
+              <img src={userDefaultProfileImage} width="60px" height="60px"></img>
+            </LinkItem>
+          </NavContainer>
+
+          {workspaces.map((it) => (
+            <WorkspaceContainer
+              key={it.id}
+              onClick={() => {
+                appendPath(`/workspace/${it.id}`);
+              }}
+            >
+              <TitleContainer>
+                <MainTitleContainer>
+                  <Description>{it.description}</Description>
+                  <DeleteContainer>
+                    <DeleteText
+                      onClick={(e: React.FormEvent) => {
+                        leaveHandler(e, it.id);
+                      }}
+                    >
+                      탈퇴하기
+                    </DeleteText>
+                  </DeleteContainer>
+                </MainTitleContainer>
+
+                <SubTitleContainer>
+                  <Title>{it.name}</Title>
+                </SubTitleContainer>
+              </TitleContainer>
+
+              <MenuTitle>메뉴 개수 {it.products.length} 개</MenuTitle>
+            </WorkspaceContainer>
+          ))}
+
+          <AddWorkspace workspaces={workspaces} modalOpen={openModal}></AddWorkspace>
+          <DummyWorkspace workspaces={workspaces}></DummyWorkspace>
+        </>
+      </Container>
       {modalOpen && <InputModal onClick={setModalClose} onSubmit={createHandler} content={modalContent} />}
     </>
   );

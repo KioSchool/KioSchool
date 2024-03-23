@@ -20,13 +20,16 @@ export const SubContainer = styled.div<{ justifyValue: string }>`
   justify-content: ${(props) => props.justifyValue};
 `;
 
-const Container = (props: any) => {
+type WrapperProps = {
+  children: JSX.Element;
+  justifyValue: string;
+};
+
+const Container = ({ children, justifyValue }: WrapperProps) => {
   return (
-    <>
-      <MainContainer>
-        <SubContainer justifyValue={props.justifyValue}>{props.content}</SubContainer>
-      </MainContainer>
-    </>
+    <MainContainer>
+      <SubContainer justifyValue={justifyValue}>{children}</SubContainer>
+    </MainContainer>
   );
 };
 
