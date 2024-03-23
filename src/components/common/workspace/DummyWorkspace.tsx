@@ -1,5 +1,14 @@
-import { DummyWorkspaceContainer } from './Container';
+import styled from '@emotion/styled';
 
+const DummyWorkspaceContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 321px;
+  height: 332px;
+  border-radius: 25px;
+  border: 1px solid #000;
+`;
 const DummyWorkspace = (props: any) => {
   const maxDummyWorkspaceNum = 2;
 

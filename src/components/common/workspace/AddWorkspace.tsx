@@ -1,5 +1,16 @@
-import { AddWorkspaceContainer } from './Container';
+import styled from '@emotion/styled';
 import plusLogo from '../../../resources/image/plusLogo.png';
+
+const AddWorkspaceContainer = styled.form`
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 321px;
+  height: 332px;
+  border-radius: 25px;
+  border: 1px solid #000;
+`;
 const AddWorkspace = (props: any) => {
   const maxWorkspaceNum = 3;
 

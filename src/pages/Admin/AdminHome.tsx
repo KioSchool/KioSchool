@@ -10,10 +10,32 @@ import styled from '@emotion/styled';
 import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import AppButton from '@components/common/button/AppButton';
 import InputModal from '@components/common/modal/InputModal';
-import { WorkspaceContainer } from '@components/common/workspace/Container';
 import Container from '@components/common/container/Container';
 import DummyWorkspace from '@components/common/workspace/DummyWorkspace';
 import AddWorkspace from '@components/common/workspace/AddWorkspace';
+
+const WorkspaceContainer = styled.div`
+  cursor: pointer;
+  width: 321px;
+  height: 332px;
+  border-radius: 25px;
+  background: #eb6d09;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  &:hover {
+    background: linear-gradient(140deg, #ffe3cc -165.17%, #eb6d09 92.63%);
+  }
+
+  &:active {
+    border-radius: 25px;
+    background: #eb6d09;
+    box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.25) inset;
+  }
+`;
 
 const NavContainer = styled.div`
   padding-bottom: 40px;
