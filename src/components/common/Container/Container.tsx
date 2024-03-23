@@ -17,6 +17,7 @@ export const SubContainer = styled.div<{ justifyValue: string }>`
   flex-direction: row;
   align-items: center;
   height: 500px;
+  min-width: 1100px;
   justify-content: ${(props) => props.justifyValue};
 `;
 
