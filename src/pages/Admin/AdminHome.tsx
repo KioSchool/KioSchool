@@ -7,12 +7,11 @@ import kioLogo from '@resources/image/kioLogo.png';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
-import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
-import AppButton from '@components/common/button/AppButton';
 import InputModal from '@components/common/modal/InputModal';
 import Container from '@components/common/container/Container';
 import DummyWorkspace from '@components/common/workspace/DummyWorkspace';
 import AddWorkspace from '@components/common/workspace/AddWorkspace';
+import { AddWorkspaceModalContent } from '@components/common/content/AddworkspaceModalContent';
 
 const WorkspaceContainer = styled.div`
   cursor: pointer;
@@ -208,19 +207,7 @@ function AdminHome() {
 
       {modalOpen && (
         <InputModal onClick={setModalClose} onSubmit={createHandler}>
-          <>
-            <AppInputWithLabel titleLabel={'워크스페이스 이름'} style={{ marginBottom: '25px' }} type={'text'} id={'workspaceName'} ref={workspaceNameRef} />
-            <AppInputWithLabel
-              titleLabel={'워크스페이스 설명'}
-              style={{ marginBottom: '20px' }}
-              type={'text'}
-              id={'workspaceDescription'}
-              ref={workspaceDescriptionRef}
-            />
-            <AppButton size={'large'} style={{ marginTop: '15px' }} type={'submit'}>
-              생성하기
-            </AppButton>
-          </>
+          <AddWorkspaceModalContent workspaceDescriptionRef={workspaceDescriptionRef} workspaceNameRef={workspaceNameRef}></AddWorkspaceModalContent>
         </InputModal>
       )}
     </>
