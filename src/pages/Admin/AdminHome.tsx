@@ -26,18 +26,12 @@ const LinkItem = styled(Link)`
 `;
 
 function AdminHome() {
-  const { fetchWorkspaces, leaveWorkspaces } = useAdminUser();
+  const { fetchWorkspaces } = useAdminUser();
   const workspaces = useRecoilValue(workspacesAtom);
 
   useEffect(() => {
     fetchWorkspaces();
   }, []);
-
-  const leaveHandler = (e: React.FormEvent, id: number) => {
-    e.stopPropagation();
-    const userInput = window.confirm('정말 삭제하시겠습니까?');
-    if (userInput) leaveWorkspaces(id);
-  };
 
   return (
     <>
@@ -53,7 +47,7 @@ function AdminHome() {
             </LinkItem>
           </NavContainer>
 
-          <WorkspaceContent workspaces={workspaces} leaveHandler={leaveHandler} />
+          <WorkspaceContent workspaces={workspaces} />
 
           <AddWorkspace workspaces={workspaces} />
           <DummyWorkspace workspaces={workspaces} />

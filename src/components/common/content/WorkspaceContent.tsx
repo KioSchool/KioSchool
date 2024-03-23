@@ -1,5 +1,6 @@
 import { Workspace } from '@@types/index';
 import styled from '@emotion/styled';
+import useAdminUser from '@hooks/useAdminUser';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 
 const WorkspaceContainer = styled.div`
@@ -88,11 +89,18 @@ const Title = styled.div`
 
 interface Props {
   workspaces: Workspace[];
-  leaveHandler: (e: React.FormEvent, id: number) => void;
 }
 
-const WorkspaceContent = ({ workspaces, leaveHandler }: Props) => {
+const WorkspaceContent = ({ workspaces }: Props) => {
+  const { leaveWorkspaces } = useAdminUser();
   const { appendPath } = useCustomNavigate();
+
+  const leaveHandler = (e: React.FormEvent, id: number) => {
+    e.stopPropagation();
+    const userInput = window.confirm('정말 삭제하시겠습니까?');
+    if (userInput) leaveWorkspaces(id);
+  };
+
   return (
     <>
       {workspaces.map((it) => (
