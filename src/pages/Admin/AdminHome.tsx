@@ -71,7 +71,6 @@ const MenuTitle = styled.div`
   height: 27px;
   flex-shrink: 0;
   color: #fff;
-  font-family: Inter;
   font-size: 24px;
   font-style: normal;
   font-weight: 300;
@@ -111,7 +110,6 @@ const SubTitle = styled.div`
   width: 198px;
   flex-shrink: 0;
   color: #fff;
-  font-family: Inter;
   font-size: 32px;
   font-weight: 100;
 `;
@@ -124,8 +122,6 @@ const Title = styled.div`
   height: 45px;
   flex-shrink: 0;
   color: #fff;
-
-  font-family: Inter;
   font-size: 40.329px;
   font-style: normal;
   font-weight: 700;
