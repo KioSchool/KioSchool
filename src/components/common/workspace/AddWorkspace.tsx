@@ -22,7 +22,7 @@ interface Props {
 }
 
 const AddWorkspace = ({ workspaces }: Props) => {
-  const maxWorkspaceNum = 3;
+  const maxWorkspaceNumber = 3;
   const { createWorkspaces } = useAdminUser();
   const workspaceNameRef = useRef<HTMLInputElement>(null);
   const workspaceDescriptionRef = useRef<HTMLInputElement>(null);
@@ -52,7 +52,7 @@ const AddWorkspace = ({ workspaces }: Props) => {
     setModalOpen(false);
   };
 
-  if (workspaces.length >= maxWorkspaceNum) return null;
+  if (workspaces.length >= maxWorkspaceNumber) return null;
 
   return (
     <>
