@@ -43,7 +43,7 @@ const AddWorkspace = ({ workspaces }: WrapperProps) => {
       alert('workspace 설명 입력해주세요');
       return;
     }
-    console.log('hi');
+
     createWorkspaces(workspaceName, workspaceDescription);
     setModalOpen(false);
   };
