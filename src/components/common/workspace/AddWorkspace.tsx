@@ -28,6 +28,10 @@ const AddWorkspace = ({ workspaces }: Props) => {
   const workspaceDescriptionRef = useRef<HTMLInputElement>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   const createHandler = (e: React.FormEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -45,11 +49,7 @@ const AddWorkspace = ({ workspaces }: Props) => {
     }
 
     createWorkspaces(workspaceName, workspaceDescription);
-    setModalOpen(false);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
+    closeModal();
   };
 
   if (workspaces.length >= maxWorkspaceNumber) return null;
