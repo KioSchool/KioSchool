@@ -29,15 +29,15 @@ const ModalContent = styled.form`
 `;
 type WrapperProps = {
   children: JSX.Element;
-  onClick: MouseEventHandler<HTMLDivElement>;
-  onSubmit: FormEventHandler<HTMLFormElement>;
+  closeModal: MouseEventHandler<HTMLDivElement>;
+  createHandler: FormEventHandler<HTMLFormElement>;
 };
 
-const InputModal = ({ children, onClick, onSubmit }: WrapperProps) => {
+const InputModal = ({ children, closeModal, createHandler }: WrapperProps) => {
   return (
     <>
-      <ModalOverlay onClick={onClick} />
-      <ModalContent onSubmit={onSubmit}>{children}</ModalContent>
+      <ModalOverlay onClick={closeModal} />
+      <ModalContent onSubmit={createHandler}>{children}</ModalContent>
     </>
   );
 };
