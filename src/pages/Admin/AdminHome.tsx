@@ -11,8 +11,9 @@ import styled from '@emotion/styled';
 import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import AppButton from '@components/common/button/AppButton';
 import InputModal from '@components/common/modal/InputModal';
-import { AddWorkspaceContainer, DummyWorkspaceContainer, WorkspaceContainer } from '@components/common/workspace/Container';
+import { AddWorkspaceContainer, WorkspaceContainer } from '@components/common/workspace/Container';
 import Container from '@components/common/Container/Container';
+import DummyWorkspace from '@components/common/workspace/DummyWorkspace';
 
 const NavContainer = styled.div`
   padding-bottom: 40px;
@@ -194,8 +195,7 @@ function AdminHome() {
         </AddWorkspaceContainer>
       )}
 
-      {workspaces.length < 2 &&
-        Array.from({ length: 2 - workspaces.length }, (_, index) => <DummyWorkspaceContainer key={`dummy_${index}`}></DummyWorkspaceContainer>)}
+      <DummyWorkspace workspaces={workspaces}></DummyWorkspace>
     </>
   );
   return (
