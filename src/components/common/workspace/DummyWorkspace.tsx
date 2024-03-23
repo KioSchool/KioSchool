@@ -17,15 +17,15 @@ interface Props {
 
 const DummyWorkspace = ({ workspaces }: Props) => {
   const maxDummyWorkspaceNumber = 2;
-
   const dummyArray = new Array(Math.max(maxDummyWorkspaceNumber - workspaces.length, 0)).fill(1);
+
+  if (maxDummyWorkspaceNumber <= workspaces.length) return null;
 
   return (
     <>
-      {maxDummyWorkspaceNumber > workspaces.length &&
-        dummyArray.map((_, index) => {
-          return <DummyWorkspaceContainer key={`dummy_${index}`} />;
-        })}
+      {dummyArray.map((_, index) => {
+        return <DummyWorkspaceContainer key={`dummy_${index}`} />;
+      })}
     </>
   );
 };
