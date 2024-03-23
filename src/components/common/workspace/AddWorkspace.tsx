@@ -3,7 +3,7 @@ import plusLogo from '../../../resources/image/plusLogo.png';
 import { Workspace } from '@@types/index';
 import useAdminUser from '@hooks/useAdminUser';
 import { useRef, useState } from 'react';
-import CreateWorkspaceModal from '../modal/CreateWorkspaceModal';
+import CreateWorkspaceModal from './modal/CreateWorkspaceModal';
 import AddWorkspaceModalContent from '../content/AddworkspaceModalContent';
 
 const AddWorkspaceContainer = styled.form`
