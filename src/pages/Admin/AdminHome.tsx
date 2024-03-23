@@ -12,25 +12,7 @@ import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import AppButton from '@components/common/button/AppButton';
 import InputModal from '@components/common/modal/InputModal';
 import { AddWorkspaceContainer, DummyWorkspaceContainer, WorkspaceContainer } from '@components/common/workspace/Container';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  box-sizing: border-box;
-`;
-const SubContainer = styled.div`
-  display: flex;
-  width: 60vw;
-  flex-basis: 0;
-  flex-wrap: wrap;
-  flex-direction: row;
-  align-items: center;
-  height: 500px;
-  justify-content: space-between;
-`;
+import Container from '@components/common/Container/Container';
 
 const NavContainer = styled.div`
   padding-bottom: 40px;
@@ -160,57 +142,60 @@ function AdminHome() {
   const setModalClose = () => {
     setModalOpen(false);
   };
+  const content = (
+    <>
+      <NavContainer>
+        <Link to={'/'}>
+          <img src={kioLogo} width="170px" height="80px"></img>
+        </Link>
+
+        <LinkItem to={'/register-account'}>
+          <img src={userDefaultProfileImage} width="60px" height="60px"></img>
+        </LinkItem>
+      </NavContainer>
+
+      {workspaces.map((it) => (
+        <WorkspaceContainer
+          key={it.id}
+          onClick={() => {
+            appendPath(`/workspace/${it.id}`);
+          }}
+        >
+          <TitleContainer>
+            <MainTitleContainer>
+              <SubTitle>{it.description}</SubTitle>
+              <DeleteContainer>
+                <DeleteText
+                  onClick={(e: React.FormEvent) => {
+                    leaveHandler(e, it.id);
+                  }}
+                >
+                  탈퇴하기
+                </DeleteText>
+              </DeleteContainer>
+            </MainTitleContainer>
+
+            <SubTitleContainer>
+              <Title>{it.name}</Title>
+            </SubTitleContainer>
+          </TitleContainer>
+
+          <MenuTitle>메뉴 개수 {it.products.length} 개</MenuTitle>
+        </WorkspaceContainer>
+      ))}
+
+      {workspaces.length < 3 && (
+        <AddWorkspaceContainer onClick={() => setModalOpen(true)}>
+          <img src={plusLogo} width={'51px'} height={'51px'}></img>
+        </AddWorkspaceContainer>
+      )}
+      {workspaces.length < 2 &&
+        Array.from({ length: 2 - workspaces.length }, (_, index) => <DummyWorkspaceContainer key={`dummy_${index}`}></DummyWorkspaceContainer>)}
+    </>
+  );
   return (
     <>
-      <Container>
-        <SubContainer>
-          <NavContainer>
-            <Link to={'/'}>
-              <img src={kioLogo} width="170px" height="80px"></img>
-            </Link>
-
-            <LinkItem to={'/register-account'}>
-              <img src={userDefaultProfileImage} width="60px" height="60px"></img>
-            </LinkItem>
-          </NavContainer>
-          {workspaces.map((it) => (
-            <WorkspaceContainer
-              key={it.id}
-              onClick={() => {
-                appendPath(`/workspace/${it.id}`);
-              }}
-            >
-              <TitleContainer>
-                <MainTitleContainer>
-                  <SubTitle>{it.description}</SubTitle>
-                  <DeleteContainer>
-                    <DeleteText
-                      onClick={(e: React.FormEvent) => {
-                        leaveHandler(e, it.id);
-                      }}
-                    >
-                      탈퇴하기
-                    </DeleteText>
-                  </DeleteContainer>
-                </MainTitleContainer>
-                <SubTitleContainer>
-                  <Title>{it.name}</Title>
-                </SubTitleContainer>
-              </TitleContainer>
-
-              <MenuTitle>메뉴 개수 {it.products.length} 개</MenuTitle>
-            </WorkspaceContainer>
-          ))}
-
-          {workspaces.length < 3 && (
-            <AddWorkspaceContainer onClick={() => setModalOpen(true)}>
-              <img src={plusLogo} width={'51px'} height={'51px'}></img>
-            </AddWorkspaceContainer>
-          )}
-          {workspaces.length < 2 &&
-            Array.from({ length: 2 - workspaces.length }, (_, index) => <DummyWorkspaceContainer key={`dummy_${index}`}></DummyWorkspaceContainer>)}
-        </SubContainer>
-      </Container>
+      <Container content={content} justifyValue={'space-between'}></Container>
       {modalOpen && <InputModal onClick={setModalClose} onSubmit={createHandler} content={modalContent}></InputModal>}
     </>
   );
