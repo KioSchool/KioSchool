@@ -200,14 +200,14 @@ function AdminHome() {
             </WorkspaceContainer>
           ))}
 
-          <AddWorkspace workspaces={workspaces} modalOpen={openModal}></AddWorkspace>
-          <DummyWorkspace workspaces={workspaces}></DummyWorkspace>
+          <AddWorkspace workspaces={workspaces} modalOpen={openModal} />
+          <DummyWorkspace workspaces={workspaces} />
         </>
       </Container>
 
       {modalOpen && (
         <InputModal onClick={setModalClose} onSubmit={createHandler}>
-          <AddWorkspaceModalContent workspaceDescriptionRef={workspaceDescriptionRef} workspaceNameRef={workspaceNameRef}></AddWorkspaceModalContent>
+          <AddWorkspaceModalContent workspaceDescriptionRef={workspaceDescriptionRef} workspaceNameRef={workspaceNameRef} />
         </InputModal>
       )}
     </>
