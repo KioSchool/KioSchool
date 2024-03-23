@@ -6,7 +6,7 @@ import userDefaultProfileImage from '@resources/image/userDefaultProfileImage.pn
 import kioLogo from '@resources/image/kioLogo.png';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
-import Container from '@components/common/container/Container';
+import Container from '@components/common/cons/Container';
 import DummyWorkspace from '@components/common/workspace/DummyWorkspace';
 import AddWorkspace from '@components/common/workspace/AddWorkspace';
 import WorkspaceContent from '@components/common/content/WorkspaceContent';
