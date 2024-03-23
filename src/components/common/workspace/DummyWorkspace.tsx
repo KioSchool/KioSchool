@@ -17,13 +17,15 @@ type WrapperProps = {
 
 const DummyWorkspace = ({ workspaces }: WrapperProps) => {
   const maxDummyWorkspaceNum = 2;
-  const dummyArray = new Array(maxDummyWorkspaceNum - workspaces.length).fill(1);
+
+  const dummyArray = new Array(Math.max(maxDummyWorkspaceNum - workspaces.length, 0)).fill(1);
 
   return (
     <>
-      {dummyArray.map((_, index) => {
-        return <DummyWorkspaceContainer key={`dummy_${index}`} />;
-      })}
+      {maxDummyWorkspaceNum > workspaces.length &&
+        dummyArray.map((_, index) => {
+          return <DummyWorkspaceContainer key={`dummy_${index}`} />;
+        })}
     </>
   );
 };
