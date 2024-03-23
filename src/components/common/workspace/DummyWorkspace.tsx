@@ -1,3 +1,4 @@
+import { Workspace } from '@@types/index';
 import styled from '@emotion/styled';
 
 const DummyWorkspaceContainer = styled.div`
@@ -9,13 +10,18 @@ const DummyWorkspaceContainer = styled.div`
   border-radius: 25px;
   border: 1px solid #000;
 `;
-const DummyWorkspace = (props: any) => {
+
+type WrapperProps = {
+  workspaces: Workspace[];
+};
+
+const DummyWorkspace = ({ workspaces }: WrapperProps) => {
   const maxDummyWorkspaceNum = 2;
 
   return (
     <>
-      {props.workspaces.length < maxDummyWorkspaceNum &&
-        Array.from({ length: maxDummyWorkspaceNum - props.workspaces.length }, (_, index) => <DummyWorkspaceContainer key={`dummy_${index}`} />)}
+      {workspaces.length < maxDummyWorkspaceNum &&
+        Array.from({ length: maxDummyWorkspaceNum - workspaces.length }, (_, index) => <DummyWorkspaceContainer key={`dummy_${index}`} />)}
     </>
   );
 };

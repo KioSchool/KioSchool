@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import plusLogo from '../../../resources/image/plusLogo.png';
+import { Workspace } from '@@types/index';
 
 const AddWorkspaceContainer = styled.form`
   cursor: pointer;
@@ -11,13 +12,19 @@ const AddWorkspaceContainer = styled.form`
   border-radius: 25px;
   border: 1px solid #000;
 `;
-const AddWorkspace = (props: any) => {
+
+type WrapperProps = {
+  workspaces: Workspace[];
+  modalOpen: () => void;
+};
+
+const AddWorkspace = ({ workspaces, modalOpen }: WrapperProps) => {
   const maxWorkspaceNum = 3;
 
-  if (props.workspaces.length >= maxWorkspaceNum) return null;
+  if (workspaces.length >= maxWorkspaceNum) return null;
 
   return (
-    <AddWorkspaceContainer onClick={props.modalOpen}>
+    <AddWorkspaceContainer onClick={modalOpen}>
       <img src={plusLogo} width={'51px'} height={'51px'}></img>
     </AddWorkspaceContainer>
   );
