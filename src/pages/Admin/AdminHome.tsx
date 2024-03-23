@@ -34,26 +34,24 @@ function AdminHome() {
   }, []);
 
   return (
-    <>
-      <Container justifyValue={'space-between'}>
-        <>
-          <NavContainer>
-            <Link to={'/'}>
-              <img src={kioLogo} width="170px" height="80px" />
-            </Link>
+    <Container justifyValue={'space-between'}>
+      <>
+        <NavContainer>
+          <Link to={'/'}>
+            <img src={kioLogo} width="170px" height="80px" />
+          </Link>
 
-            <LinkItem to={'/register-account'}>
-              <img src={userDefaultProfileImage} width="60px" height="60px" />
-            </LinkItem>
-          </NavContainer>
+          <LinkItem to={'/register-account'}>
+            <img src={userDefaultProfileImage} width="60px" height="60px" />
+          </LinkItem>
+        </NavContainer>
 
-          <WorkspaceContent workspaces={workspaces} />
+        <WorkspaceContent workspaces={workspaces} />
 
-          <AddWorkspace workspaces={workspaces} />
-          <DummyWorkspace workspaces={workspaces} />
-        </>
-      </Container>
-    </>
+        <AddWorkspace workspaces={workspaces} />
+        <DummyWorkspace workspaces={workspaces} />
+      </>
+    </Container>
   );
 }
 
