@@ -22,6 +22,7 @@ const NavContainer = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+
 const LinkItem = styled(Link)`
   width: 60px;
   height: 60px;
@@ -34,9 +35,7 @@ const MenuTitle = styled.div`
   flex-shrink: 0;
   color: #fff;
   font-size: 24px;
-  font-style: normal;
   font-weight: 300;
-  line-height: normal;
   display: flex;
   flex-direction: row;
 `;
@@ -49,12 +48,14 @@ const DeleteText = styled.div`
   cursor: pointer;
   color: #fff;
 `;
+
 const TitleContainer = styled.div`
   display: flex;
   width: 100%;
   flex-wrap: wrap;
   flex-direction: column;
 `;
+
 const MainTitleContainer = styled.div`
   display: flex;
   width: 100%;
@@ -62,15 +63,16 @@ const MainTitleContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
 `;
+
 const SubTitleContainer = styled.div`
   display: block;
 `;
+
 const SubTitle = styled.div`
   padding: 26px 0 0 22px;
   display: flex;
   flex-wrap: wrap;
   width: 198px;
-  flex-shrink: 0;
   color: #fff;
   font-size: 32px;
   font-weight: 100;
@@ -82,7 +84,6 @@ const Title = styled.div`
   flex-wrap: wrap;
   width: 188px;
   height: 45px;
-  flex-shrink: 0;
   color: #fff;
   font-size: 40.329px;
   font-weight: 700;
@@ -119,6 +120,7 @@ function AdminHome() {
   const createHandler = (e: React.FormEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
     const workspaceName = workspaceNameRef.current?.value;
     if (!workspaceName) {
       alert('workspace 이름을 입력해주세요');
@@ -130,6 +132,7 @@ function AdminHome() {
       alert('workspace 설명 입력해주세요');
       return;
     }
+
     createWorkspaces(workspaceName, workspaceDescription);
     setModalOpen(false);
   };
@@ -142,6 +145,7 @@ function AdminHome() {
   const setModalClose = () => {
     setModalOpen(false);
   };
+
   const content = (
     <>
       <NavContainer>
@@ -189,6 +193,7 @@ function AdminHome() {
           <img src={plusLogo} width={'51px'} height={'51px'}></img>
         </AddWorkspaceContainer>
       )}
+
       {workspaces.length < 2 &&
         Array.from({ length: 2 - workspaces.length }, (_, index) => <DummyWorkspaceContainer key={`dummy_${index}`}></DummyWorkspaceContainer>)}
     </>
