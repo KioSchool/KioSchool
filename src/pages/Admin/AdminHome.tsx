@@ -35,7 +35,8 @@ function AdminHome() {
 
   const leaveHandler = (e: React.FormEvent, id: number) => {
     e.stopPropagation();
-    leaveWorkspaces(id);
+    const userInput = window.confirm('정말 삭제하시겠습니까?');
+    if (userInput) leaveWorkspaces(id);
   };
 
   return (
