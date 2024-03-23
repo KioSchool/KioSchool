@@ -27,13 +27,13 @@ const ModalContent = styled.form`
   justify-content: center;
   align-items: center;
 `;
-type WrapperProps = {
+interface Props {
   children: JSX.Element;
   closeModal: MouseEventHandler<HTMLDivElement>;
   createHandler: FormEventHandler<HTMLFormElement>;
-};
+}
 
-const InputModal = ({ children, closeModal, createHandler }: WrapperProps) => {
+const InputModal = ({ children, closeModal, createHandler }: Props) => {
   return (
     <>
       <ModalOverlay onClick={closeModal} />

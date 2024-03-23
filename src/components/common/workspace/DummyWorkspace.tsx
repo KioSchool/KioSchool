@@ -11,11 +11,11 @@ const DummyWorkspaceContainer = styled.div`
   border: 1px solid #000;
 `;
 
-type WrapperProps = {
+interface Props {
   workspaces: Workspace[];
-};
+}
 
-const DummyWorkspace = ({ workspaces }: WrapperProps) => {
+const DummyWorkspace = ({ workspaces }: Props) => {
   const maxDummyWorkspaceNum = 2;
 
   const dummyArray = new Array(Math.max(maxDummyWorkspaceNum - workspaces.length, 0)).fill(1);

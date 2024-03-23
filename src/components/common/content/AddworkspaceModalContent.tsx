@@ -1,11 +1,11 @@
 import { Ref } from 'react';
 import AppButton from '../button/AppButton';
 import AppInputWithLabel from '../input/AppInputWithLabel';
-type WrapperProps = {
+interface Props {
   workspaceDescriptionRef: Ref<HTMLInputElement>;
   workspaceNameRef: Ref<HTMLInputElement>;
-};
-export const AddWorkspaceModalContent = ({ workspaceDescriptionRef, workspaceNameRef }: WrapperProps) => {
+}
+export const AddWorkspaceModalContent = ({ workspaceDescriptionRef, workspaceNameRef }: Props) => {
   return (
     <>
       <AppInputWithLabel titleLabel={'워크스페이스 이름'} style={{ marginBottom: '25px' }} type={'text'} id={'workspaceName'} ref={workspaceNameRef} />

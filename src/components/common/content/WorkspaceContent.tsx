@@ -86,12 +86,12 @@ const Title = styled.div`
   font-weight: 700;
 `;
 
-type WrapperProps = {
+interface Props {
   workspaces: Workspace[];
   leaveHandler: (e: React.FormEvent, id: number) => void;
-};
+}
 
-const WorkspaceContent = ({ workspaces, leaveHandler }: WrapperProps) => {
+const WorkspaceContent = ({ workspaces, leaveHandler }: Props) => {
   const { appendPath } = useCustomNavigate();
   return (
     <>

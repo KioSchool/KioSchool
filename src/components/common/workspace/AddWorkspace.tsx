@@ -17,11 +17,11 @@ const AddWorkspaceContainer = styled.form`
   border: 1px solid #000;
 `;
 
-type WrapperProps = {
+interface Props {
   workspaces: Workspace[];
-};
+}
 
-const AddWorkspace = ({ workspaces }: WrapperProps) => {
+const AddWorkspace = ({ workspaces }: Props) => {
   const maxWorkspaceNum = 3;
   const { createWorkspaces } = useAdminUser();
   const workspaceNameRef = useRef<HTMLInputElement>(null);
