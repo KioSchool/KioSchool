@@ -3,7 +3,7 @@ import plusLogo from '../../../resources/image/plusLogo.png';
 import { Workspace } from '@@types/index';
 import useAdminUser from '@hooks/useAdminUser';
 import { useRef, useState } from 'react';
-import InputModal from '../modal/InputModal';
+import CreateWorkspaceModal from '../modal/CreateWorkspaceModal';
 import { AddWorkspaceModalContent } from '../content/AddworkspaceModalContent';
 
 const AddWorkspaceContainer = styled.form`
@@ -61,9 +61,9 @@ const AddWorkspace = ({ workspaces }: Props) => {
       </AddWorkspaceContainer>
 
       {modalOpen && (
-        <InputModal closeModal={closeModal} createHandler={createHandler}>
+        <CreateWorkspaceModal closeModal={closeModal} createHandler={createHandler}>
           <AddWorkspaceModalContent workspaceDescriptionRef={workspaceDescriptionRef} workspaceNameRef={workspaceNameRef} />
-        </InputModal>
+        </CreateWorkspaceModal>
       )}
     </>
   );

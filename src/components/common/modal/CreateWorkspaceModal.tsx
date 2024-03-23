@@ -33,7 +33,7 @@ interface Props {
   createHandler: FormEventHandler<HTMLFormElement>;
 }
 
-const InputModal = ({ children, closeModal, createHandler }: Props) => {
+const CreateWorkspaceModal = ({ children, closeModal, createHandler }: Props) => {
   return (
     <>
       <ModalOverlay onClick={closeModal} />
@@ -42,4 +42,4 @@ const InputModal = ({ children, closeModal, createHandler }: Props) => {
   );
 };
 
-export default InputModal;
+export default CreateWorkspaceModal;
