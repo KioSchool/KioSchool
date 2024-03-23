@@ -78,11 +78,11 @@ function AdminHome() {
         <>
           <NavContainer>
             <Link to={'/'}>
-              <img src={kioLogo} width="170px" height="80px"></img>
+              <img src={kioLogo} width="170px" height="80px" />
             </Link>
 
             <LinkItem to={'/register-account'}>
-              <img src={userDefaultProfileImage} width="60px" height="60px"></img>
+              <img src={userDefaultProfileImage} width="60px" height="60px" />
             </LinkItem>
           </NavContainer>
 
