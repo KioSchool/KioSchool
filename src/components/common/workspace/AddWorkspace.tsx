@@ -4,7 +4,7 @@ import { Workspace } from '@@types/index';
 import useAdminUser from '@hooks/useAdminUser';
 import { useRef, useState } from 'react';
 import CreateWorkspaceModal from '../modal/CreateWorkspaceModal';
-import { AddWorkspaceModalContent } from '../content/AddworkspaceModalContent';
+import AddWorkspaceModalContent from '../content/AddworkspaceModalContent';
 
 const AddWorkspaceContainer = styled.form`
   cursor: pointer;
@@ -21,7 +21,7 @@ interface Props {
   workspaces: Workspace[];
 }
 
-const AddWorkspace = ({ workspaces }: Props) => {
+function AddWorkspace({ workspaces }: Props) {
   const maxWorkspaceNumber = 3;
   const { createWorkspaces } = useAdminUser();
   const workspaceNameRef = useRef<HTMLInputElement>(null);
@@ -67,6 +67,6 @@ const AddWorkspace = ({ workspaces }: Props) => {
       )}
     </>
   );
-};
+}
 
 export default AddWorkspace;

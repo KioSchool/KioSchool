@@ -33,13 +33,13 @@ interface Props {
   createHandler: FormEventHandler<HTMLFormElement>;
 }
 
-const CreateWorkspaceModal = ({ children, closeModal, createHandler }: Props) => {
+function CreateWorkspaceModal({ children, closeModal, createHandler }: Props) {
   return (
     <>
       <ModalOverlay onClick={closeModal} />
       <ModalContent onSubmit={createHandler}>{children}</ModalContent>
     </>
   );
-};
+}
 
 export default CreateWorkspaceModal;

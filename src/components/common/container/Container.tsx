@@ -26,12 +26,12 @@ interface Props {
   justifyValue: string;
 }
 
-const Container = ({ children, justifyValue }: Props) => {
+function Container({ children, justifyValue }: Props) {
   return (
     <MainContainer>
       <SubContainer justifyValue={justifyValue}>{children}</SubContainer>
     </MainContainer>
   );
-};
+}
 
 export default Container;

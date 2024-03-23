@@ -91,7 +91,7 @@ interface Props {
   workspaces: Workspace[];
 }
 
-const WorkspaceContent = ({ workspaces }: Props) => {
+function WorkspaceContent({ workspaces }: Props) {
   const { leaveWorkspace } = useAdminUser();
   const { appendPath } = useCustomNavigate();
 
@@ -134,6 +134,6 @@ const WorkspaceContent = ({ workspaces }: Props) => {
       ))}
     </>
   );
-};
+}
 
 export default WorkspaceContent;

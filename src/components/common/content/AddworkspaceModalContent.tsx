@@ -5,7 +5,7 @@ interface Props {
   workspaceDescriptionRef: Ref<HTMLInputElement>;
   workspaceNameRef: Ref<HTMLInputElement>;
 }
-export const AddWorkspaceModalContent = ({ workspaceDescriptionRef, workspaceNameRef }: Props) => {
+function AddWorkspaceModalContent({ workspaceDescriptionRef, workspaceNameRef }: Props) {
   return (
     <>
       <AppInputWithLabel titleLabel={'워크스페이스 이름'} style={{ marginBottom: '25px' }} type={'text'} id={'workspaceName'} ref={workspaceNameRef} />
@@ -21,4 +21,5 @@ export const AddWorkspaceModalContent = ({ workspaceDescriptionRef, workspaceNam
       </AppButton>
     </>
   );
-};
+}
+export default AddWorkspaceModalContent;

@@ -15,7 +15,7 @@ interface Props {
   workspaces: Workspace[];
 }
 
-const DummyWorkspace = ({ workspaces }: Props) => {
+function DummyWorkspace({ workspaces }: Props) {
   const maxDummyWorkspaceNumber = 2;
   const dummyArray = new Array(Math.max(maxDummyWorkspaceNumber - workspaces.length, 0)).fill(1);
 
@@ -28,6 +28,6 @@ const DummyWorkspace = ({ workspaces }: Props) => {
       })}
     </>
   );
-};
+}
 
 export default DummyWorkspace;
