@@ -62,12 +62,10 @@ const MainTitleContainer = styled.div`
   justify-content: space-between;
 `;
 
-const SubTitleContainer = styled.div`
-  display: block;
-`;
+const SubTitleContainer = styled.div``;
 
 const Description = styled.div`
-  padding: 26px 0 0 22px;
+  padding: 26px 10px 0 23px;
   display: flex;
   flex-wrap: wrap;
   width: 198px;
@@ -77,11 +75,11 @@ const Description = styled.div`
 `;
 
 const Title = styled.div`
-  padding: 5px 0 0 22px;
+  padding: 5px 10px 22px 22px;
   display: flex;
   flex-wrap: wrap;
-  width: 188px;
-  height: 45px;
+  width: 69%;
+  height: 50px;
   color: #fff;
   font-size: 40.329px;
   font-weight: 700;
