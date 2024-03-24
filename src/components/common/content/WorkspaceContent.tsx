@@ -2,6 +2,7 @@ import { Workspace } from '@@types/index';
 import styled from '@emotion/styled';
 import useAdminUser from '@hooks/useAdminUser';
 import useCustomNavigate from '@hooks/useCustomNavigate';
+import useConfirm from '@hooks/useConfirm';
 
 const WorkspaceContainer = styled.div`
   cursor: pointer;
@@ -92,10 +93,11 @@ interface Props {
 function WorkspaceContent({ workspaces }: Props) {
   const { leaveWorkspace } = useAdminUser();
   const { appendPath } = useCustomNavigate();
+  const { ConfirmModal, confirm } = useConfirm('해당 워크스페이스를 삭제하시겠습니까?', '확인 후 되돌릴 수 없습니다.', '확인', '취소');
 
-  const leaveHandler = (e: React.FormEvent, id: number) => {
+  const leaveHandler = async (e: React.FormEvent, id: number) => {
     e.stopPropagation();
-    const userInput = window.confirm('정말 삭제하시겠습니까?');
+    const userInput = await confirm();
     if (userInput) leaveWorkspace(id);
   };
 
@@ -130,6 +132,7 @@ function WorkspaceContent({ workspaces }: Props) {
           <MenuTitle>메뉴 개수 {it.products.length} 개</MenuTitle>
         </WorkspaceContainer>
       ))}
+      <ConfirmModal />
     </>
   );
 }
