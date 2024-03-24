@@ -75,3 +75,8 @@ export const isLoadingAtom = atom<boolean>({
   key: 'isLoadingAtom',
   default: false,
 });
+
+export const isConfirmModalOpenAtom = atom<boolean>({
+  key: 'isConfirmModalOpenAtom',
+  default: false,
+});
