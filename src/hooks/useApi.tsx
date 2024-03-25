@@ -41,6 +41,7 @@ function useApi({ useLoading = true }: UseApiProps = {}) {
     if (useLoading) setIsLoading(false);
     if (error.response.status === 403) {
       alert('로그인이 필요합니다.');
+      document.cookie = 'isLoggedIn=;';
       navigate('/login');
     }
     return Promise.reject(error);

@@ -8,7 +8,15 @@ function AuthenticationButton() {
   return (
     <>
       {isLoggedIn() ? (
-        <p onClick={logout}>Logout</p>
+        <p
+          onClick={() => {
+            logout().then(() => {
+              location.reload();
+            });
+          }}
+        >
+          Logout
+        </p>
       ) : (
         <>
           <Link to={'/login'}>Login</Link>
