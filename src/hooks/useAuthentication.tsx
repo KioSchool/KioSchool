@@ -11,15 +11,14 @@ function useAuthentication() {
   };
 
   const logout = () => {
-    userApi
+    return userApi
       .post('/logout')
       .then(() => {
         document.cookie = 'isLoggedIn=;';
       })
       .catch(() => {
         alert('Logout Failed!');
-      })
-      .finally(() => navigate('/'));
+      });
   };
 
   const login = (userId: string, userPassword: string) => {
