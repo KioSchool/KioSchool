@@ -1,12 +1,13 @@
 import styled from '@emotion/styled';
 
-export const MainContainer = styled.div`
+export const MainContainer = styled.div<{ backgroundColor?: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
   box-sizing: border-box;
+  background-color: ${(props) => (props.backgroundColor ? props.backgroundColor : 'white')};
 `;
 
 export const SubContainer = styled.div<{ justifyValue: string; flexDirection?: string; alignItems?: string }>`
@@ -26,11 +27,13 @@ interface Props {
   justifyValue: string;
   flexDirection?: string;
   alignItems?: string;
+  backgroundColor?: string;
 }
 
-function Container({ children, justifyValue, flexDirection, alignItems }: Props) {
+function Container({ children, justifyValue, flexDirection, alignItems, backgroundColor }: Props) {
+  console.log(backgroundColor);
   return (
-    <MainContainer>
+    <MainContainer backgroundColor={backgroundColor}>
       <SubContainer justifyValue={justifyValue} flexDirection={flexDirection} alignItems={alignItems}>
         {children}
       </SubContainer>

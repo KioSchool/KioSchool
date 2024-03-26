@@ -19,7 +19,7 @@ function AdminHome() {
   return (
     <Container justifyValue={'space-between'}>
       <>
-        <NavBar />
+        <NavBar logoSize={'medium'} />
 
         <WorkspaceContent workspaces={workspaces} />
 

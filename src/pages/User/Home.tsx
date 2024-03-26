@@ -44,7 +44,7 @@ const LinkText = styled.div`
 function Home() {
   return (
     <>
-      <NavBar />
+      <NavBar fix={'fixed'} logoSize={'small'} />
       <Container justifyValue={'center'} flexDirection={'column'} alignItems={'flex-start'}>
         <>
           <MainTitle>
