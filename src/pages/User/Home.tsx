@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import AuthenticationButton from '@components/user/AuthenticationButton';
 import Container from '@components/common/container/Container';
 import styled from '@emotion/styled';
 import ArrowRight from '../../resources/svg/ArrowRight';
@@ -10,6 +9,7 @@ const MainTitle = styled.div`
   height: 160px;
   font-size: 64px;
   font-weight: 800;
+  margin-bottom: 24px;
 `;
 
 const LinkAdminHome = styled(Link)`
@@ -43,7 +43,7 @@ const LinkText = styled.div`
 function Home() {
   return (
     <>
-      <Container justifyValue={'center'}>
+      <Container justifyValue={'center'} flexDirection={'column'} alignItems={'flex-start'}>
         <>
           <MainTitle>
             키오스쿨로
@@ -56,7 +56,6 @@ function Home() {
             </LinkText>
           </LinkAdminHome>
           <br></br>
-          <AuthenticationButton />
         </>
       </Container>
     </>

@@ -9,13 +9,13 @@ export const MainContainer = styled.div`
   box-sizing: border-box;
 `;
 
-export const SubContainer = styled.div<{ justifyValue: string }>`
+export const SubContainer = styled.div<{ justifyValue: string; flexDirection?: string; alignItems?: string }>`
   display: flex;
-  width: 60vw;
+  width: 65vw;
   flex-basis: 0;
   flex-wrap: wrap;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: ${(props) => (props.flexDirection ? props.flexDirection : 'center')};
+  align-items: ${(props) => (props.alignItems ? props.alignItems : 'center')};
   height: 500px;
   min-width: 1100px;
   justify-content: ${(props) => props.justifyValue};
@@ -24,12 +24,16 @@ export const SubContainer = styled.div<{ justifyValue: string }>`
 interface Props {
   children: JSX.Element;
   justifyValue: string;
+  flexDirection?: string;
+  alignItems?: string;
 }
 
-function Container({ children, justifyValue }: Props) {
+function Container({ children, justifyValue, flexDirection, alignItems }: Props) {
   return (
     <MainContainer>
-      <SubContainer justifyValue={justifyValue}>{children}</SubContainer>
+      <SubContainer justifyValue={justifyValue} flexDirection={flexDirection} alignItems={alignItems}>
+        {children}
+      </SubContainer>
     </MainContainer>
   );
 }
