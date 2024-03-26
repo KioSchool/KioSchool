@@ -5,22 +5,7 @@ import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import AppButton from '@components/common/button/AppButton';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
-
-const Container = styled.div`
-  display: block;
-  width: 100vw;
-  height: 100vh;
-  box-sizing: border-box;
-`;
-
-const SubContainer = styled.div`
-  display: flex;
-  flex-basis: 0;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  height: inherit;
-`;
+import Container from '@components/common/container/Container';
 
 const LoginContainer = styled.div`
   display: grid;
@@ -64,25 +49,23 @@ function Login() {
   };
 
   return (
-    <Container>
-      <SubContainer>
-        <LoginContainer>
-          <AppLabel size={'large'}>로그인</AppLabel>
-          <InputContainer>
-            <AppInputWithLabel titleLabel={'아이디'} type={'text'} id={'userId'} ref={userIdInputRef} />
-            <AppInputWithLabel titleLabel={'비밀번호'} type={'password'} id={'password'} ref={userPasswordInputRef} enterHandler={handleSubmit} />
-            {errorMessage && <div className="error-message">{errorMessage}</div>}
-          </InputContainer>
-          <ButtonContainer>
-            <AppButton size={'large'} style={{ gridColumn: '1/3' }} type={'button'} onClick={handleSubmit}>
-              로그인
-            </AppButton>
-            <AppLabel size={'small'}>
-              <Link to={'/'}>비밀번호를 잊어버렸나요?</Link> <Link to={'/register'}>회원가입하기</Link>
-            </AppLabel>
-          </ButtonContainer>
-        </LoginContainer>
-      </SubContainer>
+    <Container justifyValue={'center'}>
+      <LoginContainer>
+        <AppLabel size={'large'}>로그인</AppLabel>
+        <InputContainer>
+          <AppInputWithLabel titleLabel={'아이디'} type={'text'} id={'userId'} ref={userIdInputRef} />
+          <AppInputWithLabel titleLabel={'비밀번호'} type={'password'} id={'password'} ref={userPasswordInputRef} enterHandler={handleSubmit} />
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
+        </InputContainer>
+        <ButtonContainer>
+          <AppButton size={'large'} style={{ gridColumn: '1/3' }} type={'button'} onClick={handleSubmit}>
+            로그인
+          </AppButton>
+          <AppLabel size={'small'}>
+            <Link to={'/'}>비밀번호를 잊어버렸나요?</Link> <Link to={'/register'}>회원가입하기</Link>
+          </AppLabel>
+        </ButtonContainer>
+      </LoginContainer>
     </Container>
   );
 }
