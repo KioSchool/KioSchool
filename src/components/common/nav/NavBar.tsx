@@ -4,7 +4,8 @@ import kioLogo from '../../../resources/image/kioLogo.png';
 import userDefaultProfileImage from '../../../resources/image/userDefaultProfileImage.png';
 
 const NavContainer = styled.div<{ fix?: string }>`
-  padding-bottom: 40px;
+  margin: 10px 0;
+  padding: 0 0 40px 0;
   width: 100%;
   display: flex;
   flex-direction: row;
