@@ -31,7 +31,6 @@ interface Props {
 }
 
 function Container({ children, justifyValue, flexDirection, alignItems, backgroundColor }: Props) {
-  console.log(backgroundColor);
   return (
     <MainContainer backgroundColor={backgroundColor}>
       <SubContainer justifyValue={justifyValue} flexDirection={flexDirection} alignItems={alignItems}>
