@@ -57,7 +57,6 @@ function Home() {
               <ArrowRight />
             </LinkText>
           </LinkAdminHome>
-          <br></br>
         </>
       </Container>
     </>
