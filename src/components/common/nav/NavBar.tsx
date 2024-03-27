@@ -11,7 +11,7 @@ const NavContainer = styled.div<{ fix?: string }>`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  position: ${(props) => props.fix || ''};
+  position: ${(props) => props.fix};
 `;
 
 const LinkItem = styled(Link)`
@@ -34,7 +34,7 @@ function NavBar({ fix, logoSize }: NavBarProps) {
     <>
       <NavContainer fix={fix}>
         <Link to={'/'}>
-          <img src={kioLogo} width={sizeMap[logoSize].width} height={sizeMap[logoSize].height} alt="Kio Logo" />
+          <img src={kioLogo} {...sizeMap[logoSize]} alt="Kio Logo" />
         </Link>
 
         <LinkItem to={'/register-account'}>
