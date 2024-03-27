@@ -7,7 +7,7 @@ import useCustomNavigate from '@hooks/useCustomNavigate';
 
 function AdminProduct() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchProducts, AddCategories, deleteProducts } = useProducts(workspaceId);
+  const { fetchProducts, addCategories, deleteProducts } = useProducts(workspaceId);
   const products = useRecoilValue(productsAtom);
   const { appendPath } = useCustomNavigate();
   const [input, setInput] = useState<string>('');
@@ -40,7 +40,7 @@ function AdminProduct() {
       return;
     }
     setInput('');
-    AddCategories(categorieInput);
+    addCategories(categorieInput);
   };
 
   return (
