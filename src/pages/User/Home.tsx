@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Container from '@components/common/container/Container';
 import styled from '@emotion/styled';
@@ -10,11 +10,13 @@ const MainTitle = styled.div`
   height: 160px;
   font-size: 64px;
   font-weight: 800;
+  z-index: 1002;
   margin-bottom: 24px;
 `;
 
 const LinkAdminHome = styled(Link)`
   text-decoration: none;
+  z-index: 1001;
   width: 349px;
   height: 80px;
   border-radius: 50px;
@@ -42,6 +44,17 @@ const LinkText = styled.div`
 `;
 
 function Home() {
+  const [isHover, setIsHover] = useState<boolean>(false);
+
+  const HoverOverlay = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.3) 12.8%, rgba(255, 192, 141, 0.3) 56.2%, rgba(235, 109, 9, 0.3) 99.6%), #fff;
+  `;
   return (
     <>
       <NavBar fix={'fixed'} logoSize={'small'} />
@@ -51,7 +64,7 @@ function Home() {
             키오스쿨로
             <br /> 주점관리를 손쉽게,
           </MainTitle>
-          <LinkAdminHome to={'/admin'}>
+          <LinkAdminHome to={'/admin'} onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
             <LinkText>
               내 주점 바로가기
               <ArrowRight />
@@ -59,6 +72,7 @@ function Home() {
           </LinkAdminHome>
         </>
       </Container>
+      {isHover && <HoverOverlay />}
     </>
   );
 }

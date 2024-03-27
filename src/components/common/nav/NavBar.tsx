@@ -5,6 +5,7 @@ import userDefaultProfileImage from '../../../resources/image/userDefaultProfile
 import AuthenticationButton from '@components/user/AuthenticationButton';
 
 const NavContainer = styled.div<{ fix?: string }>`
+  z-index: 1003;
   width: 100%;
   display: flex;
   flex-wrap: wrap;
