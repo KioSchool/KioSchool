@@ -15,7 +15,7 @@ const MainTitle = styled.div`
 
 const LinkAdminHome = styled(Link)`
   text-decoration: none;
-  width: 348.695px;
+  width: 349px;
   height: 80px;
   border-radius: 50px;
   background: #eb6d09;
@@ -30,7 +30,7 @@ const LinkAdminHome = styled(Link)`
 `;
 
 const LinkText = styled.div`
-  width: 314.256px;
+  width: 315px;
   height: 47px;
   color: #fff;
   font-size: 32px;
