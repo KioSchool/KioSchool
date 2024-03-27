@@ -1,6 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import useAuthentication from '@hooks/useAuthentication';
+import { NavLinkItem } from '@components/common/nav/NavBar';
+import styled from '@emotion/styled';
+
+const LogOutText = styled.p`
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+`;
 
 function AuthenticationButton() {
   const { logout, isLoggedIn } = useAuthentication();
@@ -8,7 +15,7 @@ function AuthenticationButton() {
   return (
     <>
       {isLoggedIn() ? (
-        <p
+        <LogOutText
           onClick={() => {
             logout().then(() => {
               location.reload();
@@ -16,12 +23,12 @@ function AuthenticationButton() {
           }}
         >
           Logout
-        </p>
+        </LogOutText>
       ) : (
         <>
-          <Link to={'/login'}>Login</Link>
+          <NavLinkItem to={'/login'}>Login</NavLinkItem>
           <br />
-          <Link to={'/register'}>Sign Up</Link>{' '}
+          <NavLinkItem to={'/register'}>Sign Up</NavLinkItem>{' '}
         </>
       )}
     </>
