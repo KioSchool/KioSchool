@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import kioLogo from '../../../resources/image/kioLogo.png';
 import userDefaultProfileImage from '../../../resources/image/userDefaultProfileImage.png';
+import AuthenticationButton from '@components/user/AuthenticationButton';
 
 const NavContainer = styled.div<{ fix?: string }>`
   width: 100%;
@@ -10,7 +11,7 @@ const NavContainer = styled.div<{ fix?: string }>`
   position: ${(props) => props.fix};
 `;
 
-const LinkItem = styled(Link)`
+const AccountLink = styled(Link)`
   width: 60px;
   height: 60px;
 `;
@@ -22,6 +23,31 @@ const NavContent = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+`;
+
+const NavLilnkContainer = styled.div`
+  display: flex;
+  flex-direciont: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const NavLinkItemContainer = styled.div`
+  padding-right: 40px;
+  width: 75%;
+  display: flex;
+  flex-direciont: row;
+  align-items: center;
+`;
+
+export const NavLinkItem = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  width: 100px;
+  height: 43px;
+  line-height: 43px;
+  text-align: center;
 `;
 
 interface NavBarProps {
@@ -42,9 +68,16 @@ function NavBar({ fix, logoSize }: NavBarProps) {
           <img src={kioLogo} {...sizeMap[logoSize]} alt="Kio Logo" />
         </Link>
 
-        <LinkItem to={'/register-account'}>
-          <img src={userDefaultProfileImage} width="60px" height="60px" />
-        </LinkItem>
+        <NavLilnkContainer>
+          <NavLinkItemContainer>
+            <NavLinkItem to={'/info'}>Info</NavLinkItem>
+            <AuthenticationButton />
+          </NavLinkItemContainer>
+
+          <AccountLink to={'/register-account'}>
+            <img src={userDefaultProfileImage} width="60px" height="60px" />
+          </AccountLink>
+        </NavLilnkContainer>
       </NavContent>
     </NavContainer>
   );
