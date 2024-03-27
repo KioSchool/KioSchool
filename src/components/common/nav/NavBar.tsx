@@ -42,6 +42,10 @@ const NavLinkItemContainer = styled.div`
 
 export const NavLinkItem = styled(Link)`
   text-decoration: none;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 400;
+  padding: 0 0 0 33px;
   color: inherit;
   cursor: pointer;
   width: 100px;

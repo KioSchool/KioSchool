@@ -5,8 +5,12 @@ import styled from '@emotion/styled';
 
 const LogOutText = styled.p`
   text-decoration: none;
+  padding-left: 33px;
   color: inherit;
   cursor: pointer;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 400;
 `;
 
 function AuthenticationButton() {
