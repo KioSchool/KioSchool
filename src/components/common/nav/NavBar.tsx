@@ -11,7 +11,7 @@ const NavContainer = styled.div<{ fix?: string }>`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  position: ${(props) => (props.fix ? props.fix : '')};
+  position: ${(props) => props.fix || ''};
 `;
 
 const LinkItem = styled(Link)`
