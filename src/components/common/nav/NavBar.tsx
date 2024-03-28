@@ -4,12 +4,15 @@ import kioLogo from '../../../resources/image/kioLogo.png';
 import userDefaultProfileImage from '../../../resources/image/userDefaultProfileImage.png';
 import AuthenticationButton from '@components/user/AuthenticationButton';
 
-const NavContainer = styled.div<{ fix?: string }>`
+const NavContainer = styled.div`
   z-index: 1003;
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  position: ${(props) => props.fix};
+  top: 0;
+  left: 0;
+  right: 0;
+  position: fixed;
 `;
 
 const AccountLink = styled(Link)`
@@ -18,7 +21,7 @@ const AccountLink = styled(Link)`
 `;
 
 const NavContent = styled.div`
-  margin: 17px 24px 40px 24px;
+  margin: 15px 24px 40px 24px;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -56,7 +59,6 @@ export const NavLinkItem = styled(Link)`
 `;
 
 interface NavBarProps {
-  fix?: string;
   logoSize: 'small' | 'medium';
 }
 
@@ -65,9 +67,9 @@ const sizeMap: { [key in NavBarProps['logoSize']]: { width: string; height: stri
   medium: { width: '170px', height: '80px' },
 };
 
-function NavBar({ fix, logoSize }: NavBarProps) {
+function NavBar({ logoSize }: NavBarProps) {
   return (
-    <NavContainer fix={fix}>
+    <NavContainer>
       <NavContent>
         <Link to={'/'}>
           <img src={kioLogo} {...sizeMap[logoSize]} alt="Kio Logo" />

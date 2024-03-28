@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import Container from '@components/common/container/Container';
 import styled from '@emotion/styled';
 import ArrowRight from '../../resources/svg/ArrowRight';
-import NavBar from '@components/common/nav/NavBar';
 
 const MainTitle = styled.div`
   width: 540px;
@@ -79,7 +78,6 @@ function Home() {
 
   return (
     <>
-      <NavBar fix={'fixed'} logoSize={'small'} />
       <Container justifyValue={'center'} flexDirection={'column'} alignItems={'flex-start'}>
         <>
           <MainTitle>

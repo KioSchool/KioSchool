@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import NavBar from '../nav/NavBar';
 
 export const MainContainer = styled.div<{ backgroundColor?: string }>`
   display: flex;
@@ -32,11 +33,14 @@ interface Props {
 
 function Container({ children, justifyValue, flexDirection, alignItems, backgroundColor }: Props) {
   return (
-    <MainContainer backgroundColor={backgroundColor}>
-      <SubContainer justifyValue={justifyValue} flexDirection={flexDirection} alignItems={alignItems}>
-        {children}
-      </SubContainer>
-    </MainContainer>
+    <>
+      <MainContainer backgroundColor={backgroundColor}>
+        <NavBar logoSize={'small'} />
+        <SubContainer justifyValue={justifyValue} flexDirection={flexDirection} alignItems={alignItems}>
+          {children}
+        </SubContainer>
+      </MainContainer>
+    </>
   );
 }
 
