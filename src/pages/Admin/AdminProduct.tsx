@@ -34,7 +34,7 @@ function AdminProduct() {
     setSelectedProductIds(updatedProducts);
   };
 
-  const AddCategoriesHandler = (categorieInput: string) => {
+  const addCategoriesHandler = (categorieInput: string) => {
     if (!categorieInput) {
       alert('카테고리를 입력해주세요');
       return;
@@ -55,7 +55,7 @@ function AdminProduct() {
       />
       <button
         onClick={() => {
-          AddCategoriesHandler(input);
+          addCategoriesHandler(input);
         }}
       >
         카테고리 추가
