@@ -45,16 +45,38 @@ const LinkText = styled.div`
 
 function Home() {
   const [isHover, setIsHover] = useState<boolean>(false);
+  const HoverOverlay = styled.div<{ isHover: boolean }>`
+    @keyframes moveIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
 
-  const HoverOverlay = styled.div`
+    @keyframes moveOut {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 1000;
+    opacity: ${(props) => (props.isHover ? 1 : 0)};
+    animation-name: ${(props) => (props.isHover ? 'moveIn' : 'moveOut')};
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
     background: linear-gradient(90deg, rgba(255, 255, 255, 0.3) 12.8%, rgba(255, 192, 141, 0.3) 56.2%, rgba(235, 109, 9, 0.3) 99.6%), #fff;
   `;
+
   return (
     <>
       <NavBar fix={'fixed'} logoSize={'small'} />
@@ -72,7 +94,7 @@ function Home() {
           </LinkAdminHome>
         </>
       </Container>
-      {isHover && <HoverOverlay />}
+      <HoverOverlay isHover={isHover} />
     </>
   );
 }
