@@ -3,7 +3,7 @@ import useAuthentication from '@hooks/useAuthentication';
 import { NavLinkItem } from '@components/common/nav/NavBar';
 import styled from '@emotion/styled';
 
-const LogOutText = styled.p`
+const LogoutText = styled.p`
   text-decoration: none;
   padding-left: 33px;
   color: inherit;
@@ -19,7 +19,7 @@ function AuthenticationButton() {
   return (
     <>
       {isLoggedIn() ? (
-        <LogOutText
+        <LogoutText
           onClick={() => {
             logout().then(() => {
               location.reload();
@@ -27,7 +27,7 @@ function AuthenticationButton() {
           }}
         >
           Logout
-        </LogOutText>
+        </LogoutText>
       ) : (
         <>
           <NavLinkItem to={'/login'}>Login</NavLinkItem>
