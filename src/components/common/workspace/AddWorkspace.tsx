@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
-import plusLogo from '../../../resources/image/plusLogo.png';
 import { Workspace } from '@@types/index';
 import useAdminUser from '@hooks/useAdminUser';
 import { useRef, useState } from 'react';
 import CreateWorkspaceModal from './modal/CreateWorkspaceModal';
 import AddWorkspaceModalContent from '../content/AddworkspaceModalContent';
+import PlusIconSvg from '@resources/svg/PlusIconSvg';
 
 const AddWorkspaceContainer = styled.form`
   cursor: pointer;
@@ -57,7 +57,7 @@ function AddWorkspace({ workspaces }: Props) {
   return (
     <>
       <AddWorkspaceContainer onClick={() => setModalOpen(true)}>
-        <img src={plusLogo} width={'51px'} height={'51px'}></img>
+        <PlusIconSvg width={50} height={50} />
       </AddWorkspaceContainer>
 
       {modalOpen && (
