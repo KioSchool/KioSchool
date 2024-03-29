@@ -34,13 +34,13 @@ function AdminProduct() {
     setSelectedProductIds(updatedProducts);
   };
 
-  const addCategoriesHandler = (categorieInput: string) => {
-    if (!categorieInput) {
+  const addCategoriesHandler = (categoryInput: string) => {
+    if (!categoryInput) {
       alert('카테고리를 입력해주세요');
       return;
     }
     setInput('');
-    addCategories(categorieInput);
+    addCategories(categoryInput);
   };
 
   return (

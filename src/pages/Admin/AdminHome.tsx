@@ -20,7 +20,6 @@ function AdminHome() {
       <Container justifyValue={'space-between'}>
         <>
           <WorkspaceContent workspaces={workspaces} />
-
           <AddWorkspace workspaces={workspaces} />
           <DummyWorkspace workspaces={workspaces} />
         </>
