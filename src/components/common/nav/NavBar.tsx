@@ -85,7 +85,7 @@ function NavBar({ logoSize }: NavBarProps) {
           </NavLinkItemContainer>
 
           <AccountLink to={'/register-account'}>
-            <UserProfileSvg width={40} height={40} />
+            <UserProfileSvg width={50} height={50} />
           </AccountLink>
         </NavLilnkContainer>
       </NavContent>
