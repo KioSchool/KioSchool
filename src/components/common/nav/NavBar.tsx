@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import kioLogo from '../../../resources/image/kioLogo.png';
-import userDefaultProfileImage from '../../../resources/image/userDefaultProfileImage.png';
 import AuthenticationButton from '@components/user/AuthenticationButton';
+import UserProfileSvg from '@resources/svg/UserProfileSvg';
 
 const NavContainer = styled.div`
   z-index: 1003;
@@ -16,8 +16,11 @@ const NavContainer = styled.div`
 `;
 
 const AccountLink = styled(Link)`
+  display: flex;
   width: 60px;
   height: 60px;
+  align-items: center;
+  justify-content: center;
 `;
 
 const NavContent = styled.div`
@@ -82,7 +85,7 @@ function NavBar({ logoSize }: NavBarProps) {
           </NavLinkItemContainer>
 
           <AccountLink to={'/register-account'}>
-            <img src={userDefaultProfileImage} width="60px" height="60px" />
+            <UserProfileSvg width={40} height={40} />
           </AccountLink>
         </NavLilnkContainer>
       </NavContent>
