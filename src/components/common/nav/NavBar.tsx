@@ -32,9 +32,8 @@ const NavContent = styled.div`
   align-items: center;
 `;
 
-const NavLilnkContainer = styled.div`
+const NavLinkContainer = styled.div`
   display: flex;
-  flex-direciont: row;
   justify-content: space-between;
   align-items: center;
 `;
@@ -43,7 +42,6 @@ const NavLinkItemContainer = styled.div`
   padding-right: 40px;
   width: 75%;
   display: flex;
-  flex-direciont: row;
   align-items: center;
 `;
 
@@ -58,7 +56,6 @@ export const NavLinkItem = styled(Link)`
   width: 100px;
   height: 43px;
   line-height: 43px;
-  text-align: center;
 `;
 
 interface NavBarProps {
@@ -78,7 +75,7 @@ function NavBar({ logoSize }: NavBarProps) {
           <img src={kioLogo} {...sizeMap[logoSize]} alt="Kio Logo" />
         </Link>
 
-        <NavLilnkContainer>
+        <NavLinkContainer>
           <NavLinkItemContainer>
             <NavLinkItem to={'/info'}>Info</NavLinkItem>
             <AuthenticationButton />
@@ -87,7 +84,7 @@ function NavBar({ logoSize }: NavBarProps) {
           <AccountLink to={'/register-account'}>
             <UserProfileSvg width={50} height={50} />
           </AccountLink>
-        </NavLilnkContainer>
+        </NavLinkContainer>
       </NavContent>
     </NavContainer>
   );
