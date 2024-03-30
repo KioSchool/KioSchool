@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Home from '@pages/User/Home';
 import AdminHome from '@pages/Admin/AdminHome';
 import Login from '@pages/User/Login';
@@ -19,29 +19,32 @@ import AdminProductManage from '@pages/Admin/AdminProductManage';
 import OrderComplete from '@pages/User/order/OrderComplete';
 import AdminOrderHistory from '@pages/Admin/order/AdminOrderHistory';
 import AdminProductEdit from '@pages/Admin/AdminProductEdit';
+import ReactGA from 'react-ga4';
+import RouterChangeTracker from './RouterChangeTracker';
 
+ReactGA.initialize('G-XGYLSPGK2G');
 function App() {
+  RouterChangeTracker();
+
   return (
     <RecoilRoot>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/register-account" element={<AdminAccount />} />
-          <Route path="/order" element={<Order />} />
-          <Route path="/orderbasket" element={<OrderBasket />} />
-          <Route path="/order-pay" element={<OrderPay />} />
-          <Route path="/order-complete" element={<OrderComplete />} />
-          <Route path="/admin" element={<AdminHome />} />
-          <Route path="/admin/workspace/:workspaceId" element={<AdminWorkspace />} />
-          <Route path="/admin/workspace/:workspaceId/orders" element={<AdminOrder />} />
-          <Route path="/admin/workspace/:workspaceId/orders-history" element={<AdminOrderHistory />} />
-          <Route path="/admin/workspace/:workspaceId/products" element={<AdminProduct />} />
-          <Route path="/admin/workspace/:workspaceId/products/add-product" element={<AdminProductManage />} />
-          <Route path="/admin/workspace/:workspaceId/products/edit-product" element={<AdminProductEdit />} />
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/register-account" element={<AdminAccount />} />
+        <Route path="/order" element={<Order />} />
+        <Route path="/orderbasket" element={<OrderBasket />} />
+        <Route path="/order-pay" element={<OrderPay />} />
+        <Route path="/order-complete" element={<OrderComplete />} />
+        <Route path="/admin" element={<AdminHome />} />
+        <Route path="/admin/workspace/:workspaceId" element={<AdminWorkspace />} />
+        <Route path="/admin/workspace/:workspaceId/orders" element={<AdminOrder />} />
+        <Route path="/admin/workspace/:workspaceId/orders-history" element={<AdminOrderHistory />} />
+        <Route path="/admin/workspace/:workspaceId/products" element={<AdminProduct />} />
+        <Route path="/admin/workspace/:workspaceId/products/add-product" element={<AdminProductManage />} />
+        <Route path="/admin/workspace/:workspaceId/products/edit-product" element={<AdminProductEdit />} />
+      </Routes>
       <Global styles={globalStyles} />
       <LoadingModal />
     </RecoilRoot>
