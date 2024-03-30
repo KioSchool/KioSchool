@@ -5,7 +5,7 @@ import AuthenticationButton from '@components/user/AuthenticationButton';
 import UserProfileSvg from '@resources/svg/UserProfileSvg';
 
 const NavContainer = styled.div`
-  z-index: 1003;
+  z-index: 1001;
   width: 100%;
   display: flex;
   flex-wrap: wrap;
