@@ -17,14 +17,14 @@ const NavContainer = styled.div`
 
 const AccountLink = styled(Link)`
   display: flex;
-  width: 60px;
+  width: 100px;
   height: 60px;
   align-items: center;
   justify-content: center;
 `;
 
 const NavContent = styled.div`
-  margin: 15px 24px 40px 24px;
+  margin: 15px 24px;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -34,13 +34,10 @@ const NavContent = styled.div`
 
 const NavLinkContainer = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
 `;
 
 const NavLinkItemContainer = styled.div`
-  padding-right: 40px;
-  width: 75%;
   display: flex;
   align-items: center;
 `;
@@ -50,7 +47,6 @@ export const NavLinkItem = styled(Link)`
   text-align: center;
   font-size: 24px;
   font-weight: 400;
-  padding: 0 0 0 33px;
   color: inherit;
   cursor: pointer;
   width: 100px;
