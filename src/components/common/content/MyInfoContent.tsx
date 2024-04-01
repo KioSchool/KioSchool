@@ -14,7 +14,11 @@ const MyInfoContainer = styled.div`
 `;
 
 function MyInfoContent() {
-  return <MyInfoContainer></MyInfoContainer>;
+  return (
+    <>
+      <MyInfoContainer></MyInfoContainer>
+    </>
+  );
 }
 
 export default MyInfoContent;
