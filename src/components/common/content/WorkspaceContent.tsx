@@ -41,7 +41,18 @@ const MenuTitle = styled.div`
 `;
 
 const DeleteContainer = styled.div`
+  position: relative;
   padding: 12px 15px 0 0;
+`;
+
+const DeleteSvg = styled(DeleteButton)`
+  position: absolute;
+  right: 15px;
+  top: 12px;
+  transition: transform 0.1s ease;
+  &:hover {
+    transform: scale(1.2);
+  }
 `;
 
 const TitleContainer = styled.div`
@@ -110,7 +121,7 @@ function WorkspaceContent({ workspaces }: Props) {
             <MainTitleContainer>
               <Description>{it.description}</Description>
               <DeleteContainer>
-                <DeleteButton
+                <DeleteSvg
                   onClick={(e: React.FormEvent) => {
                     leaveHandler(e, it.id);
                   }}
