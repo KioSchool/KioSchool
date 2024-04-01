@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import useAdminUser from '@hooks/useAdminUser';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import useConfirm from '@hooks/useConfirm';
+import DeleteButton from '@resources/svg/DeleteButton';
 
 const WorkspaceContainer = styled.div`
   cursor: pointer;
@@ -40,12 +41,7 @@ const MenuTitle = styled.div`
 `;
 
 const DeleteContainer = styled.div`
-  padding: 16px 23px 0 0;
-`;
-
-const DeleteText = styled.div`
-  cursor: pointer;
-  color: #fff;
+  padding: 12px 15px 0 0;
 `;
 
 const TitleContainer = styled.div`
@@ -114,13 +110,11 @@ function WorkspaceContent({ workspaces }: Props) {
             <MainTitleContainer>
               <Description>{it.description}</Description>
               <DeleteContainer>
-                <DeleteText
+                <DeleteButton
                   onClick={(e: React.FormEvent) => {
                     leaveHandler(e, it.id);
                   }}
-                >
-                  탈퇴하기
-                </DeleteText>
+                />
               </DeleteContainer>
             </MainTitleContainer>
 
