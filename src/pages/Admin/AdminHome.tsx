@@ -41,7 +41,7 @@ function AdminHome() {
       <Container justifyValue={'space-between'}>
         <>
           <UserNameContainer>
-            <UserNameText>{user.name}&nbsp;</UserNameText>
+            <UserNameText>{user.name}</UserNameText>
             <DescriptionText>님의 주점</DescriptionText>
           </UserNameContainer>
           <WorkspaceContent workspaces={workspaces} />
