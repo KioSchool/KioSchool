@@ -7,14 +7,17 @@ import useCustomNavigate from '@hooks/useCustomNavigate';
 
 function AdminProduct() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchProducts, addCategories, deleteProducts } = useProducts(workspaceId);
+  const { fetchProducts, addCategories, deleteProducts, fetchCategories } = useProducts(workspaceId);
   const products = useRecoilValue(productsAtom);
+  const categories = useRecoilValue(categoriesAtom);
+
   const { appendPath } = useCustomNavigate();
   const [input, setInput] = useState<string>('');
   const [selectedProductIds, setSelectedProductIds] = useState<number[]>([]);
 
   useEffect(() => {
     fetchProducts();
+    fetchCategories();
   }, []);
 
   const deleteChoosenProducts = () => {
