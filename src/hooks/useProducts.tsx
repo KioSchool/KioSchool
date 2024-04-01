@@ -1,14 +1,14 @@
 import useApi from '@hooks/useApi';
 import { useSetRecoilState } from 'recoil';
-import { productsAtom, userWorkspaceAtom } from '@recoils/atoms';
-import { Product } from '@@types/index';
+import { categoriesAtom, productsAtom } from '@recoils/atoms';
+import { Product, ProductCategory } from '@@types/index';
 import { useNavigate } from 'react-router-dom';
 
 function useProducts(workspaceId: string | undefined) {
   const { adminApi } = useApi();
   const navigate = useNavigate();
   const setProducts = useSetRecoilState(productsAtom);
-  const setWorksapceCategories = useSetRecoilState(userWorkspaceAtom);
+  const setProductCategories = useSetRecoilState(categoriesAtom);
 
   const fetchProducts = () => {
     adminApi
@@ -82,16 +82,13 @@ function useProducts(workspaceId: string | undefined) {
 
   const fetchCategories = () => {
     adminApi
-      .get('/product-categories', {
+      .get<ProductCategory[]>('/product-categories', {
         params: {
           workspaceId: workspaceId,
         },
       })
-      .then((res: any) => {
-        setWorksapceCategories((prev) => ({
-          ...prev,
-          productCategories: res.data,
-        }));
+      .then((res) => {
+        setProductCategories(res.data);
       })
       .catch((error) => {
         console.error('Failed to fetch products categories : ', error);
