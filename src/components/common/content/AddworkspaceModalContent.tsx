@@ -8,14 +8,8 @@ interface Props {
 function AddWorkspaceModalContent({ workspaceDescriptionRef, workspaceNameRef }: Props) {
   return (
     <>
-      <AppInputWithLabel titleLabel={'워크스페이스 이름'} style={{ marginBottom: '25px' }} type={'text'} id={'workspaceName'} ref={workspaceNameRef} />
-      <AppInputWithLabel
-        titleLabel={'워크스페이스 설명'}
-        style={{ marginBottom: '20px' }}
-        type={'text'}
-        id={'workspaceDescription'}
-        ref={workspaceDescriptionRef}
-      />
+      <AppInputWithLabel titleLabel={'주점 이름'} style={{ marginBottom: '25px' }} type={'text'} id={'workspaceName'} ref={workspaceNameRef} />
+      <AppInputWithLabel titleLabel={'주점 설명'} style={{ marginBottom: '20px' }} type={'text'} id={'workspaceDescription'} ref={workspaceDescriptionRef} />
       <AppButton size={'large'} style={{ marginTop: '15px' }} type={'submit'}>
         생성하기
       </AppButton>

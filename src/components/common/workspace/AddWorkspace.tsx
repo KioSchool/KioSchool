@@ -38,13 +38,13 @@ function AddWorkspace({ workspaces }: Props) {
 
     const workspaceName = workspaceNameRef.current?.value;
     if (!workspaceName) {
-      alert('workspace 이름을 입력해주세요');
+      alert('주점 이름을 입력해주세요');
       return;
     }
 
     const workspaceDescription = workspaceDescriptionRef.current?.value;
     if (!workspaceDescription) {
-      alert('workspace 설명 입력해주세요');
+      alert('주점 설명 입력해주세요');
       return;
     }
 

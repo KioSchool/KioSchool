@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Container from '@components/common/container/Container';
 import styled from '@emotion/styled';
-import ArrowRight from '../../resources/svg/ArrowRight';
+import ArrowRight from '../../resources/svg/ArrowRightSvg';
 
 const MainTitle = styled.div`
   width: 540px;
