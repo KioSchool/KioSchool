@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import useAdminUser from '@hooks/useAdminUser';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import useConfirm from '@hooks/useConfirm';
-import DeleteButton from '@resources/svg/DeleteButton';
+import DeleteButtonSvg from '@resources/svg/DeleteButtonSvg';
 
 const WorkspaceContainer = styled.div`
   cursor: pointer;
@@ -45,7 +45,7 @@ const DeleteContainer = styled.div`
   padding: 12px 15px 0 0;
 `;
 
-const DeleteSvg = styled(DeleteButton)`
+const DeleteButton = styled(DeleteButtonSvg)`
   position: absolute;
   right: 15px;
   top: 12px;
@@ -121,7 +121,7 @@ function WorkspaceContent({ workspaces }: Props) {
             <MainTitleContainer>
               <Description>{it.description}</Description>
               <DeleteContainer>
-                <DeleteSvg
+                <DeleteButton
                   onClick={(e: React.FormEvent) => {
                     leaveHandler(e, it.id);
                   }}
