@@ -9,10 +9,19 @@ import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import ProductCard from '@components/admin/product/ProductCard';
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding-top: 100px;
+`;
+
 const ContainerPerCategory = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px;
+  padding: 50px 0;
 `;
 
 const ProductsContainer = styled.div`
@@ -37,20 +46,25 @@ function AdminProduct() {
     <>
       <NavBar logoSize={'small'} />
       <TitleNavBar title={'상품 조회'} />
-      {categories.map((category) => (
-        <ContainerPerCategory key={`product_category${category.id}`}>
-          <AppLabel size={36} style={{ fontWeight: 800 }}>
-            {category.name}
-          </AppLabel>
-          <ProductsContainer>
-            {products
-              .filter((product) => (product.productCategory?.id || null) === category.id)
-              .map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-          </ProductsContainer>
-        </ContainerPerCategory>
-      ))}
+      <Container>
+        <AppLabel size={'small'} style={{ textAlign: 'center' }}>
+          판매대기 상태인 메뉴는 메뉴 주문 화면에서 숨김처리 되며, 판매 상태로 변경 시 다시 나타나게 됩니다.
+        </AppLabel>
+        {categories.map((category) => (
+          <ContainerPerCategory key={`product_category${category.id}`}>
+            <AppLabel size={36} style={{ fontWeight: 800 }}>
+              {category.name}
+            </AppLabel>
+            <ProductsContainer>
+              {products
+                .filter((product) => (product.productCategory?.id || null) === category.id)
+                .map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+            </ProductsContainer>
+          </ContainerPerCategory>
+        ))}
+      </Container>
     </>
   );
 }
