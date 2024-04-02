@@ -84,7 +84,7 @@ function AdminProductEdit() {
       description: productState.description,
       price: productState.price,
       workspaceId: workspaceId,
-      productCategoryId: productState.productCategory.id,
+      productCategoryId: productState.productCategory?.id,
     };
 
     editProduct(body, productState.image.file);
