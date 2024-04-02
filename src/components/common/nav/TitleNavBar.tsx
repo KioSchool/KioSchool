@@ -12,7 +12,6 @@ interface Props {
 
 const Container = styled.div`
   display: flex;
-  margin-top: 200px;
   justify-content: center;
   height: 50px;
   width: 100%;
@@ -27,9 +26,21 @@ const SubContainer = styled.div`
 `;
 
 const LeftContainer = styled.div`
+  position: relative;
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 25px;
+`;
+
+const ArrowLeftButton = styled(ArrowLeftSvg)`
+  cursor: pointer;
+  position: absolute;
+  left: 1px;
+  transition: transform 0.1s ease;
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 function TitleNavBar({ title, useBackIcon = true, children }: Props) {
@@ -39,13 +50,13 @@ function TitleNavBar({ title, useBackIcon = true, children }: Props) {
     <Container>
       <SubContainer>
         <LeftContainer>
-          <ArrowLeftSvg
-            style={{ display: useBackIcon ? '' : 'hidden', cursor: 'pointer' }}
+          <ArrowLeftButton
             onClick={() => {
               navigate(-1);
             }}
+            style={{ display: useBackIcon ? '' : 'hidden' }}
           />
-          <AppLabel size={36} style={{ fontWeight: 800 }}>
+          <AppLabel size={36} style={{ fontWeight: 800, paddingLeft: 50 }}>
             {title}
           </AppLabel>
         </LeftContainer>
