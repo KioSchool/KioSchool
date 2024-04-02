@@ -44,7 +44,7 @@ function AdminProduct() {
 
   return (
     <>
-      <NavBar />
+      <NavBar useBackground={true} />
       <TitleNavBar title={'상품 조회'} />
       <Container>
         <AppLabel size={'small'} style={{ textAlign: 'center' }}>
