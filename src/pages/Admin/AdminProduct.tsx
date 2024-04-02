@@ -8,6 +8,8 @@ import NavBar from '@components/common/nav/NavBar';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import ProductCard from '@components/admin/product/ProductCard';
+import AppButton from '@components/common/button/AppButton';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 
 const Container = styled.div`
   display: flex;
@@ -15,6 +17,11 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
   padding-top: 100px;
+`;
+
+const ManageButtonContainer = styled.div`
+  display: flex;
+  gap: 20px;
 `;
 
 const ContainerPerCategory = styled.div`
@@ -37,6 +44,8 @@ function AdminProduct() {
   const rawCategories = useRecoilValue(categoriesAtom);
   const categories = [{ id: null, name: '기본메뉴' }, ...rawCategories];
 
+  const { appendPath } = useCustomNavigate();
+
   useEffect(() => {
     fetchProducts();
     fetchCategories();
@@ -45,7 +54,26 @@ function AdminProduct() {
   return (
     <>
       <NavBar useBackground={true} />
-      <TitleNavBar title={'상품 조회'} />
+      <TitleNavBar title={'상품 조회'}>
+        <ManageButtonContainer>
+          <AppButton
+            size={160}
+            onClick={() => {
+              appendPath('/categories');
+            }}
+          >
+            카테고리 관리
+          </AppButton>
+          <AppButton
+            size={130}
+            onClick={() => {
+              appendPath('/add-product');
+            }}
+          >
+            상품 추가
+          </AppButton>
+        </ManageButtonContainer>
+      </TitleNavBar>
       <Container>
         <AppLabel size={'small'} style={{ textAlign: 'center' }}>
           판매대기 상태인 메뉴는 주문 화면에서 숨김처리 되며, 판매 상태로 변경 시 다시 나타나게 됩니다.
