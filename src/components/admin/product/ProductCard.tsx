@@ -41,6 +41,15 @@ const TextContainer = styled.div`
   height: 80px;
 `;
 
+const ImageContainer = styled.div<{ isSellable: boolean | null }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 120px;
+  filter: ${(props) => (props.isSellable ? 'none' : 'grayScale(100%)')};
+`;
+
 function ProductCard({ product }: Props) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { editProductSellable } = useProducts(workspaceId);
@@ -52,7 +61,9 @@ function ProductCard({ product }: Props) {
           <AppLabel size={20}>{product.name}</AppLabel>
           <AppLabel size={20}>{product.price.toLocaleString()}원</AppLabel>
         </TextContainer>
-        <img src={product.imageUrl} alt={product.name} width="150" height="120" style={{ borderRadius: '15px' }} />
+        <ImageContainer isSellable={product.isSellable}>
+          <img src={product.imageUrl} alt={product.name} width="150" height="120" style={{ borderRadius: '15px' }} />
+        </ImageContainer>
         <SwitchButton
           checked={!!product.isSellable}
           onChange={() => {
