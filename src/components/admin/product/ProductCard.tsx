@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 
 interface Props {
   product: Product;
+  onClick?: () => void;
 }
 
 const Container = styled.div<{ isSellable: boolean | null }>`
@@ -50,12 +51,12 @@ const ImageContainer = styled.div<{ isSellable: boolean | null }>`
   filter: ${(props) => (props.isSellable ? 'none' : 'grayScale(100%)')};
 `;
 
-function ProductCard({ product }: Props) {
+function ProductCard({ product, onClick }: Props) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { editProductSellable } = useProducts(workspaceId);
 
   return (
-    <Container isSellable={product.isSellable}>
+    <Container isSellable={product.isSellable} onClick={onClick}>
       <SubContainer>
         <TextContainer>
           <AppLabel size={20}>{product.name}</AppLabel>
