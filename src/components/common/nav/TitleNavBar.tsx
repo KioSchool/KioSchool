@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 interface Props {
   title: string;
   useBackIcon?: boolean;
-  rightElement?: JSX.Element;
+  children?: JSX.Element;
 }
 
 const Container = styled.div`
@@ -31,7 +31,7 @@ const LeftContainer = styled.div`
   gap: 25px;
 `;
 
-function TitleNavBar({ title, useBackIcon = true, rightElement }: Props) {
+function TitleNavBar({ title, useBackIcon = true, children }: Props) {
   const navigate = useNavigate();
 
   return (
@@ -48,7 +48,7 @@ function TitleNavBar({ title, useBackIcon = true, rightElement }: Props) {
             {title}
           </AppLabel>
         </LeftContainer>
-        {rightElement}
+        {children}
       </SubContainer>
     </Container>
   );
