@@ -10,6 +10,7 @@ export const initState: ProductEdit = {
   description: '',
   price: 0,
   id: 0,
+  isSellable: true,
   image: {
     url: '',
     file: null,

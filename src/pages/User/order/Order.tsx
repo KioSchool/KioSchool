@@ -42,7 +42,10 @@ const ProductContainer = styled.div`
 
 function Order() {
   const workspace = useRecoilValue(userWorkspaceAtom);
-  const productsByCategory = _.groupBy<Product>(workspace.products, (product) => product.productCategory?.id);
+  const productsByCategory = _.groupBy<Product>(
+    workspace.products.filter((it) => it.isSellable),
+    (product) => product.productCategory?.id,
+  );
   const productsMap = _.keyBy(workspace.products, 'id');
   const categoryMap = _.keyBy(workspace.productCategories, 'id');
 
