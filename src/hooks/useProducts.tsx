@@ -58,6 +58,21 @@ function useProducts(workspaceId: string | undefined) {
       .catch((error) => console.error('Failed to add product: ', error));
   };
 
+  const editProductSellable = (productId: number, isSellable: boolean) => {
+    adminApi
+      .put('/product/sellable', {
+        workspaceId,
+        productId,
+        isSellable,
+      })
+      .then(() => {
+        fetchProducts();
+      })
+      .catch((error) => {
+        console.error('Failed to edit product sellable: ', error);
+      });
+  };
+
   const deleteProduct = (productId: number) => {
     adminApi
       .delete('/product', {
@@ -101,7 +116,7 @@ function useProducts(workspaceId: string | undefined) {
     });
   };
 
-  return { fetchProducts, addProduct, fetchCategories, addCategories, deleteProducts, fetchProduct, editProduct };
+  return { fetchProducts, addProduct, fetchCategories, addCategories, deleteProducts, fetchProduct, editProduct, editProductSellable };
 }
 
 export default useProducts;
