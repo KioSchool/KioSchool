@@ -5,7 +5,7 @@ import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import AppButton from '@components/common/button/AppButton';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
-import Container from '@components/common/container/Container';
+import AppContainer from '@components/common/container/AppContainer';
 
 const LoginContainer = styled.div`
   display: grid;
@@ -49,7 +49,7 @@ function Login() {
   };
 
   return (
-    <Container justifyValue={'center'}>
+    <AppContainer justifyValue={'center'}>
       <LoginContainer>
         <AppLabel size={'large'}>로그인</AppLabel>
         <InputContainer>
@@ -66,7 +66,7 @@ function Login() {
           </AppLabel>
         </ButtonContainer>
       </LoginContainer>
-    </Container>
+    </AppContainer>
   );
 }
 
