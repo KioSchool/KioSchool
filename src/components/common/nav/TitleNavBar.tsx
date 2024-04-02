@@ -33,7 +33,8 @@ const LeftContainer = styled.div`
   gap: 25px;
 `;
 
-const ArrowLeftButton = styled(ArrowLeftSvg)`
+const ArrowLeftButton = styled(ArrowLeftSvg)<{ useBackIcon: boolean }>`
+  display: ${(props) => (props.useBackIcon ? 'block' : 'none')};
   cursor: pointer;
   position: absolute;
   left: 1px;
@@ -54,7 +55,7 @@ function TitleNavBar({ title, useBackIcon = true, children }: Props) {
             onClick={() => {
               navigate(-1);
             }}
-            style={{ display: useBackIcon ? '' : 'hidden' }}
+            useBackIcon={useBackIcon}
           />
           <AppLabel size={36} style={{ fontWeight: 800, paddingLeft: 50 }}>
             {title}
