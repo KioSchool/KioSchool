@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import AccountIconSvg from '@resources/svg/AccountIconSvg';
 import DeleteUserSvg from '@resources/svg/DeleteUserSvg';
 import SettingSvg from '@resources/svg/SettingIconSvg';
-import { useNavigate } from 'react-router-dom';
 
 const ItemContainer = styled.div`
   width: 160px;
@@ -68,23 +67,21 @@ const ItmeLabel = styled.div`
 
 interface MyInfoContentItmeProps {
   label: string;
-  url: string;
+  onClickFunc: (url: string) => void;
   iconString: string;
 }
 
-function MyInfoItemContent({ label, url, iconString }: MyInfoContentItmeProps) {
-  const navigate = useNavigate();
-
+function MyInfoItemContent({ label, onClickFunc, iconString }: MyInfoContentItmeProps) {
   let buttonComponent;
   if (iconString === 'setting') {
-    buttonComponent = <SettingButton onClick={() => navigate(url)} />;
+    buttonComponent = <SettingButton onClick={() => onClickFunc('/setting')} />;
   } else if (iconString === 'account') {
-    buttonComponent = <AccountButton onClick={() => navigate(url)} />;
+    buttonComponent = <AccountButton onClick={() => onClickFunc('/register-account')} />;
   } else {
     buttonComponent = (
       <DeleteUserButton
         onClick={() => {
-          navigate(url);
+          onClickFunc('delete-user');
         }}
       />
     );

@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import MyInfoItemContent from './MyInfoItemContent';
+import { useNavigate } from 'react-router-dom';
 
 const MyInfoContainer = styled.div`
   width: 1100px;
@@ -30,14 +31,18 @@ const VerticalLine = styled.div`
 `;
 
 function MyInfoContent() {
+  const navigate = useNavigate();
+  const onClickHandler = (url: string) => {
+    navigate(url);
+  };
   return (
     <MyInfoContainer>
       <MyInfoSubContainer>
-        <MyInfoItemContent label="비밀번호 변경" url={'/change-password'} iconString="setting" />
+        <MyInfoItemContent label="비밀번호 변경" onClickFunc={onClickHandler} iconString="setting" />
         <VerticalLine />
-        <MyInfoItemContent label="계좌관리" url={'/register-account'} iconString="account" />
+        <MyInfoItemContent label="계좌관리" onClickFunc={onClickHandler} iconString="account" />
         <VerticalLine />
-        <MyInfoItemContent label="계정탈퇴" url={'/delete-admin'} iconString="delete" />
+        <MyInfoItemContent label="계정탈퇴" onClickFunc={onClickHandler} iconString="delete" />
       </MyInfoSubContainer>
     </MyInfoContainer>
   );
