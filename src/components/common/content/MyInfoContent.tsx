@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import DeleteButtonSvg from '@resources/svg/DeleteButtonSvg';
+import MyInfoItemContent from './MyInfoItemContent';
 
 const MyInfoContainer = styled.div`
   width: 1100px;
@@ -23,66 +23,14 @@ const MyInfoSubContainer = styled.div`
   align-items: center;
 `;
 
-const ItemContainer = styled.div`
-  background: silver;
-  border: 2px solid black;
-  width: 160px;
-  height: 150px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const ButtonContainer = styled.div`
-  position: relative;
-  width: 156px;
-  height: 70px;
-`;
-
-const DeleteButton = styled(DeleteButtonSvg)`
-  position: absolute;
-  width: 70px;
-  height: 70px;
-  right: 44px;
-  left: 44px;
-  top: 12px;
-  transition: transform 0.1s ease;
-  &:hover {
-    transform: scale(1.2);
-  }
-`;
-
-const ItmeLabel = styled.div`
-  width: 156px;
-  height: 43px;
-  text-align: center;
-  font-size: 24px;
-  font-weight: 400;
-`;
 function MyInfoContent() {
   return (
     <>
       <MyInfoContainer>
         <MyInfoSubContainer>
-          <ItemContainer>
-            <ButtonContainer>
-              <DeleteButton />
-            </ButtonContainer>
-            <ItmeLabel>비밀번호 변경</ItmeLabel>
-          </ItemContainer>
-          <ItemContainer>
-            <ButtonContainer>
-              <DeleteButton />
-            </ButtonContainer>
-            <ItmeLabel>계좌 관리</ItmeLabel>
-          </ItemContainer>
-          <ItemContainer>
-            <ButtonContainer>
-              <DeleteButton />
-            </ButtonContainer>
-            <ItmeLabel>계정 탈퇴</ItmeLabel>
-          </ItemContainer>
+          <MyInfoItemContent label="비밀번호 변경" />
+          <MyInfoItemContent label="계좌관리" />
+          <MyInfoItemContent label="계정탈퇴" />
         </MyInfoSubContainer>
       </MyInfoContainer>
     </>
