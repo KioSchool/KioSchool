@@ -33,11 +33,11 @@ function MyInfoContent() {
     <>
       <MyInfoContainer>
         <MyInfoSubContainer>
-          <MyInfoItemContent label="비밀번호 변경" />
+          <MyInfoItemContent label="비밀번호 변경" url={'/change-password'} />
           <VerticalLine />
-          <MyInfoItemContent label="계좌관리" />
+          <MyInfoItemContent label="계좌관리" url={'/register-account'} />
           <VerticalLine />
-          <MyInfoItemContent label="계정탈퇴" />
+          <MyInfoItemContent label="계정탈퇴" url={'/delete-admin'} />
         </MyInfoSubContainer>
       </MyInfoContainer>
     </>

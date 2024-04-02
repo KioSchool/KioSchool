@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import DeleteButtonSvg from '@resources/svg/DeleteButtonSvg';
+import { useNavigate } from 'react-router-dom';
 
 const ItemContainer = styled.div`
   background: silver;
@@ -42,13 +43,19 @@ const ItmeLabel = styled.div`
 
 interface MyInfoContentItmeProps {
   label: string;
+  url: string;
 }
 
-function MyInfoItemContent({ label }: MyInfoContentItmeProps) {
+function MyInfoItemContent({ label, url }: MyInfoContentItmeProps) {
+  const navigate = useNavigate();
   return (
     <ItemContainer>
       <ButtonContainer>
-        <DeleteButton />
+        <DeleteButton
+          onClick={() => {
+            navigate(`${url}`);
+          }}
+        />
       </ButtonContainer>
       <ItmeLabel>{label}</ItmeLabel>
     </ItemContainer>
