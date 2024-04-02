@@ -19,6 +19,7 @@ const ButtonContainer = styled.div`
 `;
 
 const DeleteButton = styled(DeleteButtonSvg)`
+  cursor: pointer;
   position: absolute;
   width: 70px;
   height: 70px;
