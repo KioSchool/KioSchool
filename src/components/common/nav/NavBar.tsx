@@ -55,20 +55,11 @@ export const NavLinkItem = styled(Link)`
 `;
 
 interface NavBarProps {
-  logoSize: 'small' | 'medium';
 }
-
-const sizeMap: { [key in NavBarProps['logoSize']]: { width: string; height: string } } = {
-  small: { width: '125px', height: '60px' },
-  medium: { width: '170px', height: '80px' },
-};
-
-function NavBar({ logoSize }: NavBarProps) {
   return (
-    <NavContainer>
       <NavContent>
         <Link to={'/'}>
-          <img src={kioLogo} {...sizeMap[logoSize]} alt="Kio Logo" />
+          <img src={kioLogo} width={'125px'} height={'60px'} alt="Kio Logo" />
         </Link>
 
         <NavLinkContainer>
