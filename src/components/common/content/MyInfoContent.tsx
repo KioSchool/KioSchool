@@ -13,6 +13,7 @@ const MyInfoContainer = styled.div`
   border-radius: 20px;
   box-shadow: 0px 4px 16.8px 0px rgba(0, 0, 0, 0.25);
 `;
+
 const MyInfoSubContainer = styled.div`
   width: 100%;
   height: 220px;
@@ -30,17 +31,15 @@ const VerticalLine = styled.div`
 
 function MyInfoContent() {
   return (
-    <>
-      <MyInfoContainer>
-        <MyInfoSubContainer>
-          <MyInfoItemContent label="비밀번호 변경" url={'/change-password'} iconString="setting" />
-          <VerticalLine />
-          <MyInfoItemContent label="계좌관리" url={'/register-account'} iconString="account" />
-          <VerticalLine />
-          <MyInfoItemContent label="계정탈퇴" url={'/delete-admin'} iconString="delete" />
-        </MyInfoSubContainer>
-      </MyInfoContainer>
-    </>
+    <MyInfoContainer>
+      <MyInfoSubContainer>
+        <MyInfoItemContent label="비밀번호 변경" url={'/change-password'} iconString="setting" />
+        <VerticalLine />
+        <MyInfoItemContent label="계좌관리" url={'/register-account'} iconString="account" />
+        <VerticalLine />
+        <MyInfoItemContent label="계정탈퇴" url={'/delete-admin'} iconString="delete" />
+      </MyInfoSubContainer>
+    </MyInfoContainer>
   );
 }
 

@@ -17,18 +17,18 @@ const MyInfoContainer = styled.div`
 function MyInfo() {
   const { fetchAdminUser } = useAdminUser();
   const user = useRecoilValue(adminUserAtom);
+
   useEffect(() => {
     fetchAdminUser();
   }, []);
+
   return (
-    <>
-      <Container justifyValue={'center'} alignItems={'center'} flexDirection={'column'}>
-        <MyInfoContainer>
-          <TitleNavBar title={`${user.name} 님의 마이페이지`} useBackIcon={true} />
-          <MyInfoContent />
-        </MyInfoContainer>
-      </Container>
-    </>
+    <Container justifyValue={'center'} alignItems={'center'} flexDirection={'column'}>
+      <MyInfoContainer>
+        <TitleNavBar title={`${user.name} 님의 마이페이지`} useBackIcon={true} />
+        <MyInfoContent />
+      </MyInfoContainer>
+    </Container>
   );
 }
 
