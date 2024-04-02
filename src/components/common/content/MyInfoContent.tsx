@@ -1,6 +1,9 @@
 import styled from '@emotion/styled';
 import MyInfoItemContent from './MyInfoItemContent';
+import SettingSvg from '@resources/svg/SettingIconSvg';
 import { useNavigate } from 'react-router-dom';
+import AccountIconSvg from '@resources/svg/AccountIconSvg';
+import DeleteUserSvg from '@resources/svg/DeleteUserSvg';
 
 const MyInfoContainer = styled.div`
   width: 1100px;
@@ -30,19 +33,69 @@ const VerticalLine = styled.div`
   background: #ccc;
 `;
 
+const SettingButton = styled(SettingSvg)`
+  cursor: pointer;
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  right: 44px;
+  left: 44px;
+  top: 12px;
+  transition: transform 0.1s ease;
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
+
+const AccountButton = styled(AccountIconSvg)`
+  cursor: pointer;
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  right: 44px;
+  left: 44px;
+  top: 12px;
+  transition: transform 0.1s ease;
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
+
+const DeleteUserButton = styled(DeleteUserSvg)`
+  cursor: pointer;
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  right: 44px;
+  left: 44px;
+  top: 12px;
+  transition: transform 0.1s ease;
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
+
 function MyInfoContent() {
   const navigate = useNavigate();
-  const onClickHandler = (url: string) => {
-    navigate(url);
-  };
+
   return (
     <MyInfoContainer>
       <MyInfoSubContainer>
-        <MyInfoItemContent label="비밀번호 변경" onClickFunc={onClickHandler} iconString="setting" />
+        <MyInfoItemContent label="비밀번호 변경">
+          <SettingButton onClick={() => navigate('/change-password')} />
+        </MyInfoItemContent>
+
         <VerticalLine />
-        <MyInfoItemContent label="계좌관리" onClickFunc={onClickHandler} iconString="account" />
+
+        <MyInfoItemContent label="계좌관리">
+          <AccountButton onClick={() => navigate('/register-account')} />
+        </MyInfoItemContent>
+
         <VerticalLine />
-        <MyInfoItemContent label="계정탈퇴" onClickFunc={onClickHandler} iconString="delete" />
+
+        <MyInfoItemContent label="계정탈퇴">
+          <DeleteUserButton onClick={() => navigate('/delete-user')} />
+        </MyInfoItemContent>
       </MyInfoSubContainer>
     </MyInfoContainer>
   );
