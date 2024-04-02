@@ -28,6 +28,7 @@ export interface Product {
   name: string;
   description: string;
   price: number;
+  isSellable: boolean | null;
   imageUrl: string;
   id: number;
   createdAt: string;

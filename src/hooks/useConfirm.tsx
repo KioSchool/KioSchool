@@ -4,7 +4,7 @@ import React from 'react';
 import AppButton from '@components/common/button/AppButton';
 
 const Container = styled.div`
-  z-index: 1000;
+  z-index: 1002;
   position: fixed;
   top: 0;
   left: 0;

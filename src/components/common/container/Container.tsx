@@ -35,7 +35,7 @@ function Container({ children, justifyValue, flexDirection, alignItems, backgrou
   return (
     <>
       <MainContainer backgroundColor={backgroundColor}>
-        <NavBar logoSize={'small'} />
+        <NavBar />
         <SubContainer justifyValue={justifyValue} flexDirection={flexDirection} alignItems={alignItems}>
           {children}
         </SubContainer>
