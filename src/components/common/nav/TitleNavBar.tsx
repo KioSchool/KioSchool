@@ -47,7 +47,7 @@ function TitleNavBar({ title, useBackIcon = true, children }: Props) {
   const navigate = useNavigate();
 
   return (
-    <Container>
+    <Container style={{ paddingBottom: 25 }}>
       <SubContainer>
         <LeftContainer>
           <ArrowLeftButton
