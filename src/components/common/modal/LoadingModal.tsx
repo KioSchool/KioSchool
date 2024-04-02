@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { isLoadingAtom } from '@recoils/atoms';
 
 const Container = styled.div`
-  z-index: 1000;
+  z-index: 1002;
   position: fixed;
   top: 0;
   left: 0;
