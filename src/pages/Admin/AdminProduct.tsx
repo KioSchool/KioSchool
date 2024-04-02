@@ -29,12 +29,15 @@ const ContainerPerCategory = styled.div`
   flex-direction: column;
   gap: 30px;
   padding: 50px 0;
+  min-width: 1000px;
+  width: 70%;
 `;
 
 const ProductsContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 200px);
-  gap: 45px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  row-gap: 40px;
+  column-gap: 40px;
 `;
 
 function AdminProduct() {
