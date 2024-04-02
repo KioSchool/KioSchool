@@ -48,7 +48,7 @@ function AdminProduct() {
       <TitleNavBar title={'상품 조회'} />
       <Container>
         <AppLabel size={'small'} style={{ textAlign: 'center' }}>
-          판매대기 상태인 메뉴는 메뉴 주문 화면에서 숨김처리 되며, 판매 상태로 변경 시 다시 나타나게 됩니다.
+          판매대기 상태인 메뉴는 주문 화면에서 숨김처리 되며, 판매 상태로 변경 시 다시 나타나게 됩니다.
         </AppLabel>
         {categories.map((category) => (
           <ContainerPerCategory key={`product_category${category.id}`}>
