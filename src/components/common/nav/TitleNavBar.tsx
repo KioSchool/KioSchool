@@ -12,6 +12,7 @@ interface Props {
 
 const Container = styled.div`
   display: flex;
+  padding-bottom: 25px;
   justify-content: center;
   height: 50px;
   width: 100%;
@@ -48,7 +49,7 @@ function TitleNavBar({ title, useBackIcon = true, children }: Props) {
   const navigate = useNavigate();
 
   return (
-    <Container style={{ paddingBottom: 25 }}>
+    <Container>
       <SubContainer>
         <LeftContainer>
           <ArrowLeftButton
