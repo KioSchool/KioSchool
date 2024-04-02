@@ -16,6 +16,7 @@ const Container = styled.div`
   justify-content: center;
   height: 50px;
   width: 100%;
+  min-width: 1200px;
 `;
 
 const SubContainer = styled.div`
