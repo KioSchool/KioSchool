@@ -10,7 +10,7 @@ import { useRecoilValue } from 'recoil';
 const MyInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
 `;
 
