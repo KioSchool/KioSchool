@@ -57,27 +57,27 @@ function AdminProduct() {
   return (
     <>
       <NavBar useBackground={true} />
-      <TitleNavBar title={'상품 조회'}>
-        <ManageButtonContainer>
-          <AppButton
-            size={160}
-            onClick={() => {
-              appendPath('/categories');
-            }}
-          >
-            카테고리 관리
-          </AppButton>
-          <AppButton
-            size={130}
-            onClick={() => {
-              appendPath('/add-product');
-            }}
-          >
-            상품 추가
-          </AppButton>
-        </ManageButtonContainer>
-      </TitleNavBar>
       <Container>
+        <TitleNavBar title={'상품 조회'}>
+          <ManageButtonContainer>
+            <AppButton
+              size={160}
+              onClick={() => {
+                appendPath('/categories');
+              }}
+            >
+              카테고리 관리
+            </AppButton>
+            <AppButton
+              size={130}
+              onClick={() => {
+                appendPath('/add-product');
+              }}
+            >
+              상품 추가
+            </AppButton>
+          </ManageButtonContainer>
+        </TitleNavBar>
         <AppLabel size={'small'} style={{ textAlign: 'center' }}>
           판매대기 상태인 메뉴는 주문 화면에서 숨김처리 되며, 판매 상태로 변경 시 다시 나타나게 됩니다.
         </AppLabel>

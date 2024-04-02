@@ -31,7 +31,7 @@ interface Props {
   backgroundColor?: string;
 }
 
-function Container({ children, justifyValue, flexDirection, alignItems, backgroundColor }: Props) {
+function AppContainer({ children, justifyValue, flexDirection, alignItems, backgroundColor }: Props) {
   return (
     <>
       <MainContainer backgroundColor={backgroundColor}>
@@ -44,4 +44,4 @@ function Container({ children, justifyValue, flexDirection, alignItems, backgrou
   );
 }
 
-export default Container;
+export default AppContainer;
