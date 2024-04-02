@@ -90,7 +90,13 @@ function AdminProduct() {
               {products
                 .filter((product) => (product.productCategory?.id || null) === category.id)
                 .map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    onClick={() => {
+                      appendPath(`/edit-product?productId=${product.id}`);
+                    }}
+                  />
                 ))}
             </ProductsContainer>
           </ContainerPerCategory>
