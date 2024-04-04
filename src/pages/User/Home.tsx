@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Container from '@components/common/container/Container';
+import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import ArrowRight from '../../resources/svg/ArrowRightSvg';
 
@@ -78,7 +78,7 @@ function Home() {
 
   return (
     <>
-      <Container justifyValue={'center'} flexDirection={'column'} alignItems={'flex-start'}>
+      <AppContainer justifyValue={'center'} flexDirection={'column'} alignItems={'flex-start'}>
         <>
           <MainTitle>
             키오스쿨로
@@ -91,7 +91,7 @@ function Home() {
             </LinkText>
           </LinkAdminHome>
         </>
-      </Container>
+      </AppContainer>
       <HoverOverlay isHover={isHover} />
     </>
   );

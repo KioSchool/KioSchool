@@ -4,7 +4,7 @@ import SelectWithOptions from '@components/common/select/SelectWithOptions';
 import styled from '@emotion/styled';
 import useProducts from '@hooks/useProducts';
 import uploadPreview from '@resources/image/uploadPreview.png';
-import { userWorkspaceAtom } from '@recoils/atoms';
+import { categoriesAtom } from '@recoils/atoms';
 import { ChangeEvent, useEffect, useReducer, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -40,7 +40,7 @@ function reducer(state: ProductEdit, action: ProductActionType) {
 function AdminProductEdit() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchProduct, fetchCategories, editProduct } = useProducts(workspaceId);
-  const workspace = useRecoilValue(userWorkspaceAtom);
+  const productCategories = useRecoilValue(categoriesAtom);
 
   const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -130,7 +130,7 @@ function AdminProductEdit() {
       <img src={productState.image.url || uploadPreview} alt={productState.image.url} style={{ width: '300px', height: '300px' }} />
       <input type="file" id="img" accept="image/*" onChange={onImageChange} />
       <SelectWithOptions
-        options={workspace.productCategories}
+        options={productCategories}
         value={productState.productCategory ? productState.productCategory.id : 'null'}
         onInput={(event: React.ChangeEvent<HTMLSelectElement>) => {
           dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
