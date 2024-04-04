@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useReducer, useEffect } from 'react';
+import React, { ChangeEvent, useEffect, useReducer, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import AppButton from '@components/common/button/AppButton';
 import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
@@ -6,7 +6,7 @@ import SelectWithOptions from '@components/common/select/SelectWithOptions';
 import styled from '@emotion/styled';
 import useProducts from '@hooks/useProducts';
 import { useRecoilValue } from 'recoil';
-import { userWorkspaceAtom } from '@recoils/atoms';
+import { categoriesAtom } from '@recoils/atoms';
 import { ProductActionType, ProductStateType } from '@@types/productTypes';
 
 const ErrorMessage = styled.div`
@@ -43,7 +43,7 @@ function AdminProductManage() {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
   const [state, dispatch] = useReducer(reducer, body);
-  const workspace = useRecoilValue(userWorkspaceAtom);
+  const productCategories = useRecoilValue(categoriesAtom);
 
   useEffect(() => {
     fetchCategories();
@@ -99,7 +99,7 @@ function AdminProductManage() {
       />
       <input type="file" id="img" accept="image/*" onChange={onImageChange} />
       <SelectWithOptions
-        options={workspace.productCategories}
+        options={productCategories}
         onInput={(event: React.ChangeEvent<HTMLSelectElement>) => {
           dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
         }}
