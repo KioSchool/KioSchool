@@ -37,19 +37,17 @@ function AdminHome() {
   }, []);
 
   return (
-    <>
-      <AppContainer justifyValue={'space-between'}>
-        <>
-          <UserNameContainer>
-            <UserNameText>{user.name}</UserNameText>
-            <DescriptionText>님의 주점</DescriptionText>
-          </UserNameContainer>
-          <WorkspaceContent workspaces={workspaces} />
-          <AddWorkspace workspaces={workspaces} />
-          <DummyWorkspace workspaces={workspaces} />
-        </>
-      </AppContainer>
-    </>
+    <AppContainer justifyValue={'space-between'}>
+      <>
+        <UserNameContainer>
+          <UserNameText>{user.name}</UserNameText>
+          <DescriptionText>님의 주점</DescriptionText>
+        </UserNameContainer>
+        <WorkspaceContent workspaces={workspaces} />
+        <AddWorkspace workspaces={workspaces} />
+        <DummyWorkspace workspaces={workspaces} />
+      </>
+    </AppContainer>
   );
 }
 
