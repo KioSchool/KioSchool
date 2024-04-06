@@ -92,7 +92,7 @@ function Register() {
   const userCodeInputRef = useRef<HTMLInputElement>(null);
 
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [isAbleId, setisAbleId] = useState<boolean>(false);
+  const [isAbleId, setIsAbleId] = useState<boolean>(false);
 
   const [isCodeSent, setIsCodeSent] = useState<boolean>(false);
   const [isVerified, setIsVerified] = useState<boolean>(false);
@@ -117,11 +117,11 @@ function Register() {
       .then((response) => {
         if (response.data !== true) {
           setErrorMessage('');
-          setisAbleId(true);
+          setIsAbleId(true);
           return;
         }
         setErrorMessage('The userId is already in use');
-        setisAbleId(false);
+        setIsAbleId(false);
       })
       .catch((error) => {
         console.error('duplicate check error:', error);
@@ -232,7 +232,7 @@ function Register() {
               type={'text'}
               id={'userId'}
               ref={userIdInputRef}
-              onChange={() => setisAbleId(false)}
+              onChange={() => setIsAbleId(false)}
               placeholder="아이디를 입력해주세요"
               required
             />
