@@ -92,7 +92,7 @@ function Register() {
   const userCodeInputRef = useRef<HTMLInputElement>(null);
 
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [isAbleId, setisAbleId] = useState<boolean>(false);
+  const [isAbleId, setIsAbleId] = useState<boolean>(false);
 
   const [isCodeSent, setIsCodeSent] = useState<boolean>(false);
   const [isVerified, setIsVerified] = useState<boolean>(false);
@@ -117,11 +117,11 @@ function Register() {
       .then((response) => {
         if (response.data !== true) {
           setErrorMessage('');
-          setisAbleId(true);
+          setIsAbleId(true);
           return;
         }
         setErrorMessage('The userId is already in use');
-        setisAbleId(false);
+        setIsAbleId(false);
       })
       .catch((error) => {
         console.error('duplicate check error:', error);
@@ -215,100 +215,98 @@ function Register() {
   };
 
   return (
-    <>
-      <Container>
-        <SubContainer>
-          <AppLabel size={'large'} style={{ padding: '0 0 30px' }}>
-            회원가입
-          </AppLabel>
+    <Container>
+      <SubContainer>
+        <AppLabel size={'large'} style={{ padding: '0 0 30px' }}>
+          회원가입
+        </AppLabel>
 
-          {errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}
-          <FormContainer id={'form'} onSubmit={submitHandler}>
-            <AppInputWithLabel titleLabel={'이름'} type={'text'} id={'name'} ref={userNameInputRef} placeholder="이름을 입력해주세요" required />
-            <IdContainer>
-              <AppInputWithLabel
-                style={{ width: '330px' }}
-                titleLabel={'아이디'}
-                messageLabel={isAbleId ? '사용가능한 ID입니다!' : undefined}
-                type={'text'}
-                id={'userId'}
-                ref={userIdInputRef}
-                onChange={() => setisAbleId(false)}
-                placeholder="아이디를 입력해주세요"
-                required
-              />
-              <AppButton size={'medium'} type={'button'} onClick={checkDuplicate}>
-                ID 중복체크
-              </AppButton>
-            </IdContainer>
-
+        {errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}
+        <FormContainer id={'form'} onSubmit={submitHandler}>
+          <AppInputWithLabel titleLabel={'이름'} type={'text'} id={'name'} ref={userNameInputRef} placeholder="이름을 입력해주세요" required />
+          <IdContainer>
             <AppInputWithLabel
-              titleLabel={'비밀번호'}
-              messageLabel={showCheckPasswordLabel()}
-              type={'password'}
-              id={'userPassword'}
-              onChange={() => {
-                setCheckUserPasswordInput('');
-              }}
-              ref={userPasswordInputRef}
-              placeholder="비밀번호를 입력해주세요"
+              style={{ width: '330px' }}
+              titleLabel={'아이디'}
+              messageLabel={isAbleId ? '사용가능한 ID입니다!' : undefined}
+              type={'text'}
+              id={'userId'}
+              ref={userIdInputRef}
+              onChange={() => setIsAbleId(false)}
+              placeholder="아이디를 입력해주세요"
               required
             />
-            <AppInput
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setCheckUserPasswordInput(event.target.value)}
-              type={'password'}
-              value={checkUserPasswordInput}
-              placeholder="입력한 비밀번호를 똑같이 입력해주세요"
-              required
-            ></AppInput>
-
-            <EmailContainer>
-              <AppInputWithLabel
-                style={{ width: '330px' }}
-                titleLabel={'이메일'}
-                type={'email'}
-                id={'userEmail'}
-                ref={userEmailInputRef}
-                placeholder="인증코드를 받을 이메일을 입력해주세요"
-                required
-              />
-              <AppButton type={'button'} onClick={sendCode}>
-                인증코드 전송
-              </AppButton>
-              {isCodeSent && (
-                <CodeContainer>
-                  <AppInputWithLabel
-                    style={{ width: '275px' }}
-                    titleLabel={'인증코드'}
-                    type={'text'}
-                    id={'code'}
-                    ref={userCodeInputRef}
-                    placeholder="받은 인증코드를 입력해주세요"
-                    required
-                  />
-                  <AppButton style={CodeReSendStyle} type={'button'} onClick={sendCode}>
-                    재전송
-                  </AppButton>
-                  <AppButton size={'small'} type={'button'} onClick={checkCode}>
-                    확인
-                  </AppButton>
-                </CodeContainer>
-              )}
-            </EmailContainer>
-
-            {isVerified && isCodeSent ? '인증 성공' : ''}
-            <AppButton size={'large'} style={RegisterStyle} type={'submit'}>
-              회원가입
+            <AppButton size={'medium'} type={'button'} onClick={checkDuplicate}>
+              ID 중복체크
             </AppButton>
-          </FormContainer>
-          <LoginLabelContainer>
-            <AppLabel size={'small'}>
-              <Link to={'/login'}>로그인하기</Link>
-            </AppLabel>
-          </LoginLabelContainer>
-        </SubContainer>
-      </Container>
-    </>
+          </IdContainer>
+
+          <AppInputWithLabel
+            titleLabel={'비밀번호'}
+            messageLabel={showCheckPasswordLabel()}
+            type={'password'}
+            id={'userPassword'}
+            onChange={() => {
+              setCheckUserPasswordInput('');
+            }}
+            ref={userPasswordInputRef}
+            placeholder="비밀번호를 입력해주세요"
+            required
+          />
+          <AppInput
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => setCheckUserPasswordInput(event.target.value)}
+            type={'password'}
+            value={checkUserPasswordInput}
+            placeholder="입력한 비밀번호를 똑같이 입력해주세요"
+            required
+          ></AppInput>
+
+          <EmailContainer>
+            <AppInputWithLabel
+              style={{ width: '330px' }}
+              titleLabel={'이메일'}
+              type={'email'}
+              id={'userEmail'}
+              ref={userEmailInputRef}
+              placeholder="인증코드를 받을 이메일을 입력해주세요"
+              required
+            />
+            <AppButton type={'button'} onClick={sendCode}>
+              인증코드 전송
+            </AppButton>
+            {isCodeSent && (
+              <CodeContainer>
+                <AppInputWithLabel
+                  style={{ width: '275px' }}
+                  titleLabel={'인증코드'}
+                  type={'text'}
+                  id={'code'}
+                  ref={userCodeInputRef}
+                  placeholder="받은 인증코드를 입력해주세요"
+                  required
+                />
+                <AppButton style={CodeReSendStyle} type={'button'} onClick={sendCode}>
+                  재전송
+                </AppButton>
+                <AppButton size={'small'} type={'button'} onClick={checkCode}>
+                  확인
+                </AppButton>
+              </CodeContainer>
+            )}
+          </EmailContainer>
+
+          {isVerified && isCodeSent ? '인증 성공' : ''}
+          <AppButton size={'large'} style={RegisterStyle} type={'submit'}>
+            회원가입
+          </AppButton>
+        </FormContainer>
+        <LoginLabelContainer>
+          <AppLabel size={'small'}>
+            <Link to={'/login'}>로그인하기</Link>
+          </AppLabel>
+        </LoginLabelContainer>
+      </SubContainer>
+    </Container>
   );
 }
 

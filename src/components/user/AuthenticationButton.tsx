@@ -11,6 +11,7 @@ const LogoutText = styled.p`
   text-align: center;
   font-size: 24px;
   font-weight: 400;
+  line-height: 43px;
   margin: 0px;
 `;
 
