@@ -12,6 +12,7 @@ const MyInfoContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
 `;
 
 function MyInfo() {
