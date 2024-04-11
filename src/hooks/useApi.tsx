@@ -10,15 +10,12 @@ interface UseApiProps {
 function useApi({ useLoading = true }: UseApiProps = {}) {
   const navigate = useNavigate();
   const setIsLoading = useSetRecoilState(isLoadingAtom);
+  const controller = new AbortController();
 
   const adminApi = axios.create({
     baseURL: process.env.REACT_APP_ENVIRONMENT == 'development' ? 'http://localhost:8080/admin' : 'https://kio-school.fly.dev/admin',
     withCredentials: true,
-  });
-
-  const sessionApi = axios.create({
-    baseURL: process.env.REACT_APP_ENVIRONMENT == 'development' ? 'http://localhost:8080/admin' : 'https://kio-school.fly.dev/admin',
-    withCredentials: true,
+    signal: controller.signal,
   });
 
   const commonRequestInterceptor = (config: any) => {
@@ -40,6 +37,7 @@ function useApi({ useLoading = true }: UseApiProps = {}) {
   adminApi.interceptors.response.use(commonResponseInterceptor, (error) => {
     if (useLoading) setIsLoading(false);
     if (error.response.status === 403) {
+      controller.abort();
       alert('로그인이 필요합니다.');
       document.cookie = 'isLoggedIn=;';
       navigate('/login');
@@ -54,7 +52,7 @@ function useApi({ useLoading = true }: UseApiProps = {}) {
   userApi.interceptors.request.use(commonRequestInterceptor, commonErrorInterceptor);
   userApi.interceptors.response.use(commonResponseInterceptor, commonErrorInterceptor);
 
-  return { adminApi, userApi, sessionApi };
+  return { adminApi, userApi };
 }
 
 export default useApi;
