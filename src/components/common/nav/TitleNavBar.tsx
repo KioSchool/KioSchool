@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 interface Props {
   title: string;
+  subTitle?: string;
   useBackIcon?: boolean;
   children?: JSX.Element;
 }
@@ -14,15 +15,21 @@ const Container = styled.div`
   display: flex;
   padding-bottom: 25px;
   justify-content: center;
-  height: 50px;
+  height: 100px;
   width: 100%;
   min-width: 1200px;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-left: 50px;
+  height: 40px;
 `;
 
 const SubContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
   width: 1200px;
 `;
 
@@ -30,7 +37,6 @@ const LeftContainer = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
-  align-items: center;
   gap: 25px;
 `;
 
@@ -45,7 +51,7 @@ const ArrowLeftButton = styled(ArrowLeftSvg)<{ useBackIcon: boolean }>`
   }
 `;
 
-function TitleNavBar({ title, useBackIcon = true, children }: Props) {
+function TitleNavBar({ title, subTitle = '', useBackIcon = true, children }: Props) {
   const navigate = useNavigate();
 
   return (
@@ -58,9 +64,14 @@ function TitleNavBar({ title, useBackIcon = true, children }: Props) {
             }}
             useBackIcon={useBackIcon}
           />
-          <AppLabel size={36} style={{ fontWeight: 800, paddingLeft: 50 }}>
-            {title}
-          </AppLabel>
+          <TitleContainer>
+            <AppLabel size={36} style={{ fontWeight: 800 }}>
+              {title}
+            </AppLabel>
+            <AppLabel size={32} style={{ fontWeight: 400, opacity: 0.8 }}>
+              {subTitle}
+            </AppLabel>
+          </TitleContainer>
         </LeftContainer>
         {children}
       </SubContainer>
