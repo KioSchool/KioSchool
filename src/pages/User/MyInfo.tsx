@@ -26,7 +26,7 @@ function MyInfo() {
   return (
     <AppContainer justifyValue={'center'} alignItems={'center'} flexDirection={'column'}>
       <MyInfoContainer>
-        <TitleNavBar title={`${user.name} 님의 마이페이지`} useBackIcon={true} />
+        <TitleNavBar title={`${user.name} 님의 마이페이지`} subTitle={user.email} useBackIcon={true} />
         <MyInfoContent />
       </MyInfoContainer>
     </AppContainer>
