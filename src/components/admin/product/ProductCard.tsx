@@ -3,7 +3,7 @@ import { Product } from '@@types/index';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import SwitchButton from '@components/common/button/SwitchButton';
-import useProducts from '@hooks/useProducts';
+import useProducts from '@hooks/user/useProducts';
 import { useParams } from 'react-router-dom';
 
 interface Props {

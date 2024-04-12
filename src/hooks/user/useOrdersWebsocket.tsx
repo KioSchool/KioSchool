@@ -1,5 +1,5 @@
 import * as StompJs from '@stomp/stompjs';
-import useAdminOrder from '@hooks/useAdminOrder';
+import useAdminOrder from '@hooks/admin/useAdminOrder';
 
 function useOrdersWebsocket(workspaceId: string | undefined) {
   const { fetchTodayOrders } = useAdminOrder(workspaceId);

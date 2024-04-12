@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Workspace } from '@@types/index';
-import useAdminUser from '@hooks/useAdminUser';
+import useAdminUser from '@hooks/admin/useAdminUser';
 import { useRef, useState } from 'react';
 import CreateWorkspaceModal from './modal/CreateWorkspaceModal';
 import AddWorkspaceModalContent from '../content/AddworkspaceModalContent';

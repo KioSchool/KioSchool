@@ -1,7 +1,10 @@
-import { ChangeEvent, useEffect, useState, useReducer } from 'react';
+import { ChangeEvent, useEffect, useReducer, useState } from 'react';
 import jsQR from 'jsqr';
-import useAdminUser from '@hooks/useAdminUser';
+
 import uploadPreview from '@resources/image/uploadPreview.png';
+
+import useAdminUser from '@hooks/admin/useAdminUser';
+
 import { useRecoilValue } from 'recoil';
 import { adminUserAtom } from '@recoils/atoms';
 

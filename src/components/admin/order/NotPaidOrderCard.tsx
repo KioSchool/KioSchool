@@ -2,7 +2,7 @@ import React from 'react';
 import { Order } from '@@types/index';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
-import useAdminOrder from '@hooks/useAdminOrder';
+import useAdminOrder from '@hooks/admin/useAdminOrder';
 
 interface Props {
   order: Order;

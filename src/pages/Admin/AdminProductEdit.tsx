@@ -2,7 +2,7 @@ import AppButton from '@components/common/button/AppButton';
 import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import SelectWithOptions from '@components/common/select/SelectWithOptions';
 import styled from '@emotion/styled';
-import useProducts from '@hooks/useProducts';
+import useProducts from '@hooks/user/useProducts';
 import uploadPreview from '@resources/image/uploadPreview.png';
 import { categoriesAtom } from '@recoils/atoms';
 import { ChangeEvent, useEffect, useReducer, useState } from 'react';

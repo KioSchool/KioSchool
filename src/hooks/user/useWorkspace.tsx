@@ -7,7 +7,7 @@ function useWorkspace() {
   const { userApi } = useApi();
   const setUserWorkspace = useSetRecoilState(userWorkspaceAtom);
 
-  const fetchWorkspace = (workspaceId: string | null) => {
+  const fetchWorkspace = (workspaceId: string | undefined | null) => {
     if (!workspaceId) return;
 
     userApi.get<Workspace>('/workspace', { params: { workspaceId: workspaceId } }).then((res) => {

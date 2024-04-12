@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import useProducts from '@hooks/useProducts';
+import useProducts from '@hooks/user/useProducts';
 import { useRecoilValue } from 'recoil';
 import { categoriesAtom, productsAtom } from '@recoils/atoms';
 import TitleNavBar from '@components/common/nav/TitleNavBar';

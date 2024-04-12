@@ -2,7 +2,7 @@ import AppContainer from '@components/common/container/AppContainer';
 import MyInfoContent from '@components/common/content/MyInfoContent';
 import TitleNavBar from '@components/common/nav/TitleNavBar';
 import styled from '@emotion/styled';
-import useAdminUser from '@hooks/useAdminUser';
+import useAdminUser from '@hooks/admin/useAdminUser';
 import { adminUserAtom } from '@recoils/atoms';
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';

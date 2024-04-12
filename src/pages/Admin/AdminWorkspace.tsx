@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import useCustomNavigate from '@hooks/useCustomNavigate';
+import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 
 function AdminWorkspace() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
+  const { fetchWorkspace } = useAdminWorkspace();
   const { appendPath } = useCustomNavigate();
+
+  useEffect(() => {
+    fetchWorkspace(workspaceId);
+  }, []);
 
   return (
     <div>

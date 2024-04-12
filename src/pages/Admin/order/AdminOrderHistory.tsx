@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import useAdminOrder from '@hooks/useAdminOrder';
+import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { ordersAtom } from '@recoils/atoms';

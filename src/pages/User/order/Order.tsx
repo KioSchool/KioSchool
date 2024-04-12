@@ -5,7 +5,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import CategoryBadgesContainer from '@components/user/order/CategoryBadgesContainer';
 import ProductCard from '@components/user/product/ProductCard';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
-import useWorkspace from '@hooks/useWorkspace';
+import useWorkspace from '@hooks/user/useWorkspace';
 import { orderBasketAtom, userWorkspaceAtom } from '@recoils/atoms';
 import { useRecoilValue } from 'recoil';
 import { Product } from '@@types/index';

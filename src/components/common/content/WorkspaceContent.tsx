@@ -1,6 +1,6 @@
 import { Workspace } from '@@types/index';
 import styled from '@emotion/styled';
-import useAdminUser from '@hooks/useAdminUser';
+import useAdminUser from '@hooks/admin/useAdminUser';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import useConfirm from '@hooks/useConfirm';
 import DeleteButtonSvg from '@resources/svg/DeleteButtonSvg';
