@@ -4,7 +4,7 @@ import AppButton from '@components/common/button/AppButton';
 import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import SelectWithOptions from '@components/common/select/SelectWithOptions';
 import styled from '@emotion/styled';
-import useProducts from '@hooks/user/useProducts';
+import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useRecoilValue } from 'recoil';
 import { categoriesAtom } from '@recoils/atoms';
 import { ProductActionType, ProductStateType } from '@@types/productTypes';
@@ -39,7 +39,7 @@ function AdminProductManage() {
     productCategoryId: 'null',
   };
 
-  const { addProduct, fetchCategories } = useProducts(workspaceId);
+  const { addProduct, fetchCategories } = useAdminProducts(workspaceId);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
   const [state, dispatch] = useReducer(reducer, body);

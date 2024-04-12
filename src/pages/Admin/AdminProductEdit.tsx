@@ -2,7 +2,7 @@ import AppButton from '@components/common/button/AppButton';
 import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import SelectWithOptions from '@components/common/select/SelectWithOptions';
 import styled from '@emotion/styled';
-import useProducts from '@hooks/user/useProducts';
+import useAdminProducts from '@hooks/admin/useAdminProducts';
 import uploadPreview from '@resources/image/uploadPreview.png';
 import { categoriesAtom } from '@recoils/atoms';
 import { ChangeEvent, useEffect, useReducer, useState } from 'react';
@@ -39,7 +39,7 @@ function reducer(state: ProductEdit, action: ProductActionType) {
 
 function AdminProductEdit() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchProduct, fetchCategories, editProduct } = useProducts(workspaceId);
+  const { fetchProduct, fetchCategories, editProduct } = useAdminProducts(workspaceId);
   const productCategories = useRecoilValue(categoriesAtom);
 
   const [errorMessage, setErrorMessage] = useState<string>('');

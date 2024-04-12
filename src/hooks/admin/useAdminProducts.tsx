@@ -4,7 +4,7 @@ import { categoriesAtom, productsAtom } from '@recoils/atoms';
 import { Product, ProductCategory } from '@@types/index';
 import { useNavigate } from 'react-router-dom';
 
-function useProducts(workspaceId: string | undefined) {
+function useAdminProducts(workspaceId: string | undefined) {
   const { adminApi } = useApi();
   const navigate = useNavigate();
   const setProducts = useSetRecoilState(productsAtom);
@@ -19,6 +19,10 @@ function useProducts(workspaceId: string | undefined) {
       })
       .then((res) => {
         setProducts(res.data);
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+        navigate(-1);
       });
   };
 
@@ -119,4 +123,4 @@ function useProducts(workspaceId: string | undefined) {
   return { fetchProducts, addProduct, fetchCategories, addCategories, deleteProducts, fetchProduct, editProduct, editProductSellable };
 }
 
-export default useProducts;
+export default useAdminProducts;
