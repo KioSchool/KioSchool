@@ -42,6 +42,7 @@ function useApi({ useLoading = true }: UseApiProps = {}) {
       document.cookie = 'isLoggedIn=;';
       navigate('/login');
     }
+
     return Promise.reject(error);
   });
 

@@ -171,7 +171,7 @@ function Register() {
         email: userEmail,
       })
       .then(() => {
-        navigate('/register-account');
+        navigate('/admin/register-account');
       })
       .catch(() => {
         setIsCodeSent(false);

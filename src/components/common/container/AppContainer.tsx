@@ -18,7 +18,7 @@ export const SubContainer = styled.div<{ justifyValue: string; flexDirection?: s
   flex-wrap: wrap;
   flex-direction: ${(props) => props.flexDirection || 'center'};
   align-items: ${(props) => props.alignItems || 'center'};
-  height: 500px;
+  height: 100%;
   min-width: 1100px;
   justify-content: ${(props) => props.justifyValue};
 `;

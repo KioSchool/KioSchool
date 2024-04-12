@@ -1,17 +1,35 @@
 import { ChangeEvent, useEffect, useReducer, useState } from 'react';
 import jsQR from 'jsqr';
-
-import uploadPreview from '@resources/image/uploadPreview.png';
-
 import useAdminUser from '@hooks/admin/useAdminUser';
-
 import { useRecoilValue } from 'recoil';
 import { adminUserAtom } from '@recoils/atoms';
+import AppContainer from '@components/common/container/AppContainer';
+import styled from '@emotion/styled';
+import TitleNavBar from '@components/common/nav/TitleNavBar';
+import AppLabel from '@components/common/label/AppLabel';
+import AppButton from '@components/common/button/AppButton';
 
 interface AccountState {
   decodedBank: string;
   accountNo: string;
 }
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 20px;
+`;
 
 type AccountAction = { type: 'SET_ACCOUNT_INFO'; payload: { decodedBank: string; accountNo: string } };
 
@@ -38,6 +56,7 @@ const extractAccountInfo = (url: string): { decodedBank: string; accountNo: stri
 
   return { decodedBank, accountNo };
 };
+
 function AdminAccount() {
   const { registerAccount, fetchAdminUser } = useAdminUser();
   const [fileURL, setFileURL] = useState<string>('');
@@ -60,6 +79,8 @@ function AdminAccount() {
 
     dispatchAccount({ type: 'SET_ACCOUNT_INFO', payload: { decodedBank, accountNo } });
   }, [adminUser.accountUrl]);
+
+  const registerAccountInfo = accountState.decodedBank && accountState.accountNo ? `${accountState.decodedBank} | ${accountState.accountNo}` : 'NONE';
 
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files?.length) {
@@ -116,22 +137,25 @@ function AdminAccount() {
   };
 
   return (
-    <>
-      <div>ADD ACCOUNT</div>
-      <img src={fileURL || uploadPreview} alt={fileURL} style={{ width: '300px', height: '300px' }} />
-      <input type="file" id="img" accept="image/*" onChange={onImageChange} />
-      <button type="button" onClick={removeImage}>
-        제거 버튼
-      </button>
-      {adminUser && (
-        <div>
-          은행: {accountState.decodedBank}
-          <br></br>
-          계좌번호: {accountState.accountNo}
-        </div>
-      )}
-      <button onClick={submitHandler}>submit</button>
-    </>
+    <AppContainer justifyValue={'center'}>
+      <Container>
+        <TitleNavBar title={`${adminUser.name} 님의 마이페이지`} subTitle={'계좌 관리'} useBackIcon={true} />
+        <ContentContainer>
+          <AppLabel size={35}>현재 등록된 계좌</AppLabel>
+          <AppLabel size={25}>{registerAccountInfo}</AppLabel>
+          <AppLabel size={16}>토스 QR에 대한 설명</AppLabel>
+          {!fileURL ? (
+            <input type="file" id="img" accept="image/*" onChange={onImageChange} />
+          ) : (
+            <>
+              <img src={fileURL} alt={fileURL} style={{ width: '300px', height: '300px' }} />
+              <AppButton onClick={removeImage}>이미지 제거</AppButton>
+            </>
+          )}
+          <AppButton onClick={submitHandler}>계좌 등록</AppButton>
+        </ContentContainer>
+      </Container>
+    </AppContainer>
   );
 }
 
