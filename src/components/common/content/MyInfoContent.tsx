@@ -88,7 +88,7 @@ function MyInfoContent() {
         <VerticalLine />
 
         <MyInfoItemContent label="계좌관리">
-          <AccountButton onClick={() => navigate('/register-account')} />
+          <AccountButton onClick={() => navigate('/admin/register-account')} />
         </MyInfoItemContent>
 
         <VerticalLine />

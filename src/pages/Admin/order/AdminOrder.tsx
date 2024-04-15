@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import useOrdersWebsocket from '@hooks/useOrdersWebsocket';
+import useOrdersWebsocket from '@hooks/user/useOrdersWebsocket';
 import { useRecoilValue } from 'recoil';
 import { ordersAtom } from '@recoils/atoms';
 import PaidOrderCard from '@components/admin/order/PaidOrderCard';
 import NotPaidOrderCard from '@components/admin/order/NotPaidOrderCard';
 import ServedOrderCard from '@components/admin/order/ServedOrderCard';
-import useAdminOrder from '@hooks/useAdminOrder';
+import useAdminOrder from '@hooks/admin/useAdminOrder';
 import styled from '@emotion/styled';
 
 const Container = styled.div`

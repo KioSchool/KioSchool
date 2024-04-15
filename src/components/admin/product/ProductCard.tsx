@@ -3,7 +3,7 @@ import { Product } from '@@types/index';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import SwitchButton from '@components/common/button/SwitchButton';
-import useProducts from '@hooks/useProducts';
+import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useParams } from 'react-router-dom';
 
 interface Props {
@@ -60,7 +60,7 @@ const ImageContainer = styled.div<{ isSellable: boolean | null }>`
 
 function ProductCard({ product, onClick }: Props) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { editProductSellable } = useProducts(workspaceId);
+  const { editProductSellable } = useAdminProducts(workspaceId);
 
   return (
     <Container isSellable={product.isSellable}>

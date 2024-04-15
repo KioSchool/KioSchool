@@ -33,12 +33,12 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/register-account" element={<AdminAccount />} />
         <Route path="/order" element={<Order />} />
         <Route path="/orderbasket" element={<OrderBasket />} />
         <Route path="/order-pay" element={<OrderPay />} />
         <Route path="/order-complete" element={<OrderComplete />} />
         <Route path="/admin" element={<AdminHome />} />
+        <Route path="/admin/register-account" element={<AdminAccount />} />
         <Route path="/admin/my-info" element={<MyInfo />} />
         <Route path="/admin/workspace/:workspaceId" element={<AdminWorkspace />} />
         <Route path="/admin/workspace/:workspaceId/orders" element={<AdminOrder />} />

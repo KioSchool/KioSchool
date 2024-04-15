@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import useProducts from '@hooks/useProducts';
+import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useRecoilValue } from 'recoil';
 import { categoriesAtom, productsAtom } from '@recoils/atoms';
 import TitleNavBar from '@components/common/nav/TitleNavBar';
@@ -42,7 +42,7 @@ const ProductsContainer = styled.div`
 
 function AdminProduct() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchProducts, fetchCategories } = useProducts(workspaceId);
+  const { fetchProducts, fetchCategories } = useAdminProducts(workspaceId);
   const products = useRecoilValue(productsAtom);
   const rawCategories = useRecoilValue(categoriesAtom);
   const categories = [{ id: null, name: '기본메뉴' }, ...rawCategories];

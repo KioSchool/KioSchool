@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import useOrder from '@hooks/useOrder';
+import useOrder from '@hooks/user/useOrder';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { orderBasketAtom, userOrderAtom } from '@recoils/atoms';
 import { useSearchParams } from 'react-router-dom';

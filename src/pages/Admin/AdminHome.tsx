@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import useAdminUser from '@hooks/useAdminUser';
+import useAdminUser from '@hooks/admin/useAdminUser';
 import { useRecoilValue } from 'recoil';
 import { adminUserAtom, workspacesAtom } from '@recoils/atoms';
 import AppContainer from '@components/common/container/AppContainer';
