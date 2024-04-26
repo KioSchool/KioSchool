@@ -65,7 +65,7 @@ function TitleNavBar({ title, subTitle = '', useBackIcon = true, children }: Pro
             useBackIcon={useBackIcon}
           />
           <TitleContainer>
-            <AppLabel size={36} style={{ fontWeight: 800 }}>
+            <AppLabel size={36} style={{ fontWeight: 800, lineHeight: '40px' }}>
               {title}
             </AppLabel>
             <AppLabel size={32} style={{ fontWeight: 400, opacity: 0.8 }}>
