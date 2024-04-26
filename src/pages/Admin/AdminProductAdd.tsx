@@ -8,6 +8,8 @@ import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useRecoilValue } from 'recoil';
 import { categoriesAtom } from '@recoils/atoms';
 import { ProductActionType, ProductStateType } from '@@types/productTypes';
+import AppContainer from '@components/common/container/AppContainer';
+import TitleNavBar from '@components/common/nav/TitleNavBar';
 
 const ErrorMessage = styled.div`
   padding: 0 0 5px;
@@ -29,7 +31,7 @@ function reducer(state: ProductStateType, action: ProductActionType) {
   }
 }
 
-function AdminProductManage() {
+function AdminProductAdd() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const body: ProductStateType = {
     name: '',
@@ -75,38 +77,40 @@ function AdminProductManage() {
   };
 
   return (
-    <>
-      <div>Product manage</div>
-      {errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}
-      <AppInputWithLabel
-        titleLabel={'상품 이름'}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          dispatch({ type: 'PRODUCT_NAME_INPUT', payload: event.target?.value });
-        }}
-      />
-      <AppInputWithLabel
-        titleLabel={'상품 설명'}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: event.target?.value });
-        }}
-      />
-      <AppInputWithLabel
-        type={'number'}
-        titleLabel={'상품 가격'}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: event.target?.value });
-        }}
-      />
-      <input type="file" id="img" accept="image/*" onChange={onImageChange} />
-      <SelectWithOptions
-        options={productCategories}
-        onInput={(event: React.ChangeEvent<HTMLSelectElement>) => {
-          dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
-        }}
-      />
-      <AppButton onClick={AddProduct}>추가하기</AppButton>
-    </>
+    <AppContainer justifyValue={'center'} flexDirection={'column'}>
+      <>
+        <TitleNavBar title={'상품 등록'} />
+        {errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}
+        <AppInputWithLabel
+          titleLabel={'상품 이름'}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            dispatch({ type: 'PRODUCT_NAME_INPUT', payload: event.target?.value });
+          }}
+        />
+        <AppInputWithLabel
+          titleLabel={'상품 설명'}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: event.target?.value });
+          }}
+        />
+        <AppInputWithLabel
+          type={'number'}
+          titleLabel={'상품 가격'}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: event.target?.value });
+          }}
+        />
+        <input type="file" id="img" accept="image/*" onChange={onImageChange} />
+        <SelectWithOptions
+          options={productCategories}
+          onInput={(event: React.ChangeEvent<HTMLSelectElement>) => {
+            dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
+          }}
+        />
+        <AppButton onClick={AddProduct}>추가하기</AppButton>
+      </>
+    </AppContainer>
   );
 }
 
-export default AdminProductManage;
+export default AdminProductAdd;
