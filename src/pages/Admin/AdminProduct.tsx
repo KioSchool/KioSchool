@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useRecoilValue } from 'recoil';
 import { categoriesAtom, productsAtom } from '@recoils/atoms';
@@ -48,6 +48,7 @@ function AdminProduct() {
   const categories = [{ id: null, name: '기본메뉴' }, ...rawCategories];
 
   const { appendPath } = useCustomNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProducts();
@@ -58,7 +59,12 @@ function AdminProduct() {
     <>
       <NavBar useBackground={true} />
       <Container>
-        <TitleNavBar title={'상품 조회'}>
+        <TitleNavBar
+          title={'상품 조회'}
+          onLeftArrowClick={() => {
+            navigate(`/admin/workspace/${workspaceId}`);
+          }}
+        >
           <ManageButtonContainer>
             <AppButton
               size={160}
