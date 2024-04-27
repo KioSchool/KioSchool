@@ -13,7 +13,7 @@ export const MainContainer = styled.div<{ backgroundColor?: string }>`
 
 export const SubContainer = styled.div<{ justifyValue: string; flexDirection?: string; alignItems?: string }>`
   display: flex;
-  width: 100%;
+  width: 65vw;
   flex-basis: 0;
   flex-wrap: wrap;
   flex-direction: ${(props) => props.flexDirection || 'center'};
