@@ -9,6 +9,7 @@ interface Props {
   subTitle?: string;
   useBackIcon?: boolean;
   children?: JSX.Element;
+  onLeftArrowClick?: () => void;
 }
 
 const Container = styled.div`
@@ -51,7 +52,7 @@ const ArrowLeftButton = styled(ArrowLeftSvg)<{ useBackIcon: boolean }>`
   }
 `;
 
-function TitleNavBar({ title, subTitle = '', useBackIcon = true, children }: Props) {
+function TitleNavBar({ title, subTitle = '', useBackIcon = true, children, onLeftArrowClick }: Props) {
   const navigate = useNavigate();
 
   return (
@@ -60,6 +61,10 @@ function TitleNavBar({ title, subTitle = '', useBackIcon = true, children }: Pro
         <LeftContainer>
           <ArrowLeftButton
             onClick={() => {
+              if (onLeftArrowClick) {
+                onLeftArrowClick();
+                return;
+              }
               navigate(-1);
             }}
             useBackIcon={useBackIcon}
