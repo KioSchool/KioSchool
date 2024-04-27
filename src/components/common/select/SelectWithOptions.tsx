@@ -6,7 +6,7 @@ interface Option {
   id: number | string;
 }
 
-interface SelectWithOptionsProps extends SelectHTMLAttributes<HTMLSelectElement> {
+export interface SelectWithOptionsProps extends SelectHTMLAttributes<HTMLSelectElement> {
   options: Option[];
 }
 
