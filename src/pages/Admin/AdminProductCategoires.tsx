@@ -11,6 +11,16 @@ const Container = styled.div`
   padding-top: 100px;
   padding-bottom: 100px;
 `;
+
+const CategoriesInputContainer = styled.div`
+  width: 100%;
+  height: 100px;
+  background-color: yellow;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const CategoriesContentContainer = styled.div`
   width: 100%;
   height: 300px;
@@ -28,6 +38,7 @@ const CategoriesButtonContainer = styled.div`
   flex-direction: column;
   align-items: center;
 `;
+
 function AdminProductCategories() {
   return (
     <>
@@ -35,6 +46,7 @@ function AdminProductCategories() {
       <AppContainer justifyValue={'center'}>
         <Container>
           <TitleNavBar title={'카테고리 관리'}></TitleNavBar>
+          <CategoriesInputContainer />
           <CategoriesContentContainer />
           <CategoriesButtonContainer>
             <AppButton size={'medium'}>편집 완료</AppButton>
