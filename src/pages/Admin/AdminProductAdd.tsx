@@ -96,7 +96,6 @@ function AdminProductAdd() {
   const [file, setFile] = useState<File | null>(null);
   const [state, dispatch] = useReducer(reducer, body);
   const productCategories = useRecoilValue(categoriesAtom);
-  const imageInputRef = React.createRef<HTMLInputElement>();
 
   useEffect(() => {
     fetchCategories();
@@ -150,7 +149,7 @@ function AdminProductAdd() {
           <ImageLabelContainer>
             <label>상품 사진</label>
             <ImageInputButton htmlFor="img">사진 업로드</ImageInputButton>
-            <ImageInput type="file" id="img" accept="image/*" onChange={onImageChange} ref={imageInputRef} />
+            <ImageInput type="file" id="img" accept="image/*" onChange={onImageChange} />
           </ImageLabelContainer>
           <Image src={file ? URL.createObjectURL(file) : uploadPreview} alt="" />
         </ImageInputContainer>
