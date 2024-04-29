@@ -2,7 +2,7 @@ import React from 'react';
 import SelectWithOptions, { SelectWithOptionsProps } from '@components/common/select/SelectWithOptions';
 import styled from '@emotion/styled';
 
-interface SelectWithLabelProps extends SelectWithOptionsProps {
+interface SelectWithLabel extends SelectWithOptionsProps {
   titleLabel: string;
 }
 
@@ -18,11 +18,11 @@ const TitleLabel = styled.label`
   font-weight: 500;
 `;
 
-function SelectWithLabel(props: SelectWithLabelProps) {
+function SelectWithLabel(props: SelectWithLabel) {
   return (
     <Container>
       <TitleLabel>{props.titleLabel}</TitleLabel>
-      <SelectWithOptions options={props.options} />
+      <SelectWithOptions {...props} />
     </Container>
   );
 }
