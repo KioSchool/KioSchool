@@ -8,7 +8,7 @@ import { useRecoilValue } from 'recoil';
 import { categoriesAtom } from '@recoils/atoms';
 import { ProductActionType, ProductStateType } from '@@types/productTypes';
 import TitleNavBar from '@components/common/nav/TitleNavBar';
-import SelectWithLabel from '@components/common/select/SelectWithLabel';
+import SelectWithLabel from '@components/common/select/SelectWithLabelProps';
 import NavBar from '@components/common/nav/NavBar';
 import ProductImageInput from '@components/admin/product/ProductImageInput';
 

@@ -8,7 +8,7 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { initState, ProductActionType, ProductEdit, ProductStateType } from '@@types/productTypes';
 import NavBar from '@components/common/nav/NavBar';
-import SelectWithLabel from '@components/common/select/SelectWithLabel';
+import SelectWithLabel from '@components/common/select/SelectWithLabelProps';
 import ProductImageInput from '@components/admin/product/ProductImageInput';
 import TitleNavBar from '@components/common/nav/TitleNavBar';
 
