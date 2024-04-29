@@ -4,7 +4,8 @@ import uploadPreview from '@resources/image/uploadPreview.png';
 
 interface ProductImageInputProps {
   onImageChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  file: File | null;
+  file?: File | null;
+  url?: string;
 }
 
 const ImageInputContainer = styled.div`
@@ -47,7 +48,17 @@ const Image = styled.img`
   object-fit: fill;
 `;
 
-function ProductImageInput({ file, onImageChange }: ProductImageInputProps) {
+function ProductImageInput({ file, url, onImageChange }: ProductImageInputProps) {
+  const getImageUrl = () => {
+    if (file) {
+      return URL.createObjectURL(file);
+    }
+    if (url) {
+      return url;
+    }
+    return uploadPreview;
+  };
+
   return (
     <ImageInputContainer>
       <ImageLabelContainer>
@@ -55,7 +66,7 @@ function ProductImageInput({ file, onImageChange }: ProductImageInputProps) {
         <ImageInputButton htmlFor="img">사진 업로드</ImageInputButton>
         <ImageInput type="file" id="img" accept="image/*" onChange={onImageChange} />
       </ImageLabelContainer>
-      <Image src={file ? URL.createObjectURL(file) : uploadPreview} alt="" />
+      <Image src={getImageUrl()} alt="" />
     </ImageInputContainer>
   );
 }
