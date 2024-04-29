@@ -22,7 +22,7 @@ function SelectWithLabel(props: SelectWithLabelProps) {
   return (
     <Container>
       <TitleLabel>{props.titleLabel}</TitleLabel>
-      <SelectWithOptions options={props.options} />
+      <SelectWithOptions {...props} />
     </Container>
   );
 }
