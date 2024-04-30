@@ -58,7 +58,7 @@ function AdminProductCategories() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { addCategories } = useAdminProducts(workspaceId);
   const categoryInputRef = useRef<HTMLInputElement>(null);
-  console.log(addCategories);
+
   const [enabled, setEnabled] = useState(false);
   const onDragEnd = ({}: DropResult) => {};
   useEffect(() => {
@@ -75,6 +75,14 @@ function AdminProductCategories() {
   }
   const onClickHandler = () => {
     console.log(categoryInputRef.current?.value);
+    const userInput = categoryInputRef.current?.value;
+
+    if (userInput === '' || userInput === undefined) {
+      alert('카테고리를 입력해주세요');
+      return;
+    }
+
+    addCategories(userInput);
   };
   return (
     <>
@@ -83,7 +91,7 @@ function AdminProductCategories() {
         <Container>
           <TitleNavBar title={'카테고리 관리'}></TitleNavBar>
           <CategoriesInputContainer>
-            <AppInputWithButton ref={categoryInputRef} onClickHandler={onClickHandler} />
+            <AppInputWithButton ref={categoryInputRef} onclick={onClickHandler} />
           </CategoriesInputContainer>
           <CategoriesContentContainer>
             <DragDropContext onDragEnd={onDragEnd}>

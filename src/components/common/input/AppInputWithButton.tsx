@@ -17,14 +17,14 @@ const CategoriesInputSubContainer = styled.div`
 `;
 
 interface AppInputWithButtonProps {
-  onClickHandler: () => void;
+  onclick: () => void;
 }
 
 const AppInputWithButton = forwardRef<HTMLInputElement, AppInputWithButtonProps>((props: AppInputWithButtonProps, ref: ForwardedRef<HTMLInputElement>) => {
   return (
     <CategoriesInputSubContainer>
       <AppInput placeholder="카테고리명" ref={ref} {...props} style={{ width: '230px', boxShadow: 'none' }} />
-      <AppButton onClick={props.onClickHandler}>카테고리 추가</AppButton>
+      <AppButton onClick={props.onclick}>카테고리 추가</AppButton>
     </CategoriesInputSubContainer>
   );
 });
