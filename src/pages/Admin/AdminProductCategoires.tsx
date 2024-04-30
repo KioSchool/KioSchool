@@ -3,6 +3,7 @@ import NavBar from '@components/common/nav/NavBar';
 import TitleNavBar from '@components/common/nav/TitleNavBar';
 import styled from '@emotion/styled';
 import AppButton from '@components/common/button/AppButton';
+import AppInputWithButton from '@components/common/input/AppInputWithButton';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -39,26 +40,6 @@ const CategoriesButtonContainer = styled.div`
   align-items: center;
 `;
 
-const CategoriesInputSubContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  height: 60px;
-  width: 420px;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0px 4px 17px 0px rgba(0, 0, 0, 0.1);
-`;
-const CategoriesInput = styled.input`
-  border: none;
-  height: 50px;
-  width: 250px;
-  &:focus {
-    outline: none;
-  }
-`;
 function AdminProductCategories() {
   return (
     <>
@@ -67,10 +48,7 @@ function AdminProductCategories() {
         <Container>
           <TitleNavBar title={'카테고리 관리'}></TitleNavBar>
           <CategoriesInputContainer>
-            <CategoriesInputSubContainer>
-              <CategoriesInput placeholder="카테고리명" />
-              <AppButton>카테고리 추가</AppButton>
-            </CategoriesInputSubContainer>
+            <AppInputWithButton />
           </CategoriesInputContainer>
           <CategoriesContentContainer />
           <CategoriesButtonContainer>
