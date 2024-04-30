@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Workspace } from '@@types/index';
 import useAdminUser from '@hooks/admin/useAdminUser';
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import CreateWorkspaceModal from './modal/CreateWorkspaceModal';
 import AddWorkspaceModalContent from '../../admin/workspace/AddworkspaceModalContent';
 import PlusIconSvg from '@resources/svg/PlusIconSvg';

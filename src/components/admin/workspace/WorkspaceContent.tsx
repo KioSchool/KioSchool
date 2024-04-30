@@ -4,6 +4,7 @@ import useAdminUser from '@hooks/admin/useAdminUser';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import useConfirm from '@hooks/useConfirm';
 import DeleteButtonSvg from '@resources/svg/DeleteButtonSvg';
+import React from 'react';
 
 const WorkspaceContainer = styled.div`
   cursor: pointer;
