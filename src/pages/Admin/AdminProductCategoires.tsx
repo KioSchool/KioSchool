@@ -39,6 +39,12 @@ const CategoriesButtonContainer = styled.div`
   align-items: center;
 `;
 
+const CategoriesInputSubContainer = styled.div`
+  height: 80px;
+  width: 600px;
+  background-color: green;
+`;
+const CategoriesInput = styled.input``;
 function AdminProductCategories() {
   return (
     <>
@@ -46,7 +52,12 @@ function AdminProductCategories() {
       <AppContainer justifyValue={'center'}>
         <Container>
           <TitleNavBar title={'카테고리 관리'}></TitleNavBar>
-          <CategoriesInputContainer />
+          <CategoriesInputContainer>
+            <CategoriesInputSubContainer>
+              <CategoriesInput placeholder="카테고리명" />
+              <AppButton>카테고리 추가</AppButton>
+            </CategoriesInputSubContainer>
+          </CategoriesInputContainer>
           <CategoriesContentContainer />
           <CategoriesButtonContainer>
             <AppButton size={'medium'}>편집 완료</AppButton>
