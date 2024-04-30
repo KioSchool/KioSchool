@@ -89,7 +89,7 @@ const Title = styled.div`
   width: 69%;
   height: 50px;
   color: #fff;
-  font-size: 40.329px;
+  font-size: 40px;
   font-weight: 700;
 `;
 
