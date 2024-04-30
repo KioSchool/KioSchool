@@ -1,14 +1,16 @@
 import AppButton from '@components/common/button/AppButton';
 import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
-import SelectWithOptions from '@components/common/select/SelectWithOptions';
 import styled from '@emotion/styled';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
-import uploadPreview from '@resources/image/uploadPreview.png';
 import { categoriesAtom } from '@recoils/atoms';
-import { ChangeEvent, useEffect, useReducer, useState } from 'react';
+import React, { ChangeEvent, useEffect, useReducer, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { initState, ProductActionType, ProductEdit, ProductStateType } from '@@types/productTypes';
+import NavBar from '@components/common/nav/NavBar';
+import SelectWithLabel from '@components/common/select/SelectWithLabelProps';
+import ProductImageInput from '@components/admin/product/ProductImageInput';
+import TitleNavBar from '@components/common/nav/TitleNavBar';
 
 const ErrorMessage = styled.div`
   padding: 0 0 5px;
@@ -36,6 +38,15 @@ function reducer(state: ProductEdit, action: ProductActionType) {
       throw new Error('Unhandled action');
   }
 }
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  padding-top: 100px;
+  padding-bottom: 100px;
+`;
 
 function AdminProductEdit() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
@@ -102,41 +113,43 @@ function AdminProductEdit() {
   };
   return (
     <>
-      <h1>Edit Page</h1>
-      {productId}
-      {errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}
-      <AppInputWithLabel
-        titleLabel={'상품 이름'}
-        value={productState.name}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          dispatch({ type: 'PRODUCT_NAME_INPUT', payload: event.target?.value });
-        }}
-      />
-      <AppInputWithLabel
-        titleLabel={'상품 설명'}
-        value={productState.description}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: event.target?.value });
-        }}
-      />
-      <AppInputWithLabel
-        type={'number'}
-        titleLabel={'상품 가격'}
-        value={productState.price}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: event.target?.value });
-        }}
-      />
-      <img src={productState.image.url || uploadPreview} alt={productState.image.url} style={{ width: '300px', height: '300px' }} />
-      <input type="file" id="img" accept="image/*" onChange={onImageChange} />
-      <SelectWithOptions
-        options={productCategories}
-        value={productState.productCategory ? productState.productCategory.id : 'null'}
-        onInput={(event: React.ChangeEvent<HTMLSelectElement>) => {
-          dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
-        }}
-      />
-      <AppButton onClick={submitEditProduct}>변경하기</AppButton>
+      <NavBar useBackground={true} />
+      <Container>
+        <TitleNavBar title={'상품 수정'} />
+        {errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}
+        <SelectWithLabel
+          titleLabel={'카테고리'}
+          options={productCategories}
+          value={productState.productCategory ? productState.productCategory.id : 'null'}
+          onInput={(event: React.ChangeEvent<HTMLSelectElement>) => {
+            dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
+          }}
+        />
+        <AppInputWithLabel
+          titleLabel={'상품명'}
+          value={productState.name}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            dispatch({ type: 'PRODUCT_NAME_INPUT', payload: event.target?.value });
+          }}
+        />
+        <ProductImageInput url={productState.image.url} file={productState.image.files} onImageChange={onImageChange} />
+        <AppInputWithLabel
+          titleLabel={'상품 설명'}
+          value={productState.description}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: event.target?.value });
+          }}
+        />
+        <AppInputWithLabel
+          type={'number'}
+          titleLabel={'상품 가격'}
+          value={productState.price}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: event.target?.value });
+          }}
+        />
+        <AppButton onClick={submitEditProduct}>변경하기</AppButton>
+      </Container>
     </>
   );
 }
