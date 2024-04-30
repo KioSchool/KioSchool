@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { ForwardedRef, forwardRef } from 'react';
 import AppButton from '../button/AppButton';
 import styled from '@emotion/styled';
 import AppInput from './AppInput';
@@ -16,11 +16,15 @@ const CategoriesInputSubContainer = styled.div`
   box-shadow: 0px 4px 17px 0px rgba(0, 0, 0, 0.1);
 `;
 
-const AppInputWithButton = forwardRef<HTMLInputElement, {}>((props, ref) => {
+interface AppInputWithButtonProps {
+  onClickHandler: () => void;
+}
+
+const AppInputWithButton = forwardRef<HTMLInputElement, AppInputWithButtonProps>((props: AppInputWithButtonProps, ref: ForwardedRef<HTMLInputElement>) => {
   return (
     <CategoriesInputSubContainer>
       <AppInput placeholder="카테고리명" ref={ref} {...props} style={{ width: '230px', boxShadow: 'none' }} />
-      <AppButton>카테고리 추가</AppButton>
+      <AppButton onClick={props.onClickHandler}>카테고리 추가</AppButton>
     </CategoriesInputSubContainer>
   );
 });
