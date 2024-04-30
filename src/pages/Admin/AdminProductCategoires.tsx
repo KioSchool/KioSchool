@@ -8,6 +8,8 @@ import { useEffect, useRef, useState } from 'react';
 import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { categoriesAtom } from '@recoils/atoms';
 
 const Container = styled.div`
   display: flex;
@@ -54,16 +56,21 @@ const CategoriesContens = styled.div`
 `;
 
 function AdminProductCategories() {
-  const items = [...Array(4)].map((_, i) => ({ id: `${i}${i}${i}`, content: `item-${i}` }));
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { addCategories } = useAdminProducts(workspaceId);
+  const { addCategories, fetchCategories } = useAdminProducts(workspaceId);
   const categoryInputRef = useRef<HTMLInputElement>(null);
+  const rawCategories = useRecoilValue(categoriesAtom);
+  const categories = rawCategories.map((category) => ({
+    ...category,
+    id: String(category.id), // id를 숫자에서 문자열로 변환
+  }));
 
   const [enabled, setEnabled] = useState(false);
   const onDragEnd = ({}: DropResult) => {};
+
   useEffect(() => {
     const animation = requestAnimationFrame(() => setEnabled(true));
-
+    fetchCategories();
     return () => {
       cancelAnimationFrame(animation);
       setEnabled(false);
@@ -74,7 +81,6 @@ function AdminProductCategories() {
     return null;
   }
   const onClickHandler = () => {
-    console.log(categoryInputRef.current?.value);
     const userInput = categoryInputRef.current?.value;
 
     if (userInput === '' || userInput === undefined) {
@@ -98,11 +104,11 @@ function AdminProductCategories() {
               <Droppable droppableId="droppable">
                 {(provided) => (
                   <div ref={provided.innerRef} {...provided.droppableProps}>
-                    {items.map((item, index) => (
+                    {categories.map((item, index) => (
                       <Draggable key={item.id} draggableId={item.id} index={index}>
                         {(pro) => (
                           <CategoriesContens ref={pro.innerRef} {...pro.draggableProps} {...pro.dragHandleProps}>
-                            {item.content}
+                            {item.name}
                           </CategoriesContens>
                         )}
                       </Draggable>
