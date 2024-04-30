@@ -40,11 +40,25 @@ const CategoriesButtonContainer = styled.div`
 `;
 
 const CategoriesInputSubContainer = styled.div`
-  height: 80px;
-  width: 600px;
-  background-color: green;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  height: 60px;
+  width: 420px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0px 4px 17px 0px rgba(0, 0, 0, 0.1);
 `;
-const CategoriesInput = styled.input``;
+const CategoriesInput = styled.input`
+  border: none;
+  height: 50px;
+  width: 250px;
+  &:focus {
+    outline: none;
+  }
+`;
 function AdminProductCategories() {
   return (
     <>
