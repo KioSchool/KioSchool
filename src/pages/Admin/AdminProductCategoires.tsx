@@ -4,8 +4,11 @@ import TitleNavBar from '@components/common/nav/TitleNavBar';
 import styled from '@emotion/styled';
 import AppButton from '@components/common/button/AppButton';
 import AppInputWithButton from '@components/common/input/AppInputWithButton';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
+import useAdminProducts from '@hooks/admin/useAdminProducts';
+import { useParams } from 'react-router-dom';
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -18,7 +21,6 @@ const Container = styled.div`
 const CategoriesInputContainer = styled.div`
   width: 100%;
   height: 100px;
-  background-color: yellow;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,7 +30,6 @@ const CategoriesInputContainer = styled.div`
 const CategoriesContentContainer = styled.div`
   width: 100%;
   height: 300px;
-  background-color: gray;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -38,7 +39,6 @@ const CategoriesContentContainer = styled.div`
 const CategoriesButtonContainer = styled.div`
   width: 100%;
   height: 100px;
-  background-color: skyBlue;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -49,12 +49,16 @@ const CategoriesContens = styled.div`
   height: 60px;
   background-color: white;
   border-radius: 12px;
+  box-shadow: 0px 4px 17px 0px rgba(0, 0, 0, 0.1);
   margin: 10px 0;
 `;
 
 function AdminProductCategories() {
-  const items = [...Array(10)].map((_, i) => ({ id: `${i}${i}${i}`, content: `item-${i}` }));
-
+  const items = [...Array(4)].map((_, i) => ({ id: `${i}${i}${i}`, content: `item-${i}` }));
+  const { workspaceId } = useParams<{ workspaceId: string }>();
+  const { addCategories } = useAdminProducts(workspaceId);
+  const categoryInputRef = useRef<HTMLInputElement>(null);
+  console.log(addCategories);
   const [enabled, setEnabled] = useState(false);
   const onDragEnd = ({}: DropResult) => {};
   useEffect(() => {
@@ -69,6 +73,9 @@ function AdminProductCategories() {
   if (!enabled) {
     return null;
   }
+  const onClickHandler = () => {
+    console.log(categoryInputRef.current?.value);
+  };
   return (
     <>
       <NavBar useBackground={true} />
@@ -76,7 +83,7 @@ function AdminProductCategories() {
         <Container>
           <TitleNavBar title={'카테고리 관리'}></TitleNavBar>
           <CategoriesInputContainer>
-            <AppInputWithButton />
+            <AppInputWithButton ref={categoryInputRef} onClickHandler={onClickHandler} />
           </CategoriesInputContainer>
           <CategoriesContentContainer>
             <DragDropContext onDragEnd={onDragEnd}>
