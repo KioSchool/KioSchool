@@ -21,7 +21,7 @@ import AdminOrderHistory from '@pages/Admin/order/AdminOrderHistory';
 import AdminProductEdit from '@pages/Admin/AdminProductEdit';
 import ReactGA from 'react-ga4';
 import RouterChangeTracker from './RouterChangeTracker';
-import MyInfo from '@pages/User/MyInfo';
+import MyInfo from '@pages/Admin/MyInfo';
 
 ReactGA.initialize('G-XGYLSPGK2G');
 function App() {
