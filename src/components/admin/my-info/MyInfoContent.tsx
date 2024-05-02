@@ -86,8 +86,20 @@ function MyInfoContent() {
     '취소',
   );
 
+  const { ConfirmModal: DeleteUserConfirmModal, confirm: deleteUserConfirm } = useConfirm(
+    '계정을 탈퇴하시겠습니까?',
+    '확인 후 되돌릴 수 없습니다.',
+    '확인',
+    '취소',
+  );
+
   const changePassword = async () => {
     const userInput = await changePasswordConfirm();
+    if (userInput) return;
+  };
+
+  const deleteUser = async () => {
+    const userInput = await deleteUserConfirm();
     if (userInput) return;
   };
 
@@ -107,10 +119,11 @@ function MyInfoContent() {
         <VerticalLine />
 
         <MyInfoItemContent label="계정탈퇴">
-          <DeleteUserButton onClick={() => navigate('/delete-user')} />
+          <DeleteUserButton onClick={deleteUser} />
         </MyInfoItemContent>
       </MyInfoSubContainer>
       <ChangePasswordConfirmModal />
+      <DeleteUserConfirmModal />
     </MyInfoContainer>
   );
 }
