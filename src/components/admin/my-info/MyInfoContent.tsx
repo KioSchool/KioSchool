@@ -5,6 +5,7 @@ import AccountIconSvg from '@resources/svg/AccountIconSvg';
 import DeleteUserSvg from '@resources/svg/DeleteUserSvg';
 import useConfirm from '@hooks/useConfirm';
 import React from 'react';
+import useAdminUser from '@hooks/admin/useAdminUser';
 
 const MyInfoContainer = styled.div`
   width: 1100px;
@@ -64,6 +65,7 @@ const DeleteUserButton = styled(DeleteUserSvg)`
 
 function MyInfoContent() {
   const navigate = useNavigate();
+  const { deleteUser } = useAdminUser();
 
   const { ConfirmModal: DeleteUserConfirmModal, confirm: deleteUserConfirm } = useConfirm(
     '계정을 탈퇴하시겠습니까?',
@@ -72,9 +74,9 @@ function MyInfoContent() {
     '취소',
   );
 
-  const deleteUser = async () => {
+  const deleteUserHandler = async () => {
     const userInput = await deleteUserConfirm();
-    if (userInput) return;
+    if (userInput) deleteUser();
   };
 
   return (
@@ -87,7 +89,7 @@ function MyInfoContent() {
         <VerticalLine />
 
         <MyInfoItemContent label="계정탈퇴">
-          <DeleteUserButton onClick={deleteUser} />
+          <DeleteUserButton onClick={deleteUserHandler} />
         </MyInfoItemContent>
       </MyInfoSubContainer>
       <DeleteUserConfirmModal />
