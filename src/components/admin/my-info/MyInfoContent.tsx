@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import MyInfoItemContent from './MyInfoItemContent';
-import SettingSvg from '@resources/svg/SettingIconSvg';
 import { useNavigate } from 'react-router-dom';
 import AccountIconSvg from '@resources/svg/AccountIconSvg';
 import DeleteUserSvg from '@resources/svg/DeleteUserSvg';
@@ -35,20 +34,6 @@ const VerticalLine = styled.div`
   background: #ccc;
 `;
 
-const SettingButton = styled(SettingSvg)`
-  cursor: pointer;
-  position: absolute;
-  width: 70px;
-  height: 70px;
-  right: 44px;
-  left: 44px;
-  top: 12px;
-  transition: transform 0.1s ease;
-  &:hover {
-    transform: scale(1.1);
-  }
-`;
-
 const AccountButton = styled(AccountIconSvg)`
   cursor: pointer;
   position: absolute;
@@ -79,12 +64,6 @@ const DeleteUserButton = styled(DeleteUserSvg)`
 
 function MyInfoContent() {
   const navigate = useNavigate();
-  const { ConfirmModal: ChangePasswordConfirmModal, confirm: changePasswordConfirm } = useConfirm(
-    '등록하신 메일로 재설정 이메일을 보내시겠습니까?',
-    '',
-    '확인',
-    '취소',
-  );
 
   const { ConfirmModal: DeleteUserConfirmModal, confirm: deleteUserConfirm } = useConfirm(
     '계정을 탈퇴하시겠습니까?',
@@ -92,11 +71,6 @@ function MyInfoContent() {
     '확인',
     '취소',
   );
-
-  const changePassword = async () => {
-    const userInput = await changePasswordConfirm();
-    if (userInput) return;
-  };
 
   const deleteUser = async () => {
     const userInput = await deleteUserConfirm();
@@ -106,12 +80,6 @@ function MyInfoContent() {
   return (
     <MyInfoContainer>
       <MyInfoSubContainer>
-        <MyInfoItemContent label="비밀번호 변경">
-          <SettingButton onClick={changePassword} />
-        </MyInfoItemContent>
-
-        <VerticalLine />
-
         <MyInfoItemContent label="계좌관리">
           <AccountButton onClick={() => navigate('/admin/register-account')} />
         </MyInfoItemContent>
@@ -122,7 +90,6 @@ function MyInfoContent() {
           <DeleteUserButton onClick={deleteUser} />
         </MyInfoItemContent>
       </MyInfoSubContainer>
-      <ChangePasswordConfirmModal />
       <DeleteUserConfirmModal />
     </MyInfoContainer>
   );
