@@ -56,7 +56,7 @@ function TitleNavBar({ title, subTitle = '', useBackIcon = true, children, onLef
   const navigate = useNavigate();
 
   return (
-    <Container useSubTitle={subTitle !== ''}>
+    <Container useSubTitle={!!subTitle}>
       <SubContainer>
         <LeftContainer>
           <ArrowLeftButton
