@@ -120,7 +120,24 @@ function useAdminProducts(workspaceId: string | undefined) {
     });
   };
 
-  return { fetchProducts, addProduct, fetchCategories, addCategories, deleteProducts, fetchProduct, editProduct, editProductSellable, reorderCategories };
+  const deleteCategory = (categoryId: number) => {
+    adminApi.delete(`/product-category?workspaceId=${workspaceId}&productCategoryId=${categoryId}`).catch((error) => {
+      console.error('Failed to delete product category: ', error);
+    });
+  };
+
+  return {
+    fetchProducts,
+    addProduct,
+    fetchCategories,
+    addCategories,
+    deleteProducts,
+    fetchProduct,
+    editProduct,
+    editProductSellable,
+    reorderCategories,
+    deleteCategory,
+  };
 }
 
 export default useAdminProducts;

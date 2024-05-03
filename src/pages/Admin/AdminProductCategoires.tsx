@@ -79,11 +79,14 @@ const CategoriesName = styled.label`
 const DeleteIcon = styled(DeleteButtonGraySvg)`
   position: absolute;
   left: 13px;
+  &:hover {
+    transform: scale(1.2);
+  }
 `;
 
 function AdminProductCategories() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { addCategories, fetchCategories, reorderCategories } = useAdminProducts(workspaceId);
+  const { addCategories, fetchCategories, reorderCategories, deleteCategory } = useAdminProducts(workspaceId);
   const categoryInputRef = useRef<HTMLInputElement>(null);
   const [rawCategories, setRawCategories] = useRecoilState(categoriesAtom);
   const [enabled, setEnabled] = useState(false);
@@ -152,7 +155,11 @@ function AdminProductCategories() {
                       <Draggable key={item.id} draggableId={item.id} index={index}>
                         {(pro) => (
                           <CategoriesItemContainer ref={pro.innerRef} {...pro.draggableProps} {...pro.dragHandleProps}>
-                            <DeleteIcon />
+                            <DeleteIcon
+                              onClick={() => {
+                                deleteCategory(Number(item.id));
+                              }}
+                            />
                             <CategoriesContensContainer>
                               <CategoriesName>{item.name}</CategoriesName>
                               <DragIconSvg style={{ paddingRight: '20px' }} />
