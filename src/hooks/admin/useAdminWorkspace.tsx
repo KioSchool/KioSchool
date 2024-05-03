@@ -4,7 +4,7 @@ import { userWorkspaceAtom } from '@recoils/atoms';
 import { Workspace } from '@@types/index';
 import { useNavigate } from 'react-router-dom';
 
-function ueAdminWorkspace() {
+function useAdminWorkspace() {
   const { adminApi } = useApi();
   const setUserWorkspace = useSetRecoilState(userWorkspaceAtom);
   const navigate = useNavigate();
@@ -26,4 +26,4 @@ function ueAdminWorkspace() {
   return { fetchWorkspace };
 }
 
-export default ueAdminWorkspace;
+export default useAdminWorkspace;
