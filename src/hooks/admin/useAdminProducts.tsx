@@ -114,7 +114,13 @@ function useAdminProducts(workspaceId: string | undefined) {
     });
   };
 
-  return { fetchProducts, addProduct, fetchCategories, addCategories, deleteProduct, fetchProduct, editProduct, editProductSellable };
+  const reorderCategories = (categoryIds: number[]) => {
+    adminApi.post('/product-categories/sort', { workspaceId, productCategoryIds: categoryIds }).catch((error) => {
+      console.error('Failed to reorder products categories : ', error);
+    });
+  };
+
+  return { fetchProducts, addProduct, fetchCategories, addCategories, deleteProducts, fetchProduct, editProduct, editProductSellable, reorderCategories };
 }
 
 export default useAdminProducts;
