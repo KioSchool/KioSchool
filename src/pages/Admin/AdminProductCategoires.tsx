@@ -4,14 +4,12 @@ import TitleNavBar from '@components/common/nav/TitleNavBar';
 import styled from '@emotion/styled';
 import AppButton from '@components/common/button/AppButton';
 import AppInputWithButton from '@components/common/input/AppInputWithButton';
-import { useEffect, useRef, useState } from 'react';
-import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
+import { useRef } from 'react';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useParams } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { categoriesAtom } from '@recoils/atoms';
-import DragIconSvg from '@resources/svg/DragIconSvg';
-import DeleteButtonGraySvg from '@resources/svg/DeleteButtonGraySvg';
+import DragAndDropContent from '@components/common/content/DragAndDropContent';
 
 const Container = styled.div`
   display: flex;
@@ -48,81 +46,11 @@ const CategoriesButtonContainer = styled.div`
   align-items: center;
 `;
 
-const CategoriesItemContainer = styled.div`
-  position: relative;
-  width: 600px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const CategoriesContensContainer = styled.div`
-  width: 500px;
-  height: 60px;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0px 4px 17px 0px rgba(0, 0, 0, 0.1);
-  margin: 10px 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const CategoriesName = styled.label`
-  font-family: Poppins;
-  font-size: 20px;
-  width: 50%;
-  padding-left: 20px;
-`;
-
-const DeleteIcon = styled(DeleteButtonGraySvg)`
-  position: absolute;
-  left: 13px;
-  &:hover {
-    transform: scale(1.2);
-  }
-`;
-
 function AdminProductCategories() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { addCategories, fetchCategories, reorderCategories, deleteCategory } = useAdminProducts(workspaceId);
+  const { addCategories, reorderCategories } = useAdminProducts(workspaceId);
   const categoryInputRef = useRef<HTMLInputElement>(null);
-  const [rawCategories, setRawCategories] = useRecoilState(categoriesAtom);
-  const [enabled, setEnabled] = useState(false);
-  const categories = rawCategories.map((category) => ({
-    ...category,
-    id: String(category.id),
-  }));
-
-  useEffect(() => {
-    const animation = requestAnimationFrame(() => setEnabled(true));
-    fetchCategories();
-    return () => {
-      cancelAnimationFrame(animation);
-      setEnabled(false);
-    };
-  }, []);
-
-  const reorder = (list: any[], startIndex: number, endIndex: number) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-
-    return result;
-  };
-
-  const onDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
-
-    const categoriesIdParsedNumber = categories.map((itm) => ({ ...itm, id: Number(itm.id) }));
-    const changedCategories = reorder(categoriesIdParsedNumber, result.source.index, result.destination.index);
-    setRawCategories(changedCategories);
-  };
-
-  if (!enabled) {
-    return null;
-  }
+  const rawCategories = useRecoilValue(categoriesAtom);
 
   const addCategoryHandler = () => {
     const userInput = categoryInputRef.current?.value;
@@ -151,32 +79,7 @@ function AdminProductCategories() {
             <AppInputWithButton ref={categoryInputRef} onclick={addCategoryHandler} />
           </CategoriesInputContainer>
           <CategoriesContentContainer>
-            <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId="droppable">
-                {(provided) => (
-                  <div ref={provided.innerRef} {...provided.droppableProps}>
-                    {categories.map((item, index) => (
-                      <Draggable key={item.id} draggableId={item.id} index={index}>
-                        {(pro) => (
-                          <CategoriesItemContainer ref={pro.innerRef} {...pro.draggableProps} {...pro.dragHandleProps}>
-                            <DeleteIcon
-                              onClick={() => {
-                                deleteCategory(Number(item.id));
-                              }}
-                            />
-                            <CategoriesContensContainer>
-                              <CategoriesName>{item.name}</CategoriesName>
-                              <DragIconSvg style={{ paddingRight: '20px' }} />
-                            </CategoriesContensContainer>
-                          </CategoriesItemContainer>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </DragDropContext>
+            <DragAndDropContent />
           </CategoriesContentContainer>
           <CategoriesButtonContainer>
             <AppButton
