@@ -173,10 +173,11 @@ function Register() {
       .then(() => {
         navigate('/admin/register-account');
       })
-      .catch(() => {
+      .catch((error) => {
+        const validationErrorMessage = error.response.data.errors?.[0].message || error.response.data.message;
+
         setIsCodeSent(false);
-        alert('send email error');
-        setErrorMessage('send email error');
+        setErrorMessage(validationErrorMessage);
       });
   };
 
