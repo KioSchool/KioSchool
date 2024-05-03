@@ -115,9 +115,14 @@ function useAdminProducts(workspaceId: string | undefined) {
   };
 
   const reorderCategories = (categoryIds: number[]) => {
-    adminApi.post('/product-categories/sort', { workspaceId, productCategoryIds: categoryIds }).catch((error) => {
-      console.error('Failed to reorder products categories : ', error);
-    });
+    adminApi
+      .post('/product-categories/sort', { workspaceId, productCategoryIds: categoryIds })
+      .then(() => {
+        navigate(`/admin/workspace/${workspaceId}/products`);
+      })
+      .catch((error) => {
+        console.error('Failed to reorder products categories : ', error);
+      });
   };
 
   const deleteCategory = (categoryId: number) => {
