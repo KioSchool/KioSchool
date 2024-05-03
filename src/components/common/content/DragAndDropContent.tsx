@@ -3,7 +3,7 @@ import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { categoriesAtom } from '@recoils/atoms';
 import DeleteButtonGraySvg from '@resources/svg/DeleteButtonGraySvg';
 import DragIconSvg from '@resources/svg/DragIconSvg';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
@@ -48,21 +48,13 @@ function DragAndDropContent() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchCategories, deleteCategory } = useAdminProducts(workspaceId);
   const [rawCategories, setRawCategories] = useRecoilState(categoriesAtom);
-  const [enabled, setEnabled] = useState(false);
   const categories = rawCategories.map((category) => ({
     ...category,
     id: String(category.id),
   }));
 
   useEffect(() => {
-    const animation = requestAnimationFrame(() => setEnabled(true));
-
     fetchCategories();
-
-    return () => {
-      cancelAnimationFrame(animation);
-      setEnabled(false);
-    };
   }, []);
 
   const reorder = (list: any[], startIndex: number, endIndex: number) => {
@@ -82,10 +74,6 @@ function DragAndDropContent() {
 
     setRawCategories(changedCategories);
   };
-
-  if (!enabled) {
-    return null;
-  }
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
