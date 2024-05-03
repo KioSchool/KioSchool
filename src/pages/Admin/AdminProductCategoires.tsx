@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { categoriesAtom } from '@recoils/atoms';
 
 const Container = styled.div`
@@ -59,14 +59,27 @@ function AdminProductCategories() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { addCategories, fetchCategories } = useAdminProducts(workspaceId);
   const categoryInputRef = useRef<HTMLInputElement>(null);
-  const rawCategories = useRecoilValue(categoriesAtom);
+  const [rawCategories, setRawCategories] = useRecoilState(categoriesAtom);
   const categories = rawCategories.map((category) => ({
     ...category,
-    id: String(category.id), // id를 숫자에서 문자열로 변환
+    id: String(category.id),
   }));
 
   const [enabled, setEnabled] = useState(false);
-  const onDragEnd = ({}: DropResult) => {};
+  const reorder = (list: any[], startIndex: number, endIndex: number) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+  };
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+    const newArr = categories.map((itm) => ({ ...itm, id: Number(itm.id) }));
+    const changedCategories = reorder(newArr, result.source.index, result.destination.index);
+
+    setRawCategories(changedCategories);
+  };
 
   useEffect(() => {
     const animation = requestAnimationFrame(() => setEnabled(true));
