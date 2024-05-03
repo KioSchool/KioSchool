@@ -47,7 +47,7 @@ function ImageRouteButton(props: ImageRouteButtonProps) {
   return (
     <Container src={props.src}>
       <SubContainer>
-        <AppLabel size={25} style={{ color: 'white' }}>
+        <AppLabel size={25} style={{ color: 'white', fontWeight: 600 }}>
           {props.buttonText}
         </AppLabel>
         <RouteButton type={'button'} onClick={props.onClick}>
