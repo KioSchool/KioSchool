@@ -3,7 +3,7 @@ import AppButton from '../button/AppButton';
 import styled from '@emotion/styled';
 import AppInput from './AppInput';
 
-const CategoriesInputSubContainer = styled.div`
+const AppInputWithButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -21,12 +21,12 @@ interface AppInputWithButtonProps {
 
 const AppInputWithButton = forwardRef<HTMLInputElement, AppInputWithButtonProps>((props: AppInputWithButtonProps, ref: ForwardedRef<HTMLInputElement>) => {
   return (
-    <CategoriesInputSubContainer>
+    <AppInputWithButtonContainer>
       <AppInput placeholder="카테고리명" ref={ref} {...props} style={{ width: '230px', boxShadow: 'none' }} />
       <AppButton onClick={props.onclick} style={{ marginLeft: '20px' }}>
         카테고리 추가
       </AppButton>
-    </CategoriesInputSubContainer>
+    </AppInputWithButtonContainer>
   );
 });
 
