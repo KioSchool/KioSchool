@@ -109,9 +109,12 @@ function useAdminProducts(workspaceId: string | undefined) {
   };
 
   const addCategories = (name: string) => {
-    adminApi.post('/product-category', { name, workspaceId }).catch((error) => {
-      console.error('Failed to add products categories : ', error);
-    });
+    adminApi
+      .post('/product-category', { name, workspaceId })
+      .then(() => fetchCategories())
+      .catch((error) => {
+        console.error('Failed to add products categories : ', error);
+      });
   };
 
   const reorderCategories = (categoryIds: number[]) => {
@@ -126,9 +129,12 @@ function useAdminProducts(workspaceId: string | undefined) {
   };
 
   const deleteCategory = (categoryId: number) => {
-    adminApi.delete(`/product-category?workspaceId=${workspaceId}&productCategoryId=${categoryId}`).catch((error) => {
-      console.error('Failed to delete product category: ', error);
-    });
+    adminApi
+      .delete(`/product-category?workspaceId=${workspaceId}&productCategoryId=${categoryId}`)
+      .then(() => fetchCategories())
+      .catch((error) => {
+        console.error('Failed to delete product category: ', error);
+      });
   };
 
   return {

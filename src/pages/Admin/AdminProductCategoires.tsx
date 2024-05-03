@@ -133,6 +133,7 @@ function AdminProductCategories() {
     }
 
     addCategories(userInput);
+    if (categoryInputRef.current) categoryInputRef.current.value = '';
   };
 
   const fixCategory = () => {
