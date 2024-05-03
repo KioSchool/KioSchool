@@ -57,14 +57,13 @@ const CategoriesContens = styled.div`
 
 function AdminProductCategories() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { addCategories, fetchCategories } = useAdminProducts(workspaceId);
+  const { addCategories, fetchCategories, reorderCategories } = useAdminProducts(workspaceId);
   const categoryInputRef = useRef<HTMLInputElement>(null);
   const [rawCategories, setRawCategories] = useRecoilState(categoriesAtom);
   const categories = rawCategories.map((category) => ({
     ...category,
-    id: String(category.id),
+    id: String(category.id), // id를 숫자에서 문자열로 변환
   }));
-
   const [enabled, setEnabled] = useState(false);
   const reorder = (list: any[], startIndex: number, endIndex: number) => {
     const result = Array.from(list);
@@ -77,8 +76,9 @@ function AdminProductCategories() {
     if (!result.destination) return;
     const newArr = categories.map((itm) => ({ ...itm, id: Number(itm.id) }));
     const changedCategories = reorder(newArr, result.source.index, result.destination.index);
-
+    const arr = changedCategories.map((itm) => itm.id);
     setRawCategories(changedCategories);
+    reorderCategories(arr);
   };
 
   useEffect(() => {
