@@ -10,6 +10,7 @@ import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { categoriesAtom } from '@recoils/atoms';
+import DragIconSvg from '@resources/svg/DragIconSvg';
 
 const Container = styled.div`
   display: flex;
@@ -46,13 +47,24 @@ const CategoriesButtonContainer = styled.div`
   align-items: center;
 `;
 
-const CategoriesContens = styled.div`
+const CategoriesContensContainer = styled.div`
   width: 500px;
   height: 60px;
   background-color: white;
   border-radius: 12px;
   box-shadow: 0px 4px 17px 0px rgba(0, 0, 0, 0.1);
   margin: 10px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const CategoriesName = styled.label`
+  font-family: Poppins;
+  font-size: 20px;
+  width: 50%;
+  padding-left: 20px;
 `;
 
 function AdminProductCategories() {
@@ -60,26 +72,11 @@ function AdminProductCategories() {
   const { addCategories, fetchCategories, reorderCategories } = useAdminProducts(workspaceId);
   const categoryInputRef = useRef<HTMLInputElement>(null);
   const [rawCategories, setRawCategories] = useRecoilState(categoriesAtom);
+  const [enabled, setEnabled] = useState(false);
   const categories = rawCategories.map((category) => ({
     ...category,
-    id: String(category.id), // id를 숫자에서 문자열로 변환
+    id: String(category.id),
   }));
-  const [enabled, setEnabled] = useState(false);
-  const reorder = (list: any[], startIndex: number, endIndex: number) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-
-    return result;
-  };
-  const onDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
-    const newArr = categories.map((itm) => ({ ...itm, id: Number(itm.id) }));
-    const changedCategories = reorder(newArr, result.source.index, result.destination.index);
-    const arr = changedCategories.map((itm) => itm.id);
-    setRawCategories(changedCategories);
-    reorderCategories(arr);
-  };
 
   useEffect(() => {
     const animation = requestAnimationFrame(() => setEnabled(true));
@@ -90,10 +87,29 @@ function AdminProductCategories() {
     };
   }, []);
 
+  const reorder = (list: any[], startIndex: number, endIndex: number) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+  };
+
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+
+    const categoriesIdParsedNumber = categories.map((itm) => ({ ...itm, id: Number(itm.id) }));
+    const changedCategories = reorder(categoriesIdParsedNumber, result.source.index, result.destination.index);
+    const arr = changedCategories.map((itm) => itm.id);
+    setRawCategories(changedCategories);
+    reorderCategories(arr);
+  };
+
   if (!enabled) {
     return null;
   }
-  const onClickHandler = () => {
+
+  const addCategoryHandler = () => {
     const userInput = categoryInputRef.current?.value;
 
     if (userInput === '' || userInput === undefined) {
@@ -103,6 +119,7 @@ function AdminProductCategories() {
 
     addCategories(userInput);
   };
+
   return (
     <>
       <NavBar useBackground={true} />
@@ -110,7 +127,7 @@ function AdminProductCategories() {
         <Container>
           <TitleNavBar title={'카테고리 관리'}></TitleNavBar>
           <CategoriesInputContainer>
-            <AppInputWithButton ref={categoryInputRef} onclick={onClickHandler} />
+            <AppInputWithButton ref={categoryInputRef} onclick={addCategoryHandler} />
           </CategoriesInputContainer>
           <CategoriesContentContainer>
             <DragDropContext onDragEnd={onDragEnd}>
@@ -120,9 +137,10 @@ function AdminProductCategories() {
                     {categories.map((item, index) => (
                       <Draggable key={item.id} draggableId={item.id} index={index}>
                         {(pro) => (
-                          <CategoriesContens ref={pro.innerRef} {...pro.draggableProps} {...pro.dragHandleProps}>
-                            {item.name}
-                          </CategoriesContens>
+                          <CategoriesContensContainer ref={pro.innerRef} {...pro.draggableProps} {...pro.dragHandleProps}>
+                            <CategoriesName>{item.name}</CategoriesName>
+                            <DragIconSvg style={{ paddingRight: '20px' }} />
+                          </CategoriesContensContainer>
                         )}
                       </Draggable>
                     ))}
