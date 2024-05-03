@@ -117,9 +117,7 @@ function AdminProductCategories() {
 
     const categoriesIdParsedNumber = categories.map((itm) => ({ ...itm, id: Number(itm.id) }));
     const changedCategories = reorder(categoriesIdParsedNumber, result.source.index, result.destination.index);
-    const arr = changedCategories.map((itm) => itm.id);
     setRawCategories(changedCategories);
-    reorderCategories(arr);
   };
 
   if (!enabled) {
@@ -135,6 +133,11 @@ function AdminProductCategories() {
     }
 
     addCategories(userInput);
+  };
+
+  const fixCategory = () => {
+    const categoriesId = rawCategories.map((itm) => itm.id);
+    reorderCategories(categoriesId);
   };
 
   return (
@@ -175,7 +178,14 @@ function AdminProductCategories() {
             </DragDropContext>
           </CategoriesContentContainer>
           <CategoriesButtonContainer>
-            <AppButton size={'medium'}>편집 완료</AppButton>
+            <AppButton
+              size={'medium'}
+              onClick={() => {
+                fixCategory();
+              }}
+            >
+              편집 완료
+            </AppButton>
           </CategoriesButtonContainer>
         </Container>
       </AppContainer>
