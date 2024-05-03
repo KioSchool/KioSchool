@@ -13,9 +13,6 @@ const Container = styled.input`
   width: 500px;
   height: 50px;
   padding: 0 18px;
-  &:focus {
-    outline: none;
-  }
 `;
 
 const AppInput = forwardRef<HTMLInputElement, AppInputProps>((props: AppInputProps, ref: ForwardedRef<HTMLInputElement>) => {

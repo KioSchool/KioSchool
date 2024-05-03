@@ -8,9 +8,8 @@ const CategoriesInputSubContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
-  height: 60px;
-  width: 400px;
+  height: 65px;
+  width: 420px;
   background-color: white;
   border-radius: 12px;
   box-shadow: 0px 4px 17px 0px rgba(0, 0, 0, 0.1);
@@ -24,7 +23,9 @@ const AppInputWithButton = forwardRef<HTMLInputElement, AppInputWithButtonProps>
   return (
     <CategoriesInputSubContainer>
       <AppInput placeholder="카테고리명" ref={ref} {...props} style={{ width: '230px', boxShadow: 'none' }} />
-      <AppButton onClick={props.onclick}>카테고리 추가</AppButton>
+      <AppButton onClick={props.onclick} style={{ marginLeft: '20px' }}>
+        카테고리 추가
+      </AppButton>
     </CategoriesInputSubContainer>
   );
 });
