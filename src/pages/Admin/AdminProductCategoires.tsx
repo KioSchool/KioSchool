@@ -1,5 +1,4 @@
 import AppContainer from '@components/common/container/AppContainer';
-import NavBar from '@components/common/nav/NavBar';
 import TitleNavBar from '@components/common/nav/TitleNavBar';
 import styled from '@emotion/styled';
 import AppButton from '@components/common/button/AppButton';
@@ -17,7 +16,6 @@ const Container = styled.div`
   gap: 15px;
   align-items: center;
   padding-top: 100px;
-  padding-bottom: 100px;
 `;
 
 const CategoriesInputContainer = styled.div`
@@ -31,7 +29,7 @@ const CategoriesInputContainer = styled.div`
 
 const CategoriesContentContainer = styled.div`
   width: 100%;
-  height: 300px;
+  height: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -48,7 +46,7 @@ const CategoriesButtonContainer = styled.div`
 
 function AdminProductCategories() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { addCategories, reorderCategories } = useAdminProducts(workspaceId);
+  const { addCategory, reorderCategories } = useAdminProducts(workspaceId);
   const categoryInputRef = useRef<HTMLInputElement>(null);
   const rawCategories = useRecoilValue(categoriesAtom);
 
@@ -60,18 +58,17 @@ function AdminProductCategories() {
       return;
     }
 
-    addCategories(userInput);
+    addCategory(userInput);
     if (categoryInputRef.current) categoryInputRef.current.value = '';
   };
 
-  const fixCategory = () => {
+  const saveCategory = () => {
     const categoriesId = rawCategories.map((itm) => itm.id);
     reorderCategories(categoriesId);
   };
 
   return (
     <>
-      <NavBar useBackground={true} />
       <AppContainer justifyValue={'center'}>
         <Container>
           <TitleNavBar title={'카테고리 관리'}></TitleNavBar>
@@ -85,7 +82,7 @@ function AdminProductCategories() {
             <AppButton
               size={'medium'}
               onClick={() => {
-                fixCategory();
+                saveCategory();
               }}
             >
               편집 완료

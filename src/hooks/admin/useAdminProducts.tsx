@@ -108,7 +108,7 @@ function useAdminProducts(workspaceId: string | undefined) {
       });
   };
 
-  const addCategories = (name: string) => {
+  const addCategory = (name: string) => {
     adminApi
       .post('/product-category', { name, workspaceId })
       .then(() => fetchCategories())
@@ -117,9 +117,9 @@ function useAdminProducts(workspaceId: string | undefined) {
       });
   };
 
-  const reorderCategories = (categoryIds: number[]) => {
+  const reorderCategories = (productCategoryIds: number[]) => {
     adminApi
-      .post('/product-categories/sort', { workspaceId, productCategoryIds: categoryIds })
+      .post('/product-categories/sort', { workspaceId, productCategoryIds })
       .then(() => {
         navigate(`/admin/workspace/${workspaceId}/products`);
       })
@@ -141,7 +141,7 @@ function useAdminProducts(workspaceId: string | undefined) {
     fetchProducts,
     addProduct,
     fetchCategories,
-    addCategories,
+    addCategory,
     deleteProducts,
     fetchProduct,
     editProduct,
