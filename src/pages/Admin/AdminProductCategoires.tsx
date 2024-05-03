@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { categoriesAtom } from '@recoils/atoms';
 import DragIconSvg from '@resources/svg/DragIconSvg';
+import DeleteButtonGraySvg from '@resources/svg/DeleteButtonGraySvg';
 
 const Container = styled.div`
   display: flex;
@@ -47,6 +48,14 @@ const CategoriesButtonContainer = styled.div`
   align-items: center;
 `;
 
+const CategoriesItemContainer = styled.div`
+  position: relative;
+  width: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const CategoriesContensContainer = styled.div`
   width: 500px;
   height: 60px;
@@ -65,6 +74,11 @@ const CategoriesName = styled.label`
   font-size: 20px;
   width: 50%;
   padding-left: 20px;
+`;
+
+const DeleteIcon = styled(DeleteButtonGraySvg)`
+  position: absolute;
+  left: 13px;
 `;
 
 function AdminProductCategories() {
@@ -137,10 +151,13 @@ function AdminProductCategories() {
                     {categories.map((item, index) => (
                       <Draggable key={item.id} draggableId={item.id} index={index}>
                         {(pro) => (
-                          <CategoriesContensContainer ref={pro.innerRef} {...pro.draggableProps} {...pro.dragHandleProps}>
-                            <CategoriesName>{item.name}</CategoriesName>
-                            <DragIconSvg style={{ paddingRight: '20px' }} />
-                          </CategoriesContensContainer>
+                          <CategoriesItemContainer ref={pro.innerRef} {...pro.draggableProps} {...pro.dragHandleProps}>
+                            <DeleteIcon />
+                            <CategoriesContensContainer>
+                              <CategoriesName>{item.name}</CategoriesName>
+                              <DragIconSvg style={{ paddingRight: '20px' }} />
+                            </CategoriesContensContainer>
+                          </CategoriesItemContainer>
                         )}
                       </Draggable>
                     ))}
