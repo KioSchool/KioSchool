@@ -11,6 +11,7 @@ import NavBar from '@components/common/nav/NavBar';
 import SelectWithLabel from '@components/common/select/SelectWithLabelProps';
 import ProductImageInput from '@components/admin/product/ProductImageInput';
 import TitleNavBar from '@components/common/nav/TitleNavBar';
+import useConfirm from '@hooks/useConfirm';
 
 const ErrorMessage = styled.div`
   padding: 0 0 5px;
@@ -50,7 +51,7 @@ const Container = styled.div`
 
 function AdminProductEdit() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchProduct, fetchCategories, editProduct } = useAdminProducts(workspaceId);
+  const { fetchProduct, fetchCategories, editProduct, deleteProduct } = useAdminProducts(workspaceId);
   const productCategories = useRecoilValue(categoriesAtom);
 
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -59,6 +60,7 @@ function AdminProductEdit() {
   const productId = Number(searchParams.get('productId'));
 
   const [productState, dispatch] = useReducer(reducer, initState);
+  const { ConfirmModal, confirm } = useConfirm(`'${productState.name}' 상품을 삭제하시겠습니까?`, '확인 후 되돌릴 수 없습니다.', '삭제하기', '취소');
 
   useEffect(() => {
     (async () => {
@@ -111,11 +113,21 @@ function AdminProductEdit() {
 
     dispatch({ type: 'PRODUCT_IMAGE_INPUT', payload: { url: newFileURL, file: event.target.files[0] } });
   };
+
+  const deleteProductHandler = async () => {
+    const userInput = await confirm();
+    if (userInput) deleteProduct(productId);
+  };
+
   return (
     <>
       <NavBar useBackground={true} />
       <Container>
-        <TitleNavBar title={'상품 수정'} />
+        <TitleNavBar title={'상품 수정'}>
+          <AppButton size={160} onClick={deleteProductHandler}>
+            상품 삭제
+          </AppButton>
+        </TitleNavBar>
         {errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}
         <SelectWithLabel
           titleLabel={'카테고리'}
@@ -149,6 +161,7 @@ function AdminProductEdit() {
           }}
         />
         <AppButton onClick={submitEditProduct}>변경하기</AppButton>
+        <ConfirmModal />
       </Container>
     </>
   );
