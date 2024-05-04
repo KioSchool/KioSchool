@@ -142,7 +142,7 @@ function useAdminProducts(workspaceId: string | undefined) {
     addProduct,
     fetchCategories,
     addCategory,
-    deleteProducts,
+    deleteProduct,
     fetchProduct,
     editProduct,
     editProductSellable,
