@@ -12,11 +12,11 @@ interface Props {
   onLeftArrowClick?: () => void;
 }
 
-const Container = styled.div`
+const Container = styled.div<{ useSubTitle: boolean }>`
   display: flex;
   padding-bottom: 25px;
   justify-content: center;
-  height: 100px;
+  height: ${(props) => (props.useSubTitle ? '100px' : '50px')};
   width: 100%;
   min-width: 1200px;
 `;
@@ -56,7 +56,7 @@ function TitleNavBar({ title, subTitle = '', useBackIcon = true, children, onLef
   const navigate = useNavigate();
 
   return (
-    <Container>
+    <Container useSubTitle={!!subTitle}>
       <SubContainer>
         <LeftContainer>
           <ArrowLeftButton
