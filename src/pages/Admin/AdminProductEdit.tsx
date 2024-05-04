@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { categoriesAtom } from '@recoils/atoms';
 import React, { ChangeEvent, useEffect, useReducer, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { initState, ProductActionType, ProductEdit, ProductStateType } from '@@types/productTypes';
 import NavBar from '@components/common/nav/NavBar';
@@ -59,6 +59,7 @@ function AdminProductEdit() {
   const [searchParams] = useSearchParams();
   const productId = Number(searchParams.get('productId'));
 
+  const navigate = useNavigate();
   const [productState, dispatch] = useReducer(reducer, initState);
   const { ConfirmModal, confirm } = useConfirm(`'${productState.name}' 상품을 삭제하시겠습니까?`, '확인 후 되돌릴 수 없습니다.', '삭제하기', '취소');
 
@@ -116,7 +117,10 @@ function AdminProductEdit() {
 
   const deleteProductHandler = async () => {
     const userInput = await confirm();
-    if (userInput) deleteProduct(productId);
+    if (!userInput) return;
+
+    deleteProduct(productId);
+    navigate(`/admin/workspace/${workspaceId}/products`);
   };
 
   return (
