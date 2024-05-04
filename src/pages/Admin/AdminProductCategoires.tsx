@@ -72,7 +72,7 @@ function AdminProductCategories() {
       <Container>
         <TitleNavBar title={'카테고리 관리'}></TitleNavBar>
         <CategoriesInputContainer>
-          <AppInputWithButton ref={categoryInputRef} onClick={addCategoryHandler} />
+          <AppInputWithButton ref={categoryInputRef} onButtonClick={addCategoryHandler} />
         </CategoriesInputContainer>
         <CategoriesContentContainer>
           <DragAndDropContent />

@@ -16,14 +16,14 @@ const AppInputWithButtonContainer = styled.div`
 `;
 
 interface AppInputWithButtonProps {
-  onClick: () => void;
+  onButtonClick: () => void;
 }
 
 const AppInputWithButton = forwardRef<HTMLInputElement, AppInputWithButtonProps>((props: AppInputWithButtonProps, ref: ForwardedRef<HTMLInputElement>) => {
   return (
     <AppInputWithButtonContainer>
       <AppInput placeholder="카테고리명" ref={ref} {...props} style={{ width: '230px', boxShadow: 'none' }} />
-      <AppButton onClick={props.onClick} style={{ marginLeft: '20px' }}>
+      <AppButton onClick={props.onButtonClick} style={{ marginLeft: '20px' }}>
         카테고리 추가
       </AppButton>
     </AppInputWithButtonContainer>
