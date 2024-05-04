@@ -93,12 +93,6 @@ function useAdminProducts(workspaceId: string | undefined) {
       });
   };
 
-  const deleteProducts = (productIds: number[]) => {
-    productIds.forEach((id) => {
-      deleteProduct(id);
-    });
-  };
-
   const fetchCategories = () => {
     adminApi
       .get<ProductCategory[]>('/product-categories', {
@@ -120,7 +114,7 @@ function useAdminProducts(workspaceId: string | undefined) {
     });
   };
 
-  return { fetchProducts, addProduct, fetchCategories, addCategories, deleteProducts, fetchProduct, editProduct, editProductSellable };
+  return { fetchProducts, addProduct, fetchCategories, addCategories, deleteProduct, fetchProduct, editProduct, editProductSellable };
 }
 
 export default useAdminProducts;
