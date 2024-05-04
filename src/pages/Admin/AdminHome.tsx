@@ -5,7 +5,7 @@ import { adminUserAtom, workspacesAtom } from '@recoils/atoms';
 import AppContainer from '@components/common/container/AppContainer';
 import DummyWorkspace from '@components/common/workspace/DummyWorkspace';
 import AddWorkspace from '@components/common/workspace/AddWorkspace';
-import WorkspaceContent from '@components/common/content/WorkspaceContent';
+import WorkspaceContent from '@components/admin/workspace/WorkspaceContent';
 import styled from '@emotion/styled';
 
 const UserNameContainer = styled.div`

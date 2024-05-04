@@ -23,10 +23,9 @@ function AuthenticationButton() {
     <>
       {isLoggedIn() ? (
         <LogoutText
-          onClick={() => {
-            logout().then(() => {
-              navigate('/');
-            });
+          onClick={async () => {
+            await logout();
+            navigate('/');
           }}
         >
           Logout

@@ -21,7 +21,8 @@ import AdminOrderHistory from '@pages/Admin/order/AdminOrderHistory';
 import AdminProductEdit from '@pages/Admin/AdminProductEdit';
 import ReactGA from 'react-ga4';
 import RouterChangeTracker from './RouterChangeTracker';
-import MyInfo from '@pages/User/MyInfo';
+import MyInfo from '@pages/Admin/MyInfo';
+import AdminProductCategories from '@pages/Admin/AdminProductCategoires';
 
 ReactGA.initialize('G-XGYLSPGK2G');
 function App() {
@@ -45,6 +46,7 @@ function App() {
         <Route path="/admin/workspace/:workspaceId/orders-history" element={<AdminOrderHistory />} />
         <Route path="/admin/workspace/:workspaceId/products" element={<AdminProduct />} />
         <Route path="/admin/workspace/:workspaceId/products/add-product" element={<AdminProductAdd />} />
+        <Route path="/admin/workspace/:workspaceId/products/categories" element={<AdminProductCategories />} />
         <Route path="/admin/workspace/:workspaceId/products/edit-product" element={<AdminProductEdit />} />
       </Routes>
       <Global styles={globalStyles} />

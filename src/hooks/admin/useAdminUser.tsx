@@ -3,9 +3,11 @@ import { Workspace } from '@@types/index';
 import { useSetRecoilState } from 'recoil';
 import { adminUserAtom, workspacesAtom } from '@recoils/atoms';
 import { useNavigate } from 'react-router-dom';
+import useAuthentication from '@hooks/useAuthentication';
 
 function useAdminUser() {
   const { adminApi } = useApi();
+  const { logout } = useAuthentication();
   const setWorkspaces = useSetRecoilState(workspacesAtom);
   const setAdminUser = useSetRecoilState(adminUserAtom);
   const navigate = useNavigate();
@@ -58,7 +60,18 @@ function useAdminUser() {
       .catch((error) => console.error('Failed to add account: ', error));
   };
 
-  return { isLoggedIn, fetchWorkspaces, createWorkspaces, leaveWorkspace, registerAccount, fetchAdminUser };
+  const deleteUser = async () => {
+    await logout();
+    adminApi
+      .delete('/user')
+      .then(() => {
+        alert('탈퇴가 완료되었습니다.');
+        navigate('/');
+      })
+      .catch((error) => console.error('Failed to delete user: ', error));
+  };
+
+  return { isLoggedIn, fetchWorkspaces, createWorkspaces, leaveWorkspace, registerAccount, fetchAdminUser, deleteUser };
 }
 
 export default useAdminUser;

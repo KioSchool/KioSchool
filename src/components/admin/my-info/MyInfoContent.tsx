@@ -1,9 +1,11 @@
 import styled from '@emotion/styled';
 import MyInfoItemContent from './MyInfoItemContent';
-import SettingSvg from '@resources/svg/SettingIconSvg';
 import { useNavigate } from 'react-router-dom';
 import AccountIconSvg from '@resources/svg/AccountIconSvg';
 import DeleteUserSvg from '@resources/svg/DeleteUserSvg';
+import useConfirm from '@hooks/useConfirm';
+import React from 'react';
+import useAdminUser from '@hooks/admin/useAdminUser';
 
 const MyInfoContainer = styled.div`
   width: 1100px;
@@ -31,20 +33,6 @@ const VerticalLine = styled.div`
   width: 1px;
   height: 215px;
   background: #ccc;
-`;
-
-const SettingButton = styled(SettingSvg)`
-  cursor: pointer;
-  position: absolute;
-  width: 70px;
-  height: 70px;
-  right: 44px;
-  left: 44px;
-  top: 12px;
-  transition: transform 0.1s ease;
-  &:hover {
-    transform: scale(1.1);
-  }
 `;
 
 const AccountButton = styled(AccountIconSvg)`
@@ -77,16 +65,23 @@ const DeleteUserButton = styled(DeleteUserSvg)`
 
 function MyInfoContent() {
   const navigate = useNavigate();
+  const { deleteUser } = useAdminUser();
+
+  const { ConfirmModal: DeleteUserConfirmModal, confirm: deleteUserConfirm } = useConfirm(
+    '계정을 탈퇴하시겠습니까?',
+    '확인 후 되돌릴 수 없습니다.',
+    '확인',
+    '취소',
+  );
+
+  const deleteUserHandler = async () => {
+    const userInput = await deleteUserConfirm();
+    if (userInput) deleteUser();
+  };
 
   return (
     <MyInfoContainer>
       <MyInfoSubContainer>
-        <MyInfoItemContent label="비밀번호 변경">
-          <SettingButton onClick={() => navigate('/change-password')} />
-        </MyInfoItemContent>
-
-        <VerticalLine />
-
         <MyInfoItemContent label="계좌관리">
           <AccountButton onClick={() => navigate('/admin/register-account')} />
         </MyInfoItemContent>
@@ -94,9 +89,10 @@ function MyInfoContent() {
         <VerticalLine />
 
         <MyInfoItemContent label="계정탈퇴">
-          <DeleteUserButton onClick={() => navigate('/delete-user')} />
+          <DeleteUserButton onClick={deleteUserHandler} />
         </MyInfoItemContent>
       </MyInfoSubContainer>
+      <DeleteUserConfirmModal />
     </MyInfoContainer>
   );
 }

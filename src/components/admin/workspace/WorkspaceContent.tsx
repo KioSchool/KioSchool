@@ -4,6 +4,7 @@ import useAdminUser from '@hooks/admin/useAdminUser';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import useConfirm from '@hooks/useConfirm';
 import DeleteButtonSvg from '@resources/svg/DeleteButtonSvg';
+import React from 'react';
 
 const WorkspaceContainer = styled.div`
   cursor: pointer;
@@ -89,7 +90,7 @@ const Title = styled.div`
   width: 69%;
   height: 50px;
   color: #fff;
-  font-size: 40.329px;
+  font-size: 40px;
   font-weight: 700;
 `;
 

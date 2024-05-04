@@ -1,5 +1,5 @@
 import AppContainer from '@components/common/container/AppContainer';
-import MyInfoContent from '@components/common/content/MyInfoContent';
+import MyInfoContent from '@components/admin/my-info/MyInfoContent';
 import TitleNavBar from '@components/common/nav/TitleNavBar';
 import styled from '@emotion/styled';
 import useAdminUser from '@hooks/admin/useAdminUser';

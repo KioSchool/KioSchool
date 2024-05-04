@@ -93,12 +93,6 @@ function useAdminProducts(workspaceId: string | undefined) {
       });
   };
 
-  const deleteProducts = (productIds: number[]) => {
-    productIds.forEach((id) => {
-      deleteProduct(id);
-    });
-  };
-
   const fetchCategories = () => {
     adminApi
       .get<ProductCategory[]>('/product-categories', {
@@ -114,13 +108,47 @@ function useAdminProducts(workspaceId: string | undefined) {
       });
   };
 
-  const addCategories = (name: string) => {
-    adminApi.post('/product-category', { name, workspaceId }).catch((error) => {
-      console.error('Failed to add products categories : ', error);
-    });
+  const addCategory = (name: string) => {
+    adminApi
+      .post('/product-category', { name, workspaceId })
+      .then(() => fetchCategories())
+      .catch((error) => {
+        console.error('Failed to add products categories : ', error);
+      });
   };
 
-  return { fetchProducts, addProduct, fetchCategories, addCategories, deleteProducts, fetchProduct, editProduct, editProductSellable };
+  const reorderCategories = (productCategoryIds: number[]) => {
+    adminApi
+      .post('/product-categories/sort', { workspaceId, productCategoryIds })
+      .then(() => {
+        navigate(`/admin/workspace/${workspaceId}/products`);
+      })
+      .catch((error) => {
+        console.error('Failed to reorder products categories : ', error);
+      });
+  };
+
+  const deleteCategory = (categoryId: number) => {
+    adminApi
+      .delete(`/product-category?workspaceId=${workspaceId}&productCategoryId=${categoryId}`)
+      .then(() => fetchCategories())
+      .catch((error) => {
+        console.error('Failed to delete product category: ', error);
+      });
+  };
+
+  return {
+    fetchProducts,
+    addProduct,
+    fetchCategories,
+    addCategory,
+    deleteProduct,
+    fetchProduct,
+    editProduct,
+    editProductSellable,
+    reorderCategories,
+    deleteCategory,
+  };
 }
 
 export default useAdminProducts;
