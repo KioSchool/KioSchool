@@ -68,29 +68,22 @@ function AdminProductCategories() {
   };
 
   return (
-    <>
-      <AppContainer justifyValue={'center'}>
-        <Container>
-          <TitleNavBar title={'카테고리 관리'}></TitleNavBar>
-          <CategoriesInputContainer>
-            <AppInputWithButton ref={categoryInputRef} oncLick={addCategoryHandler} />
-          </CategoriesInputContainer>
-          <CategoriesContentContainer>
-            <DragAndDropContent />
-          </CategoriesContentContainer>
-          <CategoriesButtonContainer>
-            <AppButton
-              size={'medium'}
-              onClick={() => {
-                saveCategory();
-              }}
-            >
-              편집 완료
-            </AppButton>
-          </CategoriesButtonContainer>
-        </Container>
-      </AppContainer>
-    </>
+    <AppContainer justifyValue={'center'}>
+      <Container>
+        <TitleNavBar title={'카테고리 관리'}></TitleNavBar>
+        <CategoriesInputContainer>
+          <AppInputWithButton ref={categoryInputRef} onClick={addCategoryHandler} />
+        </CategoriesInputContainer>
+        <CategoriesContentContainer>
+          <DragAndDropContent />
+        </CategoriesContentContainer>
+        <CategoriesButtonContainer>
+          <AppButton size={'medium'} onClick={saveCategory}>
+            편집 완료
+          </AppButton>
+        </CategoriesButtonContainer>
+      </Container>
+    </AppContainer>
   );
 }
 
