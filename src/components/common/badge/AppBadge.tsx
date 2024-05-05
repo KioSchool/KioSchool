@@ -7,7 +7,7 @@ interface AppBadgeProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Container = styled.div`
-  min-width: 90px;
+  width: auto;
   padding: 0 10px;
   height: 30px;
   border: ${(props: AppBadgeProps) => (props.noBorder ? 'none' : '1px solid black')};
@@ -18,6 +18,7 @@ const Container = styled.div`
   font-size: 15px;
   background: ${(props: AppBadgeProps) => props.background || 'white'};
   user-select: none;
+  white-space: nowrap;
 
   :active {
     background-color: gray;

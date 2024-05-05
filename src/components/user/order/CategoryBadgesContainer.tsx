@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import AppBadge from '@components/common/badge/AppBadge';
-import { Product, Workspace } from '@@types/index';
+import { Product, ProductCategory } from '@@types/index';
 import _ from 'lodash';
 
 interface CategoryBadgesContainerProps {
-  workspace: Workspace;
+  productCategories: ProductCategory[];
   productsByCategory: _.Dictionary<Product[]>;
 }
 
@@ -23,7 +23,7 @@ const Container = styled.div`
   }
 `;
 
-function CategoryBadgesContainer({ workspace, productsByCategory }: CategoryBadgesContainerProps) {
+function CategoryBadgesContainer({ productCategories, productsByCategory }: CategoryBadgesContainerProps) {
   const scrollToCategory = (categoryId: string) => {
     const categoryElement = document.getElementById(categoryId);
     const elementPosition = categoryElement?.getBoundingClientRect().top;
@@ -37,7 +37,7 @@ function CategoryBadgesContainer({ workspace, productsByCategory }: CategoryBadg
 
   return (
     <Container>
-      {workspace.productCategories.map(
+      {productCategories.map(
         (category) =>
           productsByCategory[category.id] && (
             <AppBadge onClick={() => scrollToCategory(`product_category${category.id}`)} key={`category${category.id}`}>

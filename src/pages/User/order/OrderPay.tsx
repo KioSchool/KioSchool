@@ -41,6 +41,15 @@ const Header = styled.div`
   z-index: 100;
 `;
 
+const SubContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+  gap: 20px;
+`;
+
 function OrderPay() {
   const customerNameRef = useRef<HTMLInputElement>(null);
 
@@ -93,7 +102,12 @@ function OrderPay() {
         <AppLabel>주문 결제</AppLabel>
         <AppBadge>{totalAmount.toLocaleString()}원</AppBadge>
       </Header>
-      <AppInputWithLabel titleLabel={'입금자명'} style={{ width: '80%' }} placeholder={'입금자명을 입력해주세요.'} ref={customerNameRef} />
+      <SubContainer>
+        <AppInputWithLabel titleLabel={'입금자명'} placeholder={'입금자명을 입력해주세요.'} style={{ width: '300px' }} ref={customerNameRef} />
+        <AppLabel size={12}>입력한 입금자명과 실제로 입금한 입금자명이 다를 경우 결제 확인이 불가능합니다.</AppLabel>
+        <AppLabel size={12}>아래 버튼을 누르면 주문이 완료되며, 토스 송금 창으로 이동합니다.</AppLabel>
+        <AppLabel size={12}>송금 완료 후 다시 이 페이지로 돌아오면 주문 내역을 확인하실 수 있습니다.</AppLabel>
+      </SubContainer>
       <OrderButton amount={totalAmount} buttonLabel={`Toss로 결제하기`} onClick={payOrder} />
     </Container>
   );

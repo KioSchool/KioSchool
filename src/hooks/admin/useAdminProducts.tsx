@@ -4,7 +4,7 @@ import { categoriesAtom, productsAtom } from '@recoils/atoms';
 import { Product, ProductCategory } from '@@types/index';
 import { useNavigate } from 'react-router-dom';
 
-function useAdminProducts(workspaceId: string | undefined) {
+function useAdminProducts(workspaceId: string | undefined | null) {
   const { adminApi } = useApi();
   const navigate = useNavigate();
   const setProducts = useSetRecoilState(productsAtom);

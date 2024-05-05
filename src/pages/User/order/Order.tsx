@@ -6,11 +6,12 @@ import CategoryBadgesContainer from '@components/user/order/CategoryBadgesContai
 import ProductCard from '@components/user/product/ProductCard';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import useWorkspace from '@hooks/user/useWorkspace';
-import { orderBasketAtom, userWorkspaceAtom } from '@recoils/atoms';
+import { categoriesAtom, orderBasketAtom, userWorkspaceAtom } from '@recoils/atoms';
 import { useRecoilValue } from 'recoil';
 import { Product } from '@@types/index';
 import _ from 'lodash';
 import OrderButton from '@components/user/order/OrderButton';
+import useAdminProducts from '@hooks/admin/useAdminProducts';
 
 const Container = styled.div`
   width: 100vw;
@@ -46,14 +47,17 @@ function Order() {
     workspace.products.filter((it) => it.isSellable),
     (product) => product.productCategory?.id,
   );
+  const rawProductCategories = useRecoilValue(categoriesAtom);
+  const productCategories = rawProductCategories.filter((it) => productsByCategory[it.id]);
   const productsMap = _.keyBy(workspace.products, 'id');
-  const categoryMap = _.keyBy(workspace.productCategories, 'id');
+  const categoryMap = _.keyBy(rawProductCategories, 'id');
 
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
 
   const { fetchWorkspace } = useWorkspace();
+  const { fetchCategories } = useAdminProducts(workspaceId);
   const navigate = useNavigate();
   const orderBasket = useRecoilValue(orderBasketAtom);
   const totalAmount = orderBasket.reduce((acc, cur) => {
@@ -62,6 +66,7 @@ function Order() {
 
   useEffect(() => {
     fetchWorkspace(workspaceId);
+    fetchCategories();
   }, []);
 
   return (
@@ -71,20 +76,33 @@ function Order() {
         <AppLabel size={'small'} style={{ color: 'gray' }}>
           {tableNo}번 테이블
         </AppLabel>
-        <CategoryBadgesContainer workspace={workspace} productsByCategory={productsByCategory} />
+        <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategory} />
       </Header>
       <ContentContainer>
-        {_.keys(productsByCategory).map((categoryId) => (
-          <div id={`product_category${categoryId}`} key={`product_category${categoryId}`}>
-            <AppLabel size={22}>{categoryMap[categoryId]?.name || '기본 메뉴'}</AppLabel>
-            {productsByCategory[categoryId].map((product) => (
+        {productCategories
+          .map((it) => it.id)
+          .map((categoryId) => (
+            <div id={`product_category${categoryId}`} key={`product_category${categoryId}`}>
+              <AppLabel size={22}>{categoryMap[categoryId].name}</AppLabel>
+              {productsByCategory[categoryId].map((product) => (
+                <ProductContainer key={`product${product.id}`}>
+                  <ProductCard product={product} />
+                  <HorizontalDivider />
+                </ProductContainer>
+              ))}
+            </div>
+          ))}
+        {
+          <div id={`product_categoryundefined`} key={`product_categoryundefined`}>
+            <AppLabel size={22}>기본메뉴</AppLabel>
+            {productsByCategory.undefined?.map((product) => (
               <ProductContainer key={`product${product.id}`}>
                 <ProductCard product={product} />
                 <HorizontalDivider />
               </ProductContainer>
             ))}
           </div>
-        ))}
+        }
       </ContentContainer>
       <OrderButton
         amount={totalAmount}
