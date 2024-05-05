@@ -8,6 +8,7 @@ import styled from '@emotion/styled';
 import TitleNavBar from '@components/common/nav/TitleNavBar';
 import AppLabel from '@components/common/label/AppLabel';
 import AppButton from '@components/common/button/AppButton';
+import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 
 interface AccountState {
   decodedBank: string;
@@ -28,6 +29,18 @@ const ContentContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
+  gap: 20px;
+`;
+
+const ImageContainer = styled.img`
+  width: 300px;
+  height: 300px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 30px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
   gap: 20px;
 `;
 
@@ -143,16 +156,20 @@ function AdminAccount() {
         <ContentContainer>
           <AppLabel size={35}>현재 등록된 계좌</AppLabel>
           <AppLabel size={25}>{registerAccountInfo}</AppLabel>
-          <AppLabel size={16}>토스 QR에 대한 설명</AppLabel>
+          <HorizontalDivider />
+          <AppLabel size={16}>{'토스 -> 전체 -> 사진으로 송금 -> QR 코드 발급 -> 받을 금액 설정 X'}</AppLabel>
+          <AppLabel size={16}>{'위 방식대로 발급받은 QR 코드를 업로드해주세요.'}</AppLabel>
           {!fileURL ? (
             <input type="file" id="img" accept="image/*" onChange={onImageChange} />
           ) : (
             <>
-              <img src={fileURL} alt={fileURL} style={{ width: '300px', height: '300px' }} />
-              <AppButton onClick={removeImage}>이미지 제거</AppButton>
+              <ImageContainer src={fileURL} alt={fileURL} />
+              <ButtonContainer>
+                <AppButton onClick={removeImage}>이미지 제거</AppButton>
+                <AppButton onClick={submitHandler}>계좌 등록</AppButton>
+              </ButtonContainer>
             </>
           )}
-          <AppButton onClick={submitHandler}>계좌 등록</AppButton>
         </ContentContainer>
       </Container>
     </AppContainer>
