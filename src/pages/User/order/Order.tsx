@@ -11,7 +11,7 @@ import { useRecoilValue } from 'recoil';
 import { Product } from '@@types/index';
 import _ from 'lodash';
 import OrderButton from '@components/user/order/OrderButton';
-import useAdminProducts from '@hooks/admin/useAdminProducts';
+import useProduct from '@hooks/user/useProduct';
 
 const Container = styled.div`
   width: 100vw;
@@ -57,7 +57,7 @@ function Order() {
   const tableNo = searchParams.get('tableNo');
 
   const { fetchWorkspace } = useWorkspace();
-  const { fetchCategories } = useAdminProducts(workspaceId);
+  const { fetchCategories } = useProduct(workspaceId);
   const navigate = useNavigate();
   const orderBasket = useRecoilValue(orderBasketAtom);
   const totalAmount = orderBasket.reduce((acc, cur) => {
