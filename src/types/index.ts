@@ -39,6 +39,7 @@ export interface Product {
 export interface ProductCategory {
   id: number;
   name: string;
+  index: number | null;
   createdAt: string;
   updatedAt: string;
 }
