@@ -18,6 +18,7 @@ export const initState: ProductEdit = {
   productCategory: {
     id: 0,
     name: '',
+    index: 0,
     createdAt: '',
     updatedAt: '',
   },

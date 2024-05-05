@@ -4,7 +4,7 @@ import { categoriesAtom } from '@recoils/atoms';
 import DeleteButtonGraySvg from '@resources/svg/DeleteButtonGraySvg';
 import DragIconSvg from '@resources/svg/DragIconSvg';
 import { useEffect } from 'react';
-import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 
@@ -16,7 +16,7 @@ const CategoriesItemContainer = styled.div`
   align-items: center;
 `;
 
-const CategoriesContensContainer = styled.div`
+const CategoriesContentsContainer = styled.div`
   width: 500px;
   height: 60px;
   background-color: white;
@@ -30,7 +30,6 @@ const CategoriesContensContainer = styled.div`
 `;
 
 const CategoriesName = styled.label`
-  font-family: Poppins;
   font-size: 20px;
   width: 50%;
   padding-left: 20px;
@@ -89,10 +88,10 @@ function DragAndDropContent() {
                         deleteCategory(Number(item.id));
                       }}
                     />
-                    <CategoriesContensContainer>
+                    <CategoriesContentsContainer>
                       <CategoriesName>{item.name}</CategoriesName>
                       <DragIconSvg style={{ paddingRight: '20px' }} />
-                    </CategoriesContensContainer>
+                    </CategoriesContentsContainer>
                   </CategoriesItemContainer>
                 )}
               </Draggable>

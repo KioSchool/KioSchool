@@ -8,7 +8,7 @@ import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { categoriesAtom } from '@recoils/atoms';
-import DragAndDropContent from '@components/common/content/DragAndDropContent';
+import DragAndDropContent from '@components/admin/product-category/DragAndDropContent';
 
 const Container = styled.div`
   display: flex;
