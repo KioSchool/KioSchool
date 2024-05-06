@@ -6,8 +6,10 @@ import { adminUserAtom } from '@recoils/atoms';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import TitleNavBar from '@components/common/nav/TitleNavBar';
-import AppLabel from '@components/common/label/AppLabel';
+import AppImageInput from '@components/common/input/AppImageInput';
 import AppButton from '@components/common/button/AppButton';
+import AppLabel from '@components/common/label/AppLabel';
+import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 
 interface AccountState {
   decodedBank: string;
@@ -29,6 +31,39 @@ const ContentContainer = styled.div`
   justify-content: center;
   width: 100%;
   gap: 20px;
+`;
+
+const AccountContentContainer = styled.div`
+  display: flex;
+  width: 700px;
+  height: 300px;
+  box-shadow: 0 15px 32px -8px rgba(0, 0, 0, 0.07), 0 3px 32px 0 rgba(0, 0, 0, 0.03);
+  border-radius: 10px;
+  padding: 40px 60px;
+  justify-content: space-around;
+`;
+
+const AccountInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 10px;
+`;
+
+const AccountRegisterInputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+`;
+
+const QRCodeDescriptionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 60%;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 `;
 
 type AccountAction = { type: 'SET_ACCOUNT_INFO'; payload: { decodedBank: string; accountNo: string } };
@@ -80,7 +115,8 @@ function AdminAccount() {
     dispatchAccount({ type: 'SET_ACCOUNT_INFO', payload: { decodedBank, accountNo } });
   }, [adminUser.accountUrl]);
 
-  const registerAccountInfo = accountState.decodedBank && accountState.accountNo ? `${accountState.decodedBank} | ${accountState.accountNo}` : 'NONE';
+  const registerAccountInfo =
+    accountState.decodedBank && accountState.accountNo ? `${accountState.decodedBank} | ${accountState.accountNo}` : '등록된 계좌가 없습니다.';
 
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files?.length) {
@@ -91,11 +127,6 @@ function AdminAccount() {
     const newFileURL = URL.createObjectURL(event.target.files[0]);
 
     setFileURL(newFileURL);
-  };
-
-  const removeImage = (): void => {
-    URL.revokeObjectURL(fileURL);
-    setFileURL('');
   };
 
   const removeAmountQuery = (url: string): string => {
@@ -141,18 +172,29 @@ function AdminAccount() {
       <Container>
         <TitleNavBar title={`${adminUser.name} 님의 마이페이지`} subTitle={'계좌 관리'} useBackIcon={true} />
         <ContentContainer>
-          <AppLabel size={35}>현재 등록된 계좌</AppLabel>
-          <AppLabel size={25}>{registerAccountInfo}</AppLabel>
-          <AppLabel size={16}>토스 QR에 대한 설명</AppLabel>
-          {!fileURL ? (
-            <input type="file" id="img" accept="image/*" onChange={onImageChange} />
-          ) : (
-            <>
-              <img src={fileURL} alt={fileURL} style={{ width: '300px', height: '300px' }} />
-              <AppButton onClick={removeImage}>이미지 제거</AppButton>
-            </>
-          )}
-          <AppButton onClick={submitHandler}>계좌 등록</AppButton>
+          <AccountContentContainer>
+            <AccountInfoContainer>
+              <AppLabel size={24} style={{ fontWeight: 700 }}>
+                등록된 계좌 정보
+              </AppLabel>
+              <AppLabel size={20}>{registerAccountInfo}</AppLabel>
+              <HorizontalDivider />
+              <QRCodeDescriptionContainer>
+                <AppLabel size={14} style={{ fontWeight: 600 }}>
+                  {'토스 -> 전체 -> 사진으로 송금 -> QR 코드 발급 -> 받을 금액 설정 X'}
+                </AppLabel>
+                <AppLabel size={12} style={{ fontWeight: 400 }}>
+                  {'위 방식대로 발급받은 QR 코드를 업로드해주세요.'}
+                </AppLabel>
+              </QRCodeDescriptionContainer>
+            </AccountInfoContainer>
+            <AccountRegisterInputContainer>
+              <AppImageInput title={'토스 QR 등록'} onImageChange={onImageChange} url={fileURL} width={170} height={170} />
+              <AppButton onClick={submitHandler} disabled={!fileURL}>
+                등록하기
+              </AppButton>
+            </AccountRegisterInputContainer>
+          </AccountContentContainer>
         </ContentContainer>
       </Container>
     </AppContainer>

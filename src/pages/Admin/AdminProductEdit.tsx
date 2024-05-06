@@ -9,7 +9,7 @@ import { useRecoilValue } from 'recoil';
 import { initState, ProductActionType, ProductEdit, ProductStateType } from '@@types/productTypes';
 import NavBar from '@components/common/nav/NavBar';
 import SelectWithLabel from '@components/common/select/SelectWithLabelProps';
-import ProductImageInput from '@components/admin/product/ProductImageInput';
+import AppImageInput from '@components/common/input/AppImageInput';
 import TitleNavBar from '@components/common/nav/TitleNavBar';
 import useConfirm from '@hooks/useConfirm';
 
@@ -148,7 +148,7 @@ function AdminProductEdit() {
             dispatch({ type: 'PRODUCT_NAME_INPUT', payload: event.target?.value });
           }}
         />
-        <ProductImageInput url={productState.image.url} file={productState.image.files} onImageChange={onImageChange} />
+        <AppImageInput title={'상품 사진'} url={productState.image.url} file={productState.image.files} onImageChange={onImageChange} />
         <AppInputWithLabel
           titleLabel={'상품 설명'}
           value={productState.description}

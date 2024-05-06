@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
+import useConfirm from '@hooks/useConfirm';
 
 const CategoriesItemContainer = styled.div`
   position: relative;
@@ -52,6 +53,8 @@ function DragAndDropContent() {
     id: String(category.id),
   }));
 
+  const { ConfirmModal, confirm } = useConfirm('카테고리에 포함된 상품이 있습니다.', '카테고리에 포함된 상품이 없어야 카테고리를 삭제할 수 있습니다.', '확인');
+
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -85,7 +88,11 @@ function DragAndDropContent() {
                   <CategoriesItemContainer ref={pro.innerRef} {...pro.draggableProps} {...pro.dragHandleProps}>
                     <DeleteIcon
                       onClick={() => {
-                        deleteCategory(Number(item.id));
+                        deleteCategory(Number(item.id)).catch((e) => {
+                          if (e.response.status === 405) {
+                            confirm();
+                          }
+                        });
                       }}
                     />
                     <CategoriesContentsContainer>
@@ -100,6 +107,7 @@ function DragAndDropContent() {
           </div>
         )}
       </Droppable>
+      <ConfirmModal />
     </DragDropContext>
   );
 }

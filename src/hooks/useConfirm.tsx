@@ -41,7 +41,7 @@ const ButtonContainer = styled.div`
   gap: 12px;
 `;
 
-function useConfirm(title: string, description: string, okText: string, cancelText: string) {
+function useConfirm(title: string, description: string, okText: string, cancelText?: string) {
   const [promise, setPromise] = React.useState<any>(null);
 
   const confirm = () =>
@@ -76,9 +76,11 @@ function useConfirm(title: string, description: string, okText: string, cancelTe
             <AppLabel size={24}>{description}</AppLabel>
           </TextContainer>
           <ButtonContainer>
-            <AppButton size={250} onClick={handleCancel} style={{ background: 'white', color: 'black' }}>
-              {cancelText}
-            </AppButton>
+            {cancelText && (
+              <AppButton size={250} onClick={handleCancel} style={{ background: 'white', color: 'black' }}>
+                {cancelText}
+              </AppButton>
+            )}
             <AppButton size={250} onClick={handleOk}>
               {okText}
             </AppButton>

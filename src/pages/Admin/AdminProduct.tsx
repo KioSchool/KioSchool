@@ -45,7 +45,7 @@ function AdminProduct() {
   const { fetchProducts, fetchCategories } = useAdminProducts(workspaceId);
   const products = useRecoilValue(productsAtom);
   const rawCategories = useRecoilValue(categoriesAtom);
-  const categories = [{ id: null, name: '기본메뉴' }, ...rawCategories];
+  const categories = [...rawCategories, { id: null, name: '기본메뉴' }];
 
   const { appendPath } = useCustomNavigate();
   const navigate = useNavigate();

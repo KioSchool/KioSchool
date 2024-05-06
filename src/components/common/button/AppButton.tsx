@@ -28,6 +28,9 @@ const Container = styled.button`
   &:hover {
     background: #ff7b2b;
   }
+  &:disabled {
+    background: #b1b1b1;
+  }
 `;
 
 function AppButton(props: AppButtonProps) {

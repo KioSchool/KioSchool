@@ -129,12 +129,7 @@ function useAdminProducts(workspaceId: string | undefined | null) {
   };
 
   const deleteCategory = (categoryId: number) => {
-    adminApi
-      .delete(`/product-category?workspaceId=${workspaceId}&productCategoryId=${categoryId}`)
-      .then(() => fetchCategories())
-      .catch((error) => {
-        console.error('Failed to delete product category: ', error);
-      });
+    return adminApi.delete(`/product-category?workspaceId=${workspaceId}&productCategoryId=${categoryId}`).then(() => fetchCategories());
   };
 
   return {

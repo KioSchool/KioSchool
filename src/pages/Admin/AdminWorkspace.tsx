@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import TitleNavBar from '@components/common/nav/TitleNavBar';
@@ -26,6 +26,7 @@ function AdminWorkspace() {
   const { fetchWorkspace } = useAdminWorkspace();
   const workspace = useRecoilValue(userWorkspaceAtom);
   const { appendPath } = useCustomNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchWorkspace(workspaceId);
@@ -34,7 +35,13 @@ function AdminWorkspace() {
   return (
     <AppContainer justifyValue={'center'}>
       <Container>
-        <TitleNavBar title={workspace.name} subTitle={workspace.description} />
+        <TitleNavBar
+          title={workspace.name}
+          subTitle={workspace.description}
+          onLeftArrowClick={() => {
+            navigate('/admin');
+          }}
+        />
         <ButtonContainer>
           <ImageRouteButton
             src={'https://ojsfile.ohmynews.com/STD_IMG_FILE/2022/1217/IE003091261_STD.jpg'}
@@ -50,6 +57,11 @@ function AdminWorkspace() {
             src={'https://ojsfile.ohmynews.com/STD_IMG_FILE/2022/1217/IE003091261_STD.jpg'}
             onClick={() => appendPath('/products')}
             buttonText={'상품 조회'}
+          />
+          <ImageRouteButton
+            src={'https://ojsfile.ohmynews.com/STD_IMG_FILE/2022/1217/IE003091261_STD.jpg'}
+            onClick={() => appendPath('/orders-manage')}
+            buttonText={'주문 페이지 관리'}
           />
         </ButtonContainer>
       </Container>
