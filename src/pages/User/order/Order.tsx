@@ -55,6 +55,7 @@ function Order() {
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
+  const isPreview = searchParams.get('preview') === 'true';
 
   const { fetchWorkspace } = useWorkspace();
   const { fetchCategories } = useProduct(workspaceId);
@@ -107,7 +108,11 @@ function Order() {
       <OrderButton
         amount={totalAmount}
         buttonLabel={`${totalAmount.toLocaleString()}원 장바구니`}
-        onClick={() => navigate(`/orderbasket?workspaceId=${workspaceId}&tableNo=${tableNo}`)}
+        onClick={() => {
+          if (isPreview) return;
+
+          navigate(`/orderbasket?workspaceId=${workspaceId}&tableNo=${tableNo}`);
+        }}
       />
     </Container>
   );
