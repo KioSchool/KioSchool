@@ -92,8 +92,8 @@ function OrderPay() {
       })
       .then((res) => {
         navigate(`/order-complete?orderId=${res.data.id}`);
+        window.open(`${tossAccountUrl}&amount=${totalAmount}`);
       });
-    window.open(`${tossAccountUrl}&amount=${totalAmount}`);
   };
 
   return (
