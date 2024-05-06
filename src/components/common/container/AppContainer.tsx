@@ -29,12 +29,13 @@ interface Props {
   flexDirection?: string;
   alignItems?: string;
   backgroundColor?: string;
+  useNavBackground?: boolean;
 }
 
-function AppContainer({ children, justifyValue, flexDirection, alignItems, backgroundColor }: Props) {
+function AppContainer({ children, justifyValue, flexDirection, alignItems, backgroundColor, useNavBackground }: Props) {
   return (
     <MainContainer backgroundColor={backgroundColor}>
-      <NavBar />
+      <NavBar useBackground={useNavBackground} />
       <SubContainer justifyValue={justifyValue} flexDirection={flexDirection} alignItems={alignItems}>
         {children}
       </SubContainer>
