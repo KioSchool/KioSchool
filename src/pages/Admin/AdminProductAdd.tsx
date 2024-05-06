@@ -10,7 +10,7 @@ import { ProductActionType, ProductStateType } from '@@types/productTypes';
 import TitleNavBar from '@components/common/nav/TitleNavBar';
 import SelectWithLabel from '@components/common/select/SelectWithLabelProps';
 import NavBar from '@components/common/nav/NavBar';
-import ProductImageInput from '@components/admin/product/ProductImageInput';
+import AppImageInput from '@components/common/input/AppImageInput';
 
 const ErrorMessage = styled.div`
   padding: 0 0 5px;
@@ -105,7 +105,7 @@ function AdminProductAdd() {
             dispatch({ type: 'PRODUCT_NAME_INPUT', payload: event.target?.value });
           }}
         />
-        <ProductImageInput file={file} onImageChange={onImageChange} />
+        <AppImageInput title={'상품 사진'} file={file} onImageChange={onImageChange} />
         <AppInputWithLabel
           titleLabel={'상품 설명'}
           onChange={(event: ChangeEvent<HTMLInputElement>) => {

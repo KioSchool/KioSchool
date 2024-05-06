@@ -3,9 +3,12 @@ import styled from '@emotion/styled';
 import uploadPreview from '@resources/image/uploadPreview.png';
 
 interface ProductImageInputProps {
+  title: string;
   onImageChange: (event: ChangeEvent<HTMLInputElement>) => void;
   file?: File | null;
   url?: string;
+  width?: number;
+  height?: number;
 }
 
 const ImageInputContainer = styled.div`
@@ -38,9 +41,9 @@ const ImageInput = styled.input`
   display: none;
 `;
 
-const Image = styled.img`
-  width: 500px;
-  height: 400px;
+const Image = styled.img<{ width?: number; height?: number }>`
+  width: ${(props) => (props.width ? `${props.width}px` : '500px')};
+  height: ${(props) => (props.height ? `${props.height}px` : '400px')};
   border: none;
   border-radius: 15px;
   box-sizing: border-box;
@@ -48,7 +51,7 @@ const Image = styled.img`
   object-fit: fill;
 `;
 
-function ProductImageInput({ file, url, onImageChange }: ProductImageInputProps) {
+function AppImageInput({ file, title, url, onImageChange, width, height }: ProductImageInputProps) {
   const getImageUrl = () => {
     if (file) {
       return URL.createObjectURL(file);
@@ -62,13 +65,13 @@ function ProductImageInput({ file, url, onImageChange }: ProductImageInputProps)
   return (
     <ImageInputContainer>
       <ImageLabelContainer>
-        <label>상품 사진</label>
+        <label>{title}</label>
         <ImageInputButton htmlFor="img">사진 업로드</ImageInputButton>
         <ImageInput type="file" id="img" accept="image/*" onChange={onImageChange} />
       </ImageLabelContainer>
-      <Image src={getImageUrl()} alt="" />
+      <Image src={getImageUrl()} alt="" width={width} height={height} />
     </ImageInputContainer>
   );
 }
 
-export default ProductImageInput;
+export default AppImageInput;
