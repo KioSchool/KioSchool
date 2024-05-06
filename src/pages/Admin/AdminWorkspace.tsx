@@ -51,6 +51,11 @@ function AdminWorkspace() {
             onClick={() => appendPath('/products')}
             buttonText={'상품 조회'}
           />
+          <ImageRouteButton
+            src={'https://ojsfile.ohmynews.com/STD_IMG_FILE/2022/1217/IE003091261_STD.jpg'}
+            onClick={() => appendPath('/orders-manage')}
+            buttonText={'주문 페이지 관리'}
+          />
         </ButtonContainer>
       </Container>
     </AppContainer>
