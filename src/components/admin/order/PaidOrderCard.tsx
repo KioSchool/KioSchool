@@ -52,7 +52,7 @@ const Button = styled.button`
 
 function PaidOrderCard({ order }: Props) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { serveOrder, cancelOrder, refundOrder } = useAdminOrder(workspaceId);
+  const { serveOrder, refundOrder } = useAdminOrder(workspaceId);
   const { updateOrderProductServe } = useAdminOrder(workspaceId);
 
   const dateConverter = (dateStr: string) => {
@@ -98,9 +98,6 @@ function PaidOrderCard({ order }: Props) {
       <ButtonContainer>
         <Button type={'button'} onClick={() => refundOrder(order.id)}>
           되돌리기
-        </Button>
-        <Button type={'button'} onClick={() => cancelOrder(order.id)}>
-          주문 취소
         </Button>
         <Button type={'button'} onClick={() => serveOrder(order.id)}>
           서빙 완료
