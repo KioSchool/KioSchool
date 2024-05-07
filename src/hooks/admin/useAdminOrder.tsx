@@ -26,24 +26,39 @@ function useAdminOrder(workspaceId: string | undefined) {
   };
 
   const payOrder = (orderId: number) => {
-    adminApi.post<Order>('/order/pay', { orderId: orderId, workspaceId: Number(workspaceId) }).then(() => {
+    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: 'PAID' }).then(() => {
       fetchRealTimeOrders();
     });
   };
 
   const serveOrder = (orderId: number) => {
-    adminApi.post<Order>('/order/serve', { orderId: orderId, workspaceId: Number(workspaceId) }).then(() => {
+    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: 'SERVED' }).then(() => {
       fetchRealTimeOrders();
     });
   };
 
   const cancelOrder = (orderId: number) => {
-    adminApi.post<Order>('/order/cancel', { orderId: orderId, workspaceId: Number(workspaceId) }).then(() => {
+    const userInput = confirm('정말로 주문을 취소하시겠습니까?');
+    if (!userInput) return;
+
+    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: 'CANCELLED' }).then(() => {
       fetchRealTimeOrders();
     });
   };
 
-  return { fetchAllOrders, payOrder, serveOrder, cancelOrder, fetchTodayOrders: fetchRealTimeOrders, fetchOrders };
+  const refundOrder = (orderId: number) => {
+    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: 'NOT_PAID' }).then(() => {
+      fetchRealTimeOrders();
+    });
+  };
+
+  const updateOrderProductServe = (orderProductId: number, isServed: boolean) => {
+    adminApi.post<Order>('/order/product', { workspaceId, orderProductId, isServed }).then(() => {
+      fetchRealTimeOrders();
+    });
+  };
+
+  return { fetchAllOrders, payOrder, serveOrder, cancelOrder, fetchTodayOrders: fetchRealTimeOrders, fetchOrders, updateOrderProductServe, refundOrder };
 }
 
 export default useAdminOrder;
