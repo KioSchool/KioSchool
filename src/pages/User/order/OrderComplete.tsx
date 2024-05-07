@@ -7,10 +7,12 @@ import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import OrderButton from '@components/user/order/OrderButton';
 import OrderStatusBar from '@components/user/order/OrderStatusBar';
+import ReloadSvg from '@resources/svg/ReloadSvg';
 
 const Container = styled.div`
   width: 100vw;
   min-height: 100vh;
+  padding: 60px 0 80px;
 `;
 
 const Header = styled.div`
@@ -85,6 +87,7 @@ function OrderComplete() {
     <Container>
       <Header>
         <AppLabel>주문 내역</AppLabel>
+        <ReloadSvg onClick={() => window.location.reload()}>새로고침</ReloadSvg>
       </Header>
       <SubContainer>
         <ContentBox>
