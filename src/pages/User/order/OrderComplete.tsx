@@ -12,6 +12,7 @@ import ReloadSvg from '@resources/svg/ReloadSvg';
 const Container = styled.div`
   width: 100vw;
   min-height: 100vh;
+  padding: 60px 0 80px;
 `;
 
 const Header = styled.div`
