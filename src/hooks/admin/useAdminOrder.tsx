@@ -43,7 +43,13 @@ function useAdminOrder(workspaceId: string | undefined) {
     });
   };
 
-  return { fetchAllOrders, payOrder, serveOrder, cancelOrder, fetchTodayOrders: fetchRealTimeOrders, fetchOrders };
+  const updateOrderProductServe = (orderProductId: number, isServed: boolean) => {
+    adminApi.post<Order>('/order/product', { workspaceId, orderProductId, isServed }).then(() => {
+      fetchRealTimeOrders();
+    });
+  };
+
+  return { fetchAllOrders, payOrder, serveOrder, cancelOrder, fetchTodayOrders: fetchRealTimeOrders, fetchOrders, updateOrderProductServe };
 }
 
 export default useAdminOrder;
