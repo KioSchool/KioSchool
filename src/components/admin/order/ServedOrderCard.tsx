@@ -46,15 +46,35 @@ function ServedOrderCard({ order }: Props) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { payOrder } = useAdminOrder(workspaceId);
 
+  const dateConverter = (dateStr: string) => {
+    const date = new Date(dateStr);
+
+    const isAm = date.getHours() < 12;
+    const hour = isAm ? date.getHours() : date.getHours() - 12;
+
+    return `${hour}시 ${date.getMinutes()}분`;
+  };
+
   return (
     <Container>
       <AppLabel size={18} style={{ fontWeight: 700 }}>
         주문번호 {order.id}번
       </AppLabel>
       <Row>
-        <AppLabel size={14}>입금자명: {order.customerName}</AppLabel>
         <AppLabel size={14}>테이블 {order.tableNumber}</AppLabel>
+        <AppLabel size={14}>{dateConverter(order.createdAt)}</AppLabel>
       </Row>
+      <HorizontalDivider />
+      {order.orderProducts.map((it) => (
+        <Row key={it.id}>
+          <AppLabel size={16} style={{ fontWeight: 500 }}>
+            {it.product.name}
+          </AppLabel>
+          <AppLabel size={16} style={{ fontWeight: 500 }}>
+            {it.quantity}개
+          </AppLabel>
+        </Row>
+      ))}
       <HorizontalDivider />
       <Row>
         <AppLabel size={16} style={{ fontWeight: 500 }}>

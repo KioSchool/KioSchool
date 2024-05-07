@@ -120,7 +120,7 @@ function AdminOrder() {
 
   const notPaidOrders = orders.filter((it) => it.status === 'NOT_PAID');
   const paidOrders = orders.filter((it) => it.status === 'PAID');
-  const servedOrders = orders.filter((it) => it.status === 'SERVED');
+  const servedOrders = orders.filter((it) => it.status === 'SERVED').sort((a, b) => b.id - a.id);
 
   const productCounts = _.mapValues(
     _.groupBy(
