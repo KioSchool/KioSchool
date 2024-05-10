@@ -10,6 +10,7 @@ import AppImageInput from '@components/common/input/AppImageInput';
 import AppButton from '@components/common/button/AppButton';
 import AppLabel from '@components/common/label/AppLabel';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
+import AppFooter from '@components/common/footer/AppFooter';
 
 interface AccountState {
   decodedBank: string;
@@ -196,6 +197,7 @@ function AdminAccount() {
             </AccountRegisterInputContainer>
           </AccountContentContainer>
         </ContentContainer>
+        <AppFooter />
       </Container>
     </AppContainer>
   );

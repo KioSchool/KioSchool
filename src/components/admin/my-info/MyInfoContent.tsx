@@ -6,6 +6,7 @@ import DeleteUserSvg from '@resources/svg/DeleteUserSvg';
 import useConfirm from '@hooks/useConfirm';
 import React from 'react';
 import useAdminUser from '@hooks/admin/useAdminUser';
+import AppFooter from '@components/common/footer/AppFooter';
 
 const MyInfoContainer = styled.div`
   width: 1100px;
@@ -93,6 +94,7 @@ function MyInfoContent() {
         </MyInfoItemContent>
       </MyInfoSubContainer>
       <DeleteUserConfirmModal />
+      <AppFooter />
     </MyInfoContainer>
   );
 }

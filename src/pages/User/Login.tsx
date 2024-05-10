@@ -6,6 +6,7 @@ import AppButton from '@components/common/button/AppButton';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import AppContainer from '@components/common/container/AppContainer';
+import AppFooter from '@components/common/footer/AppFooter';
 
 const LoginContainer = styled.div`
   display: grid;
@@ -65,6 +66,7 @@ function Login() {
             <Link to={'/reset-password'}>비밀번호를 잊어버렸나요?</Link> <Link to={'/register'}>회원가입하기</Link>
           </AppLabel>
         </ButtonContainer>
+        <AppFooter />
       </LoginContainer>
     </AppContainer>
   );

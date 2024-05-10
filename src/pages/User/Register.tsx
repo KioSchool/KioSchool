@@ -6,6 +6,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import AppButton from '@components/common/button/AppButton';
 import AppInput from '@components/common/input/AppInput';
+import AppFooter from '@components/common/footer/AppFooter';
 
 const Container = styled.div`
   display: flex;
@@ -306,6 +307,7 @@ function Register() {
             <Link to={'/login'}>로그인하기</Link>
           </AppLabel>
         </LoginLabelContainer>
+        <AppFooter />
       </SubContainer>
     </Container>
   );

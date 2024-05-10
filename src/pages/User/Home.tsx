@@ -4,6 +4,7 @@ import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import ArrowRight from '../../resources/svg/ArrowRightSvg';
 import { css } from '@emotion/react';
+import AppFooter from '@components/common/footer/AppFooter';
 
 const MainTitle = styled.div`
   width: 540px;
@@ -81,6 +82,7 @@ function Home() {
               <ArrowRight />
             </LinkText>
           </LinkAdminHome>
+          <AppFooter />
         </>
       </AppContainer>
       <HoverOverlay isHover={isHover} />

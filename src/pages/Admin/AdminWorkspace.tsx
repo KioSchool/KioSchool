@@ -8,6 +8,7 @@ import { userWorkspaceAtom } from '@recoils/atoms';
 import styled from '@emotion/styled';
 import ImageRouteButton from '@components/common/button/ImageRouteButton';
 import AppContainer from '@components/common/container/AppContainer';
+import AppFooter from '@components/common/footer/AppFooter';
 
 const Container = styled.div`
   display: flex;
@@ -64,6 +65,7 @@ function AdminWorkspace() {
             buttonText={'주문 페이지 관리'}
           />
         </ButtonContainer>
+        <AppFooter />
       </Container>
     </AppContainer>
   );
