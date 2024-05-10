@@ -7,6 +7,7 @@ import DummyWorkspace from '@components/common/workspace/DummyWorkspace';
 import AddWorkspace from '@components/common/workspace/AddWorkspace';
 import WorkspaceContent from '@components/admin/workspace/WorkspaceContent';
 import styled from '@emotion/styled';
+import AppFooter from '@components/common/footer/AppFooter';
 
 const UserNameContainer = styled.div`
   padding-bottom: 25px;
@@ -46,6 +47,7 @@ function AdminHome() {
         <WorkspaceContent workspaces={workspaces} />
         <AddWorkspace workspaces={workspaces} />
         <DummyWorkspace workspaces={workspaces} />
+        <AppFooter />
       </>
     </AppContainer>
   );
