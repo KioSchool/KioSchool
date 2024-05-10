@@ -24,6 +24,7 @@ import RouterChangeTracker from './RouterChangeTracker';
 import MyInfo from '@pages/Admin/MyInfo';
 import AdminProductCategories from '@pages/Admin/AdminProductCategoires';
 import AdminOrderManage from '@pages/Admin/order/AdminOrderManage';
+import ResetPassword from '@pages/User/ResetPassword';
 
 ReactGA.initialize('G-XGYLSPGK2G');
 function App() {
@@ -39,6 +40,7 @@ function App() {
         <Route path="/orderbasket" element={<OrderBasket />} />
         <Route path="/order-pay" element={<OrderPay />} />
         <Route path="/order-complete" element={<OrderComplete />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/admin" element={<AdminHome />} />
         <Route path="/admin/register-account" element={<AdminAccount />} />
         <Route path="/admin/my-info" element={<MyInfo />} />
