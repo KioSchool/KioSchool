@@ -61,8 +61,18 @@ function AdminOrderHistory() {
 
   const totalOrderPrice = orders.reduce((acc, cur) => acc + cur.totalPrice, 0).toLocaleString();
 
+  const dateConverter = (date: Date) => {
+    const dateArr = date.toLocaleDateString().split('/');
+
+    const year = dateArr[2];
+    const month = dateArr[0].length === 1 ? `0${dateArr[0]}` : dateArr[0];
+    const day = dateArr[1].length === 1 ? `0${dateArr[1]}` : dateArr[1];
+
+    return `${year}-${month}-${day}`;
+  };
+
   useEffect(() => {
-    fetchOrders({ startDate: startDate.toISOString().split('T')[0], endDate: endDate.toISOString().split('T')[0] });
+    fetchOrders({ startDate: dateConverter(startDate), endDate: dateConverter(endDate) });
   }, [startDate, endDate]);
 
   return (
