@@ -173,8 +173,8 @@ function AdminOrder() {
       </KanbanContainer>
       <ProductsByOrderContainer>
         <ProductsByOrderSubContainer>
-          <AppLabel size={23} style={{ fontWeight: 600 }}>
-            결제 완료 주문 상품별 현황
+          <AppLabel size={23} style={{ fontWeight: 600, width: '100%', textAlign: 'center' }}>
+            결제 완료 주문 중 서빙 필요한 상품 현황판
           </AppLabel>
           <ProductsContainer>
             {_.keys(productCounts).map((productId) => (

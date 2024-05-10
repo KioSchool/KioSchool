@@ -62,7 +62,7 @@ function Login() {
             로그인
           </AppButton>
           <AppLabel size={'small'}>
-            <Link to={'/'}>비밀번호를 잊어버렸나요?</Link> <Link to={'/register'}>회원가입하기</Link>
+            <Link to={'/reset-password'}>비밀번호를 잊어버렸나요?</Link> <Link to={'/register'}>회원가입하기</Link>
           </AppLabel>
         </ButtonContainer>
       </LoginContainer>
