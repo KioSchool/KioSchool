@@ -14,7 +14,7 @@ function useAuthentication() {
     return userApi
       .post('/logout')
       .then(() => {
-        document.cookie = 'isLoggedIn=;';
+        document.cookie = 'isLoggedIn=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
       })
       .catch(() => {
         alert('Logout Failed!');

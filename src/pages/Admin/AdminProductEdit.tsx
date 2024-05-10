@@ -64,6 +64,7 @@ function AdminProductEdit() {
   const { ConfirmModal, confirm } = useConfirm(`'${productState.name}' 상품을 삭제하시겠습니까?`, '확인 후 되돌릴 수 없습니다.', '삭제하기', '취소');
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     (async () => {
       const data = await fetchProduct(productId);
 
