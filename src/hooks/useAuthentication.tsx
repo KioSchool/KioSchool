@@ -36,7 +36,15 @@ function useAuthentication() {
       });
   };
 
-  return { login, logout, isLoggedIn };
+  const sendResetPasswordLink = (id: string, email: string) => {
+    return userApi.post('/user/password', { id, email });
+  };
+
+  const resetPassword = (password: string, code: string) => {
+    return userApi.post('/user/reset', { password, code });
+  };
+
+  return { login, logout, isLoggedIn, sendResetPasswordLink, resetPassword };
 }
 
 export default useAuthentication;
