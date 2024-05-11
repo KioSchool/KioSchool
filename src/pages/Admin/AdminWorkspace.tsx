@@ -57,7 +57,7 @@ function AdminWorkspace() {
           <ImageRouteButton
             src={'https://ojsfile.ohmynews.com/STD_IMG_FILE/2022/1217/IE003091261_STD.jpg'}
             onClick={() => appendPath('/products')}
-            buttonText={'상품 조회'}
+            buttonText={'상품 관리'}
           />
           <ImageRouteButton
             src={'https://ojsfile.ohmynews.com/STD_IMG_FILE/2022/1217/IE003091261_STD.jpg'}

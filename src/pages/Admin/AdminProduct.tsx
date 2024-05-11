@@ -60,7 +60,7 @@ function AdminProduct() {
       <NavBar useBackground={true} />
       <Container>
         <TitleNavBar
-          title={'상품 조회'}
+          title={'상품 관리'}
           onLeftArrowClick={() => {
             navigate(`/admin/workspace/${workspaceId}`);
           }}
