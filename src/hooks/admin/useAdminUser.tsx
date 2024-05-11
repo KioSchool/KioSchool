@@ -57,7 +57,9 @@ function useAdminUser() {
         alert('계좌 정보가 성공적으로 저장되었습니다.');
         navigate('/admin');
       })
-      .catch((error) => console.error('Failed to add account: ', error));
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
   };
 
   const deleteUser = async () => {

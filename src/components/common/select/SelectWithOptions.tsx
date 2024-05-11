@@ -22,7 +22,7 @@ const Container = styled.select`
 `;
 
 const SelectWithOptions = (props: SelectWithOptionsProps) => {
-  const defaultOption = { name: '기본', id: 'null' };
+  const defaultOption = { name: '기본메뉴', id: 'null' };
   const allOptions = [defaultOption, ...props.options];
 
   return (
