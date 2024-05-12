@@ -13,8 +13,8 @@ function useAdminOrder(workspaceId: string | undefined) {
     });
   };
 
-  const fetchOrders = (params: any) => {
-    adminApi.get<Order[]>('/orders', { params: { ...params, workspaceId } }).then((response) => {
+  const fetchOrders = (props: { startDate: string; endDate: string }) => {
+    adminApi.get<Order[]>('/orders', { params: { ...props, workspaceId } }).then((response) => {
       setOrders(response.data);
     });
   };
