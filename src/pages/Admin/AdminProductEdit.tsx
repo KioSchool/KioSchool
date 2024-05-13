@@ -111,9 +111,15 @@ function AdminProductEdit() {
       return;
     }
 
-    const newFileURL = URL.createObjectURL(event.target.files[0]);
+    const newFile = event.target.files[0];
+    if (newFile.size > 1024 * 1024 * 5) {
+      alert('상품 이미지는 5MB 이하로 업로드 가능합니다.');
+      return;
+    }
 
-    dispatch({ type: 'PRODUCT_IMAGE_INPUT', payload: { url: newFileURL, file: event.target.files[0] } });
+    const newFileURL = URL.createObjectURL(newFile);
+
+    dispatch({ type: 'PRODUCT_IMAGE_INPUT', payload: { url: newFileURL, file: newFile } });
   };
 
   const deleteProductHandler = async () => {
