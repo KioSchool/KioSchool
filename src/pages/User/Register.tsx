@@ -190,9 +190,8 @@ function Register() {
       .post<any>('/user/email', {
         email: userEmail,
       })
-      .catch(() => {
-        alert('send email error');
-        setErrorMessage('send email error! please check your email address');
+      .catch((error) => {
+        setErrorMessage(error.response.data.message);
       });
     setIsCodeSent(true);
   };
