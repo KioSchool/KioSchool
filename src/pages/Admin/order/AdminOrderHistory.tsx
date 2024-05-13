@@ -13,7 +13,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import AppCheckBox from '@components/common/input/AppCheckBox';
 
 const Container = styled.div`
-  padding: 95px 0;
+  padding-top: 100px;
   gap: 24px;
   width: 100%;
 `;
@@ -39,7 +39,7 @@ const OrderStatusConditionContainer = styled.div`
 const OrderCardContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 600px;
+  height: 500px;
   gap: 10px;
   overflow: auto;
 `;
@@ -74,7 +74,7 @@ function AdminOrderHistory() {
   }, [startDate, endDate]);
 
   return (
-    <AppContainer justifyValue={'center'}>
+    <AppContainer justifyValue={'center'} useNavBackground={true}>
       <Container>
         <TitleNavBar title={'전체 주문 조회'} />
         <ConditionContainer>
