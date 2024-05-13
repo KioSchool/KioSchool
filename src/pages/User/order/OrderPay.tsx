@@ -77,6 +77,7 @@ function OrderPay() {
 
   const payOrder = () => {
     const costumerName = customerNameRef.current?.value;
+    const open = window.open('', '_blank');
 
     if (!costumerName) {
       alert('입금자명을 입력해주세요.');
@@ -92,7 +93,9 @@ function OrderPay() {
       })
       .then((res) => {
         navigate(`/order-complete?orderId=${res.data.id}`);
-        window.open(`${tossAccountUrl}&amount=${totalAmount}`);
+
+        if (!open) return;
+        open.location.href = `${tossAccountUrl}&amount=${totalAmount}`;
       });
   };
 
