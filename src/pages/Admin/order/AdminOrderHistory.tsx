@@ -13,7 +13,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import AppCheckBox from '@components/common/input/AppCheckBox';
 
 const Container = styled.div`
-  padding: 50px;
+  padding: 95px 0;
   gap: 24px;
   width: 100%;
 `;
