@@ -93,7 +93,7 @@ function Order() {
               ))}
             </div>
           ))}
-        {
+        {productsByCategory.undefined && (
           <div id={`product_categoryundefined`} key={`product_categoryundefined`}>
             <AppLabel size={22}>기본메뉴</AppLabel>
             {productsByCategory.undefined?.map((product) => (
@@ -103,7 +103,7 @@ function Order() {
               </ProductContainer>
             ))}
           </div>
-        }
+        )}
       </ContentContainer>
       <OrderButton
         amount={totalAmount}
