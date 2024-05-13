@@ -79,7 +79,6 @@ const ButtonContainer = styled.div`
 function AdminOrderManage() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [tableCount, setTableCount] = React.useState(1);
   const baseUrl = `${location.protocol}//${location.host}`;
 
