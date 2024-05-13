@@ -37,7 +37,7 @@ function useAdminUser() {
       .then((res) => {
         setWorkspaces((prev) => [...prev, res.data]);
       })
-      .catch((error) => console.error('Failed to create workspace: ', error));
+      .catch((error) => alert(error.response.data.message));
   };
 
   const leaveWorkspace = (id: number) => {
