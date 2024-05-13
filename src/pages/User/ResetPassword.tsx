@@ -32,9 +32,11 @@ function ResetPassword() {
       return;
     }
 
-    sendResetPasswordLink(id, email).then(() => {
-      alert('비밀번호 재설정 링크를 전송했습니다.');
-    });
+    sendResetPasswordLink(id, email)
+      .then(() => {
+        alert('비밀번호 재설정 링크를 전송했습니다.');
+      })
+      .catch((error) => alert(error.response.data.message));
   };
 
   if (!code) {
