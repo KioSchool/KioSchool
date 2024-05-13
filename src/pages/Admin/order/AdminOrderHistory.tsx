@@ -13,7 +13,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import AppCheckBox from '@components/common/input/AppCheckBox';
 
 const Container = styled.div`
-  padding: 50px;
+  padding-top: 100px;
   gap: 24px;
   width: 100%;
 `;
@@ -39,7 +39,7 @@ const OrderStatusConditionContainer = styled.div`
 const OrderCardContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 600px;
+  height: 500px;
   gap: 10px;
   overflow: auto;
 `;
@@ -62,11 +62,9 @@ function AdminOrderHistory() {
   const totalOrderPrice = orders.reduce((acc, cur) => acc + cur.totalPrice, 0).toLocaleString();
 
   const dateConverter = (date: Date) => {
-    const dateArr = date.toLocaleDateString().split('/');
-
-    const year = dateArr[2];
-    const month = dateArr[0].length === 1 ? `0${dateArr[0]}` : dateArr[0];
-    const day = dateArr[1].length === 1 ? `0${dateArr[1]}` : dateArr[1];
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
 
     return `${year}-${month}-${day}`;
   };
@@ -76,7 +74,7 @@ function AdminOrderHistory() {
   }, [startDate, endDate]);
 
   return (
-    <AppContainer justifyValue={'center'}>
+    <AppContainer justifyValue={'center'} useNavBackground={true}>
       <Container>
         <TitleNavBar title={'전체 주문 조회'} />
         <ConditionContainer>
