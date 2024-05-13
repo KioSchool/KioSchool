@@ -107,7 +107,7 @@ function Register() {
   const checkDuplicate = () => {
     const userId = userIdInputRef.current?.value;
     if (!userId) {
-      setErrorMessage('The userId is null');
+      setErrorMessage('아이디가 입력되지 않았습니다.');
       return;
     }
 
@@ -121,7 +121,7 @@ function Register() {
           setIsAbleId(true);
           return;
         }
-        setErrorMessage('The userId is already in use');
+        setErrorMessage('이미 사용중인 ID입니다.');
         setIsAbleId(false);
       })
       .catch((error) => {
@@ -132,35 +132,35 @@ function Register() {
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!isAbleId) {
-      setErrorMessage('Please check userId duplicate');
+      setErrorMessage('아이디 중복체크를 해주세요.');
       return;
     }
 
     if (!isVerified) {
-      setErrorMessage('Please verify your email address');
+      setErrorMessage('이메일 인증을 해주세요.');
       return;
     }
 
     const userName = userNameInputRef.current?.value;
     if (!userName) {
-      setErrorMessage('The userName is null');
+      setErrorMessage('이름을 입력해주세요.');
       return;
     }
 
     const userId = userIdInputRef.current?.value;
     if (!userId) {
-      setErrorMessage('The userId is null');
+      setErrorMessage('아이디를 입력해주세요.');
       return;
     }
     const password = userPasswordInputRef.current?.value;
     if (!password) {
-      setErrorMessage('The userPassword is null');
+      setErrorMessage('비밀번호를 입력해주세요.');
       return;
     }
 
     const userEmail = userEmailInputRef.current?.value;
     if (!userEmail) {
-      setErrorMessage('The userEmail is null');
+      setErrorMessage('이메일을 입력해주세요.');
       return;
     }
 
@@ -172,13 +172,12 @@ function Register() {
         email: userEmail,
       })
       .then(() => {
+        document.cookie = 'isLoggedIn=true';
         navigate('/admin/register-account');
       })
-      .catch((error) => {
-        const validationErrorMessage = error.response.data.errors?.[0].message || error.response.data.message;
-
+      .catch(() => {
         setIsCodeSent(false);
-        setErrorMessage(validationErrorMessage);
+        setErrorMessage('회원가입에 실패했습니다.');
       });
   };
 
@@ -190,9 +189,8 @@ function Register() {
       .post<any>('/user/email', {
         email: userEmail,
       })
-      .catch(() => {
-        alert('send email error');
-        setErrorMessage('send email error! please check your email address');
+      .catch((error) => {
+        setErrorMessage(error.response.data.message);
       });
     setIsCodeSent(true);
   };
@@ -212,7 +210,7 @@ function Register() {
       })
       .catch(() => {
         setIsVerified(false);
-        setErrorMessage('check code error');
+        setErrorMessage('이메일 인증에 실패했습니다.');
       });
   };
 
@@ -235,7 +233,7 @@ function Register() {
               id={'userId'}
               ref={userIdInputRef}
               onChange={() => setIsAbleId(false)}
-              placeholder="아이디를 입력해주세요"
+              placeholder="아이디를 입력해주세요. (영문, 숫자 조합 4~20자)"
               required
             />
             <AppButton size={'medium'} type={'button'} onClick={checkDuplicate}>
@@ -252,7 +250,7 @@ function Register() {
               setCheckUserPasswordInput('');
             }}
             ref={userPasswordInputRef}
-            placeholder="비밀번호를 입력해주세요"
+            placeholder="비밀번호를 입력해주세요 (영문, 숫자, 특수문자 조합 8~20자)"
             required
           />
           <AppInput
