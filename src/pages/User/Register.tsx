@@ -172,6 +172,7 @@ function Register() {
         email: userEmail,
       })
       .then(() => {
+        document.cookie = 'isLoggedIn=true';
         navigate('/admin/register-account');
       })
       .catch(() => {
