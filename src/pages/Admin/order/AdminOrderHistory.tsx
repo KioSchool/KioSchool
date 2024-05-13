@@ -62,11 +62,9 @@ function AdminOrderHistory() {
   const totalOrderPrice = orders.reduce((acc, cur) => acc + cur.totalPrice, 0).toLocaleString();
 
   const dateConverter = (date: Date) => {
-    const dateArr = date.toLocaleDateString().split('/');
-
-    const year = dateArr[2];
-    const month = dateArr[0].length === 1 ? `0${dateArr[0]}` : dateArr[0];
-    const day = dateArr[1].length === 1 ? `0${dateArr[1]}` : dateArr[1];
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
 
     return `${year}-${month}-${day}`;
   };
