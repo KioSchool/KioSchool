@@ -83,7 +83,14 @@ function AdminProductAdd() {
       return;
     }
 
-    setFile(event.target.files[0]);
+    const newFile = event.target.files[0];
+    if (newFile.size > 1024 * 1024 * 5) {
+      alert('상품 이미지는 5MB 이하로 업로드 가능합니다.');
+      setFile(null);
+      return;
+    }
+
+    setFile(newFile);
   };
 
   return (
