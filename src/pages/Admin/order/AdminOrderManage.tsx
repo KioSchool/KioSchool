@@ -84,7 +84,7 @@ function AdminOrderManage() {
 
   const handleTableCount = (count: number) => {
     setTableCount(count);
-    localStorage.setItem('tableCount', String(count));
+    localStorage.setItem(`workspace-${workspaceId}-tableCount`, count.toString());
   };
 
   const downloadQrCode = (tableNo: number) => {
@@ -96,7 +96,7 @@ function AdminOrderManage() {
   };
 
   useEffect(() => {
-    setTableCount(Number(localStorage.getItem('tableCount')) || 1);
+    setTableCount(Number(localStorage.getItem(`workspace-${workspaceId}-tableCount`)) || 1);
   }, []);
 
   return (
