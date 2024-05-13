@@ -79,13 +79,12 @@ const ButtonContainer = styled.div`
 function AdminOrderManage() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [tableCount, setTableCount] = React.useState(1);
   const baseUrl = `${location.protocol}//${location.host}`;
 
   const handleTableCount = (count: number) => {
     setTableCount(count);
-    localStorage.setItem('tableCount', String(count));
+    localStorage.setItem(`workspace-${workspaceId}-tableCount`, count.toString());
   };
 
   const downloadQrCode = (tableNo: number) => {
@@ -97,7 +96,7 @@ function AdminOrderManage() {
   };
 
   useEffect(() => {
-    setTableCount(Number(localStorage.getItem('tableCount')) || 1);
+    setTableCount(Number(localStorage.getItem(`workspace-${workspaceId}-tableCount`)) || 1);
   }, []);
 
   return (
