@@ -41,6 +41,15 @@ const ProductContainer = styled.div`
   padding: 10px;
 `;
 
+const FooterContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 20px;
+`;
+
 function Order() {
   const workspace = useRecoilValue(userWorkspaceAtom);
   const productsByCategory = _.groupBy<Product>(
@@ -104,6 +113,10 @@ function Order() {
             ))}
           </div>
         )}
+        <FooterContainer>
+          <AppLabel size={16}>©건국대학교 컴퓨터공학부 학생회 ITZI</AppLabel>
+          <AppLabel size={16}>All rights reserved.</AppLabel>
+        </FooterContainer>
       </ContentContainer>
       <OrderButton
         amount={totalAmount}
