@@ -5,7 +5,6 @@ import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import AppButton from '@components/common/button/AppButton';
-import AppInput from '@components/common/input/AppInput';
 import AppFooter from '@components/common/footer/AppFooter';
 
 const Container = styled.div`
@@ -243,23 +242,25 @@ function Register() {
 
           <AppInputWithLabel
             titleLabel={'비밀번호'}
-            messageLabel={showCheckPasswordLabel()}
+            messageLabel={'영문, 숫자, 특수문자 조합 8~20자'}
             type={'password'}
             id={'userPassword'}
             onChange={() => {
               setCheckUserPasswordInput('');
             }}
             ref={userPasswordInputRef}
-            placeholder="비밀번호를 입력해주세요 (영문, 숫자, 특수문자 조합 8~20자)"
+            placeholder="비밀번호를 입력해주세요"
             required
           />
-          <AppInput
+          <AppInputWithLabel
+            titleLabel={'비밀번호 확인'}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => setCheckUserPasswordInput(event.target.value)}
+            messageLabel={showCheckPasswordLabel()}
             type={'password'}
             value={checkUserPasswordInput}
             placeholder="입력한 비밀번호를 똑같이 입력해주세요"
             required
-          ></AppInput>
+          ></AppInputWithLabel>
 
           <EmailContainer>
             <AppInputWithLabel
