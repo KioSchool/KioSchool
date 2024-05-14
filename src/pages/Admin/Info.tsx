@@ -1,5 +1,11 @@
+import AppContainer from '@components/common/container/AppContainer';
+
 function Info() {
-  return <h1>hi this is Info page</h1>;
+  return (
+    <AppContainer justifyValue={'center'} alignItems={'center'} flexDirection={'column'}>
+      <p>hi</p>
+    </AppContainer>
+  );
 }
 
 export default Info;
