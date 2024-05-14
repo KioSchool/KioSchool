@@ -227,16 +227,18 @@ function Register() {
             <AppInputWithLabel
               style={{ width: '330px' }}
               titleLabel={'아이디'}
-              messageLabel={isAbleId ? '사용가능한 ID입니다!' : undefined}
+              messageLabel={'영문, 숫자 조합 4~20자'}
               type={'text'}
               id={'userId'}
               ref={userIdInputRef}
-              onChange={() => setIsAbleId(false)}
-              placeholder="아이디를 입력해주세요. (영문, 숫자 조합 4~20자)"
+              onChange={() => {
+                setIsAbleId(false);
+              }}
+              placeholder="아이디를 입력해주세요."
               required
             />
-            <AppButton size={'medium'} type={'button'} onClick={checkDuplicate}>
-              ID 중복체크
+            <AppButton size={'medium'} type={'button'} onClick={checkDuplicate} disabled={isAbleId}>
+              {isAbleId ? '사용 가능 ID' : 'ID 중복체크'}
             </AppButton>
           </IdContainer>
 
