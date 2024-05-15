@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import NavBar from '../nav/NavBar';
+import NavBar from '@components/common/nav/NavBar';
 
 export const MainContainer = styled.div<{ backgroundColor?: string }>`
   width: 100vw;

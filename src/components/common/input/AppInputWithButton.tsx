@@ -1,7 +1,7 @@
 import { ForwardedRef, forwardRef } from 'react';
-import AppButton from '../button/AppButton';
+import AppButton from '@components/common/button/AppButton';
 import styled from '@emotion/styled';
-import AppInput from './AppInput';
+import AppInput from '@components/common/input/AppInput';
 
 const AppInputWithButtonContainer = styled.div`
   display: flex;
