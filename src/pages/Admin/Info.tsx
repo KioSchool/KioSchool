@@ -12,16 +12,16 @@ import AppLabel from '@components/common/label/AppLabel';
 const ContentContainer = styled.div`
   padding-top: 100px;
   display: flex;
-  justify-content: center;
   flex-direction: column;
+  align-items: center;
+  gap: 20px;
 `;
 
 const TitleContainer = styled.div`
   padding: 10px 0;
-  width: 100vw;
+  width: 70%;
   min-width: 1000px;
   display: flex;
-  gap: 30%;
   justify-content: space-between;
   align-items: center;
 `;
@@ -54,7 +54,7 @@ const LinkTextContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100vw;
-  height: 600px;
+  height: 300px;
   gap: 30px;
 `;
 
@@ -65,6 +65,8 @@ const FooterContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 5px;
+  padding: 15px 24px;
+  box-sizing: border-box;
 `;
 
 const OrderedListContainer = styled.ol`
