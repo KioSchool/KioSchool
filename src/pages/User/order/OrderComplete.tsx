@@ -117,7 +117,7 @@ function OrderComplete() {
       </SubContainer>
       {order.status !== 'CANCELLED' && (
         <OrderButton
-          amount={1}
+          showButton={true}
           buttonLabel={'주문내역 링크 복사'}
           onClick={() => {
             navigator.clipboard.writeText(window.location.href).then(() => {

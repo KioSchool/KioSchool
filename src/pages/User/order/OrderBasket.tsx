@@ -83,7 +83,7 @@ function OrderBasket() {
         })}
       </OrderBasketContainer>
       <OrderButton
-        amount={totalAmount}
+        showButton={orderBasket.length > 0}
         buttonLabel={`${totalAmount.toLocaleString()}원 주문하기`}
         onClick={() => navigate(`/order-pay?workspaceId=${workspaceId}&tableNo=${tableNo}`)}
       />
