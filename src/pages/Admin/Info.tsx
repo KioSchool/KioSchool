@@ -7,6 +7,7 @@ import infoImage3 from '../../resources/image/myInfoImage3.png';
 import infoImage4 from '../../resources/image/myInfoImage4.png';
 import infoImage5 from '../../resources/image/myInfoImage5.png';
 import infoImage6 from '../../resources/image/myInfoImage6.png';
+import AppFooter from '@components/common/footer/AppFooter';
 
 const ContentContainer = styled.div`
   padding-top: 100px;
@@ -19,15 +20,14 @@ const ContentContainer = styled.div`
 `;
 
 const TiteContainer = styled.div`
-  padding-top: 20px;
+  padding: 10px;
   width: 100%;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
-const Title = styled.div`
+const Label = styled.div`
   padding-left: 20px;
   font-size: 50px;
   font-weight: 800;
@@ -53,6 +53,14 @@ const LinkButton = styled.button`
   }
 `;
 
+const FooterContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 600px;
+`;
+
 function Info() {
   const url = 'https://www.notion.so/ji-in/FAQ-09eb07eac4a34ab4aa883727994e0b08';
 
@@ -60,7 +68,7 @@ function Info() {
     <AppContainer justifyValue={'center'} alignItems={'start'} fullWidth={true} useNavBackground={true}>
       <ContentContainer>
         <TiteContainer>
-          <Title>키오스쿨 사용 설명서</Title>
+          <Label>키오스쿨 사용 설명서</Label>
           <LinkButton style={{ marginRight: '20px' }} onClick={() => window.open(url)}>
             F&Q 바로가기
           </LinkButton>
@@ -120,11 +128,13 @@ function Info() {
           imageWidth="1050px"
           imageHeight="600px"
         />
-
-        <Title style={{ width: '100vw' }}>더 자세한 내용이 궁금하다면?</Title>
-        <LinkButton style={{ marginRight: '20px' }} onClick={() => window.open(url)}>
-          F&Q 바로가기
-        </LinkButton>
+        <FooterContainer>
+          <Label style={{ paddingRight: '40px' }}>더 자세한 내용이 궁금하다면?</Label>
+          <LinkButton style={{ display: 'block', marginRight: '20px' }} onClick={() => window.open(url)}>
+            F&Q 바로가기
+          </LinkButton>
+        </FooterContainer>
+        <AppFooter />
       </ContentContainer>
     </AppContainer>
   );
