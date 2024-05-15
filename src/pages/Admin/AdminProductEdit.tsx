@@ -3,7 +3,7 @@ import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import styled from '@emotion/styled';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { categoriesAtom } from '@recoils/atoms';
-import React, { ChangeEvent, useEffect, useReducer, useState } from 'react';
+import React, { ChangeEvent, useEffect, useReducer } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { initState, ProductActionType, ProductEdit, ProductStateType } from '@@types/productTypes';
@@ -12,11 +12,6 @@ import SelectWithLabel from '@components/common/select/SelectWithLabelProps';
 import AppImageInput from '@components/common/input/AppImageInput';
 import TitleNavBar from '@components/common/nav/TitleNavBar';
 import useConfirm from '@hooks/useConfirm';
-
-const ErrorMessage = styled.div`
-  padding: 0 0 5px;
-  color: #ff0000;
-`;
 
 function reducer(state: ProductEdit, action: ProductActionType) {
   switch (action.type) {
@@ -54,8 +49,6 @@ function AdminProductEdit() {
   const { fetchProduct, fetchCategories, editProduct, deleteProduct } = useAdminProducts(workspaceId);
   const productCategories = useRecoilValue(categoriesAtom);
 
-  const [errorMessage, setErrorMessage] = useState<string>('');
-
   const [searchParams] = useSearchParams();
   const productId = Number(searchParams.get('productId'));
 
@@ -80,18 +73,27 @@ function AdminProductEdit() {
 
   const submitEditProduct = () => {
     if (!productState.name || !productState.description) {
-      setErrorMessage('상품 이름 및 설명을 입력해주세요');
+      alert('상품 이름 및 설명을 입력해주세요');
       return;
     }
     if (productState.price < 0) {
-      setErrorMessage('가격은 음수가 될 수 없습니다.');
+      alert('가격은 음수가 될 수 없습니다.');
       return;
     }
     if (!productState.image.url) {
-      setErrorMessage('파일을 선택해주세요');
+      alert('파일을 선택해주세요');
       return;
     }
-    setErrorMessage('');
+
+    if (productState.name.length > 12) {
+      alert('상품 이름은 12자 이하로 입력해주세요');
+      return;
+    }
+
+    if (productState.description.length > 30) {
+      alert('상품 설명은 30자 이하로 입력해주세요');
+      return;
+    }
 
     const body: ProductStateType = {
       productId: productState.id,
@@ -138,7 +140,6 @@ function AdminProductEdit() {
           상품 삭제
         </AppButton>
       </TitleNavBar>
-      {errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}
       <SelectWithLabel
         titleLabel={'카테고리'}
         options={productCategories}
@@ -149,6 +150,7 @@ function AdminProductEdit() {
       />
       <AppInputWithLabel
         titleLabel={'상품명'}
+        messageLabel={'최대 12자'}
         value={productState.name}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
           dispatch({ type: 'PRODUCT_NAME_INPUT', payload: event.target?.value });
@@ -157,6 +159,7 @@ function AdminProductEdit() {
       <AppImageInput title={'상품 사진'} url={productState.image.url} file={productState.image.files} onImageChange={onImageChange} />
       <AppInputWithLabel
         titleLabel={'상품 설명'}
+        messageLabel={'최대 30자'}
         value={productState.description}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
           dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: event.target?.value });
