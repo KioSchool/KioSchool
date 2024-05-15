@@ -15,9 +15,32 @@ const ContentContainer = styled.div`
   width: 100%;
   justify-content: center;
   justify-direction: column;
+  align-items: center;
+`;
+
+const LinkButton = styled.button`
+  width: 200px;
+  background: #eb6d09;
+  color: white;
+  font-size: 23px;
+  font-weight: 800;
+  border: none;
+  border-radius: 50px;
+  height: 50px;
+  padding: 0 18px;
+  user-select: none;
+  box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.25);
+  &:hover {
+    background: #ff7b2b;
+  }
+  &:disabled {
+    background: #b1b1b1;
+  }
 `;
 
 function Info() {
+  const url = 'https://www.notion.so/ji-in/FAQ-09eb07eac4a34ab4aa883727994e0b08';
+
   return (
     <AppContainer justifyValue={'center'} alignItems={'center'} fullWidth={true} useNavBackground={true}>
       <ContentContainer>
@@ -77,6 +100,7 @@ function Info() {
           imageHeight="600px"
         />
         <h1>더 자세한 내용이 궁금하다면?</h1>
+        <LinkButton onClick={() => window.open(url)}>F&Q 바로가기</LinkButton>
       </ContentContainer>
     </AppContainer>
   );
