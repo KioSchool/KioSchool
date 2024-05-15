@@ -92,6 +92,9 @@ function OrderPay() {
       })
       .then((res) => {
         navigate(`/order-complete?orderId=${res.data.id}`);
+
+        if (totalAmount == 0) return;
+
         window.open(`${tossAccountUrl}&amount=${totalAmount}`);
       });
   };
@@ -108,7 +111,7 @@ function OrderPay() {
         <AppLabel size={12}>아래 버튼을 누르면 주문이 완료되며, 토스 송금 창으로 이동합니다.</AppLabel>
         <AppLabel size={12}>송금 완료 후 다시 이 페이지로 돌아오면 주문 내역을 확인하실 수 있습니다.</AppLabel>
       </SubContainer>
-      <OrderButton amount={totalAmount} buttonLabel={`Toss로 결제하기`} onClick={payOrder} />
+      <OrderButton showButton={orderBasket.length > 0} buttonLabel={totalAmount == 0 ? '주문하기' : `Toss로 결제하기`} onClick={payOrder} />
     </Container>
   );
 }

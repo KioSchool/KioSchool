@@ -119,7 +119,7 @@ function Order() {
         </FooterContainer>
       </ContentContainer>
       <OrderButton
-        amount={totalAmount}
+        showButton={orderBasket.length > 0}
         buttonLabel={`${totalAmount.toLocaleString()}원 장바구니`}
         onClick={() => {
           if (isPreview) return;

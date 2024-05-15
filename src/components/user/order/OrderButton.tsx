@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import AppButton from '@components/common/button/AppButton';
 
 interface OrderButtonProps {
-  amount: number;
+  showButton: boolean;
   buttonLabel: string;
   onClick?: () => void;
 }
@@ -25,8 +25,8 @@ const OrderButtonSubContainer = styled.div`
   box-shadow: 0px 16px 32px 0px rgba(194, 191, 172, 0.6);
 `;
 
-function OrderButton({ amount, buttonLabel, onClick }: OrderButtonProps) {
-  if (amount == 0) return null;
+function OrderButton({ showButton, buttonLabel, onClick }: OrderButtonProps) {
+  if (!showButton) return null;
 
   return (
     <OrderButtonContainer>
