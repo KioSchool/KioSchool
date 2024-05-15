@@ -14,8 +14,23 @@ const ContentContainer = styled.div`
   flex-wrap: wrap;
   width: 100%;
   justify-content: center;
-  justify-direction: column;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+const TiteContainer = styled.div`
+  padding-top: 20px;
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+`;
+
+const Title = styled.div`
+  padding-left: 20px;
+  font-size: 50px;
+  font-weight: 800;
 `;
 
 const LinkButton = styled.button`
@@ -42,8 +57,14 @@ function Info() {
   const url = 'https://www.notion.so/ji-in/FAQ-09eb07eac4a34ab4aa883727994e0b08';
 
   return (
-    <AppContainer justifyValue={'center'} alignItems={'center'} fullWidth={true} useNavBackground={true}>
+    <AppContainer justifyValue={'center'} alignItems={'start'} fullWidth={true} useNavBackground={true}>
       <ContentContainer>
+        <TiteContainer>
+          <Title>키오스쿨 사용 설명서</Title>
+          <LinkButton style={{ marginRight: '20px' }} onClick={() => window.open(url)}>
+            F&Q 바로가기
+          </LinkButton>
+        </TiteContainer>
         <AccountInfo
           mainDescription="마이페이지 > 계좌관리"
           subDescription="1. 먼저 로그인 후 계좌 등록을 해야 운영할 워크스페이스를 생성할 수 있습니다."
@@ -99,8 +120,11 @@ function Info() {
           imageWidth="1050px"
           imageHeight="600px"
         />
-        <h1>더 자세한 내용이 궁금하다면?</h1>
-        <LinkButton onClick={() => window.open(url)}>F&Q 바로가기</LinkButton>
+
+        <Title style={{ width: '100vw' }}>더 자세한 내용이 궁금하다면?</Title>
+        <LinkButton style={{ marginRight: '20px' }} onClick={() => window.open(url)}>
+          F&Q 바로가기
+        </LinkButton>
       </ContentContainer>
     </AppContainer>
   );
