@@ -131,50 +131,48 @@ function AdminProductEdit() {
   };
 
   return (
-    <>
+    <Container>
       <NavBar useBackground={true} />
-      <Container>
-        <TitleNavBar title={'상품 수정'}>
-          <AppButton size={160} onClick={deleteProductHandler}>
-            상품 삭제
-          </AppButton>
-        </TitleNavBar>
-        {errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}
-        <SelectWithLabel
-          titleLabel={'카테고리'}
-          options={productCategories}
-          value={productState.productCategory ? productState.productCategory.id : 'null'}
-          onInput={(event: React.ChangeEvent<HTMLSelectElement>) => {
-            dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
-          }}
-        />
-        <AppInputWithLabel
-          titleLabel={'상품명'}
-          value={productState.name}
-          onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            dispatch({ type: 'PRODUCT_NAME_INPUT', payload: event.target?.value });
-          }}
-        />
-        <AppImageInput title={'상품 사진'} url={productState.image.url} file={productState.image.files} onImageChange={onImageChange} />
-        <AppInputWithLabel
-          titleLabel={'상품 설명'}
-          value={productState.description}
-          onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: event.target?.value });
-          }}
-        />
-        <AppInputWithLabel
-          type={'number'}
-          titleLabel={'상품 가격'}
-          value={productState.price}
-          onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: event.target?.value });
-          }}
-        />
-        <AppButton onClick={submitEditProduct}>변경하기</AppButton>
-        <ConfirmModal />
-      </Container>
-    </>
+      <TitleNavBar title={'상품 수정'}>
+        <AppButton size={160} onClick={deleteProductHandler}>
+          상품 삭제
+        </AppButton>
+      </TitleNavBar>
+      {errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}
+      <SelectWithLabel
+        titleLabel={'카테고리'}
+        options={productCategories}
+        value={productState.productCategory ? productState.productCategory.id : 'null'}
+        onInput={(event: React.ChangeEvent<HTMLSelectElement>) => {
+          dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
+        }}
+      />
+      <AppInputWithLabel
+        titleLabel={'상품명'}
+        value={productState.name}
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+          dispatch({ type: 'PRODUCT_NAME_INPUT', payload: event.target?.value });
+        }}
+      />
+      <AppImageInput title={'상품 사진'} url={productState.image.url} file={productState.image.files} onImageChange={onImageChange} />
+      <AppInputWithLabel
+        titleLabel={'상품 설명'}
+        value={productState.description}
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+          dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: event.target?.value });
+        }}
+      />
+      <AppInputWithLabel
+        type={'number'}
+        titleLabel={'상품 가격'}
+        value={productState.price}
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+          dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: event.target?.value });
+        }}
+      />
+      <AppButton onClick={submitEditProduct}>변경하기</AppButton>
+      <ConfirmModal />
+    </Container>
   );
 }
 
