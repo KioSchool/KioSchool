@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import myInfoImage1 from '../../../resources/image/myInfoImage1.png';
+
 const Container = styled.div`
   background: #f4f4f4;
   width: 100%;
@@ -16,6 +16,7 @@ const MainTitleContainer = styled.div`
   font-weight: 800;
   font-size: 40px;
 `;
+
 const SubTitleContainer = styled.div`
   padding-bottom: 20px;
   width: 75%;
@@ -23,14 +24,22 @@ const SubTitleContainer = styled.div`
   font-size: 20px;
 `;
 
-function ManageAccountInfo() {
+interface InfoProps {
+  mainDescription: string;
+  subDescription: string;
+  imageSrc: string;
+  imageWidth: string;
+  imageHeight: string;
+}
+
+function AccountInfo({ mainDescription, subDescription, imageSrc, imageWidth, imageHeight }: InfoProps) {
   return (
     <Container>
-      <MainTitleContainer>{`마이페이지 > 계좌관리`}</MainTitleContainer>
-      <SubTitleContainer>{`1. 먼저 로그인 후 계좌 등록을 해야 워크스페이스 등록을 진행할 수 있습니다.`}</SubTitleContainer>
-      <img src={myInfoImage1} width={'1000px'} height={'500px'} alt="계좌 등록 설명1"></img>
+      <MainTitleContainer>{mainDescription}</MainTitleContainer>
+      <SubTitleContainer>{subDescription}</SubTitleContainer>
+      <img src={imageSrc} width={imageWidth} height={imageHeight} alt="Info 설명"></img>
     </Container>
   );
 }
 
-export default ManageAccountInfo;
+export default AccountInfo;
