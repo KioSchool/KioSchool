@@ -16,7 +16,7 @@ const Container = styled.div<{ isSellable: boolean | null }>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 200px;
+  width: 220px;
   height: 320px;
   border-radius: 16px;
   background: ${(props) => (props.isSellable ? 'rgba(255, 255, 255, 0.20)' : 'rgba(0, 0, 0, 0.40)')};
