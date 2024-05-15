@@ -7,7 +7,8 @@ import infoImage3 from '@resources/image/myInfoImage3.png';
 import infoImage4 from '@resources/image/myInfoImage4.png';
 import infoImage5 from '@resources/image/myInfoImage5.png';
 import infoImage6 from '@resources/image/myInfoImage6.png';
-import AppLabel from '@components/common/label/AppLabel';
+import AppFooter from '@components/common/footer/AppFooter';
+import React from 'react';
 
 const ContentContainer = styled.div`
   padding-top: 100px;
@@ -56,17 +57,6 @@ const LinkTextContainer = styled.div`
   width: 100vw;
   height: 300px;
   gap: 30px;
-`;
-
-const FooterContainer = styled.div`
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  padding: 15px 24px;
-  box-sizing: border-box;
 `;
 
 const OrderedListContainer = styled.ol`
@@ -142,10 +132,7 @@ function Info() {
           <Label>더 자세한 내용이 궁금하다면?</Label>
           <LinkButton onClick={() => window.open(faqUrl)}>F&Q 바로가기</LinkButton>
         </LinkTextContainer>
-        <FooterContainer>
-          <AppLabel size={16}>©건국대학교 컴퓨터공학부 학생회 ITZI</AppLabel>
-          <AppLabel size={16}>All rights reserved.</AppLabel>
-        </FooterContainer>
+        <AppFooter fixed={false} />
       </ContentContainer>
     </AppContainer>
   );

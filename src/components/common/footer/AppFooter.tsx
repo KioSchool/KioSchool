@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 
-const Container = styled.div`
+const FixedContainer = styled.div`
   z-index: 1001;
   width: 100%;
   display: flex;
@@ -17,12 +17,34 @@ const Container = styled.div`
   box-sizing: border-box;
 `;
 
-function AppFooter() {
+const NonFixedContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 24px;
+  box-sizing: border-box;
+`;
+
+interface AppFooterProps {
+  fixed?: boolean;
+}
+
+function AppFooter({ fixed = true }: AppFooterProps) {
+  if (!fixed)
+    return (
+      <NonFixedContainer>
+        <AppLabel size={16}>©건국대학교 컴퓨터공학부 학생회 ITZI</AppLabel>
+        <AppLabel size={16}>All rights reserved.</AppLabel>
+      </NonFixedContainer>
+    );
+
   return (
-    <Container>
+    <FixedContainer>
       <AppLabel size={16}>©건국대학교 컴퓨터공학부 학생회 ITZI</AppLabel>
       <AppLabel size={16}>All rights reserved.</AppLabel>
-    </Container>
+    </FixedContainer>
   );
 }
 
