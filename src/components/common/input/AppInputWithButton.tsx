@@ -12,7 +12,7 @@ const AppInputWithButtonContainer = styled.div`
   width: 420px;
   background-color: white;
   border-radius: 12px;
-  box-shadow: 0px 4px 17px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 17px 0 rgba(0, 0, 0, 0.1);
 `;
 
 interface AppInputWithButtonProps {

@@ -22,7 +22,7 @@ const CategoriesContentsContainer = styled.div`
   height: 60px;
   background-color: white;
   border-radius: 12px;
-  box-shadow: 0px 4px 17px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 17px 0 rgba(0, 0, 0, 0.1);
   margin: 10px 0;
   display: flex;
   flex-direction: row;

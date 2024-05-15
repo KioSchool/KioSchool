@@ -47,7 +47,7 @@ const Image = styled.img<{ width?: number; height?: number }>`
   border: none;
   border-radius: 15px;
   box-sizing: border-box;
-  box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.25) inset;
+  box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.25) inset;
   object-fit: fill;
 `;
 

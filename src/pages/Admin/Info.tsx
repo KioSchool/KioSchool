@@ -43,7 +43,7 @@ const LinkButton = styled.button`
   height: 50px;
   padding: 0 18px;
   user-select: none;
-  box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.25);
   &:hover {
     background: #ff7b2b;
   }

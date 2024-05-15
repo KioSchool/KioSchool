@@ -12,7 +12,7 @@ const LogoutText = styled.p`
   font-size: 24px;
   font-weight: 400;
   line-height: 43px;
-  margin: 0px;
+  margin: 0;
 `;
 
 function AuthenticationButton() {
