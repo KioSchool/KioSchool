@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import NavBar from '../nav/NavBar';
 
 export const MainContainer = styled.div<{ backgroundColor?: string }>`
+  width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,9 +12,9 @@ export const MainContainer = styled.div<{ backgroundColor?: string }>`
   background-color: ${(props) => (props.backgroundColor ? props.backgroundColor : 'white')};
 `;
 
-export const SubContainer = styled.div<{ justifyValue: string; flexDirection?: string; alignItems?: string }>`
+export const SubContainer = styled.div<{ justifyValue: string; flexDirection?: string; alignItems?: string; fullWidth?: boolean }>`
   display: flex;
-  width: 65vw;
+  width: ${(props) => (props.fullWidth ? '100vw' : '65vw')};
   flex-basis: 0;
   flex-wrap: wrap;
   flex-direction: ${(props) => props.flexDirection || 'center'};
@@ -30,13 +31,14 @@ interface Props {
   alignItems?: string;
   backgroundColor?: string;
   useNavBackground?: boolean;
+  fullWidth?: boolean;
 }
 
-function AppContainer({ children, justifyValue, flexDirection, alignItems, backgroundColor, useNavBackground }: Props) {
+function AppContainer({ children, justifyValue, flexDirection, alignItems, backgroundColor, useNavBackground, fullWidth }: Props) {
   return (
     <MainContainer backgroundColor={backgroundColor}>
       <NavBar useBackground={useNavBackground} />
-      <SubContainer justifyValue={justifyValue} flexDirection={flexDirection} alignItems={alignItems}>
+      <SubContainer justifyValue={justifyValue} flexDirection={flexDirection} alignItems={alignItems} fullWidth={fullWidth}>
         {children}
       </SubContainer>
     </MainContainer>
