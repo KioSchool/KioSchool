@@ -115,7 +115,7 @@ function Info() {
         />
         <KioScoolInfo
           mainDescription="주점 > 실시간 주문 조회"
-          subDescription="5. 실시간 주문 조회에서는 최근 12시간 이내에 접수된 주문에 대해 보여줍니다."
+          subDescription="5. 실시간 주문 조회에서는 최근 2시간 이내에 접수된 주문에 대해 보여줍니다."
           additionalDescription={
             <OrderedListContainer>
               <li> {'결제 대기: 고객이 주문 완료 후 결제 확인을 기다리는 주문입니다.'}</li>
