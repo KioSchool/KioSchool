@@ -12,11 +12,6 @@ import SelectWithLabel from '@components/common/select/SelectWithLabelProps';
 import NavBar from '@components/common/nav/NavBar';
 import AppImageInput from '@components/common/input/AppImageInput';
 
-const ErrorMessage = styled.div`
-  padding: 0 0 5px;
-  color: #ff0000;
-`;
-
 function reducer(state: ProductStateType, action: ProductActionType) {
   switch (action.type) {
     case 'PRODUCT_NAME_INPUT':
@@ -52,7 +47,6 @@ function AdminProductAdd() {
   };
 
   const { addProduct, fetchCategories } = useAdminProducts(workspaceId);
-  const [errorMessage, setErrorMessage] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
   const [state, dispatch] = useReducer(reducer, body);
   const productCategories = useRecoilValue(categoriesAtom);
@@ -62,18 +56,28 @@ function AdminProductAdd() {
   }, []);
   const AddProduct = () => {
     if (!state.name || !state.description) {
-      setErrorMessage('상품 이름 및 설명을 입력해주세요');
+      alert('상품 이름 및 설명을 입력해주세요');
       return;
     }
     if (state.price < 0) {
-      setErrorMessage('가격은 음수가 될 수 없습니다.');
+      alert('가격은 음수가 될 수 없습니다.');
       return;
     }
     if (!file) {
-      setErrorMessage('파일을 선택해주세요');
+      alert('파일을 선택해주세요');
       return;
     }
-    setErrorMessage('');
+
+    if (state.name.length > 12) {
+      alert('상품 이름은 12자 이하로 입력해주세요');
+      return;
+    }
+
+    if (state.description.length > 30) {
+      alert('상품 설명은 30자 이하로 입력해주세요');
+      return;
+    }
+
     addProduct(state, file);
   };
 
@@ -98,7 +102,6 @@ function AdminProductAdd() {
       <NavBar useBackground={true} />
       <Container>
         <TitleNavBar title={'상품 등록'} />
-        {errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}
         <SelectWithLabel
           titleLabel={'카테고리'}
           options={productCategories}
@@ -108,6 +111,7 @@ function AdminProductAdd() {
         />
         <AppInputWithLabel
           titleLabel={'상품명'}
+          messageLabel={'최대 12자'}
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
             dispatch({ type: 'PRODUCT_NAME_INPUT', payload: event.target?.value });
           }}
@@ -115,6 +119,7 @@ function AdminProductAdd() {
         <AppImageInput title={'상품 사진'} file={file} onImageChange={onImageChange} />
         <AppInputWithLabel
           titleLabel={'상품 설명'}
+          messageLabel={'최대 30자'}
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
             dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: event.target?.value });
           }}
