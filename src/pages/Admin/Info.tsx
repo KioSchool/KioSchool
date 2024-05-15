@@ -19,9 +19,10 @@ const ContentContainer = styled.div`
 const TitleContainer = styled.div`
   padding: 10px 0;
   width: 100vw;
+  min-width: 1000px;
   display: flex;
   gap: 30%;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 `;
 
