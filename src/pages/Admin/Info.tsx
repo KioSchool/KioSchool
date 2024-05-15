@@ -20,7 +20,8 @@ const TitleContainer = styled.div`
   padding: 10px 0;
   width: 100vw;
   display: flex;
-  justify-content: space-between;
+  gap: 30%;
+  justify-content: center;
   align-items: center;
 `;
 
