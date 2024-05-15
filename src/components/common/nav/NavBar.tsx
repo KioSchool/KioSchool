@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
-import kioLogo from '../../../resources/image/kioLogo.png';
+import kioLogo from '@resources/image/kioLogo.png';
 import AuthenticationButton from '@components/user/AuthenticationButton';
 import UserProfileSvg from '@resources/svg/UserProfileSvg';
 

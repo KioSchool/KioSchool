@@ -45,7 +45,7 @@ interface InfoProps {
   imageHeight: string;
 }
 
-function KioScoolInfo({ mainDescription, subDescription, additionalDescription, imageSrc, imageWidth, imageHeight }: InfoProps) {
+function KioSchoolInfo({ mainDescription, subDescription, additionalDescription, imageSrc, imageWidth, imageHeight }: InfoProps) {
   return (
     <Container>
       <SubContainer>
@@ -58,4 +58,4 @@ function KioScoolInfo({ mainDescription, subDescription, additionalDescription, 
   );
 }
 
-export default KioScoolInfo;
+export default KioSchoolInfo;
