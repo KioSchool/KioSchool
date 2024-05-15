@@ -1,4 +1,4 @@
-import ManageAccount from '@components/admin/info/ManageAccount';
+import ManageAccountInfo from '@components/admin/info/ManageAccountInfo';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 
@@ -15,7 +15,7 @@ function Info() {
   return (
     <AppContainer justifyValue={'center'} alignItems={'center'} fullWidth={true}>
       <ContentContainer>
-        <ManageAccount />
+        <ManageAccountInfo />
       </ContentContainer>
     </AppContainer>
   );
