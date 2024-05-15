@@ -7,7 +7,7 @@ import infoImage3 from '../../resources/image/myInfoImage3.png';
 import infoImage4 from '../../resources/image/myInfoImage4.png';
 import infoImage5 from '../../resources/image/myInfoImage5.png';
 import infoImage6 from '../../resources/image/myInfoImage6.png';
-import AppFooter from '@components/common/footer/AppFooter';
+import AppLabel from '@components/common/label/AppLabel';
 
 const ContentContainer = styled.div`
   padding-top: 100px;
@@ -20,15 +20,14 @@ const ContentContainer = styled.div`
 `;
 
 const TiteContainer = styled.div`
-  padding: 10px;
-  width: 100%;
+  padding: 10px 0;
+  width: 100vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
 const Label = styled.div`
-  padding-left: 20px;
   font-size: 50px;
   font-weight: 800;
 `;
@@ -53,23 +52,33 @@ const LinkButton = styled.button`
   }
 `;
 
-const FooterContainer = styled.div`
+const LinkTextContainer = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100vw;
   height: 600px;
 `;
 
+const FooterContainer = styled.div`
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+`;
+
 function Info() {
   const url = 'https://www.notion.so/ji-in/FAQ-09eb07eac4a34ab4aa883727994e0b08';
 
   return (
-    <AppContainer justifyValue={'center'} alignItems={'start'} fullWidth={true} useNavBackground={true}>
+    <AppContainer justifyValue={'center'} alignItems={'center'} fullWidth={true} useNavBackground={true}>
       <ContentContainer>
         <TiteContainer>
-          <Label>키오스쿨 사용 설명서</Label>
-          <LinkButton style={{ marginRight: '20px' }} onClick={() => window.open(url)}>
+          <Label style={{ paddingLeft: '15px' }}>키오스쿨 사용 설명서</Label>
+          <LinkButton style={{ marginRight: '15px' }} onClick={() => window.open(url)}>
             F&Q 바로가기
           </LinkButton>
         </TiteContainer>
@@ -128,13 +137,16 @@ function Info() {
           imageWidth="1050px"
           imageHeight="600px"
         />
-        <FooterContainer>
-          <Label style={{ paddingRight: '40px' }}>더 자세한 내용이 궁금하다면?</Label>
-          <LinkButton style={{ display: 'block', marginRight: '20px' }} onClick={() => window.open(url)}>
+        <LinkTextContainer>
+          <Label>더 자세한 내용이 궁금하다면?</Label>
+          <LinkButton style={{ display: 'block', marginTop: '30px' }} onClick={() => window.open(url)}>
             F&Q 바로가기
           </LinkButton>
+        </LinkTextContainer>
+        <FooterContainer>
+          <AppLabel size={16}>©건국대학교 컴퓨터공학부 학생회 ITZI</AppLabel>
+          <AppLabel size={16}>All rights reserved.</AppLabel>
         </FooterContainer>
-        <AppFooter />
       </ContentContainer>
     </AppContainer>
   );
