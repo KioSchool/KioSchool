@@ -25,7 +25,7 @@ import MyInfo from '@pages/Admin/MyInfo';
 import AdminProductCategories from '@pages/Admin/AdminProductCategoires';
 import AdminOrderManage from '@pages/Admin/order/AdminOrderManage';
 import ResetPassword from '@pages/User/ResetPassword';
-import Info from '@pages/Admin/Info';
+import Info from '@pages/User/Info';
 
 ReactGA.initialize('G-XGYLSPGK2G');
 function App() {

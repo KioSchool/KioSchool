@@ -103,16 +103,16 @@ function AdminAccount() {
   });
 
   useEffect(() => {
-    if (!adminUser.accountUrl) fetchAdminUser();
-
-    if (!adminUser || !adminUser.accountUrl) return;
+    if (!adminUser || !adminUser.accountUrl) {
+      fetchAdminUser();
+      return;
+    }
 
     const accountInfo = extractAccountInfo(adminUser.accountUrl);
 
     if (!accountInfo) return;
 
     const { decodedBank, accountNo } = accountInfo;
-
     dispatchAccount({ type: 'SET_ACCOUNT_INFO', payload: { decodedBank, accountNo } });
   }, [adminUser.accountUrl]);
 
@@ -126,7 +126,6 @@ function AdminAccount() {
     }
 
     const newFileURL = URL.createObjectURL(event.target.files[0]);
-
     setFileURL(newFileURL);
   };
 
@@ -143,10 +142,9 @@ function AdminAccount() {
 
     const image = new Image();
     image.src = fileURL;
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-
     image.onload = () => {
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
       if (!context) return;
 
       canvas.width = image.width;
@@ -155,14 +153,13 @@ function AdminAccount() {
       context.drawImage(image, 0, 0, image.width, image.height);
 
       const imageData = context.getImageData(0, 0, image.width, image.height);
-      const code = jsQR(imageData.data, imageData.width, imageData.height);
-
-      if (!code) {
+      const qrCode = jsQR(imageData.data, imageData.width, imageData.height);
+      if (!qrCode) {
         alert('QR코드가 인식되지 않았습니다.\n다시 업로드 바랍니다.');
         return;
       }
 
-      const decodedUrl: string = code.data;
+      const decodedUrl: string = qrCode.data;
       const url = removeAmountQuery(decodedUrl);
       registerAccount(url);
     };

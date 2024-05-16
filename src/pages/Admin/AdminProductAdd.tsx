@@ -98,42 +98,40 @@ function AdminProductAdd() {
   };
 
   return (
-    <>
+    <Container>
       <NavBar useBackground={true} />
-      <Container>
-        <TitleNavBar title={'상품 등록'} />
-        <SelectWithLabel
-          titleLabel={'카테고리'}
-          options={productCategories}
-          onInput={(event: React.ChangeEvent<HTMLSelectElement>) => {
-            dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
-          }}
-        />
-        <AppInputWithLabel
-          titleLabel={'상품명'}
-          messageLabel={'최대 12자'}
-          onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            dispatch({ type: 'PRODUCT_NAME_INPUT', payload: event.target?.value });
-          }}
-        />
-        <AppImageInput title={'상품 사진'} file={file} onImageChange={onImageChange} />
-        <AppInputWithLabel
-          titleLabel={'상품 설명'}
-          messageLabel={'최대 30자'}
-          onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: event.target?.value });
-          }}
-        />
-        <AppInputWithLabel
-          type={'number'}
-          titleLabel={'상품 가격'}
-          onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: event.target?.value });
-          }}
-        />
-        <AppButton onClick={AddProduct}>추가하기</AppButton>
-      </Container>
-    </>
+      <TitleNavBar title={'상품 등록'} />
+      <SelectWithLabel
+        titleLabel={'카테고리'}
+        options={productCategories}
+        onInput={(event: React.ChangeEvent<HTMLSelectElement>) => {
+          dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
+        }}
+      />
+      <AppInputWithLabel
+        titleLabel={'상품명'}
+        messageLabel={'최대 12자'}
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+          dispatch({ type: 'PRODUCT_NAME_INPUT', payload: event.target?.value });
+        }}
+      />
+      <AppImageInput title={'상품 사진'} file={file} onImageChange={onImageChange} />
+      <AppInputWithLabel
+        titleLabel={'상품 설명'}
+        messageLabel={'최대 30자'}
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+          dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: event.target?.value });
+        }}
+      />
+      <AppInputWithLabel
+        type={'number'}
+        titleLabel={'상품 가격'}
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+          dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: event.target?.value });
+        }}
+      />
+      <AppButton onClick={AddProduct}>추가하기</AppButton>
+    </Container>
   );
 }
 

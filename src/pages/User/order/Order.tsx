@@ -84,7 +84,7 @@ function Order() {
         {productCategories
           .map((it) => it.id)
           .map((categoryId) => (
-            <div id={`product_category${categoryId}`} key={`product_category${categoryId}`}>
+            <div id={`product_category_${categoryId}`} key={`product_category_${categoryId}`}>
               <AppLabel size={22}>{categoryMap[categoryId].name}</AppLabel>
               {productsByCategory[categoryId].map((product) => (
                 <ProductContainer key={`product${product.id}`}>
@@ -95,7 +95,7 @@ function Order() {
             </div>
           ))}
         {productsByCategory.undefined && (
-          <div id={`product_categoryundefined`} key={`product_categoryundefined`}>
+          <div id={`product_category_undefined`} key={`product_category_undefined`}>
             <AppLabel size={22}>기본메뉴</AppLabel>
             {productsByCategory.undefined?.map((product) => (
               <ProductContainer key={`product${product.id}`}>
