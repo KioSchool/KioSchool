@@ -64,6 +64,10 @@ function OrderBasket() {
 
   const basketRef = React.useRef<HTMLDivElement>(null);
 
+  if (orderBasket.length == 0) {
+    navigate(-1);
+  }
+
   useEffect(() => {
     basketRef.current?.scroll({ top: 0, behavior: 'smooth' });
   }, []);
