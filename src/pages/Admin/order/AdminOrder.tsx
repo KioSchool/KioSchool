@@ -61,7 +61,7 @@ const ProductsByOrderContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 20%;
+  height: 200px;
 `;
 
 const ProductsByOrderSubContainer = styled.div`
@@ -88,7 +88,7 @@ const ProductCard = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-  width: 150px;
+  width: 160px;
   padding: 5px;
   box-sizing: border-box;
   background: white;
