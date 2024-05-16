@@ -34,15 +34,13 @@ function Login() {
 
   useEffect(() => {
     if (isLoggedIn()) navigate('/');
-
-    setErrorMessage('');
   }, []);
 
   const handleSubmit = () => {
     const userId = userIdInputRef.current?.value;
     const userPassword = userPasswordInputRef.current?.value;
     if (!userId || !userPassword) {
-      setErrorMessage('Both fields are required.');
+      setErrorMessage('아이디와 비밀번호를 입력해주세요.');
       return;
     }
 

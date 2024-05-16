@@ -53,7 +53,7 @@ function AdminProductCategories() {
   const addCategoryHandler = () => {
     const userInput = categoryInputRef.current?.value;
 
-    if (userInput === '' || userInput === undefined) {
+    if (!userInput) {
       alert('카테고리를 입력해주세요');
       return;
     }

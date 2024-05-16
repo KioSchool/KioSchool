@@ -20,7 +20,7 @@ const Container = styled.div<{ isSellable: boolean | null }>`
   height: 320px;
   border-radius: 16px;
   background: ${(props) => (props.isSellable ? 'rgba(255, 255, 255, 0.20)' : 'rgba(0, 0, 0, 0.40)')};
-  box-shadow: 0px 4px 17px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 17px 0 rgba(0, 0, 0, 0.1);
 `;
 
 const SubContainer = styled.div`

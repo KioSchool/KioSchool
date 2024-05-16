@@ -1,7 +1,7 @@
 import { ForwardedRef, forwardRef } from 'react';
-import AppButton from '../button/AppButton';
+import AppButton from '@components/common/button/AppButton';
 import styled from '@emotion/styled';
-import AppInput from './AppInput';
+import AppInput from '@components/common/input/AppInput';
 
 const AppInputWithButtonContainer = styled.div`
   display: flex;
@@ -12,7 +12,7 @@ const AppInputWithButtonContainer = styled.div`
   width: 420px;
   background-color: white;
   border-radius: 12px;
-  box-shadow: 0px 4px 17px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 17px 0 rgba(0, 0, 0, 0.1);
 `;
 
 interface AppInputWithButtonProps {

@@ -22,7 +22,7 @@ const OrderButtonSubContainer = styled.div`
   padding: 8px;
   border-radius: 20px;
   background: white;
-  box-shadow: 0px 16px 32px 0px rgba(194, 191, 172, 0.6);
+  box-shadow: 0 16px 32px 0 rgba(194, 191, 172, 0.6);
 `;
 
 function OrderButton({ showButton, buttonLabel, onClick }: OrderButtonProps) {

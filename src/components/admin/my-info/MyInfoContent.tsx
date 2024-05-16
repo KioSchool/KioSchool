@@ -18,7 +18,7 @@ const MyInfoContainer = styled.div`
   gap: 10px;
   flex-shrink: 0;
   border-radius: 20px;
-  box-shadow: 0px 4px 16.8px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 16.8px 0 rgba(0, 0, 0, 0.25);
 `;
 
 const MyInfoSubContainer = styled.div`

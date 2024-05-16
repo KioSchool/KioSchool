@@ -56,59 +56,57 @@ function AdminProduct() {
   }, []);
 
   return (
-    <>
+    <Container>
       <NavBar useBackground={true} />
-      <Container>
-        <TitleNavBar
-          title={'상품 관리'}
-          onLeftArrowClick={() => {
-            navigate(`/admin/workspace/${workspaceId}`);
-          }}
-        >
-          <ManageButtonContainer>
-            <AppButton
-              size={160}
-              onClick={() => {
-                appendPath('/categories');
-              }}
-            >
-              카테고리 관리
-            </AppButton>
-            <AppButton
-              size={130}
-              onClick={() => {
-                appendPath('/add-product');
-              }}
-            >
-              상품 추가
-            </AppButton>
-          </ManageButtonContainer>
-        </TitleNavBar>
-        <AppLabel size={'small'} style={{ textAlign: 'center' }}>
-          판매대기 상태인 메뉴는 주문 화면에서 숨김처리 되며, 판매 상태로 변경 시 다시 나타나게 됩니다.
-        </AppLabel>
-        {categories.map((category) => (
-          <ContainerPerCategory key={`product_category${category.id}`}>
-            <AppLabel size={36} style={{ fontWeight: 800 }}>
-              {category.name}
-            </AppLabel>
-            <ProductsContainer>
-              {products
-                .filter((product) => (product.productCategory?.id || null) === category.id)
-                .map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    onClick={() => {
-                      appendPath(`/edit-product?productId=${product.id}`);
-                    }}
-                  />
-                ))}
-            </ProductsContainer>
-          </ContainerPerCategory>
-        ))}
-      </Container>
-    </>
+      <TitleNavBar
+        title={'상품 관리'}
+        onLeftArrowClick={() => {
+          navigate(`/admin/workspace/${workspaceId}`);
+        }}
+      >
+        <ManageButtonContainer>
+          <AppButton
+            size={160}
+            onClick={() => {
+              appendPath('/categories');
+            }}
+          >
+            카테고리 관리
+          </AppButton>
+          <AppButton
+            size={130}
+            onClick={() => {
+              appendPath('/add-product');
+            }}
+          >
+            상품 추가
+          </AppButton>
+        </ManageButtonContainer>
+      </TitleNavBar>
+      <AppLabel size={'small'} style={{ textAlign: 'center' }}>
+        HIDE 상태인 메뉴는 주문 화면에서 숨김처리 되며, ON 상태로 변경 시 다시 나타나게 됩니다.
+      </AppLabel>
+      {categories.map((category) => (
+        <ContainerPerCategory key={`product_category_${category.id}`}>
+          <AppLabel size={36} style={{ fontWeight: 800 }}>
+            {category.name}
+          </AppLabel>
+          <ProductsContainer>
+            {products
+              .filter((product) => (product.productCategory?.id || null) === category.id)
+              .map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  onClick={() => {
+                    appendPath(`/edit-product?productId=${product.id}`);
+                  }}
+                />
+              ))}
+          </ProductsContainer>
+        </ContainerPerCategory>
+      ))}
+    </Container>
   );
 }
 

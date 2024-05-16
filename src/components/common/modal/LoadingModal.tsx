@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import LoadingSvg from '../../../resources/svg/LoadingSvg';
+import LoadingSvg from '@resources/svg/LoadingSvg';
 import { useRecoilValue } from 'recoil';
 import { isLoadingAtom } from '@recoils/atoms';
 

@@ -1,6 +1,6 @@
 import { Ref } from 'react';
-import AppButton from '../../common/button/AppButton';
-import AppInputWithLabel from '../../common/input/AppInputWithLabel';
+import AppButton from '@components/common/button/AppButton';
+import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 
 interface Props {
   workspaceDescriptionRef: Ref<HTMLInputElement>;

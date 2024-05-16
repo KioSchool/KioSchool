@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
-import ArrowRight from '../../resources/svg/ArrowRightSvg';
+import ArrowRight from '@resources/svg/ArrowRightSvg';
 import { css } from '@emotion/react';
 import AppFooter from '@components/common/footer/AppFooter';
 
@@ -69,24 +69,22 @@ function Home() {
   const [isHover, setIsHover] = useState<boolean>(false);
 
   return (
-    <>
-      <AppContainer justifyValue={'center'} flexDirection={'column'} alignItems={'flex-start'}>
-        <>
-          <MainTitle>
-            키오스쿨로
-            <br /> 주점관리를 손쉽게,
-          </MainTitle>
-          <LinkAdminHome to={'/admin'} onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
-            <LinkText>
-              내 주점 바로가기
-              <ArrowRight />
-            </LinkText>
-          </LinkAdminHome>
-          <AppFooter />
-        </>
-      </AppContainer>
-      <HoverOverlay isHover={isHover} />
-    </>
+    <AppContainer justifyValue={'center'} flexDirection={'column'} alignItems={'flex-start'}>
+      <>
+        <MainTitle>
+          키오스쿨로
+          <br /> 주점관리를 손쉽게,
+        </MainTitle>
+        <LinkAdminHome to={'/admin'} onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
+          <LinkText>
+            내 주점 바로가기
+            <ArrowRight />
+          </LinkText>
+        </LinkAdminHome>
+        <AppFooter />
+        <HoverOverlay isHover={isHover} />
+      </>
+    </AppContainer>
   );
 }
 

@@ -1,13 +1,14 @@
-import KioScoolInfo from '@components/admin/info/KioScoolInfo';
+import KioSchoolInfo from '@components/user/info/KioSchoolInfo';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
-import infoImage1 from '../../resources/image/myInfoImage1.png';
-import infoImage2 from '../../resources/image/myInfoImage2.png';
-import infoImage3 from '../../resources/image/myInfoImage3.png';
-import infoImage4 from '../../resources/image/myInfoImage4.png';
-import infoImage5 from '../../resources/image/myInfoImage5.png';
-import infoImage6 from '../../resources/image/myInfoImage6.png';
-import AppLabel from '@components/common/label/AppLabel';
+import infoImage1 from '@resources/image/myInfoImage1.png';
+import infoImage2 from '@resources/image/myInfoImage2.png';
+import infoImage3 from '@resources/image/myInfoImage3.png';
+import infoImage4 from '@resources/image/myInfoImage4.png';
+import infoImage5 from '@resources/image/myInfoImage5.png';
+import infoImage6 from '@resources/image/myInfoImage6.png';
+import AppFooter from '@components/common/footer/AppFooter';
+import React from 'react';
 
 const ContentContainer = styled.div`
   padding-top: 100px;
@@ -42,7 +43,7 @@ const LinkButton = styled.button`
   height: 50px;
   padding: 0 18px;
   user-select: none;
-  box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.25);
   &:hover {
     background: #ff7b2b;
   }
@@ -56,17 +57,6 @@ const LinkTextContainer = styled.div`
   width: 100vw;
   height: 300px;
   gap: 30px;
-`;
-
-const FooterContainer = styled.div`
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  padding: 15px 24px;
-  box-sizing: border-box;
 `;
 
 const OrderedListContainer = styled.ol`
@@ -85,35 +75,35 @@ function Info() {
             F&Q 바로가기
           </LinkButton>
         </TitleContainer>
-        <KioScoolInfo
+        <KioSchoolInfo
           mainDescription="마이페이지 > 계좌관리"
           subDescription="1. 먼저 로그인 후 계좌 등록을 해야 운영할 워크스페이스를 생성할 수 있습니다."
           imageSrc={infoImage1}
           imageWidth="1050px"
           imageHeight="500px"
         />
-        <KioScoolInfo
+        <KioSchoolInfo
           mainDescription="주점 > 상품 관리 > 카테고리 관리"
           subDescription="2. 상품을 등록할 카테고리를 먼저 생성해줍니다."
           imageSrc={infoImage2}
           imageWidth="1050px"
           imageHeight="600px"
         />
-        <KioScoolInfo
+        <KioSchoolInfo
           mainDescription="주점 > 상품 관리"
           subDescription="3. 메뉴를 등록하고 나면 하단의 버튼을 통해 상품의 노출여부를 조절할 수 있습니다."
           imageSrc={infoImage3}
           imageWidth="1050px"
           imageHeight="370px"
         />
-        <KioScoolInfo
+        <KioSchoolInfo
           mainDescription="주점 > 주문 페이지 관리"
           subDescription="4. 주문 페이지 관리에서 고객화면을 모니터링 할 수 있고, 각 테이블의 주문 QR도 확인할 수 있습니다."
           imageSrc={infoImage4}
           imageWidth="1050px"
           imageHeight="600px"
         />
-        <KioScoolInfo
+        <KioSchoolInfo
           mainDescription="주점 > 실시간 주문 조회"
           subDescription="5. 실시간 주문 조회에서는 최근 2시간 이내에 접수된 주문에 대해 보여줍니다."
           additionalDescription={
@@ -131,7 +121,7 @@ function Info() {
           imageWidth="1050px"
           imageHeight="700px"
         />
-        <KioScoolInfo
+        <KioSchoolInfo
           mainDescription="주점 > 전체 주문 조회"
           subDescription="6. 전체 주문 조회에서는 설정 기간 내 모든 주문과 총 금액을 확인할 수 있습니다."
           imageSrc={infoImage6}
@@ -142,10 +132,7 @@ function Info() {
           <Label>더 자세한 내용이 궁금하다면?</Label>
           <LinkButton onClick={() => window.open(faqUrl)}>F&Q 바로가기</LinkButton>
         </LinkTextContainer>
-        <FooterContainer>
-          <AppLabel size={16}>©건국대학교 컴퓨터공학부 학생회 ITZI</AppLabel>
-          <AppLabel size={16}>All rights reserved.</AppLabel>
-        </FooterContainer>
+        <AppFooter fixed={false} />
       </ContentContainer>
     </AppContainer>
   );

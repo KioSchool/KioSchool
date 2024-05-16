@@ -12,6 +12,7 @@ import { Product } from '@@types/index';
 import _ from 'lodash';
 import OrderButton from '@components/user/order/OrderButton';
 import useProduct from '@hooks/user/useProduct';
+import AppFooter from '@components/common/footer/AppFooter';
 
 const Container = styled.div`
   width: 100vw;
@@ -39,15 +40,6 @@ const ContentContainer = styled.div`
 
 const ProductContainer = styled.div`
   padding: 10px;
-`;
-
-const FooterContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  padding: 20px;
 `;
 
 function Order() {
@@ -92,7 +84,7 @@ function Order() {
         {productCategories
           .map((it) => it.id)
           .map((categoryId) => (
-            <div id={`product_category${categoryId}`} key={`product_category${categoryId}`}>
+            <div id={`product_category_${categoryId}`} key={`product_category_${categoryId}`}>
               <AppLabel size={22}>{categoryMap[categoryId].name}</AppLabel>
               {productsByCategory[categoryId].map((product) => (
                 <ProductContainer key={`product${product.id}`}>
@@ -103,7 +95,7 @@ function Order() {
             </div>
           ))}
         {productsByCategory.undefined && (
-          <div id={`product_categoryundefined`} key={`product_categoryundefined`}>
+          <div id={`product_category_undefined`} key={`product_category_undefined`}>
             <AppLabel size={22}>기본메뉴</AppLabel>
             {productsByCategory.undefined?.map((product) => (
               <ProductContainer key={`product${product.id}`}>
@@ -113,10 +105,7 @@ function Order() {
             ))}
           </div>
         )}
-        <FooterContainer>
-          <AppLabel size={16}>©건국대학교 컴퓨터공학부 학생회 ITZI</AppLabel>
-          <AppLabel size={16}>All rights reserved.</AppLabel>
-        </FooterContainer>
+        <AppFooter fixed={false} />
       </ContentContainer>
       <OrderButton
         showButton={orderBasket.length > 0}

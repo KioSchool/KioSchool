@@ -3,8 +3,8 @@ import { Workspace } from '@@types/index';
 import useAdminUser from '@hooks/admin/useAdminUser';
 import React, { useRef, useState } from 'react';
 import CreateWorkspaceModal from './modal/CreateWorkspaceModal';
-import AddWorkspaceModalContent from '../../admin/workspace/AddworkspaceModalContent';
 import PlusIconSvg from '@resources/svg/PlusIconSvg';
+import AddWorkspaceModalContent from '@components/admin/workspace/AddworkspaceModalContent';
 
 const AddWorkspaceContainer = styled.form`
   cursor: pointer;

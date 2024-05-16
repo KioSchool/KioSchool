@@ -12,7 +12,7 @@ const WorkspaceContainer = styled.div`
   height: 332px;
   border-radius: 25px;
   background: #eb6d09;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -25,7 +25,7 @@ const WorkspaceContainer = styled.div`
   &:active {
     border-radius: 25px;
     background: #eb6d09;
-    box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.25) inset;
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.25) inset;
   }
 `;
 
