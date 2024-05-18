@@ -124,7 +124,7 @@ function AdminOrderManage() {
 
         <AppLabel>테이블 개수는 {tableCount}개 입니다.</AppLabel>
         <ContentContainer>
-          <DeviceFrameset device="iPhone X" width={350} height={700}>
+          <DeviceFrameset device="iPhone X" width={360} height={700}>
             <PreviewContainer src={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=1&preview=true`} />
           </DeviceFrameset>
           <QRCodeContainer>
