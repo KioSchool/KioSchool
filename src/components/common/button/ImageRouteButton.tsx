@@ -12,11 +12,11 @@ const Container = styled.div<{ src: string }>`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  width: 270px;
+  width: 280px;
   height: 440px;
   box-sizing: border-box;
-  background-image: url(${(props) => props.src});
   padding: 40px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) -18.3%, rgba(0, 0, 0, 0.6) 100%), url(${(props) => props.src});
   &:hover {
     background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #eb6d09 120%), url(${(props) => props.src});
   }
@@ -47,7 +47,7 @@ function ImageRouteButton(props: ImageRouteButtonProps) {
   return (
     <Container src={props.src}>
       <SubContainer>
-        <AppLabel size={25} style={{ color: 'white', fontWeight: 600 }}>
+        <AppLabel size={30} style={{ color: 'white', fontWeight: 600, textShadow: '0 4px 4px rgba(0, 0, 0, 0.25)' }}>
           {props.buttonText}
         </AppLabel>
         <RouteButton type={'button'} onClick={props.onClick}>

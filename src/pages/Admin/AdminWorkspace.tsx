@@ -9,6 +9,10 @@ import styled from '@emotion/styled';
 import ImageRouteButton from '@components/common/button/ImageRouteButton';
 import AppContainer from '@components/common/container/AppContainer';
 import AppFooter from '@components/common/footer/AppFooter';
+import orderImage from '@resources/image/orderImage.png';
+import orderHistoryImage from '@resources/image/orderHistoryImage.png';
+import productImage from '@resources/image/productImage.png';
+import orderManageImage from '@resources/image/orderManageImage.png';
 
 const Container = styled.div`
   display: flex;
@@ -44,26 +48,10 @@ function AdminWorkspace() {
           }}
         />
         <ButtonContainer>
-          <ImageRouteButton
-            src={'https://ojsfile.ohmynews.com/STD_IMG_FILE/2022/1217/IE003091261_STD.jpg'}
-            onClick={() => appendPath('/orders')}
-            buttonText={'실시간 주문 조회'}
-          />
-          <ImageRouteButton
-            src={'https://ojsfile.ohmynews.com/STD_IMG_FILE/2022/1217/IE003091261_STD.jpg'}
-            onClick={() => appendPath('/orders-history')}
-            buttonText={'전체 주문 조회'}
-          />
-          <ImageRouteButton
-            src={'https://ojsfile.ohmynews.com/STD_IMG_FILE/2022/1217/IE003091261_STD.jpg'}
-            onClick={() => appendPath('/products')}
-            buttonText={'상품 관리'}
-          />
-          <ImageRouteButton
-            src={'https://ojsfile.ohmynews.com/STD_IMG_FILE/2022/1217/IE003091261_STD.jpg'}
-            onClick={() => appendPath('/orders-manage')}
-            buttonText={'주문 페이지 관리'}
-          />
+          <ImageRouteButton src={orderImage} onClick={() => appendPath('/orders')} buttonText={'실시간 주문 조회'} />
+          <ImageRouteButton src={orderHistoryImage} onClick={() => appendPath('/orders-history')} buttonText={'전체 주문 조회'} />
+          <ImageRouteButton src={productImage} onClick={() => appendPath('/products')} buttonText={'상품 관리'} />
+          <ImageRouteButton src={orderManageImage} onClick={() => appendPath('/orders-manage')} buttonText={'주문 페이지 관리'} />
         </ButtonContainer>
         <AppFooter />
       </Container>
