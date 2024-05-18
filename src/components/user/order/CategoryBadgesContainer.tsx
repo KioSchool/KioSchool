@@ -40,13 +40,13 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
       {productCategories.map(
         (category) =>
           productsByCategory[category.id] && (
-            <AppBadge onClick={() => scrollToCategory(`product_category${category.id}`)} key={`category${category.id}`}>
+            <AppBadge onClick={() => scrollToCategory(`product_category_${category.id}`)} key={`category_${category.id}`}>
               {category.name}
             </AppBadge>
           ),
       )}
       {productsByCategory.undefined && (
-        <AppBadge onClick={() => scrollToCategory(`product_categoryundefined`)} key={`categorynull`}>
+        <AppBadge onClick={() => scrollToCategory(`product_category_undefined`)} key={`category_null`}>
           기본 메뉴
         </AppBadge>
       )}
