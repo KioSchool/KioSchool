@@ -10,7 +10,6 @@ interface ProductCardProps {
 
 const Container = styled.div`
   max-width: 100vw;
-  height: 90px;
   padding: 10px;
   display: grid;
   grid-template-columns: 2fr 1fr;
