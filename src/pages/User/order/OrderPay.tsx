@@ -91,7 +91,7 @@ function OrderPay() {
         customerName: costumerName,
       })
       .then((res) => {
-        navigate(`/order-complete?orderId=${res.data.id}`);
+        navigate(`/order-complete?orderId=${res.data.id}&workspaceId=${workspaceId}`);
 
         if (totalAmount == 0) return;
 

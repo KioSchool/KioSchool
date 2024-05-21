@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import useOrder from '@hooks/user/useOrder';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { orderBasketAtom, userOrderAtom } from '@recoils/atoms';
@@ -8,6 +8,8 @@ import AppLabel from '@components/common/label/AppLabel';
 import OrderButton from '@components/user/order/OrderButton';
 import OrderStatusBar from '@components/user/order/OrderStatusBar';
 import ReloadSvg from '@resources/svg/ReloadSvg';
+import useWorkspace from '@hooks/user/useWorkspace';
+import AppButton from '@components/common/button/AppButton';
 
 const Container = styled.div`
   width: 100vw;
@@ -59,9 +61,12 @@ const ProductContainer = styled.div`
 `;
 
 function OrderComplete() {
+  const [accountInfo, setAccountInfo] = useState<string>();
   const [searchParams] = useSearchParams();
   const orderId = searchParams.get('orderId');
+  const workspaceId = searchParams.get('workspaceId');
 
+  const { fetchWorkspaceAccount } = useWorkspace();
   const { fetchOrder } = useOrder();
   const setOrderBasket = useSetRecoilState(orderBasketAtom);
   const order = useRecoilValue(userOrderAtom);
@@ -78,9 +83,21 @@ function OrderComplete() {
     setOrderBasket([]);
   };
 
+  const getAccountInfo = async () => {
+    const rawAccountInfo = await fetchWorkspaceAccount(workspaceId);
+    setAccountInfo(rawAccountInfo);
+  };
+
+  const copyAccountInfo = () => {
+    navigator.clipboard.writeText(accountInfo!).then(() => {
+      alert('계좌 정보가 복사되었습니다.');
+    });
+  };
+
   useEffect(() => {
     resetRecoilState();
     fetchOrder(orderId);
+    getAccountInfo();
   }, []);
 
   return (
@@ -114,6 +131,13 @@ function OrderComplete() {
           <ContentTitleLabel size={17}>총 결제 금액</ContentTitleLabel>
           <AppLabel size={13}>{order.totalPrice.toLocaleString()}원</AppLabel>
         </ContentBox>
+        {order.status === 'NOT_PAID' && (
+          <ContentBox>
+            <ContentTitleLabel size={17}>결제 계좌 정보</ContentTitleLabel>
+            <AppLabel size={13}>{accountInfo}</AppLabel>
+            <AppButton onClick={copyAccountInfo}>복사하기</AppButton>
+          </ContentBox>
+        )}
       </SubContainer>
       {order.status !== 'CANCELLED' && (
         <OrderButton
