@@ -134,7 +134,7 @@ function OrderComplete() {
         {order.status === 'NOT_PAID' && (
           <ContentBox>
             <ContentTitleLabel size={17}>결제 계좌 정보</ContentTitleLabel>
-            <AppLabel size={13}>{accountInfo}</AppLabel>
+            <AppLabel size={13}>{`${accountInfo} - ${order.totalPrice.toLocaleString()}원`}</AppLabel>
             <AppButton onClick={copyAccountInfo}>복사하기</AppButton>
           </ContentBox>
         )}
