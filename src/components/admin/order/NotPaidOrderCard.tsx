@@ -72,9 +72,9 @@ function NotPaidOrderCard({ order }: Props) {
   return (
     <Container>
       <AppLabel size={18} style={{ fontWeight: 700 }}>
-        주문번호 {order.id}번
+        테이블 {order.tableNumber}
       </AppLabel>
-      <AppLabel size={16}>테이블 {order.tableNumber}</AppLabel>
+      <AppLabel size={16}>주문번호 {order.id}번</AppLabel>
       <Row>
         <AppLabel size={14}>입금자명: {order.customerName}</AppLabel>
         <AppLabel size={14}>{dateConverter(order.createdAt)}</AppLabel>
