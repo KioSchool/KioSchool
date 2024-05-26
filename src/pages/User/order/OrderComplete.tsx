@@ -121,7 +121,7 @@ function OrderComplete() {
           {order?.orderProducts.map((orderProduct) => (
             <ProductContainer key={orderProduct.id}>
               <AppLabel size={13} style={{ fontWeight: 'bold' }}>
-                {orderProduct.product.name} · {orderProduct.quantity}개
+                {orderProduct.productName} · {orderProduct.quantity}개
               </AppLabel>
               <AppLabel size={13}>{orderProduct.totalPrice.toLocaleString()}원</AppLabel>
             </ProductContainer>

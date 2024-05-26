@@ -68,7 +68,7 @@ function ServedOrderCard({ order }: Props) {
       {order.orderProducts.map((it) => (
         <Row key={it.id}>
           <AppLabel size={16} style={{ fontWeight: 500 }}>
-            {it.product.name}
+            {it.productName}
           </AppLabel>
           <AppLabel size={16} style={{ fontWeight: 500 }}>
             {it.quantity}개

@@ -40,7 +40,7 @@ function ToggleOrderCard({ order }: ToggleOrderCardProps) {
   const [isClosed, setIsClosed] = React.useState<boolean>(true);
 
   const closedProductLabelText =
-    order.orderProducts.length > 1 ? `${order.orderProducts[0].product.name} 외 ${order.orderProducts.length - 1}개` : order.orderProducts[0].product.name;
+    order.orderProducts.length > 1 ? `${order.orderProducts[0].productName} 외 ${order.orderProducts.length - 1}개` : order.orderProducts[0].productName;
 
   const handleToggle = () => {
     setIsClosed((prev) => !prev);
@@ -81,7 +81,7 @@ function ToggleOrderCard({ order }: ToggleOrderCardProps) {
         ) : (
           order.orderProducts.map((orderProduct) => (
             <AppLabel key={orderProduct.id} size={16}>
-              {orderProduct.product.name} · {orderProduct.quantity}개
+              {orderProduct.productName} · {orderProduct.quantity}개
             </AppLabel>
           ))
         )}
