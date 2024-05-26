@@ -81,7 +81,7 @@ function PaidOrderCard({ order }: Props) {
             onChange={() => {
               updateOrderProductServe(it.id, !it.isServed);
             }}
-            label={it.product.name}
+            label={it.productName}
           />
           <AppLabel size={16}>{it.quantity}개</AppLabel>
         </Row>
