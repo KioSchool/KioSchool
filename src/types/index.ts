@@ -16,6 +16,7 @@ export interface OrderProductBase {
 }
 
 export interface OrderProduct extends OrderProductBase {
+  productId: number;
   productName: string;
   productPrice: number;
   isServed: boolean;
