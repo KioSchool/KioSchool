@@ -128,7 +128,7 @@ function AdminOrder() {
         orders.filter((it) => it.status == 'PAID'),
         'orderProducts',
       ).filter((it) => !it.isServed),
-      'product.id',
+      'productId',
     ),
     (filteredProducts) => _.sumBy(filteredProducts, 'quantity'),
   );
@@ -178,12 +178,12 @@ function AdminOrder() {
           </AppLabel>
           <ProductsContainer>
             {_.keys(productCounts).map((productId) => (
-              <ProductCard key={productId}>
+              <ProductCard key={`product_card_${productId}`}>
                 <ProductImage src={productMap[productId].imageUrl} />
-                <AppLabel key={productId} size={14} style={{ fontWeight: 600 }}>
+                <AppLabel key={`product_name_${productId}`} size={14} style={{ fontWeight: 600 }}>
                   {productMap[productId].name}
                 </AppLabel>
-                <AppLabel key={productId} size={12}>
+                <AppLabel key={`product_quantity_${productId}`} size={12}>
                   {productCounts[productId]}개
                 </AppLabel>
               </ProductCard>
