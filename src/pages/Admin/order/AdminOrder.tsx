@@ -13,6 +13,7 @@ import VerticalDivider from '@components/common/divider/VerticalDivider';
 import AppLabel from '@components/common/label/AppLabel';
 import _ from 'lodash';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
+import uploadPreview from '@resources/image/uploadPreview.png';
 
 const Container = styled.div`
   display: flex;
@@ -179,9 +180,9 @@ function AdminOrder() {
           <ProductsContainer>
             {_.keys(productCounts).map((productId) => (
               <ProductCard key={`product_card_${productId}`}>
-                <ProductImage src={productMap[productId].imageUrl} />
+                <ProductImage src={productMap[productId]?.imageUrl || uploadPreview} />
                 <AppLabel key={`product_name_${productId}`} size={14} style={{ fontWeight: 600 }}>
-                  {productMap[productId].name}
+                  {productMap[productId]?.name || '삭제된 상품'}
                 </AppLabel>
                 <AppLabel key={`product_quantity_${productId}`} size={12}>
                   {productCounts[productId]}개
