@@ -6,12 +6,10 @@ import UserProfileSvg from '@resources/svg/UserProfileSvg';
 
 const NavContainer = styled.div<{ useBackground: boolean }>`
   z-index: 1001;
-  width: 100%;
+  width: 1000px;
   display: flex;
   flex-wrap: wrap;
   top: 0;
-  left: 0;
-  right: 0;
   position: fixed;
   background: ${(props) => (props.useBackground ? 'white' : 'transparent')};
 `;
@@ -63,7 +61,7 @@ function NavBar({ useBackground = false }: NavBarProps) {
     <NavContainer useBackground={useBackground}>
       <NavContent>
         <Link to={'/'}>
-          <img src={kioLogo} width={'125px'} height={'60px'} alt="Kio Logo" />
+          <img src={kioLogo} width={'60px'} height={'27px'} alt="Kio Logo" />
         </Link>
 
         <NavLinkContainer>
