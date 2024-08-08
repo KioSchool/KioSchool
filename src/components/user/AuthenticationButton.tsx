@@ -11,8 +11,12 @@ const LogoutText = styled.p`
   text-align: center;
   font-size: 18px;
   font-weight: 400;
-  line-height: 43px;
   margin: 0;
+  transition: ease-in 0.1s;
+  &: hover {
+    color: #eb6d09;
+    text-decoration: underline;
+  }
 `;
 
 function AuthenticationButton() {

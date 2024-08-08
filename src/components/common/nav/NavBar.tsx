@@ -24,8 +24,8 @@ const NavContent = styled.div`
 
 const NavLinkContainer = styled.div`
   display: flex;
-  align-items: center;
-  gap: 35px;
+  flex-wrap: wrap;
+  gap: 40px;
 `;
 
 export const NavLinkItem = styled(Link)`
@@ -35,9 +35,11 @@ export const NavLinkItem = styled(Link)`
   font-weight: 400;
   color: #5c5c5c;
   cursor: pointer;
-  width: 100px;
-  height: 43px;
-  line-height: 43px;
+  transition: ease-in 0.1s;
+  &: hover {
+    color: #eb6d09;
+    text-decoration: underline;
+  }
 `;
 
 interface NavBarProps {
