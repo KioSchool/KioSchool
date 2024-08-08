@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import kioLogo from '@resources/image/kioLogo.png';
 import AuthenticationButton from '@components/user/AuthenticationButton';
-import UserProfileSvg from '@resources/svg/UserProfileSvg';
 
 const NavContainer = styled.div<{ useBackground: boolean }>`
   z-index: 1001;
@@ -12,14 +11,6 @@ const NavContainer = styled.div<{ useBackground: boolean }>`
   top: 0;
   position: fixed;
   background: ${(props) => (props.useBackground ? 'white' : 'transparent')};
-`;
-
-const AccountLink = styled(Link)`
-  display: flex;
-  width: 100px;
-  height: 60px;
-  align-items: center;
-  justify-content: center;
 `;
 
 const NavContent = styled.div`
@@ -34,19 +25,15 @@ const NavContent = styled.div`
 const NavLinkContainer = styled.div`
   display: flex;
   align-items: center;
-`;
-
-const NavLinkItemContainer = styled.div`
-  display: flex;
-  align-items: center;
+  gap: 35px;
 `;
 
 export const NavLinkItem = styled(Link)`
   text-decoration: none;
   text-align: center;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 400;
-  color: inherit;
+  color: #5c5c5c;
   cursor: pointer;
   width: 100px;
   height: 43px;
@@ -65,14 +52,9 @@ function NavBar({ useBackground = false }: NavBarProps) {
         </Link>
 
         <NavLinkContainer>
-          <NavLinkItemContainer>
-            <NavLinkItem to={'/info'}>Info</NavLinkItem>
-            <AuthenticationButton />
-          </NavLinkItemContainer>
-
-          <AccountLink to={'/admin/my-info'}>
-            <UserProfileSvg width={50} height={50} />
-          </AccountLink>
+          <NavLinkItem to={'/info'}>키오스쿨 소개</NavLinkItem>
+          <AuthenticationButton />
+          <NavLinkItem to={'/admin/my-info'}>마이 페이지</NavLinkItem>
         </NavLinkContainer>
       </NavContent>
     </NavContainer>

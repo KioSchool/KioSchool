@@ -6,10 +6,10 @@ import { useNavigate } from 'react-router-dom';
 
 const LogoutText = styled.p`
   text-decoration: none;
-  color: inherit;
+  color: #5c5c5c;
   cursor: pointer;
   text-align: center;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 400;
   line-height: 43px;
   margin: 0;
@@ -28,12 +28,12 @@ function AuthenticationButton() {
             navigate('/');
           }}
         >
-          Logout
+          로그아웃
         </LogoutText>
       ) : (
         <>
-          <NavLinkItem to={'/login'}>Login</NavLinkItem>
-          <NavLinkItem to={'/register'}>Sign Up</NavLinkItem>
+          <NavLinkItem to={'/login'}>로그인</NavLinkItem>
+          <NavLinkItem to={'/register'}>회원가입</NavLinkItem>
         </>
       )}
     </>
