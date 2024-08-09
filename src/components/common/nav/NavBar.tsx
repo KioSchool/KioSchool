@@ -5,17 +5,21 @@ import AuthenticationButton from '@components/user/AuthenticationButton';
 
 const NavContainer = styled.div<{ useBackground: boolean }>`
   z-index: 1001;
-  width: 1000px;
+  width: 100vw;
   display: flex;
+  flex-direction: row;
+  justify-content: center;
   flex-wrap: wrap;
   top: 0;
   position: fixed;
   background: ${(props) => (props.useBackground ? 'white' : 'transparent')};
+  backdrop-filter: blur(10px);
+  opacity: 0.8;
 `;
 
 const NavContent = styled.div`
   margin: 15px 24px;
-  width: 100%;
+  width: 1000px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -36,7 +40,7 @@ export const NavLinkItem = styled(Link)`
   color: #5c5c5c;
   cursor: pointer;
   transition: ease-in 0.1s;
-  &: hover {
+  &:hover {
     color: #eb6d09;
     text-decoration: underline;
   }
@@ -45,6 +49,7 @@ export const NavLinkItem = styled(Link)`
 interface NavBarProps {
   useBackground?: boolean;
 }
+
 function NavBar({ useBackground = false }: NavBarProps) {
   return (
     <NavContainer useBackground={useBackground}>
