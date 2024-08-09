@@ -3,8 +3,7 @@ import useAuthentication from '@hooks/useAuthentication';
 import { NavLinkItem } from '@components/common/nav/NavBar';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import { navBarLabelStyle } from '@styles/navBarStyles';
-
+import { navBarLabelStyle } from '@styles/navbarStyles';
 const LogoutText = styled.p`
   margin: 0;
   ${navBarLabelStyle}
