@@ -3,20 +3,11 @@ import useAuthentication from '@hooks/useAuthentication';
 import { NavLinkItem } from '@components/common/nav/NavBar';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
+import { navBarLabelStyle } from '@styles/navBarStyles';
 
 const LogoutText = styled.p`
-  text-decoration: none;
-  color: #5c5c5c;
-  cursor: pointer;
-  text-align: center;
-  font-size: 18px;
-  font-weight: 400;
   margin: 0;
-  transition: ease-in 0.1s;
-  &: hover {
-    color: #eb6d09;
-    text-decoration: underline;
-  }
+  ${navBarLabelStyle}
 `;
 
 function AuthenticationButton() {

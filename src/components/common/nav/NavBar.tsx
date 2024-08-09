@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import kioLogo from '@resources/image/kioLogo.png';
 import AuthenticationButton from '@components/user/AuthenticationButton';
+import { navBarLabelStyle } from '@styles/navBarStyles';
 
 const NavContainer = styled.div<{ useBackground: boolean }>`
   z-index: 1001;
@@ -33,17 +34,7 @@ const NavLinkContainer = styled.div`
 `;
 
 export const NavLinkItem = styled(Link)`
-  text-decoration: none;
-  text-align: center;
-  font-size: 18px;
-  font-weight: 400;
-  color: #5c5c5c;
-  cursor: pointer;
-  transition: ease-in 0.1s;
-  &:hover {
-    color: #eb6d09;
-    text-decoration: underline;
-  }
+  ${navBarLabelStyle}
 `;
 
 interface NavBarProps {
