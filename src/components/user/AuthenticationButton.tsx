@@ -3,16 +3,10 @@ import useAuthentication from '@hooks/useAuthentication';
 import { NavLinkItem } from '@components/common/nav/NavBar';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-
+import { navBarLabelStyle } from '@styles/navBarStyles';
 const LogoutText = styled.p`
-  text-decoration: none;
-  color: inherit;
-  cursor: pointer;
-  text-align: center;
-  font-size: 24px;
-  font-weight: 400;
-  line-height: 43px;
   margin: 0;
+  ${navBarLabelStyle}
 `;
 
 function AuthenticationButton() {
@@ -28,12 +22,12 @@ function AuthenticationButton() {
             navigate('/');
           }}
         >
-          Logout
+          로그아웃
         </LogoutText>
       ) : (
         <>
-          <NavLinkItem to={'/login'}>Login</NavLinkItem>
-          <NavLinkItem to={'/register'}>Sign Up</NavLinkItem>
+          <NavLinkItem to={'/login'}>로그인</NavLinkItem>
+          <NavLinkItem to={'/register'}>회원가입</NavLinkItem>
         </>
       )}
     </>
