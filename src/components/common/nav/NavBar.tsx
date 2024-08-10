@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import kioLogo from '@resources/image/kioLogo.png';
 import AuthenticationButton from '@components/user/AuthenticationButton';
-import { navBarLabelStyle } from '@styles/navbarStyles';
+import { navBarLabelStyle } from '@styles/navBarStyles';
 
 const NavContainer = styled.div<{ useBackground: boolean }>`
   z-index: 1001;
