@@ -12,9 +12,9 @@ export const MainContainer = styled.div<{ backgroundColor?: string }>`
   background-color: ${(props) => (props.backgroundColor ? props.backgroundColor : 'white')};
 `;
 
-export const SubContainer = styled.div<{ justifyValue: string; flexDirection?: string; alignItems?: string }>`
+export const SubContainer = styled.div<{ justifyValue: string; flexDirection?: string; alignItems?: string; customWidth?: string }>`
   display: flex;
-  width: 65vw;
+  width: ${(props) => props.customWidth || '65vw'};
   flex-basis: 0;
   flex-wrap: wrap;
   flex-direction: ${(props) => props.flexDirection || 'center'};
@@ -31,13 +31,14 @@ interface Props {
   alignItems?: string;
   backgroundColor?: string;
   useNavBackground?: boolean;
+  customWidth?: string;
 }
 
-function AppContainer({ children, justifyValue, flexDirection, alignItems, backgroundColor, useNavBackground }: Props) {
+function AppContainer({ children, justifyValue, flexDirection, alignItems, backgroundColor, useNavBackground, customWidth }: Props) {
   return (
     <MainContainer backgroundColor={backgroundColor}>
       <NavBar useBackground={useNavBackground} />
-      <SubContainer justifyValue={justifyValue} flexDirection={flexDirection} alignItems={alignItems}>
+      <SubContainer justifyValue={justifyValue} flexDirection={flexDirection} alignItems={alignItems} customWidth={customWidth}>
         {children}
       </SubContainer>
     </MainContainer>
