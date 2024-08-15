@@ -20,7 +20,7 @@ export const SubContainer = styled.div<{ justifyValue: string; flexDirection?: s
   flex-direction: ${(props) => props.flexDirection || 'center'};
   align-items: ${(props) => props.alignItems || 'center'};
   height: 100%;
-  min-width: 1100px;
+  min-width: 1000px;
   justify-content: ${(props) => props.justifyValue};
 `;
 
