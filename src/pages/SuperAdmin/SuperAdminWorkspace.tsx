@@ -9,8 +9,9 @@ import { useRecoilValue } from 'recoil';
 
 const HorizontalLine = styled.hr`
   width: 100%;
-  border: 0.3px solid #d8d8d8;
+  border: 0.3px solid #eeecec;
 `;
+
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -18,6 +19,7 @@ const ContentContainer = styled.div`
   align-items: center;
   height: 500px;
 `;
+
 function SuperAdminWorkspace() {
   const workspaces = useRecoilValue(userWorkspaceListAtom);
 

@@ -8,7 +8,7 @@ const SearchBarContainer = styled.div`
   align-items: center;
   border-bottom: 0.5px solid #d8d8d8;
   color: #d8d8d8;
-
+  transition: 0.1s ease-in;
   &:focus-within {
     color: black;
     border-bottom: 0.5px solid black;

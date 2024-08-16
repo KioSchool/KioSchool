@@ -14,8 +14,8 @@ function SuperAdminWorkspaceContent({ name, owner, createdAt }: Workspace) {
   const filteredCreatedDate = datePart.replace(/-/g, '.');
 
   return (
-    <SubContainer style={{ gap: '5px' }} flexDirection="column" justifyValue="center" alignItems="flex-start" customWidth="1000px" customHeight="80px">
-      <AppLabel size={20} style={{ fontWeight: 600 }}>
+    <SubContainer flexDirection="column" justifyValue="center" alignItems="flex-start" customWidth="1000px" customHeight="80px" customGap="5px">
+      <AppLabel size={20} style={{ fontWeight: 600, cursor: 'pointer' }}>
         {name}
       </AppLabel>
       <SubLabelContainer>{`${filteredCreatedDate} | ${owner.name}`}</SubLabelContainer>
