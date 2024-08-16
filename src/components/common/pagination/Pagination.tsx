@@ -23,7 +23,7 @@ function Pagination({ totalPageCount, itemsPerPage = 6 }: PaginationProps) {
     <ReactPaginate
       pageCount={totalPageCount}
       onPageChange={pageClickHandler}
-      pageRangeDisplayed={6}
+      pageRangeDisplayed={3}
       previousLabel="<"
       nextLabel=">"
       pageClassName="page-item"

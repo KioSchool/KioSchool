@@ -2,6 +2,8 @@
     display: flex;
     list-style: none;
     padding: 0;
+    justify-content: center;
+    align-items: center;
   }
   
   .page-item {
@@ -9,39 +11,44 @@
   }
   
   .page-link {
-    display: block;
-    padding: 8px 16px;
-    color: #007bff;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15px;
+    height: 15px;
+    padding: 5px 5px;
+    color: #777;
+    border-radius:100%;
     text-decoration: none;
+    font-weight: 400;
+    font-size: 14px;
+    transition: background-color 0.3s, color 0.3s;
   }
   
   .page-link:hover {
-    background-color: #e9ecef;
+    color: #333;
+    background-color: #e0e0e0;
   }
   
   .page-item.active .page-link {
-    z-index: 3;
-    color: #fff;
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: #d9d9d9;
+    color: #333;
+    font-weight: bold;
   }
   
   .page-item.disabled .page-link {
-    color: #6c757d;
+    color: #ccc;
     pointer-events: none;
-    background-color: #fff;
-    border-color: #dee2e6;
   }
   
-  .page-item:first-child .page-link {
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-  }
-  
+  .page-item:first-child .page-link,
   .page-item:last-child .page-link {
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
+    border-radius: 100%;
+  }
+  
+  .page-item .page-link::before,
+  .page-item .page-link::after {
+    content: '';
+    padding: 0 3px;
   }
   
