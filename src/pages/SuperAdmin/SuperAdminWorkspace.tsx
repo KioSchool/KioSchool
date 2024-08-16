@@ -19,7 +19,8 @@ function SuperAdminWorkspace() {
       <>
         <TitleNavBar title="전체 워크스페이스 관리" />
         {workspaces.content.map((item) => {
-          return <SuperAdminWorkspaceContent key={item.id}>{item.name}</SuperAdminWorkspaceContent>;
+          console.log(item);
+          return <SuperAdminWorkspaceContent {...item} key={item.id} />;
         })}
       </>
     </AppContainer>
