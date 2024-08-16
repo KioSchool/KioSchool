@@ -12,14 +12,14 @@ export const MainContainer = styled.div<{ backgroundColor?: string }>`
   background-color: ${(props) => (props.backgroundColor ? props.backgroundColor : 'white')};
 `;
 
-export const SubContainer = styled.div<{ justifyValue: string; flexDirection?: string; alignItems?: string; customWidth?: string }>`
+export const SubContainer = styled.div<{ justifyValue: string; flexDirection?: string; alignItems?: string; customWidth?: string; customHeight?: string }>`
   display: flex;
   width: ${(props) => props.customWidth || '65vw'};
   flex-basis: 0;
   flex-wrap: wrap;
   flex-direction: ${(props) => props.flexDirection || 'center'};
   align-items: ${(props) => props.alignItems || 'center'};
-  height: 100%;
+  height: ${(props) => props.customHeight || '100%'};
   min-width: 1000px;
   justify-content: ${(props) => props.justifyValue};
 `;
@@ -32,13 +32,14 @@ interface Props {
   backgroundColor?: string;
   useNavBackground?: boolean;
   customWidth?: string;
+  customHeight?: string;
 }
 
-function AppContainer({ children, justifyValue, flexDirection, alignItems, backgroundColor, useNavBackground, customWidth }: Props) {
+function AppContainer({ children, justifyValue, flexDirection, alignItems, backgroundColor, useNavBackground, customWidth, customHeight }: Props) {
   return (
     <MainContainer backgroundColor={backgroundColor}>
       <NavBar useBackground={useNavBackground} />
-      <SubContainer justifyValue={justifyValue} flexDirection={flexDirection} alignItems={alignItems} customWidth={customWidth}>
+      <SubContainer justifyValue={justifyValue} flexDirection={flexDirection} alignItems={alignItems} customWidth={customWidth} customHeight={customHeight}>
         {children}
       </SubContainer>
     </MainContainer>
