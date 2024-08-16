@@ -38,7 +38,7 @@ function AdminHome() {
   }, []);
 
   return (
-    <AppContainer justifyValue={'space-between'}>
+    <AppContainer justifyValue={'space-between'} flexDirection={'row'}>
       <>
         <UserNameContainer>
           <UserNameText>{user.name}</UserNameText>

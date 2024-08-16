@@ -17,7 +17,7 @@ const Container = styled.div<{ useSubTitle: boolean }>`
   padding-bottom: 25px;
   justify-content: center;
   height: ${(props) => (props.useSubTitle ? '100px' : '50px')};
-  width: 100%;
+  width: 1000px;
   min-width: 1000px;
 `;
 

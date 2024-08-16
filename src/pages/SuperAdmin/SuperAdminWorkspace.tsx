@@ -16,9 +16,9 @@ const HorizontalLine = styled.hr`
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
-  height: 500px;
+  height: 550px;
 `;
 
 function SuperAdminWorkspace() {
@@ -30,7 +30,7 @@ function SuperAdminWorkspace() {
   };
 
   return (
-    <AppContainer justifyValue="center" customWidth="1000px" customHeight="100%" customGap="20px">
+    <AppContainer justifyValue={'center'} customWidth={'1000px'} customHeight={'100%'} customGap={'20px'}>
       <>
         <TitleNavBar title="전체 워크스페이스 관리" />
         <SuperAdminSearchBar />

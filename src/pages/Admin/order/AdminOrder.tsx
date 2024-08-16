@@ -17,6 +17,8 @@ import uploadPreview from '@resources/image/uploadPreview.png';
 
 const Container = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
   gap: 24px;
   width: 100vw;

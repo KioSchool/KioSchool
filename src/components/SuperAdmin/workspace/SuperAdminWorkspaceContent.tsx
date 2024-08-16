@@ -26,7 +26,7 @@ function SuperAdminWorkspaceContent({ id, name, owner, createdAt, showDescribe, 
   const navigate = useNavigate();
 
   return (
-    <SubContainer flexDirection="column" justifyValue="center" alignItems="flex-start" customWidth="1000px" customHeight="80px" customGap="5px">
+    <SubContainer flexDirection={'column'} justifyValue={'center'} alignItems={'flex-start'} customWidth={'1000px'} customHeight={'80px'} customGap={'5px'}>
       <WorkspaceLabel
         onClick={() => {
           onSelect(id);
