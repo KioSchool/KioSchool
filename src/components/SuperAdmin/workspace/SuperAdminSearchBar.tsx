@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import useSuperAdminWorkspace from '@hooks/SuperAdmin/useSuperAdminWorkspace';
+import ActivatedSearchSvg from '@resources/svg/ActivatedSearchSvg';
 import React, { forwardRef } from 'react';
 
 const Input = styled.input`
@@ -47,6 +48,7 @@ const SuperAdminSearchBar = forwardRef<HTMLInputElement, React.InputHTMLAttribut
 
   return (
     <SearchBarContainer>
+      <ActivatedSearchSvg />
       <Input {...props} ref={ref} type="text" placeholder="사용자 이름, 워크스페이스 이름 등을 입력해주세요" onKeyDown={fetchWorkspacesByName} />
     </SearchBarContainer>
   );
