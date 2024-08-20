@@ -56,7 +56,7 @@ const SuperAdminSearchBar = forwardRef<HTMLInputElement, React.InputHTMLAttribut
         {...props}
         ref={ref}
         type="text"
-        placeholder="사용자 이름, 워크스페이스 이름 등을 입력해주세요"
+        placeholder="워크스페이스 이름을 입력해주세요"
         onKeyDown={fetchWorkspacesByName}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
