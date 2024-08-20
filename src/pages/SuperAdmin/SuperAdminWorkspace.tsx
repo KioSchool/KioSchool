@@ -42,7 +42,7 @@ function SuperAdminWorkspace() {
               {index < workspaces.content.length - 1 && <HorizontalLine />}
             </div>
           ))}
-          {workspaces.numberOfElements === 0 && <EmptyLabel>찾고자 하는 워크스페이스 없습니다.</EmptyLabel>}
+          {workspaces.numberOfElements === 0 && <EmptyLabel>찾고자 하는 워크스페이스가 없습니다.</EmptyLabel>}
         </ContentContainer>
         <Pagination totalPageCount={workspaces.totalPages - 1} name={userInputRef.current?.value} />
       </>

@@ -16,7 +16,7 @@ function Pagination({ totalPageCount, itemsPerPage = 6, name }: PaginationProps)
     fetchAllWorkspaces(1, itemsPerPage);
   }, []);
 
-  const pageClickHandler = (e: any) => {
+  const pageClickHandler = (e: { selected: number }) => {
     fetchAllWorkspaces(e.selected + 1, itemsPerPage, name);
   };
 
