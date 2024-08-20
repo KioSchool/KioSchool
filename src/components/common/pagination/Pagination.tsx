@@ -1,22 +1,23 @@
 import useSuperAdminWorkspace from '@hooks/SuperAdmin/useSuperAdminWorkspace';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 import './Pagination.css';
 
 interface PaginationProps {
   totalPageCount: number;
   itemsPerPage?: number;
+  name?: string;
 }
 
-function Pagination({ totalPageCount, itemsPerPage = 6 }: PaginationProps) {
+function Pagination({ totalPageCount, itemsPerPage = 6, name }: PaginationProps) {
   const { fetchAllWorkspaces } = useSuperAdminWorkspace();
 
   useEffect(() => {
     fetchAllWorkspaces(1, itemsPerPage);
   }, []);
 
-  const pageClickHandler = (event: any) => {
-    fetchAllWorkspaces(event.selected + 1, itemsPerPage);
+  const pageClickHandler = (e: any) => {
+    fetchAllWorkspaces(e.selected + 1, itemsPerPage, name);
   };
 
   return (

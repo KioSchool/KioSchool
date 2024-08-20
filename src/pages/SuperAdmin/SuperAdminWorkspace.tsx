@@ -5,7 +5,7 @@ import SuperAdminSearchBar from '@components/SuperAdmin/workspace/SuperAdminSear
 import SuperAdminWorkspaceContent from '@components/SuperAdmin/workspace/SuperAdminWorkspaceContent';
 import styled from '@emotion/styled';
 import { userWorkspaceListAtom } from '@recoils/atoms';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
 const HorizontalLine = styled.hr`
@@ -22,6 +22,7 @@ const ContentContainer = styled.div`
 `;
 
 function SuperAdminWorkspace() {
+  const userInputRef = useRef<HTMLInputElement | null>(null);
   const workspaces = useRecoilValue(userWorkspaceListAtom);
   const [selectedWorkspaceId, setSelectedWorkspaceId] = useState<number>(0);
 
@@ -33,7 +34,7 @@ function SuperAdminWorkspace() {
     <AppContainer justifyValue={'center'} customWidth={'1000px'} customHeight={'100%'} customGap={'20px'}>
       <>
         <TitleNavBar title="전체 워크스페이스 관리" />
-        <SuperAdminSearchBar />
+        <SuperAdminSearchBar ref={userInputRef} />
         <ContentContainer>
           {workspaces.content.map((item, index) => (
             <div key={item.id}>
@@ -42,7 +43,7 @@ function SuperAdminWorkspace() {
             </div>
           ))}
         </ContentContainer>
-        <Pagination totalPageCount={workspaces.totalPages - 1} />
+        <Pagination totalPageCount={workspaces.totalPages - 1} name={userInputRef.current?.value} />
       </>
     </AppContainer>
   );
