@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
 import useSuperAdminWorkspace from '@hooks/SuperAdmin/useSuperAdminWorkspace';
 import ActivatedSearchSvg from '@resources/svg/ActivatedSearchSvg';
-import React, { forwardRef } from 'react';
+import DeactivatedSearchSvg from '@resources/svg/DeactivatedSearchSvg';
+import React, { forwardRef, useState } from 'react';
 
 const Input = styled.input`
-  width: 50%;
+  width: 100%;
   font-size: 25px;
   border: none;
   color: inherit;
@@ -19,6 +20,7 @@ const Input = styled.input`
 `;
 
 const SearchBarContainer = styled.div`
+  gap: 20px;
   width: 100%;
   height: 50px;
   display: flex;
@@ -34,6 +36,7 @@ const SearchBarContainer = styled.div`
 `;
 
 const SuperAdminSearchBar = forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>((props, ref) => {
+  const [isFocused, setIsFocused] = useState<boolean>(false);
   const { fetchAllWorkspaces } = useSuperAdminWorkspace();
 
   const fetchWorkspacesByName = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -48,8 +51,16 @@ const SuperAdminSearchBar = forwardRef<HTMLInputElement, React.InputHTMLAttribut
 
   return (
     <SearchBarContainer>
-      <ActivatedSearchSvg />
-      <Input {...props} ref={ref} type="text" placeholder="사용자 이름, 워크스페이스 이름 등을 입력해주세요" onKeyDown={fetchWorkspacesByName} />
+      {isFocused ? <ActivatedSearchSvg /> : <DeactivatedSearchSvg />}
+      <Input
+        {...props}
+        ref={ref}
+        type="text"
+        placeholder="사용자 이름, 워크스페이스 이름 등을 입력해주세요"
+        onKeyDown={fetchWorkspacesByName}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+      />
     </SearchBarContainer>
   );
 });
