@@ -6,9 +6,9 @@ function useSuperAdminWorkspace() {
   const { superAdminApi } = useApi();
   const setUserWorkspaceList = useSetRecoilState(userWorkspaceListAtom);
 
-  const fetchAllWorkspaces = (page: number, size: number) => {
+  const fetchAllWorkspaces = (page: number, size: number, name?: string) => {
     superAdminApi
-      .get<any>('/workspaces', { params: { page: page, size: size } })
+      .get<any>('/workspaces', { params: { page: page, size: size, name: name } })
       .then((res) => {
         setUserWorkspaceList(res.data);
       })
