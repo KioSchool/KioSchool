@@ -1,5 +1,4 @@
 import { Workspace } from '@@types/index';
-import AppButton from '@components/common/button/AppButton';
 import { SubContainer } from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import { navBarLabelStyle } from '@styles/navBarStyles';
@@ -15,12 +14,7 @@ const WorkspaceLabel = styled.div`
   ${navBarLabelStyle}
 `;
 
-interface WorkspaceProps extends Workspace {
-  showDescribe: boolean;
-  onSelect: (id: number) => void;
-}
-
-function SuperAdminWorkspaceContent({ id, name, owner, createdAt, showDescribe, onSelect }: WorkspaceProps) {
+function SuperAdminWorkspaceContent({ id, name, owner, createdAt }: Workspace) {
   const datePart = createdAt.split('T')[0];
   const filteredCreatedDate = datePart.replace(/-/g, '.');
   const navigate = useNavigate();
@@ -29,25 +23,12 @@ function SuperAdminWorkspaceContent({ id, name, owner, createdAt, showDescribe, 
     <SubContainer flexDirection={'column'} justifyValue={'center'} alignItems={'flex-start'} customWidth={'1000px'} customHeight={'80px'} customGap={'5px'}>
       <WorkspaceLabel
         onClick={() => {
-          onSelect(id);
+          navigate(`/admin/workspace/${id}`);
         }}
       >
         {name}
       </WorkspaceLabel>
-
       <SubLabelContainer>{`${filteredCreatedDate} | ${owner.name}`}</SubLabelContainer>
-      {showDescribe && (
-        <>
-          <div>Detail Contents</div>
-          <AppButton
-            onClick={() => {
-              navigate(`/admin/workspace/${id}`);
-            }}
-          >
-            바로가기
-          </AppButton>
-        </>
-      )}
     </SubContainer>
   );
 }
