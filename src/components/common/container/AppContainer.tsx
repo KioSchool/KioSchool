@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import NavBar from '@components/common/nav/NavBar';
 
 export const MainContainer = styled.div<{ backgroundColor?: string }>`
-  width: 100vw;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
