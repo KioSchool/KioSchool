@@ -1,3 +1,4 @@
+import { WorkspaceList } from '@@types/index';
 import useApi from '@hooks/useApi';
 import { userWorkspaceListAtom } from '@recoils/atoms';
 import { useSetRecoilState } from 'recoil';
@@ -8,7 +9,7 @@ function useSuperAdminWorkspace() {
 
   const fetchAllWorkspaces = (page: number, size: number, name?: string) => {
     superAdminApi
-      .get<any>('/workspaces', { params: { page: page, size: size, name: name } })
+      .get<WorkspaceList>('/workspaces', { params: { page: page, size: size, name: name } })
       .then((res) => {
         setUserWorkspaceList(res.data);
       })
