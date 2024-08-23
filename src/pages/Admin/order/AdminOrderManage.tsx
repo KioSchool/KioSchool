@@ -100,7 +100,7 @@ function AdminOrderManage() {
   }, []);
 
   return (
-    <AppContainer justifyValue={'center'} useNavBackground={true} flexDirection={'row'}>
+    <AppContainer justifyValue={'center'} useNavBackground={true} alignItems={'center'}>
       <Container>
         <TitleNavBar title={'주문 페이지 관리'}>
           <ButtonContainer>
