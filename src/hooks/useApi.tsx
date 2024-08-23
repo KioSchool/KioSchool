@@ -62,7 +62,7 @@ function useApi({ useLoading = true }: UseApiProps = {}) {
   superAdminApi.interceptors.request.use(commonRequestInterceptor, commonErrorInterceptor);
   superAdminApi.interceptors.response.use(commonResponseInterceptor, (error) => {
     if (useLoading) setIsLoading(false);
-    if (error.response.status === 500) {
+    if (error.response.status === 403) {
       controller.abort();
       alert('권한이 없습니다.');
       navigate('/');
