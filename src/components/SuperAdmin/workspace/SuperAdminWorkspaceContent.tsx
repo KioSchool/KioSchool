@@ -15,9 +15,10 @@ const WorkspaceLabel = styled.div`
 `;
 
 function SuperAdminWorkspaceContent({ id, name, owner, createdAt }: Workspace) {
+  const navigate = useNavigate();
   const datePart = createdAt.split('T')[0];
   const filteredCreatedDate = datePart.replace(/-/g, '.');
-  const navigate = useNavigate();
+  const subLabelContents = `${filteredCreatedDate} | ${owner.name}`;
 
   return (
     <SubContainer flexDirection={'column'} justifyValue={'center'} alignItems={'flex-start'} customWidth={'1000px'} customHeight={'80px'} customGap={'5px'}>
@@ -28,7 +29,7 @@ function SuperAdminWorkspaceContent({ id, name, owner, createdAt }: Workspace) {
       >
         {name}
       </WorkspaceLabel>
-      <SubLabelContainer>{`${filteredCreatedDate} | ${owner.name}`}</SubLabelContainer>
+      <SubLabelContainer>{subLabelContents}</SubLabelContainer>
     </SubContainer>
   );
 }
