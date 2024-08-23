@@ -9,7 +9,7 @@ function useSuperAdminWorkspace() {
 
   const fetchAllWorkspaces = (page: number, size: number, name?: string) => {
     superAdminApi
-      .get<WorkspaceList>('/workspaces', { params: { page: page, size: size, name: name } })
+      .get<WorkspaceList>('/workspaces', { params: { page, size, name } })
       .then((res) => {
         setUserWorkspaceList(res.data);
       })

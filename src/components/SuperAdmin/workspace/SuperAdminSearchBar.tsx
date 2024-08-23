@@ -40,13 +40,9 @@ const SuperAdminSearchBar = forwardRef<HTMLInputElement, React.InputHTMLAttribut
   const { fetchAllWorkspaces } = useSuperAdminWorkspace();
 
   const fetchWorkspacesByName = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && ref && typeof ref !== 'function') {
-      if (ref.current?.value) {
-        fetchAllWorkspaces(1, 6, ref.current.value);
-      } else {
-        fetchAllWorkspaces(1, 6);
-      }
-    }
+    if (!(e.key === 'Enter' && ref && typeof ref !== 'function')) return;
+
+    fetchAllWorkspaces(1, 6, ref.current?.value);
   };
 
   return (
