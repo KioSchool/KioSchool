@@ -20,12 +20,14 @@ function SuperAdminWorkspace() {
   const userInputRef = useRef<HTMLInputElement | null>(null);
   const workspaces = useRecoilValue(userWorkspaceListAtom);
 
+  const contentsJustifyCenter = workspaces.numberOfElements > 0;
+
   return (
     <AppContainer contentsJustify={'center'} customWidth={'1000px'} customHeight={'100%'} customGap={'20px'}>
       <>
         <TitleNavBar title="전체 워크스페이스 관리" />
         <SuperAdminSearchBar ref={userInputRef} />
-        <ContentContainer justifyCenter={workspaces.numberOfElements > 0}>
+        <ContentContainer justifyCenter={contentsJustifyCenter}>
           <SuperAdminWorkspaceContents workspaces={workspaces} />
         </ContentContainer>
         <Pagination totalPageCount={workspaces.totalPages - 1} name={userInputRef.current?.value} />
