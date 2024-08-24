@@ -21,11 +21,11 @@ function SuperAdminWorkspace() {
   const userInputRef = useRef<HTMLInputElement | null>(null);
   const workspaces = useRecoilValue(userPaginationResponseAtom);
   const { fetchAllWorkspaces } = useSuperAdminWorkspace();
-
-  const EmptyWorkspaces = workspaces.numberOfElements === 0;
+  const workspacesNumberPerPage = workspaces.size;
+  const emptyWorkspaces = workspaces.numberOfElements === 0;
 
   useEffect(() => {
-    fetchAllWorkspaces(1, 6);
+    fetchAllWorkspaces(1, workspacesNumberPerPage);
   }, []);
 
   return (
@@ -33,13 +33,13 @@ function SuperAdminWorkspace() {
       <>
         <TitleNavBar title="전체 워크스페이스 관리" />
         <SuperAdminSearchBar ref={userInputRef} />
-        <ContentContainer justifyCenter={EmptyWorkspaces}>
+        <ContentContainer justifyCenter={emptyWorkspaces}>
           <SuperAdminWorkspaceContents workspaces={workspaces} />
         </ContentContainer>
         <Pagination
           totalPageCount={workspaces.totalPages - 1}
           paginateFunction={(page: number) => {
-            fetchAllWorkspaces(page, workspaces.size, userInputRef.current?.value);
+            fetchAllWorkspaces(page, workspacesNumberPerPage, userInputRef.current?.value);
           }}
         />
       </>
