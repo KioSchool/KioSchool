@@ -3,7 +3,7 @@ import TitleNavBar from '@components/common/nav/TitleNavBar';
 import Pagination from '@components/common/pagination/Pagination';
 import SuperAdminSearchBar from '@components/SuperAdmin/workspace/SuperAdminSearchBar';
 import styled from '@emotion/styled';
-import { userWorkspaceListAtom } from '@recoils/atoms';
+import { userPaginationResponseAtom } from '@recoils/atoms';
 import { useEffect, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
 import SuperAdminWorkspaceContents from './SuperAdminWorkspaceContents';
@@ -19,7 +19,7 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 
 function SuperAdminWorkspace() {
   const userInputRef = useRef<HTMLInputElement | null>(null);
-  const workspaces = useRecoilValue(userWorkspaceListAtom);
+  const workspaces = useRecoilValue(userPaginationResponseAtom);
   const { fetchAllWorkspaces } = useSuperAdminWorkspace();
 
   const contentsJustifyCenter = workspaces.numberOfElements > 0;

@@ -72,7 +72,7 @@ export interface Pageable {
   unpaged: boolean;
 }
 
-export interface WorkspaceList<T> {
+export interface PaginationResponse<T> {
   content: T[];
   pageable: Pageable;
   totalPages: number;

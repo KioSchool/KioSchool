@@ -1,6 +1,6 @@
-import { Workspace, WorkspaceList } from '@@types/index';
+import { Workspace, PaginationResponse } from '@@types/index';
 import useApi from '@hooks/useApi';
-import { userWorkspaceListAtom } from '@recoils/atoms';
+import { userPaginationResponseAtom } from '@recoils/atoms';
 import { useSetRecoilState } from 'recoil';
 
 interface ParamsType {
@@ -11,7 +11,7 @@ interface ParamsType {
 
 function useSuperAdminWorkspace() {
   const { superAdminApi } = useApi();
-  const setUserWorkspaceList = useSetRecoilState(userWorkspaceListAtom);
+  const setUserPaginationResponse = useSetRecoilState(userPaginationResponseAtom);
 
   const fetchAllWorkspaces = (page: number, size: number, name?: string) => {
     const params: ParamsType = { page, size };
@@ -20,9 +20,9 @@ function useSuperAdminWorkspace() {
     }
 
     superAdminApi
-      .get<WorkspaceList<Workspace>>('/workspaces', { params: params })
+      .get<PaginationResponse<Workspace>>('/workspaces', { params: params })
       .then((res) => {
-        setUserWorkspaceList(res.data);
+        setUserPaginationResponse(res.data);
       })
       .catch((error) => console.error(error));
   };

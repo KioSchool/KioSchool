@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { Order, OrderProductBase, Product, ProductCategory, User, Workspace, WorkspaceList } from '@@types/index';
+import { Order, OrderProductBase, Product, ProductCategory, User, Workspace, PaginationResponse } from '@@types/index';
 
 export const ordersAtom = atom<Order[]>({
   key: 'ordersAtom',
@@ -81,8 +81,8 @@ export const isLoadingAtom = atom<boolean>({
   default: false,
 });
 
-export const userWorkspaceListAtom = atom<WorkspaceList<Workspace>>({
-  key: 'userWorkspaceListAtom',
+export const userPaginationResponseAtom = atom<PaginationResponse<Workspace>>({
+  key: 'userPaginationResponseAtom',
   default: {
     content: [],
     pageable: {
