@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 import './Pagination.css';
 
@@ -9,13 +8,9 @@ interface PaginationProps {
   paginateFunction: (...args: any[]) => void;
 }
 
-function Pagination({ totalPageCount, itemsPerPage = 6, paginateFunction }: PaginationProps) {
-  useEffect(() => {
-    paginateFunction(1, itemsPerPage);
-  }, []);
-
+function Pagination({ totalPageCount, itemsPerPage = 6, paginateFunction, name }: PaginationProps) {
   const pageClickHandler = (e: { selected: number }) => {
-    paginateFunction(e.selected + 1, itemsPerPage);
+    paginateFunction(e.selected + 1, itemsPerPage, name);
   };
 
   return (

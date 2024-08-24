@@ -4,7 +4,7 @@ import Pagination from '@components/common/pagination/Pagination';
 import SuperAdminSearchBar from '@components/SuperAdmin/workspace/SuperAdminSearchBar';
 import styled from '@emotion/styled';
 import { userWorkspaceListAtom } from '@recoils/atoms';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
 import SuperAdminWorkspaceContents from './SuperAdminWorkspaceContents';
 import useSuperAdminWorkspace from '@hooks/SuperAdmin/useSuperAdminWorkspace';
@@ -23,6 +23,10 @@ function SuperAdminWorkspace() {
   const { fetchAllWorkspaces } = useSuperAdminWorkspace();
 
   const contentsJustifyCenter = workspaces.numberOfElements > 0;
+
+  useEffect(() => {
+    fetchAllWorkspaces(1, 6);
+  }, []);
 
   return (
     <AppContainer contentsJustify={'center'} customWidth={'1000px'} customHeight={'100%'} customGap={'20px'}>
