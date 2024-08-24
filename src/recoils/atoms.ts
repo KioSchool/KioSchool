@@ -81,7 +81,7 @@ export const isLoadingAtom = atom<boolean>({
   default: false,
 });
 
-export const userWorkspaceListAtom = atom<WorkspaceList>({
+export const userWorkspaceListAtom = atom<WorkspaceList<Workspace>>({
   key: 'userWorkspaceListAtom',
   default: {
     content: [],

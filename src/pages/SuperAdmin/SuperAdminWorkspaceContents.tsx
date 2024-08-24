@@ -1,4 +1,4 @@
-import { WorkspaceList } from '@@types/index';
+import { Workspace, WorkspaceList } from '@@types/index';
 import SuperAdminWorkspaceContent from '@components/SuperAdmin/workspace/SuperAdminWorkspaceContent';
 import styled from '@emotion/styled';
 
@@ -12,7 +12,7 @@ const EmptyLabel = styled.div`
   color: #d8d8d8;
 `;
 
-function SuperAdminWorkspaceContents({ workspaces }: { workspaces: WorkspaceList }) {
+function SuperAdminWorkspaceContents({ workspaces }: { workspaces: WorkspaceList<Workspace> }) {
   if (workspaces.numberOfElements === 0) {
     return <EmptyLabel>찾고자 하는 워크스페이스가 없습니다.</EmptyLabel>;
   }

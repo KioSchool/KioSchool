@@ -72,8 +72,8 @@ export interface Pageable {
   unpaged: boolean;
 }
 
-export interface WorkspaceList {
-  content: Workspace[];
+export interface WorkspaceList<T> {
+  content: T[];
   pageable: Pageable;
   totalPages: number;
   totalElements: number;

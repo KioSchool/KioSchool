@@ -1,4 +1,4 @@
-import { WorkspaceList } from '@@types/index';
+import { Workspace, WorkspaceList } from '@@types/index';
 import useApi from '@hooks/useApi';
 import { userWorkspaceListAtom } from '@recoils/atoms';
 import { useSetRecoilState } from 'recoil';
@@ -20,7 +20,7 @@ function useSuperAdminWorkspace() {
     }
 
     superAdminApi
-      .get<WorkspaceList>('/workspaces', { params: params })
+      .get<WorkspaceList<Workspace>>('/workspaces', { params: params })
       .then((res) => {
         setUserWorkspaceList(res.data);
       })
