@@ -3,14 +3,12 @@ import './Pagination.css';
 
 interface PaginationProps {
   totalPageCount: number;
-  itemsPerPage?: number;
-  name?: string;
-  paginateFunction: (...args: any[]) => void;
+  paginateFunction: (page: number) => void;
 }
 
-function Pagination({ totalPageCount, itemsPerPage = 6, paginateFunction, name }: PaginationProps) {
+function Pagination({ totalPageCount, paginateFunction }: PaginationProps) {
   const pageClickHandler = (e: { selected: number }) => {
-    paginateFunction(e.selected + 1, itemsPerPage, name);
+    paginateFunction(e.selected + 1);
   };
 
   return (

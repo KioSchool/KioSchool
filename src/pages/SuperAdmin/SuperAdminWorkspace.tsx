@@ -36,7 +36,12 @@ function SuperAdminWorkspace() {
         <ContentContainer justifyCenter={contentsJustifyCenter}>
           <SuperAdminWorkspaceContents workspaces={workspaces} />
         </ContentContainer>
-        <Pagination totalPageCount={workspaces.totalPages - 1} name={userInputRef.current?.value} paginateFunction={fetchAllWorkspaces} />
+        <Pagination
+          totalPageCount={workspaces.totalPages - 1}
+          paginateFunction={(page: number) => {
+            fetchAllWorkspaces(page, workspaces.size, userInputRef.current?.value);
+          }}
+        />
       </>
     </AppContainer>
   );
