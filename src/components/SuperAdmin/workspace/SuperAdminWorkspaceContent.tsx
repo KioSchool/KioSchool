@@ -1,7 +1,6 @@
 import { Workspace } from '@@types/index';
 import { SubContainer } from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
-import { navBarLabelStyle } from '@styles/navBarStyles';
 import { useNavigate } from 'react-router-dom';
 
 const SubLabelContainer = styled.div`
@@ -11,7 +10,17 @@ const SubLabelContainer = styled.div`
 `;
 
 const WorkspaceLabel = styled.div`
-  ${navBarLabelStyle}
+  text-align: center;
+  font-size: 18px;
+  font-weight: 400;
+  text-decoration: none;
+  color: #5c5c5c;
+  cursor: pointer;
+  transition: ease-in 0.1s;
+  &:hover {
+    color: #eb6d09;
+    text-decoration: underline;
+  }
 `;
 
 function SuperAdminWorkspaceContent({ id, name, owner, createdAt }: Workspace) {
