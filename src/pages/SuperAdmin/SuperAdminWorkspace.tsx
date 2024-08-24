@@ -7,6 +7,7 @@ import { userWorkspaceListAtom } from '@recoils/atoms';
 import { useRef } from 'react';
 import { useRecoilValue } from 'recoil';
 import SuperAdminWorkspaceContents from './SuperAdminWorkspaceContents';
+import useSuperAdminWorkspace from '@hooks/SuperAdmin/useSuperAdminWorkspace';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   display: flex;
@@ -19,6 +20,7 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 function SuperAdminWorkspace() {
   const userInputRef = useRef<HTMLInputElement | null>(null);
   const workspaces = useRecoilValue(userWorkspaceListAtom);
+  const { fetchAllWorkspaces } = useSuperAdminWorkspace();
 
   const contentsJustifyCenter = workspaces.numberOfElements > 0;
 
@@ -30,7 +32,7 @@ function SuperAdminWorkspace() {
         <ContentContainer justifyCenter={contentsJustifyCenter}>
           <SuperAdminWorkspaceContents workspaces={workspaces} />
         </ContentContainer>
-        <Pagination totalPageCount={workspaces.totalPages - 1} name={userInputRef.current?.value} />
+        <Pagination totalPageCount={workspaces.totalPages - 1} name={userInputRef.current?.value} paginateFunction={fetchAllWorkspaces} />
       </>
     </AppContainer>
   );
