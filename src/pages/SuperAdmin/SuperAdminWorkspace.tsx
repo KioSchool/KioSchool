@@ -12,7 +12,7 @@ import useSuperAdminWorkspace from '@hooks/SuperAdmin/useSuperAdminWorkspace';
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   display: flex;
   flex-direction: column;
-  justify-content: ${(props) => (props.justifyCenter ? 'flex-start' : 'center')};
+  justify-content: ${(props) => (props.justifyCenter ? 'center' : 'flex-start')};
   align-items: center;
   height: 550px;
 `;
@@ -22,7 +22,7 @@ function SuperAdminWorkspace() {
   const workspaces = useRecoilValue(userPaginationResponseAtom);
   const { fetchAllWorkspaces } = useSuperAdminWorkspace();
 
-  const contentsJustifyCenter = workspaces.numberOfElements > 0;
+  const EmptyWorkspaces = workspaces.numberOfElements === 0;
 
   useEffect(() => {
     fetchAllWorkspaces(1, 6);
@@ -33,7 +33,7 @@ function SuperAdminWorkspace() {
       <>
         <TitleNavBar title="전체 워크스페이스 관리" />
         <SuperAdminSearchBar ref={userInputRef} />
-        <ContentContainer justifyCenter={contentsJustifyCenter}>
+        <ContentContainer justifyCenter={EmptyWorkspaces}>
           <SuperAdminWorkspaceContents workspaces={workspaces} />
         </ContentContainer>
         <Pagination
