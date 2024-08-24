@@ -27,7 +27,7 @@ function SuperAdminWorkspaceContent({ id, name, owner, createdAt }: Workspace) {
   const navigate = useNavigate();
   const datePart = createdAt.split('T')[0];
   const filteredCreatedDate = datePart.replace(/-/g, '.');
-  const subLabelContents = `${filteredCreatedDate} | ${owner.name}`;
+  const createdDateAndOwnerText = `${filteredCreatedDate} | ${owner.name}`;
 
   return (
     <SubContainer
@@ -45,7 +45,7 @@ function SuperAdminWorkspaceContent({ id, name, owner, createdAt }: Workspace) {
       >
         {name}
       </WorkspaceLabel>
-      <SubLabelContainer>{subLabelContents}</SubLabelContainer>
+      <SubLabelContainer>{createdDateAndOwnerText}</SubLabelContainer>
     </SubContainer>
   );
 }
