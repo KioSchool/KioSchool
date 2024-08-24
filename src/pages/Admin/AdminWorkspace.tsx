@@ -38,7 +38,7 @@ function AdminWorkspace() {
   }, []);
 
   return (
-    <AppContainer justifyValue={'center'}>
+    <AppContainer contentsJustify={'center'}>
       <Container>
         <TitleNavBar
           title={workspace.name}

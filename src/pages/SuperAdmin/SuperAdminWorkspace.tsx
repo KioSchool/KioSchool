@@ -21,7 +21,7 @@ function SuperAdminWorkspace() {
   const workspaces = useRecoilValue(userWorkspaceListAtom);
 
   return (
-    <AppContainer justifyValue={'center'} customWidth={'1000px'} customHeight={'100%'} customGap={'20px'}>
+    <AppContainer contentsJustify={'center'} customWidth={'1000px'} customHeight={'100%'} customGap={'20px'}>
       <>
         <TitleNavBar title="전체 워크스페이스 관리" />
         <SuperAdminSearchBar ref={userInputRef} />

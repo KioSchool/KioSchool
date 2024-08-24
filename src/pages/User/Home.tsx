@@ -69,7 +69,7 @@ function Home() {
   const [isHover, setIsHover] = useState<boolean>(false);
 
   return (
-    <AppContainer justifyValue={'center'} flexDirection={'column'} alignItems={'flex-start'}>
+    <AppContainer contentsJustify={'center'} contentsDirection={'column'} contentsAlign={'flex-start'}>
       <>
         <MainTitle>
           키오스쿨로

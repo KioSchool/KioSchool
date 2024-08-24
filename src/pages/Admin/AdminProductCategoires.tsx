@@ -68,7 +68,7 @@ function AdminProductCategories() {
   };
 
   return (
-    <AppContainer justifyValue={'center'}>
+    <AppContainer contentsJustify={'center'}>
       <Container>
         <TitleNavBar title={'카테고리 관리'}></TitleNavBar>
         <CategoriesInputContainer>

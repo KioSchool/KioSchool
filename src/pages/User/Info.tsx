@@ -68,7 +68,7 @@ function Info() {
   const faqUrl = 'https://www.notion.so/ji-in/FAQ-09eb07eac4a34ab4aa883727994e0b08';
 
   return (
-    <AppContainer justifyValue={'center'} alignItems={'center'} useNavBackground={true} customWidth={'100vw'}>
+    <AppContainer contentsJustify={'center'} contentsAlign={'center'} useNavBackground={true} customWidth={'100vw'}>
       <ContentContainer>
         <TitleContainer>
           <Label>키오스쿨 사용 설명서</Label>

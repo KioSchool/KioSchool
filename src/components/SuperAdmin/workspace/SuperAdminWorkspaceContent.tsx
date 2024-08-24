@@ -21,7 +21,14 @@ function SuperAdminWorkspaceContent({ id, name, owner, createdAt }: Workspace) {
   const subLabelContents = `${filteredCreatedDate} | ${owner.name}`;
 
   return (
-    <SubContainer flexDirection={'column'} justifyValue={'center'} alignItems={'flex-start'} customWidth={'1000px'} customHeight={'80px'} customGap={'5px'}>
+    <SubContainer
+      contentsDirection={'column'}
+      contentsJustify={'center'}
+      contentsAlign={'flex-start'}
+      customWidth={'1000px'}
+      customHeight={'80px'}
+      customGap={'5px'}
+    >
       <WorkspaceLabel
         onClick={() => {
           navigate(`/admin/workspace/${id}`);

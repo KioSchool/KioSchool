@@ -166,7 +166,7 @@ function AdminAccount() {
   };
 
   return (
-    <AppContainer justifyValue={'center'}>
+    <AppContainer contentsJustify={'center'}>
       <Container>
         <TitleNavBar title={`${adminUser.name} 님의 마이페이지`} subTitle={'계좌 관리'} useBackIcon={true} />
         <ContentContainer>

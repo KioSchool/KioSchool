@@ -13,9 +13,9 @@ export const MainContainer = styled.div<{ backgroundColor?: string }>`
 `;
 
 export const SubContainer = styled.div<{
-  justifyValue: string;
-  flexDirection?: string;
-  alignItems?: string;
+  contentsJustify: string;
+  contentsDirection?: string;
+  contentsAlign?: string;
   customWidth?: string;
   customHeight?: string;
   customGap?: string;
@@ -24,19 +24,19 @@ export const SubContainer = styled.div<{
   width: ${(props) => props.customWidth || '65vw'};
   flex-basis: 0;
   flex-wrap: wrap;
-  flex-direction: ${(props) => props.flexDirection || 'column'};
-  align-items: ${(props) => props.alignItems || 'center'};
+  flex-direction: ${(props) => props.contentsDirection || 'column'};
+  align-items: ${(props) => props.contentsAlign || 'center'};
   height: ${(props) => props.customHeight || '100%'};
   min-width: 1000px;
-  justify-content: ${(props) => props.justifyValue};
+  justify-content: ${(props) => props.contentsJustify};
   gap: ${(props) => props.customGap};
 `;
 
 interface Props {
   children: JSX.Element;
-  justifyValue: string;
-  flexDirection?: string;
-  alignItems?: string;
+  contentsJustify: string;
+  contentsDirection?: string;
+  contentsAlign?: string;
   backgroundColor?: string;
   useNavBackground?: boolean;
   customWidth?: string;
@@ -44,14 +44,24 @@ interface Props {
   customGap?: string;
 }
 
-function AppContainer({ children, justifyValue, flexDirection, alignItems, backgroundColor, useNavBackground, customWidth, customHeight, customGap }: Props) {
+function AppContainer({
+  children,
+  contentsJustify,
+  contentsDirection,
+  contentsAlign,
+  backgroundColor,
+  useNavBackground,
+  customWidth,
+  customHeight,
+  customGap,
+}: Props) {
   return (
     <MainContainer backgroundColor={backgroundColor}>
       <NavBar useBackground={useNavBackground} />
       <SubContainer
-        justifyValue={justifyValue}
-        flexDirection={flexDirection}
-        alignItems={alignItems}
+        contentsJustify={contentsJustify}
+        contentsDirection={contentsDirection}
+        contentsAlign={contentsAlign}
         customWidth={customWidth}
         customHeight={customHeight}
         customGap={customGap}
