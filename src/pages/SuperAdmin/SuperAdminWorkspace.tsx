@@ -21,11 +21,11 @@ function SuperAdminWorkspace() {
   const userInputRef = useRef<HTMLInputElement | null>(null);
   const workspaces = useRecoilValue(userPaginationResponseAtom);
   const { fetchAllWorkspaces } = useSuperAdminWorkspace();
-  const workspacesNumberPerPage = workspaces.size;
+  const size = 6;
   const emptyWorkspaces = workspaces.numberOfElements === 0;
 
   useEffect(() => {
-    fetchAllWorkspaces(1, workspacesNumberPerPage);
+    fetchAllWorkspaces(1, size);
   }, []);
 
   return (
@@ -39,7 +39,7 @@ function SuperAdminWorkspace() {
         <Pagination
           totalPageCount={workspaces.totalPages - 1}
           paginateFunction={(page: number) => {
-            fetchAllWorkspaces(page, workspacesNumberPerPage, userInputRef.current?.value);
+            fetchAllWorkspaces(page, size, userInputRef.current?.value);
           }}
         />
       </>
