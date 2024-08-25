@@ -53,7 +53,25 @@ function useApi({ useLoading = true }: UseApiProps = {}) {
   userApi.interceptors.request.use(commonRequestInterceptor, commonErrorInterceptor);
   userApi.interceptors.response.use(commonResponseInterceptor, commonErrorInterceptor);
 
-  return { adminApi, userApi };
+  const superAdminApi = axios.create({
+    baseURL: process.env.REACT_APP_ENVIRONMENT == 'development' ? 'http://localhost:8080/super-admin' : 'https://kio-school.fly.dev/super-admin',
+    withCredentials: true,
+    signal: controller.signal,
+  });
+
+  superAdminApi.interceptors.request.use(commonRequestInterceptor, commonErrorInterceptor);
+  superAdminApi.interceptors.response.use(commonResponseInterceptor, (error) => {
+    if (useLoading) setIsLoading(false);
+    if (error.response.status === 403) {
+      controller.abort();
+      alert('권한이 없습니다.');
+      navigate('/');
+    }
+
+    return Promise.reject(error);
+  });
+
+  return { adminApi, userApi, superAdminApi };
 }
 
 export default useApi;

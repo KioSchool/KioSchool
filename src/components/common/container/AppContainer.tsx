@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import NavBar from '@components/common/nav/NavBar';
 
 export const MainContainer = styled.div<{ backgroundColor?: string }>`
-  width: 100vw;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,32 +12,60 @@ export const MainContainer = styled.div<{ backgroundColor?: string }>`
   background-color: ${(props) => (props.backgroundColor ? props.backgroundColor : 'white')};
 `;
 
-export const SubContainer = styled.div<{ justifyValue: string; flexDirection?: string; alignItems?: string }>`
+export const SubContainer = styled.div<{
+  contentsJustify: string;
+  contentsDirection?: string;
+  contentsAlign?: string;
+  customWidth?: string;
+  customHeight?: string;
+  customGap?: string;
+}>`
   display: flex;
-  width: 65vw;
+  width: ${(props) => props.customWidth || '65vw'};
   flex-basis: 0;
   flex-wrap: wrap;
-  flex-direction: ${(props) => props.flexDirection || 'center'};
-  align-items: ${(props) => props.alignItems || 'center'};
-  height: 100%;
-  min-width: 1100px;
-  justify-content: ${(props) => props.justifyValue};
+  flex-direction: ${(props) => props.contentsDirection || 'column'};
+  align-items: ${(props) => props.contentsAlign || 'center'};
+  height: ${(props) => props.customHeight || '100%'};
+  min-width: 1000px;
+  justify-content: ${(props) => props.contentsJustify};
+  gap: ${(props) => props.customGap};
 `;
 
 interface Props {
   children: JSX.Element;
-  justifyValue: string;
-  flexDirection?: string;
-  alignItems?: string;
+  contentsJustify: string;
+  contentsDirection?: string;
+  contentsAlign?: string;
   backgroundColor?: string;
   useNavBackground?: boolean;
+  customWidth?: string;
+  customHeight?: string;
+  customGap?: string;
 }
 
-function AppContainer({ children, justifyValue, flexDirection, alignItems, backgroundColor, useNavBackground }: Props) {
+function AppContainer({
+  children,
+  contentsJustify,
+  contentsDirection,
+  contentsAlign,
+  backgroundColor,
+  useNavBackground,
+  customWidth,
+  customHeight,
+  customGap,
+}: Props) {
   return (
     <MainContainer backgroundColor={backgroundColor}>
       <NavBar useBackground={useNavBackground} />
-      <SubContainer justifyValue={justifyValue} flexDirection={flexDirection} alignItems={alignItems}>
+      <SubContainer
+        contentsJustify={contentsJustify}
+        contentsDirection={contentsDirection}
+        contentsAlign={contentsAlign}
+        customWidth={customWidth}
+        customHeight={customHeight}
+        customGap={customGap}
+      >
         {children}
       </SubContainer>
     </MainContainer>

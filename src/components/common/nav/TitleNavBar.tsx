@@ -17,8 +17,8 @@ const Container = styled.div<{ useSubTitle: boolean }>`
   padding-bottom: 25px;
   justify-content: center;
   height: ${(props) => (props.useSubTitle ? '100px' : '50px')};
-  width: 100%;
-  min-width: 1200px;
+  width: 1000px;
+  min-width: 1000px;
 `;
 
 const TitleContainer = styled.div`
@@ -31,7 +31,7 @@ const TitleContainer = styled.div`
 const SubContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 1200px;
+  width: 100%;
 `;
 
 const LeftContainer = styled.div`

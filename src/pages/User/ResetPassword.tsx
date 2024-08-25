@@ -41,7 +41,7 @@ function ResetPassword() {
 
   if (!code) {
     return (
-      <AppContainer justifyValue={'center'}>
+      <AppContainer contentsJustify={'center'}>
         <Container>
           <AppInput placeholder={'아이디를 입력해주세요'} ref={idInputRef} />
           <AppInput placeholder={'이메일을 입력해주세요'} ref={emailInputRef} />
@@ -82,7 +82,7 @@ function ResetPassword() {
   };
 
   return (
-    <AppContainer justifyValue={'center'}>
+    <AppContainer contentsJustify={'center'}>
       <Container>
         <AppInputWithLabel
           titleLabel={'비밀번호'}

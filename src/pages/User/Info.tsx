@@ -8,11 +8,12 @@ import infoImage4 from '@resources/image/myInfoImage4.png';
 import infoImage5 from '@resources/image/myInfoImage5.png';
 import infoImage6 from '@resources/image/myInfoImage6.png';
 import AppFooter from '@components/common/footer/AppFooter';
-import React from 'react';
 
 const ContentContainer = styled.div`
   padding-top: 100px;
   display: flex;
+  width: 100%;
+  height: 100vh;
   flex-direction: column;
   align-items: center;
   gap: 20px;
@@ -54,7 +55,7 @@ const LinkTextContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100vw;
+  width: 100%;
   height: 300px;
   gap: 30px;
 `;
@@ -67,13 +68,11 @@ function Info() {
   const faqUrl = 'https://www.notion.so/ji-in/FAQ-09eb07eac4a34ab4aa883727994e0b08';
 
   return (
-    <AppContainer justifyValue={'center'} alignItems={'center'} useNavBackground={true}>
+    <AppContainer contentsJustify={'center'} contentsAlign={'center'} useNavBackground={true} customWidth={'100vw'}>
       <ContentContainer>
         <TitleContainer>
-          <Label style={{ paddingLeft: '15px' }}>키오스쿨 사용 설명서</Label>
-          <LinkButton style={{ marginRight: '15px' }} onClick={() => window.open(faqUrl)}>
-            F&Q 바로가기
-          </LinkButton>
+          <Label>키오스쿨 사용 설명서</Label>
+          <LinkButton onClick={() => window.open(faqUrl)}>F&Q 바로가기</LinkButton>
         </TitleContainer>
         <KioSchoolInfo
           mainDescription="마이페이지 > 계좌관리"

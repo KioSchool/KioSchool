@@ -48,7 +48,7 @@ function Login() {
   };
 
   return (
-    <AppContainer justifyValue={'center'}>
+    <AppContainer contentsJustify={'center'}>
       <LoginContainer>
         <AppLabel size={'large'}>로그인</AppLabel>
         <InputContainer>

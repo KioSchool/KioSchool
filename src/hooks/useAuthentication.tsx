@@ -28,7 +28,7 @@ function useAuthentication() {
         password: userPassword,
       })
       .then(() => {
-        document.cookie = 'isLoggedIn=true';
+        document.cookie = 'isLoggedIn=true;path=/';
         navigate('/admin');
       })
       .catch(() => {

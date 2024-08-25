@@ -74,7 +74,7 @@ function AdminOrderHistory() {
   }, [startDate, endDate]);
 
   return (
-    <AppContainer justifyValue={'center'} useNavBackground={true}>
+    <AppContainer contentsJustify={'center'} useNavBackground={true}>
       <Container>
         <TitleNavBar title={'전체 주문 조회'} />
         <ConditionContainer>
