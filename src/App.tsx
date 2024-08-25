@@ -47,7 +47,7 @@ function App() {
         <Route path="/admin/register-account" element={<AdminAccount />} />
         <Route path="/admin/my-info" element={<MyInfo />} />
         <Route path="/info" element={<Info />} />
-        <Route path="/super-admin-home" element={<SuperAdminHome />} />
+        <Route path="/super-admin/home" element={<SuperAdminHome />} />
         <Route path="/admin/workspace/:workspaceId" element={<AdminWorkspace />} />
         <Route path="/admin/workspace/:workspaceId/orders" element={<AdminOrder />} />
         <Route path="/admin/workspace/:workspaceId/orders-history" element={<AdminOrderHistory />} />
