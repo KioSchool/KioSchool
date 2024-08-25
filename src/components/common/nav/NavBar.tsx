@@ -52,7 +52,7 @@ function NavBar({ useBackground = false }: NavBarProps) {
         <NavLinkContainer>
           <NavLinkItem to={'/info'}>키오스쿨 소개</NavLinkItem>
           <AuthenticationButton />
-          <NavLinkItem to={'/admin/my-info'}>마이 페이지</NavLinkItem>
+          <NavLinkItem to={'/admin/my-info'}>마이페이지</NavLinkItem>
         </NavLinkContainer>
       </NavContent>
     </NavContainer>
