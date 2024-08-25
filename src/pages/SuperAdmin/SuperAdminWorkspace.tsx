@@ -25,7 +25,7 @@ function SuperAdminWorkspace() {
   const emptyWorkspaces = workspaces.numberOfElements === 0;
 
   useEffect(() => {
-    fetchAllWorkspaces(1, size);
+    fetchAllWorkspaces(0, size);
   }, []);
 
   return (
@@ -37,7 +37,7 @@ function SuperAdminWorkspace() {
           <SuperAdminWorkspaceContents workspaces={workspaces} />
         </ContentContainer>
         <Pagination
-          totalPageCount={workspaces.totalPages - 1}
+          totalPageCount={workspaces.totalPages}
           paginateFunction={(page: number) => {
             fetchAllWorkspaces(page, size, userInputRef.current?.value);
           }}

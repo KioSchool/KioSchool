@@ -9,10 +9,10 @@ interface PaginationProps {
 
 function Pagination({ totalPageCount, paginateFunction }: PaginationProps) {
   const [searchParams] = useSearchParams();
-  const currentPage = Number(searchParams.get('page')) - 1;
+  const currentPage = Number(searchParams.get('page'));
 
   const pageClickHandler = (e: { selected: number }) => {
-    paginateFunction(e.selected + 1);
+    paginateFunction(e.selected);
   };
 
   return (
