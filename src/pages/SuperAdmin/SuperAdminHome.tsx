@@ -28,8 +28,7 @@ const LinkAdminHome = styled(Link)`
   align-items: center;
 
   &:hover {
-    // border: 9px solid rgba(112, 112, 112, 0.3);
-    background-color: #000; /* 기본 배경색을 검정으로 설정 */
+    background-color: #000;
     background-image: linear-gradient(
       133deg,
       rgba(255, 255, 255, 0.2) 1.42%,
