@@ -1,5 +1,6 @@
 import ReactPaginate from 'react-paginate';
 import './Pagination.css';
+import { useSearchParams } from 'react-router-dom';
 
 interface PaginationProps {
   totalPageCount: number;
@@ -7,6 +8,9 @@ interface PaginationProps {
 }
 
 function Pagination({ totalPageCount, paginateFunction }: PaginationProps) {
+  const [searchParams] = useSearchParams();
+  const currentPage = Number(searchParams.get('page')) - 1;
+
   const pageClickHandler = (e: { selected: number }) => {
     paginateFunction(e.selected + 1);
   };
@@ -16,6 +20,7 @@ function Pagination({ totalPageCount, paginateFunction }: PaginationProps) {
       pageCount={totalPageCount}
       onPageChange={pageClickHandler}
       pageRangeDisplayed={3}
+      forcePage={currentPage}
       previousLabel="<"
       nextLabel=">"
       pageClassName="page-item"
