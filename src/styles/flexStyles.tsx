@@ -5,16 +5,19 @@ interface FlexProps {
   align?: string;
 }
 
+const flexContents = ({ justify, align }: FlexProps) => css`
+  justify-content: ${justify};
+  align-items: ${align};
+`;
+
 export const colFlex = ({ justify, align }: FlexProps) => css`
   display: flex;
   flex-direction: column;
-  justify-content: ${justify};
-  align-items: ${align};
+  ${flexContents({ justify, align })}
 `;
 
 export const rowFlex = ({ justify, align }: FlexProps) => css`
   display: flex;
   flex-direction: row;
-  justify-content: ${justify};
-  align-items: ${align};
+  ${flexContents({ justify, align })}
 `;
