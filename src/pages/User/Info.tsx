@@ -7,22 +7,20 @@ import infoImage4 from '@resources/image/myInfoImage4.png';
 import infoImage5 from '@resources/image/myInfoImage5.png';
 import infoImage6 from '@resources/image/myInfoImage6.png';
 import AppFooter from '@components/common/footer/AppFooter';
-import { flexStyle } from '@styles/flexStyles';
 import NavBar from '@components/common/nav/NavBar';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const InfoContainer = styled.div`
-  ${flexStyle({ align: 'center' })}
   width: 100%;
   gap: 30px;
+  ${colFlex({ align: 'center' })}
 `;
 
 const TitleContainer = styled.div`
   padding-top: 70px;
   width: 70%;
   min-width: 1000px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const Label = styled.div`
@@ -48,13 +46,10 @@ const LinkButton = styled.button`
 `;
 
 const LinkTextContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   width: 100%;
   height: 300px;
   gap: 30px;
+  ${colFlex({ align: 'center', justify: 'center' })}
 `;
 
 const OrderedListContainer = styled.ol`

@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import ArrowRight from '@resources/svg/ArrowRightSvg';
 import { css } from '@emotion/react';
 import AppFooter from '@components/common/footer/AppFooter';
-import { flexStyle } from '@styles/flexStyles';
+import { rowFlex } from '@styles/flexStyles';
 
 const MainTitle = styled.div`
   width: 540px;
@@ -23,7 +23,7 @@ const LinkAdminHome = styled(Link)`
   height: 80px;
   border-radius: 50px;
   background: #eb6d09;
-  ${flexStyle({ direction: 'row' })}
+  ${rowFlex({ align: 'center', justify: 'center' })}
 
   &:hover {
     background: linear-gradient(133deg, #ff9f32, #eb6d09);
@@ -36,7 +36,7 @@ const LinkText = styled.div`
   color: #fff;
   font-size: 32px;
   font-weight: 600;
-  ${flexStyle({ direction: 'row' })}
+  ${rowFlex({ align: 'center', justify: 'center' })}
 `;
 
 const HoverOverlay = styled.div<{ isHover: boolean }>`
