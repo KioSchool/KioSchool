@@ -1,14 +1,20 @@
 import { css } from '@emotion/react';
 
-interface FlexStyleProps {
-  direction?: string;
+interface FlexProps {
   justify?: string;
   align?: string;
 }
 
-export const flexStyle = ({ direction, justify, align }: FlexStyleProps) => css`
+export const colFlex = ({ justify, align }: FlexProps) => css`
   display: flex;
-  flex-direction: ${direction || 'column'};
+  flex-direction: column;
+  justify-content: ${justify};
+  align-items: ${align};
+`;
+
+export const rowFlex = ({ justify, align }: FlexProps) => css`
+  display: flex;
+  flex-direction: row;
   justify-content: ${justify};
   align-items: ${align};
 `;
