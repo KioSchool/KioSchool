@@ -1,12 +1,12 @@
 import React, { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import useApi from '@hooks/useApi';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import AppButton from '@components/common/button/AppButton';
 import AppFooter from '@components/common/footer/AppFooter';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import useRegister from '@hooks/user/useRegister';
 
 const Container = styled.div`
   width: 100vw;
@@ -64,9 +64,7 @@ const ErrorMessage = styled.div`
 `;
 
 function Register() {
-  const { userApi } = useApi();
-  const navigate = useNavigate();
-
+  const { checkDuplicateId, registerUser, sendVerifyMail, verifyUser } = useRegister();
   const userNameInputRef = useRef<HTMLInputElement>(null);
   const userIdInputRef = useRef<HTMLInputElement>(null);
   const userPasswordInputRef = useRef<HTMLInputElement>(null);
@@ -80,38 +78,33 @@ function Register() {
   const [isCodeSent, setIsCodeSent] = useState<boolean>(false);
   const [isVerified, setIsVerified] = useState<boolean>(false);
 
+  const navigate = useNavigate();
+
   const isSamePassword = userPasswordInputRef.current?.value === checkUserPasswordInput;
   const showCheckPasswordLabel = () => {
     if (!checkUserPasswordInput) return undefined;
     return isSamePassword ? '비밀번호가 동일합니다!' : '비밀번호가 서로 다릅니다.';
   };
 
-  const checkDuplicate = () => {
+  const checkDuplicate = async () => {
     const userId = userIdInputRef.current?.value;
     if (!userId) {
       setErrorMessage('아이디가 입력되지 않았습니다.');
       return;
     }
 
-    userApi
-      .post<any>('/user/duplicate', {
-        id: userId,
-      })
-      .then((response) => {
-        if (response.data !== true) {
-          setErrorMessage('');
-          setIsAbleId(true);
-          return;
-        }
-        setErrorMessage('이미 사용중인 ID입니다.');
-        setIsAbleId(false);
-      })
-      .catch((error) => {
-        console.error('duplicate check error:', error);
-      });
+    const isDuplicated = await checkDuplicateId(userId);
+    if (!isDuplicated) {
+      setErrorMessage('');
+      setIsAbleId(true);
+      return;
+    }
+
+    setErrorMessage('이미 사용중인 ID입니다.');
+    setIsAbleId(false);
   };
 
-  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!isAbleId) {
       setErrorMessage('아이디 중복체크를 해주세요.');
@@ -134,6 +127,7 @@ function Register() {
       setErrorMessage('아이디를 입력해주세요.');
       return;
     }
+
     const password = userPasswordInputRef.current?.value;
     if (!password) {
       setErrorMessage('비밀번호를 입력해주세요.');
@@ -146,59 +140,55 @@ function Register() {
       return;
     }
 
-    userApi
-      .post<any>('/register', {
-        id: userId,
-        password: password,
-        name: userName,
-        email: userEmail,
-      })
-      .then(() => {
-        document.cookie = 'isLoggedIn=true';
-        navigate('/admin/register-account');
-      })
-      .catch(() => {
-        setIsCodeSent(false);
-        setErrorMessage('회원가입에 실패했습니다.');
-      });
+    const isSuccess = await registerUser(userId, password, userName, userEmail);
+    if (!isSuccess) {
+      setIsCodeSent(false);
+      setErrorMessage('회원가입에 실패했습니다.');
+      return;
+    }
+
+    document.cookie = 'isLoggedIn=true';
+    navigate('/admin/register-account');
   };
 
-  const sendCode = () => {
+  const sendCode = async () => {
     setErrorMessage('');
     const userEmail = userEmailInputRef.current?.value;
 
-    userApi
-      .post<any>('/user/email', {
-        email: userEmail,
-      })
-      .catch((error) => {
-        setErrorMessage(error.response.data.message);
-      });
+    if (!userEmail) {
+      alert('이메일을 입력해주세요');
+      return;
+    }
+
+    const isEmailSent = await sendVerifyMail(userEmail);
+    if (!isEmailSent) {
+      setErrorMessage('이메일 발송이 실패했습니다.');
+      setIsCodeSent(false);
+    }
+
     setIsCodeSent(true);
   };
 
-  const checkCode = () => {
+  const checkCode = async () => {
     const userEmail = userEmailInputRef.current?.value;
     const inputCode = userCodeInputRef.current?.value;
 
-    userApi
-      .post<any>('/user/verify', {
-        email: userEmail,
-        code: inputCode,
-      })
-      .then((res) => {
-        setIsVerified(res.data);
-        if (res.data === false) setErrorMessage('틀린 인증 코드입니다.');
-      })
-      .catch(() => {
-        setIsVerified(false);
-        setErrorMessage('이메일 인증에 실패했습니다.');
-      });
+    if (!userEmail || !inputCode) {
+      alert('이메일 또는 입력코드가 올바른지 확인해주세요');
+      return;
+    }
+
+    const response = await verifyUser(userEmail, inputCode);
+
+    setIsVerified(response.isVerify);
+    if (!response.isVerify) {
+      setErrorMessage(response.errorMessage);
+    }
   };
 
   return (
-    <Container className={'register-container'}>
-      <SubContainer className={'register-sub-container'}>
+    <Container>
+      <SubContainer>
         <AppLabel size={'large'} style={{ padding: '0 0 30px' }}>
           회원가입
         </AppLabel>
@@ -206,7 +196,7 @@ function Register() {
         {errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}
         <FormContainer id={'form'} onSubmit={submitHandler}>
           <AppInputWithLabel titleLabel={'이름'} type={'text'} id={'name'} ref={userNameInputRef} placeholder="이름을 입력해주세요" required />
-          <IdContainer className={'id-container'}>
+          <IdContainer>
             <AppInputWithLabel
               style={{ width: '330px' }}
               titleLabel={'아이디'}
@@ -247,7 +237,7 @@ function Register() {
             required
           ></AppInputWithLabel>
 
-          <EmailContainer className={'email-container'}>
+          <EmailContainer>
             <AppInputWithLabel
               style={{ width: '330px' }}
               titleLabel={'이메일'}
@@ -261,7 +251,7 @@ function Register() {
               인증코드 전송
             </AppButton>
             {isCodeSent && (
-              <CodeContainer className={'code-container'}>
+              <CodeContainer>
                 <AppInputWithLabel
                   style={{ width: '275px' }}
                   titleLabel={'인증코드'}
@@ -286,7 +276,7 @@ function Register() {
             회원가입
           </AppButton>
         </FormContainer>
-        <LoginLabelContainer className={'login-label-container'}>
+        <LoginLabelContainer>
           <AppLabel size={'small'}>
             <Link to={'/login'}>로그인하기</Link>
           </AppLabel>
