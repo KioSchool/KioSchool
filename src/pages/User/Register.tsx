@@ -6,69 +6,52 @@ import AppLabel from '@components/common/label/AppLabel';
 import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import AppButton from '@components/common/button/AppButton';
 import AppFooter from '@components/common/footer/AppFooter';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
-  display: flex;
   width: 100vw;
   height: 100vh;
   box-sizing: border-box;
   flex-wrap: wrap;
-  justify-content: center;
+  ${rowFlex({ justify: 'center' })}
 `;
 
 const SubContainer = styled.div`
   width: 500px;
-  display: flex;
   flex-basis: 0;
   flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: center;
-  flex-direction: column;
   height: inherit;
+  ${colFlex({ justify: 'center', align: 'flex-start' })}
 `;
 
 const FormContainer = styled.form`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
   flex-wrap: wrap;
   gap: 14px;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 const IdContainer = styled.div`
   width: 100%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  flex-direction: row;
   flex-wrap: wrap;
+  ${rowFlex({ justify: 'space-between', align: 'flex-end' })}
 `;
 
 const EmailContainer = styled.div`
   width: 100%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  flex-direction: row;
   flex-wrap: wrap;
   gap: 12px;
+  ${rowFlex({ justify: 'space-between', align: 'flex-end' })}
 `;
 
 const CodeContainer = styled.div`
   width: 100%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  flex-direction: row;
   flex-wrap: wrap;
+  ${rowFlex({ justify: 'space-between', align: 'flex-end' })}
 `;
 
 const LoginLabelContainer = styled.div`
-  display: flex;
   width: 100%;
-  align-items: center;
-  justify-content: center;
   padding: 20px 0 0;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const CodeReSendStyle = { width: '90px' };
