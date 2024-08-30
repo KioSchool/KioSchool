@@ -36,8 +36,10 @@ interface Props {
 function CreateWorkspaceModal({ children, closeModal, createHandler }: Props) {
   return (
     <>
-      <ModalOverlay onClick={closeModal} />
-      <ModalContent onSubmit={createHandler}>{children}</ModalContent>
+      <ModalOverlay onClick={closeModal} className={'modal-overlay'} />
+      <ModalContent onSubmit={createHandler} className={'modal-content'}>
+        {children}
+      </ModalContent>
     </>
   );
 }
