@@ -12,6 +12,7 @@ import SelectWithLabel from '@components/common/select/SelectWithLabelProps';
 import AppImageInput from '@components/common/input/AppImageInput';
 import TitleNavBar from '@components/common/nav/TitleNavBar';
 import useConfirm from '@hooks/useConfirm';
+import { colFlex } from '@styles/flexStyles';
 
 function reducer(state: ProductEdit, action: ProductActionType) {
   switch (action.type) {
@@ -36,12 +37,10 @@ function reducer(state: ProductEdit, action: ProductActionType) {
 }
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
   gap: 15px;
-  align-items: center;
   padding-top: 100px;
   padding-bottom: 100px;
+  ${colFlex({ align: 'center' })}
 `;
 
 function AdminProductEdit() {
