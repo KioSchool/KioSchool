@@ -11,6 +11,7 @@ import AppButton from '@components/common/button/AppButton';
 import AppLabel from '@components/common/label/AppLabel';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import AppFooter from '@components/common/footer/AppFooter';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 interface AccountState {
   decodedBank: string;
@@ -18,53 +19,40 @@ interface AccountState {
 }
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   width: 100%;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   width: 100%;
   gap: 20px;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const AccountContentContainer = styled.div`
-  display: flex;
   width: 700px;
   height: 300px;
   box-shadow: 0 15px 32px -8px rgba(0, 0, 0, 0.07), 0 3px 32px 0 rgba(0, 0, 0, 0.03);
   border-radius: 10px;
   padding: 40px 60px;
-  justify-content: space-around;
+  ${rowFlex({ justify: 'space-around' })}
 `;
 
 const AccountInfoContainer = styled.div`
-  display: flex;
-  flex-direction: column;
   gap: 10px;
   padding-top: 10px;
+  ${colFlex({})}
 `;
 
 const AccountRegisterInputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
   gap: 10px;
-  align-items: center;
+  ${colFlex({ align: 'center' })}
 `;
 
 const QRCodeDescriptionContainer = styled.div`
-  display: flex;
-  flex-direction: column;
   height: 60%;
-  justify-content: center;
-  align-items: center;
   gap: 10px;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 type AccountAction = { type: 'SET_ACCOUNT_INFO'; payload: { decodedBank: string; accountNo: string } };
