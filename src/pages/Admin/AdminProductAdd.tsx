@@ -98,7 +98,7 @@ function AdminProductAdd() {
   };
 
   return (
-    <Container>
+    <Container className={'admin-product-add-container'}>
       <NavBar useBackground={true} />
       <TitleNavBar title={'상품 등록'} />
       <SelectWithLabel
