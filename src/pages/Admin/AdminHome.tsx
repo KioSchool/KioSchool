@@ -40,9 +40,9 @@ function AdminHome() {
   return (
     <AppContainer contentsJustify={'space-between'} contentsDirection={'row'}>
       <>
-        <UserNameContainer>
-          <UserNameText>{user.name}</UserNameText>
-          <DescriptionText>님의 주점</DescriptionText>
+        <UserNameContainer className={'username-container'}>
+          <UserNameText className={'username'}>{user.name}</UserNameText>
+          <DescriptionText className={'description'}>님의 주점</DescriptionText>
         </UserNameContainer>
         <WorkspaceContent workspaces={workspaces} />
         <AddWorkspace workspaces={workspaces} />
