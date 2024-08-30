@@ -72,12 +72,12 @@ function ProductCounterBadge({ product }: ProductCounterBadgeProps) {
   };
 
   return (
-    <Container>
-      <LabelContainer>
+    <Container className={'product-counter-badge-container'}>
+      <LabelContainer className={'label-container'}>
         <AppLabel size={13}>{product.name}</AppLabel>
         <AppLabel size={13}>{product.price.toLocaleString()}원</AppLabel>
       </LabelContainer>
-      <CounterContainer>
+      <CounterContainer className={'counter-container'}>
         <MinusButtonSvg onClick={() => handleCounterButtonClick('minus')} />
         <AppLabel size={20}>{quantity}</AppLabel>
         <PlusButtonSvg onClick={() => handleCounterButtonClick('plus')} />
