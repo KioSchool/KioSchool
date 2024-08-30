@@ -42,10 +42,11 @@ function SuperAdminWorkspaceContent({ id, name, owner, createdAt }: Workspace) {
         onClick={() => {
           navigate(`/admin/workspace/${id}`);
         }}
+        className={'workspace-label'}
       >
         {name}
       </WorkspaceLabel>
-      <SubLabelContainer>{createdDateAndOwnerText}</SubLabelContainer>
+      <SubLabelContainer className={'sub-label-container'}>{createdDateAndOwnerText}</SubLabelContainer>
     </SubContainer>
   );
 }
