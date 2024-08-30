@@ -46,7 +46,7 @@ const SuperAdminSearchBar = forwardRef<HTMLInputElement, React.InputHTMLAttribut
   };
 
   return (
-    <SearchBarContainer>
+    <SearchBarContainer className={'search-bar-container'}>
       {isFocused ? <ActivatedSearchSvg /> : <DeactivatedSearchSvg />}
       <Input
         {...props}
