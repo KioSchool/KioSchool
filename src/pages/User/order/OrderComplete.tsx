@@ -101,25 +101,31 @@ function OrderComplete() {
   }, []);
 
   return (
-    <Container>
-      <Header>
+    <Container className={'order-complete-container'}>
+      <Header className={'order-complete-header'}>
         <AppLabel>주문 내역</AppLabel>
         <ReloadSvg onClick={() => window.location.reload()}>새로고침</ReloadSvg>
       </Header>
-      <SubContainer>
-        <ContentBox>
-          <ContentTitleLabel size={17}>주문 번호: {orderId}번</ContentTitleLabel>
+      <SubContainer className={'order-complete-sub-container'}>
+        <ContentBox className={'order-complete-content-box'}>
+          <ContentTitleLabel size={17} className={'order-complete-content-title-label'}>
+            주문 번호: {orderId}번
+          </ContentTitleLabel>
           <AppLabel size={13}>주문 일시: {dateConverter(new Date(order.createdAt))}</AppLabel>
           <AppLabel size={13}>입금자명: {order?.customerName}</AppLabel>
         </ContentBox>
-        <ContentBox>
-          <ContentTitleLabel size={17}>주문 상태</ContentTitleLabel>
+        <ContentBox className={'order-complete-content-box'}>
+          <ContentTitleLabel size={17} className={'order-complete-content-title-label'}>
+            주문 상태
+          </ContentTitleLabel>
           <OrderStatusBar status={order.status} />
         </ContentBox>
-        <ContentBox>
-          <ContentTitleLabel size={17}>주문 상품</ContentTitleLabel>
+        <ContentBox className={'order-complete-content-box'}>
+          <ContentTitleLabel size={17} className={'order-complete-content-title-label'}>
+            주문 상품
+          </ContentTitleLabel>
           {order?.orderProducts.map((orderProduct) => (
-            <ProductContainer key={orderProduct.id}>
+            <ProductContainer key={orderProduct.id} className={'order-complete-product-container'}>
               <AppLabel size={13} style={{ fontWeight: 'bold' }}>
                 {orderProduct.productName} · {orderProduct.quantity}개
               </AppLabel>
@@ -127,13 +133,17 @@ function OrderComplete() {
             </ProductContainer>
           ))}
         </ContentBox>
-        <ContentBox>
-          <ContentTitleLabel size={17}>총 결제 금액</ContentTitleLabel>
+        <ContentBox className={'order-complete-content-box'}>
+          <ContentTitleLabel size={17} className={'order-complete-content-title-label'}>
+            총 결제 금액
+          </ContentTitleLabel>
           <AppLabel size={13}>{order.totalPrice.toLocaleString()}원</AppLabel>
         </ContentBox>
         {order.status === 'NOT_PAID' && (
-          <ContentBox>
-            <ContentTitleLabel size={17}>결제 계좌 정보</ContentTitleLabel>
+          <ContentBox className={'order-complete-content-box'}>
+            <ContentTitleLabel size={17} className={'order-complete-content-title-label'}>
+              결제 계좌 정보
+            </ContentTitleLabel>
             <AppLabel size={13}>{accountInfo}</AppLabel>
             <AppButton onClick={copyAccountInfo}>복사하기</AppButton>
           </ContentBox>
