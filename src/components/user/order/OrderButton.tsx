@@ -29,8 +29,8 @@ function OrderButton({ showButton, buttonLabel, onClick }: OrderButtonProps) {
   if (!showButton) return null;
 
   return (
-    <OrderButtonContainer>
-      <OrderButtonSubContainer>
+    <OrderButtonContainer className={'order-button-container'}>
+      <OrderButtonSubContainer className={'order-button-sub-container'}>
         <AppButton size={270} onClick={onClick}>
           {buttonLabel}
         </AppButton>
