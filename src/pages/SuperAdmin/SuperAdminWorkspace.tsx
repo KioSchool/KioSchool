@@ -33,7 +33,7 @@ function SuperAdminWorkspace() {
       <>
         <TitleNavBar title="전체 워크스페이스 관리" />
         <SuperAdminSearchBar ref={userInputRef} />
-        <ContentContainer justifyCenter={emptyWorkspaces}>
+        <ContentContainer justifyCenter={emptyWorkspaces} className={'content-container'}>
           <SuperAdminWorkspaceContents workspaces={workspaces} />
         </ContentContainer>
         <Pagination
