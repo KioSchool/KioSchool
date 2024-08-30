@@ -43,16 +43,20 @@ interface NavBarProps {
 
 function NavBar({ useBackground = false }: NavBarProps) {
   return (
-    <NavContainer useBackground={useBackground}>
-      <NavContent>
+    <NavContainer useBackground={useBackground} className={'nav-container'}>
+      <NavContent className={'nav-content'}>
         <Link to={'/'}>
           <img src={kioLogo} width={'60px'} height={'27px'} alt="Kio Logo" />
         </Link>
 
-        <NavLinkContainer>
-          <NavLinkItem to={'/info'}>키오스쿨 소개</NavLinkItem>
+        <NavLinkContainer className={'nav-link-container'}>
+          <NavLinkItem to={'/info'} className={'nav-link-item'}>
+            키오스쿨 소개
+          </NavLinkItem>
           <AuthenticationButton />
-          <NavLinkItem to={'/admin/my-info'}>마이페이지</NavLinkItem>
+          <NavLinkItem to={'/admin/my-info'} className={'nav-link-item'}>
+            마이페이지
+          </NavLinkItem>
         </NavLinkContainer>
       </NavContent>
     </NavContainer>

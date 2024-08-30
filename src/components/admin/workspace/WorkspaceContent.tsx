@@ -117,11 +117,12 @@ function WorkspaceContent({ workspaces }: Props) {
           onClick={() => {
             appendPath(`/workspace/${it.id}`);
           }}
+          className={'workspace-container'}
         >
-          <TitleContainer>
-            <MainTitleContainer>
-              <Description>{it.description}</Description>
-              <DeleteContainer>
+          <TitleContainer className={'title-container'}>
+            <MainTitleContainer className={'main-title-container'}>
+              <Description className={'description'}>{it.description}</Description>
+              <DeleteContainer className={'delete-container'}>
                 <DeleteButton
                   onClick={(e: React.FormEvent) => {
                     leaveHandler(e, it.id);
@@ -130,12 +131,12 @@ function WorkspaceContent({ workspaces }: Props) {
               </DeleteContainer>
             </MainTitleContainer>
 
-            <SubTitleContainer>
-              <Title>{it.name}</Title>
+            <SubTitleContainer className={'sub-title-container'}>
+              <Title className={'title'}>{it.name}</Title>
             </SubTitleContainer>
           </TitleContainer>
 
-          <MenuTitle>메뉴 개수 {it.products.length} 개</MenuTitle>
+          <MenuTitle className={'menu-title'}>메뉴 개수 {it.products.length} 개</MenuTitle>
         </WorkspaceContainer>
       ))}
       <ConfirmModal />

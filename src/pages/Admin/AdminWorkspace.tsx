@@ -39,7 +39,7 @@ function AdminWorkspace() {
 
   return (
     <AppContainer contentsJustify={'center'}>
-      <Container>
+      <Container className={'admin-workspace-container'}>
         <TitleNavBar
           title={workspace.name}
           subTitle={workspace.description}
@@ -47,7 +47,7 @@ function AdminWorkspace() {
             navigate('/admin');
           }}
         />
-        <ButtonContainer>
+        <ButtonContainer className={'button-container'}>
           <ImageRouteButton src={orderImage} onClick={() => appendPath('/orders')} buttonText={'실시간 주문 조회'} />
           <ImageRouteButton src={orderHistoryImage} onClick={() => appendPath('/orders-history')} buttonText={'전체 주문 조회'} />
           <ImageRouteButton src={productImage} onClick={() => appendPath('/products')} buttonText={'상품 관리'} />

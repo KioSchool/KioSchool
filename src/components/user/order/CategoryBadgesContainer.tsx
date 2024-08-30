@@ -36,7 +36,7 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
   };
 
   return (
-    <Container>
+    <Container className={'category-badges-container'}>
       {productCategories.map(
         (category) =>
           productsByCategory[category.id] && (

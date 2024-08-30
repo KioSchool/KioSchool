@@ -35,19 +35,31 @@ const OtherStatusLabel = styled(AppLabel)`
 function OrderStatusBar({ status }: OrderStatusBarProps) {
   if (status === 'CANCELLED') {
     return (
-      <CancelContainer>
-        <CurrentStatusLabel>주문 취소</CurrentStatusLabel>
+      <CancelContainer className={'cancel-container'}>
+        <CurrentStatusLabel className={'cancel-status-label'}>주문 취소</CurrentStatusLabel>
       </CancelContainer>
     );
   }
 
   return (
     <Container>
-      {status === 'NOT_PAID' ? <CurrentStatusLabel>결제 확인 중</CurrentStatusLabel> : <OtherStatusLabel>결제 확인 중</OtherStatusLabel>}
+      {status === 'NOT_PAID' ? (
+        <CurrentStatusLabel className={'current-status-label'}>결제 확인 중</CurrentStatusLabel>
+      ) : (
+        <OtherStatusLabel className={'other-status-label'}>결제 확인 중</OtherStatusLabel>
+      )}
       {'· · ·'}
-      {status === 'PAID' ? <CurrentStatusLabel>조리중</CurrentStatusLabel> : <OtherStatusLabel>조리중</OtherStatusLabel>}
+      {status === 'PAID' ? (
+        <CurrentStatusLabel className={'current-status-label'}>조리중</CurrentStatusLabel>
+      ) : (
+        <OtherStatusLabel className={'other-status-label'}>조리중</OtherStatusLabel>
+      )}
       {'· · ·'}
-      {status === 'SERVED' ? <CurrentStatusLabel>서빙 완료</CurrentStatusLabel> : <OtherStatusLabel>서빙 완료</OtherStatusLabel>}
+      {status === 'SERVED' ? (
+        <CurrentStatusLabel className={'current-status-label'}>서빙 완료</CurrentStatusLabel>
+      ) : (
+        <OtherStatusLabel className={'other-status-label'}>서빙 완료</OtherStatusLabel>
+      )}
     </Container>
   );
 }

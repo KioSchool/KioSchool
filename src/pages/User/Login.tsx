@@ -49,14 +49,14 @@ function Login() {
 
   return (
     <AppContainer contentsJustify={'center'}>
-      <LoginContainer>
+      <LoginContainer className={'login-container'}>
         <AppLabel size={'large'}>로그인</AppLabel>
-        <InputContainer>
+        <InputContainer className={'input-container'}>
           <AppInputWithLabel titleLabel={'아이디'} type={'text'} id={'userId'} ref={userIdInputRef} />
           <AppInputWithLabel titleLabel={'비밀번호'} type={'password'} id={'password'} ref={userPasswordInputRef} enterHandler={handleSubmit} />
           {errorMessage && <div className="error-message">{errorMessage}</div>}
         </InputContainer>
-        <ButtonContainer>
+        <ButtonContainer className={'button-container'}>
           <AppButton size={'large'} style={{ gridColumn: '1/3' }} type={'button'} onClick={handleSubmit}>
             로그인
           </AppButton>

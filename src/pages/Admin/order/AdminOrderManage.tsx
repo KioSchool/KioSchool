@@ -101,9 +101,9 @@ function AdminOrderManage() {
 
   return (
     <AppContainer contentsJustify={'center'} useNavBackground={true} contentsDirection={'row'}>
-      <Container>
+      <Container className={'admin-order-manage-container'}>
         <TitleNavBar title={'주문 페이지 관리'}>
-          <ButtonContainer>
+          <ButtonContainer className={'button-container'}>
             <AppButton
               onClick={() => {
                 handleTableCount(tableCount + 1);
@@ -123,13 +123,13 @@ function AdminOrderManage() {
         </TitleNavBar>
 
         <AppLabel>테이블 개수는 {tableCount}개 입니다.</AppLabel>
-        <ContentContainer>
+        <ContentContainer className={'content-container'}>
           <DeviceFrameset device="iPhone X" width={360} height={700}>
             <PreviewContainer src={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=1&preview=true`} />
           </DeviceFrameset>
-          <QRCodeContainer>
+          <QRCodeContainer className={'qrcode-container'}>
             {Array.from({ length: tableCount }, (_, index) => (
-              <QRCodeCard key={index}>
+              <QRCodeCard key={index} className={'qrcode-card'}>
                 <TableLink href={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${index + 1}`} target={'_blank'}>
                   {index + 1}번 테이블
                 </TableLink>

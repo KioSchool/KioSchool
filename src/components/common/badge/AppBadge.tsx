@@ -29,7 +29,7 @@ const Container = styled.div`
   }
 `;
 function AppBadge(props: AppBadgeProps) {
-  return <Container {...props} />;
+  return <Container {...props} className={'app-badge'} />;
 }
 
 export default AppBadge;

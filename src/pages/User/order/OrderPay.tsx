@@ -100,12 +100,12 @@ function OrderPay() {
   };
 
   return (
-    <Container>
-      <Header>
+    <Container className={'order-pay-container'}>
+      <Header className={'order-pay-header'}>
         <AppLabel>주문 결제</AppLabel>
         <AppBadge>{totalAmount.toLocaleString()}원</AppBadge>
       </Header>
-      <SubContainer>
+      <SubContainer className={'order-pay-sub-container'}>
         <AppInputWithLabel titleLabel={'입금자명'} placeholder={'입금자명을 입력해주세요.'} style={{ width: '300px' }} ref={customerNameRef} />
         <AppLabel size={12}>입력한 입금자명과 실제로 입금한 입금자명이 다를 경우 결제 확인이 불가능합니다.</AppLabel>
         <AppLabel size={12}>아래 버튼을 누르면 주문이 완료되며, 토스 송금 창으로 이동합니다.</AppLabel>

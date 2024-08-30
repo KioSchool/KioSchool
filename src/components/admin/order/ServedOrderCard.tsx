@@ -56,17 +56,17 @@ function ServedOrderCard({ order }: Props) {
   };
 
   return (
-    <Container>
+    <Container className={'served-order-card-container'}>
       <AppLabel size={18} style={{ fontWeight: 700 }}>
         테이블 {order.tableNumber}
       </AppLabel>
-      <Row>
+      <Row className={'served-order-card-row'}>
         <AppLabel size={14}>주문번호 {order.id}번</AppLabel>
         <AppLabel size={14}>{dateConverter(order.createdAt)}</AppLabel>
       </Row>
       <HorizontalDivider />
       {order.orderProducts.map((it) => (
-        <Row key={it.id}>
+        <Row key={it.id} className={'served-order-card-row'}>
           <AppLabel size={16} style={{ fontWeight: 500 }}>
             {it.productName}
           </AppLabel>
@@ -76,7 +76,7 @@ function ServedOrderCard({ order }: Props) {
         </Row>
       ))}
       <HorizontalDivider />
-      <Row>
+      <Row className={'served-order-card-row'}>
         <AppLabel size={16} style={{ fontWeight: 500 }}>
           총 주문 금액
         </AppLabel>
@@ -84,7 +84,7 @@ function ServedOrderCard({ order }: Props) {
           {order.totalPrice.toLocaleString()}원
         </AppLabel>
       </Row>
-      <Button type={'button'} onClick={() => payOrder(order.id)}>
+      <Button type={'button'} onClick={() => payOrder(order.id)} className={'served-order-card-button'}>
         되돌리기
       </Button>
     </Container>

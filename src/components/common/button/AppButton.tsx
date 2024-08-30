@@ -34,7 +34,7 @@ const Container = styled.button`
 `;
 
 function AppButton(props: AppButtonProps) {
-  return <Container {...props} />;
+  return <Container {...props} className={'app-button'} />;
 }
 
 export default AppButton;

@@ -67,15 +67,15 @@ function useConfirm(title: string, description: string, okText: string, cancelTe
     if (promise === null) return null;
 
     return (
-      <Container>
-        <SubContainer>
-          <TextContainer>
+      <Container className={'confirm-container'}>
+        <SubContainer className={'confirm-sub-container'}>
+          <TextContainer className={'text-container'}>
             <AppLabel size={'large'} style={{ fontWeight: 700 }}>
               {title}
             </AppLabel>
             <AppLabel size={24}>{description}</AppLabel>
           </TextContainer>
-          <ButtonContainer>
+          <ButtonContainer className={'button-container'}>
             {cancelText && (
               <AppButton size={250} onClick={handleCancel} style={{ background: 'white', color: 'black' }}>
                 {cancelText}

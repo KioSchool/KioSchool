@@ -71,11 +71,11 @@ function ToggleOrderCard({ order }: ToggleOrderCardProps) {
   };
 
   return (
-    <Container>
+    <Container className={'toggle-order-card-container'}>
       <AppLabel size={18} style={{ fontWeight: 700 }}>
         주문번호 {order.id}번
       </AppLabel>
-      <ProductContainer>
+      <ProductContainer className={'product-container'}>
         {isClosed ? (
           <AppLabel size={16}>{closedProductLabelText}</AppLabel>
         ) : (
@@ -86,8 +86,8 @@ function ToggleOrderCard({ order }: ToggleOrderCardProps) {
           ))
         )}
       </ProductContainer>
-      <RightContainer>
-        <OrderInfoContainer>
+      <RightContainer className={'right-container'}>
+        <OrderInfoContainer className={'order-info-container'}>
           <AppLabel size={16}>
             {order.customerName} | {order.totalPrice.toLocaleString()}원 | {orderStatusConverter(order.status)}
           </AppLabel>

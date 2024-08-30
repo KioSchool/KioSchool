@@ -69,8 +69,8 @@ function Info() {
 
   return (
     <AppContainer contentsJustify={'center'} contentsAlign={'center'} useNavBackground={true} customWidth={'100vw'}>
-      <ContentContainer>
-        <TitleContainer>
+      <ContentContainer className={'info-container'}>
+        <TitleContainer className={'info-title-container'}>
           <Label>키오스쿨 사용 설명서</Label>
           <LinkButton onClick={() => window.open(faqUrl)}>F&Q 바로가기</LinkButton>
         </TitleContainer>
@@ -127,7 +127,7 @@ function Info() {
           imageWidth="1050px"
           imageHeight="600px"
         />
-        <LinkTextContainer>
+        <LinkTextContainer className={'info-link-container'}>
           <Label>더 자세한 내용이 궁금하다면?</Label>
           <LinkButton onClick={() => window.open(faqUrl)}>F&Q 바로가기</LinkButton>
         </LinkTextContainer>

@@ -63,14 +63,14 @@ function ProductCard({ product, onClick }: Props) {
   const { editProductSellable } = useAdminProducts(workspaceId);
 
   return (
-    <Container isSellable={product.isSellable}>
-      <SubContainer>
-        <ContentContainer onClick={onClick}>
-          <TextContainer>
+    <Container isSellable={product.isSellable} className={'product-card-container'}>
+      <SubContainer className={'product-card-sub-container'}>
+        <ContentContainer onClick={onClick} className={'content-container'}>
+          <TextContainer className={'text-container'}>
             <AppLabel size={20}>{product.name}</AppLabel>
             <AppLabel size={20}>{product.price.toLocaleString()}원</AppLabel>
           </TextContainer>
-          <ImageContainer isSellable={product.isSellable}>
+          <ImageContainer isSellable={product.isSellable} className={'image-container'}>
             <img src={product.imageUrl} alt={product.name} width="150" height="120" style={{ borderRadius: '15px' }} />
           </ImageContainer>
         </ContentContainer>

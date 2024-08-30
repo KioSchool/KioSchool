@@ -72,22 +72,22 @@ function Order() {
   }, []);
 
   return (
-    <Container>
-      <Header>
+    <Container className={'order-container'}>
+      <Header className={'order-header'}>
         <AppLabel size={'medium'}>{workspace.name}</AppLabel>
         <AppLabel size={'small'} style={{ color: 'gray' }}>
           {tableNo}번 테이블
         </AppLabel>
         <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategory} />
       </Header>
-      <ContentContainer>
+      <ContentContainer className={'order-content'}>
         {productCategories
           .map((it) => it.id)
           .map((categoryId) => (
             <div id={`product_category_${categoryId}`} key={`product_category_${categoryId}`}>
               <AppLabel size={22}>{categoryMap[categoryId].name}</AppLabel>
               {productsByCategory[categoryId].map((product) => (
-                <ProductContainer key={`product${product.id}`}>
+                <ProductContainer key={`product${product.id}`} className={'product-container'}>
                   <ProductCard product={product} />
                   <HorizontalDivider />
                 </ProductContainer>
@@ -98,7 +98,7 @@ function Order() {
           <div id={`product_category_undefined`} key={`product_category_undefined`}>
             <AppLabel size={22}>기본메뉴</AppLabel>
             {productsByCategory.undefined?.map((product) => (
-              <ProductContainer key={`product${product.id}`}>
+              <ProductContainer key={`product${product.id}`} className={'product-container'}>
                 <ProductCard product={product} />
                 <HorizontalDivider />
               </ProductContainer>

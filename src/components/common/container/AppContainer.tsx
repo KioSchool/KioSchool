@@ -56,7 +56,7 @@ function AppContainer({
   customGap,
 }: Props) {
   return (
-    <MainContainer backgroundColor={backgroundColor}>
+    <MainContainer backgroundColor={backgroundColor} className={'main-container'}>
       <NavBar useBackground={useNavBackground} />
       <SubContainer
         contentsJustify={contentsJustify}
@@ -65,6 +65,7 @@ function AppContainer({
         customWidth={customWidth}
         customHeight={customHeight}
         customGap={customGap}
+        className={'sub-container'}
       >
         {children}
       </SubContainer>

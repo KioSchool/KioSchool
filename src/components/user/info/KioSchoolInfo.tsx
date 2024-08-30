@@ -47,12 +47,12 @@ interface InfoProps {
 
 function KioSchoolInfo({ mainDescription, subDescription, additionalDescription, imageSrc, imageWidth, imageHeight }: InfoProps) {
   return (
-    <Container>
-      <SubContainer>
-        <MainDescriptionContainer>{mainDescription}</MainDescriptionContainer>
-        <SubDescriptionContainer>{subDescription}</SubDescriptionContainer>
-        <AdditionalDescriptionContainer>{additionalDescription}</AdditionalDescriptionContainer>
-        <img src={imageSrc} width={imageWidth} height={imageHeight} alt="Info 설명" />
+    <Container className={'kio-school-info-container'}>
+      <SubContainer className={'kio-school-info-sub-container'}>
+        <MainDescriptionContainer className={'main-description-container'}>{mainDescription}</MainDescriptionContainer>
+        <SubDescriptionContainer className={'sub-description-container'}>{subDescription}</SubDescriptionContainer>
+        <AdditionalDescriptionContainer className={'additional-description-container'}>{additionalDescription}</AdditionalDescriptionContainer>
+        <img src={imageSrc} width={imageWidth} height={imageHeight} alt="Info 설명" className={'kio-school-info-image'} />
       </SubContainer>
     </Container>
   );
