@@ -24,7 +24,7 @@ function DummyWorkspace({ workspaces }: Props) {
   return (
     <>
       {dummyArray.map((_, index) => {
-        return <DummyWorkspaceContainer key={`dummy_${index}`} />;
+        return <DummyWorkspaceContainer key={`dummy_${index}`} className={'dummy-workspace-container'} />;
       })}
     </>
   );
