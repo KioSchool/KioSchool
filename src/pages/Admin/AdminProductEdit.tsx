@@ -133,7 +133,7 @@ function AdminProductEdit() {
   };
 
   return (
-    <Container>
+    <Container className={'admin-product-edit-container'}>
       <NavBar useBackground={true} />
       <TitleNavBar title={'상품 수정'}>
         <AppButton size={160} onClick={deleteProductHandler}>
