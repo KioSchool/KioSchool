@@ -56,7 +56,7 @@ function AddWorkspace({ workspaces }: Props) {
 
   return (
     <>
-      <AddWorkspaceContainer onClick={() => setModalOpen(true)}>
+      <AddWorkspaceContainer onClick={() => setModalOpen(true)} className={'add-workspace-container'}>
         <PlusIconSvg width={50} height={50} />
       </AddWorkspaceContainer>
 
