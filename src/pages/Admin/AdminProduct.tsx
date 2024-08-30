@@ -56,7 +56,7 @@ function AdminProduct() {
   }, []);
 
   return (
-    <Container>
+    <Container className={'admin-product-container'}>
       <NavBar useBackground={true} />
       <TitleNavBar
         title={'상품 관리'}
@@ -64,7 +64,7 @@ function AdminProduct() {
           navigate(`/admin/workspace/${workspaceId}`);
         }}
       >
-        <ManageButtonContainer>
+        <ManageButtonContainer className={'manage-button-container'}>
           <AppButton
             size={160}
             onClick={() => {
@@ -87,11 +87,11 @@ function AdminProduct() {
         HIDE 상태인 메뉴는 주문 화면에서 숨김처리 되며, ON 상태로 변경 시 다시 나타나게 됩니다.
       </AppLabel>
       {categories.map((category) => (
-        <ContainerPerCategory key={`product_category_${category.id}`}>
+        <ContainerPerCategory key={`product_category_${category.id}`} className={'container-per-category'}>
           <AppLabel size={36} style={{ fontWeight: 800 }}>
             {category.name}
           </AppLabel>
-          <ProductsContainer>
+          <ProductsContainer className={'products-container'}>
             {products
               .filter((product) => (product.productCategory?.id || null) === category.id)
               .map((product) => (
