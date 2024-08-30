@@ -10,6 +10,7 @@ import OrderStatusBar from '@components/user/order/OrderStatusBar';
 import ReloadSvg from '@resources/svg/ReloadSvg';
 import useWorkspace from '@hooks/user/useWorkspace';
 import AppButton from '@components/common/button/AppButton';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
   width: 100vw;
@@ -22,30 +23,24 @@ const Header = styled.div`
   position: sticky;
   top: 0;
   width: 100vw;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 25px;
   box-sizing: border-box;
   z-index: 100;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const SubContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   gap: 10px;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const ContentBox = styled.div`
-  display: flex;
-  flex-direction: column;
   width: 100%;
   padding: 20px;
   background: #f7f7f7;
   box-sizing: border-box;
   gap: 4px;
+  ${colFlex({})}
 `;
 
 const ContentTitleLabel = styled(AppLabel)`
@@ -54,10 +49,9 @@ const ContentTitleLabel = styled(AppLabel)`
 `;
 
 const ProductContainer = styled.div`
-  display: flex;
-  flex-direction: column;
   gap: 4px;
   padding: 10px 0;
+  ${colFlex({})}
 `;
 
 function OrderComplete() {
