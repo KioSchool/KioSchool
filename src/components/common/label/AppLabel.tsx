@@ -22,7 +22,7 @@ const Container = styled.label`
 `;
 
 function AppLabel(props: AppLabelProps) {
-  return <Container {...props} />;
+  return <Container {...props} className={'app-label'} />;
 }
 
 export default AppLabel;
