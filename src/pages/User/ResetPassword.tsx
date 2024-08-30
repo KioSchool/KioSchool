@@ -42,7 +42,7 @@ function ResetPassword() {
   if (!code) {
     return (
       <AppContainer contentsJustify={'center'}>
-        <Container>
+        <Container className={'reset-password-container'}>
           <AppInput placeholder={'아이디를 입력해주세요'} ref={idInputRef} />
           <AppInput placeholder={'이메일을 입력해주세요'} ref={emailInputRef} />
           <AppButton size={'large'} onClick={sendResetPasswordLinkHandler}>
