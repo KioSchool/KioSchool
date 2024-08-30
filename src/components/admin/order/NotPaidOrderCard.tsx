@@ -70,19 +70,19 @@ function NotPaidOrderCard({ order }: Props) {
   };
 
   return (
-    <Container>
+    <Container className={'not-paid-order-card-container'}>
       <AppLabel size={18} style={{ fontWeight: 700 }}>
         테이블 {order.tableNumber}
       </AppLabel>
       <AppLabel size={16}>주문번호 {order.id}번</AppLabel>
-      <Row>
+      <Row className={'not-paid-order-card-row'}>
         <AppLabel size={14}>입금자명: {order.customerName}</AppLabel>
         <AppLabel size={14}>{dateConverter(order.createdAt)}</AppLabel>
       </Row>
       <HorizontalDivider />
-      <OrderProductsContainer>
+      <OrderProductsContainer className={'order-products-container'}>
         {order.orderProducts.map((it) => (
-          <Row key={it.id}>
+          <Row key={it.id} className={'order-product-row'}>
             <AppLabel size={16} style={{ fontWeight: 500 }}>
               {it.productName}
             </AppLabel>
@@ -93,7 +93,7 @@ function NotPaidOrderCard({ order }: Props) {
         ))}
       </OrderProductsContainer>
       <HorizontalDivider />
-      <Row>
+      <Row className={'not-paid-order-card-row'}>
         <AppLabel size={16} style={{ fontWeight: 500 }}>
           총 주문 금액
         </AppLabel>
@@ -101,11 +101,11 @@ function NotPaidOrderCard({ order }: Props) {
           {order.totalPrice.toLocaleString()}원
         </AppLabel>
       </Row>
-      <ButtonContainer>
-        <Button type={'button'} onClick={() => cancelOrder(order.id)}>
+      <ButtonContainer className={'button-container'}>
+        <Button type={'button'} onClick={() => cancelOrder(order.id)} className={'cancel-button'}>
           주문 취소
         </Button>
-        <Button type={'button'} onClick={() => payOrder(order.id)}>
+        <Button type={'button'} onClick={() => payOrder(order.id)} className={'pay-button'}>
           결제 완료
         </Button>
       </ButtonContainer>
