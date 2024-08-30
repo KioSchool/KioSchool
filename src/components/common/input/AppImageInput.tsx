@@ -63,13 +63,15 @@ function AppImageInput({ file, title, url, onImageChange, width, height }: Produ
   };
 
   return (
-    <ImageInputContainer>
-      <ImageLabelContainer>
+    <ImageInputContainer className={'app-image-input'}>
+      <ImageLabelContainer className={'image-label-container'}>
         <label>{title}</label>
-        <ImageInputButton htmlFor="img">사진 업로드</ImageInputButton>
-        <ImageInput type="file" id="img" accept="image/*" onChange={onImageChange} />
+        <ImageInputButton htmlFor="img" className={'image-input-button'}>
+          사진 업로드
+        </ImageInputButton>
+        <ImageInput type="file" id="img" accept="image/*" onChange={onImageChange} className={'image-input'} />
       </ImageLabelContainer>
-      <Image src={getImageUrl()} alt="" width={width} height={height} />
+      <Image src={getImageUrl()} alt="" width={width} height={height} className={'image'} />
     </ImageInputContainer>
   );
 }
