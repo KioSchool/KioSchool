@@ -75,15 +75,15 @@ function AdminOrderHistory() {
 
   return (
     <AppContainer contentsJustify={'center'} useNavBackground={true}>
-      <Container>
+      <Container className={'admin-order-history-container'}>
         <TitleNavBar title={'전체 주문 조회'} />
-        <ConditionContainer>
-          <DatePickerContainer>
+        <ConditionContainer className={'condition-container'}>
+          <DatePickerContainer className={'date-picker-container'}>
             <ReactDatePicker selected={startDate} shouldCloseOnSelect dateFormat={'yyyy.MM.dd'} onChange={(date: Date) => setStartDate(date)} />
             {'~'}
             <ReactDatePicker selected={endDate} shouldCloseOnSelect dateFormat={'yyyy.MM.dd'} onChange={(date: Date) => setEndDate(date)} />
           </DatePickerContainer>
-          <OrderStatusConditionContainer>
+          <OrderStatusConditionContainer className={'order-status-condition-container'}>
             <AppCheckBox
               checked={showServedOrder}
               onChange={() => {
@@ -95,12 +95,12 @@ function AdminOrderHistory() {
             />
           </OrderStatusConditionContainer>
         </ConditionContainer>
-        <OrderCardContainer>
+        <OrderCardContainer className={'order-card-container'}>
           {orders.map((order) => (
             <ToggleOrderCard key={order.id} order={order} />
           ))}
         </OrderCardContainer>
-        <TotalPriceContainer>
+        <TotalPriceContainer className={'total-price-container'}>
           <AppLabel size={25}>총 주문 금액: {totalOrderPrice}원</AppLabel>
         </TotalPriceContainer>
       </Container>
