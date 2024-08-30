@@ -22,7 +22,7 @@ const AppInput = forwardRef<HTMLInputElement, AppInputProps>((props: AppInputPro
     }
   };
 
-  return <Container {...props} ref={ref} onKeyDown={onKeyDown} />;
+  return <Container {...props} ref={ref} onKeyDown={onKeyDown} className={'app-input'} />;
 });
 
 export default AppInput;
