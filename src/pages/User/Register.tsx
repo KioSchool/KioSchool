@@ -214,8 +214,8 @@ function Register() {
   };
 
   return (
-    <Container>
-      <SubContainer>
+    <Container className={'register-container'}>
+      <SubContainer className={'register-sub-container'}>
         <AppLabel size={'large'} style={{ padding: '0 0 30px' }}>
           회원가입
         </AppLabel>
@@ -223,7 +223,7 @@ function Register() {
         {errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}
         <FormContainer id={'form'} onSubmit={submitHandler}>
           <AppInputWithLabel titleLabel={'이름'} type={'text'} id={'name'} ref={userNameInputRef} placeholder="이름을 입력해주세요" required />
-          <IdContainer>
+          <IdContainer className={'id-container'}>
             <AppInputWithLabel
               style={{ width: '330px' }}
               titleLabel={'아이디'}
@@ -264,7 +264,7 @@ function Register() {
             required
           ></AppInputWithLabel>
 
-          <EmailContainer>
+          <EmailContainer className={'email-container'}>
             <AppInputWithLabel
               style={{ width: '330px' }}
               titleLabel={'이메일'}
@@ -278,7 +278,7 @@ function Register() {
               인증코드 전송
             </AppButton>
             {isCodeSent && (
-              <CodeContainer>
+              <CodeContainer className={'code-container'}>
                 <AppInputWithLabel
                   style={{ width: '275px' }}
                   titleLabel={'인증코드'}
@@ -303,7 +303,7 @@ function Register() {
             회원가입
           </AppButton>
         </FormContainer>
-        <LoginLabelContainer>
+        <LoginLabelContainer className={'login-label-container'}>
           <AppLabel size={'small'}>
             <Link to={'/login'}>로그인하기</Link>
           </AppLabel>
