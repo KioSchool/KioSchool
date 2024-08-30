@@ -1,4 +1,4 @@
-import { Workspace, PaginationResponse } from '@@types/index';
+import { PaginationResponse, Workspace } from '@@types/index';
 import SuperAdminWorkspaceContent from '@components/SuperAdmin/workspace/SuperAdminWorkspaceContent';
 import styled from '@emotion/styled';
 
@@ -14,7 +14,7 @@ const EmptyLabel = styled.div`
 
 function SuperAdminWorkspaceContents({ workspaces }: { workspaces: PaginationResponse<Workspace> }) {
   if (workspaces.numberOfElements === 0) {
-    return <EmptyLabel>찾고자 하는 워크스페이스가 없습니다.</EmptyLabel>;
+    return <EmptyLabel className={'empty-label'}>찾고자 하는 워크스페이스가 없습니다.</EmptyLabel>;
   }
 
   return (
