@@ -69,15 +69,15 @@ function AdminProductCategories() {
 
   return (
     <AppContainer contentsJustify={'center'}>
-      <Container>
+      <Container className={'admin-product-categories-container'}>
         <TitleNavBar title={'카테고리 관리'}></TitleNavBar>
-        <CategoriesInputContainer>
+        <CategoriesInputContainer className={'categories-input-container'}>
           <AppInputWithButton ref={categoryInputRef} onButtonClick={addCategoryHandler} />
         </CategoriesInputContainer>
-        <CategoriesContentContainer>
+        <CategoriesContentContainer className={'categories-content-container'}>
           <DragAndDropContent />
         </CategoriesContentContainer>
-        <CategoriesButtonContainer>
+        <CategoriesButtonContainer className={'categories-button-container'}>
           <AppButton size={'medium'} onClick={saveCategory}>
             편집 완료
           </AppButton>
