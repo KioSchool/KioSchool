@@ -138,11 +138,11 @@ function AdminOrder() {
   const productMap = _.keyBy(products, 'id');
 
   return (
-    <Container>
+    <Container className={'admin-order-container'}>
       <TitleNavBar title={'실시간 주문 조회'} />
-      <KanbanContainer>
-        <OrderColumnContainer>
-          <OrderHeader>
+      <KanbanContainer className={'kanban-container'}>
+        <OrderColumnContainer className={'order-column-container'}>
+          <OrderHeader className={'order-header'}>
             <AppLabel size={22} style={{ fontWeight: 600 }}>
               결제 대기
             </AppLabel>
@@ -152,8 +152,8 @@ function AdminOrder() {
           ))}
         </OrderColumnContainer>
         <VerticalDivider />
-        <OrderColumnContainer>
-          <OrderHeader>
+        <OrderColumnContainer className={'order-column-container'}>
+          <OrderHeader className={'order-header'}>
             <AppLabel size={22} style={{ fontWeight: 600 }}>
               결제 완료
             </AppLabel>
@@ -163,8 +163,8 @@ function AdminOrder() {
           ))}
         </OrderColumnContainer>
         <VerticalDivider />
-        <OrderColumnContainer>
-          <OrderHeader>
+        <OrderColumnContainer className={'order-column-container'}>
+          <OrderHeader className={'order-header'}>
             <AppLabel size={22} style={{ fontWeight: 600 }}>
               서빙 완료
             </AppLabel>
@@ -174,15 +174,15 @@ function AdminOrder() {
           ))}
         </OrderColumnContainer>
       </KanbanContainer>
-      <ProductsByOrderContainer>
-        <ProductsByOrderSubContainer>
+      <ProductsByOrderContainer className={'products-by-order-container'}>
+        <ProductsByOrderSubContainer className={'products-by-order-sub-container'}>
           <AppLabel size={23} style={{ fontWeight: 600, width: '100%', textAlign: 'center' }}>
             결제 완료 주문 중 서빙 필요한 상품 현황판
           </AppLabel>
-          <ProductsContainer>
+          <ProductsContainer className={'products-container'}>
             {_.keys(productCounts).map((productId) => (
-              <ProductCard key={`product_card_${productId}`}>
-                <ProductImage src={productMap[productId]?.imageUrl || uploadPreview} />
+              <ProductCard key={`product_card_${productId}`} className={'product-card'}>
+                <ProductImage src={productMap[productId]?.imageUrl || uploadPreview} className={'product-image'} />
                 <AppLabel key={`product_name_${productId}`} size={14} style={{ fontWeight: 600 }}>
                   {productMap[productId]?.name || '삭제된 상품'}
                 </AppLabel>
