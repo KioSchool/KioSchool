@@ -167,17 +167,17 @@ function AdminAccount() {
 
   return (
     <AppContainer contentsJustify={'center'}>
-      <Container>
+      <Container className={'admin-account-container'}>
         <TitleNavBar title={`${adminUser.name} 님의 마이페이지`} subTitle={'계좌 관리'} useBackIcon={true} />
-        <ContentContainer>
-          <AccountContentContainer>
-            <AccountInfoContainer>
+        <ContentContainer className={'content-container'}>
+          <AccountContentContainer className={'account-content-container'}>
+            <AccountInfoContainer className={'account-info-container'}>
               <AppLabel size={24} style={{ fontWeight: 700 }}>
                 등록된 계좌 정보
               </AppLabel>
               <AppLabel size={20}>{registerAccountInfo}</AppLabel>
               <HorizontalDivider />
-              <QRCodeDescriptionContainer>
+              <QRCodeDescriptionContainer className={'qr-code-description-container'}>
                 <AppLabel size={14} style={{ fontWeight: 600 }}>
                   {'토스 -> 전체 -> 사진으로 송금 -> QR 코드 발급 -> 받을 금액 설정 X'}
                 </AppLabel>
@@ -186,7 +186,7 @@ function AdminAccount() {
                 </AppLabel>
               </QRCodeDescriptionContainer>
             </AccountInfoContainer>
-            <AccountRegisterInputContainer>
+            <AccountRegisterInputContainer className={'account-register-input-container'}>
               <AppImageInput title={'토스 QR 등록'} onImageChange={onImageChange} url={fileURL} width={170} height={170} />
               <AppButton onClick={submitHandler} disabled={!fileURL}>
                 등록하기
