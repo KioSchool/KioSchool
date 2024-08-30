@@ -97,15 +97,15 @@ function ProductDialog(props: ProductDialogProps) {
   };
 
   return (
-    <Container onClick={closeDialog} ref={dialogRef}>
-      <ModalContainer>
-        <CloseButtonContainer>
+    <Container onClick={closeDialog} ref={dialogRef} className={'product-dialog-container'}>
+      <ModalContainer className={'product-dialog'}>
+        <CloseButtonContainer className={'close-button'}>
           <CloseSvg onClick={props.closeDialog} />
         </CloseButtonContainer>
-        <ProductImage src={props.product.imageUrl} />
+        <ProductImage src={props.product.imageUrl} className={'product-image'} />
         <AppLabel size={'small'}>{props.product.name}</AppLabel>
         <AppLabel size={12}>{props.product.description}</AppLabel>
-        <OrderButtonContainer>
+        <OrderButtonContainer className={'order-button'}>
           <AppButton size={270} onClick={addOrderBasket}>
             {props.product.price.toLocaleString()}원 담기
           </AppButton>
