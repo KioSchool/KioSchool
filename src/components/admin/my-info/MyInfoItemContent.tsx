@@ -31,9 +31,9 @@ interface MyInfoContentItmeProps {
 
 function MyInfoItemContent({ label, children }: MyInfoContentItmeProps) {
   return (
-    <ItemContainer>
-      <ButtonContainer>{children}</ButtonContainer>
-      <ItmeLabel>{label}</ItmeLabel>
+    <ItemContainer className={'my-info-item-container'}>
+      <ButtonContainer className={'button-container'}>{children}</ButtonContainer>
+      <ItmeLabel className={'item-label'}>{label}</ItmeLabel>
     </ItemContainer>
   );
 }
