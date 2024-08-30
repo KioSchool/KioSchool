@@ -34,14 +34,14 @@ interface AppFooterProps {
 function AppFooter({ fixed = true }: AppFooterProps) {
   if (!fixed)
     return (
-      <NonFixedContainer>
+      <NonFixedContainer className={'app-footer'}>
         <AppLabel size={16}>©건국대학교 컴퓨터공학부 학생회 ITZI</AppLabel>
         <AppLabel size={16}>All rights reserved.</AppLabel>
       </NonFixedContainer>
     );
 
   return (
-    <FixedContainer>
+    <FixedContainer className={'app-footer'}>
       <AppLabel size={16}>©건국대학교 컴퓨터공학부 학생회 ITZI</AppLabel>
       <AppLabel size={16}>All rights reserved.</AppLabel>
     </FixedContainer>
