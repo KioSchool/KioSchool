@@ -56,9 +56,9 @@ function TitleNavBar({ title, subTitle = '', useBackIcon = true, children, onLef
   const navigate = useNavigate();
 
   return (
-    <Container useSubTitle={!!subTitle}>
-      <SubContainer>
-        <LeftContainer>
+    <Container useSubTitle={!!subTitle} className={'title-nav-bar-container'}>
+      <SubContainer className={'title-nav-bar-sub-container'}>
+        <LeftContainer className={'left-container'}>
           <ArrowLeftButton
             onClick={() => {
               if (onLeftArrowClick) {
@@ -69,7 +69,7 @@ function TitleNavBar({ title, subTitle = '', useBackIcon = true, children, onLef
             }}
             useBackIcon={useBackIcon}
           />
-          <TitleContainer>
+          <TitleContainer className={'title-container'}>
             <AppLabel size={36} style={{ fontWeight: 800, lineHeight: '40px' }}>
               {title}
             </AppLabel>
