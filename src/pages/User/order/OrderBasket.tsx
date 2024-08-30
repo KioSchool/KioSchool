@@ -73,14 +73,14 @@ function OrderBasket() {
   }, []);
 
   return (
-    <Container>
-      <Header>
+    <Container className={'order-basket-container'}>
+      <Header className={'order-basket-header'}>
         <AppBadge background={'lightgray'} noBorder={true}>
           TABLE {tableNo}
         </AppBadge>
         <AppLabel size={'small'}>{workspace.name}</AppLabel>
       </Header>
-      <OrderBasketContainer ref={basketRef}>
+      <OrderBasketContainer ref={basketRef} className={'order-basket-content'}>
         {orderBasket.map((basket) => {
           const product = productsMap[basket.productId];
           return <ProductCounterBadge product={product} key={product.id} />;
