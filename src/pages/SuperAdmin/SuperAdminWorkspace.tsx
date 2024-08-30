@@ -8,13 +8,15 @@ import { useEffect, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
 import SuperAdminWorkspaceContents from './SuperAdminWorkspaceContents';
 import useSuperAdminWorkspace from '@hooks/SuperAdmin/useSuperAdminWorkspace';
+import { colFlex } from '@styles/flexStyles';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
-  display: flex;
-  flex-direction: column;
-  justify-content: ${(props) => (props.justifyCenter ? 'center' : 'flex-start')};
-  align-items: center;
   height: 550px;
+  ${(props) =>
+    colFlex({
+      justify: props.justifyCenter ? 'center' : 'flex-start',
+      align: 'center',
+    })}
 `;
 
 function SuperAdminWorkspace() {
