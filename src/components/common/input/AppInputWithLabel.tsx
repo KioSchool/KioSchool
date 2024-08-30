@@ -34,10 +34,14 @@ const MessageLabel = styled.label`
 
 const AppInputWithLabel = forwardRef<HTMLInputElement, AppInputWithLabelProps>((props: AppInputWithLabelProps, ref: ForwardedRef<HTMLInputElement>) => {
   return (
-    <Container>
-      <LabelContainer>
-        <TitleLabel htmlFor={props.id}>{props.titleLabel}</TitleLabel>
-        <MessageLabel htmlFor={props.id}>{props.messageLabel}</MessageLabel>
+    <Container className={'app-input-with-label'}>
+      <LabelContainer className={'label-container'}>
+        <TitleLabel htmlFor={props.id} className={'title-label'}>
+          {props.titleLabel}
+        </TitleLabel>
+        <MessageLabel htmlFor={props.id} className={'message-label'}>
+          {props.messageLabel}
+        </MessageLabel>
       </LabelContainer>
       <AppInput {...props} ref={ref} />
     </Container>
