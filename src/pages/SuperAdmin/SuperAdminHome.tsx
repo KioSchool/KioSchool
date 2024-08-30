@@ -81,18 +81,18 @@ function SuperAdminHome() {
   return (
     <AppContainer contentsJustify={'center'} contentsDirection={'column'} contentsAlign={'flex-start'}>
       <>
-        <MainTitle>
+        <MainTitle className={'main-title'}>
           키오스쿨로
           <br /> 주점관리를 손쉽게,
         </MainTitle>
-        <LinkAdminHome to={'/admin'} onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
-          <LinkText>
+        <LinkAdminHome to={'/admin'} onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)} className={'link-admin-home'}>
+          <LinkText className={'link-text'}>
             SUPER ADMIN
             <ArrowRight />
           </LinkText>
         </LinkAdminHome>
         <AppFooter />
-        <HoverOverlay isHover={isHover} />
+        <HoverOverlay isHover={isHover} className={'hover-overlay'} />
       </>
     </AppContainer>
   );
