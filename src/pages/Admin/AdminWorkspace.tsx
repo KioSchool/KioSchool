@@ -13,17 +13,16 @@ import orderImage from '@resources/image/orderImage.png';
 import orderHistoryImage from '@resources/image/orderHistoryImage.png';
 import productImage from '@resources/image/productImage.png';
 import orderManageImage from '@resources/image/orderManageImage.png';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 100%;
+  ${colFlex({ align: 'center' })}
 `;
 
 const ButtonContainer = styled.div`
-  display: flex;
   gap: 30px;
+  ${rowFlex({})}
 `;
 
 function AdminWorkspace() {
