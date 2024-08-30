@@ -10,6 +10,7 @@ import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import useApi from '@hooks/useApi';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Order } from '@@types/index';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
   width: 100vw;
@@ -33,21 +34,16 @@ const Header = styled.div`
   position: sticky;
   top: 0;
   width: 100vw;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 25px;
   box-sizing: border-box;
   z-index: 100;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const SubContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   height: 70vh;
   gap: 20px;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 function OrderPay() {
