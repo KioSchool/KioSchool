@@ -9,39 +9,31 @@ import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { categoriesAtom } from '@recoils/atoms';
 import DragAndDropContent from '@components/admin/product-category/DragAndDropContent';
+import { colFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
   gap: 15px;
-  align-items: center;
   padding-top: 100px;
+  ${colFlex({ align: 'center' })}
 `;
 
 const CategoriesInputContainer = styled.div`
   width: 100%;
   height: 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const CategoriesContentContainer = styled.div`
   width: 100%;
   height: 400px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   overflow: auto;
+  ${colFlex({ align: 'center' })}
 `;
 
 const CategoriesButtonContainer = styled.div`
   width: 100%;
   height: 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  ${colFlex({ align: 'center' })}
 `;
 
 function AdminProductCategories() {
