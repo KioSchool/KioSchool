@@ -81,8 +81,8 @@ function MyInfoContent() {
   };
 
   return (
-    <MyInfoContainer>
-      <MyInfoSubContainer>
+    <MyInfoContainer className={'my-info-container'}>
+      <MyInfoSubContainer className={'my-info-sub-container'}>
         <MyInfoItemContent label="계좌관리">
           <AccountButton onClick={() => navigate('/admin/register-account')} />
         </MyInfoItemContent>
