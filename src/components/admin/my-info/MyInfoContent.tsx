@@ -7,27 +7,22 @@ import useConfirm from '@hooks/useConfirm';
 import React from 'react';
 import useAdminUser from '@hooks/admin/useAdminUser';
 import AppFooter from '@components/common/footer/AppFooter';
+import { rowFlex } from '@styles/flexStyles';
 
 const MyInfoContainer = styled.div`
   width: 1100px;
   height: 300px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
   gap: 10px;
   flex-shrink: 0;
   border-radius: 20px;
   box-shadow: 0 4px 16.8px 0 rgba(0, 0, 0, 0.25);
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const MyInfoSubContainer = styled.div`
   width: 100%;
   height: 220px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
+  ${rowFlex({ justify: 'space-evenly', align: 'center' })}
 `;
 
 const VerticalLine = styled.div`
