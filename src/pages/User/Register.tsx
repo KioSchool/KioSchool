@@ -94,14 +94,14 @@ function Register() {
     }
 
     const isDuplicated = await checkDuplicateId(userId);
-    if (!isDuplicated) {
-      setErrorMessage('');
-      setIsAbleId(true);
+    if (isDuplicated) {
+      setErrorMessage('이미 사용중인 ID입니다.');
+      setIsAbleId(false);
       return;
     }
 
-    setErrorMessage('이미 사용중인 ID입니다.');
-    setIsAbleId(false);
+    setErrorMessage('');
+    setIsAbleId(true);
   };
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -164,6 +164,7 @@ function Register() {
     if (!isEmailSent) {
       setErrorMessage('이메일 발송이 실패했습니다.');
       setIsCodeSent(false);
+      return;
     }
 
     setIsCodeSent(true);
