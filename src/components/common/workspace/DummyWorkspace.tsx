@@ -1,14 +1,13 @@
 import { Workspace } from '@@types/index';
 import styled from '@emotion/styled';
+import { rowFlex } from '@styles/flexStyles';
 
 const DummyWorkspaceContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 321px;
   height: 332px;
   border-radius: 25px;
   border: 1px solid #000;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 interface Props {
