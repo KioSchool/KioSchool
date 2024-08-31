@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import React, { useState } from 'react';
 import ProductDialog from '@components/user/product/ProductDialog';
+import { colFlex } from '@styles/flexStyles';
 
 interface ProductCardProps {
   product: Product;
@@ -16,10 +17,9 @@ const Container = styled.div`
 `;
 
 const LabelContainer = styled.div`
-  display: flex;
   flex-basis: 0;
-  flex-direction: column;
   gap: 3px;
+  ${colFlex()}
 `;
 
 const ImageContainer = styled.div``;

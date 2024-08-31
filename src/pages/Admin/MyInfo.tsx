@@ -6,13 +6,11 @@ import useAdminUser from '@hooks/admin/useAdminUser';
 import { adminUserAtom } from '@recoils/atoms';
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
+import { colFlex } from '@styles/flexStyles';
 
 const MyInfoContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   width: 100%;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 function MyInfo() {

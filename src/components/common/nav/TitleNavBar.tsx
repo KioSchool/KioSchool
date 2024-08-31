@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import ArrowLeftSvg from '@resources/svg/ArrowLeftSvg';
 import AppLabel from '@components/common/label/AppLabel';
 import { useNavigate } from 'react-router-dom';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 interface Props {
   title: string;
@@ -13,32 +14,28 @@ interface Props {
 }
 
 const Container = styled.div<{ useSubTitle: boolean }>`
-  display: flex;
   padding-bottom: 25px;
-  justify-content: center;
   height: ${(props) => (props.useSubTitle ? '100px' : '50px')};
   width: 1000px;
   min-width: 1000px;
+  ${rowFlex({ justify: 'center' })}
 `;
 
 const TitleContainer = styled.div`
-  display: flex;
-  flex-direction: column;
   padding-left: 50px;
   height: 40px;
+  ${colFlex()}
 `;
 
 const SubContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
   width: 100%;
+  ${rowFlex({ justify: 'space-between' })}
 `;
 
 const LeftContainer = styled.div`
   position: relative;
-  display: flex;
-  justify-content: center;
   gap: 25px;
+  ${rowFlex({ justify: 'center' })}
 `;
 
 const ArrowLeftButton = styled(ArrowLeftSvg)<{ useBackIcon: boolean }>`

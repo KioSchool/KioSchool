@@ -8,20 +8,18 @@ import AppLabel from '@components/common/label/AppLabel';
 import { QRCodeCanvas } from 'qrcode.react';
 import { DeviceFrameset } from 'react-device-frameset';
 import 'react-device-frameset/styles/marvel-devices.min.css';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 100vw;
   gap: 10px;
   padding: 100px 0 50px 0;
+  ${colFlex({ align: 'center' })}
 `;
 
 const ContentContainer = styled.div`
-  display: flex;
-  justify-content: space-around;
   width: 100%;
+  ${rowFlex({ justify: 'space-around' })}
 `;
 
 const PreviewContainer = styled.iframe`
@@ -40,15 +38,13 @@ const QRCodeContainer = styled.div`
 `;
 
 const QRCodeCard = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: 10px;
   width: 200px;
   height: 230px;
   border-radius: 20px;
   padding: 10px;
   box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.1);
+  ${colFlex({ align: 'center' })}
 `;
 
 const TableLink = styled.a`
@@ -60,20 +56,18 @@ const TableLink = styled.a`
 `;
 
 const QRCodeDownloadButton = styled.label`
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 100px;
   height: 30px;
   border: 1px solid #eb6d09;
   border-radius: 10px;
   cursor: pointer;
   user-select: none;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const ButtonContainer = styled.div`
-  display: flex;
   gap: 20px;
+  ${rowFlex()}
 `;
 
 function AdminOrderManage() {

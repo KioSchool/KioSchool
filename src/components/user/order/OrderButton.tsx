@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import AppButton from '@components/common/button/AppButton';
+import { rowFlex } from '@styles/flexStyles';
 
 interface OrderButtonProps {
   showButton: boolean;
@@ -13,9 +14,7 @@ const OrderButtonContainer = styled.div`
   bottom: 50px;
   width: 100vw;
   height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const OrderButtonSubContainer = styled.div`

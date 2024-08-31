@@ -5,6 +5,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import SwitchButton from '@components/common/button/SwitchButton';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useParams } from 'react-router-dom';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 interface Props {
   product: Product;
@@ -12,50 +13,36 @@ interface Props {
 }
 
 const Container = styled.div<{ isSellable: boolean | null }>`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   width: 220px;
   height: 320px;
   border-radius: 16px;
   background: ${(props) => (props.isSellable ? 'rgba(255, 255, 255, 0.20)' : 'rgba(0, 0, 0, 0.40)')};
   box-shadow: 0 4px 17px 0 rgba(0, 0, 0, 0.1);
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const SubContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   width: 100%;
   height: 100%;
   gap: 10px;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const TextContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   height: 80px;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const ImageContainer = styled.div<{ isSellable: boolean | null }>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 150px;
   height: 120px;
   filter: ${(props) => (props.isSellable ? 'none' : 'grayScale(100%)')};
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 function ProductCard({ product, onClick }: Props) {

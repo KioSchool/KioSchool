@@ -3,34 +3,30 @@ import { Link } from 'react-router-dom';
 import kioLogo from '@resources/image/kioLogo.png';
 import AuthenticationButton from '@components/user/AuthenticationButton';
 import { navBarLabelStyle } from '@styles/navBarStyles';
+import { rowFlex } from '@styles/flexStyles';
 
 const NavContainer = styled.div<{ useBackground: boolean }>`
   z-index: 1001;
   width: 100vw;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
   flex-wrap: wrap;
   top: 0;
   position: fixed;
   background: ${(props) => (props.useBackground ? 'white' : 'transparent')};
   backdrop-filter: blur(10px);
   opacity: 0.8;
+  ${rowFlex({ justify: 'center' })}
 `;
 
 const NavContent = styled.div`
   margin: 15px 24px;
   width: 1000px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const NavLinkContainer = styled.div`
-  display: flex;
   flex-wrap: wrap;
   gap: 40px;
+  ${rowFlex()}
 `;
 
 export const NavLinkItem = styled(Link)`

@@ -5,6 +5,7 @@ import useCustomNavigate from '@hooks/useCustomNavigate';
 import useConfirm from '@hooks/useConfirm';
 import DeleteButtonSvg from '@resources/svg/DeleteButtonSvg';
 import React from 'react';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const WorkspaceContainer = styled.div`
   cursor: pointer;
@@ -13,10 +14,7 @@ const WorkspaceContainer = styled.div`
   border-radius: 25px;
   background: #eb6d09;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
+  ${colFlex({ justify: 'space-between', align: 'flex-start' })}
 
   &:hover {
     background: linear-gradient(140deg, #ffe3cc -165.17%, #eb6d09 92.63%);
@@ -37,8 +35,7 @@ const MenuTitle = styled.div`
   color: #fff;
   font-size: 24px;
   font-weight: 300;
-  display: flex;
-  flex-direction: row;
+  ${rowFlex()}
 `;
 
 const DeleteContainer = styled.div`
@@ -57,41 +54,38 @@ const DeleteButton = styled(DeleteButtonSvg)`
 `;
 
 const TitleContainer = styled.div`
-  display: flex;
   width: 100%;
   flex-wrap: wrap;
-  flex-direction: column;
+  ${colFlex()}
 `;
 
 const MainTitleContainer = styled.div`
-  display: flex;
   width: 100%;
   flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: space-between;
+  ${rowFlex({ justify: 'space-between' })}
 `;
 
 const SubTitleContainer = styled.div``;
 
 const Description = styled.div`
   padding: 26px 10px 0 23px;
-  display: flex;
   flex-wrap: wrap;
   width: 198px;
   color: #fff;
   font-size: 32px;
   font-weight: 100;
+  ${rowFlex()}
 `;
 
 const Title = styled.div`
   padding: 5px 10px 22px 22px;
-  display: flex;
   flex-wrap: wrap;
   width: 69%;
   height: 50px;
   color: #fff;
   font-size: 40px;
   font-weight: 700;
+  ${rowFlex()}
 `;
 
 interface Props {

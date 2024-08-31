@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import AppBadge from '@components/common/badge/AppBadge';
 import { Product, ProductCategory } from '@@types/index';
 import _ from 'lodash';
+import { rowFlex } from '@styles/flexStyles';
 
 interface CategoryBadgesContainerProps {
   productCategories: ProductCategory[];
@@ -14,10 +15,10 @@ const Container = styled.div`
   height: 50px;
   padding-left: 35px;
   box-sizing: border-box;
-  display: flex;
   gap: 8px;
-  align-items: center;
   overflow: scroll;
+  ${rowFlex({ align: 'center' })}
+
   &::-webkit-scrollbar {
     display: none;
   }

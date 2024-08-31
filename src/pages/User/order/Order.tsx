@@ -13,6 +13,7 @@ import _ from 'lodash';
 import OrderButton from '@components/user/order/OrderButton';
 import useProduct from '@hooks/user/useProduct';
 import AppFooter from '@components/common/footer/AppFooter';
+import { colFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
   width: 100vw;
@@ -27,11 +28,8 @@ const Header = styled.div`
   width: 100vw;
   height: 110px;
   flex-basis: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   z-index: 100;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const ContentContainer = styled.div`

@@ -6,32 +6,29 @@ import PlusButtonSvg from '@resources/svg/PlusButtonSvg';
 import { orderBasketAtom } from '@recoils/atoms';
 import { useRecoilState } from 'recoil';
 import MinusButtonSvg from '@resources/svg/MinusButtonSvg';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 interface ProductCounterBadgeProps {
   product: Product;
 }
 
 const Container = styled.div`
-  display: flex;
   width: 330px;
   height: 60px;
   padding: 12px 24px;
   border: 1px solid black;
   box-sizing: border-box;
   border-radius: 28px;
-  justify-content: space-between;
+  ${rowFlex({ justify: 'space-between' })}
 `;
 
 const LabelContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+  ${colFlex()}
 `;
 
 const CounterContainer = styled.div`
-  display: flex;
   width: 100px;
-  justify-content: space-between;
-  align-items: center;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 function ProductCounterBadge({ product }: ProductCounterBadgeProps) {

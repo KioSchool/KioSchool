@@ -11,6 +11,7 @@ import TitleNavBar from '@components/common/nav/TitleNavBar';
 import SelectWithLabel from '@components/common/select/SelectWithLabelProps';
 import NavBar from '@components/common/nav/NavBar';
 import AppImageInput from '@components/common/input/AppImageInput';
+import { colFlex } from '@styles/flexStyles';
 
 function reducer(state: ProductStateType, action: ProductActionType) {
   switch (action.type) {
@@ -28,12 +29,10 @@ function reducer(state: ProductStateType, action: ProductActionType) {
 }
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
   gap: 15px;
-  align-items: center;
   padding-top: 100px;
   padding-bottom: 100px;
+  ${colFlex({ align: 'center' })}
 `;
 
 function AdminProductAdd() {

@@ -8,6 +8,7 @@ import { orderBasketAtom, userWorkspaceAtom } from '@recoils/atoms';
 import ProductCounterBadge from '@components/user/product/ProductCounterBadge';
 import _ from 'lodash';
 import OrderButton from '@components/user/order/OrderButton';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
   width: 100vw;
@@ -33,20 +34,16 @@ const Header = styled.div`
   position: sticky;
   top: 0;
   width: 100vw;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 25px;
   box-sizing: border-box;
   z-index: 100;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const OrderBasketContainer = styled.div`
-  display: flex;
-  flex-direction: column;
   width: 100vw;
-  align-items: center;
   gap: 14px;
+  ${colFlex({ align: 'center' })}
 `;
 
 function OrderBasket() {

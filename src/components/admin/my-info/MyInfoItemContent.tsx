@@ -1,13 +1,11 @@
 import styled from '@emotion/styled';
+import { colFlex } from '@styles/flexStyles';
 import { ReactNode } from 'react';
 
 const ItemContainer = styled.div`
   width: 160px;
   height: 150px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  ${colFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const ButtonContainer = styled.div`

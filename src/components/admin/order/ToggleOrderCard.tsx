@@ -3,37 +3,34 @@ import { Order } from '@@types/index';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import ArrowUpSvg from '@resources/svg/ArrowUpSvg';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 interface ToggleOrderCardProps {
   order: Order;
 }
 
 const Container = styled.div`
-  display: flex;
-  justify-content: space-between;
   width: 100%;
   background: #f7f7f7;
   padding: 20px 50px;
   box-sizing: border-box;
+  ${rowFlex({ justify: 'space-between' })}
 `;
 
 const ProductContainer = styled.div`
-  display: flex;
-  flex-direction: column;
   width: 200px;
   gap: 4px;
+  ${colFlex()}
 `;
 
 const RightContainer = styled.div`
-  display: flex;
   gap: 15px;
+  ${rowFlex()}
 `;
 
 const OrderInfoContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   gap: 30px;
+  ${colFlex({ justify: 'space-between' })}
 `;
 
 function ToggleOrderCard({ order }: ToggleOrderCardProps) {

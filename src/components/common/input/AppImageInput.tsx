@@ -1,6 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import styled from '@emotion/styled';
 import uploadPreview from '@resources/image/uploadPreview.png';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 interface ProductImageInputProps {
   title: string;
@@ -12,18 +13,14 @@ interface ProductImageInputProps {
 }
 
 const ImageInputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
   gap: 15px;
-  align-items: center;
+  ${colFlex({ align: 'center' })}
 `;
 
 const ImageLabelContainer = styled.div`
-  display: flex;
   width: 100%;
-  justify-content: space-between;
-  align-items: center;
   font-size: 14px;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const ImageInputButton = styled.label`

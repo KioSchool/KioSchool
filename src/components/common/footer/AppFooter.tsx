@@ -1,30 +1,25 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
+import { colFlex } from '@styles/flexStyles';
 
 const FixedContainer = styled.div`
   z-index: 1001;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   bottom: 0;
   left: 0;
   right: 0;
   position: fixed;
   padding: 15px 24px;
   box-sizing: border-box;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const NonFixedContainer = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   padding: 15px 24px;
   box-sizing: border-box;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 interface AppFooterProps {

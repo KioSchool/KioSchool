@@ -1,6 +1,7 @@
 import React, { ForwardedRef, forwardRef } from 'react';
 import AppInput, { AppInputProps } from '@components/common/input/AppInput';
 import styled from '@emotion/styled';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 interface AppInputWithLabelProps extends AppInputProps {
   titleLabel: string;
@@ -8,15 +9,12 @@ interface AppInputWithLabelProps extends AppInputProps {
 }
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
   gap: 12px;
+  ${colFlex()}
 `;
 
 const LabelContainer = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
+  ${rowFlex({ align: 'center' })}
 `;
 
 const TitleLabel = styled.label`

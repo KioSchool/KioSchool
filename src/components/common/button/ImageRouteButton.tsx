@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
+import { colFlex } from '@styles/flexStyles';
 
 interface ImageRouteButtonProps {
   src: string;
@@ -9,26 +10,22 @@ interface ImageRouteButtonProps {
 }
 
 const Container = styled.div<{ src: string }>`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
   width: 280px;
   height: 440px;
   box-sizing: border-box;
   padding: 40px;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0) -18.3%, rgba(0, 0, 0, 0.6) 100%), url(${(props) => props.src});
+  ${colFlex({ justify: 'flex-end' })}
+
   &:hover {
     background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #eb6d09 120%), url(${(props) => props.src});
   }
 `;
 
 const SubContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
   width: 100%;
   height: 100px;
+  ${colFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const RouteButton = styled.button`

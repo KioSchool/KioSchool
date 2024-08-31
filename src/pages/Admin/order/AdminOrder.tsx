@@ -14,35 +14,30 @@ import AppLabel from '@components/common/label/AppLabel';
 import _ from 'lodash';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import uploadPreview from '@resources/image/uploadPreview.png';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
   gap: 24px;
   width: 100vw;
   height: 100vh;
   padding: 20px;
   box-sizing: border-box;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const KanbanContainer = styled.div`
-  display: flex;
   width: 100%;
   gap: 24px;
   height: 65%;
-  justify-content: center;
+  ${rowFlex({ justify: 'center' })}
 `;
 
 const OrderColumnContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   height: 100%;
   gap: 10px;
   overflow: auto;
   scrollbar-width: none;
+  ${colFlex({ align: 'center' })}
 `;
 
 const OrderHeader = styled.div`
@@ -52,44 +47,34 @@ const OrderHeader = styled.div`
   width: 350px;
   height: 110px;
   flex-basis: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   z-index: 100;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const ProductsByOrderContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 100%;
   height: 200px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const ProductsByOrderSubContainer = styled.div`
-  display: flex;
-  flex-direction: column;
   width: 80%;
   height: 100%;
   gap: 10px;
   background: #f8f8f8;
   padding: 10px;
   box-sizing: border-box;
+  ${colFlex()}
 `;
 
 const ProductsContainer = styled.div`
-  display: flex;
   height: 100%;
   gap: 10px;
   overflow: auto;
+  ${rowFlex()}
 `;
 
 const ProductCard = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   height: 100%;
   width: 160px;
   padding: 5px;
@@ -97,6 +82,7 @@ const ProductCard = styled.div`
   background: white;
   border-radius: 10px;
   gap: 5px;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const ProductImage = styled.img`

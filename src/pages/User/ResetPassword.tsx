@@ -7,11 +7,10 @@ import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import useAuthentication from '@hooks/useAuthentication';
 import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
+import { colFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  ${colFlex({ align: 'center' })}
   gap: 24px;
 `;
 

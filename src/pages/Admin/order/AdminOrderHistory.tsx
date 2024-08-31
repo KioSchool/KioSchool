@@ -11,6 +11,7 @@ import ToggleOrderCard from '@components/admin/order/ToggleOrderCard';
 import TitleNavBar from '@components/common/nav/TitleNavBar';
 import AppLabel from '@components/common/label/AppLabel';
 import AppCheckBox from '@components/common/input/AppCheckBox';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
   padding-top: 100px;
@@ -19,36 +20,31 @@ const Container = styled.div`
 `;
 
 const ConditionContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
+  ${rowFlex({ justify: 'space-between' })}
 `;
 
 const DatePickerContainer = styled.div`
-  display: flex;
-  justify-content: center;
   gap: 24px;
   margin-bottom: 24px;
+  ${rowFlex({ justify: 'center' })}
 `;
 
 const OrderStatusConditionContainer = styled.div`
-  display: flex;
-  justify-content: center;
   gap: 24px;
+  ${rowFlex({ justify: 'center' })}
 `;
 
 const OrderCardContainer = styled.div`
-  display: flex;
-  flex-direction: column;
   height: 500px;
   gap: 10px;
   overflow: auto;
+  ${colFlex()}
 `;
 
 const TotalPriceContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
   width: 100%;
   padding: 10px;
+  ${rowFlex({ justify: 'flex-end' })}
 `;
 
 function AdminOrderHistory() {

@@ -10,27 +10,25 @@ import AppLabel from '@components/common/label/AppLabel';
 import ProductCard from '@components/admin/product/ProductCard';
 import AppButton from '@components/common/button/AppButton';
 import useCustomNavigate from '@hooks/useCustomNavigate';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 100%;
   padding-top: 100px;
+  ${colFlex({ align: 'center' })}
 `;
 
 const ManageButtonContainer = styled.div`
-  display: flex;
   gap: 20px;
+  ${rowFlex()}
 `;
 
 const ContainerPerCategory = styled.div`
-  display: flex;
-  flex-direction: column;
   gap: 30px;
   padding: 50px 0;
   min-width: 1000px;
   width: 70%;
+  ${colFlex()}
 `;
 
 const ProductsContainer = styled.div`

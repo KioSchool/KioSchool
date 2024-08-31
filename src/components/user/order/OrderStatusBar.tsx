@@ -1,24 +1,21 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 interface OrderStatusBarProps {
   status: string;
 }
 
 const Container = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   margin-top: 20px;
   padding: 0 20px;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const CancelContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: 5px;
+  ${colFlex({ align: 'center' })}
 `;
 
 const CurrentStatusLabel = styled(AppLabel)`
