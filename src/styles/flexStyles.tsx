@@ -10,13 +10,13 @@ const flexContents = ({ justify, align }: FlexProps) => css`
   align-items: ${align};
 `;
 
-export const colFlex = ({ justify, align }: FlexProps) => css`
+export const colFlex = ({ justify, align }: FlexProps = {}) => css`
   display: flex;
   flex-direction: column;
   ${flexContents({ justify, align })}
 `;
 
-export const rowFlex = ({ justify, align }: FlexProps) => css`
+export const rowFlex = ({ justify, align }: FlexProps = {}) => css`
   display: flex;
   flex-direction: row;
   ${flexContents({ justify, align })}
