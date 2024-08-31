@@ -8,13 +8,12 @@ import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautif
 import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import useConfirm from '@hooks/useConfirm';
+import { rowFlex } from '@styles/flexStyles';
 
 const CategoriesItemContainer = styled.div`
   position: relative;
   width: 600px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const CategoriesContentsContainer = styled.div`
@@ -24,10 +23,7 @@ const CategoriesContentsContainer = styled.div`
   border-radius: 12px;
   box-shadow: 0 4px 17px 0 rgba(0, 0, 0, 0.1);
   margin: 10px 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const CategoriesName = styled.label`
