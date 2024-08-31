@@ -5,16 +5,15 @@ import React, { useRef, useState } from 'react';
 import CreateWorkspaceModal from './modal/CreateWorkspaceModal';
 import PlusIconSvg from '@resources/svg/PlusIconSvg';
 import AddWorkspaceModalContent from '@components/admin/workspace/AddworkspaceModalContent';
+import { rowFlex } from '@styles/flexStyles';
 
 const AddWorkspaceContainer = styled.form`
   cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 321px;
   height: 332px;
   border-radius: 25px;
   border: 1px solid #000;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 interface Props {
