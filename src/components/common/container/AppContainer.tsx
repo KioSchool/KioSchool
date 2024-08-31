@@ -1,15 +1,13 @@
 import styled from '@emotion/styled';
 import NavBar from '@components/common/nav/NavBar';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 export const MainContainer = styled.div<{ backgroundColor?: string }>`
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   height: 100vh;
   box-sizing: border-box;
   background-color: ${(props) => (props.backgroundColor ? props.backgroundColor : 'white')};
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 export const SubContainer = styled.div<{
@@ -20,16 +18,17 @@ export const SubContainer = styled.div<{
   customHeight?: string;
   customGap?: string;
 }>`
-  display: flex;
-  width: ${(props) => props.customWidth || '65vw'};
   flex-basis: 0;
   flex-wrap: wrap;
-  flex-direction: ${(props) => props.contentsDirection || 'column'};
-  align-items: ${(props) => props.contentsAlign || 'center'};
+  width: ${(props) => props.customWidth || '65vw'};
   height: ${(props) => props.customHeight || '100%'};
   min-width: 1000px;
-  justify-content: ${(props) => props.contentsJustify};
   gap: ${(props) => props.customGap};
+
+  ${(props) =>
+    props.contentsDirection === 'row'
+      ? rowFlex({ justify: props.contentsJustify, align: props.contentsAlign || 'center' })
+      : colFlex({ justify: props.contentsJustify, align: props.contentsAlign || 'center' })}
 `;
 
 interface Props {
