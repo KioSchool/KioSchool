@@ -24,7 +24,6 @@ export const SubContainer = styled.div<{
   height: ${(props) => props.customHeight || '100%'};
   min-width: 1000px;
   gap: ${(props) => props.customGap};
-
   ${(props) =>
     props.contentsDirection === 'row'
       ? rowFlex({ justify: props.contentsJustify, align: props.contentsAlign || 'center' })
