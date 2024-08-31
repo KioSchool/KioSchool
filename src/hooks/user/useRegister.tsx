@@ -16,10 +16,10 @@ function useRegister() {
     return response;
   };
 
-  const registerUser = async (userId: string, password: string, userName: string, userEmail: string) => {
+  const registerUser = async (id: string, password: string, userName: string, userEmail: string) => {
     const response = await userApi
       .post('/register', {
-        id: userId,
+        id,
         password: password,
         name: userName,
         email: userEmail,
