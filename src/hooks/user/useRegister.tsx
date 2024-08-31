@@ -3,10 +3,10 @@ import useApi from '@hooks/useApi';
 function useRegister() {
   const { userApi } = useApi();
 
-  const checkDuplicateId = async (userId: string) => {
+  const checkDuplicateId = async (id: string) => {
     const response = await userApi
       .post<boolean>('/user/duplicate', {
-        id: userId,
+        id,
       })
       .then((res) => res.data)
       .catch((error) => {
