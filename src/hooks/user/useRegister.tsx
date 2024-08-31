@@ -16,13 +16,13 @@ function useRegister() {
     return response;
   };
 
-  const registerUser = async (id: string, password: string, userName: string, userEmail: string) => {
+  const registerUser = async (id: string, password: string, name: string, email: string) => {
     const response = await userApi
       .post('/register', {
         id,
-        password: password,
-        name: userName,
-        email: userEmail,
+        password,
+        name,
+        email,
       })
       .then(() => true)
       .catch(() => false);
@@ -30,10 +30,10 @@ function useRegister() {
     return response;
   };
 
-  const sendVerifyMail = async (userEmail: string) => {
+  const sendVerifyMail = async (email: string) => {
     const response = await userApi
       .post('/user/email', {
-        email: userEmail,
+        email,
       })
       .then(() => true)
       .catch(() => false);
@@ -46,11 +46,11 @@ function useRegister() {
     errorMessage: string;
   }
 
-  const verifyUser = async (userEmail: string, inputCode: string): Promise<VerifyUserResponse> => {
+  const verifyUser = async (email: string, code: string): Promise<VerifyUserResponse> => {
     const response = await userApi
       .post<boolean>('/user/verify', {
-        email: userEmail,
-        code: inputCode,
+        email,
+        code,
       })
       .then((res) => {
         return { isVerify: res.data, errorMessage: '틀린 인증 코드입니다.' };
