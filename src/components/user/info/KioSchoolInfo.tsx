@@ -1,21 +1,16 @@
 import styled from '@emotion/styled';
+import { colFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
   padding: 20px 0;
   width: 100%;
   background: #f4f4f4;
   gap: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const SubContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
+  ${colFlex({ justify: 'center', align: 'flex-start' })}
 `;
 
 const MainDescriptionContainer = styled.div`
