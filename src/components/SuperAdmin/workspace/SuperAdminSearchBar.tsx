@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import useSuperAdminWorkspace from '@hooks/SuperAdmin/useSuperAdminWorkspace';
 import ActivatedSearchSvg from '@resources/svg/ActivatedSearchSvg';
 import DeactivatedSearchSvg from '@resources/svg/DeactivatedSearchSvg';
+import { rowFlex } from '@styles/flexStyles';
 import React, { forwardRef, useState } from 'react';
 
 const Input = styled.input`
@@ -23,12 +24,11 @@ const SearchBarContainer = styled.div`
   gap: 20px;
   width: 100%;
   height: 50px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
   border-bottom: 0.5px solid #d8d8d8;
   color: #d8d8d8;
   transition: 0.1s ease-in;
+  ${rowFlex({ justify: 'flex-start', align: 'center' })}
+
   &:focus-within {
     color: black;
     border-bottom: 0.5px solid black;

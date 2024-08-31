@@ -1,12 +1,12 @@
 import { Workspace } from '@@types/index';
 import { SubContainer } from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
+import { rowFlex } from '@styles/flexStyles';
 import { useNavigate } from 'react-router-dom';
 
 const SubLabelContainer = styled.div`
-  display: flex;
-  flex-direction: row;
   color: #d8d8d8;
+  ${rowFlex({})}
 `;
 
 const WorkspaceLabel = styled.div`
