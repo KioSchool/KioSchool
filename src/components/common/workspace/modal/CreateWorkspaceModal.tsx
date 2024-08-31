@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { colFlex } from '@styles/flexStyles';
 import { FormEventHandler, MouseEventHandler } from 'react';
 
 const ModalOverlay = styled.div`
@@ -21,11 +22,8 @@ const ModalContent = styled.form`
   padding: 20px;
   z-index: 1010;
   height: 300px;
-  display: flex;
   flex-wrap: wrap;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 interface Props {
   children: JSX.Element;
