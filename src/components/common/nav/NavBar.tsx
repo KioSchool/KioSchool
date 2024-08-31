@@ -26,7 +26,7 @@ const NavContent = styled.div`
 const NavLinkContainer = styled.div`
   flex-wrap: wrap;
   gap: 40px;
-  ${rowFlex({})}
+  ${rowFlex()}
 `;
 
 export const NavLinkItem = styled(Link)`

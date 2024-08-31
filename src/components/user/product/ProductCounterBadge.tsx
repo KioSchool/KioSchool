@@ -23,7 +23,7 @@ const Container = styled.div`
 `;
 
 const LabelContainer = styled.div`
-  ${colFlex({})}
+  ${colFlex()}
 `;
 
 const CounterContainer = styled.div`

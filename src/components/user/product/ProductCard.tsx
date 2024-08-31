@@ -19,7 +19,7 @@ const Container = styled.div`
 const LabelContainer = styled.div`
   flex-basis: 0;
   gap: 3px;
-  ${colFlex({})}
+  ${colFlex()}
 `;
 
 const ImageContainer = styled.div``;

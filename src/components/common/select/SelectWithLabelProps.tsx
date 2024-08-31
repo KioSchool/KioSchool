@@ -9,7 +9,7 @@ interface SelectWithLabelProps extends SelectWithOptionsProps {
 
 const Container = styled.div`
   gap: 12px;
-  ${colFlex({})}
+  ${colFlex()}
 `;
 
 const TitleLabel = styled.label`

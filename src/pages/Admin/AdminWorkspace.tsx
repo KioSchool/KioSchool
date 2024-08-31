@@ -22,7 +22,7 @@ const Container = styled.div`
 
 const ButtonContainer = styled.div`
   gap: 30px;
-  ${rowFlex({})}
+  ${rowFlex()}
 `;
 
 function AdminWorkspace() {

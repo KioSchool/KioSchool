@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const SubLabelContainer = styled.div`
   color: #d8d8d8;
-  ${rowFlex({})}
+  ${rowFlex()}
 `;
 
 const WorkspaceLabel = styled.div`

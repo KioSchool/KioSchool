@@ -20,7 +20,7 @@ const Container = styled.div`
 
 const ManageButtonContainer = styled.div`
   gap: 20px;
-  ${rowFlex({})}
+  ${rowFlex()}
 `;
 
 const ContainerPerCategory = styled.div`
@@ -28,7 +28,7 @@ const ContainerPerCategory = styled.div`
   padding: 50px 0;
   min-width: 1000px;
   width: 70%;
-  ${colFlex({})}
+  ${colFlex()}
 `;
 
 const ProductsContainer = styled.div`

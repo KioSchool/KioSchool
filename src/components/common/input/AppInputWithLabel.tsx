@@ -10,7 +10,7 @@ interface AppInputWithLabelProps extends AppInputProps {
 
 const Container = styled.div`
   gap: 12px;
-  ${colFlex({})}
+  ${colFlex()}
 `;
 
 const LabelContainer = styled.div`

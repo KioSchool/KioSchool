@@ -24,7 +24,7 @@ const Container = styled.div<{ useSubTitle: boolean }>`
 const TitleContainer = styled.div`
   padding-left: 50px;
   height: 40px;
-  ${colFlex({})}
+  ${colFlex()}
 `;
 
 const SubContainer = styled.div`

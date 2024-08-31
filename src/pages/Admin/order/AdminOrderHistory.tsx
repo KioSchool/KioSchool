@@ -38,7 +38,7 @@ const OrderCardContainer = styled.div`
   height: 500px;
   gap: 10px;
   overflow: auto;
-  ${colFlex({})}
+  ${colFlex()}
 `;
 
 const TotalPriceContainer = styled.div`

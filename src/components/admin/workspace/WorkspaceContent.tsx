@@ -35,7 +35,7 @@ const MenuTitle = styled.div`
   color: #fff;
   font-size: 24px;
   font-weight: 300;
-  ${rowFlex({})}
+  ${rowFlex()}
 `;
 
 const DeleteContainer = styled.div`
@@ -56,7 +56,7 @@ const DeleteButton = styled(DeleteButtonSvg)`
 const TitleContainer = styled.div`
   width: 100%;
   flex-wrap: wrap;
-  ${colFlex({})}
+  ${colFlex()}
 `;
 
 const MainTitleContainer = styled.div`
@@ -74,7 +74,7 @@ const Description = styled.div`
   color: #fff;
   font-size: 32px;
   font-weight: 100;
-  ${rowFlex({})}
+  ${rowFlex()}
 `;
 
 const Title = styled.div`
@@ -85,7 +85,7 @@ const Title = styled.div`
   color: #fff;
   font-size: 40px;
   font-weight: 700;
-  ${rowFlex({})}
+  ${rowFlex()}
 `;
 
 interface Props {

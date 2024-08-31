@@ -30,7 +30,7 @@ const Row = styled.div`
 const OrderProductsContainer = styled.div`
   gap: 5px;
   width: 100%;
-  ${colFlex({})}
+  ${colFlex()}
 `;
 
 const ButtonContainer = styled.div`

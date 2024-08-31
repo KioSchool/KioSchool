@@ -67,7 +67,7 @@ const QRCodeDownloadButton = styled.label`
 
 const ButtonContainer = styled.div`
   gap: 20px;
-  ${rowFlex({})}
+  ${rowFlex()}
 `;
 
 function AdminOrderManage() {

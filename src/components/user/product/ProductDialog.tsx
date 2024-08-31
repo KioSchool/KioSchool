@@ -41,7 +41,7 @@ const ModalContainer = styled.div`
   padding: 5px;
   background: white;
   border-radius: 16px;
-  ${colFlex({})}
+  ${colFlex()}
 `;
 
 const CloseButtonContainer = styled.div`
@@ -51,7 +51,7 @@ const CloseButtonContainer = styled.div`
   background: white;
   opacity: 0.7;
   border-radius: 4px;
-  ${rowFlex({})}
+  ${rowFlex()}
 `;
 
 const ProductImage = styled.img`

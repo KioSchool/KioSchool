@@ -41,7 +41,7 @@ const AccountContentContainer = styled.div`
 const AccountInfoContainer = styled.div`
   gap: 10px;
   padding-top: 10px;
-  ${colFlex({})}
+  ${colFlex()}
 `;
 
 const AccountRegisterInputContainer = styled.div`

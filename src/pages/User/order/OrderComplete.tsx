@@ -40,7 +40,7 @@ const ContentBox = styled.div`
   background: #f7f7f7;
   box-sizing: border-box;
   gap: 4px;
-  ${colFlex({})}
+  ${colFlex()}
 `;
 
 const ContentTitleLabel = styled(AppLabel)`
@@ -51,7 +51,7 @@ const ContentTitleLabel = styled(AppLabel)`
 const ProductContainer = styled.div`
   gap: 4px;
   padding: 10px 0;
-  ${colFlex({})}
+  ${colFlex()}
 `;
 
 function OrderComplete() {

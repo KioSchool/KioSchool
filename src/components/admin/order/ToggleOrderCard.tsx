@@ -20,12 +20,12 @@ const Container = styled.div`
 const ProductContainer = styled.div`
   width: 200px;
   gap: 4px;
-  ${colFlex({})}
+  ${colFlex()}
 `;
 
 const RightContainer = styled.div`
   gap: 15px;
-  ${rowFlex({})}
+  ${rowFlex()}
 `;
 
 const OrderInfoContainer = styled.div`

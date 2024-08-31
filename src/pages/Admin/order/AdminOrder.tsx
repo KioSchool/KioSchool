@@ -64,14 +64,14 @@ const ProductsByOrderSubContainer = styled.div`
   background: #f8f8f8;
   padding: 10px;
   box-sizing: border-box;
-  ${colFlex({})}
+  ${colFlex()}
 `;
 
 const ProductsContainer = styled.div`
   height: 100%;
   gap: 10px;
   overflow: auto;
-  ${rowFlex({})}
+  ${rowFlex()}
 `;
 
 const ProductCard = styled.div`
