@@ -5,42 +5,38 @@ import { useParams } from 'react-router-dom';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import AppLabel from '@components/common/label/AppLabel';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 interface Props {
   order: Order;
 }
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   padding: 22px;
   width: 350px;
   box-sizing: border-box;
   background: #f7f7f7;
   gap: 7px;
+  ${colFlex({ align: 'center' })}
 `;
 
 const Row = styled.div`
-  display: flex;
-  justify-content: space-between;
   width: 100%;
   padding: 0 5px;
   box-sizing: border-box;
+  ${rowFlex({ justify: 'space-between' })}
 `;
 
 const OrderProductsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
   gap: 5px;
   width: 100%;
+  ${colFlex({})}
 `;
 
 const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
   width: 100%;
   padding-top: 10px;
+  ${rowFlex({ justify: 'space-between' })}
 `;
 
 const Button = styled.button`
