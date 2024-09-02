@@ -83,12 +83,14 @@ function MyInfoContent() {
     <MyInfoContainer className={'my-info-container'}>
       <MyInfoSubContainer className={'my-info-sub-container'}>
         {user.role === UserRole.SUPER_ADMIN && (
-          <MyInfoItemContent label="SUPER ADMIN">
-            <SuperAdminButton onClick={() => navigate('/super-admin/home')} />
-          </MyInfoItemContent>
-        )}
+          <>
+            <MyInfoItemContent label="SUPER ADMIN">
+              <SuperAdminButton onClick={() => navigate('/super-admin/home')} />
+            </MyInfoItemContent>
 
-        <VerticalLine />
+            <VerticalLine />
+          </>
+        )}
 
         <MyInfoItemContent label="계좌관리">
           <AccountButton onClick={() => navigate('/admin/register-account')} />
