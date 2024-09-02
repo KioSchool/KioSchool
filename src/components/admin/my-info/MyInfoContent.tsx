@@ -11,6 +11,7 @@ import { rowFlex } from '@styles/flexStyles';
 import { adminUserAtom } from '@recoils/atoms';
 import { useRecoilValue } from 'recoil';
 import SuperAdminSvg from '@resources/svg/SuperAdminSvg';
+import { UserRole } from '../../../types/index';
 
 const MyInfoContainer = styled.div`
   width: 1100px;
@@ -81,7 +82,7 @@ function MyInfoContent() {
   return (
     <MyInfoContainer className={'my-info-container'}>
       <MyInfoSubContainer className={'my-info-sub-container'}>
-        {user.role === 'SUPER_ADMIN' && (
+        {user.role === UserRole.SUPER_ADMIN && (
           <MyInfoItemContent label="SUPER ADMIN">
             <SuperAdminButton onClick={() => navigate('/super-admin/home')} />
           </MyInfoItemContent>
