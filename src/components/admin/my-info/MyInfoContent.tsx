@@ -11,7 +11,7 @@ import { rowFlex } from '@styles/flexStyles';
 import { adminUserAtom } from '@recoils/atoms';
 import { useRecoilValue } from 'recoil';
 import SuperAdminSvg from '@resources/svg/SuperAdminSvg';
-import { UserRole } from '../../../types/index';
+import { UserRole } from '@@types/index';
 
 const MyInfoContainer = styled.div`
   width: 1100px;
