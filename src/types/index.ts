@@ -86,10 +86,15 @@ export interface PaginationResponse<T> {
   empty: boolean;
 }
 
+export enum UserRole {
+  ADMIN = 'ADMIN',
+  SUPER_ADMIN = 'SUPER_ADMIN',
+}
+
 export interface User {
   name: string;
   email: string;
-  role: string;
+  role: UserRole;
   accountUrl: string;
   id: number;
   createdAt: string;
