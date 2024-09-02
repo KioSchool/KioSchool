@@ -34,7 +34,7 @@ const VerticalLine = styled.div`
   background: #ccc;
 `;
 
-const SuperAdminButton = styled(SuperAdminSvg)`
+const CommonButtonStyle = styled.div`
   cursor: pointer;
   position: absolute;
   width: 70px;
@@ -43,37 +43,22 @@ const SuperAdminButton = styled(SuperAdminSvg)`
   left: 44px;
   top: 12px;
   transition: transform 0.1s ease;
+
   &:hover {
     transform: scale(1.1);
   }
+`;
+
+const SuperAdminButton = styled(SuperAdminSvg)`
+  ${CommonButtonStyle};
 `;
 
 const AccountButton = styled(AccountIconSvg)`
-  cursor: pointer;
-  position: absolute;
-  width: 70px;
-  height: 70px;
-  right: 44px;
-  left: 44px;
-  top: 12px;
-  transition: transform 0.1s ease;
-  &:hover {
-    transform: scale(1.1);
-  }
+  ${CommonButtonStyle};
 `;
 
 const DeleteUserButton = styled(DeleteUserSvg)`
-  cursor: pointer;
-  position: absolute;
-  width: 70px;
-  height: 70px;
-  right: 44px;
-  left: 44px;
-  top: 12px;
-  transition: transform 0.1s ease;
-  &:hover {
-    transform: scale(1.1);
-  }
+  ${CommonButtonStyle};
 `;
 
 function MyInfoContent() {
@@ -97,7 +82,9 @@ function MyInfoContent() {
     <MyInfoContainer className={'my-info-container'}>
       <MyInfoSubContainer className={'my-info-sub-container'}>
         {user.role === 'SUPER_ADMIN' && (
-          <MyInfoItemContent label="SUPER ADMIN">{<SuperAdminButton onClick={() => navigate('/super-admin/home')} />}</MyInfoItemContent>
+          <MyInfoItemContent label="SUPER ADMIN">
+            <SuperAdminButton onClick={() => navigate('/super-admin/home')} />
+          </MyInfoItemContent>
         )}
 
         <VerticalLine />

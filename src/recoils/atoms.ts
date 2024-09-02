@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { Order, OrderProductBase, Product, ProductCategory, User, Workspace, PaginationResponse } from '@@types/index';
+import { Order, OrderProductBase, Product, ProductCategory, User, Workspace, PaginationResponse, UserRole } from '@@types/index';
 
 export const ordersAtom = atom<Order[]>({
   key: 'ordersAtom',
@@ -29,7 +29,7 @@ export const userWorkspaceAtom = atom<Workspace>({
     owner: {
       name: '',
       email: '',
-      role: '',
+      role: UserRole.ADMIN,
       accountUrl: '',
       id: 0,
       createdAt: '',
@@ -48,7 +48,7 @@ export const adminUserAtom = atom<User>({
   default: {
     name: '',
     email: '',
-    role: '',
+    role: UserRole.ADMIN,
     accountUrl: '',
     id: 0,
     createdAt: '',
