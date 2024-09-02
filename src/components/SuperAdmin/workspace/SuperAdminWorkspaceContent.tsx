@@ -2,7 +2,6 @@ import { Workspace } from '@@types/index';
 import { SubContainer } from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import { rowFlex } from '@styles/flexStyles';
-import { useNavigate } from 'react-router-dom';
 
 const SubLabelContainer = styled.div`
   color: #d8d8d8;
@@ -24,7 +23,6 @@ const WorkspaceLabel = styled.div`
 `;
 
 function SuperAdminWorkspaceContent({ id, name, owner, createdAt }: Workspace) {
-  const navigate = useNavigate();
   const datePart = createdAt.split('T')[0];
   const filteredCreatedDate = datePart.replace(/-/g, '.');
   const createdDateAndOwnerText = `${filteredCreatedDate} | ${owner.name}`;
@@ -40,7 +38,7 @@ function SuperAdminWorkspaceContent({ id, name, owner, createdAt }: Workspace) {
     >
       <WorkspaceLabel
         onClick={() => {
-          navigate(`/admin/workspace/${id}`);
+          window.open(`${window.location.origin}/admin/workspace/${id}`, '_blank', 'rel=noopener noreferrer popup=false');
         }}
         className={'workspace-label'}
       >
