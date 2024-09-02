@@ -35,7 +35,7 @@ const VerticalLine = styled.div`
   background: #ccc;
 `;
 
-const CommonButtonStyle = styled.div`
+const CommonButtonStyle = `
   cursor: pointer;
   position: absolute;
   width: 70px;
