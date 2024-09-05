@@ -80,7 +80,7 @@ function SuperAdminHome() {
           키오스쿨로
           <br /> 주점관리를 손쉽게,
         </MainTitle>
-        <LinkAdminHome to={'/admin'} onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)} className={'link-admin-home'}>
+        <LinkAdminHome to={'/super-admin/manage'} onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)} className={'link-admin-home'}>
           <LinkText className={'link-text'}>
             SUPER ADMIN
             <ArrowRight />
