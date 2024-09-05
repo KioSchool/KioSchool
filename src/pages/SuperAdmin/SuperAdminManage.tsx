@@ -2,14 +2,18 @@ import ImageRouteButton from '@components/common/button/ImageRouteButton';
 import AppContainer from '@components/common/container/AppContainer';
 import TitleNavBar from '@components/common/nav/TitleNavBar';
 import styled from '@emotion/styled';
-import { ButtonContainer } from '@pages/Admin/AdminWorkspace';
 import orderImage from '@resources/image/orderImage.png';
-import { colFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   width: 100%;
   ${colFlex({ align: 'center' })}
+`;
+
+const ButtonContainer = styled.div`
+  gap: 30px;
+  ${rowFlex()}
 `;
 
 function SuperAdminManage() {
