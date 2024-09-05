@@ -28,6 +28,7 @@ import ResetPassword from '@pages/User/ResetPassword';
 import Info from '@pages/User/Info';
 import SuperAdminHome from '@pages/SuperAdmin/SuperAdminHome';
 import SuperAdminWorkspace from '@pages/SuperAdmin/SuperAdminWorkspace';
+import SuperAdminManage from '@pages/SuperAdmin/SuperAdminManage';
 
 ReactGA.initialize('G-XGYLSPGK2G');
 function App() {
@@ -51,6 +52,7 @@ function App() {
         <Route path="/super-admin/home" element={<SuperAdminHome />} />
         <Route path="/admin/workspace/:workspaceId" element={<AdminWorkspace />} />
         <Route path="/super-admin/workspace" element={<SuperAdminWorkspace />} />
+        <Route path="/super-admin/manage" element={<SuperAdminManage />} />
         <Route path="/admin/workspace/:workspaceId/orders" element={<AdminOrder />} />
         <Route path="/admin/workspace/:workspaceId/orders-history" element={<AdminOrderHistory />} />
         <Route path="/admin/workspace/:workspaceId/orders-manage" element={<AdminOrderManage />} />

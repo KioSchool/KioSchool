@@ -16,7 +16,7 @@ const MainTitle = styled.div`
   margin-bottom: 24px;
 `;
 
-const LinkAdminHome = styled(Link)`
+const LinkSuperAdminHome = styled(Link)`
   text-decoration: none;
   z-index: 1001;
   width: 349px;
@@ -80,12 +80,17 @@ function SuperAdminHome() {
           키오스쿨로
           <br /> 주점관리를 손쉽게,
         </MainTitle>
-        <LinkAdminHome to={'/admin'} onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)} className={'link-admin-home'}>
+        <LinkSuperAdminHome
+          to={'/super-admin/manage'}
+          onMouseEnter={() => setIsHover(true)}
+          onMouseLeave={() => setIsHover(false)}
+          className={'link-admin-home'}
+        >
           <LinkText className={'link-text'}>
             SUPER ADMIN
             <ArrowRight />
           </LinkText>
-        </LinkAdminHome>
+        </LinkSuperAdminHome>
         <AppFooter />
         <HoverOverlay isHover={isHover} className={'hover-overlay'} />
       </>
