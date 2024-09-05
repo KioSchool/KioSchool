@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   width: 100%;
-  ${colFlex({ justify: 'center', align: 'center' })}
+  ${colFlex({ align: 'center' })}
 `;
 
 function SuperAdminManage() {
@@ -21,6 +21,7 @@ function SuperAdminManage() {
         <ButtonContainer>
           <ImageRouteButton src={orderImage} onClick={() => navigate('/super-admin/workspace')} buttonText={'워크스페이스 조회'} />
           <ImageRouteButton src={orderImage} onClick={() => navigate('/super-admin/user')} buttonText={'사용자 조회'} />
+          <ImageRouteButton src={orderImage} onClick={() => navigate('/super-admin/email')} buttonText={'이메일 조회'} />
         </ButtonContainer>
       </Container>
     </AppContainer>
