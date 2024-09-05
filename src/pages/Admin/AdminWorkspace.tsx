@@ -20,7 +20,7 @@ const Container = styled.div`
   ${colFlex({ align: 'center' })}
 `;
 
-const ButtonContainer = styled.div`
+export const ButtonContainer = styled.div`
   gap: 30px;
   ${rowFlex()}
 `;
