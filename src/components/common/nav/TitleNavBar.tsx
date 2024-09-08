@@ -18,6 +18,8 @@ const Container = styled.div<{ useSubTitle: boolean }>`
   height: ${(props) => (props.useSubTitle ? '100px' : '50px')};
   width: 1000px;
   min-width: 1000px;
+  position: fixed;
+  top: 70px;
   ${rowFlex({ justify: 'center' })}
 `;
 
