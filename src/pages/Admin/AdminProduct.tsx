@@ -6,14 +6,14 @@ import { categoriesAtom, productsAtom } from '@recoils/atoms';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import ProductCard from '@components/admin/product/ProductCard';
-import AppButton from '@components/common/button/AppButton';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import AppContainer from '@components/common/container/AppContainer';
+import RoundedAppButton from '@components/common/button/RoundedAppButton';
 
 const ManageButtonContainer = styled.div`
   gap: 20px;
-  ${rowFlex()}
+  ${rowFlex({ align: 'center' })}
 `;
 
 const ContainerPerCategory = styled.div`
@@ -47,22 +47,22 @@ function AdminProduct() {
 
   const titleNavBarChildren = (
     <ManageButtonContainer className={'manage-button-container'}>
-      <AppButton
-        size={160}
+      <RoundedAppButton
+        size={'160'}
         onClick={() => {
           appendPath('/categories');
         }}
       >
         카테고리 관리
-      </AppButton>
-      <AppButton
-        size={130}
+      </RoundedAppButton>
+      <RoundedAppButton
+        size={'130'}
         onClick={() => {
           appendPath('/add-product');
         }}
       >
         상품 추가
-      </AppButton>
+      </RoundedAppButton>
     </ManageButtonContainer>
   );
 
