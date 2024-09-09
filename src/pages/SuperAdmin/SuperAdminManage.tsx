@@ -1,6 +1,5 @@
 import ImageRouteButton from '@components/common/button/ImageRouteButton';
 import AppContainer from '@components/common/container/AppContainer';
-import TitleNavBar from '@components/common/nav/TitleNavBar';
 import styled from '@emotion/styled';
 import orderImage from '@resources/image/orderImage.png';
 import { colFlex, rowFlex } from '@styles/flexStyles';
@@ -19,9 +18,8 @@ const ButtonContainer = styled.div`
 function SuperAdminManage() {
   const navigate = useNavigate();
   return (
-    <AppContainer contentsJustify={'center'}>
+    <AppContainer contentsJustify={'center'} useTitleNavBar={{ title: '관리 페이지' }}>
       <Container>
-        <TitleNavBar title={'관리 페이지'} />
         <ButtonContainer>
           <ImageRouteButton src={orderImage} onClick={() => navigate('/super-admin/workspace')} buttonText={'워크스페이스 조회'} />
           <ImageRouteButton src={orderImage} onClick={() => navigate('/super-admin/user')} buttonText={'사용자 조회'} />
