@@ -13,7 +13,6 @@ import AppCheckBox from '@components/common/input/AppCheckBox';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
-  padding-top: 100px;
   gap: 24px;
   width: 100%;
 `;
