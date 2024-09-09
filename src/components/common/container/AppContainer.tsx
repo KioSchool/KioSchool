@@ -3,9 +3,9 @@ import NavBar from '@components/common/nav/NavBar';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import TitleNavBar, { TitleNavBarProps } from '../nav/TitleNavBar';
 
-export const MainContainer = styled.div<{ backgroundColor?: string }>`
+export const MainContainer = styled.div<{ backgroundColor?: string; useScroll?: boolean }>`
   width: 100%;
-  height: 100vh;
+  height: ${(props) => (props.useScroll ? '100%' : '100vh')};
   box-sizing: border-box;
   background-color: ${(props) => (props.backgroundColor ? props.backgroundColor : 'white')};
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -43,6 +43,7 @@ interface Props {
   customHeight?: string;
   customGap?: string;
   useTitleNavBar?: TitleNavBarProps;
+  useScroll?: boolean;
 }
 
 function AppContainer({
@@ -56,9 +57,10 @@ function AppContainer({
   customHeight,
   customGap,
   useTitleNavBar,
+  useScroll,
 }: Props) {
   return (
-    <MainContainer backgroundColor={backgroundColor} className={'main-container'}>
+    <MainContainer backgroundColor={backgroundColor} className={'main-container'} useScroll={useScroll}>
       <NavBar useBackground={useNavBackground} />
       {useTitleNavBar && <TitleNavBar {...useTitleNavBar} />}
       <SubContainer
