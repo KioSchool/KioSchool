@@ -5,7 +5,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import { useNavigate } from 'react-router-dom';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 
-interface Props {
+export interface TitleNavBarProps {
   title: string;
   subTitle?: string;
   useBackIcon?: boolean;
@@ -51,7 +51,7 @@ const ArrowLeftButton = styled(ArrowLeftSvg)<{ useBackIcon: boolean }>`
   }
 `;
 
-function TitleNavBar({ title, subTitle = '', useBackIcon = true, children, onLeftArrowClick }: Props) {
+function TitleNavBar({ title, subTitle = '', useBackIcon = true, children, onLeftArrowClick }: TitleNavBarProps) {
   const navigate = useNavigate();
 
   return (

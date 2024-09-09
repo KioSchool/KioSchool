@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import NavBar from '@components/common/nav/NavBar';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import TitleNavBar, { TitleNavBarProps } from '../nav/TitleNavBar';
 
 export const MainContainer = styled.div<{ backgroundColor?: string }>`
   width: 100%;
@@ -17,6 +18,7 @@ export const SubContainer = styled.div<{
   customWidth?: string;
   customHeight?: string;
   customGap?: string;
+  isTitleNavBar?: boolean;
 }>`
   flex-basis: 0;
   flex-wrap: wrap;
@@ -40,6 +42,7 @@ interface Props {
   customWidth?: string;
   customHeight?: string;
   customGap?: string;
+  useTitleNavBar?: TitleNavBarProps;
 }
 
 function AppContainer({
@@ -52,10 +55,12 @@ function AppContainer({
   customWidth,
   customHeight,
   customGap,
+  useTitleNavBar,
 }: Props) {
   return (
     <MainContainer backgroundColor={backgroundColor} className={'main-container'}>
       <NavBar useBackground={useNavBackground} />
+      {useTitleNavBar && <TitleNavBar {...useTitleNavBar} />}
       <SubContainer
         contentsJustify={contentsJustify}
         contentsDirection={contentsDirection}
@@ -64,6 +69,7 @@ function AppContainer({
         customHeight={customHeight}
         customGap={customGap}
         className={'sub-container'}
+        isTitleNavBar={!!useTitleNavBar}
       >
         {children}
       </SubContainer>
