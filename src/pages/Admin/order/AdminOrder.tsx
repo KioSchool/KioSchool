@@ -8,21 +8,18 @@ import NotPaidOrderCard from '@components/admin/order/NotPaidOrderCard';
 import ServedOrderCard from '@components/admin/order/ServedOrderCard';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import styled from '@emotion/styled';
-import TitleNavBar from '@components/common/nav/TitleNavBar';
 import VerticalDivider from '@components/common/divider/VerticalDivider';
 import AppLabel from '@components/common/label/AppLabel';
 import _ from 'lodash';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import uploadPreview from '@resources/image/uploadPreview.png';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import AppContainer from '@components/common/container/AppContainer';
 
 const Container = styled.div`
   gap: 24px;
-  width: 100vw;
-  height: 100vh;
-  padding: 20px;
-  box-sizing: border-box;
-  ${colFlex({ justify: 'center', align: 'center' })}
+  width: 100%;
+  height: 80vh;
 `;
 
 const KanbanContainer = styled.div`
@@ -124,63 +121,64 @@ function AdminOrder() {
   const productMap = _.keyBy(products, 'id');
 
   return (
-    <Container className={'admin-order-container'}>
-      <TitleNavBar title={'실시간 주문 조회'} />
-      <KanbanContainer className={'kanban-container'}>
-        <OrderColumnContainer className={'order-column-container'}>
-          <OrderHeader className={'order-header'}>
-            <AppLabel size={22} style={{ fontWeight: 600 }}>
-              결제 대기
-            </AppLabel>
-          </OrderHeader>
-          {notPaidOrders.map((it) => (
-            <NotPaidOrderCard order={it} key={it.id} />
-          ))}
-        </OrderColumnContainer>
-        <VerticalDivider />
-        <OrderColumnContainer className={'order-column-container'}>
-          <OrderHeader className={'order-header'}>
-            <AppLabel size={22} style={{ fontWeight: 600 }}>
-              결제 완료
-            </AppLabel>
-          </OrderHeader>
-          {paidOrders.map((it) => (
-            <PaidOrderCard order={it} key={it.id} />
-          ))}
-        </OrderColumnContainer>
-        <VerticalDivider />
-        <OrderColumnContainer className={'order-column-container'}>
-          <OrderHeader className={'order-header'}>
-            <AppLabel size={22} style={{ fontWeight: 600 }}>
-              서빙 완료
-            </AppLabel>
-          </OrderHeader>
-          {servedOrders.map((it) => (
-            <ServedOrderCard order={it} key={it.id} />
-          ))}
-        </OrderColumnContainer>
-      </KanbanContainer>
-      <ProductsByOrderContainer className={'products-by-order-container'}>
-        <ProductsByOrderSubContainer className={'products-by-order-sub-container'}>
-          <AppLabel size={23} style={{ fontWeight: 600, width: '100%', textAlign: 'center' }}>
-            결제 완료 주문 중 서빙 필요한 상품 현황판
-          </AppLabel>
-          <ProductsContainer className={'products-container'}>
-            {_.keys(productCounts).map((productId) => (
-              <ProductCard key={`product_card_${productId}`} className={'product-card'}>
-                <ProductImage src={productMap[productId]?.imageUrl || uploadPreview} className={'product-image'} />
-                <AppLabel key={`product_name_${productId}`} size={14} style={{ fontWeight: 600 }}>
-                  {productMap[productId]?.name || '삭제된 상품'}
-                </AppLabel>
-                <AppLabel key={`product_quantity_${productId}`} size={12}>
-                  {productCounts[productId]}개
-                </AppLabel>
-              </ProductCard>
+    <AppContainer contentsJustify={'center'} contentsAlign={'center'} contentsDirection={'column'} useTitleNavBar={{ title: '몰라' }}>
+      <Container>
+        <KanbanContainer className={'kanban-container'}>
+          <OrderColumnContainer className={'order-column-container'}>
+            <OrderHeader className={'order-header'}>
+              <AppLabel size={22} style={{ fontWeight: 600 }}>
+                결제 대기
+              </AppLabel>
+            </OrderHeader>
+            {notPaidOrders.map((it) => (
+              <NotPaidOrderCard order={it} key={it.id} />
             ))}
-          </ProductsContainer>
-        </ProductsByOrderSubContainer>
-      </ProductsByOrderContainer>
-    </Container>
+          </OrderColumnContainer>
+          <VerticalDivider />
+          <OrderColumnContainer className={'order-column-container'}>
+            <OrderHeader className={'order-header'}>
+              <AppLabel size={22} style={{ fontWeight: 600 }}>
+                결제 완료
+              </AppLabel>
+            </OrderHeader>
+            {paidOrders.map((it) => (
+              <PaidOrderCard order={it} key={it.id} />
+            ))}
+          </OrderColumnContainer>
+          <VerticalDivider />
+          <OrderColumnContainer className={'order-column-container'}>
+            <OrderHeader className={'order-header'}>
+              <AppLabel size={22} style={{ fontWeight: 600 }}>
+                서빙 완료
+              </AppLabel>
+            </OrderHeader>
+            {servedOrders.map((it) => (
+              <ServedOrderCard order={it} key={it.id} />
+            ))}
+          </OrderColumnContainer>
+        </KanbanContainer>
+        <ProductsByOrderContainer className={'products-by-order-container'}>
+          <ProductsByOrderSubContainer className={'products-by-order-sub-container'}>
+            <AppLabel size={23} style={{ fontWeight: 600, width: '100%', textAlign: 'center' }}>
+              결제 완료 주문 중 서빙 필요한 상품 현황판
+            </AppLabel>
+            <ProductsContainer className={'products-container'}>
+              {_.keys(productCounts).map((productId) => (
+                <ProductCard key={`product_card_${productId}`} className={'product-card'}>
+                  <ProductImage src={productMap[productId]?.imageUrl || uploadPreview} className={'product-image'} />
+                  <AppLabel key={`product_name_${productId}`} size={14} style={{ fontWeight: 600 }}>
+                    {productMap[productId]?.name || '삭제된 상품'}
+                  </AppLabel>
+                  <AppLabel key={`product_quantity_${productId}`} size={12}>
+                    {productCounts[productId]}개
+                  </AppLabel>
+                </ProductCard>
+              ))}
+            </ProductsContainer>
+          </ProductsByOrderSubContainer>
+        </ProductsByOrderContainer>
+      </Container>
+    </AppContainer>
   );
 }
 
