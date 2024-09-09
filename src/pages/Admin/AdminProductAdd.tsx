@@ -7,10 +7,9 @@ import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useRecoilValue } from 'recoil';
 import { categoriesAtom } from '@recoils/atoms';
 import { ProductActionType, ProductStateType } from '@@types/productTypes';
-import TitleNavBar from '@components/common/nav/TitleNavBar';
 import SelectWithLabel from '@components/common/select/SelectWithLabelProps';
-import NavBar from '@components/common/nav/NavBar';
 import AppImageInput from '@components/common/input/AppImageInput';
+import AppContainer from '@components/common/container/AppContainer';
 import { colFlex } from '@styles/flexStyles';
 
 function reducer(state: ProductStateType, action: ProductActionType) {
@@ -29,9 +28,10 @@ function reducer(state: ProductStateType, action: ProductActionType) {
 }
 
 const Container = styled.div`
+  width: 100%;
+  height: 100%;
+  padding-bottom: 20px;
   gap: 15px;
-  padding-top: 100px;
-  padding-bottom: 100px;
   ${colFlex({ align: 'center' })}
 `;
 
@@ -97,40 +97,40 @@ function AdminProductAdd() {
   };
 
   return (
-    <Container className={'admin-product-add-container'}>
-      <NavBar useBackground={true} />
-      <TitleNavBar title={'상품 등록'} />
-      <SelectWithLabel
-        titleLabel={'카테고리'}
-        options={productCategories}
-        onInput={(event: React.ChangeEvent<HTMLSelectElement>) => {
-          dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
-        }}
-      />
-      <AppInputWithLabel
-        titleLabel={'상품명'}
-        messageLabel={'최대 12자'}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          dispatch({ type: 'PRODUCT_NAME_INPUT', payload: event.target?.value });
-        }}
-      />
-      <AppImageInput title={'상품 사진'} file={file} onImageChange={onImageChange} />
-      <AppInputWithLabel
-        titleLabel={'상품 설명'}
-        messageLabel={'최대 30자'}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: event.target?.value });
-        }}
-      />
-      <AppInputWithLabel
-        type={'number'}
-        titleLabel={'상품 가격'}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: event.target?.value });
-        }}
-      />
-      <AppButton onClick={AddProduct}>추가하기</AppButton>
-    </Container>
+    <AppContainer contentsJustify={'center'} useNavBackground={true} useTitleNavBar={{ title: '상품 등록' }} useScroll={true}>
+      <Container>
+        <SelectWithLabel
+          titleLabel={'카테고리'}
+          options={productCategories}
+          onInput={(event: React.ChangeEvent<HTMLSelectElement>) => {
+            dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
+          }}
+        />
+        <AppInputWithLabel
+          titleLabel={'상품명'}
+          messageLabel={'최대 12자'}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            dispatch({ type: 'PRODUCT_NAME_INPUT', payload: event.target?.value });
+          }}
+        />
+        <AppImageInput title={'상품 사진'} file={file} onImageChange={onImageChange} />
+        <AppInputWithLabel
+          titleLabel={'상품 설명'}
+          messageLabel={'최대 30자'}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: event.target?.value });
+          }}
+        />
+        <AppInputWithLabel
+          type={'number'}
+          titleLabel={'상품 가격'}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: event.target?.value });
+          }}
+        />
+        <AppButton onClick={AddProduct}>추가하기</AppButton>
+      </Container>
+    </AppContainer>
   );
 }
 
