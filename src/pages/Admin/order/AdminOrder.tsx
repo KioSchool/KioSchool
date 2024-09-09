@@ -16,16 +16,10 @@ import uploadPreview from '@resources/image/uploadPreview.png';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import AppContainer from '@components/common/container/AppContainer';
 
-const Container = styled.div`
-  gap: 24px;
-  width: 100%;
-  height: 80vh;
-`;
-
 const KanbanContainer = styled.div`
   width: 100%;
   gap: 24px;
-  height: 65%;
+  height: 450px;
   ${rowFlex({ justify: 'center' })}
 `;
 
@@ -55,7 +49,7 @@ const ProductsByOrderContainer = styled.div`
 `;
 
 const ProductsByOrderSubContainer = styled.div`
-  width: 80%;
+  width: 100%;
   height: 100%;
   gap: 10px;
   background: #f8f8f8;
@@ -121,8 +115,8 @@ function AdminOrder() {
   const productMap = _.keyBy(products, 'id');
 
   return (
-    <AppContainer contentsJustify={'center'} contentsAlign={'center'} contentsDirection={'column'} useTitleNavBar={{ title: '몰라' }}>
-      <Container>
+    <AppContainer contentsJustify={'center'} customGap={'30px'} useTitleNavBar={{ title: '실시간 주문 조회' }}>
+      <>
         <KanbanContainer className={'kanban-container'}>
           <OrderColumnContainer className={'order-column-container'}>
             <OrderHeader className={'order-header'}>
@@ -177,7 +171,7 @@ function AdminOrder() {
             </ProductsContainer>
           </ProductsByOrderSubContainer>
         </ProductsByOrderContainer>
-      </Container>
+      </>
     </AppContainer>
   );
 }
