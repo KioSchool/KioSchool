@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import AppContainer from '@components/common/container/AppContainer';
-import AppButton from '@components/common/button/AppButton';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
 import AppLabel from '@components/common/label/AppLabel';
@@ -8,6 +7,7 @@ import { QRCodeCanvas } from 'qrcode.react';
 import { DeviceFrameset } from 'react-device-frameset';
 import 'react-device-frameset/styles/marvel-devices.min.css';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import RoundedAppButton from '@components/common/button/RoundedAppButton';
 
 const Container = styled.div`
   width: 100vw;
@@ -66,7 +66,7 @@ const QRCodeDownloadButton = styled.label`
 
 const ButtonContainer = styled.div`
   gap: 20px;
-  ${rowFlex()}
+  ${rowFlex({ align: 'center' })}
 `;
 
 function AdminOrderManage() {
@@ -94,21 +94,21 @@ function AdminOrderManage() {
 
   const titleNavBarChildren = (
     <ButtonContainer className={'button-container'}>
-      <AppButton
+      <RoundedAppButton
         onClick={() => {
           handleTableCount(tableCount + 1);
         }}
       >
         테이블 추가
-      </AppButton>
-      <AppButton
+      </RoundedAppButton>
+      <RoundedAppButton
         onClick={() => {
           handleTableCount(tableCount - 1);
         }}
         disabled={tableCount === 1}
       >
         테이블 삭제
-      </AppButton>
+      </RoundedAppButton>
     </ButtonContainer>
   );
 
