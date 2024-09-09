@@ -25,6 +25,8 @@ export const SubContainer = styled.div<{
   width: ${(props) => props.customWidth || '65vw'};
   height: ${(props) => props.customHeight || '100%'};
   min-width: 1000px;
+  padding-top: ${(props) => props.isTitleNavBar && '140px'};
+
   gap: ${(props) => props.customGap};
   ${(props) =>
     props.contentsDirection === 'row'
