@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import AppContainer from '@components/common/container/AppContainer';
-import TitleNavBar from '@components/common/nav/TitleNavBar';
 import AppButton from '@components/common/button/AppButton';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
@@ -93,29 +92,35 @@ function AdminOrderManage() {
     setTableCount(Number(localStorage.getItem(`workspace-${workspaceId}-tableCount`)) || 1);
   }, []);
 
-  return (
-    <AppContainer contentsJustify={'center'} useNavBackground={true} contentsDirection={'row'}>
-      <Container className={'admin-order-manage-container'}>
-        <TitleNavBar title={'주문 페이지 관리'}>
-          <ButtonContainer className={'button-container'}>
-            <AppButton
-              onClick={() => {
-                handleTableCount(tableCount + 1);
-              }}
-            >
-              테이블 추가
-            </AppButton>
-            <AppButton
-              onClick={() => {
-                handleTableCount(tableCount - 1);
-              }}
-              disabled={tableCount === 1}
-            >
-              테이블 삭제
-            </AppButton>
-          </ButtonContainer>
-        </TitleNavBar>
+  const titleNavBarChildren = (
+    <ButtonContainer className={'button-container'}>
+      <AppButton
+        onClick={() => {
+          handleTableCount(tableCount + 1);
+        }}
+      >
+        테이블 추가
+      </AppButton>
+      <AppButton
+        onClick={() => {
+          handleTableCount(tableCount - 1);
+        }}
+        disabled={tableCount === 1}
+      >
+        테이블 삭제
+      </AppButton>
+    </ButtonContainer>
+  );
 
+  return (
+    <AppContainer
+      contentsJustify={'center'}
+      useNavBackground={true}
+      contentsDirection={'row'}
+      useScroll={true}
+      useTitleNavBar={{ title: '주문 페이지 관리', children: titleNavBarChildren }}
+    >
+      <Container className={'admin-order-manage-container'}>
         <AppLabel>테이블 개수는 {tableCount}개 입니다.</AppLabel>
         <ContentContainer className={'content-container'}>
           <DeviceFrameset device="iPhone X" width={360} height={700}>
