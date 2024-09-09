@@ -1,22 +1,15 @@
 import React, { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useRecoilValue } from 'recoil';
 import { categoriesAtom, productsAtom } from '@recoils/atoms';
-import TitleNavBar from '@components/common/nav/TitleNavBar';
-import NavBar from '@components/common/nav/NavBar';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import ProductCard from '@components/admin/product/ProductCard';
 import AppButton from '@components/common/button/AppButton';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-
-const Container = styled.div`
-  width: 100%;
-  padding-top: 100px;
-  ${colFlex({ align: 'center' })}
-`;
+import AppContainer from '@components/common/container/AppContainer';
 
 const ManageButtonContainer = styled.div`
   gap: 20px;
@@ -46,65 +39,71 @@ function AdminProduct() {
   const categories = [...rawCategories, { id: null, name: '기본메뉴' }];
 
   const { appendPath } = useCustomNavigate();
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProducts();
     fetchCategories();
   }, []);
 
-  return (
-    <Container className={'admin-product-container'}>
-      <NavBar useBackground={true} />
-      <TitleNavBar
-        title={'상품 관리'}
-        onLeftArrowClick={() => {
-          navigate(`/admin/workspace/${workspaceId}`);
+  const titleNavBarChildren = (
+    <ManageButtonContainer className={'manage-button-container'}>
+      <AppButton
+        size={160}
+        onClick={() => {
+          appendPath('/categories');
         }}
       >
-        <ManageButtonContainer className={'manage-button-container'}>
-          <AppButton
-            size={160}
-            onClick={() => {
-              appendPath('/categories');
-            }}
-          >
-            카테고리 관리
-          </AppButton>
-          <AppButton
-            size={130}
-            onClick={() => {
-              appendPath('/add-product');
-            }}
-          >
-            상품 추가
-          </AppButton>
-        </ManageButtonContainer>
-      </TitleNavBar>
-      <AppLabel size={'small'} style={{ textAlign: 'center' }}>
-        HIDE 상태인 메뉴는 주문 화면에서 숨김처리 되며, ON 상태로 변경 시 다시 나타나게 됩니다.
-      </AppLabel>
-      {categories.map((category) => (
-        <ContainerPerCategory key={`product_category_${category.id}`} className={'container-per-category'}>
-          <AppLabel size={36} style={{ fontWeight: 800 }}>
-            {category.name}
-          </AppLabel>
-          <ProductsContainer className={'products-container'}>
-            {products
-              .filter((product) => (product.productCategory?.id || null) === category.id)
-              .map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  onClick={() => {
-                    appendPath(`/edit-product?productId=${product.id}`);
-                  }}
-                />
-              ))}
-          </ProductsContainer>
-        </ContainerPerCategory>
-      ))}
-    </Container>
+        카테고리 관리
+      </AppButton>
+      <AppButton
+        size={130}
+        onClick={() => {
+          appendPath('/add-product');
+        }}
+      >
+        상품 추가
+      </AppButton>
+    </ManageButtonContainer>
+  );
+
+  return (
+    <AppContainer
+      useNavBackground={true}
+      contentsJustify={'center'}
+      contentsAlign={'center'}
+      useTitleNavBar={{
+        title: '상품관리',
+        children: titleNavBarChildren,
+      }}
+      customWidth={'100%'}
+      useScroll={true}
+    >
+      <>
+        <AppLabel size={'small'} style={{ textAlign: 'center' }}>
+          HIDE 상태인 메뉴는 주문 화면에서 숨김처리 되며, ON 상태로 변경 시 다시 나타나게 됩니다.
+        </AppLabel>
+        {categories.map((category) => (
+          <ContainerPerCategory key={`product_category_${category.id}`} className={'container-per-category'}>
+            <AppLabel size={36} style={{ fontWeight: 800 }}>
+              {category.name}
+            </AppLabel>
+            <ProductsContainer className={'products-container'}>
+              {products
+                .filter((product) => (product.productCategory?.id || null) === category.id)
+                .map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    onClick={() => {
+                      appendPath(`/edit-product?productId=${product.id}`);
+                    }}
+                  />
+                ))}
+            </ProductsContainer>
+          </ContainerPerCategory>
+        ))}
+      </>
+    </AppContainer>
   );
 }
 
