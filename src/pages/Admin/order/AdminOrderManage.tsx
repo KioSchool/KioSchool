@@ -12,7 +12,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 const Container = styled.div`
   width: 100vw;
   gap: 10px;
-  padding: 100px 0 50px 0;
+  padding-bottom: 50px;
   ${colFlex({ align: 'center' })}
 `;
 
