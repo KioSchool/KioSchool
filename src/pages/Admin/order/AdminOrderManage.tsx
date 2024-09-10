@@ -118,7 +118,7 @@ function AdminOrderManage() {
       useNavBackground={true}
       contentsDirection={'row'}
       useScroll={true}
-      useTitleNavBar={{ title: '주문 페이지 관리', children: titleNavBarChildren }}
+      titleNavBarProps={{ title: '주문 페이지 관리', children: titleNavBarChildren }}
     >
       <Container className={'admin-order-manage-container'}>
         <AppLabel>테이블 개수는 {tableCount}개 입니다.</AppLabel>

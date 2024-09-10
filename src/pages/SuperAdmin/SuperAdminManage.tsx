@@ -18,7 +18,7 @@ const ButtonContainer = styled.div`
 function SuperAdminManage() {
   const navigate = useNavigate();
   return (
-    <AppContainer contentsJustify={'center'} useTitleNavBar={{ title: '관리 페이지' }}>
+    <AppContainer contentsJustify={'center'} titleNavBarProps={{ title: '관리 페이지' }}>
       <Container>
         <ButtonContainer>
           <ImageRouteButton src={orderImage} onClick={() => navigate('/super-admin/workspace')} buttonText={'워크스페이스 조회'} />

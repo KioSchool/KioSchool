@@ -59,7 +59,7 @@ function AdminProductCategories() {
   };
 
   return (
-    <AppContainer contentsJustify={'center'} useTitleNavBar={{ title: '카테고리 관리' }}>
+    <AppContainer contentsJustify={'center'} titleNavBarProps={{ title: '카테고리 관리' }}>
       <Container className={'admin-product-categories-container'}>
         <CategoriesInputContainer className={'categories-input-container'}>
           <AppInputWithButton ref={categoryInputRef} onButtonClick={addCategoryHandler} />

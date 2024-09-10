@@ -68,7 +68,7 @@ function AdminOrderHistory() {
   }, [startDate, endDate]);
 
   return (
-    <AppContainer contentsJustify={'center'} useNavBackground={true} useTitleNavBar={{ title: '전체 주문 조회' }}>
+    <AppContainer contentsJustify={'center'} useNavBackground={true} titleNavBarProps={{ title: '전체 주문 조회' }}>
       <Container className={'admin-order-history-container'}>
         <ConditionContainer className={'condition-container'}>
           <DatePickerContainer className={'date-picker-container'}>

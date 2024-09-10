@@ -35,7 +35,7 @@ function SuperAdminWorkspace() {
       customWidth={'1000px'}
       customHeight={'100%'}
       customGap={'20px'}
-      useTitleNavBar={{ title: '전체 워크스페이스 관리' }}
+      titleNavBarProps={{ title: '전체 워크스페이스 관리' }}
     >
       <>
         <SuperAdminSearchBar ref={userInputRef} />

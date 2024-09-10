@@ -44,7 +44,7 @@ interface Props {
   customWidth?: string;
   customHeight?: string;
   customGap?: string;
-  useTitleNavBar?: TitleNavBarProps;
+  titleNavBarProps?: TitleNavBarProps;
   useScroll?: boolean;
 }
 
@@ -58,13 +58,13 @@ function AppContainer({
   customWidth,
   customHeight,
   customGap,
-  useTitleNavBar,
+  titleNavBarProps,
   useScroll,
 }: Props) {
   return (
     <MainContainer backgroundColor={backgroundColor} className={'main-container'} useScroll={useScroll}>
       <NavBar useBackground={useNavBackground} />
-      {useTitleNavBar && <TitleNavBar {...useTitleNavBar} />}
+      {titleNavBarProps && <TitleNavBar {...titleNavBarProps} />}
       <SubContainer
         contentsJustify={contentsJustify}
         contentsDirection={contentsDirection}
@@ -73,7 +73,7 @@ function AppContainer({
         customHeight={customHeight}
         customGap={customGap}
         className={'sub-container'}
-        isTitleNavBar={!!useTitleNavBar}
+        isTitleNavBar={!!titleNavBarProps}
       >
         {children}
       </SubContainer>

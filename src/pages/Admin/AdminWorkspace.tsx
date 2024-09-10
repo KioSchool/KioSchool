@@ -35,7 +35,7 @@ function AdminWorkspace() {
   }, []);
 
   return (
-    <AppContainer contentsJustify={'center'} useTitleNavBar={{ title: workspace.name, subTitle: workspace.description }}>
+    <AppContainer contentsJustify={'center'} titleNavBarProps={{ title: workspace.name, subTitle: workspace.description }}>
       <Container className={'admin-workspace-container'}>
         <ButtonContainer className={'button-container'}>
           <ImageRouteButton src={orderImage} onClick={() => appendPath('/orders')} buttonText={'실시간 주문 조회'} />

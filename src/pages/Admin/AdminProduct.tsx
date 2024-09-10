@@ -71,7 +71,7 @@ function AdminProduct() {
       useNavBackground={true}
       contentsJustify={'center'}
       contentsAlign={'center'}
-      useTitleNavBar={{
+      titleNavBarProps={{
         title: '상품관리',
         children: titleNavBarChildren,
       }}

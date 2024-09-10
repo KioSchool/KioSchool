@@ -139,7 +139,7 @@ function AdminProductEdit() {
   );
 
   return (
-    <AppContainer contentsJustify={'center'} useNavBackground={true} useTitleNavBar={{ title: '상품 수정', children: titleNavBarChildren }} useScroll={true}>
+    <AppContainer contentsJustify={'center'} useNavBackground={true} titleNavBarProps={{ title: '상품 수정', children: titleNavBarChildren }} useScroll={true}>
       <Container>
         <SelectWithLabel
           titleLabel={'카테고리'}
