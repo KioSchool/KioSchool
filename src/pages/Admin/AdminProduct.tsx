@@ -6,15 +6,10 @@ import { categoriesAtom, productsAtom } from '@recoils/atoms';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import ProductCard from '@components/admin/product/ProductCard';
-import useCustomNavigate from '@hooks/useCustomNavigate';
-import { colFlex, rowFlex } from '@styles/flexStyles';
+import { colFlex } from '@styles/flexStyles';
 import AppContainer from '@components/common/container/AppContainer';
-import RoundedAppButton from '@components/common/button/RoundedAppButton';
-
-const ManageButtonContainer = styled.div`
-  gap: 20px;
-  ${rowFlex({ align: 'center' })}
-`;
+import AdminProductTitleNavBarChildren from './AdminProductTitleNavBarChildren';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 
 const ContainerPerCategory = styled.div`
   gap: 30px;
@@ -37,34 +32,12 @@ function AdminProduct() {
   const products = useRecoilValue(productsAtom);
   const rawCategories = useRecoilValue(categoriesAtom);
   const categories = [...rawCategories, { id: null, name: '기본메뉴' }];
-
   const { appendPath } = useCustomNavigate();
 
   useEffect(() => {
     fetchProducts();
     fetchCategories();
   }, []);
-
-  const titleNavBarChildren = (
-    <ManageButtonContainer className={'manage-button-container'}>
-      <RoundedAppButton
-        size={'160px'}
-        onClick={() => {
-          appendPath('/categories');
-        }}
-      >
-        카테고리 관리
-      </RoundedAppButton>
-      <RoundedAppButton
-        size={'130px'}
-        onClick={() => {
-          appendPath('/add-product');
-        }}
-      >
-        상품 추가
-      </RoundedAppButton>
-    </ManageButtonContainer>
-  );
 
   return (
     <AppContainer
@@ -73,7 +46,7 @@ function AdminProduct() {
       contentsAlign={'center'}
       titleNavBarProps={{
         title: '상품관리',
-        children: titleNavBarChildren,
+        children: <AdminProductTitleNavBarChildren />,
       }}
       customWidth={'100%'}
       useScroll={true}
