@@ -152,8 +152,10 @@ function AdminAccount() {
     };
   };
 
+  const titleNavBarProps = { title: `${adminUser.name} 님의 마이페이지`, subTitle: '계좌 관리', useBackIcon: true };
+
   return (
-    <AppContainer contentsJustify={'center'} titleNavBarProps={{ title: `${adminUser.name} 님의 마이페이지`, subTitle: '계좌 관리', useBackIcon: true }}>
+    <AppContainer contentsJustify={'center'} titleNavBarProps={titleNavBarProps}>
       <Container className={'admin-account-container'}>
         <ContentContainer className={'content-container'}>
           <AccountContentContainer className={'account-content-container'}>
