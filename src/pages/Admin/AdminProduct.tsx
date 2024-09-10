@@ -48,7 +48,7 @@ function AdminProduct() {
   const titleNavBarChildren = (
     <ManageButtonContainer className={'manage-button-container'}>
       <RoundedAppButton
-        size={'160'}
+        size={'160px'}
         onClick={() => {
           appendPath('/categories');
         }}
@@ -56,7 +56,7 @@ function AdminProduct() {
         카테고리 관리
       </RoundedAppButton>
       <RoundedAppButton
-        size={'130'}
+        size={'130px'}
         onClick={() => {
           appendPath('/add-product');
         }}

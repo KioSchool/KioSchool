@@ -133,7 +133,7 @@ function AdminProductEdit() {
   };
 
   const titleNavBarChildren = (
-    <RoundedAppButton size={'160'} onClick={deleteProductHandler}>
+    <RoundedAppButton size={'160px'} onClick={deleteProductHandler}>
       상품 삭제
     </RoundedAppButton>
   );
