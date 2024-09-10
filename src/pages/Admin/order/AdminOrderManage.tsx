@@ -7,7 +7,7 @@ import { QRCodeCanvas } from 'qrcode.react';
 import { DeviceFrameset } from 'react-device-frameset';
 import 'react-device-frameset/styles/marvel-devices.min.css';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import RoundedAppButton from '@components/common/button/RoundedAppButton';
+import AdminOrderManageTitleNavBarChildren from '../AdminOrderManageTitleNavBarChildren';
 
 const Container = styled.div`
   width: 100vw;
@@ -64,11 +64,6 @@ const QRCodeDownloadButton = styled.label`
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
-const ButtonContainer = styled.div`
-  gap: 20px;
-  ${rowFlex({ align: 'center' })}
-`;
-
 function AdminOrderManage() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
 
@@ -92,33 +87,16 @@ function AdminOrderManage() {
     setTableCount(Number(localStorage.getItem(`workspace-${workspaceId}-tableCount`)) || 1);
   }, []);
 
-  const titleNavBarChildren = (
-    <ButtonContainer className={'button-container'}>
-      <RoundedAppButton
-        onClick={() => {
-          handleTableCount(tableCount + 1);
-        }}
-      >
-        테이블 추가
-      </RoundedAppButton>
-      <RoundedAppButton
-        onClick={() => {
-          handleTableCount(tableCount - 1);
-        }}
-        disabled={tableCount === 1}
-      >
-        테이블 삭제
-      </RoundedAppButton>
-    </ButtonContainer>
-  );
-
   return (
     <AppContainer
       contentsJustify={'center'}
       useNavBackground={true}
       contentsDirection={'row'}
       useScroll={true}
-      titleNavBarProps={{ title: '주문 페이지 관리', children: titleNavBarChildren }}
+      titleNavBarProps={{
+        title: '주문 페이지 관리',
+        children: <AdminOrderManageTitleNavBarChildren handleTableCount={handleTableCount} tableCount={tableCount} />,
+      }}
     >
       <Container className={'admin-order-manage-container'}>
         <AppLabel>테이블 개수는 {tableCount}개 입니다.</AppLabel>
