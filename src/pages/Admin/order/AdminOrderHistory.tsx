@@ -8,13 +8,11 @@ import { useRecoilValue } from 'recoil';
 import { ordersAtom } from '@recoils/atoms';
 import AppContainer from '@components/common/container/AppContainer';
 import ToggleOrderCard from '@components/admin/order/ToggleOrderCard';
-import TitleNavBar from '@components/common/nav/TitleNavBar';
 import AppLabel from '@components/common/label/AppLabel';
 import AppCheckBox from '@components/common/input/AppCheckBox';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
-  padding-top: 100px;
   gap: 24px;
   width: 100%;
 `;
@@ -70,9 +68,8 @@ function AdminOrderHistory() {
   }, [startDate, endDate]);
 
   return (
-    <AppContainer contentsJustify={'center'} useNavBackground={true}>
+    <AppContainer contentsJustify={'center'} useNavBackground={true} titleNavBarProps={{ title: '전체 주문 조회' }}>
       <Container className={'admin-order-history-container'}>
-        <TitleNavBar title={'전체 주문 조회'} />
         <ConditionContainer className={'condition-container'}>
           <DatePickerContainer className={'date-picker-container'}>
             <ReactDatePicker selected={startDate} shouldCloseOnSelect dateFormat={'yyyy.MM.dd'} onChange={(date: Date) => setStartDate(date)} />

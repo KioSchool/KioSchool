@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 import AppContainer from '@components/common/container/AppContainer';
-import TitleNavBar from '@components/common/nav/TitleNavBar';
-import AppButton from '@components/common/button/AppButton';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
 import AppLabel from '@components/common/label/AppLabel';
@@ -9,11 +7,12 @@ import { QRCodeCanvas } from 'qrcode.react';
 import { DeviceFrameset } from 'react-device-frameset';
 import 'react-device-frameset/styles/marvel-devices.min.css';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import AdminOrderManageTitleNavBarChildren from '../AdminOrderManageTitleNavBarChildren';
 
 const Container = styled.div`
   width: 100vw;
   gap: 10px;
-  padding: 100px 0 50px 0;
+  padding-bottom: 50px;
   ${colFlex({ align: 'center' })}
 `;
 
@@ -65,11 +64,6 @@ const QRCodeDownloadButton = styled.label`
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
-const ButtonContainer = styled.div`
-  gap: 20px;
-  ${rowFlex()}
-`;
-
 function AdminOrderManage() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
 
@@ -94,28 +88,17 @@ function AdminOrderManage() {
   }, []);
 
   return (
-    <AppContainer contentsJustify={'center'} useNavBackground={true} contentsDirection={'row'}>
+    <AppContainer
+      contentsJustify={'center'}
+      useNavBackground={true}
+      contentsDirection={'row'}
+      useScroll={true}
+      titleNavBarProps={{
+        title: '주문 페이지 관리',
+        children: <AdminOrderManageTitleNavBarChildren handleTableCount={handleTableCount} tableCount={tableCount} />,
+      }}
+    >
       <Container className={'admin-order-manage-container'}>
-        <TitleNavBar title={'주문 페이지 관리'}>
-          <ButtonContainer className={'button-container'}>
-            <AppButton
-              onClick={() => {
-                handleTableCount(tableCount + 1);
-              }}
-            >
-              테이블 추가
-            </AppButton>
-            <AppButton
-              onClick={() => {
-                handleTableCount(tableCount - 1);
-              }}
-              disabled={tableCount === 1}
-            >
-              테이블 삭제
-            </AppButton>
-          </ButtonContainer>
-        </TitleNavBar>
-
         <AppLabel>테이블 개수는 {tableCount}개 입니다.</AppLabel>
         <ContentContainer className={'content-container'}>
           <DeviceFrameset device="iPhone X" width={360} height={700}>

@@ -5,7 +5,6 @@ import { useRecoilValue } from 'recoil';
 import { adminUserAtom } from '@recoils/atoms';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
-import TitleNavBar from '@components/common/nav/TitleNavBar';
 import AppImageInput from '@components/common/input/AppImageInput';
 import AppButton from '@components/common/button/AppButton';
 import AppLabel from '@components/common/label/AppLabel';
@@ -153,10 +152,11 @@ function AdminAccount() {
     };
   };
 
+  const titleNavBarProps = { title: `${adminUser.name} 님의 마이페이지`, subTitle: '계좌 관리', useBackIcon: true };
+
   return (
-    <AppContainer contentsJustify={'center'}>
+    <AppContainer contentsJustify={'center'} titleNavBarProps={titleNavBarProps}>
       <Container className={'admin-account-container'}>
-        <TitleNavBar title={`${adminUser.name} 님의 마이페이지`} subTitle={'계좌 관리'} useBackIcon={true} />
         <ContentContainer className={'content-container'}>
           <AccountContentContainer className={'account-content-container'}>
             <AccountInfoContainer className={'account-info-container'}>

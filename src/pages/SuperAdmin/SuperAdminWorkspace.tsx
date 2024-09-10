@@ -1,5 +1,4 @@
 import AppContainer from '@components/common/container/AppContainer';
-import TitleNavBar from '@components/common/nav/TitleNavBar';
 import Pagination from '@components/common/pagination/Pagination';
 import SuperAdminSearchBar from '@components/SuperAdmin/workspace/SuperAdminSearchBar';
 import styled from '@emotion/styled';
@@ -31,9 +30,14 @@ function SuperAdminWorkspace() {
   }, []);
 
   return (
-    <AppContainer contentsJustify={'center'} customWidth={'1000px'} customHeight={'100%'} customGap={'20px'}>
+    <AppContainer
+      contentsJustify={'center'}
+      customWidth={'1000px'}
+      customHeight={'100%'}
+      customGap={'20px'}
+      titleNavBarProps={{ title: '전체 워크스페이스 관리' }}
+    >
       <>
-        <TitleNavBar title="전체 워크스페이스 관리" />
         <SuperAdminSearchBar ref={userInputRef} />
         <ContentContainer justifyCenter={emptyWorkspaces} className={'content-container'}>
           <SuperAdminWorkspaceContents workspaces={workspaces} />

@@ -1,5 +1,4 @@
 import AppContainer from '@components/common/container/AppContainer';
-import TitleNavBar from '@components/common/nav/TitleNavBar';
 import styled from '@emotion/styled';
 import AppButton from '@components/common/button/AppButton';
 import AppInputWithButton from '@components/common/input/AppInputWithButton';
@@ -60,9 +59,8 @@ function AdminProductCategories() {
   };
 
   return (
-    <AppContainer contentsJustify={'center'}>
+    <AppContainer contentsJustify={'center'} titleNavBarProps={{ title: '카테고리 관리' }}>
       <Container className={'admin-product-categories-container'}>
-        <TitleNavBar title={'카테고리 관리'}></TitleNavBar>
         <CategoriesInputContainer className={'categories-input-container'}>
           <AppInputWithButton ref={categoryInputRef} onButtonClick={addCategoryHandler} />
         </CategoriesInputContainer>

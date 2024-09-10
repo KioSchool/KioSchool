@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
-import TitleNavBar from '@components/common/nav/TitleNavBar';
 import { useRecoilValue } from 'recoil';
 import { userWorkspaceAtom } from '@recoils/atoms';
 import styled from '@emotion/styled';
@@ -30,22 +29,14 @@ function AdminWorkspace() {
   const { fetchWorkspace } = useAdminWorkspace();
   const workspace = useRecoilValue(userWorkspaceAtom);
   const { appendPath } = useCustomNavigate();
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchWorkspace(workspaceId);
   }, []);
 
   return (
-    <AppContainer contentsJustify={'center'}>
+    <AppContainer contentsJustify={'center'} titleNavBarProps={{ title: workspace.name, subTitle: workspace.description }}>
       <Container className={'admin-workspace-container'}>
-        <TitleNavBar
-          title={workspace.name}
-          subTitle={workspace.description}
-          onLeftArrowClick={() => {
-            navigate('/admin');
-          }}
-        />
         <ButtonContainer className={'button-container'}>
           <ImageRouteButton src={orderImage} onClick={() => appendPath('/orders')} buttonText={'실시간 주문 조회'} />
           <ImageRouteButton src={orderHistoryImage} onClick={() => appendPath('/orders-history')} buttonText={'전체 주문 조회'} />
