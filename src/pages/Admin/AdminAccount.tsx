@@ -3,7 +3,7 @@ import jsQR from 'jsqr';
 import useAdminUser from '@hooks/admin/useAdminUser';
 import { useRecoilValue } from 'recoil';
 import { adminUserAtom } from '@recoils/atoms';
-import AppContainer from '@components/common/container/AppContainer';
+import TestContainer from '@components/common/container/TestContainer';
 import styled from '@emotion/styled';
 import AppImageInput from '@components/common/input/AppImageInput';
 import AppButton from '@components/common/button/AppButton';
@@ -155,7 +155,7 @@ function AdminAccount() {
   const titleNavBarProps = { title: `${adminUser.name} 님의 마이페이지`, subTitle: '계좌 관리', useBackIcon: true };
 
   return (
-    <AppContainer contentsJustify={'center'} titleNavBarProps={titleNavBarProps}>
+    <TestContainer useFlex={colFlex({ justify: 'center' })} titleNavBarProps={titleNavBarProps}>
       <Container className={'admin-account-container'}>
         <ContentContainer className={'content-container'}>
           <AccountContentContainer className={'account-content-container'}>
@@ -184,7 +184,7 @@ function AdminAccount() {
         </ContentContainer>
         <AppFooter />
       </Container>
-    </AppContainer>
+    </TestContainer>
   );
 }
 
