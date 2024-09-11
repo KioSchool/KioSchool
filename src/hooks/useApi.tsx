@@ -11,6 +11,7 @@ function useApi() {
 
   const setLoadingFalse = (key: any) => {
     const timeOutId = map.get(key);
+    map.delete(key);
     clearTimeout(timeOutId);
 
     if (!map.size) setIsLoading(false);
