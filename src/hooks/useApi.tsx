@@ -9,6 +9,13 @@ function useApi() {
   const controller = new AbortController();
   const map = new Map();
 
+  const setLoadingFalse = (key: any) => {
+    const timeOutId = map.get(key);
+    clearTimeout(timeOutId);
+
+    if (!map.size) setIsLoading(false);
+  };
+
   const adminApi = axios.create({
     baseURL: process.env.REACT_APP_ENVIRONMENT == 'development' ? 'http://localhost:8080/admin' : 'https://kio-school.fly.dev/admin',
     withCredentials: true,
@@ -26,26 +33,18 @@ function useApi() {
   };
 
   const commonResponseInterceptor = (response: any) => {
-    const timeOutId = map.get(response.config);
-    clearTimeout(timeOutId);
-    setIsLoading(false);
-
+    setLoadingFalse(response.config);
     return response;
   };
 
   const commonErrorInterceptor = (error: any) => {
-    const timeOutId = map.get(error.config);
-    clearTimeout(timeOutId);
-    setIsLoading(false);
-
+    setLoadingFalse(error.config);
     return Promise.reject(error);
   };
 
   adminApi.interceptors.request.use(commonRequestInterceptor, commonErrorInterceptor);
   adminApi.interceptors.response.use(commonResponseInterceptor, (error) => {
-    const timeOutId = map.get(error.config);
-    clearTimeout(timeOutId);
-    setIsLoading(false);
+    setLoadingFalse(error.config);
 
     if (error.response.status === 403) {
       controller.abort();
@@ -72,9 +71,7 @@ function useApi() {
 
   superAdminApi.interceptors.request.use(commonRequestInterceptor, commonErrorInterceptor);
   superAdminApi.interceptors.response.use(commonResponseInterceptor, (error) => {
-    const timeOutId = map.get(error.config);
-    clearTimeout(timeOutId);
-    setIsLoading(false);
+    setLoadingFalse(error.config);
 
     if (error.response.status === 403) {
       controller.abort();
