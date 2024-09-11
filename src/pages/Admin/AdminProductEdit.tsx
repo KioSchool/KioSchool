@@ -12,7 +12,7 @@ import AppImageInput from '@components/common/input/AppImageInput';
 import useConfirm from '@hooks/useConfirm';
 import { colFlex } from '@styles/flexStyles';
 import RoundedAppButton from '@components/common/button/RoundedAppButton';
-import AppContainer from '@components/common/container/AppContainer';
+import TestContainer from '@components/common/container/TestContainer';
 
 function reducer(state: ProductEdit, action: ProductActionType) {
   switch (action.type) {
@@ -139,7 +139,12 @@ function AdminProductEdit() {
   );
 
   return (
-    <AppContainer contentsJustify={'center'} useNavBackground={true} titleNavBarProps={{ title: '상품 수정', children: titleNavBarChildren }} useScroll={true}>
+    <TestContainer
+      useFlex={colFlex({ justify: 'center' })}
+      useNavBackground={true}
+      titleNavBarProps={{ title: '상품 수정', children: titleNavBarChildren }}
+      useScroll={true}
+    >
       <Container>
         <SelectWithLabel
           titleLabel={'카테고리'}
@@ -177,7 +182,7 @@ function AdminProductEdit() {
         <AppButton onClick={submitEditProduct}>변경하기</AppButton>
         <ConfirmModal />
       </Container>
-    </AppContainer>
+    </TestContainer>
   );
 }
 
