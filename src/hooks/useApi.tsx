@@ -3,14 +3,27 @@ import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { isLoadingAtom } from '@recoils/atoms';
 
-interface UseApiProps {
-  useLoading?: boolean;
-}
-
-function useApi({ useLoading = true }: UseApiProps = {}) {
+function useApi() {
   const navigate = useNavigate();
   const setIsLoading = useSetRecoilState(isLoadingAtom);
   const controller = new AbortController();
+  const map = new Map();
+
+  const startLoading = (key: any) => {
+    const timeOutId = setTimeout(() => {
+      setIsLoading(true);
+    }, 500);
+
+    map.set(key, timeOutId);
+  };
+
+  const stopLoading = (key: any) => {
+    const timeOutId = map.get(key);
+    map.delete(key);
+    clearTimeout(timeOutId);
+
+    if (!map.size) setIsLoading(false);
+  };
 
   const adminApi = axios.create({
     baseURL: process.env.REACT_APP_ENVIRONMENT == 'development' ? 'http://localhost:8080/admin' : 'https://kio-school.fly.dev/admin',
@@ -19,23 +32,24 @@ function useApi({ useLoading = true }: UseApiProps = {}) {
   });
 
   const commonRequestInterceptor = (config: any) => {
-    if (useLoading) setIsLoading(true);
+    startLoading(config);
     return config;
   };
 
   const commonResponseInterceptor = (response: any) => {
-    if (useLoading) setIsLoading(false);
+    stopLoading(response.config);
     return response;
   };
 
   const commonErrorInterceptor = (error: any) => {
-    if (useLoading) setIsLoading(false);
+    stopLoading(error.config);
     return Promise.reject(error);
   };
 
   adminApi.interceptors.request.use(commonRequestInterceptor, commonErrorInterceptor);
   adminApi.interceptors.response.use(commonResponseInterceptor, (error) => {
-    if (useLoading) setIsLoading(false);
+    stopLoading(error.config);
+
     if (error.response.status === 403) {
       controller.abort();
       alert('로그인이 필요합니다.');
@@ -61,7 +75,8 @@ function useApi({ useLoading = true }: UseApiProps = {}) {
 
   superAdminApi.interceptors.request.use(commonRequestInterceptor, commonErrorInterceptor);
   superAdminApi.interceptors.response.use(commonResponseInterceptor, (error) => {
-    if (useLoading) setIsLoading(false);
+    stopLoading(error.config);
+
     if (error.response.status === 403) {
       controller.abort();
       alert('권한이 없습니다.');
