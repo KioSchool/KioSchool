@@ -14,7 +14,7 @@ import _ from 'lodash';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import uploadPreview from '@resources/image/uploadPreview.png';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import AppContainer from '@components/common/container/AppContainer';
+import TestContainer from '@components/common/container/TestContainer';
 
 const KanbanContainer = styled.div`
   width: 100%;
@@ -115,7 +115,7 @@ function AdminOrder() {
   const productMap = _.keyBy(products, 'id');
 
   return (
-    <AppContainer contentsJustify={'center'} customGap={'30px'} titleNavBarProps={{ title: '실시간 주문 조회' }}>
+    <TestContainer useFlex={colFlex({ justify: 'center' })} customGap={'30px'} titleNavBarProps={{ title: '실시간 주문 조회' }}>
       <>
         <KanbanContainer className={'kanban-container'}>
           <OrderColumnContainer className={'order-column-container'}>
@@ -172,7 +172,7 @@ function AdminOrder() {
           </ProductsByOrderSubContainer>
         </ProductsByOrderContainer>
       </>
-    </AppContainer>
+    </TestContainer>
   );
 }
 
