@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import TestContainer from '@components/common/container/TestContainer';
+import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import ArrowRight from '@resources/svg/ArrowRightSvg';
 import { css } from '@emotion/react';
@@ -74,7 +74,7 @@ function SuperAdminHome() {
   const [isHover, setIsHover] = useState<boolean>(false);
 
   return (
-    <TestContainer useFlex={colFlex({ justify: 'center', align: 'start' })}>
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'start' })}>
       <>
         <MainTitle className={'main-title'}>
           키오스쿨로
@@ -94,7 +94,7 @@ function SuperAdminHome() {
         <AppFooter />
         <HoverOverlay isHover={isHover} className={'hover-overlay'} />
       </>
-    </TestContainer>
+    </AppContainer>
   );
 }
 

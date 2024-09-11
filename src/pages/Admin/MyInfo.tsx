@@ -1,4 +1,4 @@
-import TestContainer from '@components/common/container/TestContainer';
+import AppContainer from '@components/common/container/AppContainer';
 import MyInfoContent from '@components/admin/my-info/MyInfoContent';
 import TitleNavBar from '@components/common/nav/TitleNavBar';
 import styled from '@emotion/styled';
@@ -22,12 +22,12 @@ function MyInfo() {
   }, []);
 
   return (
-    <TestContainer useFlex={colFlex({ justify: 'center', align: 'center' })}>
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })}>
       <MyInfoContainer className={'my-info-container'}>
         <TitleNavBar title={`${user.name} 님의 마이페이지`} subTitle={user.email} useBackIcon={true} />
         <MyInfoContent />
       </MyInfoContainer>
-    </TestContainer>
+    </AppContainer>
   );
 }
 

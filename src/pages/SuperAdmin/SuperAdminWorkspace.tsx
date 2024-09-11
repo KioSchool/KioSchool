@@ -1,4 +1,4 @@
-import TestContainer from '@components/common/container/TestContainer';
+import AppContainer from '@components/common/container/AppContainer';
 import Pagination from '@components/common/pagination/Pagination';
 import SuperAdminSearchBar from '@components/SuperAdmin/workspace/SuperAdminSearchBar';
 import styled from '@emotion/styled';
@@ -30,7 +30,7 @@ function SuperAdminWorkspace() {
   }, []);
 
   return (
-    <TestContainer
+    <AppContainer
       useFlex={colFlex({ justify: 'center' })}
       customWidth={'1000px'}
       customHeight={'100%'}
@@ -49,7 +49,7 @@ function SuperAdminWorkspace() {
           }}
         />
       </>
-    </TestContainer>
+    </AppContainer>
   );
 }
 

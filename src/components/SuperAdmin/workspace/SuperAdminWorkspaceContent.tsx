@@ -1,5 +1,5 @@
 import { Workspace } from '@@types/index';
-import { SubContainer } from '@components/common/container/TestContainer';
+import { SubContainer } from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 

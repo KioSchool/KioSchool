@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import TestContainer from '@components/common/container/TestContainer';
+import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
 import AppLabel from '@components/common/label/AppLabel';
@@ -88,7 +88,7 @@ function AdminOrderManage() {
   }, []);
 
   return (
-    <TestContainer
+    <AppContainer
       useFlex={rowFlex({ justify: 'center' })}
       useNavBackground={true}
       useScroll={true}
@@ -122,7 +122,7 @@ function AdminOrderManage() {
           </QRCodeContainer>
         </ContentContainer>
       </Container>
-    </TestContainer>
+    </AppContainer>
   );
 }
 

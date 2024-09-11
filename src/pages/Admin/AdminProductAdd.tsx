@@ -9,7 +9,7 @@ import { categoriesAtom } from '@recoils/atoms';
 import { ProductActionType, ProductStateType } from '@@types/productTypes';
 import SelectWithLabel from '@components/common/select/SelectWithLabelProps';
 import AppImageInput from '@components/common/input/AppImageInput';
-import TestContainer from '@components/common/container/TestContainer';
+import AppContainer from '@components/common/container/AppContainer';
 import { colFlex } from '@styles/flexStyles';
 
 function reducer(state: ProductStateType, action: ProductActionType) {
@@ -97,7 +97,7 @@ function AdminProductAdd() {
   };
 
   return (
-    <TestContainer useFlex={colFlex({ justify: 'center' })} useNavBackground={true} titleNavBarProps={{ title: '상품 등록' }} useScroll={true}>
+    <AppContainer useFlex={colFlex({ justify: 'center' })} useNavBackground={true} titleNavBarProps={{ title: '상품 등록' }} useScroll={true}>
       <Container>
         <SelectWithLabel
           titleLabel={'카테고리'}
@@ -130,7 +130,7 @@ function AdminProductAdd() {
         />
         <AppButton onClick={AddProduct}>추가하기</AppButton>
       </Container>
-    </TestContainer>
+    </AppContainer>
   );
 }
 

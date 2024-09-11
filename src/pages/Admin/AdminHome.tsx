@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import useAdminUser from '@hooks/admin/useAdminUser';
 import { useRecoilValue } from 'recoil';
 import { adminUserAtom, workspacesAtom } from '@recoils/atoms';
-import TestContainer from '@components/common/container/TestContainer';
+import AppContainer from '@components/common/container/AppContainer';
 import DummyWorkspace from '@components/common/workspace/DummyWorkspace';
 import AddWorkspace from '@components/common/workspace/AddWorkspace';
 import WorkspaceContent from '@components/admin/workspace/WorkspaceContent';
@@ -39,7 +39,7 @@ function AdminHome() {
   }, []);
 
   return (
-    <TestContainer useFlex={rowFlex({ justify: 'space-between' })}>
+    <AppContainer useFlex={rowFlex({ justify: 'space-between' })}>
       <>
         <UserNameContainer className={'username-container'}>
           <UserNameText className={'username'}>{user.name}</UserNameText>
@@ -50,7 +50,7 @@ function AdminHome() {
         <DummyWorkspace workspaces={workspaces} />
         <AppFooter />
       </>
-    </TestContainer>
+    </AppContainer>
   );
 }
 

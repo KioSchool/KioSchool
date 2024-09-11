@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import TestContainer from '@components/common/container/TestContainer';
+import AppContainer from '@components/common/container/AppContainer';
 import AppInput from '@components/common/input/AppInput';
 import AppButton from '@components/common/button/AppButton';
 import styled from '@emotion/styled';
@@ -40,7 +40,7 @@ function ResetPassword() {
 
   if (!code) {
     return (
-      <TestContainer useFlex={colFlex({ justify: 'center' })}>
+      <AppContainer useFlex={colFlex({ justify: 'center' })}>
         <Container className={'reset-password-container'}>
           <AppInput placeholder={'아이디를 입력해주세요'} ref={idInputRef} />
           <AppInput placeholder={'이메일을 입력해주세요'} ref={emailInputRef} />
@@ -51,7 +51,7 @@ function ResetPassword() {
             <Link to={'/login'}>로그인하기</Link>
           </AppLabel>
         </Container>
-      </TestContainer>
+      </AppContainer>
     );
   }
 
@@ -81,7 +81,7 @@ function ResetPassword() {
   };
 
   return (
-    <TestContainer useFlex={colFlex({ justify: 'center' })}>
+    <AppContainer useFlex={colFlex({ justify: 'center' })}>
       <Container>
         <AppInputWithLabel
           titleLabel={'비밀번호'}
@@ -106,7 +106,7 @@ function ResetPassword() {
           비밀번호 재설정
         </AppButton>
       </Container>
-    </TestContainer>
+    </AppContainer>
   );
 }
 

@@ -6,7 +6,7 @@ import { useRecoilValue } from 'recoil';
 import { userWorkspaceAtom } from '@recoils/atoms';
 import styled from '@emotion/styled';
 import ImageRouteButton from '@components/common/button/ImageRouteButton';
-import TestContainer from '@components/common/container/TestContainer';
+import AppContainer from '@components/common/container/AppContainer';
 import AppFooter from '@components/common/footer/AppFooter';
 import orderImage from '@resources/image/orderImage.png';
 import orderHistoryImage from '@resources/image/orderHistoryImage.png';
@@ -35,7 +35,7 @@ function AdminWorkspace() {
   }, []);
 
   return (
-    <TestContainer useFlex={colFlex({ justify: 'center' })} titleNavBarProps={{ title: workspace.name, subTitle: workspace.description }}>
+    <AppContainer useFlex={colFlex({ justify: 'center' })} titleNavBarProps={{ title: workspace.name, subTitle: workspace.description }}>
       <Container className={'admin-workspace-container'}>
         <ButtonContainer className={'button-container'}>
           <ImageRouteButton src={orderImage} onClick={() => appendPath('/orders')} buttonText={'실시간 주문 조회'} />
@@ -45,7 +45,7 @@ function AdminWorkspace() {
         </ButtonContainer>
         <AppFooter />
       </Container>
-    </TestContainer>
+    </AppContainer>
   );
 }
 

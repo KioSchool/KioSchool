@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 import NavBar from '@components/common/nav/NavBar';
-import { colFlex, rowFlex } from '@styles/flexStyles';
+import { colFlex } from '@styles/flexStyles';
 import TitleNavBar, { TitleNavBarProps } from '../nav/TitleNavBar';
+import { SerializedStyles } from '@emotion/react';
 
 export const MainContainer = styled.div<{ backgroundColor?: string; useScroll?: boolean }>`
   width: 100%;
@@ -12,9 +13,7 @@ export const MainContainer = styled.div<{ backgroundColor?: string; useScroll?: 
 `;
 
 export const SubContainer = styled.div<{
-  contentsJustify: string;
-  contentsDirection?: string;
-  contentsAlign?: string;
+  useFlex: SerializedStyles;
   customWidth?: string;
   customHeight?: string;
   customGap?: string;
@@ -28,17 +27,12 @@ export const SubContainer = styled.div<{
   padding-top: ${(props) => props.isTitleNavBar && '140px'};
 
   gap: ${(props) => props.customGap};
-  ${(props) =>
-    props.contentsDirection === 'row'
-      ? rowFlex({ justify: props.contentsJustify, align: props.contentsAlign || 'center' })
-      : colFlex({ justify: props.contentsJustify, align: props.contentsAlign || 'center' })}
+  ${(props) => props.useFlex}
 `;
 
 interface Props {
   children: JSX.Element;
-  contentsJustify: string;
-  contentsDirection?: string;
-  contentsAlign?: string;
+  useFlex: SerializedStyles;
   backgroundColor?: string;
   useNavBackground?: boolean;
   customWidth?: string;
@@ -48,27 +42,13 @@ interface Props {
   useScroll?: boolean;
 }
 
-function AppContainer({
-  children,
-  contentsJustify,
-  contentsDirection,
-  contentsAlign,
-  backgroundColor,
-  useNavBackground,
-  customWidth,
-  customHeight,
-  customGap,
-  titleNavBarProps,
-  useScroll,
-}: Props) {
+function AppContainer({ children, useFlex, backgroundColor, useNavBackground, customWidth, customHeight, customGap, titleNavBarProps, useScroll }: Props) {
   return (
     <MainContainer backgroundColor={backgroundColor} className={'main-container'} useScroll={useScroll}>
       <NavBar useBackground={useNavBackground} />
       {titleNavBarProps && <TitleNavBar {...titleNavBarProps} />}
       <SubContainer
-        contentsJustify={contentsJustify}
-        contentsDirection={contentsDirection}
-        contentsAlign={contentsAlign}
+        useFlex={useFlex}
         customWidth={customWidth}
         customHeight={customHeight}
         customGap={customGap}
