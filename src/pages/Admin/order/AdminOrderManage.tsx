@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import AppContainer from '@components/common/container/AppContainer';
+import TestContainer from '@components/common/container/TestContainer';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
 import AppLabel from '@components/common/label/AppLabel';
@@ -88,10 +88,9 @@ function AdminOrderManage() {
   }, []);
 
   return (
-    <AppContainer
-      contentsJustify={'center'}
+    <TestContainer
+      useFlex={rowFlex({ justify: 'center' })}
       useNavBackground={true}
-      contentsDirection={'row'}
       useScroll={true}
       titleNavBarProps={{
         title: '주문 페이지 관리',
@@ -123,7 +122,7 @@ function AdminOrderManage() {
           </QRCodeContainer>
         </ContentContainer>
       </Container>
-    </AppContainer>
+    </TestContainer>
   );
 }
 
