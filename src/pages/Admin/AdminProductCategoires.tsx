@@ -1,4 +1,4 @@
-import AppContainer from '@components/common/container/AppContainer';
+import TestContainer from '@components/common/container/TestContainer';
 import styled from '@emotion/styled';
 import AppButton from '@components/common/button/AppButton';
 import AppInputWithButton from '@components/common/input/AppInputWithButton';
@@ -59,7 +59,7 @@ function AdminProductCategories() {
   };
 
   return (
-    <AppContainer contentsJustify={'center'} titleNavBarProps={{ title: '카테고리 관리' }}>
+    <TestContainer useFlex={colFlex({ justify: 'center' })} titleNavBarProps={{ title: '카테고리 관리' }}>
       <Container className={'admin-product-categories-container'}>
         <CategoriesInputContainer className={'categories-input-container'}>
           <AppInputWithButton ref={categoryInputRef} onButtonClick={addCategoryHandler} />
@@ -73,7 +73,7 @@ function AdminProductCategories() {
           </AppButton>
         </CategoriesButtonContainer>
       </Container>
-    </AppContainer>
+    </TestContainer>
   );
 }
 
