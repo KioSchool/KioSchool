@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import ProductCard from '@components/admin/product/ProductCard';
 import { colFlex } from '@styles/flexStyles';
-import AppContainer from '@components/common/container/AppContainer';
+import TestContainer from '@components/common/container/TestContainer';
 import AdminProductTitleNavBarChildren from './AdminProductTitleNavBarChildren';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 
@@ -40,10 +40,9 @@ function AdminProduct() {
   }, []);
 
   return (
-    <AppContainer
+    <TestContainer
       useNavBackground={true}
-      contentsJustify={'center'}
-      contentsAlign={'center'}
+      useFlex={colFlex({ justify: 'center', align: 'center' })}
       titleNavBarProps={{
         title: '상품관리',
         children: <AdminProductTitleNavBarChildren />,
@@ -76,7 +75,7 @@ function AdminProduct() {
           </ContainerPerCategory>
         ))}
       </>
-    </AppContainer>
+    </TestContainer>
   );
 }
 
