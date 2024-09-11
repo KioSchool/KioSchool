@@ -9,7 +9,15 @@ function useApi() {
   const controller = new AbortController();
   const map = new Map();
 
-  const setLoadingFalse = (key: any) => {
+  const startLoading = (key: any) => {
+    const timeOutId = setTimeout(() => {
+      setIsLoading(true);
+    }, 500);
+
+    map.set(key, timeOutId);
+  };
+
+  const stopLoading = (key: any) => {
     const timeOutId = map.get(key);
     map.delete(key);
     clearTimeout(timeOutId);
@@ -24,28 +32,23 @@ function useApi() {
   });
 
   const commonRequestInterceptor = (config: any) => {
-    const timeOutId = setTimeout(() => {
-      setIsLoading(true);
-    }, 500);
-
-    map.set(config, timeOutId);
-
+    startLoading(config);
     return config;
   };
 
   const commonResponseInterceptor = (response: any) => {
-    setLoadingFalse(response.config);
+    stopLoading(response.config);
     return response;
   };
 
   const commonErrorInterceptor = (error: any) => {
-    setLoadingFalse(error.config);
+    stopLoading(error.config);
     return Promise.reject(error);
   };
 
   adminApi.interceptors.request.use(commonRequestInterceptor, commonErrorInterceptor);
   adminApi.interceptors.response.use(commonResponseInterceptor, (error) => {
-    setLoadingFalse(error.config);
+    stopLoading(error.config);
 
     if (error.response.status === 403) {
       controller.abort();
@@ -72,7 +75,7 @@ function useApi() {
 
   superAdminApi.interceptors.request.use(commonRequestInterceptor, commonErrorInterceptor);
   superAdminApi.interceptors.response.use(commonResponseInterceptor, (error) => {
-    setLoadingFalse(error.config);
+    stopLoading(error.config);
 
     if (error.response.status === 403) {
       controller.abort();
