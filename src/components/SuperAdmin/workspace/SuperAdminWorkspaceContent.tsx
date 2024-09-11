@@ -1,7 +1,7 @@
 import { Workspace } from '@@types/index';
 import { SubContainer } from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
-import { rowFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const SubLabelContainer = styled.div`
   color: #d8d8d8;
@@ -28,14 +28,7 @@ function SuperAdminWorkspaceContent({ id, name, owner, createdAt }: Workspace) {
   const createdDateAndOwnerText = `${filteredCreatedDate} | ${owner.name}`;
 
   return (
-    <SubContainer
-      contentsDirection={'column'}
-      contentsJustify={'center'}
-      contentsAlign={'flex-start'}
-      customWidth={'1000px'}
-      customHeight={'80px'}
-      customGap={'5px'}
-    >
+    <SubContainer useFlex={colFlex({ justify: 'center', align: 'start' })} customWidth={'1000px'} customHeight={'80px'} customGap={'5px'}>
       <WorkspaceLabel
         onClick={() => {
           window.open(`${window.location.origin}/admin/workspace/${id}`, '_blank', 'rel=noopener noreferrer popup=false');

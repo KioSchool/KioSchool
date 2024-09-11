@@ -89,9 +89,8 @@ function AdminOrderManage() {
 
   return (
     <AppContainer
-      contentsJustify={'center'}
+      useFlex={rowFlex({ justify: 'center' })}
       useNavBackground={true}
-      contentsDirection={'row'}
       useScroll={true}
       titleNavBarProps={{
         title: '주문 페이지 관리',

@@ -7,6 +7,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import AppContainer from '@components/common/container/AppContainer';
 import AppFooter from '@components/common/footer/AppFooter';
+import { colFlex } from '@styles/flexStyles';
 
 const LoginContainer = styled.div`
   display: grid;
@@ -48,7 +49,7 @@ function Login() {
   };
 
   return (
-    <AppContainer contentsJustify={'center'}>
+    <AppContainer useFlex={colFlex({ align: 'center' })}>
       <LoginContainer className={'login-container'}>
         <AppLabel size={'large'}>로그인</AppLabel>
         <InputContainer className={'input-container'}>

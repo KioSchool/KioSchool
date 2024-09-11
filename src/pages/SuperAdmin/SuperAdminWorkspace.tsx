@@ -31,7 +31,7 @@ function SuperAdminWorkspace() {
 
   return (
     <AppContainer
-      contentsJustify={'center'}
+      useFlex={colFlex({ justify: 'center' })}
       customWidth={'1000px'}
       customHeight={'100%'}
       customGap={'20px'}

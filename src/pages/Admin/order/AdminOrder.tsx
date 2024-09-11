@@ -115,7 +115,7 @@ function AdminOrder() {
   const productMap = _.keyBy(products, 'id');
 
   return (
-    <AppContainer contentsJustify={'center'} customGap={'30px'} titleNavBarProps={{ title: '실시간 주문 조회' }}>
+    <AppContainer useFlex={colFlex({ justify: 'center' })} customGap={'30px'} titleNavBarProps={{ title: '실시간 주문 조회' }}>
       <>
         <KanbanContainer className={'kanban-container'}>
           <OrderColumnContainer className={'order-column-container'}>

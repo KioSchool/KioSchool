@@ -8,6 +8,7 @@ import AddWorkspace from '@components/common/workspace/AddWorkspace';
 import WorkspaceContent from '@components/admin/workspace/WorkspaceContent';
 import styled from '@emotion/styled';
 import AppFooter from '@components/common/footer/AppFooter';
+import { rowFlex } from '@styles/flexStyles';
 
 const UserNameContainer = styled.div`
   padding-bottom: 25px;
@@ -38,7 +39,7 @@ function AdminHome() {
   }, []);
 
   return (
-    <AppContainer contentsJustify={'space-between'} contentsDirection={'row'}>
+    <AppContainer useFlex={rowFlex({ justify: 'space-between' })}>
       <>
         <UserNameContainer className={'username-container'}>
           <UserNameText className={'username'}>{user.name}</UserNameText>

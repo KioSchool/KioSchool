@@ -97,7 +97,7 @@ function AdminProductAdd() {
   };
 
   return (
-    <AppContainer contentsJustify={'center'} useNavBackground={true} titleNavBarProps={{ title: '상품 등록' }} useScroll={true}>
+    <AppContainer useFlex={colFlex({ justify: 'center' })} useNavBackground={true} titleNavBarProps={{ title: '상품 등록' }} useScroll={true}>
       <Container>
         <SelectWithLabel
           titleLabel={'카테고리'}

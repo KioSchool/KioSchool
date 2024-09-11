@@ -42,8 +42,7 @@ function AdminProduct() {
   return (
     <AppContainer
       useNavBackground={true}
-      contentsJustify={'center'}
-      contentsAlign={'center'}
+      useFlex={colFlex({ justify: 'center', align: 'center' })}
       titleNavBarProps={{
         title: '상품관리',
         children: <AdminProductTitleNavBarChildren />,

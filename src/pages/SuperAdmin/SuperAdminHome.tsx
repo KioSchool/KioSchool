@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import ArrowRight from '@resources/svg/ArrowRightSvg';
 import { css } from '@emotion/react';
 import AppFooter from '@components/common/footer/AppFooter';
-import { rowFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const MainTitle = styled.div`
   width: 540px;
@@ -74,7 +74,7 @@ function SuperAdminHome() {
   const [isHover, setIsHover] = useState<boolean>(false);
 
   return (
-    <AppContainer contentsJustify={'center'} contentsDirection={'column'} contentsAlign={'flex-start'}>
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'start' })}>
       <>
         <MainTitle className={'main-title'}>
           키오스쿨로
