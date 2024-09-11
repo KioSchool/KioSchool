@@ -6,7 +6,7 @@ import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { ordersAtom } from '@recoils/atoms';
-import AppContainer from '@components/common/container/AppContainer';
+import TestContainer from '@components/common/container/TestContainer';
 import ToggleOrderCard from '@components/admin/order/ToggleOrderCard';
 import AppLabel from '@components/common/label/AppLabel';
 import AppCheckBox from '@components/common/input/AppCheckBox';
@@ -68,7 +68,7 @@ function AdminOrderHistory() {
   }, [startDate, endDate]);
 
   return (
-    <AppContainer contentsJustify={'center'} useNavBackground={true} titleNavBarProps={{ title: '전체 주문 조회' }}>
+    <TestContainer useFlex={colFlex({ justify: 'center' })} useNavBackground={true} titleNavBarProps={{ title: '전체 주문 조회' }}>
       <Container className={'admin-order-history-container'}>
         <ConditionContainer className={'condition-container'}>
           <DatePickerContainer className={'date-picker-container'}>
@@ -97,7 +97,7 @@ function AdminOrderHistory() {
           <AppLabel size={25}>총 주문 금액: {totalOrderPrice}원</AppLabel>
         </TotalPriceContainer>
       </Container>
-    </AppContainer>
+    </TestContainer>
   );
 }
 
