@@ -8,6 +8,7 @@ import { useRecoilValue } from 'recoil';
 import SuperAdminSearchContents from './SuperAdminSearchContents';
 import useSuperAdminWorkspace from '@hooks/SuperAdmin/useSuperAdminWorkspace';
 import { colFlex } from '@styles/flexStyles';
+import SuperAdminWorkspaceContent from '@components/SuperAdmin/workspace/SuperAdminWorkspaceContent';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   height: 550px;
@@ -38,9 +39,9 @@ function SuperAdminWorkspace() {
       titleNavBarProps={{ title: '전체 워크스페이스 관리' }}
     >
       <>
-        <SuperAdminSearchBar ref={userInputRef} />
+        <SuperAdminSearchBar ref={userInputRef} fetchContents={fetchAllWorkspaces} />
         <ContentContainer justifyCenter={emptyWorkspaces} className={'content-container'}>
-          <SuperAdminSearchContents contents={workspaces} target={'워크스페이스'} />
+          <SuperAdminSearchContents contents={workspaces} target={'워크스페이스'} ContentComponent={SuperAdminWorkspaceContent} />
         </ContentContainer>
         <Pagination
           totalPageCount={workspaces.totalPages}
