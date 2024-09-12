@@ -9,6 +9,7 @@ import Pagination from '@components/common/pagination/Pagination';
 import AppContainer from '@components/common/container/AppContainer';
 import useSuperAdminUser from '@hooks/SuperAdmin/useSuperAdminUser';
 import SuperAdminUserContent from '@components/SuperAdmin/user/SuperAdminUserContent';
+import { useNavigate } from 'react-router-dom';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   height: 550px;
@@ -20,11 +21,12 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 `;
 
 function SuperAdminUser() {
+  const size = 6;
+  const navigate = useNavigate();
   const userInputRef = useRef<HTMLInputElement | null>(null);
   const users = useRecoilValue(userPaginationResponseAtom);
   const { fetchAllUsers } = useSuperAdminUser();
-  const size = 6;
-  const emptyUsers = useRecoilValue(userPaginationResponseAtom).numberOfElements === 0;
+  const emptyUsers = users.numberOfElements === 0;
 
   useEffect(() => {
     fetchAllUsers(0, size);
@@ -36,7 +38,7 @@ function SuperAdminUser() {
       customWidth={'1000px'}
       customHeight={'100%'}
       customGap={'20px'}
-      titleNavBarProps={{ title: '전체 유저 관리' }}
+      titleNavBarProps={{ title: '전체 유저 관리', onLeftArrowClick: () => navigate('/super-admin/manage') }}
     >
       <>
         <SuperAdminSearchBar ref={userInputRef} fetchContents={fetchAllUsers} />
