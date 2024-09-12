@@ -1,5 +1,4 @@
 import { PaginationResponse } from '@@types/index';
-import SuperAdminWorkspaceContent from '@components/SuperAdmin/workspace/SuperAdminWorkspaceContent';
 import styled from '@emotion/styled';
 
 const HorizontalLine = styled.hr`
@@ -15,9 +14,10 @@ const EmptyLabel = styled.div`
 interface ContentsProps {
   contents: PaginationResponse<any>;
   target: string;
+  ContentComponent: React.ElementType<any>;
 }
 
-function SuperAdminSearchContents({ contents, target }: ContentsProps) {
+function SuperAdminSearchContents({ contents, target, ContentComponent }: ContentsProps) {
   if (contents.numberOfElements === 0) {
     return <EmptyLabel className={'empty-label'}>{`찾고자 하는 ${target} 이/가 존재하지 않습니다.`}</EmptyLabel>;
   }
@@ -26,7 +26,7 @@ function SuperAdminSearchContents({ contents, target }: ContentsProps) {
     <>
       {contents.content.map((item, index) => (
         <div key={item.id}>
-          <SuperAdminWorkspaceContent {...item} />
+          <ContentComponent {...item} />
           {index < contents.content.length - 1 && <HorizontalLine />}
         </div>
       ))}
