@@ -1,6 +1,6 @@
 import { Workspace, PaginationResponse } from '@@types/index';
 import useApi from '@hooks/useApi';
-import { userPaginationResponseAtom } from '@recoils/atoms';
+import { workspacePaginationResponseAtom } from '@recoils/atoms';
 import { useSearchParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
@@ -13,7 +13,7 @@ interface ParamsType {
 function useSuperAdminWorkspace() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { superAdminApi } = useApi();
-  const setUserPaginationResponse = useSetRecoilState(userPaginationResponseAtom);
+  const setUserPaginationResponse = useSetRecoilState(workspacePaginationResponseAtom);
 
   const fetchAllWorkspaces = (page: number, size: number, name?: string) => {
     const params: ParamsType = { page, size };
