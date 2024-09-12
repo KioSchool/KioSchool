@@ -1,4 +1,4 @@
-import { Workspace, PaginationResponse } from '@@types/index';
+import { PaginationResponse, User } from '@@types/index';
 import useApi from '@hooks/useApi';
 import { userPaginationResponseAtom } from '@recoils/atoms';
 import { useSearchParams } from 'react-router-dom';
@@ -22,7 +22,7 @@ function useSuperAdminUser() {
     }
 
     superAdminApi
-      .get<PaginationResponse<Workspace>>('/users', { params: params })
+      .get<PaginationResponse<User>>('/users', { params: params })
       .then((res) => {
         setUserPaginationResponse(res.data);
         searchParams.set('page', params.page.toString());
