@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { userPaginationResponseAtom } from '@recoils/atoms';
 import { useEffect, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
-import SuperAdminWorkspaceContents from './SuperAdminWorkspaceContents';
+import SuperAdminSearchContents from './SuperAdminSearchContents';
 import useSuperAdminWorkspace from '@hooks/SuperAdmin/useSuperAdminWorkspace';
 import { colFlex } from '@styles/flexStyles';
 
@@ -40,7 +40,7 @@ function SuperAdminWorkspace() {
       <>
         <SuperAdminSearchBar ref={userInputRef} />
         <ContentContainer justifyCenter={emptyWorkspaces} className={'content-container'}>
-          <SuperAdminWorkspaceContents workspaces={workspaces} />
+          <SuperAdminSearchContents contents={workspaces} target={'워크스페이스'} />
         </ContentContainer>
         <Pagination
           totalPageCount={workspaces.totalPages}
