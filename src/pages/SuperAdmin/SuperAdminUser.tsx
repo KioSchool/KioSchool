@@ -26,7 +26,7 @@ function SuperAdminUser() {
   const userInputRef = useRef<HTMLInputElement | null>(null);
   const users = useRecoilValue(userPaginationResponseAtom);
   const { fetchAllUsers } = useSuperAdminUser();
-  const emptyUsers = users.numberOfElements === 0;
+  const isEmptyUsers = users.empty;
 
   useEffect(() => {
     fetchAllUsers(0, size);
@@ -42,7 +42,7 @@ function SuperAdminUser() {
     >
       <>
         <SuperAdminSearchBar ref={userInputRef} fetchContents={fetchAllUsers} />
-        <ContentContainer justifyCenter={emptyUsers} className={'content-container'}>
+        <ContentContainer justifyCenter={isEmptyUsers} className={'content-container'}>
           <SuperAdminSearchContents contents={users} target={'유저'} ContentComponent={SuperAdminUserContent} />
         </ContentContainer>
         <Pagination

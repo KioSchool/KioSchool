@@ -26,7 +26,7 @@ function SuperAdminWorkspace() {
   const userInputRef = useRef<HTMLInputElement | null>(null);
   const workspaces = useRecoilValue(workspacePaginationResponseAtom);
   const { fetchAllWorkspaces } = useSuperAdminWorkspace();
-  const emptyWorkspaces = workspaces.numberOfElements === 0;
+  const isEmptyWorkspaces = workspaces.empty;
 
   useEffect(() => {
     fetchAllWorkspaces(0, size);
@@ -42,7 +42,7 @@ function SuperAdminWorkspace() {
     >
       <>
         <SuperAdminSearchBar ref={userInputRef} fetchContents={fetchAllWorkspaces} />
-        <ContentContainer justifyCenter={emptyWorkspaces} className={'content-container'}>
+        <ContentContainer justifyCenter={isEmptyWorkspaces} className={'content-container'}>
           <SuperAdminSearchContents contents={workspaces} target={'워크스페이스'} ContentComponent={SuperAdminWorkspaceContent} />
         </ContentContainer>
         <Pagination
