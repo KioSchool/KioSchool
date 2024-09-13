@@ -7,7 +7,7 @@ import { useSetRecoilState } from 'recoil';
 interface ParamsType {
   page: number;
   size: number;
-  username?: string;
+  name?: string;
 }
 
 function useSuperAdminUser() {
@@ -15,10 +15,10 @@ function useSuperAdminUser() {
   const { superAdminApi } = useApi();
   const setUserPaginationResponse = useSetRecoilState(userPaginationResponseAtom);
 
-  const fetchAllUsers = (page: number, size: number, username?: string) => {
+  const fetchAllUsers = (page: number, size: number, name?: string) => {
     const params: ParamsType = { page, size };
-    if (username) {
-      params.username = username;
+    if (name) {
+      params.name = name;
     }
 
     superAdminApi
