@@ -18,7 +18,7 @@ interface ContentsProps {
 }
 
 function SuperAdminSearchContents({ contents, target, ContentComponent }: ContentsProps) {
-  if (contents.numberOfElements === 0) {
+  if (contents.empty) {
     return <EmptyLabel className={'empty-label'}>{`찾고자 하는 ${target} 이/가 존재하지 않습니다.`}</EmptyLabel>;
   }
 
