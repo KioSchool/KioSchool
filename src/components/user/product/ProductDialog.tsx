@@ -22,7 +22,7 @@ const Container = styled.div`
   height: 100vh;
   background: rgba(0, 0, 0, 0.7);
   animation: fadeIn 0.2s;
-  ${rowFlex({ justify: 'center', align: 'center' })}
+  ${rowFlex({ justify: 'center', align: 'center' })};
 
   @keyframes fadeIn {
     from {
