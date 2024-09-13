@@ -21,7 +21,7 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 `;
 
 function SuperAdminWorkspace() {
-  const size = 6;
+  const pageSize = 6;
   const navigate = useNavigate();
   const userInputRef = useRef<HTMLInputElement | null>(null);
   const workspaces = useRecoilValue(workspacePaginationResponseAtom);
@@ -29,7 +29,7 @@ function SuperAdminWorkspace() {
   const isEmptyWorkspaces = workspaces.empty;
 
   useEffect(() => {
-    fetchAllWorkspaces(0, size);
+    fetchAllWorkspaces(0, pageSize);
   }, []);
 
   return (
@@ -48,7 +48,7 @@ function SuperAdminWorkspace() {
         <Pagination
           totalPageCount={workspaces.totalPages}
           paginateFunction={(page: number) => {
-            fetchAllWorkspaces(page, size, userInputRef.current?.value);
+            fetchAllWorkspaces(page, pageSize, userInputRef.current?.value);
           }}
         />
       </>

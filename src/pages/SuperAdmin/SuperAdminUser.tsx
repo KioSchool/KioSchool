@@ -21,7 +21,7 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 `;
 
 function SuperAdminUser() {
-  const size = 6;
+  const pageSize = 6;
   const navigate = useNavigate();
   const userInputRef = useRef<HTMLInputElement | null>(null);
   const users = useRecoilValue(userPaginationResponseAtom);
@@ -29,7 +29,7 @@ function SuperAdminUser() {
   const isEmptyUsers = users.empty;
 
   useEffect(() => {
-    fetchAllUsers(0, size);
+    fetchAllUsers(0, pageSize);
   }, []);
 
   return (
@@ -48,7 +48,7 @@ function SuperAdminUser() {
         <Pagination
           totalPageCount={users.totalPages}
           paginateFunction={(page: number) => {
-            fetchAllUsers(page, size, userInputRef.current?.value);
+            fetchAllUsers(page, pageSize, userInputRef.current?.value);
           }}
         />
       </>
