@@ -16,13 +16,10 @@ function useSuperAdminWorkspace() {
   const setUserPaginationResponse = useSetRecoilState(workspacePaginationResponseAtom);
 
   const fetchAllWorkspaces = (page: number, size: number, name?: string) => {
-    const params: ParamsType = { page, size };
-    if (name) {
-      params.name = name;
-    }
+    const params: ParamsType = { page, size, name };
 
     superAdminApi
-      .get<PaginationResponse<Workspace>>('/workspaces', { params: params })
+      .get<PaginationResponse<Workspace>>('/workspaces', { params })
       .then((res) => {
         setUserPaginationResponse(res.data);
         searchParams.set('page', params.page.toString());
