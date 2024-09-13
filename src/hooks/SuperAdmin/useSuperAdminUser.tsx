@@ -16,13 +16,10 @@ function useSuperAdminUser() {
   const setUserPaginationResponse = useSetRecoilState(userPaginationResponseAtom);
 
   const fetchAllUsers = (page: number, size: number, name?: string) => {
-    const params: ParamsType = { page, size };
-    if (name) {
-      params.name = name;
-    }
+    const params: ParamsType = { page, size, name };
 
     superAdminApi
-      .get<PaginationResponse<User>>('/users', { params: params })
+      .get<PaginationResponse<User>>('/users', { params })
       .then((res) => {
         setUserPaginationResponse(res.data);
         searchParams.set('page', params.page.toString());
