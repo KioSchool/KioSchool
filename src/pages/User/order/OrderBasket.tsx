@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import AppBadge from '@components/common/badge/AppBadge';
 import AppLabel from '@components/common/label/AppLabel';
@@ -86,7 +86,15 @@ function OrderBasket() {
       <OrderButton
         showButton={orderBasket.length > 0}
         buttonLabel={`${totalAmount.toLocaleString()}원 주문하기`}
-        onClick={() => navigate(`/order-pay?workspaceId=${workspaceId}&tableNo=${tableNo}`)}
+        onClick={() =>
+          navigate({
+            pathname: '/order-pay',
+            search: createSearchParams({
+              workspaceId: workspaceId || '',
+              tableNo: tableNo || '',
+            }).toString(),
+          })
+        }
       />
     </Container>
   );

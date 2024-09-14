@@ -7,7 +7,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import AppBadge from '@components/common/badge/AppBadge';
 import OrderButton from '@components/user/order/OrderButton';
 import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import useOrder from '@hooks/user/useOrder';
 
@@ -79,7 +79,13 @@ function OrderPay() {
     }
 
     createOrder(workspaceId, tableNo, orderBasket, customerName).then((res) => {
-      navigate(`/order-complete?orderId=${res.data.id}&workspaceId=${workspaceId}`);
+      navigate({
+        pathname: '/order-complete',
+        search: createSearchParams({
+          orderId: res.data.id.toString(),
+          workspaceId: workspaceId || '',
+        }).toString(),
+      });
 
       if (totalAmount == 0) return;
 
