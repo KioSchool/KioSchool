@@ -128,8 +128,8 @@ function useAdminProducts(workspaceId: string | undefined | null) {
       });
   };
 
-  const deleteCategory = (categoryId: number) => {
-    return adminApi.delete(`/product-category?workspaceId=${workspaceId}&productCategoryId=${categoryId}`).then(() => fetchCategories());
+  const deleteCategory = (productCategoryId: number) => {
+    return adminApi.delete(`/product-category`, { params: { workspaceId, productCategoryId } }).then(() => fetchCategories());
   };
 
   return {
