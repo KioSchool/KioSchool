@@ -14,7 +14,7 @@ const ButtonContainer = styled.div`
   height: 70px;
 `;
 
-const ItmeLabel = styled.div`
+const ItemLabel = styled.div`
   width: 156px;
   height: 43px;
   text-align: center;
@@ -22,16 +22,16 @@ const ItmeLabel = styled.div`
   font-weight: 400;
 `;
 
-interface MyInfoContentItmeProps {
+interface MyInfoContentItemProps {
   label: string;
   children: ReactNode;
 }
 
-function MyInfoItemContent({ label, children }: MyInfoContentItmeProps) {
+function MyInfoItemContent({ label, children }: MyInfoContentItemProps) {
   return (
     <ItemContainer className={'my-info-item-container'}>
       <ButtonContainer className={'button-container'}>{children}</ButtonContainer>
-      <ItmeLabel className={'item-label'}>{label}</ItmeLabel>
+      <ItemLabel className={'item-label'}>{label}</ItemLabel>
     </ItemContainer>
   );
 }
