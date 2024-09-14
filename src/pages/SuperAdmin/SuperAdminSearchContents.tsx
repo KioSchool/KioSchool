@@ -1,5 +1,6 @@
 import { PaginationResponse } from '@@types/index';
 import styled from '@emotion/styled';
+import React from 'react';
 
 const HorizontalLine = styled.hr`
   width: 100%;
@@ -14,7 +15,7 @@ const EmptyLabel = styled.div`
 interface ContentsProps {
   contents: PaginationResponse<any>;
   target: string;
-  ContentComponent: React.ElementType<any>;
+  ContentComponent: React.ElementType;
 }
 
 function SuperAdminSearchContents({ contents, target, ContentComponent }: ContentsProps) {

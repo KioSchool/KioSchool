@@ -4,7 +4,7 @@ function useRegister() {
   const { userApi } = useApi();
 
   const checkDuplicateId = async (id: string) => {
-    const response = await userApi
+    return userApi
       .post<boolean>('/user/duplicate', {
         id,
       })
@@ -12,12 +12,10 @@ function useRegister() {
       .catch((error) => {
         console.error(error + '동일한 ID가 존재합니다.');
       });
-
-    return response;
   };
 
   const registerUser = async (id: string, password: string, name: string, email: string) => {
-    const response = await userApi
+    return userApi
       .post('/register', {
         id,
         password,
@@ -26,19 +24,15 @@ function useRegister() {
       })
       .then(() => true)
       .catch(() => false);
-
-    return response;
   };
 
   const sendVerifyMail = async (email: string) => {
-    const response = await userApi
+    return userApi
       .post('/user/email', {
         email,
       })
       .then(() => true)
       .catch(() => false);
-
-    return response;
   };
 
   interface VerifyUserResponse {
@@ -47,7 +41,7 @@ function useRegister() {
   }
 
   const verifyUser = async (email: string, code: string): Promise<VerifyUserResponse> => {
-    const response = await userApi
+    return userApi
       .post<boolean>('/user/verify', {
         email,
         code,
@@ -58,8 +52,6 @@ function useRegister() {
       .catch(() => {
         return { isVerify: false, errorMessage: '이메일 인증에 실패했습니다.' };
       });
-
-    return response;
   };
 
   return { checkDuplicateId, registerUser, sendVerifyMail, verifyUser };
