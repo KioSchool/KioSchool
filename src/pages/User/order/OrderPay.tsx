@@ -7,10 +7,9 @@ import AppLabel from '@components/common/label/AppLabel';
 import AppBadge from '@components/common/badge/AppBadge';
 import OrderButton from '@components/user/order/OrderButton';
 import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
-import useApi from '@hooks/useApi';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Order } from '@@types/index';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import useOrder from '@hooks/user/useOrder';
 
 const Container = styled.div`
   width: 100vw;
@@ -57,7 +56,7 @@ function OrderPay() {
   }, 0);
 
   const navigate = useNavigate();
-  const { userApi } = useApi();
+  const { createOrder } = useOrder();
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
@@ -72,27 +71,20 @@ function OrderPay() {
   }, []);
 
   const payOrder = () => {
-    const costumerName = customerNameRef.current?.value;
+    const customerName = customerNameRef.current?.value;
 
-    if (!costumerName) {
+    if (!customerName) {
       alert('입금자명을 입력해주세요.');
       return;
     }
 
-    userApi
-      .post<Order>('/order', {
-        workspaceId: workspaceId,
-        tableNumber: tableNo,
-        orderProducts: orderBasket,
-        customerName: costumerName,
-      })
-      .then((res) => {
-        navigate(`/order-complete?orderId=${res.data.id}&workspaceId=${workspaceId}`);
+    createOrder(workspaceId, tableNo, orderBasket, customerName).then((res) => {
+      navigate(`/order-complete?orderId=${res.data.id}&workspaceId=${workspaceId}`);
 
-        if (totalAmount == 0) return;
+      if (totalAmount == 0) return;
 
-        window.open(`${tossAccountUrl}&amount=${totalAmount}`);
-      });
+      window.open(`${tossAccountUrl}&amount=${totalAmount}`);
+    });
   };
 
   return (

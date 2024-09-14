@@ -1,5 +1,5 @@
 import useApi from '@hooks/useApi';
-import { Order } from '@@types/index';
+import { Order, OrderProductBase } from '@@types/index';
 import { useSetRecoilState } from 'recoil';
 import { userOrderAtom } from '@recoils/atoms';
 
@@ -13,7 +13,16 @@ function useOrder() {
     });
   };
 
-  return { fetchOrder };
+  const createOrder = (workspaceId: string | null, tableNumber: string | null, orderProducts: OrderProductBase[], customerName: string) => {
+    return userApi.post<Order>('/order', {
+      workspaceId,
+      tableNumber,
+      orderProducts,
+      customerName,
+    });
+  };
+
+  return { fetchOrder, createOrder };
 }
 
 export default useOrder;
