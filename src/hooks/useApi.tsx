@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { isLoadingAtom } from '@recoils/atoms';
@@ -9,7 +9,7 @@ function useApi() {
   const controller = new AbortController();
   const map = new Map();
 
-  const startLoading = (key: any) => {
+  const startLoading = (key: InternalAxiosRequestConfig<any>) => {
     const timeOutId = setTimeout(() => {
       setIsLoading(true);
     }, 500);
@@ -17,7 +17,7 @@ function useApi() {
     map.set(key, timeOutId);
   };
 
-  const stopLoading = (key: any) => {
+  const stopLoading = (key: InternalAxiosRequestConfig<any>) => {
     const timeOutId = map.get(key);
     map.delete(key);
     clearTimeout(timeOutId);
@@ -31,12 +31,12 @@ function useApi() {
     signal: controller.signal,
   });
 
-  const commonRequestInterceptor = (config: any) => {
+  const commonRequestInterceptor = (config: InternalAxiosRequestConfig<any>) => {
     startLoading(config);
     return config;
   };
 
-  const commonResponseInterceptor = (response: any) => {
+  const commonResponseInterceptor = (response: AxiosResponse<any, any>) => {
     stopLoading(response.config);
     return response;
   };
