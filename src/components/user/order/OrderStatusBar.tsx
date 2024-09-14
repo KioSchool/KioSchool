@@ -2,9 +2,10 @@ import React from 'react';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { OrderStatus } from '@@types/index';
 
 interface OrderStatusBarProps {
-  status: string;
+  status: OrderStatus;
 }
 
 const Container = styled.div`
@@ -30,7 +31,7 @@ const OtherStatusLabel = styled(AppLabel)`
 `;
 
 function OrderStatusBar({ status }: OrderStatusBarProps) {
-  if (status === 'CANCELLED') {
+  if (status === OrderStatus.CANCELLED) {
     return (
       <CancelContainer className={'cancel-container'}>
         <CurrentStatusLabel className={'cancel-status-label'}>주문 취소</CurrentStatusLabel>
@@ -40,19 +41,19 @@ function OrderStatusBar({ status }: OrderStatusBarProps) {
 
   return (
     <Container>
-      {status === 'NOT_PAID' ? (
+      {status === OrderStatus.NOT_PAID ? (
         <CurrentStatusLabel className={'current-status-label'}>결제 확인 중</CurrentStatusLabel>
       ) : (
         <OtherStatusLabel className={'other-status-label'}>결제 확인 중</OtherStatusLabel>
       )}
       {'· · ·'}
-      {status === 'PAID' ? (
+      {status === OrderStatus.PAID ? (
         <CurrentStatusLabel className={'current-status-label'}>조리중</CurrentStatusLabel>
       ) : (
         <OtherStatusLabel className={'other-status-label'}>조리중</OtherStatusLabel>
       )}
       {'· · ·'}
-      {status === 'SERVED' ? (
+      {status === OrderStatus.SERVED ? (
         <CurrentStatusLabel className={'current-status-label'}>서빙 완료</CurrentStatusLabel>
       ) : (
         <OtherStatusLabel className={'other-status-label'}>서빙 완료</OtherStatusLabel>
