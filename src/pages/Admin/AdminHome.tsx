@@ -20,7 +20,7 @@ function AdminHome() {
   }, []);
 
   return (
-    <AppContainer useFlex={rowFlex({ justify: 'space-between' })} titleNavBarProps={{ title: `${user.name}님의 워크스페이스`, useArrow: false }}>
+    <AppContainer useFlex={rowFlex({ justify: 'space-between' })} titleNavBarProps={{ title: `${user.name}님의 주점`, useBackIcon: false }}>
       <>
         <WorkspaceContent workspaces={workspaces} />
         <AddWorkspace workspaces={workspaces} />
