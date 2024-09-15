@@ -10,7 +10,6 @@ export interface TitleNavBarProps {
   subTitle?: string;
   useBackIcon?: boolean;
   children?: JSX.Element;
-  useArrow?: boolean;
   onLeftArrowClick?: () => void;
 }
 
@@ -24,8 +23,8 @@ const Container = styled.div<{ useSubTitle: boolean }>`
   ${rowFlex({ justify: 'center' })}
 `;
 
-const TitleContainer = styled.div<{ useArrow?: boolean }>`
-  padding-left: ${(props) => (props.useArrow ? '40px' : '')};
+const TitleContainer = styled.div<{ useBackIcon?: boolean }>`
+  padding-left: ${(props) => (props.useBackIcon ? '40px' : '')};
   height: 40px;
   ${colFlex()}
 `;
@@ -52,26 +51,24 @@ const ArrowLeftButton = styled(ArrowLeftSvg)<{ useBackIcon: boolean }>`
   }
 `;
 
-function TitleNavBar({ title, subTitle = '', useBackIcon = true, children, useArrow = true, onLeftArrowClick }: TitleNavBarProps) {
+function TitleNavBar({ title, subTitle = '', useBackIcon = true, children, onLeftArrowClick }: TitleNavBarProps) {
   const navigate = useNavigate();
 
   return (
     <Container useSubTitle={!!subTitle} className={'title-nav-bar-container'}>
       <SubContainer className={'title-nav-bar-sub-container'}>
         <LeftContainer className={'left-container'}>
-          {useArrow && (
-            <ArrowLeftButton
-              onClick={() => {
-                if (onLeftArrowClick) {
-                  onLeftArrowClick();
-                  return;
-                }
-                navigate(-1);
-              }}
-              useBackIcon={useBackIcon}
-            />
-          )}
-          <TitleContainer className={'title-container'} useArrow={useArrow}>
+          <ArrowLeftButton
+            onClick={() => {
+              if (onLeftArrowClick) {
+                onLeftArrowClick();
+                return;
+              }
+              navigate(-1);
+            }}
+            useBackIcon={useBackIcon}
+          />
+          <TitleContainer className={'title-container'} useBackIcon={useBackIcon}>
             <AppLabel size={25} style={{ fontWeight: 800, lineHeight: '40px' }}>
               {title}
             </AppLabel>
