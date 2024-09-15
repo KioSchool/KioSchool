@@ -12,8 +12,15 @@ const AddWorkspaceContainer = styled.form`
   width: 321px;
   height: 332px;
   border-radius: 25px;
-  border: 1px solid #000;
+  background: #eeecec;
   ${rowFlex({ justify: 'center', align: 'center' })}
+`;
+
+const PluseIcon = styled(PlusIconSvg)`
+  transition: transform 0.1s ease;
+  &:hover {
+    transform: scale(1.2);
+  }
 `;
 
 interface Props {
@@ -56,7 +63,7 @@ function AddWorkspace({ workspaces }: Props) {
   return (
     <>
       <AddWorkspaceContainer onClick={() => setModalOpen(true)} className={'add-workspace-container'}>
-        <PlusIconSvg width={50} height={50} />
+        <PluseIcon width={50} height={50} />
       </AddWorkspaceContainer>
 
       {modalOpen && (

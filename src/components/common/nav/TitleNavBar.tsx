@@ -23,8 +23,8 @@ const Container = styled.div<{ useSubTitle: boolean }>`
   ${rowFlex({ justify: 'center' })}
 `;
 
-const TitleContainer = styled.div`
-  padding-left: 50px;
+const TitleContainer = styled.div<{ useBackIcon?: boolean }>`
+  padding-left: ${(props) => (props.useBackIcon ? '40px' : '')};
   height: 40px;
   ${colFlex()}
 `;
@@ -68,7 +68,7 @@ function TitleNavBar({ title, subTitle = '', useBackIcon = true, children, onLef
             }}
             useBackIcon={useBackIcon}
           />
-          <TitleContainer className={'title-container'}>
+          <TitleContainer className={'title-container'} useBackIcon={useBackIcon}>
             <AppLabel size={25} style={{ fontWeight: 800, lineHeight: '40px' }}>
               {title}
             </AppLabel>
