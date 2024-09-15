@@ -20,11 +20,11 @@ function useAuthentication() {
       });
   };
 
-  const login = (userId: string, userPassword: string) => {
+  const login = (id: string, password: string) => {
     userApi
       .post('/login', {
-        id: userId,
-        password: userPassword,
+        id,
+        password,
       })
       .then(() => {
         localStorage.setItem('isLoggedIn', 'true');
