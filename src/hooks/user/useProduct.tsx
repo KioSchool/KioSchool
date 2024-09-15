@@ -10,11 +10,7 @@ function useProduct(workspaceId: string | undefined | null) {
 
   const fetchCategories = () => {
     userApi
-      .get<ProductCategory[]>('/product-categories', {
-        params: {
-          workspaceId: workspaceId,
-        },
-      })
+      .get<ProductCategory[]>('/product-categories', { params: { workspaceId } })
       .then((res) => {
         setProductCategories(res.data);
       })
