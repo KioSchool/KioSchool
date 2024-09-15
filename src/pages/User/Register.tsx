@@ -147,7 +147,7 @@ function Register() {
       return;
     }
 
-    document.cookie = 'isLoggedIn=true';
+    localStorage.setItem('isLoggedIn', 'true');
     navigate('/admin/register-account');
   };
 

@@ -53,7 +53,7 @@ function useApi() {
     if (error.response.status === 403) {
       controller.abort();
       alert('로그인이 필요합니다.');
-      document.cookie = 'isLoggedIn=;';
+      localStorage.setItem('isLoggedIn', 'false');
       navigate('/login');
     }
 

@@ -12,11 +12,6 @@ function useAdminUser() {
   const setAdminUser = useSetRecoilState(adminUserAtom);
   const navigate = useNavigate();
 
-  const isLoggedIn = async () => {
-    await adminApi.get('/user');
-    return true;
-  };
-
   const fetchAdminUser = () => {
     adminApi
       .get('/user')
@@ -73,7 +68,7 @@ function useAdminUser() {
       .catch((error) => console.error('Failed to delete user: ', error));
   };
 
-  return { isLoggedIn, fetchWorkspaces, createWorkspaces, leaveWorkspace, registerAccount, fetchAdminUser, deleteUser };
+  return { fetchWorkspaces, createWorkspaces, leaveWorkspace, registerAccount, fetchAdminUser, deleteUser };
 }
 
 export default useAdminUser;
