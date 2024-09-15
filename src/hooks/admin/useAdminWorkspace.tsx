@@ -13,7 +13,7 @@ function useAdminWorkspace() {
     if (!workspaceId) return;
 
     adminApi
-      .get<Workspace>('/workspace', { params: { workspaceId: workspaceId } })
+      .get<Workspace>('/workspace', { params: { workspaceId } })
       .then((res) => {
         setUserWorkspace(res.data);
       })
