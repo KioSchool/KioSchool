@@ -8,7 +8,7 @@ function useOrder() {
   const setOrder = useSetRecoilState(userOrderAtom);
 
   const fetchOrder = (orderId: string | null) => {
-    userApi.get<Order>('/order', { params: { orderId: orderId } }).then((response) => {
+    userApi.get<Order>('/order', { params: { orderId } }).then((response) => {
       setOrder(response.data);
     });
   };
