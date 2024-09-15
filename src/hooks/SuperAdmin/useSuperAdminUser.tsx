@@ -4,7 +4,7 @@ import { userPaginationResponseAtom } from '@recoils/atoms';
 import { useSearchParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
-interface ParamsType {
+interface FetchAllUsersParamsType {
   page: number;
   size: number;
   name?: string;
@@ -16,7 +16,7 @@ function useSuperAdminUser() {
   const setUserPaginationResponse = useSetRecoilState(userPaginationResponseAtom);
 
   const fetchAllUsers = (page: number, size: number, name?: string) => {
-    const params: ParamsType = { page, size, name };
+    const params: FetchAllUsersParamsType = { page, size, name };
 
     superAdminApi
       .get<PaginationResponse<User>>('/users', { params })
