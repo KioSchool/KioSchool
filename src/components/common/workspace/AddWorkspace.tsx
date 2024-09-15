@@ -12,7 +12,7 @@ const AddWorkspaceContainer = styled.form`
   width: 321px;
   height: 332px;
   border-radius: 25px;
-  border: 1px solid #000;
+  background: #eeecec;
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
