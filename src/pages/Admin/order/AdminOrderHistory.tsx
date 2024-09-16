@@ -11,6 +11,7 @@ import ToggleOrderCard from '@components/admin/order/ToggleOrderCard';
 import AppLabel from '@components/common/label/AppLabel';
 import AppCheckBox from '@components/common/input/AppCheckBox';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { OrderStatus } from '@@types/index';
 
 const Container = styled.div`
   gap: 24px;
@@ -51,7 +52,7 @@ function AdminOrderHistory() {
   const [endDate, setEndDate] = useState(new Date());
   const [showServedOrder, setShowServedOrder] = useState(false);
   const { fetchOrders } = useAdminOrder(workspaceId);
-  const orders = showServedOrder ? useRecoilValue(ordersAtom).filter((order) => order.status === 'SERVED') : useRecoilValue(ordersAtom);
+  const orders = showServedOrder ? useRecoilValue(ordersAtom).filter((order) => order.status === OrderStatus.SERVED) : useRecoilValue(ordersAtom);
 
   const totalOrderPrice = orders.reduce((acc, cur) => acc + cur.totalPrice, 0).toLocaleString();
 

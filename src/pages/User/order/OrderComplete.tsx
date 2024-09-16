@@ -5,12 +5,13 @@ import { orderBasketAtom, userOrderAtom } from '@recoils/atoms';
 import { useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
-import OrderButton from '@components/user/order/OrderButton';
 import OrderStatusBar from '@components/user/order/OrderStatusBar';
 import ReloadSvg from '@resources/svg/ReloadSvg';
 import useWorkspace from '@hooks/user/useWorkspace';
 import AppButton from '@components/common/button/AppButton';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { OrderStatus } from '@@types/index';
+import OrderButton from '@components/user/order/OrderButton';
 
 const Container = styled.div`
   width: 100vw;
@@ -133,7 +134,7 @@ function OrderComplete() {
           </ContentTitleLabel>
           <AppLabel size={13}>{order.totalPrice.toLocaleString()}원</AppLabel>
         </ContentBox>
-        {order.status === 'NOT_PAID' && (
+        {order.status === OrderStatus.NOT_PAID && (
           <ContentBox className={'order-complete-content-box'}>
             <ContentTitleLabel size={17} className={'order-complete-content-title-label'}>
               결제 계좌 정보
@@ -143,7 +144,7 @@ function OrderComplete() {
           </ContentBox>
         )}
       </SubContainer>
-      {order.status !== 'CANCELLED' && (
+      {order.status !== OrderStatus.CANCELLED && (
         <OrderButton
           showButton={true}
           buttonLabel={'주문내역 링크 복사'}

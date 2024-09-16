@@ -15,6 +15,7 @@ import useAdminProducts from '@hooks/admin/useAdminProducts';
 import uploadPreview from '@resources/image/uploadPreview.png';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import AppContainer from '@components/common/container/AppContainer';
+import { OrderStatus } from '@@types/index';
 
 const KanbanContainer = styled.div`
   width: 100%;
@@ -98,14 +99,14 @@ function AdminOrder() {
     fetchProducts();
   }, []);
 
-  const notPaidOrders = orders.filter((it) => it.status === 'NOT_PAID');
-  const paidOrders = orders.filter((it) => it.status === 'PAID');
-  const servedOrders = orders.filter((it) => it.status === 'SERVED').sort((a, b) => b.id - a.id);
+  const notPaidOrders = orders.filter((it) => it.status === OrderStatus.NOT_PAID);
+  const paidOrders = orders.filter((it) => it.status === OrderStatus.PAID);
+  const servedOrders = orders.filter((it) => it.status === OrderStatus.SERVED).sort((a, b) => b.id - a.id);
 
   const productCounts = _.mapValues(
     _.groupBy(
       _.flatMap(
-        orders.filter((it) => it.status == 'PAID'),
+        orders.filter((it) => it.status == OrderStatus.PAID),
         'orderProducts',
       ).filter((it) => !it.isServed),
       'productId',

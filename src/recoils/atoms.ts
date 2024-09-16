@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { Order, OrderProductBase, Product, ProductCategory, User, Workspace, PaginationResponse, UserRole } from '@@types/index';
+import { Order, OrderProductBase, OrderStatus, PaginationResponse, Product, ProductCategory, User, UserRole, Workspace } from '@@types/index';
 
 export const ordersAtom = atom<Order[]>({
   key: 'ordersAtom',
@@ -64,7 +64,7 @@ export const userOrderAtom = atom<Order>({
     customerName: '',
     orderProducts: [],
     totalPrice: 0,
-    status: '',
+    status: OrderStatus.NOT_PAID,
     id: 0,
     createdAt: '',
     updatedAt: '',

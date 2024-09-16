@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import CategoryBadgesContainer from '@components/user/order/CategoryBadgesContainer';
@@ -111,7 +111,13 @@ function Order() {
         onClick={() => {
           if (isPreview) return;
 
-          navigate(`/orderbasket?workspaceId=${workspaceId}&tableNo=${tableNo}`);
+          navigate({
+            pathname: '/orderbasket',
+            search: createSearchParams({
+              workspaceId: workspaceId || '',
+              tableNo: tableNo || '',
+            }).toString(),
+          });
         }}
       />
     </Container>

@@ -1,5 +1,5 @@
 import useApi from '@hooks/useApi';
-import { Order } from '@@types/index';
+import { Order, OrderStatus } from '@@types/index';
 import { useSetRecoilState } from 'recoil';
 import { ordersAtom } from '@recoils/atoms';
 
@@ -26,13 +26,13 @@ function useAdminOrder(workspaceId: string | undefined) {
   };
 
   const payOrder = (orderId: number) => {
-    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: 'PAID' }).then(() => {
+    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.PAID }).then(() => {
       fetchRealTimeOrders();
     });
   };
 
   const serveOrder = (orderId: number) => {
-    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: 'SERVED' }).then(() => {
+    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.SERVED }).then(() => {
       fetchRealTimeOrders();
     });
   };
@@ -41,13 +41,13 @@ function useAdminOrder(workspaceId: string | undefined) {
     const userInput = confirm('정말로 주문을 취소하시겠습니까?');
     if (!userInput) return;
 
-    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: 'CANCELLED' }).then(() => {
+    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.CANCELLED }).then(() => {
       fetchRealTimeOrders();
     });
   };
 
   const refundOrder = (orderId: number) => {
-    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: 'NOT_PAID' }).then(() => {
+    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.NOT_PAID }).then(() => {
       fetchRealTimeOrders();
     });
   };

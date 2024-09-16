@@ -36,10 +36,16 @@ function useAdminProducts(workspaceId: string | undefined | null) {
     return res.data;
   };
 
-  const addProduct = (product: any, file: File) => {
+  const createFormData = (parameter: any, file: File | null) => {
     const data = new FormData();
-    data.append('body', new Blob([JSON.stringify(product)], { type: 'application/json' }));
-    data.append('file', new Blob([file], { type: 'image/jpeg' }));
+    data.append('body', new Blob([JSON.stringify(parameter)], { type: 'application/json' }));
+    if (file) data.append('file', new Blob([file], { type: 'image/jpeg' }));
+
+    return data;
+  };
+
+  const addProduct = (product: any, file: File) => {
+    const data = createFormData(product, file);
 
     adminApi
       .post('/product', data)
@@ -50,9 +56,7 @@ function useAdminProducts(workspaceId: string | undefined | null) {
   };
 
   const editProduct = (parameter: any, file: File | null) => {
-    const data = new FormData();
-    data.append('body', new Blob([JSON.stringify(parameter)], { type: 'application/json' }));
-    if (file) data.append('file', new Blob([file], { type: 'image/jpeg' }));
+    const data = createFormData(parameter, file);
 
     adminApi
       .put('/product', data)
@@ -128,8 +132,8 @@ function useAdminProducts(workspaceId: string | undefined | null) {
       });
   };
 
-  const deleteCategory = (categoryId: number) => {
-    return adminApi.delete(`/product-category?workspaceId=${workspaceId}&productCategoryId=${categoryId}`).then(() => fetchCategories());
+  const deleteCategory = (productCategoryId: number) => {
+    return adminApi.delete(`/product-category`, { params: { workspaceId, productCategoryId } }).then(() => fetchCategories());
   };
 
   return {

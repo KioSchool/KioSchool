@@ -4,7 +4,7 @@ export interface Order {
   customerName: string;
   orderProducts: Array<OrderProduct>;
   totalPrice: number;
-  status: string;
+  status: OrderStatus;
   id: number;
   createdAt: string;
   updatedAt: string;
@@ -84,6 +84,13 @@ export interface PaginationResponse<T> {
   sort: Sort;
   first: boolean;
   empty: boolean;
+}
+
+export enum OrderStatus {
+  PAID = 'PAID',
+  SERVED = 'SERVED',
+  CANCELLED = 'CANCELLED',
+  NOT_PAID = 'NOT_PAID',
 }
 
 export enum UserRole {
