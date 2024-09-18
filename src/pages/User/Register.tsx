@@ -7,14 +7,7 @@ import AppButton from '@components/common/button/AppButton';
 import AppFooter from '@components/common/footer/AppFooter';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import useRegister from '@hooks/user/useRegister';
-
-const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
-  box-sizing: border-box;
-  flex-wrap: wrap;
-  ${rowFlex({ justify: 'center' })}
-`;
+import AppContainer from '@components/common/container/AppContainer';
 
 const SubContainer = styled.div`
   width: 500px;
@@ -188,7 +181,7 @@ function Register() {
   };
 
   return (
-    <Container className={'register-container'}>
+    <AppContainer useFlex={rowFlex({ justify: 'center' })}>
       <SubContainer className={'register-sub-container'}>
         <AppLabel size={'large'} style={{ padding: '0 0 30px' }}>
           회원가입
@@ -284,7 +277,7 @@ function Register() {
         </LoginLabelContainer>
         <AppFooter />
       </SubContainer>
-    </Container>
+    </AppContainer>
   );
 }
 
