@@ -20,8 +20,7 @@ const Container = styled.div<{ useSubTitle: boolean }>`
   width: 100vw;
   position: fixed;
   top: 61px;
-  background: white;
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
   ${rowFlex({ justify: 'center' })}
 `;
 
