@@ -11,9 +11,7 @@ const NavContainer = styled.div<{ useBackground: boolean }>`
   flex-wrap: wrap;
   top: 0;
   position: fixed;
-  background: ${(props) => (props.useBackground ? 'white' : 'transparent')};
-  backdrop-filter: blur(10px);
-  opacity: 0.8;
+  background: ${(props) => (props.useBackground ? 'rgba(255, 255, 255, 0.95)' : 'transparent')};
   ${rowFlex({ justify: 'center' })}
 `;
 

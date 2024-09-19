@@ -14,12 +14,13 @@ export interface TitleNavBarProps {
 }
 
 const Container = styled.div<{ useSubTitle: boolean }>`
-  padding-bottom: 25px;
+  z-index: 1002;
+  margin-bottom: 25px;
   height: ${(props) => (props.useSubTitle ? '100px' : '50px')};
-  width: 1000px;
-  min-width: 1000px;
+  width: 100vw;
   position: fixed;
-  top: 70px;
+  top: 61px;
+  background: rgba(255, 255, 255, 0.95);
   ${rowFlex({ justify: 'center' })}
 `;
 
@@ -30,7 +31,7 @@ const TitleContainer = styled.div<{ useBackIcon?: boolean }>`
 `;
 
 const SubContainer = styled.div`
-  width: 100%;
+  width: 1000px;
   ${rowFlex({ justify: 'space-between' })}
 `;
 
