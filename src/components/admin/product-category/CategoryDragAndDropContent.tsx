@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import useConfirm from '@hooks/useConfirm';
 import DroppableContents from './DroppableContents';
 import { ProductCategory } from '@@types/index';
 
@@ -16,8 +15,6 @@ function CategoryDragAndDropContent() {
     ...category,
     id: String(category.id),
   }));
-
-  const { ConfirmModal, confirm } = useConfirm('카테고리에 포함된 상품이 있습니다.', '카테고리에 포함된 상품이 없어야 카테고리를 삭제할 수 있습니다.', '확인');
 
   useEffect(() => {
     fetchCategories();
@@ -43,8 +40,7 @@ function CategoryDragAndDropContent() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="droppable">{(provided) => <DroppableContents provided={provided} categories={categories} confirm={confirm} />}</Droppable>
-      <ConfirmModal />
+      <Droppable droppableId="droppable">{(provided) => <DroppableContents provided={provided} categories={categories} />}</Droppable>
     </DragDropContext>
   );
 }

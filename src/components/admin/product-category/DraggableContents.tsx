@@ -1,6 +1,7 @@
 import { ProductCategory } from '@@types/index';
 import styled from '@emotion/styled';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
+import useConfirm from '@hooks/useConfirm';
 import DeleteButtonGraySvg from '@resources/svg/DeleteButtonGraySvg';
 import DragIconSvg from '@resources/svg/DragIconSvg';
 import { rowFlex } from '@styles/flexStyles';
@@ -40,33 +41,36 @@ const DeleteIcon = styled(DeleteButtonGraySvg)`
 interface DraggableProps {
   item: ProductCategory;
   index: number;
-  confirm: () => Promise<unknown>;
 }
 
-function DraggableContents({ item, index, confirm }: DraggableProps) {
+function DraggableContents({ item, index }: DraggableProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { deleteCategory } = useAdminProducts(workspaceId);
+  const { ConfirmModal, confirm } = useConfirm('카테고리에 포함된 상품이 있습니다.', '카테고리에 포함된 상품이 없어야 카테고리를 삭제할 수 있습니다.', '확인');
 
   return (
-    <Draggable key={item.id} draggableId={String(item.id)} index={index}>
-      {(provided) => (
-        <CategoriesItemContainer ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-          <DeleteIcon
-            onClick={() => {
-              deleteCategory(Number(item.id)).catch((e) => {
-                if (e.response.status === 405) {
-                  confirm();
-                }
-              });
-            }}
-          />
-          <CategoriesContentsContainer>
-            <CategoriesName>{item.name}</CategoriesName>
-            <DragIconSvg style={{ paddingRight: '20px' }} />
-          </CategoriesContentsContainer>
-        </CategoriesItemContainer>
-      )}
-    </Draggable>
+    <>
+      <Draggable key={item.id} draggableId={String(item.id)} index={index}>
+        {(provided) => (
+          <CategoriesItemContainer ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+            <DeleteIcon
+              onClick={() => {
+                deleteCategory(Number(item.id)).catch((e) => {
+                  if (e.response.status === 405) {
+                    confirm();
+                  }
+                });
+              }}
+            />
+            <CategoriesContentsContainer>
+              <CategoriesName>{item.name}</CategoriesName>
+              <DragIconSvg style={{ paddingRight: '20px' }} />
+            </CategoriesContentsContainer>
+          </CategoriesItemContainer>
+        )}
+      </Draggable>
+      <ConfirmModal />
+    </>
   );
 }
 
