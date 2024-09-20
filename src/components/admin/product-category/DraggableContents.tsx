@@ -48,20 +48,20 @@ function DraggableContents({ item, index }: DraggableProps) {
   const { deleteCategory } = useAdminProducts(workspaceId);
   const { ConfirmModal, confirm } = useConfirm('카테고리에 포함된 상품이 있습니다.', '카테고리에 포함된 상품이 없어야 카테고리를 삭제할 수 있습니다.', '확인');
 
+  const deleteCategoryHandler = () => {
+    deleteCategory(Number(item.id)).catch((e) => {
+      if (e.response.status === 405) {
+        confirm();
+      }
+    });
+  };
+
   return (
     <>
       <Draggable key={item.id} draggableId={String(item.id)} index={index}>
         {(provided) => (
           <CategoriesItemContainer ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-            <DeleteIcon
-              onClick={() => {
-                deleteCategory(Number(item.id)).catch((e) => {
-                  if (e.response.status === 405) {
-                    confirm();
-                  }
-                });
-              }}
-            />
+            <DeleteIcon onClick={deleteCategoryHandler} />
             <CategoriesContentsContainer>
               <CategoriesName>{item.name}</CategoriesName>
               <DragIconSvg style={{ paddingRight: '20px' }} />
