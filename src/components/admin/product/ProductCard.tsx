@@ -16,8 +16,9 @@ const Container = styled.div<{ isSellable: boolean | null }>`
   width: 220px;
   height: 320px;
   border-radius: 16px;
-  background: ${(props) => (props.isSellable ? 'rgba(255, 255, 255, 0.20)' : 'rgba(0, 0, 0, 0.40)')};
-  box-shadow: 0 4px 17px 0 rgba(0, 0, 0, 0.1);
+  background: ${(props) => (props.isSellable ? 'rgba(255, 255, 255, 0.20)' : 'rgba(255, 255, 255, 0.10)')};
+  opacity: ${(props) => (props.isSellable ? '' : '50%')};
+  box-shadow: ${(props) => (props.isSellable ? '0 4px 17px 0 rgba(0, 0, 0, 0.1)' : '0px 5px 20px 0px rgba(0, 0, 0, 0.1) inset')};
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
