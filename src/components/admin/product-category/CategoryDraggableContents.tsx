@@ -39,17 +39,17 @@ const DeleteIcon = styled(DeleteButtonGraySvg)`
 `;
 
 interface DraggableProps {
-  category: ProductCategory;
+  item: ProductCategory;
   index: number;
 }
 
-function CategoryDraggableContents({ category, index }: DraggableProps) {
+function CategoryDraggableContents({ item, index }: DraggableProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { deleteCategory } = useAdminProducts(workspaceId);
   const { ConfirmModal, confirm } = useConfirm('카테고리에 포함된 상품이 있습니다.', '카테고리에 포함된 상품이 없어야 카테고리를 삭제할 수 있습니다.', '확인');
 
   const deleteCategoryHandler = () => {
-    deleteCategory(category.id).catch((e) => {
+    deleteCategory(item.id).catch((e) => {
       if (e.response.status === 405) {
         confirm();
       }
@@ -58,12 +58,12 @@ function CategoryDraggableContents({ category, index }: DraggableProps) {
 
   return (
     <>
-      <Draggable key={category.id} draggableId={String(category.id)} index={index}>
+      <Draggable key={item.id} draggableId={String(item.id)} index={index}>
         {(provided) => (
           <CategoryItemContainer ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className={'draggable-category-container'}>
             <DeleteIcon onClick={deleteCategoryHandler} />
             <CategoryContentsContainer>
-              <CategoryName>{category.name}</CategoryName>
+              <CategoryName>{item.name}</CategoryName>
               <DragIconSvg style={{ paddingRight: '20px' }} />
             </CategoryContentsContainer>
           </CategoryItemContainer>

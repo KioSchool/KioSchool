@@ -13,14 +13,14 @@ const CategoriesContentContainer = styled.div`
 
 interface DroppableProps {
   provided: DroppableProvided;
-  categoryArray: ProductCategory[];
+  categories: ProductCategory[];
 }
 
-function CategoryDroppableContents({ provided, categoryArray }: DroppableProps) {
+function CategoryDroppableContents({ provided, categories }: DroppableProps) {
   return (
     <CategoriesContentContainer ref={provided.innerRef} {...provided.droppableProps} className={'droppable-container'}>
-      {categoryArray.map((category, index) => {
-        return <CategoryDraggableContents category={category} index={index} />;
+      {categories.map((item, index) => {
+        return <CategoryDraggableContents item={item} index={index} />;
       })}
       {provided.placeholder}
     </CategoriesContentContainer>
