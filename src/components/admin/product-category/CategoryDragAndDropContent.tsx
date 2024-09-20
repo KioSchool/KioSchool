@@ -8,7 +8,7 @@ import useConfirm from '@hooks/useConfirm';
 import DroppableContents from './DroppableContents';
 import { ProductCategory } from '@@types/index';
 
-function DragAndDropContent() {
+function CategoryDragAndDropContent() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchCategories } = useAdminProducts(workspaceId);
   const [rawCategories, setRawCategories] = useRecoilState(categoriesAtom);
@@ -49,4 +49,4 @@ function DragAndDropContent() {
   );
 }
 
-export default DragAndDropContent;
+export default CategoryDragAndDropContent;

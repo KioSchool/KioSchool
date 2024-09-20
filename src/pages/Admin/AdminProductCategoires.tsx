@@ -7,7 +7,7 @@ import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { categoriesAtom } from '@recoils/atoms';
-import DragAndDropContent from '@components/admin/product-category/DragAndDropContent';
+import CategoryDragAndDropContent from '@components/admin/product-category/CategoryDragAndDropContent';
 import { colFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
@@ -57,7 +57,7 @@ function AdminProductCategories() {
         <CategoriesInputContainer className={'categories-input-container'}>
           <AppInputWithButton ref={categoryInputRef} onButtonClick={addCategoryHandler} />
         </CategoriesInputContainer>
-        <DragAndDropContent />
+        <CategoryDragAndDropContent />
         <CategoriesButtonContainer className={'categories-button-container'}>
           <AppButton size={'medium'} onClick={saveCategory}>
             편집 완료
