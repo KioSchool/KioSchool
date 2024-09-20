@@ -39,7 +39,7 @@ export interface Product {
 }
 
 export interface ProductCategory {
-  id: number;
+  id: number | string;
   name: string;
   index: number | null;
   createdAt: string;
