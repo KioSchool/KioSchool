@@ -13,7 +13,7 @@ function CategoryDragAndDropContent() {
   const [rawCategories, setRawCategories] = useRecoilState(categoriesAtom);
   const categories: ProductCategory[] = rawCategories.map((category) => ({
     ...category,
-    id: String(category.id),
+    id: category.id,
   }));
 
   useEffect(() => {
@@ -32,7 +32,7 @@ function CategoryDragAndDropContent() {
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
 
-    const categoriesIdParsedNumber = categories.map((itm) => ({ ...itm, id: Number(itm.id) }));
+    const categoriesIdParsedNumber = categories.map((itm) => ({ ...itm, id: itm.id }));
     const changedCategories = reorder(categoriesIdParsedNumber, result.source.index, result.destination.index);
 
     setRawCategories(changedCategories);

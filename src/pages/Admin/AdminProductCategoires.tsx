@@ -47,7 +47,7 @@ function AdminProductCategories() {
   };
 
   const saveCategory = () => {
-    const categoriesId = rawCategories.map((itm) => Number(itm.id));
+    const categoriesId = rawCategories.map((itm) => itm.id);
     reorderCategories(categoriesId);
   };
 
