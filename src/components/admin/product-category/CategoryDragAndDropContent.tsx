@@ -11,7 +11,7 @@ function CategoryDragAndDropContent() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchCategories } = useAdminProducts(workspaceId);
   const [rawCategories, setRawCategories] = useRecoilState(categoriesAtom);
-  const categories: ProductCategory[] = rawCategories.map((category) => ({
+  const categoryArray: ProductCategory[] = rawCategories.map((category) => ({
     ...category,
     id: category.id,
   }));
@@ -32,7 +32,7 @@ function CategoryDragAndDropContent() {
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
 
-    const categoriesIdParsedNumber = categories.map((category) => ({ ...category, id: category.id }));
+    const categoriesIdParsedNumber = categoryArray.map((category) => ({ ...category, id: category.id }));
     const changedCategories = reorder(categoriesIdParsedNumber, result.source.index, result.destination.index);
 
     setRawCategories(changedCategories);
@@ -40,7 +40,7 @@ function CategoryDragAndDropContent() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="droppable">{(provided) => <CategoryDroppableContents provided={provided} categories={categories} />}</Droppable>
+      <Droppable droppableId="droppable">{(provided) => <CategoryDroppableContents provided={provided} categoryArray={categoryArray} />}</Droppable>
     </DragDropContext>
   );
 }
