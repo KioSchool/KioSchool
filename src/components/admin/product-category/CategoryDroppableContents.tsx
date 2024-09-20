@@ -18,7 +18,7 @@ interface DroppableProps {
 
 function CategoryDroppableContents({ provided, categories }: DroppableProps) {
   return (
-    <CategoriesContentContainer ref={provided.innerRef} {...provided.droppableProps}>
+    <CategoriesContentContainer ref={provided.innerRef} {...provided.droppableProps} className={'droppable-container'}>
       {categories.map((item, index) => {
         return <CategoryDraggableContents item={item} index={index} />;
       })}

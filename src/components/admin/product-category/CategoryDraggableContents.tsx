@@ -60,7 +60,7 @@ function CategoryDraggableContents({ item, index }: DraggableProps) {
     <>
       <Draggable key={item.id} draggableId={String(item.id)} index={index}>
         {(provided) => (
-          <CategoryItemContainer ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+          <CategoryItemContainer ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className={'draggable-category-container'}>
             <DeleteIcon onClick={deleteCategoryHandler} />
             <CategoryContentsContainer>
               <CategoryName>{item.name}</CategoryName>
