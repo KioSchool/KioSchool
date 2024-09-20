@@ -8,13 +8,13 @@ import { rowFlex } from '@styles/flexStyles';
 import { Draggable } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
 
-const CategoriesItemContainer = styled.div`
+const CategoryItemContainer = styled.div`
   position: relative;
   width: 600px;
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
-const CategoriesContentsContainer = styled.div`
+const CategoryContentsContainer = styled.div`
   width: 500px;
   height: 60px;
   background-color: white;
@@ -24,7 +24,7 @@ const CategoriesContentsContainer = styled.div`
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
-const CategoriesName = styled.label`
+const CategoryName = styled.label`
   font-size: 20px;
   width: 50%;
   padding-left: 20px;
@@ -60,13 +60,13 @@ function DraggableContents({ item, index }: DraggableProps) {
     <>
       <Draggable key={item.id} draggableId={String(item.id)} index={index}>
         {(provided) => (
-          <CategoriesItemContainer ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+          <CategoryItemContainer ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
             <DeleteIcon onClick={deleteCategoryHandler} />
-            <CategoriesContentsContainer>
-              <CategoriesName>{item.name}</CategoriesName>
+            <CategoryContentsContainer>
+              <CategoryName>{item.name}</CategoryName>
               <DragIconSvg style={{ paddingRight: '20px' }} />
-            </CategoriesContentsContainer>
-          </CategoriesItemContainer>
+            </CategoryContentsContainer>
+          </CategoryItemContainer>
         )}
       </Draggable>
       <ConfirmModal />
