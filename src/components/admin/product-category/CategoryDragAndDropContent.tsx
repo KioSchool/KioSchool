@@ -32,8 +32,7 @@ function CategoryDragAndDropContent() {
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
 
-    const categoriesIdParsedNumber = categories.map((category) => ({ ...category, id: category.id }));
-    const changedCategories = reorder(categoriesIdParsedNumber, result.source.index, result.destination.index);
+    const changedCategories = reorder(categories, result.source.index, result.destination.index);
 
     setRawCategories(changedCategories);
   };
