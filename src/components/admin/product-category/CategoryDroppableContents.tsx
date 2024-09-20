@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
-import DraggableContents from './DraggableContents';
+import CategoryDraggableContents from './CategoryDraggableContents';
 import { ProductCategory } from '@@types/index';
 import { DroppableProvided } from 'react-beautiful-dnd';
 
@@ -16,15 +16,15 @@ interface DroppableProps {
   categories: ProductCategory[];
 }
 
-function DroppableContents({ provided, categories }: DroppableProps) {
+function CategoryDroppableContents({ provided, categories }: DroppableProps) {
   return (
     <CategoriesContentContainer ref={provided.innerRef} {...provided.droppableProps}>
       {categories.map((item, index) => {
-        return <DraggableContents item={item} index={index} />;
+        return <CategoryDraggableContents item={item} index={index} />;
       })}
       {provided.placeholder}
     </CategoriesContentContainer>
   );
 }
 
-export default DroppableContents;
+export default CategoryDroppableContents;

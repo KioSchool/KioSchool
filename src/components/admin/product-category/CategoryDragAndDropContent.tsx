@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import DroppableContents from './DroppableContents';
+import CategoryDroppableContents from './CategoryDroppableContents';
 import { ProductCategory } from '@@types/index';
 
 function CategoryDragAndDropContent() {
@@ -40,7 +40,7 @@ function CategoryDragAndDropContent() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="droppable">{(provided) => <DroppableContents provided={provided} categories={categories} />}</Droppable>
+      <Droppable droppableId="droppable">{(provided) => <CategoryDroppableContents provided={provided} categories={categories} />}</Droppable>
     </DragDropContext>
   );
 }
