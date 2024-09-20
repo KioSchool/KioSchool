@@ -22,13 +22,6 @@ const CategoriesInputContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
-const CategoriesContentContainer = styled.div`
-  width: 100%;
-  height: 400px;
-  overflow: auto;
-  ${colFlex({ align: 'center' })}
-`;
-
 const CategoriesButtonContainer = styled.div`
   width: 100%;
   height: 100px;
@@ -54,7 +47,7 @@ function AdminProductCategories() {
   };
 
   const saveCategory = () => {
-    const categoriesId = rawCategories.map((itm) => itm.id);
+    const categoriesId = rawCategories.map((itm) => Number(itm.id));
     reorderCategories(categoriesId);
   };
 
@@ -64,9 +57,7 @@ function AdminProductCategories() {
         <CategoriesInputContainer className={'categories-input-container'}>
           <AppInputWithButton ref={categoryInputRef} onButtonClick={addCategoryHandler} />
         </CategoriesInputContainer>
-        <CategoriesContentContainer className={'categories-content-container'}>
-          <DragAndDropContent />
-        </CategoriesContentContainer>
+        <DragAndDropContent />
         <CategoriesButtonContainer className={'categories-button-container'}>
           <AppButton size={'medium'} onClick={saveCategory}>
             편집 완료
