@@ -6,19 +6,29 @@ import SwitchButton from '@components/common/button/SwitchButton';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useParams } from 'react-router-dom';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { css } from '@emotion/react';
 
 interface Props {
   product: Product;
   onClick?: () => void;
 }
 
+const sellableStyle = css`
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 17px 0 rgba(0, 0, 0, 0.1);
+`;
+
+const unSellableStyle = css`
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 50%;
+  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1) inset;
+`;
+
 const Container = styled.div<{ isSellable: boolean | null }>`
   width: 220px;
   height: 320px;
+  ${(props) => (props.isSellable ? sellableStyle : unSellableStyle)};
   border-radius: 16px;
-  background: ${(props) => (props.isSellable ? 'rgba(255, 255, 255, 0.20)' : 'rgba(255, 255, 255, 0.10)')};
-  opacity: ${(props) => (props.isSellable ? '' : '50%')};
-  box-shadow: ${(props) => (props.isSellable ? '0 4px 17px 0 rgba(0, 0, 0, 0.1)' : '0px 5px 20px 0px rgba(0, 0, 0, 0.1) inset')};
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
