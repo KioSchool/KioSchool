@@ -12,12 +12,22 @@ interface Props {
   onClick?: () => void;
 }
 
+const sellableStyle = `
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 17px 0 rgba(0, 0, 0, 0.1);
+`;
+
+const unSellableStyle = `
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 50%;
+  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1) inset;
+`;
+
 const Container = styled.div<{ isSellable: boolean | null }>`
   width: 220px;
   height: 320px;
   border-radius: 16px;
-  background: ${(props) => (props.isSellable ? 'rgba(255, 255, 255, 0.20)' : 'rgba(0, 0, 0, 0.40)')};
-  box-shadow: 0 4px 17px 0 rgba(0, 0, 0, 0.1);
+  ${(props) => (props.isSellable ? sellableStyle : unSellableStyle)}
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
