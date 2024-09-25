@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import AppButton from '@components/common/button/AppButton';
 import { rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 interface OrderButtonProps {
   showButton: boolean;
@@ -20,7 +21,7 @@ const OrderButtonContainer = styled.div`
 const OrderButtonSubContainer = styled.div`
   padding: 8px;
   border-radius: 20px;
-  background: white;
+  background: ${Color.white};
   box-shadow: 0 16px 32px 0 rgba(194, 191, 172, 0.6);
 `;
 

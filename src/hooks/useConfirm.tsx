@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import React from 'react';
 import AppButton from '@components/common/button/AppButton';
+import { Color } from '@resources/colors';
 
 const Container = styled.div`
   z-index: 1002;
@@ -24,7 +25,7 @@ const SubContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  color: white;
+  color: ${Color.white};
 `;
 
 const TextContainer = styled.div`

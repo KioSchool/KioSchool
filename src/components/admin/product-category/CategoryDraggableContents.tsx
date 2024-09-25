@@ -2,6 +2,7 @@ import { ProductCategory } from '@@types/index';
 import styled from '@emotion/styled';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import useConfirm from '@hooks/useConfirm';
+import { Color } from '@resources/colors';
 import DeleteButtonGraySvg from '@resources/svg/DeleteButtonGraySvg';
 import DragIconSvg from '@resources/svg/DragIconSvg';
 import { rowFlex } from '@styles/flexStyles';
@@ -17,7 +18,7 @@ const CategoryItemContainer = styled.div`
 const CategoryContentsContainer = styled.div`
   width: 500px;
   height: 60px;
-  background-color: white;
+  background-color: ${Color.white};
   border-radius: 12px;
   box-shadow: 0 4px 17px 0 rgba(0, 0, 0, 0.1);
   margin: 10px 0;

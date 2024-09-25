@@ -8,6 +8,7 @@ import { DeviceFrameset } from 'react-device-frameset';
 import 'react-device-frameset/styles/marvel-devices.min.css';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import AdminOrderManageTitleNavBarChildren from '../AdminOrderManageTitleNavBarChildren';
+import { Color } from '@resources/colors';
 
 const Container = styled.div`
   width: 100vw;
@@ -48,7 +49,7 @@ const QRCodeCard = styled.div`
 
 const TableLink = styled.a`
   font-weight: bold;
-  color: white;
+  color: ${Color.white};
   padding: 5px 10px;
   background: #eb6d09;
   border-radius: 10px;

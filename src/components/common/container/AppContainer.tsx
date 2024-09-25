@@ -3,12 +3,13 @@ import NavBar from '@components/common/nav/NavBar';
 import { colFlex } from '@styles/flexStyles';
 import TitleNavBar, { TitleNavBarProps } from '../nav/TitleNavBar';
 import { SerializedStyles } from '@emotion/react';
+import { Color } from '@resources/colors';
 
 export const MainContainer = styled.div<{ backgroundColor?: string; useScroll?: boolean }>`
   width: 100%;
   height: ${(props) => (props.useScroll ? '100%' : '100vh')};
   box-sizing: border-box;
-  background-color: ${(props) => (props.backgroundColor ? props.backgroundColor : 'white')};
+  background-color: ${(props) => (props.backgroundColor ? props.backgroundColor : Color.white)};
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 

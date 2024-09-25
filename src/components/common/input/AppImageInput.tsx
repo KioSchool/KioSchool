@@ -2,6 +2,7 @@ import React, { ChangeEvent } from 'react';
 import styled from '@emotion/styled';
 import uploadPreview from '@resources/image/uploadPreview.png';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 interface ProductImageInputProps {
   title: string;
@@ -28,7 +29,7 @@ const ImageInputButton = styled.label`
   padding: 5px 10px;
   border-radius: 8px;
   background-color: #eb6d09;
-  color: white;
+  color: ${Color.white};
   &:hover {
     background: #ff7b2b;
   }

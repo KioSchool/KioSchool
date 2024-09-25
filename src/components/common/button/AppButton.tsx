@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { Color } from '@resources/colors';
 
 export interface AppButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'small' | 'medium' | 'large' | number;
@@ -17,7 +18,7 @@ const Container = styled.button`
     return sizeMap[props.size || 'medium'];
   }};
   background: #eb6d09;
-  color: white;
+  color: ${Color.white};
   font-size: 18px;
   border: none;
   border-radius: 15px;

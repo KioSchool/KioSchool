@@ -10,6 +10,7 @@ import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import useOrder from '@hooks/user/useOrder';
+import { Color } from '@resources/colors';
 
 const Container = styled.div`
   width: 100vw;
@@ -29,7 +30,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.div`
-  background: white;
+  background: ${Color.white};
   position: sticky;
   top: 0;
   width: 100vw;

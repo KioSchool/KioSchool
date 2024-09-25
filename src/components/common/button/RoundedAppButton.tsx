@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { Color } from '@resources/colors';
 
 export interface RoundedAppButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: string;
@@ -8,7 +9,7 @@ export interface RoundedAppButtonProps extends React.ButtonHTMLAttributes<HTMLBu
 const Container = styled.button`
   width: ${(props: RoundedAppButtonProps) => props.size};
   background: #eb6d09;
-  color: white;
+  color: ${Color.white};
   font-size: 15px;
   border: none;
   border-radius: 20px;

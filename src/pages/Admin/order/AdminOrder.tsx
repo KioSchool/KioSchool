@@ -16,6 +16,7 @@ import uploadPreview from '@resources/image/uploadPreview.png';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import AppContainer from '@components/common/container/AppContainer';
 import { OrderStatus } from '@@types/index';
+import { Color } from '@resources/colors';
 
 const KanbanContainer = styled.div`
   width: 100%;
@@ -33,7 +34,7 @@ const OrderColumnContainer = styled.div`
 `;
 
 const OrderHeader = styled.div`
-  background: white;
+  background: ${Color.white};
   position: sticky;
   top: 0;
   width: 350px;
@@ -71,7 +72,7 @@ const ProductCard = styled.div`
   width: 160px;
   padding: 5px;
   box-sizing: border-box;
-  background: white;
+  background: ${Color.white};
   border-radius: 10px;
   gap: 5px;
   ${colFlex({ justify: 'center', align: 'center' })}
