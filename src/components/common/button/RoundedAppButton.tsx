@@ -8,8 +8,8 @@ export interface RoundedAppButtonProps extends React.ButtonHTMLAttributes<HTMLBu
 
 const Container = styled.button`
   width: ${(props: RoundedAppButtonProps) => props.size};
-  background: ${Color.kioOrange};
-  color: ${Color.white};
+  background: ${Color.KIO_ORANGE};
+  color: ${Color.WHITE};
   font-size: 15px;
   border: none;
   border-radius: 20px;

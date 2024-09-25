@@ -18,7 +18,7 @@ const CategoryItemContainer = styled.div`
 const CategoryContentsContainer = styled.div`
   width: 500px;
   height: 60px;
-  background-color: ${Color.white};
+  background-color: ${Color.WHITE};
   border-radius: 12px;
   box-shadow: 0 4px 17px 0 rgba(0, 0, 0, 0.1);
   margin: 10px 0;

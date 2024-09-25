@@ -9,6 +9,6 @@ export const navBarLabelStyle = `
   cursor: pointer;
   transition: ease-in 0.1s;
   &:hover {
-    color: ${Color.kioOrange};
+    color: ${Color.KIO_ORANGE};
     text-decoration: underline;
   }`;

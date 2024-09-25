@@ -8,7 +8,7 @@ import { Color } from '@resources/colors';
 const AppInputWithButtonContainer = styled.div`
   height: 65px;
   width: 420px;
-  background-color: ${Color.white};
+  background-color: ${Color.WHITE};
   border-radius: 12px;
   box-shadow: 0 4px 17px 0 rgba(0, 0, 0, 0.1);
   ${rowFlex({ justify: 'center', align: 'center' })}

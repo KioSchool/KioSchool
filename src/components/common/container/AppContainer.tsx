@@ -9,7 +9,7 @@ export const MainContainer = styled.div<{ backgroundColor?: string; useScroll?: 
   width: 100%;
   height: ${(props) => (props.useScroll ? '100%' : '100vh')};
   box-sizing: border-box;
-  background-color: ${(props) => (props.backgroundColor ? props.backgroundColor : Color.white)};
+  background-color: ${(props) => (props.backgroundColor ? props.backgroundColor : Color.WHITE)};
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 

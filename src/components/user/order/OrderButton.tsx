@@ -21,7 +21,7 @@ const OrderButtonContainer = styled.div`
 const OrderButtonSubContainer = styled.div`
   padding: 8px;
   border-radius: 20px;
-  background: ${Color.white};
+  background: ${Color.WHITE};
   box-shadow: 0 16px 32px 0 rgba(194, 191, 172, 0.6);
 `;
 

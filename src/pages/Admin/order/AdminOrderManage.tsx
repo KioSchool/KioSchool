@@ -51,14 +51,14 @@ const TableLink = styled.a`
   font-weight: bold;
   color: ${Color.WHITE};
   padding: 5px 10px;
-  background: ${Color.kioOrange};
+  background: ${Color.KIO_ORANGE};
   border-radius: 10px;
 `;
 
 const QRCodeDownloadButton = styled.label`
   width: 100px;
   height: 30px;
-  border: 1px solid ${Color.kioOrange};
+  border: 1px solid ${Color.KIO_ORANGE};
   border-radius: 10px;
   cursor: pointer;
   user-select: none;

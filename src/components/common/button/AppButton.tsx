@@ -17,8 +17,8 @@ const Container = styled.button`
     if (typeof props.size === 'number') return `${props.size}px`;
     return sizeMap[props.size || 'medium'];
   }};
-  background: ${Color.kioOrange};
-  color: ${Color.white};
+  background: ${Color.KIO_ORANGE};
+  color: ${Color.WHITE};
   font-size: 18px;
   border: none;
   border-radius: 15px;

@@ -17,7 +17,7 @@ const Container = styled.div`
   text-align: center;
   line-height: 30px;
   font-size: 15px;
-  background: ${(props: AppBadgeProps) => props.background || Color.white};
+  background: ${(props: AppBadgeProps) => props.background || Color.WHITE};
   user-select: none;
   white-space: nowrap;
 

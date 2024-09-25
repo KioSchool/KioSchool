@@ -39,8 +39,8 @@ const Button = styled.button`
   width: 80px;
   height: 30px;
   border: none;
-  background: ${Color.kioOrange};
-  color: ${Color.white};
+  background: ${Color.KIO_ORANGE};
+  color: ${Color.WHITE};
   cursor: pointer;
   border-radius: 50px;
   &:hover {

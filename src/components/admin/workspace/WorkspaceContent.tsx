@@ -13,17 +13,17 @@ const WorkspaceContainer = styled.div`
   width: 321px;
   height: 332px;
   border-radius: 25px;
-  background: ${Color.kioOrange};
+  background: ${Color.KIO_ORANGE};
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   ${colFlex({ justify: 'space-between', align: 'flex-start' })}
 
   &:hover {
-    background: linear-gradient(140deg, #ffe3cc -165.17%, ${Color.kioOrange} 92.63%);
+    background: linear-gradient(140deg, #ffe3cc -165.17%, ${Color.KIO_ORANGE} 92.63%);
   }
 
   &:active {
     border-radius: 25px;
-    background: ${Color.kioOrange};
+    background: ${Color.KIO_ORANGE};
     box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.25) inset;
   }
 `;

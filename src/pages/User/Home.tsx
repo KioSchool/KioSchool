@@ -23,11 +23,11 @@ const LinkAdminHome = styled(Link)`
   width: 349px;
   height: 80px;
   border-radius: 50px;
-  background: ${Color.kioOrange};
+  background: ${Color.KIO_ORANGE};
   ${rowFlex({ align: 'center', justify: 'center' })}
 
   &:hover {
-    background: linear-gradient(133deg, #ff9f32, ${Color.kioOrange});
+    background: linear-gradient(133deg, #ff9f32, ${Color.KIO_ORANGE});
   }
 `;
 

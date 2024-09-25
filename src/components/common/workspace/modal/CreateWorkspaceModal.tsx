@@ -18,7 +18,7 @@ const ModalContent = styled.form`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: ${Color.white};
+  background-color: ${Color.WHITE};
   border-radius: 25px;
   padding: 20px;
   z-index: 1010;
