@@ -5,7 +5,7 @@ export const navBarLabelStyle = `
   font-size: 18px;
   font-weight: 400;
   text-decoration: none;
-  color: ${Color.grey};
+  color: ${Color.GREY};
   cursor: pointer;
   transition: ease-in 0.1s;
   &:hover {

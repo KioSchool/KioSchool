@@ -14,7 +14,7 @@ const sizeMap = {
 };
 
 const Container = styled.label<{ size?: 'small' | 'medium' | 'large' | number; color?: string }>`
-  color: ${(props) => props.color || Color.grey};
+  color: ${(props) => props.color || Color.GREY};
   font-size: ${(props: AppLabelProps) => {
     if (typeof props.size === 'number') return `${props.size}px`;
     return sizeMap[props.size || 'medium'];
