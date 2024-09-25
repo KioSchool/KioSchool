@@ -1,6 +1,6 @@
 export const enum Color {
-  'grey' = '#5c5c5c',
-  'white' = 'white',
-  'black' = 'black',
-  'kioOrange' = '#EB6D09'
+  GREY = '#5c5c5c',
+  WHITE = 'white',
+  BLACK = 'black',
+  KIO_ORANGE = '#EB6D09',
 }
