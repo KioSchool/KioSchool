@@ -12,6 +12,7 @@ import AppButton from '@components/common/button/AppButton';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { OrderStatus } from '@@types/index';
 import OrderButton from '@components/user/order/OrderButton';
+import { Color } from '@resources/colors';
 
 const Container = styled.div`
   width: 100vw;
@@ -20,7 +21,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.div`
-  background: white;
+  background: ${Color.WHITE};
   position: sticky;
   top: 0;
   width: 100vw;

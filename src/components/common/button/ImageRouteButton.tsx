@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import { colFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 interface ImageRouteButtonProps {
   src: string;
@@ -18,7 +19,7 @@ const Container = styled.div<{ src: string }>`
   ${colFlex({ justify: 'flex-end' })}
 
   &:hover {
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #eb6d09 120%), url(${(props) => props.src});
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, ${Color.KIO_ORANGE} 120%), url(${(props) => props.src});
   }
 `;
 
@@ -35,7 +36,7 @@ const RouteButton = styled.button`
   border: 1px solid #fff;
   border-radius: 8px;
   font-size: 16px;
-  color: white;
+  color: ${Color.WHITE};
   cursor: pointer;
   backdrop-filter: blur(8px);
 `;
@@ -44,7 +45,7 @@ function ImageRouteButton(props: ImageRouteButtonProps) {
   return (
     <Container src={props.src} className={'image-route-button-container'}>
       <SubContainer className={'image-route-sub-container'}>
-        <AppLabel size={25} style={{ color: 'white', fontWeight: 600, textShadow: '0 4px 4px rgba(0, 0, 0, 0.25)' }}>
+        <AppLabel size={25} style={{ color: Color.WHITE, fontWeight: 600, textShadow: '0 4px 4px rgba(0, 0, 0, 0.25)' }}>
           {props.buttonText}
         </AppLabel>
         <RouteButton type={'button'} onClick={props.onClick} className={'route-button'}>

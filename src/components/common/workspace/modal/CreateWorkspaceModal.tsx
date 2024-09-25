@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { FormEventHandler, MouseEventHandler } from 'react';
 
@@ -17,7 +18,7 @@ const ModalContent = styled.form`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: white;
+  background-color: ${Color.WHITE};
   border-radius: 25px;
   padding: 20px;
   z-index: 1010;

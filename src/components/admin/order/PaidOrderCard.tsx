@@ -7,6 +7,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import AppCheckBox from '@components/common/input/AppCheckBox';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 interface Props {
   order: Order;
@@ -38,8 +39,8 @@ const Button = styled.button`
   width: 80px;
   height: 30px;
   border: none;
-  background: #eb6d09;
-  color: white;
+  background: ${Color.KIO_ORANGE};
+  color: ${Color.WHITE};
   cursor: pointer;
   border-radius: 50px;
   &:hover {

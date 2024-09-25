@@ -9,6 +9,7 @@ import infoImage6 from '@resources/image/myInfoImage6.png';
 import AppFooter from '@components/common/footer/AppFooter';
 import NavBar from '@components/common/nav/NavBar';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 const InfoContainer = styled.div`
   width: 100%;
@@ -30,8 +31,8 @@ const Label = styled.div`
 
 const LinkButton = styled.button`
   width: 200px;
-  background: #eb6d09;
-  color: white;
+  background: ${Color.KIO_ORANGE};
+  color: ${Color.WHITE};
   font-size: 23px;
   font-weight: 800;
   border: none;

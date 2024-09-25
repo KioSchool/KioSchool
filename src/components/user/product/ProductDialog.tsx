@@ -7,6 +7,7 @@ import { useSetRecoilState } from 'recoil';
 import { orderBasketAtom } from '@recoils/atoms';
 import CloseSvg from '@resources/svg/CloseSvg';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 interface ProductDialogProps {
   product: Product;
@@ -39,7 +40,7 @@ const ModalContainer = styled.div`
   width: 250px;
   height: 270px;
   padding: 5px;
-  background: white;
+  background: ${Color.WHITE};
   border-radius: 16px;
   ${colFlex()}
 `;
@@ -48,7 +49,7 @@ const CloseButtonContainer = styled.div`
   position: absolute;
   right: 15px;
   top: 10px;
-  background: white;
+  background: ${Color.WHITE};
   opacity: 0.7;
   border-radius: 4px;
   ${rowFlex()}

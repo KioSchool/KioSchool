@@ -6,6 +6,7 @@ import ArrowRight from '@resources/svg/ArrowRightSvg';
 import { css } from '@emotion/react';
 import AppFooter from '@components/common/footer/AppFooter';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 const MainTitle = styled.div`
   width: 540px;
@@ -22,11 +23,11 @@ const LinkAdminHome = styled(Link)`
   width: 349px;
   height: 80px;
   border-radius: 50px;
-  background: #eb6d09;
+  background: ${Color.KIO_ORANGE};
   ${rowFlex({ align: 'center', justify: 'center' })}
 
   &:hover {
-    background: linear-gradient(133deg, #ff9f32, #eb6d09);
+    background: linear-gradient(133deg, #ff9f32, ${Color.KIO_ORANGE});
   }
 `;
 

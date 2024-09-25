@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { Color } from '@resources/colors';
 
 interface AppBadgeProps extends React.HTMLAttributes<HTMLDivElement> {
   background?: string;
@@ -16,7 +17,7 @@ const Container = styled.div`
   text-align: center;
   line-height: 30px;
   font-size: 15px;
-  background: ${(props: AppBadgeProps) => props.background || 'white'};
+  background: ${(props: AppBadgeProps) => props.background || Color.WHITE};
   user-select: none;
   white-space: nowrap;
 

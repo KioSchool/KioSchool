@@ -1,6 +1,7 @@
 import { Workspace } from '@@types/index';
 import { SubContainer } from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
+import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const SubLabelContainer = styled.div`
@@ -13,11 +14,11 @@ const WorkspaceLabel = styled.div`
   font-size: 18px;
   font-weight: 400;
   text-decoration: none;
-  color: #5c5c5c;
+  color: ${Color.GREY};
   cursor: pointer;
   transition: ease-in 0.1s;
   &:hover {
-    color: #eb6d09;
+    color: ${Color.KIO_ORANGE};
     text-decoration: underline;
   }
 `;

@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import React from 'react';
 import AppButton from '@components/common/button/AppButton';
+import { Color } from '@resources/colors';
 
 const Container = styled.div`
   z-index: 1002;
@@ -24,7 +25,7 @@ const SubContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  color: white;
+  color: ${Color.WHITE};
 `;
 
 const TextContainer = styled.div`
@@ -70,10 +71,12 @@ function useConfirm(title: string, description: string, okText: string, cancelTe
       <Container className={'confirm-container'}>
         <SubContainer className={'confirm-sub-container'}>
           <TextContainer className={'text-container'}>
-            <AppLabel size={'large'} style={{ fontWeight: 700 }}>
+            <AppLabel size={'large'} style={{ fontWeight: 700 }} color={Color.WHITE}>
               {title}
             </AppLabel>
-            <AppLabel size={24}>{description}</AppLabel>
+            <AppLabel size={24} color={Color.WHITE}>
+              {description}
+            </AppLabel>
           </TextContainer>
           <ButtonContainer className={'button-container'}>
             {cancelText && (

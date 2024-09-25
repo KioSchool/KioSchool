@@ -1,12 +1,14 @@
+import { Color } from '@resources/colors';
+
 export const navBarLabelStyle = `
   text-align: center;
   font-size: 18px;
   font-weight: 400;
   text-decoration: none;
-  color: #5c5c5c;
+  color: ${Color.GREY};
   cursor: pointer;
   transition: ease-in 0.1s;
   &:hover {
-    color: #eb6d09;
+    color: ${Color.KIO_ORANGE};
     text-decoration: underline;
   }`;
