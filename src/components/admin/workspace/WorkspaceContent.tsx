@@ -6,23 +6,24 @@ import useConfirm from '@hooks/useConfirm';
 import DeleteButtonSvg from '@resources/svg/DeleteButtonSvg';
 import React from 'react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 const WorkspaceContainer = styled.div`
   cursor: pointer;
   width: 321px;
   height: 332px;
   border-radius: 25px;
-  background: #eb6d09;
+  background: ${Color.kioOrange};
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   ${colFlex({ justify: 'space-between', align: 'flex-start' })}
 
   &:hover {
-    background: linear-gradient(140deg, #ffe3cc -165.17%, #eb6d09 92.63%);
+    background: linear-gradient(140deg, #ffe3cc -165.17%, ${Color.kioOrange} 92.63%);
   }
 
   &:active {
     border-radius: 25px;
-    background: #eb6d09;
+    background: ${Color.kioOrange};
     box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.25) inset;
   }
 `;

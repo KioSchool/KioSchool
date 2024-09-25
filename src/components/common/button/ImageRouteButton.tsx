@@ -19,7 +19,7 @@ const Container = styled.div<{ src: string }>`
   ${colFlex({ justify: 'flex-end' })}
 
   &:hover {
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #eb6d09 120%), url(${(props) => props.src});
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, ${Color.kioOrange} 120%), url(${(props) => props.src});
   }
 `;
 

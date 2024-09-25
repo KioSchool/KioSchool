@@ -32,7 +32,7 @@ const Button = styled.button`
   width: 80px;
   height: 30px;
   border: none;
-  background: #eb6d09;
+  background: ${Color.kioOrange};
   color: ${Color.white};
   cursor: pointer;
   border-radius: 50px;

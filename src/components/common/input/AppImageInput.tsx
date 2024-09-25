@@ -28,7 +28,7 @@ const ImageInputButton = styled.label`
   cursor: pointer;
   padding: 5px 10px;
   border-radius: 8px;
-  background-color: #eb6d09;
+  background-color: ${Color.kioOrange};
   color: ${Color.white};
   &:hover {
     background: #ff7b2b;

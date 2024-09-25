@@ -27,7 +27,7 @@ const Container = styled.div`
 `;
 
 const Circle = styled.div<{ checked: boolean }>`
-  background-color: ${(props) => (props.checked ? '#eb6d09' : Color.white)};
+  background-color: ${(props) => (props.checked ? Color.kioOrange : Color.white)};
   color: ${(props) => (props.checked ? Color.white : 'black')};
   width: 38px;
   height: 38px;
