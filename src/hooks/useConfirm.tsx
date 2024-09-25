@@ -25,7 +25,7 @@ const SubContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  color: ${Color.white};
+  color: ${Color.WHITE};
 `;
 
 const TextContainer = styled.div`
@@ -71,10 +71,10 @@ function useConfirm(title: string, description: string, okText: string, cancelTe
       <Container className={'confirm-container'}>
         <SubContainer className={'confirm-sub-container'}>
           <TextContainer className={'text-container'}>
-            <AppLabel size={'large'} style={{ fontWeight: 700 }} color={Color.white}>
+            <AppLabel size={'large'} style={{ fontWeight: 700 }} color={Color.WHITE}>
               {title}
             </AppLabel>
-            <AppLabel size={24} color={Color.white}>
+            <AppLabel size={24} color={Color.WHITE}>
               {description}
             </AppLabel>
           </TextContainer>

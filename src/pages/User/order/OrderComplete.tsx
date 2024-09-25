@@ -21,7 +21,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.div`
-  background: ${Color.white};
+  background: ${Color.WHITE};
   position: sticky;
   top: 0;
   width: 100vw;

@@ -34,7 +34,7 @@ const OrderColumnContainer = styled.div`
 `;
 
 const OrderHeader = styled.div`
-  background: ${Color.white};
+  background: ${Color.WHITE};
   position: sticky;
   top: 0;
   width: 350px;
@@ -72,7 +72,7 @@ const ProductCard = styled.div`
   width: 160px;
   padding: 5px;
   box-sizing: border-box;
-  background: ${Color.white};
+  background: ${Color.WHITE};
   border-radius: 10px;
   gap: 5px;
   ${colFlex({ justify: 'center', align: 'center' })}

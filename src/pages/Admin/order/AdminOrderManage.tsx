@@ -49,7 +49,7 @@ const QRCodeCard = styled.div`
 
 const TableLink = styled.a`
   font-weight: bold;
-  color: ${Color.white};
+  color: ${Color.WHITE};
   padding: 5px 10px;
   background: ${Color.kioOrange};
   border-radius: 10px;

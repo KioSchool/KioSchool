@@ -32,7 +32,7 @@ const Label = styled.div`
 const LinkButton = styled.button`
   width: 200px;
   background: ${Color.kioOrange};
-  color: ${Color.white};
+  color: ${Color.WHITE};
   font-size: 23px;
   font-weight: 800;
   border: none;
