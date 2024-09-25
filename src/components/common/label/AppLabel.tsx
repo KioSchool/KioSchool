@@ -4,6 +4,7 @@ import { Color } from '@resources/colors';
 
 export interface AppLabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
   size?: 'small' | 'medium' | 'large' | number;
+  color?: string;
 }
 
 const sizeMap = {
@@ -12,8 +13,8 @@ const sizeMap = {
   large: '40px',
 };
 
-const Container = styled.label`
-  color: ${Color.grey};
+const Container = styled.label<{ size?: 'small' | 'medium' | 'large' | number; color?: string }>`
+  color: ${(props) => props.color || Color.grey};
   font-size: ${(props: AppLabelProps) => {
     if (typeof props.size === 'number') return `${props.size}px`;
     return sizeMap[props.size || 'medium'];
