@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { useRecoilValue } from 'recoil';
-import { userWorkspaceAtom } from '@recoils/atoms';
+import { adminWorkspaceAtom } from '@recoils/atoms';
 import styled from '@emotion/styled';
 import ImageRouteButton from '@components/common/button/ImageRouteButton';
 import AppContainer from '@components/common/container/AppContainer';
@@ -27,7 +27,7 @@ export const ButtonContainer = styled.div`
 function AdminWorkspace() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchWorkspace } = useAdminWorkspace();
-  const workspace = useRecoilValue(userWorkspaceAtom);
+  const workspace = useRecoilValue(adminWorkspaceAtom);
   const { appendPath } = useCustomNavigate();
 
   useEffect(() => {

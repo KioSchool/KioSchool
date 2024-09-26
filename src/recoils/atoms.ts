@@ -21,6 +21,29 @@ export const categoriesAtom = atom<ProductCategory[]>({
   default: [],
 });
 
+export const adminWorkspaceAtom = atom<Workspace>({
+  key: 'adminWorkspaceAtom',
+  default: {
+    name: '',
+    description: '',
+    owner: {
+      name: '',
+      email: '',
+      role: UserRole.ADMIN,
+      accountUrl: '',
+      id: 0,
+      createdAt: '',
+      updatedAt: '',
+    },
+    products: [],
+    productCategories: [],
+    id: 0,
+    createdAt: '',
+    updatedAt: '',
+    tableCount: 0,
+  },
+});
+
 export const userWorkspaceAtom = atom<Workspace>({
   key: 'userWorkspaceAtom',
   default: {
@@ -40,6 +63,7 @@ export const userWorkspaceAtom = atom<Workspace>({
     id: 0,
     createdAt: '',
     updatedAt: '',
+    tableCount: 0,
   },
 });
 

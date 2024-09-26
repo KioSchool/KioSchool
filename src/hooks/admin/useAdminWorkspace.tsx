@@ -1,12 +1,12 @@
 import useApi from '@hooks/useApi';
 import { useSetRecoilState } from 'recoil';
-import { userWorkspaceAtom } from '@recoils/atoms';
+import { adminWorkspaceAtom } from '@recoils/atoms';
 import { Workspace } from '@@types/index';
 import { useNavigate } from 'react-router-dom';
 
 function useAdminWorkspace() {
   const { adminApi } = useApi();
-  const setUserWorkspace = useSetRecoilState(userWorkspaceAtom);
+  const setAdminWorkspace = useSetRecoilState(adminWorkspaceAtom);
   const navigate = useNavigate();
 
   const fetchWorkspace = (workspaceId: string | undefined | null) => {
@@ -15,7 +15,7 @@ function useAdminWorkspace() {
     adminApi
       .get<Workspace>('/workspace', { params: { workspaceId } })
       .then((res) => {
-        setUserWorkspace(res.data);
+        setAdminWorkspace(res.data);
       })
       .catch((error) => {
         alert(error.response.data.message);
@@ -23,7 +23,18 @@ function useAdminWorkspace() {
       });
   };
 
-  return { fetchWorkspace };
+  const updateWorkspaceTableCount = (workspaceId: string | undefined | null, tableCount: number) => {
+    adminApi
+      .post<Workspace>('/workspace/table-count', { workspaceId, tableCount })
+      .then((res) => {
+        setAdminWorkspace(res.data);
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
+  };
+
+  return { fetchWorkspace, updateWorkspaceTableCount };
 }
 
 export default useAdminWorkspace;
