@@ -22,7 +22,7 @@ export const categoriesAtom = atom<ProductCategory[]>({
 });
 
 export const adminWorkspaceAtom = atom<Workspace>({
-  key: 'userWorkspaceAtom',
+  key: 'adminWorkspaceAtom',
   default: {
     name: '',
     description: '',
