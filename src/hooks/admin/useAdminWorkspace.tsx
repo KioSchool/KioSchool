@@ -23,7 +23,18 @@ function useAdminWorkspace() {
       });
   };
 
-  return { fetchWorkspace };
+  const updateWorkspaceTableCount = (workspaceId: string | undefined | null, tableCount: number) => {
+    adminApi
+      .post<Workspace>('/workspace/table-count', { workspaceId, tableCount })
+      .then((res) => {
+        setAdminWorkspace(res.data);
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
+  };
+
+  return { fetchWorkspace, updateWorkspaceTableCount };
 }
 
 export default useAdminWorkspace;
