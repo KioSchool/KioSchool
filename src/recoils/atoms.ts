@@ -68,6 +68,7 @@ export const userOrderAtom = atom<Order>({
     id: 0,
     createdAt: '',
     updatedAt: '',
+    tableCount: 0,
   },
 });
 

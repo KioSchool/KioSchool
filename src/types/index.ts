@@ -53,6 +53,7 @@ export interface Workspace {
   products: Array<Product>;
   productCategories: Array<ProductCategory>;
   id: number;
+  tableCount: number;
   createdAt: string;
   updatedAt: string;
 }
