@@ -106,4 +106,13 @@ export interface User {
   id: number;
   createdAt: string;
   updatedAt: string;
+  schoolName: string;
+}
+
+export interface Email {
+  name: string;
+  domain: string;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
 }

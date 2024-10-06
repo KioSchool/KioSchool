@@ -30,6 +30,7 @@ import SuperAdminHome from '@pages/SuperAdmin/SuperAdminHome';
 import SuperAdminWorkspace from '@pages/SuperAdmin/SuperAdminWorkspace';
 import SuperAdminManage from '@pages/SuperAdmin/SuperAdminManage';
 import SuperAdminUser from '@pages/SuperAdmin/SuperAdminUser';
+import SuperAdminEmail from '@pages/SuperAdmin/SuperAdminEmail';
 
 ReactGA.initialize('G-XGYLSPGK2G');
 function App() {
@@ -53,6 +54,7 @@ function App() {
         <Route path="/super-admin/home" element={<SuperAdminHome />} />
         <Route path="/admin/workspace/:workspaceId" element={<AdminWorkspace />} />
         <Route path="/super-admin/workspace" element={<SuperAdminWorkspace />} />
+        <Route path="/super-admin/email" element={<SuperAdminEmail />} />
         <Route path="/super-admin/manage" element={<SuperAdminManage />} />
         <Route path="/super-admin/user" element={<SuperAdminUser />} />
         <Route path="/admin/workspace/:workspaceId/orders" element={<AdminOrder />} />
