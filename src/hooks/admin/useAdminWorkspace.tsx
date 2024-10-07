@@ -1,12 +1,14 @@
 import useApi from '@hooks/useApi';
 import { useSetRecoilState } from 'recoil';
-import { adminWorkspaceAtom } from '@recoils/atoms';
-import { Workspace } from '@@types/index';
-import { useNavigate } from 'react-router-dom';
+import { adminWorkspaceAtom, tablePaginationResponseAtom } from '@recoils/atoms';
+import { PaginationResponse, Table, Workspace } from '@@types/index';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 function useAdminWorkspace() {
   const { adminApi } = useApi();
+  const [searchParams, setSearchParams] = useSearchParams();
   const setAdminWorkspace = useSetRecoilState(adminWorkspaceAtom);
+  const setTablePaginationResponse = useSetRecoilState(tablePaginationResponseAtom);
   const navigate = useNavigate();
 
   const fetchWorkspace = (workspaceId: string | undefined | null) => {
@@ -34,7 +36,16 @@ function useAdminWorkspace() {
       });
   };
 
-  return { fetchWorkspace, updateWorkspaceTableCount };
+  const fetchWorkspaceTable = (worksapceId: number, tableId: number, page: number, size: number) => {
+    const params = { worksapceId, tableId, page, size };
+    adminApi.get<PaginationResponse<Table>>('/orders/table', { params }).then((res) => {
+      setTablePaginationResponse(res.data);
+      searchParams.set('page', params.page.toString());
+      setSearchParams(searchParams);
+    });
+  };
+
+  return { fetchWorkspace, updateWorkspaceTableCount, fetchWorkspaceTable };
 }
 
 export default useAdminWorkspace;
