@@ -1,6 +1,7 @@
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 import { adminWorkspaceAtom } from '@recoils/atoms';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
@@ -48,6 +49,7 @@ function AdminOrderTable() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchWorkspace } = useAdminWorkspace();
   const workspace = useRecoilValue(adminWorkspaceAtom);
+  const { replaceLastPath } = useCustomNavigate();
 
   useEffect(() => {
     fetchWorkspace(workspaceId);
@@ -58,7 +60,9 @@ function AdminOrderTable() {
       <Container className={'admin-workspace-container'}>
         <TableListContainer tableCount={workspace.tableCount}>
           {Array.from({ length: workspace.tableCount }, (_, index) => (
-            <TableCell key={index}>{index + 1}번</TableCell>
+            <TableCell key={index} onClick={() => replaceLastPath(`/${index + 1}`)}>
+              {index + 1}번
+            </TableCell>
           ))}
         </TableListContainer>
       </Container>
