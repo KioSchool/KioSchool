@@ -4,18 +4,14 @@ import orderHistoryImage from '@resources/image/orderHistoryImage.png';
 import orderManageImage from '@resources/image/orderManageImage.png';
 import AppFooter from '@components/common/footer/AppFooter';
 import AppContainer from '@components/common/container/AppContainer';
-import { colFlex, rowFlex } from '@styles/flexStyles';
+import { colFlex } from '@styles/flexStyles';
 import styled from '@emotion/styled';
 import useCustomNavigate from '@hooks/useCustomNavigate';
+import { ButtonContainer } from '../AdminWorkspace';
 
 const Container = styled.div`
   width: 100%;
   ${colFlex({ align: 'center' })}
-`;
-
-export const ButtonContainer = styled.div`
-  gap: 30px;
-  ${rowFlex()}
 `;
 
 function AdminOrderCheck() {
