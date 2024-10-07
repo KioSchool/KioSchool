@@ -27,7 +27,7 @@ function AdminOrderCheck() {
         <ButtonContainer className={'button-container'}>
           <ImageRouteButton src={orderImage} onClick={() => replaceLastPath('/orders')} buttonText={'실시간 주문 조회'} />
           <ImageRouteButton src={orderHistoryImage} onClick={() => replaceLastPath('/orders-history')} buttonText={'전체 주문 조회'} />
-          <ImageRouteButton src={orderManageImage} onClick={() => replaceLastPath('/oreders-table')} buttonText={'테이블별 주문 조회'} />
+          <ImageRouteButton src={orderManageImage} onClick={() => replaceLastPath('/orders-table')} buttonText={'테이블별 주문 조회'} />
         </ButtonContainer>
         <AppFooter />
       </Container>

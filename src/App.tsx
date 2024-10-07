@@ -31,6 +31,7 @@ import SuperAdminWorkspace from '@pages/SuperAdmin/SuperAdminWorkspace';
 import SuperAdminManage from '@pages/SuperAdmin/SuperAdminManage';
 import SuperAdminUser from '@pages/SuperAdmin/SuperAdminUser';
 import AdminOrderCheck from '@pages/Admin/order/AdminOrderCheck';
+import AdminOrderTable from '@pages/Admin/order/AdminOrderTable';
 
 ReactGA.initialize('G-XGYLSPGK2G');
 function App() {
@@ -60,6 +61,7 @@ function App() {
         <Route path="/admin/workspace/:workspaceId/orders" element={<AdminOrder />} />
         <Route path="/admin/workspace/:workspaceId/orders-history" element={<AdminOrderHistory />} />
         <Route path="/admin/workspace/:workspaceId/orders-manage" element={<AdminOrderManage />} />
+        <Route path="/admin/workspace/:workspaceId/orders-table" element={<AdminOrderTable />} />
         <Route path="/admin/workspace/:workspaceId/products" element={<AdminProduct />} />
         <Route path="/admin/workspace/:workspaceId/products/add-product" element={<AdminProductAdd />} />
         <Route path="/admin/workspace/:workspaceId/products/categories" element={<AdminProductCategories />} />
