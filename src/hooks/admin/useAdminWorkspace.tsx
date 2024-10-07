@@ -36,8 +36,9 @@ function useAdminWorkspace() {
       });
   };
 
-  const fetchWorkspaceTable = (worksapceId: number, tableId: number, page: number, size: number) => {
-    const params = { worksapceId, tableId, page, size };
+  const fetchWorkspaceTable = (workspaceId: number, tableNumber: number, page: number, size: number) => {
+    const params = { workspaceId, tableNumber, page, size };
+
     adminApi.get<PaginationResponse<Table>>('/orders/table', { params }).then((res) => {
       setTablePaginationResponse(res.data);
       searchParams.set('page', params.page.toString());
