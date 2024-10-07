@@ -108,3 +108,15 @@ export interface User {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Table {
+  tableNumber: number;
+  customerName: string;
+  orderProducts: Array<OrderProduct>;
+  totalPrice: number;
+  status: OrderStatus;
+  cancelReason: string;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+}
