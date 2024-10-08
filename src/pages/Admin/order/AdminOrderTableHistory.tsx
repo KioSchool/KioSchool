@@ -11,12 +11,12 @@ import useCustomNavigate from '@hooks/useCustomNavigate';
 import OrderTableHistoryContent from '@components/user/order/OrderTableHistoryCotent';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
-  height: 550px;
+  height: ${(props) => (props.justifyCenter ? '550px' : '100%')};
   ${(props) =>
     colFlex({
       justify: props.justifyCenter ? 'center' : 'flex-start',
       align: 'center',
-    })}
+    })};
 `;
 
 const HorizontalLine = styled.hr`
@@ -38,6 +38,7 @@ function AdminOrderTableHistory() {
 
   const isEmptyWorkspaces = tables.empty;
   const emptyMessage = '찾고자 하는 주문이 존재하지 않습니다.';
+
   const pageSize = 6;
 
   useEffect(() => {
@@ -48,8 +49,8 @@ function AdminOrderTableHistory() {
     <AppContainer
       useFlex={colFlex({ justify: 'center' })}
       customWidth={'1000px'}
-      customHeight={'100%'}
-      customGap={'20px'}
+      useNavBackground={true}
+      useScroll={true}
       titleNavBarProps={{ title: `${tableNumber}번 테이블`, onLeftArrowClick: () => replaceLastPath(`/orders-table`) }}
     >
       <>
@@ -62,13 +63,14 @@ function AdminOrderTableHistory() {
           ))}
 
           {isEmptyWorkspaces && <EmptyLabel className={'empty-label'}>{emptyMessage}</EmptyLabel>}
+
+          <Pagination
+            totalPageCount={tables.totalPages}
+            paginateFunction={(page: number) => {
+              fetchWorkspaceTable(Number(workspaceId), Number(tableNumber), page, pageSize);
+            }}
+          />
         </ContentContainer>
-        <Pagination
-          totalPageCount={tables.totalPages}
-          paginateFunction={(page: number) => {
-            fetchWorkspaceTable(Number(workspaceId), Number(tableNumber), page, pageSize);
-          }}
-        />
       </>
     </AppContainer>
   );

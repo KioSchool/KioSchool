@@ -1,10 +1,21 @@
 import { Table } from '@@types/index';
 import TableOrderCard from '@components/admin/order/TableOrderCard';
-import { SubContainer } from '@components/common/container/AppContainer';
+import { SerializedStyles } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Dispatch, SetStateAction } from 'react';
+
+const Container = styled.div<{
+  useFlex: SerializedStyles;
+}>`
+  width: 1000px;
+  min-width: 1000px;
+  height: auto;
+  padding: 10px;
+  gap: 10px;
+  ${(props) => props.useFlex}
+`;
 
 const SubLabelContainer = styled.div`
   color: #d8d8d8;
@@ -47,13 +58,13 @@ function OrderTableHistoryContent({ id, customerName, createdAt, isShowDetail, s
   };
 
   return (
-    <SubContainer useFlex={colFlex({ justify: 'center', align: 'start' })} customWidth={'1000px'} customHeight={'80px'} customGap={'5px'}>
+    <Container useFlex={colFlex({ justify: 'center', align: 'start' })}>
       <TableOrderLabel onClick={onClickTableOrderLabel} className={'table-order-label'}>
         {`주문번호 ${id}번`}
       </TableOrderLabel>
       <SubLabelContainer className={'sub-label-container'}>{createdDateAndOwnerText}</SubLabelContainer>
       {isShowDetail && <TableOrderCard id={id} customerName={customerName} createdAt={createdAt} orderProducts={orderProducts} totalPrice={totalPrice} />}
-    </SubContainer>
+    </Container>
   );
 }
 
