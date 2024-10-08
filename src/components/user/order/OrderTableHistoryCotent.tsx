@@ -1,4 +1,5 @@
 import { Table } from '@@types/index';
+import TableOrderCard from '@components/admin/order/TableOrderCard';
 import { SubContainer } from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
@@ -29,14 +30,12 @@ interface OrderTableHistoryProps extends Table {
   setSelectedOrderId: Dispatch<SetStateAction<null | number>>;
 }
 
-function OrderTableHistoryContent({ id, customerName, createdAt, isShowDetail, setSelectedOrderId }: OrderTableHistoryProps) {
+function OrderTableHistoryContent({ id, customerName, createdAt, isShowDetail, setSelectedOrderId, orderProducts, totalPrice }: OrderTableHistoryProps) {
   const datePart = createdAt.split('T')[0];
   const timePart = createdAt.split('T')[1].split(':');
   const filteredCreatedDate = datePart.replace(/-/g, '.') + ' - ' + timePart[0] + ':' + timePart[1];
 
   const createdDateAndOwnerText = `${customerName} | ${filteredCreatedDate}`;
-
-  const Dummy = <h1>hi</h1>;
 
   const onClickTableOrderLabel = () => {
     if (isShowDetail) {
@@ -53,7 +52,7 @@ function OrderTableHistoryContent({ id, customerName, createdAt, isShowDetail, s
         {`주문번호 ${id}번`}
       </TableOrderLabel>
       <SubLabelContainer className={'sub-label-container'}>{createdDateAndOwnerText}</SubLabelContainer>
-      {isShowDetail && Dummy}
+      {isShowDetail && <TableOrderCard id={id} customerName={customerName} createdAt={createdAt} orderProducts={orderProducts} totalPrice={totalPrice} />}
     </SubContainer>
   );
 }
