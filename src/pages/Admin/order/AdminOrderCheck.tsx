@@ -18,7 +18,10 @@ function AdminOrderCheck() {
   const { replaceLastPath } = useCustomNavigate();
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })} titleNavBarProps={{ title: '주문 조회', subTitle: '주문 조회를 다양하게 관리할 수 있습니다.' }}>
+    <AppContainer
+      useFlex={colFlex({ justify: 'center' })}
+      titleNavBarProps={{ title: '주문 조회', subTitle: '주문 조회를 다양하게 관리할 수 있습니다.', onLeftArrowClick: () => replaceLastPath('') }}
+    >
       <Container className={'admin-workspace-container'}>
         <ButtonContainer className={'button-container'}>
           <ImageRouteButton src={orderImage} onClick={() => replaceLastPath('/orders')} buttonText={'실시간 주문 조회'} />

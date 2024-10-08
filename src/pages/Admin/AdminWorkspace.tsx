@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { useRecoilValue } from 'recoil';
@@ -26,6 +26,7 @@ export const ButtonContainer = styled.div`
 function AdminWorkspace() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchWorkspace } = useAdminWorkspace();
+  const navigate = useNavigate();
   const workspace = useRecoilValue(adminWorkspaceAtom);
   const { appendPath } = useCustomNavigate();
 
@@ -34,7 +35,10 @@ function AdminWorkspace() {
   }, []);
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })} titleNavBarProps={{ title: workspace.name, subTitle: workspace.description }}>
+    <AppContainer
+      useFlex={colFlex({ justify: 'center' })}
+      titleNavBarProps={{ title: workspace.name, subTitle: workspace.description, onLeftArrowClick: () => navigate('/admin') }}
+    >
       <Container className={'admin-workspace-container'}>
         <ButtonContainer className={'button-container'}>
           <ImageRouteButton src={orderImage} onClick={() => appendPath('/order-check')} buttonText={'주문 조회'} />
