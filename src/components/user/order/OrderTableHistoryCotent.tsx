@@ -40,31 +40,29 @@ interface OrderTableHistoryProps extends Table {
   setSelectedOrderId: Dispatch<SetStateAction<null | number>>;
 }
 
-function OrderTableHistoryContent({ id, customerName, createdAt, isShowDetail, setSelectedOrderId, orderProducts, totalPrice }: OrderTableHistoryProps) {
-  const datePart = createdAt.split('T')[0];
-  const timePart = createdAt.split('T')[1].split(':');
+function OrderTableHistoryContent(props: OrderTableHistoryProps) {
+  const datePart = props.createdAt.split('T')[0];
+  const timePart = props.createdAt.split('T')[1].split(':');
   const filteredCreatedDate = datePart.replace(/-/g, '.') + ' - ' + timePart[0] + ':' + timePart[1];
 
-  const createdDateAndOwnerText = `${customerName} | ${filteredCreatedDate}`;
-
-  const props = { id, customerName, createdAt, orderProducts, totalPrice };
+  const createdDateAndOwnerText = `${props.customerName} | ${filteredCreatedDate}`;
 
   const onClickTableOrderLabel = () => {
-    if (isShowDetail) {
-      setSelectedOrderId(null);
+    if (props.isShowDetail) {
+      props.setSelectedOrderId(null);
       return;
     }
 
-    setSelectedOrderId(id);
+    props.setSelectedOrderId(props.id);
   };
 
   return (
     <Container useFlex={colFlex({ justify: 'center', align: 'start' })}>
       <TableOrderLabel onClick={onClickTableOrderLabel} className={'table-order-label'}>
-        {`주문번호 ${id}번`}
+        {`주문번호 ${props.id}번`}
       </TableOrderLabel>
       <SubLabelContainer className={'sub-label-container'}>{createdDateAndOwnerText}</SubLabelContainer>
-      {isShowDetail && <TableOrderCard {...props} />}
+      {props.isShowDetail && <TableOrderCard {...props} />}
     </Container>
   );
 }
