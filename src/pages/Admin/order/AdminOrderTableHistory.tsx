@@ -1,7 +1,6 @@
 import AppContainer from '@components/common/container/AppContainer';
 import Pagination from '@components/common/pagination/Pagination';
 import styled from '@emotion/styled';
-import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { colFlex } from '@styles/flexStyles';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -10,6 +9,7 @@ import { tablePaginationResponseAtom } from '@recoils/atoms';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import OrderTableHistoryContent from '@components/user/order/OrderTableHistoryCotent';
 import { Color } from '@resources/colors';
+import useAdminOrder from '@hooks/admin/useAdminOrder';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   margin-top: 20px;
@@ -35,7 +35,7 @@ function AdminOrderTableHistory() {
   const { workspaceId, tableNumber } = useParams<{ workspaceId: string; tableNumber: string }>();
   const { replaceLastPath } = useCustomNavigate();
   const tables = useRecoilValue(tablePaginationResponseAtom);
-  const { fetchWorkspaceTable } = useAdminWorkspace();
+  const { fetchWorkspaceTable } = useAdminOrder(workspaceId);
   const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
 
   const isEmptyWorkspaces = tables.empty;
@@ -44,7 +44,7 @@ function AdminOrderTableHistory() {
   const pageSize = 6;
 
   useEffect(() => {
-    fetchWorkspaceTable(Number(workspaceId), Number(tableNumber), 0, pageSize);
+    fetchWorkspaceTable(Number(tableNumber), 0, pageSize);
   }, []);
 
   return (
@@ -69,7 +69,7 @@ function AdminOrderTableHistory() {
           <Pagination
             totalPageCount={tables.totalPages}
             paginateFunction={(page: number) => {
-              fetchWorkspaceTable(Number(workspaceId), Number(tableNumber), page, pageSize);
+              fetchWorkspaceTable(Number(tableNumber), page, pageSize);
             }}
           />
         </ContentContainer>
