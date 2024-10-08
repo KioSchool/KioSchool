@@ -18,7 +18,7 @@ const Container = styled.div<{
 `;
 
 const SubLabelContainer = styled.div`
-  color: #d8d8d8;
+  color: ${Color.HEAVY_GREY};
   ${rowFlex()}
 `;
 

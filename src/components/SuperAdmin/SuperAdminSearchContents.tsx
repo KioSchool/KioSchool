@@ -1,5 +1,6 @@
 import { PaginationResponse } from '@@types/index';
 import styled from '@emotion/styled';
+import { Color } from '@resources/colors';
 import React from 'react';
 
 const HorizontalLine = styled.hr`
@@ -9,7 +10,7 @@ const HorizontalLine = styled.hr`
 
 const EmptyLabel = styled.div`
   font-size: 40px;
-  color: #d8d8d8;
+  color: ${Color.LIGHT_GREY};
 `;
 
 interface ContentsProps {

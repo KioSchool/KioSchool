@@ -39,7 +39,7 @@ const SubContainer = styled.div`
 const ContentBox = styled.div`
   width: 100%;
   padding: 20px;
-  background: #${Color.ORDER_GREY};
+  background: #${Color.HEAVY_GREY};
   box-sizing: border-box;
   gap: 4px;
   ${colFlex()}

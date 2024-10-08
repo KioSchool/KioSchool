@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom';
 import { tablePaginationResponseAtom } from '@recoils/atoms';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import OrderTableHistoryContent from '@components/user/order/OrderTableHistoryCotent';
+import { Color } from '@resources/colors';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   margin-top: 20px;
@@ -27,7 +28,7 @@ const HorizontalLine = styled.hr`
 
 const EmptyLabel = styled.div`
   font-size: 40px;
-  color: #d8d8d8;
+  color: ${Color.HEAVY_GREY};
 `;
 
 function AdminOrderTableHistory() {
