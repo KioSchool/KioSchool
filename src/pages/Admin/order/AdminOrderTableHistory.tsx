@@ -9,7 +9,6 @@ import { useParams } from 'react-router-dom';
 import { tablePaginationResponseAtom } from '@recoils/atoms';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import OrderTableHistoryContent from '@components/user/order/OrderTableHistoryCotent';
-import AdminOrderSearchContents from '@components/admin/order/AdminOrderSearchContents';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   height: 550px;
@@ -20,6 +19,16 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
     })}
 `;
 
+const HorizontalLine = styled.hr`
+  width: 100%;
+  border: 0.3px solid #eeecec;
+`;
+
+const EmptyLabel = styled.div`
+  font-size: 40px;
+  color: #d8d8d8;
+`;
+
 function AdminOrderTableHistory() {
   const { workspaceId, tableNumber } = useParams<{ workspaceId: string; tableNumber: string }>();
   const { replaceLastPath } = useCustomNavigate();
@@ -27,6 +36,7 @@ function AdminOrderTableHistory() {
   const tables = useRecoilValue(tablePaginationResponseAtom);
   const { fetchWorkspaceTable } = useAdminWorkspace();
   const isEmptyWorkspaces = tables.empty;
+  const emptyMessage = '찾고자 하는 주문이 존재하지 않습니다.';
 
   useEffect(() => {
     fetchWorkspaceTable(Number(workspaceId), Number(tableNumber), 0, pageSize);
@@ -42,7 +52,14 @@ function AdminOrderTableHistory() {
     >
       <>
         <ContentContainer justifyCenter={isEmptyWorkspaces} className={'content-container'}>
-          <AdminOrderSearchContents contents={tables} ContentComponent={OrderTableHistoryContent} />
+          {tables.content.map((item, index) => (
+            <div key={item.id}>
+              <OrderTableHistoryContent {...item} />
+              {index < tables.content.length - 1 && <HorizontalLine />}
+            </div>
+          ))}
+
+          {isEmptyWorkspaces && <EmptyLabel className={'empty-label'}>{emptyMessage}</EmptyLabel>}
         </ContentContainer>
         <Pagination
           totalPageCount={tables.totalPages}
