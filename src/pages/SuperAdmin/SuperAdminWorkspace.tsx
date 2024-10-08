@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { workspacePaginationResponseAtom } from '@recoils/atoms';
 import { useEffect, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
-import SuperAdminSearchContents from './SuperAdminSearchContents';
+import SuperAdminSearchContents from '../../components/SuperAdmin/SuperAdminSearchContents';
 import useSuperAdminWorkspace from '@hooks/SuperAdmin/useSuperAdminWorkspace';
 import { colFlex } from '@styles/flexStyles';
 import SuperAdminWorkspaceContent from '@components/SuperAdmin/workspace/SuperAdminWorkspaceContent';

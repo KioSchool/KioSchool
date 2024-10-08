@@ -4,7 +4,7 @@ import { userPaginationResponseAtom } from '@recoils/atoms';
 import { colFlex } from '@styles/flexStyles';
 import { useEffect, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
-import SuperAdminSearchContents from './SuperAdminSearchContents';
+import SuperAdminSearchContents from '../../components/SuperAdmin/SuperAdminSearchContents';
 import Pagination from '@components/common/pagination/Pagination';
 import AppContainer from '@components/common/container/AppContainer';
 import useSuperAdminUser from '@hooks/SuperAdmin/useSuperAdminUser';

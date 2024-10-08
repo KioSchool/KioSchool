@@ -8,7 +8,7 @@ import { useRecoilValue } from 'recoil';
 import { useParams } from 'react-router-dom';
 import { tablePaginationResponseAtom } from '@recoils/atoms';
 import useCustomNavigate from '@hooks/useCustomNavigate';
-import SuperAdminSearchContents from '@pages/SuperAdmin/SuperAdminSearchContents';
+import SuperAdminSearchContents from '@components/SuperAdmin/SuperAdminSearchContents';
 import OrderTableHistoryContent from '@components/user/order/OrderTableHistoryCotent';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
