@@ -26,7 +26,6 @@ const TableOrderLabel = styled.div`
   text-align: center;
   font-size: 18px;
   font-weight: 400;
-  text-decoration: none;
   color: ${Color.GREY};
   cursor: pointer;
   transition: ease-in 0.1s;
@@ -48,6 +47,8 @@ function OrderTableHistoryContent({ id, customerName, createdAt, isShowDetail, s
 
   const createdDateAndOwnerText = `${customerName} | ${filteredCreatedDate}`;
 
+  const props = { id, customerName, createdAt, orderProducts, totalPrice };
+
   const onClickTableOrderLabel = () => {
     if (isShowDetail) {
       setSelectedOrderId(null);
@@ -63,7 +64,7 @@ function OrderTableHistoryContent({ id, customerName, createdAt, isShowDetail, s
         {`주문번호 ${id}번`}
       </TableOrderLabel>
       <SubLabelContainer className={'sub-label-container'}>{createdDateAndOwnerText}</SubLabelContainer>
-      {isShowDetail && <TableOrderCard id={id} customerName={customerName} createdAt={createdAt} orderProducts={orderProducts} totalPrice={totalPrice} />}
+      {isShowDetail && <TableOrderCard {...props} />}
     </Container>
   );
 }
