@@ -9,7 +9,7 @@ const Container = styled.div`
   padding: 22px;
   width: 100%;
   box-sizing: border-box;
-  background: ${Color.HEAVY_GREY};
+  background: ${Color.LIGHT_GREY};
   gap: 7px;
   ${colFlex({ align: 'center' })}
 `;

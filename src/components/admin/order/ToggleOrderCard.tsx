@@ -12,7 +12,7 @@ interface ToggleOrderCardProps {
 
 const Container = styled.div`
   width: 100%;
-  background: ${Color.HEAVY_GREY};
+  background: ${Color.LIGHT_GREY};
   padding: 20px 50px;
   box-sizing: border-box;
   ${rowFlex({ justify: 'space-between' })}
