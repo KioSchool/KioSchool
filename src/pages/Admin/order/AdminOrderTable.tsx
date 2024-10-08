@@ -11,20 +11,24 @@ import { useRecoilValue } from 'recoil';
 
 const Container = styled.div`
   width: 100%;
+  height: 100%;
   ${colFlex({ align: 'center' })}
 `;
 
 const TableListContainer = styled.div<{ tableCount: number }>`
+  max-height: 400px;
+  min-height: 400px;
   display: grid;
   justify-items: center;
   align-items: center;
   width: 100%;
-  max-height: 400px;
   overflow-y: auto;
   border-radius: 20px;
   background: #fff;
   box-shadow: 0px 0px 10px 0px rgba(216, 216, 216, 0.3);
-  grid-gap: 10px;
+
+  row-gap: 15px;
+  column-gap: 40px;
   grid-template-columns: repeat(5, 1fr);
   padding: 10px;
 `;
@@ -56,7 +60,7 @@ function AdminOrderTable() {
   }, []);
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })} titleNavBarProps={{ title: '테이블 주문 조회' }}>
+    <AppContainer useFlex={colFlex({ justify: 'center' })} titleNavBarProps={{ title: '테이블 주문 조회', subTitle: '테이블 별 주문 내역을 조회합니다.' }}>
       <Container className={'admin-workspace-container'}>
         <TableListContainer tableCount={workspace.tableCount}>
           {Array.from({ length: workspace.tableCount }, (_, index) => (

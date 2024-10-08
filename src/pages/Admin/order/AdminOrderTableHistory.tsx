@@ -11,6 +11,7 @@ import useCustomNavigate from '@hooks/useCustomNavigate';
 import OrderTableHistoryContent from '@components/user/order/OrderTableHistoryCotent';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
+  margin-top: 20px;
   height: ${(props) => (props.justifyCenter ? '550px' : '100%')};
   ${(props) =>
     colFlex({
