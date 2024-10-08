@@ -4,7 +4,6 @@ import Home from '@pages/User/Home';
 import AdminHome from '@pages/Admin/AdminHome';
 import Login from '@pages/User/Login';
 import AdminWorkspace from '@pages/Admin/AdminWorkspace';
-import AdminOrder from '@pages/Admin/order/AdminOrder';
 import Register from '@pages/User/Register';
 import AdminProduct from '@pages/Admin/AdminProduct';
 import Order from '@pages/User/order/Order';
@@ -33,6 +32,7 @@ import SuperAdminUser from '@pages/SuperAdmin/SuperAdminUser';
 import AdminOrderCheck from '@pages/Admin/order/AdminOrderCheck';
 import AdminOrderTable from '@pages/Admin/order/AdminOrderTable';
 import AdminOrderTableHistory from '@pages/Admin/order/AdminOrderTableHistory';
+import AdminOrderRealtime from '@pages/Admin/order/AdminOrderRealtime';
 
 ReactGA.initialize('G-XGYLSPGK2G');
 function App() {
@@ -59,7 +59,7 @@ function App() {
         <Route path="/super-admin/manage" element={<SuperAdminManage />} />
         <Route path="/super-admin/user" element={<SuperAdminUser />} />
         <Route path="/admin/workspace/:workspaceId/order-check" element={<AdminOrderCheck />} />
-        <Route path="/admin/workspace/:workspaceId/orders" element={<AdminOrder />} />
+        <Route path="/admin/workspace/:workspaceId/orders-realtime" element={<AdminOrderRealtime />} />
         <Route path="/admin/workspace/:workspaceId/orders-history" element={<AdminOrderHistory />} />
         <Route path="/admin/workspace/:workspaceId/orders-manage" element={<AdminOrderManage />} />
         <Route path="/admin/workspace/:workspaceId/orders-table" element={<AdminOrderTable />} />

@@ -85,7 +85,7 @@ const ProductImage = styled.img`
   object-fit: fill;
 `;
 
-function AdminOrder() {
+function AdminOrderRealtime() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { subscribeOrders } = useOrdersWebsocket(workspaceId);
   const { fetchTodayOrders } = useAdminOrder(workspaceId);
@@ -178,4 +178,4 @@ function AdminOrder() {
   );
 }
 
-export default AdminOrder;
+export default AdminOrderRealtime;
