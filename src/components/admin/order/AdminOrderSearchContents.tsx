@@ -1,4 +1,4 @@
-import { PaginationResponse } from '@@types/index';
+import { PaginationResponse, Table } from '@@types/index';
 import styled from '@emotion/styled';
 import React from 'react';
 
@@ -13,7 +13,7 @@ const EmptyLabel = styled.div`
 `;
 
 interface ContentsProps {
-  contents: PaginationResponse<any>;
+  contents: PaginationResponse<Table>;
   ContentComponent: React.ElementType;
 }
 
