@@ -6,7 +6,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
   padding: 22px;
-  width: 350px;
+  width: 100%;
   box-sizing: border-box;
   background: #f7f7f7;
   gap: 7px;
