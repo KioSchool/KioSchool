@@ -8,8 +8,8 @@ import { useRecoilValue } from 'recoil';
 import { useParams } from 'react-router-dom';
 import { tablePaginationResponseAtom } from '@recoils/atoms';
 import useCustomNavigate from '@hooks/useCustomNavigate';
-import SuperAdminSearchContents from '@components/SuperAdmin/SuperAdminSearchContents';
 import OrderTableHistoryContent from '@components/user/order/OrderTableHistoryCotent';
+import AdminOrderSearchContents from '@components/admin/order/AdminOrderSearchContents';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   height: 550px;
@@ -42,7 +42,7 @@ function AdminOrderTableHistory() {
     >
       <>
         <ContentContainer justifyCenter={isEmptyWorkspaces} className={'content-container'}>
-          <SuperAdminSearchContents contents={tables} target={'주문번호'} ContentComponent={OrderTableHistoryContent} />
+          <AdminOrderSearchContents contents={tables} ContentComponent={OrderTableHistoryContent} />
         </ContentContainer>
         <Pagination
           totalPageCount={tables.totalPages}
