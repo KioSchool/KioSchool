@@ -1,4 +1,4 @@
-import { Table } from '@@types/index';
+import { Order } from '@@types/index';
 import TableOrderCard from '@components/admin/order/TableOrderCard';
 import { SerializedStyles } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -35,7 +35,7 @@ const TableOrderLabel = styled.div`
   }
 `;
 
-interface OrderTableHistoryProps extends Table {
+interface OrderTableHistoryProps extends Order {
   isShowDetail?: boolean;
   setSelectedOrderId: Dispatch<SetStateAction<null | number>>;
 }

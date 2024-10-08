@@ -24,7 +24,6 @@ const TableListContainer = styled.div<{ tableCount: number }>`
   width: 100%;
   overflow-y: auto;
   border-radius: 20px;
-  background: #fff;
   box-shadow: 0px 0px 10px 0px rgba(216, 216, 216, 0.3);
 
   row-gap: 15px;

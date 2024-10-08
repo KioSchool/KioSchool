@@ -1,13 +1,13 @@
 import useApi from '@hooks/useApi';
-import { Order, OrderStatus, PaginationResponse, Table } from '@@types/index';
+import { Order, OrderStatus, PaginationResponse } from '@@types/index';
 import { useSetRecoilState } from 'recoil';
-import { ordersAtom, tablePaginationResponseAtom } from '@recoils/atoms';
+import { ordersAtom, tableOrderPaginationResponseAtom } from '@recoils/atoms';
 import { useSearchParams } from 'react-router-dom';
 
 function useAdminOrder(workspaceId: string | undefined) {
   const { adminApi } = useApi();
   const setOrders = useSetRecoilState(ordersAtom);
-  const setTablePaginationResponse = useSetRecoilState(tablePaginationResponseAtom);
+  const setTablePaginationResponse = useSetRecoilState(tableOrderPaginationResponseAtom);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const fetchAllOrders = () => {
@@ -64,7 +64,7 @@ function useAdminOrder(workspaceId: string | undefined) {
   const fetchWorkspaceTable = (tableNumber: number, page: number, size: number) => {
     const params = { workspaceId, tableNumber, page, size };
 
-    adminApi.get<PaginationResponse<Table>>('/orders/table', { params }).then((res) => {
+    adminApi.get<PaginationResponse<Order>>('/orders/table', { params }).then((res) => {
       setTablePaginationResponse(res.data);
       searchParams.set('page', params.page.toString());
       setSearchParams(searchParams);

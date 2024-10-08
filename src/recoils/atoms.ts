@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { Order, OrderProductBase, OrderStatus, PaginationResponse, Product, ProductCategory, Table, User, UserRole, Workspace } from '@@types/index';
+import { Order, OrderProductBase, OrderStatus, PaginationResponse, Product, ProductCategory, User, UserRole, Workspace } from '@@types/index';
 
 export const ordersAtom = atom<Order[]>({
   key: 'ordersAtom',
@@ -88,6 +88,7 @@ export const userOrderAtom = atom<Order>({
     customerName: '',
     orderProducts: [],
     totalPrice: 0,
+    cancelReason: '',
     status: OrderStatus.NOT_PAID,
     id: 0,
     createdAt: '',
@@ -169,8 +170,8 @@ export const userPaginationResponseAtom = atom<PaginationResponse<User>>({
   },
 });
 
-export const tablePaginationResponseAtom = atom<PaginationResponse<Table>>({
-  key: 'tablePaginationResponseAtom',
+export const tableOrderPaginationResponseAtom = atom<PaginationResponse<Order>>({
+  key: 'tableOrderPaginationResponseAtom',
   default: {
     content: [],
     pageable: {

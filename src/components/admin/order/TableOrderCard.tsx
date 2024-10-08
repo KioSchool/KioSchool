@@ -1,4 +1,4 @@
-import { Table } from '@@types/index';
+import { Order } from '@@types/index';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
@@ -27,7 +27,7 @@ const OrderProductsContainer = styled.div`
   ${colFlex()}
 `;
 
-function TableOrderCard({ id, customerName, createdAt, orderProducts, totalPrice }: Omit<Table, 'status' | 'cancelReason' | 'updatedAt' | 'tableNumber'>) {
+function TableOrderCard({ id, customerName, createdAt, orderProducts, totalPrice }: Omit<Order, 'status' | 'cancelReason' | 'updatedAt' | 'tableNumber'>) {
   const dateConverter = (dateStr: string) => {
     const date = new Date(dateStr);
 
