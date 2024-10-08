@@ -2,13 +2,14 @@ import { Table } from '@@types/index';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
+import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
   padding: 22px;
   width: 100%;
   box-sizing: border-box;
-  background: #f7f7f7;
+  background: #${Color.ORDER_GREY};
   gap: 7px;
   ${colFlex({ align: 'center' })}
 `;

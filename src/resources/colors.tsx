@@ -3,4 +3,5 @@ export const enum Color {
   WHITE = 'white',
   BLACK = 'black',
   KIO_ORANGE = '#EB6D09',
+  ORDER_GREY = '#f7f7f7',
 }
