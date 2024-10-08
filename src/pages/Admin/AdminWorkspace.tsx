@@ -41,7 +41,7 @@ function AdminWorkspace() {
     >
       <Container className={'admin-workspace-container'}>
         <ButtonContainer className={'button-container'}>
-          <ImageRouteButton src={orderImage} onClick={() => appendPath('/order-check')} buttonText={'주문 조회'} />
+          <ImageRouteButton src={orderImage} onClick={() => appendPath('/order')} buttonText={'주문 조회'} />
           <ImageRouteButton src={productImage} onClick={() => appendPath('/products')} buttonText={'상품 관리'} />
           <ImageRouteButton src={orderManageImage} onClick={() => appendPath('/orders-manage')} buttonText={'주문 페이지 관리'} />
         </ButtonContainer>

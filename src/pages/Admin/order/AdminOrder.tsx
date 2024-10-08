@@ -14,7 +14,7 @@ const Container = styled.div`
   ${colFlex({ align: 'center' })}
 `;
 
-function AdminOrderCheck() {
+function AdminOrder() {
   const { replaceLastPath } = useCustomNavigate();
 
   return (
@@ -31,4 +31,4 @@ function AdminOrderCheck() {
   );
 }
 
-export default AdminOrderCheck;
+export default AdminOrder;

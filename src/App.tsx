@@ -29,7 +29,7 @@ import SuperAdminHome from '@pages/SuperAdmin/SuperAdminHome';
 import SuperAdminWorkspace from '@pages/SuperAdmin/SuperAdminWorkspace';
 import SuperAdminManage from '@pages/SuperAdmin/SuperAdminManage';
 import SuperAdminUser from '@pages/SuperAdmin/SuperAdminUser';
-import AdminOrderCheck from '@pages/Admin/order/AdminOrderCheck';
+import AdminOrder from '@pages/Admin/order/AdminOrder';
 import AdminOrderTable from '@pages/Admin/order/AdminOrderTable';
 import AdminOrderTableHistory from '@pages/Admin/order/AdminOrderTableHistory';
 import AdminOrderRealtime from '@pages/Admin/order/AdminOrderRealtime';
@@ -58,7 +58,7 @@ function App() {
         <Route path="/super-admin/workspace" element={<SuperAdminWorkspace />} />
         <Route path="/super-admin/manage" element={<SuperAdminManage />} />
         <Route path="/super-admin/user" element={<SuperAdminUser />} />
-        <Route path="/admin/workspace/:workspaceId/order-check" element={<AdminOrderCheck />} />
+        <Route path="/admin/workspace/:workspaceId/order" element={<AdminOrder />} />
         <Route path="/admin/workspace/:workspaceId/orders-realtime" element={<AdminOrderRealtime />} />
         <Route path="/admin/workspace/:workspaceId/orders-history" element={<AdminOrderHistory />} />
         <Route path="/admin/workspace/:workspaceId/orders-manage" element={<AdminOrderManage />} />
