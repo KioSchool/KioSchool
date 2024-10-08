@@ -37,9 +37,9 @@ function TableOrderCard({ id, customerName, createdAt, orderProducts, totalPrice
   };
 
   return (
-    <Container className={'not-paid-order-card-container'}>
+    <Container className={'table-order-card-container'}>
       <AppLabel size={16}>주문번호 {id}번</AppLabel>
-      <Row className={'not-paid-order-card-row'}>
+      <Row className={'table-order-card-row'}>
         <AppLabel size={14}>입금자명: {customerName}</AppLabel>
         <AppLabel size={14}>{dateConverter(createdAt)}</AppLabel>
       </Row>
@@ -57,7 +57,7 @@ function TableOrderCard({ id, customerName, createdAt, orderProducts, totalPrice
         ))}
       </OrderProductsContainer>
       <HorizontalDivider />
-      <Row className={'not-paid-order-card-row'}>
+      <Row className={'table-order-card-row'}>
         <AppLabel size={16} style={{ fontWeight: 500 }}>
           총 주문 금액
         </AppLabel>

@@ -64,8 +64,8 @@ function AdminOrderTable() {
       useFlex={colFlex({ justify: 'center' })}
       titleNavBarProps={{ title: '테이블 주문 조회', subTitle: '테이블 별 주문 내역을 조회합니다.', onLeftArrowClick: () => replaceLastPath(`/order-check`) }}
     >
-      <Container className={'admin-workspace-container'}>
-        <TableListContainer tableCount={workspace.tableCount}>
+      <Container className={'admin-order-table-container'}>
+        <TableListContainer tableCount={workspace.tableCount} className={'table-list-container'}>
           {Array.from({ length: workspace.tableCount }, (_, index) => (
             <TableCell key={index} onClick={() => replaceLastPath(`/${index + 1}`)}>
               {index + 1}번
