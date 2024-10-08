@@ -3,7 +3,7 @@ import Pagination from '@components/common/pagination/Pagination';
 import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { colFlex } from '@styles/flexStyles';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { useParams } from 'react-router-dom';
 import { tablePaginationResponseAtom } from '@recoils/atoms';
@@ -32,11 +32,13 @@ const EmptyLabel = styled.div`
 function AdminOrderTableHistory() {
   const { workspaceId, tableNumber } = useParams<{ workspaceId: string; tableNumber: string }>();
   const { replaceLastPath } = useCustomNavigate();
-  const pageSize = 6;
   const tables = useRecoilValue(tablePaginationResponseAtom);
   const { fetchWorkspaceTable } = useAdminWorkspace();
+  const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
+
   const isEmptyWorkspaces = tables.empty;
   const emptyMessage = '찾고자 하는 주문이 존재하지 않습니다.';
+  const pageSize = 6;
 
   useEffect(() => {
     fetchWorkspaceTable(Number(workspaceId), Number(tableNumber), 0, pageSize);
@@ -54,7 +56,7 @@ function AdminOrderTableHistory() {
         <ContentContainer justifyCenter={isEmptyWorkspaces} className={'content-container'}>
           {tables.content.map((item, index) => (
             <div key={item.id}>
-              <OrderTableHistoryContent {...item} />
+              <OrderTableHistoryContent {...item} isShowDetail={item.id === selectedOrderId} setSelectedOrderId={setSelectedOrderId} />
               {index < tables.content.length - 1 && <HorizontalLine />}
             </div>
           ))}

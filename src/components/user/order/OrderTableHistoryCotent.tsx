@@ -3,6 +3,7 @@ import { SubContainer } from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Dispatch, SetStateAction } from 'react';
 
 const SubLabelContainer = styled.div`
   color: #d8d8d8;
@@ -23,19 +24,36 @@ const TableOrderLabel = styled.div`
   }
 `;
 
-function OrderTableHistoryContent(props: Table) {
-  const datePart = props.createdAt.split('T')[0];
-  const timePart = props.createdAt.split('T')[1].split(':');
+interface OrderTableHistoryProps extends Table {
+  isShowDetail?: boolean;
+  setSelectedOrderId: Dispatch<SetStateAction<null | number>>;
+}
+
+function OrderTableHistoryContent({ id, customerName, createdAt, isShowDetail, setSelectedOrderId }: OrderTableHistoryProps) {
+  const datePart = createdAt.split('T')[0];
+  const timePart = createdAt.split('T')[1].split(':');
   const filteredCreatedDate = datePart.replace(/-/g, '.') + ' - ' + timePart[0] + ':' + timePart[1];
 
-  const createdDateAndOwnerText = `${props.customerName} | ${filteredCreatedDate}`;
+  const createdDateAndOwnerText = `${customerName} | ${filteredCreatedDate}`;
+
+  const Dummy = <h1>hi</h1>;
+
+  const onClickTableOrderLabel = () => {
+    if (isShowDetail) {
+      setSelectedOrderId(null);
+      return;
+    }
+
+    setSelectedOrderId(id);
+  };
 
   return (
     <SubContainer useFlex={colFlex({ justify: 'center', align: 'start' })} customWidth={'1000px'} customHeight={'80px'} customGap={'5px'}>
-      <TableOrderLabel onClick={() => {}} className={'table-order-label'}>
-        {`주문번호 ${props.id}번`}
+      <TableOrderLabel onClick={onClickTableOrderLabel} className={'table-order-label'}>
+        {`주문번호 ${id}번`}
       </TableOrderLabel>
       <SubLabelContainer className={'sub-label-container'}>{createdDateAndOwnerText}</SubLabelContainer>
+      {isShowDetail && Dummy}
     </SubContainer>
   );
 }
