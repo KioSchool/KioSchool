@@ -53,7 +53,7 @@ function AdminOrderTable() {
 
   useEffect(() => {
     fetchWorkspace(workspaceId);
-  }, [workspaceId, fetchWorkspace]);
+  }, []);
 
   return (
     <AppContainer useFlex={colFlex({ justify: 'center' })} titleNavBarProps={{ title: '테이블 주문 조회' }}>
