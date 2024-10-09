@@ -53,7 +53,7 @@ function AdminOrderTableHistory() {
       customWidth={'1000px'}
       useNavBackground={true}
       useScroll={true}
-      titleNavBarProps={{ title: `${tableNumber}번 테이블`, onLeftArrowClick: () => replaceLastPath(``) }}
+      titleNavBarProps={{ title: `${tableNumber}번 테이블`, onLeftArrowClick: () => replaceLastPath('') }}
     >
       <>
         <ContentContainer justifyCenter={isEmptyWorkspaces} className={'content-container'}>
