@@ -59,11 +59,11 @@ function App() {
         <Route path="/super-admin/manage" element={<SuperAdminManage />} />
         <Route path="/super-admin/user" element={<SuperAdminUser />} />
         <Route path="/admin/workspace/:workspaceId/order" element={<AdminOrder />} />
-        <Route path="/admin/workspace/:workspaceId/orders-realtime" element={<AdminOrderRealtime />} />
-        <Route path="/admin/workspace/:workspaceId/orders-history" element={<AdminOrderHistory />} />
+        <Route path="/admin/workspace/:workspaceId/order/realtime" element={<AdminOrderRealtime />} />
+        <Route path="/admin/workspace/:workspaceId/order/history" element={<AdminOrderHistory />} />
         <Route path="/admin/workspace/:workspaceId/orders-manage" element={<AdminOrderManage />} />
-        <Route path="/admin/workspace/:workspaceId/orders-table" element={<AdminOrderTable />} />
-        <Route path="/admin/workspace/:workspaceId/:tableNumber" element={<AdminOrderTableHistory />} />
+        <Route path="/admin/workspace/:workspaceId/order/table" element={<AdminOrderTable />} />
+        <Route path="/admin/workspace/:workspaceId/order/table/:tableNumber" element={<AdminOrderTableHistory />} />
         <Route path="/admin/workspace/:workspaceId/products" element={<AdminProduct />} />
         <Route path="/admin/workspace/:workspaceId/products/add-product" element={<AdminProductAdd />} />
         <Route path="/admin/workspace/:workspaceId/products/categories" element={<AdminProductCategories />} />

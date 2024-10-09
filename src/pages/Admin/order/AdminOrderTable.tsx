@@ -52,7 +52,7 @@ function AdminOrderTable() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchWorkspace } = useAdminWorkspace();
   const workspace = useRecoilValue(adminWorkspaceAtom);
-  const { replaceLastPath } = useCustomNavigate();
+  const { appendPath, replaceLastPath } = useCustomNavigate();
 
   useEffect(() => {
     fetchWorkspace(workspaceId);
@@ -61,12 +61,12 @@ function AdminOrderTable() {
   return (
     <AppContainer
       useFlex={colFlex({ justify: 'center' })}
-      titleNavBarProps={{ title: '테이블 주문 조회', subTitle: '테이블 별 주문 내역을 조회합니다.', onLeftArrowClick: () => replaceLastPath(`/order`) }}
+      titleNavBarProps={{ title: '테이블 주문 조회', subTitle: '테이블 별 주문 내역을 조회합니다.', onLeftArrowClick: () => replaceLastPath('') }}
     >
       <Container className={'admin-order-table-container'}>
         <TableListContainer tableCount={workspace.tableCount} className={'table-list-container'}>
           {Array.from({ length: workspace.tableCount }, (_, index) => (
-            <TableCell key={index} onClick={() => replaceLastPath(`/${index + 1}`)}>
+            <TableCell key={index} onClick={() => appendPath(`/${index + 1}`)}>
               {index + 1}번
             </TableCell>
           ))}
