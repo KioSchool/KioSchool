@@ -27,7 +27,7 @@ const OrderProductsContainer = styled.div`
   ${colFlex()}
 `;
 
-function TableOrderCard({ id, customerName, createdAt, orderProducts, totalPrice }: Omit<Order, 'status' | 'cancelReason' | 'updatedAt' | 'tableNumber'>) {
+function TableOrderCard({ id, customerName, createdAt, orderProducts, totalPrice }: Order) {
   const dateConverter = (dateStr: string) => {
     const date = new Date(dateStr);
 
