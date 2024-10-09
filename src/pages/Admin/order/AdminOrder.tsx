@@ -19,7 +19,7 @@ function AdminOrder() {
 
   return (
     <AppContainer useFlex={colFlex({ justify: 'center' })} titleNavBarProps={{ title: '주문 조회', subTitle: '주문 조회를 다양하게 관리할 수 있습니다.' }}>
-      <Container className={'admin-order-check-container'}>
+      <Container className={'admin-order-container'}>
         <ButtonContainer className={'button-container'}>
           <ImageRouteButton src={orderImage} onClick={() => replaceLastPath('/orders-realtime')} buttonText={'실시간 주문 조회'} />
           <ImageRouteButton src={orderHistoryImage} onClick={() => replaceLastPath('/orders-history')} buttonText={'전체 주문 조회'} />
