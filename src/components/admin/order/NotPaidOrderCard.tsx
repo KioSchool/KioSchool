@@ -16,7 +16,7 @@ const Container = styled.div`
   padding: 22px;
   width: 350px;
   box-sizing: border-box;
-  background: #f7f7f7;
+  background: ${Color.LIGHT_GREY};
   gap: 7px;
   ${colFlex({ align: 'center' })}
 `;

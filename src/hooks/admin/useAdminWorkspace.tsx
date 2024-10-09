@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 function useAdminWorkspace() {
   const { adminApi } = useApi();
   const setAdminWorkspace = useSetRecoilState(adminWorkspaceAtom);
+
   const navigate = useNavigate();
 
   const fetchWorkspace = (workspaceId: string | undefined | null) => {

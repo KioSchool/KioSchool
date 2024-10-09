@@ -5,6 +5,7 @@ export interface Order {
   orderProducts: Array<OrderProduct>;
   totalPrice: number;
   status: OrderStatus;
+  cancelReason: string;
   id: number;
   createdAt: string;
   updatedAt: string;

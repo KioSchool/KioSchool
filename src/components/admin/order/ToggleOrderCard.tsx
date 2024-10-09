@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import ArrowUpSvg from '@resources/svg/ArrowUpSvg';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 interface ToggleOrderCardProps {
   order: Order;
@@ -11,7 +12,7 @@ interface ToggleOrderCardProps {
 
 const Container = styled.div`
   width: 100%;
-  background: #f7f7f7;
+  background: ${Color.LIGHT_GREY};
   padding: 20px 50px;
   box-sizing: border-box;
   ${rowFlex({ justify: 'space-between' })}
