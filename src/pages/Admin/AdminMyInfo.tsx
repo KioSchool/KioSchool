@@ -13,7 +13,7 @@ const MyInfoContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
-function MyInfo() {
+function AdminMyInfo() {
   const { fetchAdminUser } = useAdminUser();
   const user = useRecoilValue(adminUserAtom);
 
@@ -31,4 +31,4 @@ function MyInfo() {
   );
 }
 
-export default MyInfo;
+export default AdminMyInfo;

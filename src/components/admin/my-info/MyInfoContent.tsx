@@ -85,7 +85,7 @@ function MyInfoContent() {
         {user.role === UserRole.SUPER_ADMIN && (
           <>
             <MyInfoItemContent label="SUPER ADMIN">
-              <SuperAdminButton onClick={() => navigate('/super-admin/home')} />
+              <SuperAdminButton onClick={() => navigate('/super-admin')} />
             </MyInfoItemContent>
 
             <VerticalLine />

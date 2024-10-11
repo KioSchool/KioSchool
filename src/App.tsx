@@ -20,7 +20,7 @@ import AdminOrderHistory from '@pages/Admin/order/AdminOrderHistory';
 import AdminProductEdit from '@pages/Admin/AdminProductEdit';
 import ReactGA from 'react-ga4';
 import RouterChangeTracker from './RouterChangeTracker';
-import MyInfo from '@pages/Admin/MyInfo';
+import AdminMyInfo from '@pages/Admin/AdminMyInfo';
 import AdminProductCategories from '@pages/Admin/AdminProductCategoires';
 import AdminOrderManage from '@pages/Admin/order/AdminOrderManage';
 import ResetPassword from '@pages/User/ResetPassword';
@@ -45,29 +45,31 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/order" element={<Order />} />
-        <Route path="/orderbasket" element={<OrderBasket />} />
+        <Route path="/order-basket" element={<OrderBasket />} />
         <Route path="/order-pay" element={<OrderPay />} />
         <Route path="/order-complete" element={<OrderComplete />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/admin" element={<AdminHome />} />
-        <Route path="/admin/register-account" element={<AdminAccount />} />
-        <Route path="/admin/my-info" element={<MyInfo />} />
         <Route path="/info" element={<Info />} />
-        <Route path="/super-admin/home" element={<SuperAdminHome />} />
+
+        <Route path="/admin" element={<AdminHome />} />
+        <Route path="/admin/my-info" element={<AdminMyInfo />} />
+        <Route path="/admin/register-account" element={<AdminAccount />} />
         <Route path="/admin/workspace/:workspaceId" element={<AdminWorkspace />} />
-        <Route path="/super-admin/workspace" element={<SuperAdminWorkspace />} />
-        <Route path="/super-admin/manage" element={<SuperAdminManage />} />
-        <Route path="/super-admin/user" element={<SuperAdminUser />} />
         <Route path="/admin/workspace/:workspaceId/order" element={<AdminOrder />} />
         <Route path="/admin/workspace/:workspaceId/order/realtime" element={<AdminOrderRealtime />} />
         <Route path="/admin/workspace/:workspaceId/order/history" element={<AdminOrderHistory />} />
-        <Route path="/admin/workspace/:workspaceId/orders-manage" element={<AdminOrderManage />} />
         <Route path="/admin/workspace/:workspaceId/order/table" element={<AdminOrderTable />} />
         <Route path="/admin/workspace/:workspaceId/order/table/:tableNumber" element={<AdminOrderTableHistory />} />
+        <Route path="/admin/workspace/:workspaceId/orders-manage" element={<AdminOrderManage />} />
         <Route path="/admin/workspace/:workspaceId/products" element={<AdminProduct />} />
         <Route path="/admin/workspace/:workspaceId/products/add-product" element={<AdminProductAdd />} />
-        <Route path="/admin/workspace/:workspaceId/products/categories" element={<AdminProductCategories />} />
         <Route path="/admin/workspace/:workspaceId/products/edit-product" element={<AdminProductEdit />} />
+        <Route path="/admin/workspace/:workspaceId/products/categories" element={<AdminProductCategories />} />
+
+        <Route path="/super-admin" element={<SuperAdminHome />} />
+        <Route path="/super-admin/workspace" element={<SuperAdminWorkspace />} />
+        <Route path="/super-admin/manage" element={<SuperAdminManage />} />
+        <Route path="/super-admin/user" element={<SuperAdminUser />} />
       </Routes>
       <Global styles={globalStyles} />
       <LoadingModal />
