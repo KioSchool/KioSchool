@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { Color } from '@resources/colors';
 import ActivatedSearchSvg from '@resources/svg/ActivatedSearchSvg';
 import DeactivatedSearchSvg from '@resources/svg/DeactivatedSearchSvg';
 import { rowFlex } from '@styles/flexStyles';
@@ -16,7 +15,7 @@ const Input = styled.input`
   }
 
   &::placeholder {
-    color: ${Color.HEAVY_GREY};
+    color: #d8d8d8;
   }
 `;
 
@@ -24,8 +23,8 @@ const SearchBarContainer = styled.div`
   gap: 20px;
   width: 100%;
   height: 50px;
-  border-bottom: 0.5px solid ${Color.HEAVY_GREY};
-  color: ${Color.HEAVY_GREY};
+  border-bottom: 0.5px solid #d8d8d8;
+  color: #d8d8d8;
   transition: 0.1s ease-in;
   ${rowFlex({ justify: 'flex-start', align: 'center' })}
 

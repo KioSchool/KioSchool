@@ -113,7 +113,7 @@ function Order() {
           if (isPreview) return;
 
           navigate({
-            pathname: '/order-basket',
+            pathname: '/orderbasket',
             search: createSearchParams({
               workspaceId: workspaceId || '',
               tableNo: tableNo || '',

@@ -5,7 +5,7 @@ import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const SubLabelContainer = styled.div`
-  color: ${Color.HEAVY_GREY};
+  color: #d8d8d8;
   ${rowFlex()}
 `;
 

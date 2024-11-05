@@ -1,14 +1,11 @@
 import useApi from '@hooks/useApi';
-import { Order, OrderStatus, PaginationResponse } from '@@types/index';
+import { Order, OrderStatus } from '@@types/index';
 import { useSetRecoilState } from 'recoil';
-import { ordersAtom, tableOrderPaginationResponseAtom } from '@recoils/atoms';
-import { useSearchParams } from 'react-router-dom';
+import { ordersAtom } from '@recoils/atoms';
 
 function useAdminOrder(workspaceId: string | undefined) {
   const { adminApi } = useApi();
   const setOrders = useSetRecoilState(ordersAtom);
-  const setTablePaginationResponse = useSetRecoilState(tableOrderPaginationResponseAtom);
-  const [searchParams, setSearchParams] = useSearchParams();
 
   const fetchAllOrders = () => {
     adminApi.get<Order[]>('/orders', { params: { workspaceId } }).then((response) => {
@@ -61,27 +58,7 @@ function useAdminOrder(workspaceId: string | undefined) {
     });
   };
 
-  const fetchWorkspaceTable = (tableNumber: number, page: number, size: number) => {
-    const params = { workspaceId, tableNumber, page, size };
-
-    adminApi.get<PaginationResponse<Order>>('/orders/table', { params }).then((res) => {
-      setTablePaginationResponse(res.data);
-      searchParams.set('page', params.page.toString());
-      setSearchParams(searchParams);
-    });
-  };
-
-  return {
-    fetchAllOrders,
-    payOrder,
-    serveOrder,
-    cancelOrder,
-    fetchTodayOrders: fetchRealTimeOrders,
-    fetchOrders,
-    updateOrderProductServe,
-    refundOrder,
-    fetchWorkspaceTable,
-  };
+  return { fetchAllOrders, payOrder, serveOrder, cancelOrder, fetchTodayOrders: fetchRealTimeOrders, fetchOrders, updateOrderProductServe, refundOrder };
 }
 
 export default useAdminOrder;

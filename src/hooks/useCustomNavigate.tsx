@@ -9,12 +9,7 @@ function useCustomNavigate() {
     navigate(url);
   };
 
-  const replaceLastPath = (path: string) => {
-    const url = location.pathname.replace(/\/[^/]*$/, '') + path;
-    navigate(url);
-  };
-
-  return { appendPath, replaceLastPath };
+  return { appendPath };
 }
 
 export default useCustomNavigate;

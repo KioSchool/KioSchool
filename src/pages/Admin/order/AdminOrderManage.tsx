@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
@@ -9,9 +9,6 @@ import 'react-device-frameset/styles/marvel-devices.min.css';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import AdminOrderManageTitleNavBarChildren from '../AdminOrderManageTitleNavBarChildren';
 import { Color } from '@resources/colors';
-import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { adminWorkspaceAtom } from '@recoils/atoms';
 
 const Container = styled.div`
   width: 100vw;
@@ -70,25 +67,13 @@ const QRCodeDownloadButton = styled.label`
 
 function AdminOrderManage() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchWorkspace, updateWorkspaceTableCount } = useAdminWorkspace();
-  const setAdminWorkspace = useSetRecoilState(adminWorkspaceAtom);
-  const workspace = useRecoilValue(adminWorkspaceAtom);
 
-  const [debouncedId, setDebouncedId] = useState<NodeJS.Timeout>();
+  const [tableCount, setTableCount] = React.useState(1);
   const baseUrl = `${location.protocol}//${location.host}`;
 
-  useEffect(() => {
-    return () => clearTimeout(debouncedId);
-  }, [debouncedId]);
-
   const handleTableCount = (count: number) => {
-    setAdminWorkspace((prev) => ({ ...prev, tableCount: count }));
-
-    const delayDebouncedId = setTimeout(() => {
-      updateWorkspaceTableCount(workspaceId, count);
-    }, 300);
-
-    setDebouncedId(delayDebouncedId);
+    setTableCount(count);
+    localStorage.setItem(`workspace-${workspaceId}-tableCount`, count.toString());
   };
 
   const downloadQrCode = (tableNo: number) => {
@@ -100,9 +85,7 @@ function AdminOrderManage() {
   };
 
   useEffect(() => {
-    // will be deleted
-    localStorage.removeItem(`workspace-${workspaceId}-tableCount`);
-    fetchWorkspace(workspaceId);
+    setTableCount(Number(localStorage.getItem(`workspace-${workspaceId}-tableCount`)) || 1);
   }, []);
 
   return (
@@ -112,17 +95,17 @@ function AdminOrderManage() {
       useScroll={true}
       titleNavBarProps={{
         title: '주문 페이지 관리',
-        children: <AdminOrderManageTitleNavBarChildren handleTableCount={handleTableCount} tableCount={workspace.tableCount} />,
+        children: <AdminOrderManageTitleNavBarChildren handleTableCount={handleTableCount} tableCount={tableCount} />,
       }}
     >
       <Container className={'admin-order-manage-container'}>
-        <AppLabel>테이블 개수는 {workspace.tableCount}개 입니다.</AppLabel>
+        <AppLabel>테이블 개수는 {tableCount}개 입니다.</AppLabel>
         <ContentContainer className={'content-container'}>
           <DeviceFrameset device="iPhone X" width={360} height={700}>
             <PreviewContainer src={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=1&preview=true`} />
           </DeviceFrameset>
           <QRCodeContainer className={'qrcode-container'}>
-            {Array.from({ length: workspace.tableCount }, (_, index) => (
+            {Array.from({ length: tableCount }, (_, index) => (
               <QRCodeCard key={index} className={'qrcode-card'}>
                 <TableLink href={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${index + 1}`} target={'_blank'}>
                   {index + 1}번 테이블

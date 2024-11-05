@@ -5,7 +5,6 @@ export interface Order {
   orderProducts: Array<OrderProduct>;
   totalPrice: number;
   status: OrderStatus;
-  cancelReason: string;
   id: number;
   createdAt: string;
   updatedAt: string;
@@ -54,7 +53,6 @@ export interface Workspace {
   products: Array<Product>;
   productCategories: Array<ProductCategory>;
   id: number;
-  tableCount: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -105,6 +103,14 @@ export interface User {
   email: string;
   role: UserRole;
   accountUrl: string;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Email {
+  name: string;
+  domain: string;
   id: number;
   createdAt: string;
   updatedAt: string;

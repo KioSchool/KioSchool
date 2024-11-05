@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { Order, OrderProductBase, OrderStatus, PaginationResponse, Product, ProductCategory, User, UserRole, Workspace } from '@@types/index';
+import { Email, Order, OrderProductBase, OrderStatus, PaginationResponse, Product, ProductCategory, User, UserRole, Workspace } from '@@types/index';
 
 export const ordersAtom = atom<Order[]>({
   key: 'ordersAtom',
@@ -21,29 +21,6 @@ export const categoriesAtom = atom<ProductCategory[]>({
   default: [],
 });
 
-export const adminWorkspaceAtom = atom<Workspace>({
-  key: 'adminWorkspaceAtom',
-  default: {
-    name: '',
-    description: '',
-    owner: {
-      name: '',
-      email: '',
-      role: UserRole.ADMIN,
-      accountUrl: '',
-      id: 0,
-      createdAt: '',
-      updatedAt: '',
-    },
-    products: [],
-    productCategories: [],
-    id: 0,
-    createdAt: '',
-    updatedAt: '',
-    tableCount: 0,
-  },
-});
-
 export const userWorkspaceAtom = atom<Workspace>({
   key: 'userWorkspaceAtom',
   default: {
@@ -56,6 +33,7 @@ export const userWorkspaceAtom = atom<Workspace>({
       accountUrl: '',
       id: 0,
       createdAt: '',
+      // schoolName: '',
       updatedAt: '',
     },
     products: [],
@@ -63,7 +41,6 @@ export const userWorkspaceAtom = atom<Workspace>({
     id: 0,
     createdAt: '',
     updatedAt: '',
-    tableCount: 0,
   },
 });
 
@@ -75,6 +52,7 @@ export const adminUserAtom = atom<User>({
     role: UserRole.ADMIN,
     accountUrl: '',
     id: 0,
+    // schoolName: '',
     createdAt: '',
     updatedAt: '',
   },
@@ -88,7 +66,6 @@ export const userOrderAtom = atom<Order>({
     customerName: '',
     orderProducts: [],
     totalPrice: 0,
-    cancelReason: '',
     status: OrderStatus.NOT_PAID,
     id: 0,
     createdAt: '',
@@ -170,8 +147,8 @@ export const userPaginationResponseAtom = atom<PaginationResponse<User>>({
   },
 });
 
-export const tableOrderPaginationResponseAtom = atom<PaginationResponse<Order>>({
-  key: 'tableOrderPaginationResponseAtom',
+export const emailPaginationResponseAtom = atom<PaginationResponse<Email>>({
+  key: 'emailPaginationResponseAtom',
   default: {
     content: [],
     pageable: {

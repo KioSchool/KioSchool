@@ -2,13 +2,13 @@ import AppContainer from '@components/common/container/AppContainer';
 import Pagination from '@components/common/pagination/Pagination';
 import SuperAdminSearchBar from '@components/SuperAdmin/workspace/SuperAdminSearchBar';
 import styled from '@emotion/styled';
-import { workspacePaginationResponseAtom } from '@recoils/atoms';
+import { emailPaginationResponseAtom } from '@recoils/atoms';
 import { useEffect, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
 import SuperAdminSearchContents from './SuperAdminSearchContents';
-import useSuperAdminWorkspace from '@hooks/SuperAdmin/useSuperAdminWorkspace';
+import useSuperAdminEmail from '@hooks/SuperAdmin/useSuperAdminEmail';
 import { colFlex } from '@styles/flexStyles';
-import SuperAdminWorkspaceContent from '@components/SuperAdmin/workspace/SuperAdminWorkspaceContent';
+import SuperAdminEmailContent from '@components/SuperAdmin/email/SuperAdminEmailContent';
 import { useNavigate } from 'react-router-dom';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
@@ -20,16 +20,16 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
     })}
 `;
 
-function SuperAdminWorkspace() {
+function SuperAdminEmail() {
   const pageSize = 6;
   const navigate = useNavigate();
   const userInputRef = useRef<HTMLInputElement | null>(null);
-  const workspaces = useRecoilValue(workspacePaginationResponseAtom);
-  const { fetchAllWorkspaces } = useSuperAdminWorkspace();
-  const isEmptyWorkspaces = workspaces.empty;
+  const emails = useRecoilValue(emailPaginationResponseAtom);
+  const { fetchAllEmails } = useSuperAdminEmail();
+  const isEmptyEmails = emails.empty;
 
   useEffect(() => {
-    fetchAllWorkspaces(0, pageSize);
+    fetchAllEmails(0, pageSize);
   }, []);
 
   return (
@@ -38,17 +38,17 @@ function SuperAdminWorkspace() {
       customWidth={'1000px'}
       customHeight={'100%'}
       customGap={'20px'}
-      titleNavBarProps={{ title: '전체 워크스페이스 관리', onLeftArrowClick: () => navigate('/super-admin/manage') }}
+      titleNavBarProps={{ title: '사용자 이메일 관리', onLeftArrowClick: () => navigate('/super-admin/email') }}
     >
       <>
-        <SuperAdminSearchBar ref={userInputRef} fetchContents={fetchAllWorkspaces} />
-        <ContentContainer justifyCenter={isEmptyWorkspaces} className={'content-container'}>
-          <SuperAdminSearchContents contents={workspaces} target={'워크스페이스'} ContentComponent={SuperAdminWorkspaceContent} />
+        <SuperAdminSearchBar ref={userInputRef} fetchContents={fetchAllEmails} />
+        <ContentContainer justifyCenter={isEmptyEmails} className={'content-container'}>
+          <SuperAdminSearchContents contents={emails} target={'이메일'} ContentComponent={SuperAdminEmailContent} />
         </ContentContainer>
         <Pagination
-          totalPageCount={workspaces.totalPages}
+          totalPageCount={emails.totalPages}
           paginateFunction={(page: number) => {
-            fetchAllWorkspaces(page, pageSize, userInputRef.current?.value);
+            fetchAllEmails(page, pageSize, userInputRef.current?.value);
           }}
         />
       </>
@@ -56,4 +56,4 @@ function SuperAdminWorkspace() {
   );
 }
 
-export default SuperAdminWorkspace;
+export default SuperAdminEmail;
