@@ -38,7 +38,7 @@ function SuperAdminEmail() {
       customWidth={'1000px'}
       customHeight={'100%'}
       customGap={'20px'}
-      titleNavBarProps={{ title: '사용자 이메일 관리', onLeftArrowClick: () => navigate('/super-admin/email') }}
+      titleNavBarProps={{ title: ' 사용자 이메일 관리', onLeftArrowClick: () => navigate('/super-admin/email') }}
     >
       <>
         <SuperAdminSearchBar ref={userInputRef} fetchContents={fetchAllEmails} />
