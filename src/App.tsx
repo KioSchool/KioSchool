@@ -22,7 +22,7 @@ import ReactGA from 'react-ga4';
 import RouterChangeTracker from './RouterChangeTracker';
 import AdminMyInfo from '@pages/Admin/AdminMyInfo';
 import AdminProductCategories from '@pages/Admin/AdminProductCategoires';
-import AdminOrderManage from '@pages/Admin/order/AdminOrderManage';
+import AdminTableCount from '@pages/Admin/order/AdminTableCount';
 import ResetPassword from '@pages/User/ResetPassword';
 import Info from '@pages/User/Info';
 import SuperAdminHome from '@pages/SuperAdmin/SuperAdminHome';
@@ -60,7 +60,7 @@ function App() {
         <Route path="/admin/workspace/:workspaceId/order/history" element={<AdminOrderHistory />} />
         <Route path="/admin/workspace/:workspaceId/order/table" element={<AdminOrderTable />} />
         <Route path="/admin/workspace/:workspaceId/order/table/:tableNumber" element={<AdminOrderTableHistory />} />
-        <Route path="/admin/workspace/:workspaceId/orders-manage" element={<AdminOrderManage />} />
+        <Route path="/admin/workspace/:workspaceId/table-count" element={<AdminTableCount />} />
         <Route path="/admin/workspace/:workspaceId/products" element={<AdminProduct />} />
         <Route path="/admin/workspace/:workspaceId/products/add-product" element={<AdminProductAdd />} />
         <Route path="/admin/workspace/:workspaceId/products/edit-product" element={<AdminProductEdit />} />

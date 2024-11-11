@@ -43,7 +43,7 @@ function AdminWorkspace() {
         <ButtonContainer className={'button-container'}>
           <ImageRouteButton src={orderImage} onClick={() => appendPath('/order')} buttonText={'주문 조회'} />
           <ImageRouteButton src={productImage} onClick={() => appendPath('/products')} buttonText={'상품 관리'} />
-          <ImageRouteButton src={orderManageImage} onClick={() => appendPath('/orders-manage')} buttonText={'주문 페이지 관리'} />
+          <ImageRouteButton src={orderManageImage} onClick={() => appendPath('/table-count')} buttonText={'테이블 개수 관리'} />
         </ButtonContainer>
         <AppFooter />
       </Container>
