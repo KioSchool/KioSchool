@@ -1,4 +1,4 @@
-import SuperAdminSearchBar from '@components/SuperAdmin/workspace/SuperAdminSearchBar';
+import SuperAdminSearchBar from '@components/super-admin/workspace/SuperAdminSearchBar';
 import styled from '@emotion/styled';
 import { userPaginationResponseAtom } from '@recoils/atoms';
 import { colFlex } from '@styles/flexStyles';
@@ -6,10 +6,10 @@ import { useEffect, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
 import Pagination from '@components/common/pagination/Pagination';
 import AppContainer from '@components/common/container/AppContainer';
-import useSuperAdminUser from '@hooks/SuperAdmin/useSuperAdminUser';
-import SuperAdminUserContent from '@components/SuperAdmin/user/SuperAdminUserContent';
+import useSuperAdminUser from '@hooks/super-admin/useSuperAdminUser';
+import SuperAdminUserContent from '@components/super-admin/user/SuperAdminUserContent';
 import { useNavigate } from 'react-router-dom';
-import SuperAdminSearchContents from '@components/SuperAdmin/SuperAdminSearchContents';
+import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   height: 550px;
