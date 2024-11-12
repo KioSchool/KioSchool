@@ -68,7 +68,7 @@ const QRCodeDownloadButton = styled.label`
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
-function AdminOrderManage() {
+function AdminTableCount() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchWorkspace, updateWorkspaceTableCount } = useAdminWorkspace();
   const setAdminWorkspace = useSetRecoilState(adminWorkspaceAtom);
@@ -111,7 +111,7 @@ function AdminOrderManage() {
       useNavBackground={true}
       useScroll={true}
       titleNavBarProps={{
-        title: '주문 페이지 관리',
+        title: '테이블 개수 관리',
         children: <AdminOrderManageTitleNavBarChildren handleTableCount={handleTableCount} tableCount={workspace.tableCount} />,
       }}
     >
@@ -144,4 +144,4 @@ function AdminOrderManage() {
   );
 }
 
-export default AdminOrderManage;
+export default AdminTableCount;
