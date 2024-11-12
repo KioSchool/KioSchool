@@ -1,15 +1,15 @@
 import AppContainer from '@components/common/container/AppContainer';
 import Pagination from '@components/common/pagination/Pagination';
-import SuperAdminSearchBar from '@components/SuperAdmin/workspace/SuperAdminSearchBar';
+import SuperAdminSearchBar from '@components/super-admin/workspace/SuperAdminSearchBar';
 import styled from '@emotion/styled';
 import { workspacePaginationResponseAtom } from '@recoils/atoms';
 import { useEffect, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
-import useSuperAdminWorkspace from '@hooks/SuperAdmin/useSuperAdminWorkspace';
+import useSuperAdminWorkspace from '@hooks/super-admin/useSuperAdminWorkspace';
 import { colFlex } from '@styles/flexStyles';
-import SuperAdminWorkspaceContent from '@components/SuperAdmin/workspace/SuperAdminWorkspaceContent';
+import SuperAdminWorkspaceContent from '@components/super-admin/workspace/SuperAdminWorkspaceContent';
 import { useNavigate } from 'react-router-dom';
-import SuperAdminSearchContents from '@components/SuperAdmin/SuperAdminSearchContents';
+import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   height: 550px;
