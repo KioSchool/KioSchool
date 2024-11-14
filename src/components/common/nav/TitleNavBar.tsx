@@ -16,7 +16,7 @@ export interface TitleNavBarProps {
 const Container = styled.div<{ useSubTitle: boolean }>`
   z-index: 1002;
   margin-bottom: 25px;
-  height: ${(props) => (props.useSubTitle ? '100px' : '50px')};
+  height: 50px;
   width: 100vw;
   position: fixed;
   top: 61px;
