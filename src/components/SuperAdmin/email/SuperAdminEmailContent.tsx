@@ -18,7 +18,7 @@ const EmailLabel = styled.div`
   cursor: pointer;
   transition: ease-in 0.1s;
   &:hover {
-    color: ${Color.KIO_ORANGE};ㄴ
+    color: ${Color.KIO_ORANGE};
   }
 `;
 
