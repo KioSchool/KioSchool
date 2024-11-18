@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
@@ -73,6 +73,7 @@ function AdminTableCount() {
   const { fetchWorkspace, updateWorkspaceTableCount } = useAdminWorkspace();
   const setAdminWorkspace = useSetRecoilState(adminWorkspaceAtom);
   const workspace = useRecoilValue(adminWorkspaceAtom);
+  const QRCodeCardRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
 
   const [debouncedId, setDebouncedId] = useState<NodeJS.Timeout>();
   const baseUrl = `${location.protocol}//${location.host}`;
@@ -92,7 +93,16 @@ function AdminTableCount() {
   };
 
   const downloadQrCode = (tableNo: number) => {
-    const canvas = document.getElementById(`qrcode-${tableNo}`) as HTMLCanvasElement;
+    const qrDiv = QRCodeCardRefs.current[tableNo];
+    if (!qrDiv) {
+      return;
+    }
+
+    const canvas = qrDiv.querySelector('canvas') as HTMLCanvasElement;
+    if (!canvas) {
+      return;
+    }
+
     const link = document.createElement('a');
     link.download = `${tableNo}번 테이블 QR코드.png`;
     link.href = canvas.toDataURL('image/png');
@@ -127,14 +137,10 @@ function AdminTableCount() {
                 <TableLink href={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${index + 1}`} target={'_blank'}>
                   {index + 1}번 테이블
                 </TableLink>
-                <QRCodeCanvas value={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${index + 1}`} size={150} id={`qrcode-${index + 1}`} />
-                <QRCodeDownloadButton
-                  onClick={() => {
-                    downloadQrCode(index + 1);
-                  }}
-                >
-                  다운로드
-                </QRCodeDownloadButton>
+                <div ref={(el) => (QRCodeCardRefs.current[index] = el)}>
+                  <QRCodeCanvas value={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${index + 1}`} size={150} />
+                </div>
+                <QRCodeDownloadButton onClick={() => downloadQrCode(index + 1)}>다운로드</QRCodeDownloadButton>
               </QRCodeCard>
             ))}
           </QRCodeContainer>
