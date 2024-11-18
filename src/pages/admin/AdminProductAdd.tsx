@@ -53,15 +53,18 @@ function AdminProductAdd() {
   useEffect(() => {
     fetchCategories();
   }, []);
+
   const AddProduct = () => {
     if (!state.name || !state.description) {
       alert('상품 이름 및 설명을 입력해주세요');
       return;
     }
+
     if (state.price < 0) {
       alert('가격은 음수가 될 수 없습니다.');
       return;
     }
+
     if (!file) {
       alert('파일을 선택해주세요');
       return;
