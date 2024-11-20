@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
@@ -73,6 +73,7 @@ function AdminTableCount() {
   const { fetchWorkspace, updateWorkspaceTableCount } = useAdminWorkspace();
   const setAdminWorkspace = useSetRecoilState(adminWorkspaceAtom);
   const workspace = useRecoilValue(adminWorkspaceAtom);
+  const QRCodeCanvasRefs = useRef<{ [key: number]: HTMLCanvasElement | null }>([]);
 
   const [debouncedId, setDebouncedId] = useState<NodeJS.Timeout>();
   const baseUrl = `${location.protocol}//${location.host}`;
@@ -92,7 +93,12 @@ function AdminTableCount() {
   };
 
   const downloadQrCode = (tableNo: number) => {
-    const canvas = document.getElementById(`qrcode-${tableNo}`) as HTMLCanvasElement;
+    const canvas = QRCodeCanvasRefs.current[tableNo];
+    if (!canvas) {
+      alert('다운로드 오류가 발생했습니다!');
+      return;
+    }
+
     const link = document.createElement('a');
     link.download = `${tableNo}번 테이블 QR코드.png`;
     link.href = canvas.toDataURL('image/png');
@@ -127,14 +133,12 @@ function AdminTableCount() {
                 <TableLink href={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${index + 1}`} target={'_blank'}>
                   {index + 1}번 테이블
                 </TableLink>
-                <QRCodeCanvas value={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${index + 1}`} size={150} id={`qrcode-${index + 1}`} />
-                <QRCodeDownloadButton
-                  onClick={() => {
-                    downloadQrCode(index + 1);
-                  }}
-                >
-                  다운로드
-                </QRCodeDownloadButton>
+                <QRCodeCanvas
+                  value={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${index + 1}`}
+                  size={150}
+                  ref={(el) => (QRCodeCanvasRefs.current[index + 1] = el)}
+                />
+                <QRCodeDownloadButton onClick={() => downloadQrCode(index + 1)}>다운로드</QRCodeDownloadButton>
               </QRCodeCard>
             ))}
           </QRCodeContainer>
