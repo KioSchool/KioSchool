@@ -73,7 +73,7 @@ function AdminTableCount() {
   const { fetchWorkspace, updateWorkspaceTableCount } = useAdminWorkspace();
   const setAdminWorkspace = useSetRecoilState(adminWorkspaceAtom);
   const workspace = useRecoilValue(adminWorkspaceAtom);
-  const QRCodeCardRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
+  const QRCodeCanvasRefs = useRef<{ [key: number]: HTMLCanvasElement | null }>([]);
 
   const [debouncedId, setDebouncedId] = useState<NodeJS.Timeout>();
   const baseUrl = `${location.protocol}//${location.host}`;
@@ -93,13 +93,9 @@ function AdminTableCount() {
   };
 
   const downloadQrCode = (tableNo: number) => {
-    const qrDiv = QRCodeCardRefs.current[tableNo];
-    if (!qrDiv) {
-      return;
-    }
-
-    const canvas = qrDiv.querySelector('canvas') as HTMLCanvasElement;
+    const canvas = QRCodeCanvasRefs.current[tableNo];
     if (!canvas) {
+      alert('다운로드 오류가 발생했습니다!');
       return;
     }
 
@@ -137,9 +133,11 @@ function AdminTableCount() {
                 <TableLink href={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${index + 1}`} target={'_blank'}>
                   {index + 1}번 테이블
                 </TableLink>
-                <div ref={(el) => (QRCodeCardRefs.current[index] = el)}>
-                  <QRCodeCanvas value={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${index + 1}`} size={150} />
-                </div>
+                <QRCodeCanvas
+                  value={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${index + 1}`}
+                  size={150}
+                  ref={(el) => (QRCodeCanvasRefs.current[index + 1] = el)}
+                />
                 <QRCodeDownloadButton onClick={() => downloadQrCode(index + 1)}>다운로드</QRCodeDownloadButton>
               </QRCodeCard>
             ))}
