@@ -7,7 +7,7 @@ import { QRCodeCanvas } from 'qrcode.react';
 import { DeviceFrameset } from 'react-device-frameset';
 import 'react-device-frameset/styles/marvel-devices.min.css';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import AdminOrderManageTitleNavBarChildren from '../AdminOrderManageTitleNavBarChildren';
+import AdminOrderManageTitleNavBarChildren from '../../../components/admin/order/AdminOrderManageTitleNavBarChildren';
 import { Color } from '@resources/colors';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
