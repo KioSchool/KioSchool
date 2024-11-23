@@ -1,3 +1,4 @@
+import { PaginationResponse } from '@@types/index';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import ActivatedSearchSvg from '@resources/svg/ActivatedSearchSvg';
@@ -35,16 +36,17 @@ const SearchBarContainer = styled.div`
   }
 `;
 interface SuperAdminSearchBarProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  fetchContents: (page: number, size: number, name: string | undefined) => void;
+  fetchContents: (page: number, size: number, name: string | undefined) => Promise<PaginationResponse<any> | null>;
+  setContents: (content: PaginationResponse<any> | null) => void;
 }
 
 const SuperAdminSearchBar = forwardRef<HTMLInputElement, SuperAdminSearchBarProps>((props, ref) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
-
-  const fetchContentsByName = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const fetchContentsByName = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!(e.key === 'Enter' && ref && typeof ref !== 'function')) return;
 
-    props.fetchContents(0, 6, ref.current?.value);
+    const response = await props.fetchContents(0, 6, ref.current?.value);
+    props.setContents(response);
   };
 
   return (
