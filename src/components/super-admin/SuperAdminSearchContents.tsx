@@ -14,7 +14,7 @@ const EmptyLabel = styled.div`
 `;
 
 interface ContentsProps {
-  contents: PaginationResponse<any> | null;
+  contents: PaginationResponse<any>;
   target: string;
   ContentComponent: React.ElementType;
 }

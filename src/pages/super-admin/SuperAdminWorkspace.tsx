@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
 import { PaginationResponse, Workspace } from '@@types/index';
 import { useEffect, useRef, useState } from 'react';
+import { defaultPaginatoinValue } from '@@types/paginationType';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   height: 550px;
@@ -22,10 +23,10 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 function SuperAdminWorkspace() {
   const pageSize = 6;
   const navigate = useNavigate();
-  const [workspaces, setWorkspaces] = useState<PaginationResponse<Workspace> | null>(null);
+  const [workspaces, setWorkspaces] = useState<PaginationResponse<Workspace>>(defaultPaginatoinValue);
   const userInputRef = useRef<HTMLInputElement | null>(null);
   const { fetchAllWorkspaces } = useSuperAdminWorkspace();
-  const isEmptyWorkspaces = workspaces?.empty ?? true;
+  const isEmptyWorkspaces = workspaces.empty;
 
   const fetchAndSetWorkspaces = async (page: number, size: number, name: string | undefined) => {
     const workspaceResponse = await fetchAllWorkspaces(page, size, name);
@@ -50,7 +51,7 @@ function SuperAdminWorkspace() {
           <SuperAdminSearchContents contents={workspaces} target={'워크스페이스'} ContentComponent={SuperAdminWorkspaceContent} />
         </ContentContainer>
         <Pagination
-          totalPageCount={workspaces?.totalPages || 0}
+          totalPageCount={workspaces.totalPages || 0}
           paginateFunction={(page: number) => {
             fetchAndSetWorkspaces(page, pageSize, userInputRef.current?.value);
           }}

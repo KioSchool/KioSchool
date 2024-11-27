@@ -9,6 +9,7 @@ import SuperAdminUserContent from '@components/super-admin/user/SuperAdminUserCo
 import { useNavigate } from 'react-router-dom';
 import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
 import { PaginationResponse, User } from '@@types/index';
+import { defaultPaginatoinValue } from '@@types/paginationType';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   height: 550px;
@@ -22,7 +23,7 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 function SuperAdminUser() {
   const pageSize = 6;
   const navigate = useNavigate();
-  const [users, setUsers] = useState<PaginationResponse<User> | null>(null);
+  const [users, setUsers] = useState<PaginationResponse<User>>(defaultPaginatoinValue);
   const userInputRef = useRef<HTMLInputElement>(null);
   const { fetchAllUsers } = useSuperAdminUser();
 
