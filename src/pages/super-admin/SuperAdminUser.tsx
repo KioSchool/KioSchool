@@ -58,7 +58,7 @@ function SuperAdminUser() {
         <Pagination
           totalPageCount={users?.totalPages || 0}
           paginateFunction={(page: number) => {
-            fetchAllUsers(page, pageSize, userInputRef.current?.value);
+            fetchAndSetUsers(page, pageSize, userInputRef.current?.value);
           }}
         />
       </>

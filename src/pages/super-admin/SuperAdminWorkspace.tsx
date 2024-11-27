@@ -57,7 +57,7 @@ function SuperAdminWorkspace() {
         <Pagination
           totalPageCount={workspaces?.totalPages || 0}
           paginateFunction={(page: number) => {
-            fetchAllWorkspaces(page, pageSize, userInputRef.current?.value);
+            fetchAndSetWorkspaces(page, pageSize, userInputRef.current?.value);
           }}
         />
       </>
