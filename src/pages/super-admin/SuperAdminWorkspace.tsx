@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
 import { PaginationResponse, Workspace } from '@@types/index';
 import { useEffect, useRef, useState } from 'react';
+import { defaultPaginationValue } from '@@types/PaginationType';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   height: 550px;
@@ -22,7 +23,7 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 function SuperAdminWorkspace() {
   const pageSize = 6;
   const navigate = useNavigate();
-  const [workspaces, setWorkspaces] = useState<PaginationResponse<Workspace> | null>(null);
+  const [workspaces, setWorkspaces] = useState<PaginationResponse<Workspace>>(defaultPaginationValue);
   const userInputRef = useRef<HTMLInputElement | null>(null);
   const { fetchAllWorkspaces } = useSuperAdminWorkspace();
   const isEmptyWorkspaces = workspaces?.empty ?? true;

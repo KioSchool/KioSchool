@@ -9,6 +9,7 @@ import OrderTableHistoryContent from '@components/user/order/OrderTableHistoryCo
 import { Color } from '@resources/colors';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { Order, PaginationResponse } from '@@types/index';
+import { defaultPaginationValue } from '@@types/PaginationType';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   margin-top: 20px;
@@ -32,7 +33,7 @@ const EmptyLabel = styled.div`
 
 function AdminOrderTableHistory() {
   const { workspaceId, tableNumber } = useParams<{ workspaceId: string; tableNumber: string }>();
-  const [tableOrders, setTableOrders] = useState<PaginationResponse<Order> | null>(null);
+  const [tableOrders, setTableOrders] = useState<PaginationResponse<Order>>(defaultPaginationValue);
   const { replaceLastPath } = useCustomNavigate();
   const { fetchWorkspaceTable } = useAdminOrder(workspaceId);
   const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
