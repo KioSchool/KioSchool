@@ -1,4 +1,3 @@
-import { PaginationResponse } from '@@types/index';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import ActivatedSearchSvg from '@resources/svg/ActivatedSearchSvg';
