@@ -48,12 +48,7 @@ function AdminOrderTableHistory() {
   };
 
   useEffect(() => {
-    const workspaceTableResponse = async () => {
-      const response = await fetchWorkspaceTable(Number(tableNumber), 0, pageSize);
-      setTableOrders(response);
-    };
-
-    workspaceTableResponse();
+    fetchAndSetWorkspaceTable(Number(tableNumber), 0, pageSize);
   }, []);
 
   return (

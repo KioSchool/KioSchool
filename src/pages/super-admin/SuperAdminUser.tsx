@@ -28,19 +28,14 @@ function SuperAdminUser() {
 
   const isEmptyUsers = users?.empty ?? true;
 
-  useEffect(() => {
-    const userResponse = async () => {
-      const response = await fetchAllUsers(0, pageSize);
-      setUsers(response);
-    };
-
-    userResponse();
-  }, []);
-
   const fetchAndSetUsers = async (page: number, size: number, name: string | undefined) => {
     const userResponse = await fetchAllUsers(page, size, name);
     setUsers(userResponse);
   };
+
+  useEffect(() => {
+    fetchAndSetUsers(0, pageSize, '');
+  }, []);
 
   return (
     <AppContainer
