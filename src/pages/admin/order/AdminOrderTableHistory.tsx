@@ -3,13 +3,12 @@ import Pagination from '@components/common/pagination/Pagination';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import { useParams } from 'react-router-dom';
-import { tableOrderPaginationResponseAtom } from '@recoils/atoms';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import OrderTableHistoryContent from '@components/user/order/OrderTableHistoryCotent';
 import { Color } from '@resources/colors';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
+import { Order, PaginationResponse } from '@@types/index';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   margin-top: 20px;
@@ -33,18 +32,28 @@ const EmptyLabel = styled.div`
 
 function AdminOrderTableHistory() {
   const { workspaceId, tableNumber } = useParams<{ workspaceId: string; tableNumber: string }>();
+  const [tableOrders, setTableOrders] = useState<PaginationResponse<Order> | null>(null);
   const { replaceLastPath } = useCustomNavigate();
-  const tableOrders = useRecoilValue(tableOrderPaginationResponseAtom);
   const { fetchWorkspaceTable } = useAdminOrder(workspaceId);
   const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
 
-  const isEmptyWorkspaces = tableOrders.empty;
+  const isEmptyWorkspaces = tableOrders?.empty ?? true;
   const emptyMessage = '찾고자 하는 주문이 존재하지 않습니다.';
 
   const pageSize = 6;
 
+  const fetchAndSetWorkspaceTable = async (tableNum: number, page: number, size: number) => {
+    const workspaceTableResponse = await fetchWorkspaceTable(Number(tableNum), page, size);
+    setTableOrders(workspaceTableResponse);
+  };
+
   useEffect(() => {
-    fetchWorkspaceTable(Number(tableNumber), 0, pageSize);
+    const workspaceTableResponse = async () => {
+      const response = await fetchWorkspaceTable(Number(tableNumber), 0, pageSize);
+      setTableOrders(response);
+    };
+
+    workspaceTableResponse();
   }, []);
 
   return (
@@ -57,7 +66,7 @@ function AdminOrderTableHistory() {
     >
       <>
         <ContentContainer justifyCenter={isEmptyWorkspaces} className={'content-container'}>
-          {tableOrders.content.map((item, index) => (
+          {tableOrders?.content.map((item, index) => (
             <div key={item.id}>
               <OrderTableHistoryContent {...item} isShowDetail={item.id === selectedOrderId} setSelectedOrderId={setSelectedOrderId} />
               {index < tableOrders.content.length - 1 && <HorizontalLine />}
@@ -67,9 +76,9 @@ function AdminOrderTableHistory() {
           {isEmptyWorkspaces && <EmptyLabel className={'empty-label'}>{emptyMessage}</EmptyLabel>}
 
           <Pagination
-            totalPageCount={tableOrders.totalPages}
+            totalPageCount={tableOrders?.totalPages || 0}
             paginateFunction={(page: number) => {
-              fetchWorkspaceTable(Number(tableNumber), page, pageSize);
+              fetchAndSetWorkspaceTable(Number(tableNumber), page, pageSize);
             }}
           />
         </ContentContainer>
