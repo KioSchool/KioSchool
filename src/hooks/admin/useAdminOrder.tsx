@@ -3,7 +3,7 @@ import { Order, OrderStatus, PaginationResponse } from '@@types/index';
 import { useSetRecoilState } from 'recoil';
 import { ordersAtom, tableOrderPaginationResponseAtom } from '@recoils/atoms';
 import { useSearchParams } from 'react-router-dom';
-import { defaultPaginatoinValue } from '@@types/paginationType';
+import { defaultPaginationValue } from '@@types/PaginationType';
 
 function useAdminOrder(workspaceId: string | undefined) {
   const { adminApi } = useApi();
@@ -75,7 +75,7 @@ function useAdminOrder(workspaceId: string | undefined) {
       })
       .catch((error) => {
         console.log(error);
-        return defaultPaginatoinValue;
+        return defaultPaginationValue;
       });
 
     return response;

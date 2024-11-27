@@ -1,6 +1,6 @@
 import { PaginationResponse } from '.';
 
-export const defaultPaginatoinValue: PaginationResponse<any> = {
+export const defaultPaginationValue: PaginationResponse<any> = {
   content: [],
   pageable: {
     pageNumber: 0,

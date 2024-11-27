@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 import { Order, OrderProductBase, OrderStatus, PaginationResponse, Product, ProductCategory, User, UserRole, Workspace } from '@@types/index';
-import { defaultPaginatoinValue } from '@@types/paginationType';
+import { defaultPaginationValue } from '@@types/PaginationType';
 
 export const ordersAtom = atom<Order[]>({
   key: 'ordersAtom',
@@ -109,15 +109,15 @@ export const isLoadingAtom = atom<boolean>({
 
 export const workspacePaginationResponseAtom = atom<PaginationResponse<Workspace>>({
   key: 'workspacePaginationResponseAtom',
-  default: defaultPaginatoinValue,
+  default: defaultPaginationValue,
 });
 
 export const userPaginationResponseAtom = atom<PaginationResponse<User>>({
   key: 'userPaginationResponseAtom',
-  default: defaultPaginatoinValue,
+  default: defaultPaginationValue,
 });
 
 export const tableOrderPaginationResponseAtom = atom<PaginationResponse<Order>>({
   key: 'tableOrderPaginationResponseAtom',
-  default: defaultPaginatoinValue,
+  default: defaultPaginationValue,
 });
