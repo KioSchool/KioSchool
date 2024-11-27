@@ -36,17 +36,16 @@ const SearchBarContainer = styled.div`
   }
 `;
 interface SuperAdminSearchBarProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  fetchContents: (page: number, size: number, name: string | undefined) => Promise<PaginationResponse<any> | null>;
-  setContents: (content: PaginationResponse<any> | null) => void;
+  fetchContents: (page: number, size: number, name: string | undefined) => Promise<void>;
 }
 
 const SuperAdminSearchBar = forwardRef<HTMLInputElement, SuperAdminSearchBarProps>((props, ref) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
+
   const fetchContentsByName = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!(e.key === 'Enter' && ref && typeof ref !== 'function')) return;
 
-    const response = await props.fetchContents(0, 6, ref.current?.value);
-    props.setContents(response);
+    props.fetchContents(0, 6, ref.current?.value);
   };
 
   return (

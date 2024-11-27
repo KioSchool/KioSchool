@@ -1,4 +1,5 @@
 import { PaginationResponse, User } from '@@types/index';
+import { defaultPaginatoinValue } from '@@types/paginationType';
 import useApi from '@hooks/useApi';
 import { useSearchParams } from 'react-router-dom';
 
@@ -24,7 +25,7 @@ function useSuperAdminUser() {
       })
       .catch((error) => {
         console.error(error);
-        return null;
+        return defaultPaginatoinValue;
       });
 
     return response;

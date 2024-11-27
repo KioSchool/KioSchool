@@ -23,7 +23,7 @@ function SuperAdminUser() {
   const pageSize = 6;
   const navigate = useNavigate();
   const [users, setUsers] = useState<PaginationResponse<User> | null>(null);
-  const userInputRef = useRef<HTMLInputElement | null>(null);
+  const userInputRef = useRef<HTMLInputElement>(null);
   const { fetchAllUsers } = useSuperAdminUser();
 
   const isEmptyUsers = users?.empty ?? true;
@@ -37,6 +37,11 @@ function SuperAdminUser() {
     userResponse();
   }, []);
 
+  const fetchAndSetUsers = async (page: number, size: number, name: string | undefined) => {
+    const userResponse = await fetchAllUsers(page, size, name);
+    setUsers(userResponse);
+  };
+
   return (
     <AppContainer
       useFlex={colFlex({ justify: 'center' })}
@@ -46,7 +51,7 @@ function SuperAdminUser() {
       titleNavBarProps={{ title: '전체 유저 관리', onLeftArrowClick: () => navigate('/super-admin/manage') }}
     >
       <>
-        <SuperAdminSearchBar ref={userInputRef} fetchContents={fetchAllUsers} setContents={setUsers} />
+        <SuperAdminSearchBar ref={userInputRef} fetchContents={fetchAndSetUsers} />
         <ContentContainer justifyCenter={isEmptyUsers} className={'content-container'}>
           <SuperAdminSearchContents contents={users} target={'유저'} ContentComponent={SuperAdminUserContent} />
         </ContentContainer>
