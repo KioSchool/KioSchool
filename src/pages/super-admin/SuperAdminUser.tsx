@@ -27,7 +27,7 @@ function SuperAdminUser() {
   const userInputRef = useRef<HTMLInputElement>(null);
   const { fetchAllUsers } = useSuperAdminUser();
 
-  const isEmptyUsers = users?.empty ?? true;
+  const isEmptyUsers = users.empty;
 
   const fetchAndSetUsers = async (page: number, size: number, name: string | undefined) => {
     const userResponse = await fetchAllUsers(page, size, name);
@@ -52,7 +52,7 @@ function SuperAdminUser() {
           <SuperAdminSearchContents contents={users} target={'유저'} ContentComponent={SuperAdminUserContent} />
         </ContentContainer>
         <Pagination
-          totalPageCount={users?.totalPages || 0}
+          totalPageCount={users.totalPages}
           paginateFunction={(page: number) => {
             fetchAndSetUsers(page, pageSize, userInputRef.current?.value);
           }}

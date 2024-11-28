@@ -38,13 +38,13 @@ function AdminOrderTableHistory() {
   const { fetchWorkspaceTable } = useAdminOrder(workspaceId);
   const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
 
-  const isEmptyWorkspaces = tableOrders?.empty ?? true;
+  const isEmptyWorkspaces = tableOrders.empty;
   const emptyMessage = '찾고자 하는 주문이 존재하지 않습니다.';
 
   const pageSize = 6;
 
-  const fetchAndSetWorkspaceTable = async (tableNum: number, page: number, size: number) => {
-    const workspaceTableResponse = await fetchWorkspaceTable(Number(tableNum), page, size);
+  const fetchAndSetWorkspaceTable = async (tableNo: number, page: number, size: number) => {
+    const workspaceTableResponse = await fetchWorkspaceTable(tableNo, page, size);
     setTableOrders(workspaceTableResponse);
   };
 
@@ -62,7 +62,7 @@ function AdminOrderTableHistory() {
     >
       <>
         <ContentContainer justifyCenter={isEmptyWorkspaces} className={'content-container'}>
-          {tableOrders?.content.map((item, index) => (
+          {tableOrders.content.map((item, index) => (
             <div key={item.id}>
               <OrderTableHistoryContent {...item} isShowDetail={item.id === selectedOrderId} setSelectedOrderId={setSelectedOrderId} />
               {index < tableOrders.content.length - 1 && <HorizontalLine />}
@@ -72,7 +72,7 @@ function AdminOrderTableHistory() {
           {isEmptyWorkspaces && <EmptyLabel className={'empty-label'}>{emptyMessage}</EmptyLabel>}
 
           <Pagination
-            totalPageCount={tableOrders?.totalPages || 0}
+            totalPageCount={tableOrders.totalPages}
             paginateFunction={(page: number) => {
               fetchAndSetWorkspaceTable(Number(tableNumber), page, pageSize);
             }}

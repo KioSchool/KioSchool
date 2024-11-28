@@ -41,7 +41,7 @@ interface SuperAdminSearchBarProps extends React.InputHTMLAttributes<HTMLInputEl
 const SuperAdminSearchBar = forwardRef<HTMLInputElement, SuperAdminSearchBarProps>((props, ref) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
-  const fetchContentsByName = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const fetchContentsByName = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!(e.key === 'Enter' && ref && typeof ref !== 'function')) return;
 
     props.fetchContents(0, 6, ref.current?.value);

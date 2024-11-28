@@ -26,7 +26,7 @@ function SuperAdminWorkspace() {
   const [workspaces, setWorkspaces] = useState<PaginationResponse<Workspace>>(defaultPaginationValue);
   const userInputRef = useRef<HTMLInputElement | null>(null);
   const { fetchAllWorkspaces } = useSuperAdminWorkspace();
-  const isEmptyWorkspaces = workspaces?.empty ?? true;
+  const isEmptyWorkspaces = workspaces.empty;
 
   const fetchAndSetWorkspaces = async (page: number, size: number, name: string | undefined) => {
     const workspaceResponse = await fetchAllWorkspaces(page, size, name);
@@ -51,7 +51,7 @@ function SuperAdminWorkspace() {
           <SuperAdminSearchContents contents={workspaces} target={'워크스페이스'} ContentComponent={SuperAdminWorkspaceContent} />
         </ContentContainer>
         <Pagination
-          totalPageCount={workspaces?.totalPages || 0}
+          totalPageCount={workspaces.totalPages}
           paginateFunction={(page: number) => {
             fetchAndSetWorkspaces(page, pageSize, userInputRef.current?.value);
           }}
