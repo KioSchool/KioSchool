@@ -20,13 +20,13 @@ interface ContentsProps {
 }
 
 function SuperAdminSearchContents({ contents, target, ContentComponent }: ContentsProps) {
-  if (contents?.empty) {
+  if (contents.empty) {
     return <EmptyLabel className={'empty-label'}>{`찾고자 하는 ${target} 이/가 존재하지 않습니다.`}</EmptyLabel>;
   }
 
   return (
     <>
-      {contents?.content.map((item, index) => (
+      {contents.content.map((item, index) => (
         <div key={item.id}>
           <ContentComponent {...item} />
           {index < contents.content.length - 1 && <HorizontalLine />}
