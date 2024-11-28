@@ -6,7 +6,7 @@ import styled from '@emotion/styled';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useRecoilValue } from 'recoil';
 import { categoriesAtom } from '@recoils/atoms';
-import { ProductActionType, ProductStateType } from '@@types/productTypes';
+import { ProductActionType, ProductStateType } from '@@types/ProductTypes';
 import SelectWithLabel from '@components/common/select/SelectWithLabelProps';
 import AppImageInput from '@components/common/input/AppImageInput';
 import AppContainer from '@components/common/container/AppContainer';

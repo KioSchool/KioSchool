@@ -3,13 +3,13 @@ import Pagination from '@components/common/pagination/Pagination';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import { useParams } from 'react-router-dom';
-import { tableOrderPaginationResponseAtom } from '@recoils/atoms';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import OrderTableHistoryContent from '@components/user/order/OrderTableHistoryCotent';
 import { Color } from '@resources/colors';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
+import { Order, PaginationResponse } from '@@types/index';
+import { defaultPaginationValue } from '@@types/PaginationType';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   margin-top: 20px;
@@ -33,8 +33,8 @@ const EmptyLabel = styled.div`
 
 function AdminOrderTableHistory() {
   const { workspaceId, tableNumber } = useParams<{ workspaceId: string; tableNumber: string }>();
+  const [tableOrders, setTableOrders] = useState<PaginationResponse<Order>>(defaultPaginationValue);
   const { replaceLastPath } = useCustomNavigate();
-  const tableOrders = useRecoilValue(tableOrderPaginationResponseAtom);
   const { fetchWorkspaceTable } = useAdminOrder(workspaceId);
   const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
 
@@ -43,8 +43,13 @@ function AdminOrderTableHistory() {
 
   const pageSize = 6;
 
+  const fetchAndSetWorkspaceTable = async (tableNo: number, page: number, size: number) => {
+    const workspaceTableResponse = await fetchWorkspaceTable(tableNo, page, size);
+    setTableOrders(workspaceTableResponse);
+  };
+
   useEffect(() => {
-    fetchWorkspaceTable(Number(tableNumber), 0, pageSize);
+    fetchAndSetWorkspaceTable(Number(tableNumber), 0, pageSize);
   }, []);
 
   return (
@@ -69,7 +74,7 @@ function AdminOrderTableHistory() {
           <Pagination
             totalPageCount={tableOrders.totalPages}
             paginateFunction={(page: number) => {
-              fetchWorkspaceTable(Number(tableNumber), page, pageSize);
+              fetchAndSetWorkspaceTable(Number(tableNumber), page, pageSize);
             }}
           />
         </ContentContainer>

@@ -3,6 +3,7 @@ import { Order, OrderStatus, PaginationResponse } from '@@types/index';
 import { useSetRecoilState } from 'recoil';
 import { ordersAtom, tableOrderPaginationResponseAtom } from '@recoils/atoms';
 import { useSearchParams } from 'react-router-dom';
+import { defaultPaginationValue } from '@@types/PaginationType';
 
 function useAdminOrder(workspaceId: string | undefined) {
   const { adminApi } = useApi();
@@ -64,11 +65,20 @@ function useAdminOrder(workspaceId: string | undefined) {
   const fetchWorkspaceTable = (tableNumber: number, page: number, size: number) => {
     const params = { workspaceId, tableNumber, page, size };
 
-    adminApi.get<PaginationResponse<Order>>('/orders/table', { params }).then((res) => {
-      setTablePaginationResponse(res.data);
-      searchParams.set('page', params.page.toString());
-      setSearchParams(searchParams);
-    });
+    const response = adminApi
+      .get<PaginationResponse<Order>>('/orders/table', { params })
+      .then((res) => {
+        setTablePaginationResponse(res.data);
+        searchParams.set('page', params.page.toString());
+        setSearchParams(searchParams);
+        return res.data;
+      })
+      .catch((error) => {
+        console.log(error);
+        return defaultPaginationValue;
+      });
+
+    return response;
   };
 
   return {

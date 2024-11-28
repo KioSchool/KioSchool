@@ -35,7 +35,7 @@ const SearchBarContainer = styled.div`
   }
 `;
 interface SuperAdminSearchBarProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  fetchContents: (page: number, size: number, name: string | undefined) => void;
+  fetchContents: (page: number, size: number, name: string | undefined) => Promise<void>;
 }
 
 const SuperAdminSearchBar = forwardRef<HTMLInputElement, SuperAdminSearchBarProps>((props, ref) => {
