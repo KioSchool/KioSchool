@@ -23,11 +23,11 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 function SuperAdminEmail() {
   const pageSize = 6;
   const navigate = useNavigate();
-  const [Emails, setEmails] = useState<PaginationResponse<EmailDomain>>(defaultPaginationValue);
-  const EmailInputRef = useRef<HTMLInputElement>(null);
+  const [emails, setEmails] = useState<PaginationResponse<EmailDomain>>(defaultPaginationValue);
+  const emailInputRef = useRef<HTMLInputElement>(null);
   const { fetchAllEmails } = useSuperAdminEmail();
 
-  const isEmptyEmails = Emails.empty;
+  const isEmptyEmails = emails.empty;
 
   const fetchAndSetEmails = async (page: number, size: number, name: string | undefined) => {
     const emailResponse = await fetchAllEmails(page, size, name);
@@ -47,14 +47,14 @@ function SuperAdminEmail() {
       titleNavBarProps={{ title: '이메일 도메인 관리', onLeftArrowClick: () => navigate('/super-admin/manage') }}
     >
       <>
-        <SuperAdminSearchBar ref={EmailInputRef} fetchContents={fetchAndSetEmails} />
+        <SuperAdminSearchBar ref={emailInputRef} fetchContents={fetchAndSetEmails} />
         <ContentContainer justifyCenter={isEmptyEmails} className={'content-container'}>
-          <SuperAdminSearchContents contents={Emails} target={'이메일'} ContentComponent={SuperAdminEmailContent} />
+          <SuperAdminSearchContents contents={emails} target={'이메일'} ContentComponent={SuperAdminEmailContent} />
         </ContentContainer>
         <Pagination
-          totalPageCount={Emails.totalPages}
+          totalPageCount={emails.totalPages}
           paginateFunction={(page: number) => {
-            fetchAndSetEmails(page, pageSize, EmailInputRef.current?.value);
+            fetchAndSetEmails(page, pageSize, emailInputRef.current?.value);
           }}
         />
       </>

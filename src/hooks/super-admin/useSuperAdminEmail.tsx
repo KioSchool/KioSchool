@@ -3,7 +3,7 @@ import { defaultPaginationValue } from '@@types/PaginationType';
 import useApi from '@hooks/useApi';
 import { useSearchParams } from 'react-router-dom';
 
-interface FetchAllUsersParamsType {
+interface FetchAllEmailsParamsType {
   page: number;
   size: number;
   name?: string;
@@ -14,10 +14,10 @@ function useSuperAdminEmail() {
   const { superAdminApi } = useApi();
 
   const fetchAllEmails = (page: number, size: number, name?: string) => {
-    const params: FetchAllUsersParamsType = { page, size, name };
+    const params: FetchAllEmailsParamsType = { page, size, name };
 
     const response = superAdminApi
-      .get<PaginationResponse<EmailDomain>>('/users', { params })
+      .get<PaginationResponse<EmailDomain>>('/emails', { params })
       .then((res) => {
         searchParams.set('page', params.page.toString());
         setSearchParams(searchParams);

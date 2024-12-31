@@ -14,7 +14,7 @@ const WorkspaceLabel = styled.div`
   font-size: 18px;
   font-weight: 400;
   text-decoration: none;
-  color: GREY;
+  color: ${Color.GREY};
   cursor: pointer;
   transition: ease-in 0.1s;
   &:hover {

@@ -1,4 +1,4 @@
-import { EmailDomain, User } from '@@types/index';
+import { EmailDomain } from '@@types/index';
 import { SubContainer } from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
@@ -9,12 +9,12 @@ const SubLabelContainer = styled.div`
   ${rowFlex()}
 `;
 
-const WorkspaceLabel = styled.div`
+const EmailLabel = styled.div`
   text-align: center;
   font-size: 18px;
   font-weight: 400;
   text-decoration: none;
-  color: #5c5c5c;
+  color: ${Color.GREY};
   cursor: pointer;
   transition: ease-in 0.1s;
   &:hover {
@@ -26,7 +26,7 @@ const WorkspaceLabel = styled.div`
 function SuperAdminEmailContent({ name, domain }: EmailDomain) {
   return (
     <SubContainer useFlex={colFlex({ justify: 'center', align: 'start' })} customWidth={'1000px'} customHeight={'80px'} customGap={'5px'}>
-      <WorkspaceLabel className={'user-label'}>{name}</WorkspaceLabel>
+      <EmailLabel className={'email-label'}>{name}</EmailLabel>
       <SubLabelContainer className={'sub-label-container'}>{domain}</SubLabelContainer>
     </SubContainer>
   );
