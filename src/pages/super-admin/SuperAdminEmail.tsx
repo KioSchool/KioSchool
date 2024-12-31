@@ -23,19 +23,19 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 function SuperAdminEmail() {
   const pageSize = 6;
   const navigate = useNavigate();
-  const [users, setUsers] = useState<PaginationResponse<EmailDomain>>(defaultPaginationValue);
-  const userInputRef = useRef<HTMLInputElement>(null);
+  const [Emails, setEmails] = useState<PaginationResponse<EmailDomain>>(defaultPaginationValue);
+  const EmailInputRef = useRef<HTMLInputElement>(null);
   const { fetchAllEmails } = useSuperAdminEmail();
 
-  const isEmptyUsers = users.empty;
+  const isEmptyEmails = Emails.empty;
 
-  const fetchAndSetUsers = async (page: number, size: number, name: string | undefined) => {
-    const userResponse = await fetchAllEmails(page, size, name);
-    setUsers(userResponse);
+  const fetchAndSetEmails = async (page: number, size: number, name: string | undefined) => {
+    const emailResponse = await fetchAllEmails(page, size, name);
+    setEmails(emailResponse);
   };
 
   useEffect(() => {
-    fetchAndSetUsers(0, pageSize, '');
+    fetchAndSetEmails(0, pageSize, '');
   }, []);
 
   return (
@@ -47,14 +47,14 @@ function SuperAdminEmail() {
       titleNavBarProps={{ title: '이메일 도메인 관리', onLeftArrowClick: () => navigate('/super-admin/manage') }}
     >
       <>
-        <SuperAdminSearchBar ref={userInputRef} fetchContents={fetchAndSetUsers} />
-        <ContentContainer justifyCenter={isEmptyUsers} className={'content-container'}>
-          <SuperAdminSearchContents contents={users} target={'이메일'} ContentComponent={SuperAdminEmailContent} />
+        <SuperAdminSearchBar ref={EmailInputRef} fetchContents={fetchAndSetEmails} />
+        <ContentContainer justifyCenter={isEmptyEmails} className={'content-container'}>
+          <SuperAdminSearchContents contents={Emails} target={'이메일'} ContentComponent={SuperAdminEmailContent} />
         </ContentContainer>
         <Pagination
-          totalPageCount={users.totalPages}
+          totalPageCount={Emails.totalPages}
           paginateFunction={(page: number) => {
-            fetchAndSetUsers(page, pageSize, userInputRef.current?.value);
+            fetchAndSetEmails(page, pageSize, EmailInputRef.current?.value);
           }}
         />
       </>
