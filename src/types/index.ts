@@ -109,3 +109,11 @@ export interface User {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface EmailDomain {
+  name: string;
+  domain: string;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+}
