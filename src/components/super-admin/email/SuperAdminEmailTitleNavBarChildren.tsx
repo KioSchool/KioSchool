@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { rowFlex } from '@styles/flexStyles';
 import RoundedAppButton from '@components/common/button/RoundedAppButton';
 import useInputConfirm from '@hooks/useInputConfirm';
+import useSuperAdminEmail from '@hooks/super-admin/useSuperAdminEmail';
 
 const ButtonContainer = styled.div`
   gap: 20px;
@@ -9,6 +10,7 @@ const ButtonContainer = styled.div`
 `;
 
 function SuperAdminEmailTitleNavBarChildren() {
+  const { addEmailDomain } = useSuperAdminEmail();
   const { InputConfirmModal, confirm } = useInputConfirm({
     title: '도메인 추가',
     description: '추가할 도메인을 입력하세요.',
@@ -22,7 +24,12 @@ function SuperAdminEmailTitleNavBarChildren() {
   const handleAddDomain = async () => {
     try {
       const result = await confirm();
-      console.log('입력된 도메인:', result);
+
+      const schoolName = result['학교명'];
+      const schoolDomain = result['학교 도메인'];
+
+      addEmailDomain(schoolName, schoolDomain);
+      console.log(`도메인 추가 완료: ${schoolName} (${schoolDomain})`);
     } catch {
       console.log('도메인 추가 취소됨');
     }
