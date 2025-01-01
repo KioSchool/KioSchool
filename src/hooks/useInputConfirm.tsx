@@ -122,7 +122,7 @@ function useInputConfirm({ title, description, submitText, inputSlots = [] }: In
           <SubmitContainer className="button-container">
             {inputSlots.map((slot, index) => (
               <InputContainer key={index}>
-                <AppLabel size={15} style={{ color: Color.WHITE }}>
+                <AppLabel size={15} color={Color.WHITE}>
                   {slot.label}
                 </AppLabel>
                 <AppInput ref={(el) => (inputRefs.current[index] = el)} type="text" placeholder={slot.placeholder} style={{ width: '100%' }} />

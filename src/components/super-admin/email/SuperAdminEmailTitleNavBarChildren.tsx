@@ -10,6 +10,9 @@ const ButtonContainer = styled.div`
 `;
 
 function SuperAdminEmailTitleNavBarChildren() {
+  const schoolName = '학교명';
+  const schoolDomain = '학교 도메인';
+
   const { addEmailDomain } = useSuperAdminEmail();
   const { InputConfirmModal, confirm } = useInputConfirm({
     title: '도메인 추가',
@@ -25,12 +28,9 @@ function SuperAdminEmailTitleNavBarChildren() {
     try {
       const result = await confirm();
 
-      const schoolName = result['학교명'];
-      const schoolDomain = result['학교 도메인'];
-
-      addEmailDomain(schoolName, schoolDomain);
+      addEmailDomain(result[schoolName], result[schoolDomain]);
     } catch {
-      alert('이메일 추가 취소됨');
+      alert('도메인 추가 취소됨');
     }
   };
 

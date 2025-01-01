@@ -10,7 +10,7 @@ interface FetchAllEmailsParamsType {
   name?: string;
 }
 
-interface AddEmailsParamsType {
+interface AddEmailDomainParamsType {
   name: string;
   domain: string;
 }
@@ -36,7 +36,7 @@ function useSuperAdminEmail() {
   };
 
   const addEmailDomain = (name: string, domain: string) => {
-    const params: AddEmailsParamsType = { name, domain };
+    const params: AddEmailDomainParamsType = { name, domain };
 
     superAdminApi
       .post('/email-domain', params)
