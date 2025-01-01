@@ -100,7 +100,7 @@ function useInputConfirm({ title, description, submitText, inputSlots = [] }: In
     setPromise(null);
   };
 
-  const confirm = () => new Promise((resolve, reject) => setPromise({ resolve, reject }));
+  const confirm = (): Promise<Record<string, string>> => new Promise((resolve, reject) => setPromise({ resolve, reject }));
 
   const InputConfirmModal = () => {
     if (promise === null) return null;
