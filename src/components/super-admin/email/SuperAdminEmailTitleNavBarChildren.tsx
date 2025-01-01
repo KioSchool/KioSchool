@@ -19,8 +19,8 @@ function SuperAdminEmailTitleNavBarChildren() {
     description: '추가할 도메인을 입력하세요.',
     submitText: '도메인 추가하기',
     inputSlots: [
-      { label: '학교명', placeholder: '등록하실 학교 이름을 입력해주세요.' },
-      { label: '학교 도메인', placeholder: '학교 이메일 도메인을 입력해주세요.' },
+      { label: schoolName, placeholder: '등록하실 학교 이름을 입력해주세요.' },
+      { label: schoolDomain, placeholder: '학교 이메일 도메인을 입력해주세요.' },
     ],
   });
 
