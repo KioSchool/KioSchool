@@ -10,6 +10,7 @@ import { PaginationResponse, EmailDomain } from '@@types/index';
 import { defaultPaginationValue } from '@@types/PaginationType';
 import useSuperAdminEmail from '@hooks/super-admin/useSuperAdminEmail';
 import SuperAdminEmailContent from '@components/super-admin/user/SuperAdminEmailContent';
+import SuperAdminEmailTitleNavBarChildren from '@components/super-admin/email/SuperAdminEmailTitleNavBarChildren';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   height: 550px;
@@ -44,7 +45,11 @@ function SuperAdminEmail() {
       customWidth={'1000px'}
       customHeight={'100%'}
       customGap={'20px'}
-      titleNavBarProps={{ title: '이메일 도메인 관리', onLeftArrowClick: () => navigate('/super-admin/manage') }}
+      titleNavBarProps={{
+        title: '이메일 도메인 관리',
+        onLeftArrowClick: () => navigate('/super-admin/manage'),
+        children: <SuperAdminEmailTitleNavBarChildren />,
+      }}
     >
       <>
         <SuperAdminSearchBar ref={emailInputRef} fetchContents={fetchAndSetEmails} />
