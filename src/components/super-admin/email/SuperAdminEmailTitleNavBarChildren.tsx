@@ -1,8 +1,6 @@
 import styled from '@emotion/styled';
-// eslint-disable-next-line import/no-unresolved
-import RoundedAppButton from '@components/common/button/RoundedAppButton';
-// eslint-disable-next-line import/no-unresolved
 import { rowFlex } from '@styles/flexStyles';
+import RoundedAppButton from '@components/common/button/RoundedAppButton';
 
 const ButtonContainer = styled.div`
   gap: 20px;
