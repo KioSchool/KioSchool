@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { Order, OrderProductBase, OrderStatus, PaginationResponse, Product, ProductCategory, User, UserRole, Workspace } from '@@types/index';
+import { EmailDomain, Order, OrderProductBase, OrderStatus, PaginationResponse, Product, ProductCategory, User, UserRole, Workspace } from '@@types/index';
 import { defaultPaginationValue } from '@@types/PaginationType';
 
 export const ordersAtom = atom<Order[]>({
@@ -107,13 +107,8 @@ export const isLoadingAtom = atom<boolean>({
   default: false,
 });
 
-export const workspacePaginationResponseAtom = atom<PaginationResponse<Workspace>>({
-  key: 'workspacePaginationResponseAtom',
-  default: defaultPaginationValue,
-});
-
-export const userPaginationResponseAtom = atom<PaginationResponse<User>>({
-  key: 'userPaginationResponseAtom',
+export const emailPaginationResponseAtom = atom<PaginationResponse<EmailDomain>>({
+  key: 'emailPaginationResponseAtom',
   default: defaultPaginationValue,
 });
 
