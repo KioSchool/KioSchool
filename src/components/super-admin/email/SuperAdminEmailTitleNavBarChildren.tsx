@@ -29,9 +29,8 @@ function SuperAdminEmailTitleNavBarChildren() {
       const schoolDomain = result['학교 도메인'];
 
       addEmailDomain(schoolName, schoolDomain);
-      console.log(`도메인 추가 완료: ${schoolName} (${schoolDomain})`);
     } catch {
-      console.log('도메인 추가 취소됨');
+      alert('이메일 추가 취소됨');
     }
   };
 
