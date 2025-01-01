@@ -44,7 +44,13 @@ function useSuperAdminEmail() {
     });
   };
 
-  return { fetchAllEmails, addEmailDomain };
+  const deleteEmailDomain = (domainId: Number) => {
+    superAdminApi.delete('/email-domain', { data: { domainId } }).catch((error) => {
+      console.error(error);
+    });
+  };
+
+  return { fetchAllEmails, addEmailDomain, deleteEmailDomain };
 }
 
 export default useSuperAdminEmail;
