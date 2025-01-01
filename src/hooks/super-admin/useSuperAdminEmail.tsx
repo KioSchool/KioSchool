@@ -9,6 +9,11 @@ interface FetchAllEmailsParamsType {
   name?: string;
 }
 
+interface AddEmailsParamsType {
+  name: string;
+  domain: string;
+}
+
 function useSuperAdminEmail() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { superAdminApi } = useApi();
@@ -31,7 +36,15 @@ function useSuperAdminEmail() {
     return response;
   };
 
-  return { fetchAllEmails };
+  const addEmailDomain = (name: string, domain: string) => {
+    const params: AddEmailsParamsType = { name, domain };
+
+    superAdminApi.post('/email-domain', params).catch((error) => {
+      console.error(error);
+    });
+  };
+
+  return { fetchAllEmails, addEmailDomain };
 }
 
 export default useSuperAdminEmail;
