@@ -83,7 +83,7 @@ function useInputConfirm({ title, description, submitText, inputSlots = [] }: In
   const handleConfirm = () => {
     const values = inputRefs.current.map((input) => input?.value.trim() || '');
 
-    const emptyFields = inputSlots.map((slot, index) => (values[index] === '' ? slot.label : null)).filter(Boolean);
+    const emptyFields = inputSlots.filter((_, index) => values[index] === '').map((slot) => slot.label);
     if (emptyFields.length) {
       alert(`다음 항목을 입력해주세요: ${emptyFields.join(', ')}`);
       return;
