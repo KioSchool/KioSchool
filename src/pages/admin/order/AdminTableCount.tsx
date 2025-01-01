@@ -7,7 +7,7 @@ import { QRCodeCanvas } from 'qrcode.react';
 import { DeviceFrameset } from 'react-device-frameset';
 import 'react-device-frameset/styles/marvel-devices.min.css';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import AdminOrderManageTitleNavBarChildren from '../../../components/admin/order/AdminOrderManageTitleNavBarChildren';
+import AdminTableCountTitleNavBarChildren from '@components/admin/order/AdminOrderManageTitleNavBarChildren';
 import { Color } from '@resources/colors';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
@@ -118,7 +118,7 @@ function AdminTableCount() {
       useScroll={true}
       titleNavBarProps={{
         title: '테이블 개수 관리',
-        children: <AdminOrderManageTitleNavBarChildren handleTableCount={handleTableCount} tableCount={workspace.tableCount} />,
+        children: <AdminTableCountTitleNavBarChildren handleTableCount={handleTableCount} tableCount={workspace.tableCount} />,
       }}
     >
       <Container className={'admin-order-manage-container'}>

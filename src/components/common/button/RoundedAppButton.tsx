@@ -16,6 +16,8 @@ const Container = styled.button`
   height: 35px;
   padding: 0 35px;
   user-select: none;
+  cursor: pointer;
+
   &:hover {
     background: #ff7b2b;
   }
