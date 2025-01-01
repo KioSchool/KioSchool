@@ -17,7 +17,7 @@ function useSuperAdminEmail() {
     const params: FetchAllEmailsParamsType = { page, size, name };
 
     const response = superAdminApi
-      .get<PaginationResponse<EmailDomain>>('/emails', { params })
+      .get<PaginationResponse<EmailDomain>>('/email-domains', { params })
       .then((res) => {
         searchParams.set('page', params.page.toString());
         setSearchParams(searchParams);
