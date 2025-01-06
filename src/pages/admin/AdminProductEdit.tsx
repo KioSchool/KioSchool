@@ -54,7 +54,12 @@ function AdminProductEdit() {
 
   const navigate = useNavigate();
   const [productState, dispatch] = useReducer(reducer, initState);
-  const { ConfirmModal, confirm } = useConfirm(`'${productState.name}' 상품을 삭제하시겠습니까?`, '확인 후 되돌릴 수 없습니다.', '삭제하기', '취소');
+  const { ConfirmModal, confirm } = useConfirm({
+    title: `'${productState.name}' 상품을 삭제하시겠습니까?`,
+    description: '확인 후 되돌릴 수 없습니다.',
+    okText: '삭제하기',
+    cancelText: '취소',
+  });
 
   useEffect(() => {
     window.scrollTo(0, 0);

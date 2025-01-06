@@ -47,7 +47,11 @@ interface DraggableProps {
 function CategoryDraggableContents({ category, index }: DraggableProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { deleteCategory } = useAdminProducts(workspaceId);
-  const { ConfirmModal, confirm } = useConfirm('카테고리에 포함된 상품이 있습니다.', '카테고리에 포함된 상품이 없어야 카테고리를 삭제할 수 있습니다.', '확인');
+  const { ConfirmModal, confirm } = useConfirm({
+    title: '카테고리에 포함된 상품이 있습니다.',
+    description: '카테고리에 포함된 상품이 없어야 카테고리를 삭제할 수 있습니다.',
+    okText: '확인',
+  });
 
   const deleteCategoryHandler = () => {
     deleteCategory(category.id).catch((e) => {
