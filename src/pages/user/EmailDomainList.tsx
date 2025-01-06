@@ -4,7 +4,6 @@ import { colFlex } from '@styles/flexStyles';
 import { useEffect, useRef, useState } from 'react';
 import Pagination from '@components/common/pagination/Pagination';
 import AppContainer from '@components/common/container/AppContainer';
-import { useNavigate } from 'react-router-dom';
 import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
 import { EmailDomain, PaginationResponse } from '@@types/index';
 import { defaultPaginationValue } from '@@types/PaginationType';
@@ -22,7 +21,6 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 
 function EmailDomainList() {
   const pageSize = 6;
-  const navigate = useNavigate();
   const [emailDomain, setEmailDomain] = useState<PaginationResponse<EmailDomain>>(defaultPaginationValue);
   const userInputRef = useRef<HTMLInputElement>(null);
   const { fetchAllEmailDomain } = useEmail();
@@ -44,7 +42,7 @@ function EmailDomainList() {
       customWidth={'1000px'}
       customHeight={'100%'}
       customGap={'20px'}
-      titleNavBarProps={{ title: '이메일 도메인 조회', onLeftArrowClick: () => navigate('/') }}
+      titleNavBarProps={{ title: '이메일 도메인 조회', useBackIcon: false }}
     >
       <>
         <SuperAdminSearchBar ref={userInputRef} fetchContents={fetchAndSetEmailDomain} />
