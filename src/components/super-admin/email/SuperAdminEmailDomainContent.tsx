@@ -35,7 +35,7 @@ const ButtonContainer = styled.div`
   height: 100%;
 `;
 
-function SuperAdminEmailContent({ name, domain, id }: EmailDomain) {
+function SuperAdminEmailDomainContent({ name, domain, id }: EmailDomain) {
   const { deleteEmailDomain } = useSuperAdminEmail();
 
   const onDeleteHandler = () => {
@@ -57,4 +57,4 @@ function SuperAdminEmailContent({ name, domain, id }: EmailDomain) {
   );
 }
 
-export default SuperAdminEmailContent;
+export default SuperAdminEmailDomainContent;

@@ -3,7 +3,7 @@ import { defaultPaginationValue } from '@@types/PaginationType';
 import useApi from '@hooks/useApi';
 import { useSearchParams } from 'react-router-dom';
 
-interface FetchAllEmailsParamsType {
+interface FetchAllEmailDomainParamsType {
   page: number;
   size: number;
   name?: string;
@@ -13,8 +13,8 @@ function useEmail() {
   const { userApi } = useApi();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const fetchAllEmails = (page: number, size: number, name?: string) => {
-    const params: FetchAllEmailsParamsType = { page, size, name };
+  const fetchAllEmailDomain = (page: number, size: number, name?: string) => {
+    const params: FetchAllEmailDomainParamsType = { page, size, name };
 
     const response = userApi
       .get<PaginationResponse<EmailDomain>>('/email-domains', { params })
@@ -31,7 +31,7 @@ function useEmail() {
     return response;
   };
 
-  return { fetchAllEmails };
+  return { fetchAllEmailDomain };
 }
 
 export default useEmail;

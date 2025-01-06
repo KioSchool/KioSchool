@@ -107,8 +107,8 @@ export const isLoadingAtom = atom<boolean>({
   default: false,
 });
 
-export const emailPaginationResponseAtom = atom<PaginationResponse<EmailDomain>>({
-  key: 'emailPaginationResponseAtom',
+export const emailDomainPaginationResponseAtom = atom<PaginationResponse<EmailDomain>>({
+  key: 'emailDomainPaginationResponseAtom',
   default: defaultPaginationValue,
 });
 

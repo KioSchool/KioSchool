@@ -9,7 +9,7 @@ const ButtonContainer = styled.div`
   ${rowFlex({ align: 'center' })}
 `;
 
-function SuperAdminEmailTitleNavBarChildren() {
+function SuperAdminEmailDomainTitleNavBarChildren() {
   const schoolName = '학교명';
   const schoolDomain = '학교 도메인';
 
@@ -44,4 +44,4 @@ function SuperAdminEmailTitleNavBarChildren() {
   );
 }
 
-export default SuperAdminEmailTitleNavBarChildren;
+export default SuperAdminEmailDomainTitleNavBarChildren;

@@ -7,10 +7,10 @@ import AppContainer from '@components/common/container/AppContainer';
 import { useNavigate } from 'react-router-dom';
 import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
 import useSuperAdminEmail from '@hooks/super-admin/useSuperAdminEmail';
-import SuperAdminEmailContent from '@components/super-admin/email/SuperAdminEmailContent';
-import SuperAdminEmailTitleNavBarChildren from '@components/super-admin/email/SuperAdminEmailTitleNavBarChildren';
+import SuperAdminEmailDomainContent from '@components/super-admin/email/SuperAdminEmailDomainContent';
+import SuperAdminEmailDomainTitleNavBarChildren from '@components/super-admin/email/SuperAdminEmailDomainTitleNavBarChildren';
 import { useRecoilValue } from 'recoil';
-import { emailPaginationResponseAtom } from '@recoils/atoms';
+import { emailDomainPaginationResponseAtom } from '@recoils/atoms';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   height: 550px;
@@ -21,17 +21,17 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
     })}
 `;
 
-function SuperAdminEmail() {
+function SuperAdminEmailDomainList() {
   const pageSize = 6;
   const navigate = useNavigate();
-  const emails = useRecoilValue(emailPaginationResponseAtom);
-  const emailInputRef = useRef<HTMLInputElement>(null);
-  const { fetchAllEmails } = useSuperAdminEmail();
+  const emailDomain = useRecoilValue(emailDomainPaginationResponseAtom);
+  const userInputRef = useRef<HTMLInputElement>(null);
+  const { fetchAllEmailDomain } = useSuperAdminEmail();
 
-  const isEmptyEmails = emails.empty;
+  const isEmptyEmailDomain = emailDomain.empty;
 
   useEffect(() => {
-    fetchAllEmails(0, pageSize);
+    fetchAllEmailDomain(0, pageSize);
   }, []);
 
   return (
@@ -43,18 +43,18 @@ function SuperAdminEmail() {
       titleNavBarProps={{
         title: '이메일 도메인 관리',
         onLeftArrowClick: () => navigate('/super-admin/manage'),
-        children: <SuperAdminEmailTitleNavBarChildren />,
+        children: <SuperAdminEmailDomainTitleNavBarChildren />,
       }}
     >
       <>
-        <SuperAdminSearchBar ref={emailInputRef} fetchContents={fetchAllEmails} />
-        <ContentContainer justifyCenter={isEmptyEmails} className={'content-container'}>
-          <SuperAdminSearchContents contents={emails} target={'이메일'} ContentComponent={SuperAdminEmailContent} />
+        <SuperAdminSearchBar ref={userInputRef} fetchContents={fetchAllEmailDomain} />
+        <ContentContainer justifyCenter={isEmptyEmailDomain} className={'content-container'}>
+          <SuperAdminSearchContents contents={emailDomain} target={'이메일'} ContentComponent={SuperAdminEmailDomainContent} />
         </ContentContainer>
         <Pagination
-          totalPageCount={emails.totalPages}
+          totalPageCount={emailDomain.totalPages}
           paginateFunction={(page: number) => {
-            fetchAllEmails(page, pageSize, emailInputRef.current?.value);
+            fetchAllEmailDomain(page, pageSize, userInputRef.current?.value);
           }}
         />
       </>
@@ -62,4 +62,4 @@ function SuperAdminEmail() {
   );
 }
 
-export default SuperAdminEmail;
+export default SuperAdminEmailDomainList;

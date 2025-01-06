@@ -28,7 +28,7 @@ const LabelContainer = styled.div`
   height: 100%;
 `;
 
-function EmailContent({ name, domain }: EmailDomain) {
+function EmailDomainContent({ name, domain }: EmailDomain) {
   return (
     <SubContainer useFlex={rowFlex({ justify: 'space-between', align: 'start' })} customWidth={'1000px'} customHeight={'80px'} customGap={'5px'}>
       <LabelContainer>
@@ -39,4 +39,4 @@ function EmailContent({ name, domain }: EmailDomain) {
   );
 }
 
-export default EmailContent;
+export default EmailDomainContent;
