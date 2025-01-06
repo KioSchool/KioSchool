@@ -96,7 +96,12 @@ interface Props {
 function WorkspaceContent({ workspaces }: Props) {
   const { leaveWorkspace } = useAdminUser();
   const { appendPath } = useCustomNavigate();
-  const { ConfirmModal, confirm } = useConfirm('해당 워크스페이스를 삭제하시겠습니까?', '확인 후 되돌릴 수 없습니다.', '확인', '취소');
+  const { ConfirmModal, confirm } = useConfirm({
+    title: '해당 워크스페이스를 삭제하시겠습니까?',
+    description: '확인 후 되돌릴 수 없습니다.',
+    okText: '확인',
+    cancelText: '취소',
+  });
 
   const leaveHandler = async (e: React.FormEvent, id: number) => {
     e.stopPropagation();
