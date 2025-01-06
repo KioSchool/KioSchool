@@ -34,7 +34,7 @@ import AdminOrderTable from '@pages/admin/order/AdminOrderTable';
 import AdminOrderTableHistory from '@pages/admin/order/AdminOrderTableHistory';
 import AdminOrderRealtime from '@pages/admin/order/AdminOrderRealtime';
 import SuperAdminEmailDomainList from '@pages/super-admin/SuperAdminEmailDomainList';
-import EmailDomainList from '@pages/user/EmailDomainList';
+import UserEmailDomain from '@pages/user/UserEmailDomain';
 
 ReactGA.initialize('G-XGYLSPGK2G');
 function App() {
@@ -52,7 +52,7 @@ function App() {
         <Route path="/order-complete" element={<OrderComplete />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/info" element={<Info />} />
-        <Route path="/email-domains" element={<EmailDomainList />} />
+        <Route path="/email-domains" element={<UserEmailDomain />} />
 
         <Route path="/admin" element={<AdminHome />} />
         <Route path="/admin/my-info" element={<AdminMyInfo />} />

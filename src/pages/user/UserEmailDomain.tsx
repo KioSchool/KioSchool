@@ -19,7 +19,7 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
     })}
 `;
 
-function EmailDomainList() {
+function UserEmailDomain() {
   const pageSize = 6;
   const [emailDomain, setEmailDomain] = useState<PaginationResponse<EmailDomain>>(defaultPaginationValue);
   const userInputRef = useRef<HTMLInputElement>(null);
@@ -60,4 +60,4 @@ function EmailDomainList() {
   );
 }
 
-export default EmailDomainList;
+export default UserEmailDomain;
