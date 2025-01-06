@@ -33,7 +33,8 @@ import AdminOrder from '@pages/admin/order/AdminOrder';
 import AdminOrderTable from '@pages/admin/order/AdminOrderTable';
 import AdminOrderTableHistory from '@pages/admin/order/AdminOrderTableHistory';
 import AdminOrderRealtime from '@pages/admin/order/AdminOrderRealtime';
-import SuperAdminEmail from '@pages/super-admin/SuperAdminEmail';
+import SuperAdminEmailDomainList from '@pages/super-admin/SuperAdminEmailDomainList';
+import UserEmailDomain from '@pages/user/UserEmailDomain';
 
 ReactGA.initialize('G-XGYLSPGK2G');
 function App() {
@@ -51,6 +52,7 @@ function App() {
         <Route path="/order-complete" element={<OrderComplete />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/info" element={<Info />} />
+        <Route path="/email-domains" element={<UserEmailDomain />} />
 
         <Route path="/admin" element={<AdminHome />} />
         <Route path="/admin/my-info" element={<AdminMyInfo />} />
@@ -71,7 +73,7 @@ function App() {
         <Route path="/super-admin/workspace" element={<SuperAdminWorkspace />} />
         <Route path="/super-admin/manage" element={<SuperAdminManage />} />
         <Route path="/super-admin/user" element={<SuperAdminUser />} />
-        <Route path="/super-admin/email" element={<SuperAdminEmail />} />
+        <Route path="/super-admin/email" element={<SuperAdminEmailDomainList />} />
       </Routes>
       <Global styles={globalStyles} />
       <LoadingModal />
