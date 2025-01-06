@@ -7,7 +7,7 @@ import AppContainer from '@components/common/container/AppContainer';
 import { useNavigate } from 'react-router-dom';
 import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
 import useSuperAdminEmail from '@hooks/super-admin/useSuperAdminEmail';
-import SuperAdminEmailContent from '@components/super-admin/user/SuperAdminEmailContent';
+import SuperAdminEmailContent from '@components/super-admin/email/SuperAdminEmailContent';
 import SuperAdminEmailTitleNavBarChildren from '@components/super-admin/email/SuperAdminEmailTitleNavBarChildren';
 import { useRecoilValue } from 'recoil';
 import { emailPaginationResponseAtom } from '@recoils/atoms';
