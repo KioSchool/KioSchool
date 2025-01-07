@@ -36,12 +36,9 @@ function SuperAdminWorkspace() {
 
   useEffect(() => {
     const nowPage = Number(searchParams.get('page'));
+    const searchValue = userInputRef.current?.value || '';
 
-    if (userInputRef.current?.value === null) {
-      fetchAndSetWorkspaces(nowPage, pageSize, '', true);
-    } else {
-      fetchAndSetWorkspaces(nowPage, pageSize, userInputRef.current?.value, true);
-    }
+    fetchAndSetWorkspaces(nowPage, pageSize, searchValue, true);
   }, [searchParams]);
 
   return (

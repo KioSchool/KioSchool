@@ -9,6 +9,7 @@ import { EmailDomain, PaginationResponse } from '@@types/index';
 import { defaultPaginationValue } from '@@types/PaginationType';
 import useEmail from '@hooks/user/useEmail';
 import EmailDomainContent from '@components/user/email/EmailDomainContent';
+import { useSearchParams } from 'react-router-dom';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   height: 550px;
@@ -21,20 +22,24 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 
 function UserEmailDomain() {
   const pageSize = 6;
+  const [searchParams] = useSearchParams();
   const [emailDomain, setEmailDomain] = useState<PaginationResponse<EmailDomain>>(defaultPaginationValue);
   const userInputRef = useRef<HTMLInputElement>(null);
   const { fetchAllEmailDomain } = useEmail();
 
   const isEmptyEmailDomain = emailDomain.empty;
 
-  const fetchAndSetEmailDomain = async (page: number, size: number, name: string | undefined) => {
-    const emailResponse = await fetchAllEmailDomain(page, size, name);
+  const fetchAndSetEmailDomain = async (page: number, size: number, name: string | undefined, replace?: boolean) => {
+    const emailResponse = await fetchAllEmailDomain(page, size, name, replace ?? false);
     setEmailDomain(emailResponse);
   };
 
   useEffect(() => {
-    fetchAndSetEmailDomain(0, pageSize, '');
-  }, []);
+    const nowPage = Number(searchParams.get('page'));
+    const searchValue = userInputRef.current?.value || '';
+
+    fetchAndSetEmailDomain(nowPage, pageSize, searchValue, true);
+  }, [searchParams]);
 
   return (
     <AppContainer
