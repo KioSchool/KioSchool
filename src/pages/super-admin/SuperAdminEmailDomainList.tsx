@@ -4,7 +4,7 @@ import { colFlex } from '@styles/flexStyles';
 import { useEffect, useRef } from 'react';
 import Pagination from '@components/common/pagination/Pagination';
 import AppContainer from '@components/common/container/AppContainer';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
 import useSuperAdminEmail from '@hooks/super-admin/useSuperAdminEmail';
 import SuperAdminEmailDomainContent from '@components/super-admin/email/SuperAdminEmailDomainContent';
@@ -24,6 +24,7 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 function SuperAdminEmailDomainList() {
   const pageSize = 6;
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const emailDomain = useRecoilValue(emailDomainPaginationResponseAtom);
   const userInputRef = useRef<HTMLInputElement>(null);
   const { fetchAllEmailDomain } = useSuperAdminEmail();
@@ -31,8 +32,11 @@ function SuperAdminEmailDomainList() {
   const isEmptyEmailDomain = emailDomain.empty;
 
   useEffect(() => {
-    fetchAllEmailDomain(0, pageSize);
-  }, []);
+    const nowPage = Number(searchParams.get('page'));
+    const searchValue = userInputRef.current?.value || '';
+
+    fetchAllEmailDomain(nowPage, pageSize, searchValue, true);
+  }, [searchParams]);
 
   return (
     <AppContainer
@@ -54,7 +58,7 @@ function SuperAdminEmailDomainList() {
         <Pagination
           totalPageCount={emailDomain.totalPages}
           paginateFunction={(page: number) => {
-            fetchAllEmailDomain(page, pageSize, userInputRef.current?.value);
+            fetchAllEmailDomain(page, pageSize, userInputRef.current?.value, false);
           }}
         />
       </>

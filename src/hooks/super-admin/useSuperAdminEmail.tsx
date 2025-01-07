@@ -20,14 +20,14 @@ function useSuperAdminEmail() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { superAdminApi } = useApi();
 
-  const fetchAllEmailDomain = (page: number, size: number, name?: string) => {
+  const fetchAllEmailDomain = (page: number, size: number, name?: string, replace?: boolean) => {
     const params: FetchAllEmailDomainParamsType = { page, size, name };
 
     superAdminApi
       .get<PaginationResponse<EmailDomain>>('/email-domains', { params })
       .then((res) => {
         searchParams.set('page', params.page.toString());
-        setSearchParams(searchParams);
+        setSearchParams(searchParams, { replace });
         setEmailPaginationResponse(res.data);
       })
       .catch((error) => {
