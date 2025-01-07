@@ -16,7 +16,7 @@ const AddWorkspaceContainer = styled.form`
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
-const PluseIcon = styled(PlusIconSvg)`
+const PlusIcon = styled(PlusIconSvg)`
   transition: transform 0.1s ease;
   &:hover {
     transform: scale(1.2);
@@ -63,7 +63,7 @@ function AddWorkspace({ workspaces }: Props) {
   return (
     <>
       <AddWorkspaceContainer onClick={() => setModalOpen(true)} className={'add-workspace-container'}>
-        <PluseIcon width={50} height={50} />
+        <PlusIcon width={50} height={50} />
       </AddWorkspaceContainer>
 
       {modalOpen && (
