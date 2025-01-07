@@ -6,29 +6,28 @@ function useAuthentication() {
   const navigate = useNavigate();
 
   const isLoggedIn = () => {
-    const match = document.cookie.match(new RegExp(`(^| )isLoggedIn=([^;]+)`));
-    if (match) return match[2];
+    return localStorage.getItem('isLoggedIn') === 'true';
   };
 
   const logout = () => {
     return userApi
       .post('/logout')
       .then(() => {
-        document.cookie = 'isLoggedIn=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        localStorage.setItem('isLoggedIn', 'false');
       })
       .catch(() => {
         alert('Logout Failed!');
       });
   };
 
-  const login = (userId: string, userPassword: string) => {
+  const login = (id: string, password: string) => {
     userApi
       .post('/login', {
-        id: userId,
-        password: userPassword,
+        id,
+        password,
       })
       .then(() => {
-        document.cookie = 'isLoggedIn=true';
+        localStorage.setItem('isLoggedIn', 'true');
         navigate('/admin');
       })
       .catch(() => {

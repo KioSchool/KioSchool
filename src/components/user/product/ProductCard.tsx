@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import React, { useState } from 'react';
 import ProductDialog from '@components/user/product/ProductDialog';
+import { colFlex } from '@styles/flexStyles';
 
 interface ProductCardProps {
   product: Product;
@@ -16,10 +17,9 @@ const Container = styled.div`
 `;
 
 const LabelContainer = styled.div`
-  display: flex;
   flex-basis: 0;
-  flex-direction: column;
   gap: 3px;
+  ${colFlex()}
 `;
 
 const ImageContainer = styled.div``;
@@ -32,19 +32,20 @@ function ProductCard({ product }: ProductCardProps) {
   return (
     <>
       {openDialog && <ProductDialog product={product} closeDialog={() => setOpenDialog(false)} />}
-      <Container onClick={() => setOpenDialog(true)}>
-        <LabelContainer>
+      <Container onClick={() => setOpenDialog(true)} className={'product-card-container'}>
+        <LabelContainer className={'label-container'}>
           <AppLabel size={20}>{product.name}</AppLabel>
           <AppLabel size={13}>{product.description}</AppLabel>
           <AppLabel size={22} style={{ marginTop: 'auto' }}>
             {product.price.toLocaleString()}원
           </AppLabel>
         </LabelContainer>
-        <ImageContainer>
+        <ImageContainer className={'image-container'}>
           <img
             src={product.imageUrl}
             alt={product.name}
             style={{ float: 'right', width: '90px', height: '90px', objectFit: 'cover', border: 'none', borderRadius: '10px' }}
+            className={'product-image'}
           />
         </ImageContainer>
       </Container>

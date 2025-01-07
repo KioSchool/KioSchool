@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import LoadingSvg from '@resources/svg/LoadingSvg';
 import { useRecoilValue } from 'recoil';
 import { isLoadingAtom } from '@recoils/atoms';
+import { rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
   z-index: 1002;
@@ -12,9 +13,7 @@ const Container = styled.div`
   height: 100vh;
   background: gray;
   opacity: 0.3;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const Circle = styled.div`

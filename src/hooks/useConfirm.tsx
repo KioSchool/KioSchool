@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
-import React from 'react';
+import React, { useState } from 'react';
 import AppButton from '@components/common/button/AppButton';
+import { Color } from '@resources/colors';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
   z-index: 1002;
@@ -12,37 +14,35 @@ const Container = styled.div`
   height: 100vh;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(2px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const SubContainer = styled.div`
   width: 800px;
   height: 200px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
+  ${colFlex({ justify: 'space-between', align: 'center' })}
+  color: ${Color.WHITE};
 `;
 
 const TextContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+  ${colFlex({ align: 'center' })}
   gap: 12px;
-  align-items: center;
 `;
 
 const ButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  ${rowFlex({ justify: 'space-between' })}
   gap: 12px;
 `;
 
-function useConfirm(title: string, description: string, okText: string, cancelText?: string) {
-  const [promise, setPromise] = React.useState<any>(null);
+interface ConfirmProps {
+  title: string;
+  description: string;
+  okText: string;
+  cancelText?: string;
+}
+
+function useConfirm({ title, description, okText, cancelText }: ConfirmProps) {
+  const [promise, setPromise] = useState<any>(null);
 
   const confirm = () =>
     new Promise((resolve) => {
@@ -67,15 +67,17 @@ function useConfirm(title: string, description: string, okText: string, cancelTe
     if (promise === null) return null;
 
     return (
-      <Container>
-        <SubContainer>
-          <TextContainer>
-            <AppLabel size={'large'} style={{ fontWeight: 700 }}>
+      <Container className={'confirm-container'}>
+        <SubContainer className={'confirm-sub-container'}>
+          <TextContainer className={'text-container'}>
+            <AppLabel size={'large'} style={{ fontWeight: 700 }} color={Color.WHITE}>
               {title}
             </AppLabel>
-            <AppLabel size={24}>{description}</AppLabel>
+            <AppLabel size={24} color={Color.WHITE}>
+              {description}
+            </AppLabel>
           </TextContainer>
-          <ButtonContainer>
+          <ButtonContainer className={'button-container'}>
             {cancelText && (
               <AppButton size={250} onClick={handleCancel} style={{ background: 'white', color: 'black' }}>
                 {cancelText}

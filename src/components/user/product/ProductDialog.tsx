@@ -6,6 +6,8 @@ import AppButton from '@components/common/button/AppButton';
 import { useSetRecoilState } from 'recoil';
 import { orderBasketAtom } from '@recoils/atoms';
 import CloseSvg from '@resources/svg/CloseSvg';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 interface ProductDialogProps {
   product: Product;
@@ -20,10 +22,8 @@ const Container = styled.div`
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   animation: fadeIn 0.2s;
+  ${rowFlex({ justify: 'center', align: 'center' })};
 
   @keyframes fadeIn {
     from {
@@ -40,20 +40,19 @@ const ModalContainer = styled.div`
   width: 250px;
   height: 270px;
   padding: 5px;
-  background: white;
+  background: ${Color.WHITE};
   border-radius: 16px;
-  display: flex;
-  flex-direction: column;
+  ${colFlex()}
 `;
 
 const CloseButtonContainer = styled.div`
-  display: flex;
   position: absolute;
   right: 15px;
   top: 10px;
-  background: white;
+  background: ${Color.WHITE};
   opacity: 0.7;
   border-radius: 4px;
+  ${rowFlex()}
 `;
 
 const ProductImage = styled.img`
@@ -64,9 +63,7 @@ const ProductImage = styled.img`
 
 const OrderButtonContainer = styled.div`
   margin-top: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 function ProductDialog(props: ProductDialogProps) {
@@ -97,15 +94,15 @@ function ProductDialog(props: ProductDialogProps) {
   };
 
   return (
-    <Container onClick={closeDialog} ref={dialogRef}>
-      <ModalContainer>
-        <CloseButtonContainer>
+    <Container onClick={closeDialog} ref={dialogRef} className={'product-dialog-container'}>
+      <ModalContainer className={'product-dialog'}>
+        <CloseButtonContainer className={'close-button'}>
           <CloseSvg onClick={props.closeDialog} />
         </CloseButtonContainer>
-        <ProductImage src={props.product.imageUrl} />
+        <ProductImage src={props.product.imageUrl} className={'product-image'} />
         <AppLabel size={'small'}>{props.product.name}</AppLabel>
         <AppLabel size={12}>{props.product.description}</AppLabel>
-        <OrderButtonContainer>
+        <OrderButtonContainer className={'order-button'}>
           <AppButton size={270} onClick={addOrderBasket}>
             {props.product.price.toLocaleString()}원 담기
           </AppButton>

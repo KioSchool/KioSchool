@@ -3,8 +3,9 @@ import styled from '@emotion/styled';
 import ArrowLeftSvg from '@resources/svg/ArrowLeftSvg';
 import AppLabel from '@components/common/label/AppLabel';
 import { useNavigate } from 'react-router-dom';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
-interface Props {
+export interface TitleNavBarProps {
   title: string;
   subTitle?: string;
   useBackIcon?: boolean;
@@ -13,35 +14,34 @@ interface Props {
 }
 
 const Container = styled.div<{ useSubTitle: boolean }>`
-  display: flex;
-  padding-bottom: 25px;
-  justify-content: center;
-  height: ${(props) => (props.useSubTitle ? '100px' : '50px')};
-  width: 100%;
-  min-width: 1200px;
+  z-index: 1002;
+  margin-bottom: 25px;
+  height: 50px;
+  width: 100vw;
+  position: fixed;
+  top: 61px;
+  background: rgba(255, 255, 255, 0.95);
+  ${rowFlex({ justify: 'center' })}
 `;
 
-const TitleContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-left: 50px;
+const TitleContainer = styled.div<{ useBackIcon?: boolean }>`
+  padding-left: ${(props) => (props.useBackIcon ? '40px' : '')};
   height: 40px;
+  ${colFlex()}
 `;
 
 const SubContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 1200px;
+  width: 1000px;
+  ${rowFlex({ justify: 'space-between' })}
 `;
 
 const LeftContainer = styled.div`
   position: relative;
-  display: flex;
-  justify-content: center;
   gap: 25px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
-const ArrowLeftButton = styled(ArrowLeftSvg)<{ useBackIcon: boolean }>`
+const ArrowLeftButton = styled(ArrowLeftSvg)<{ useBackIcon?: boolean }>`
   display: ${(props) => (props.useBackIcon ? 'block' : 'none')};
   cursor: pointer;
   position: absolute;
@@ -52,13 +52,13 @@ const ArrowLeftButton = styled(ArrowLeftSvg)<{ useBackIcon: boolean }>`
   }
 `;
 
-function TitleNavBar({ title, subTitle = '', useBackIcon = true, children, onLeftArrowClick }: Props) {
+function TitleNavBar({ title, subTitle = '', useBackIcon = true, children, onLeftArrowClick }: TitleNavBarProps) {
   const navigate = useNavigate();
 
   return (
-    <Container useSubTitle={!!subTitle}>
-      <SubContainer>
-        <LeftContainer>
+    <Container useSubTitle={!!subTitle} className={'title-nav-bar-container'}>
+      <SubContainer className={'title-nav-bar-sub-container'}>
+        <LeftContainer className={'left-container'}>
           <ArrowLeftButton
             onClick={() => {
               if (onLeftArrowClick) {
@@ -69,11 +69,11 @@ function TitleNavBar({ title, subTitle = '', useBackIcon = true, children, onLef
             }}
             useBackIcon={useBackIcon}
           />
-          <TitleContainer>
-            <AppLabel size={36} style={{ fontWeight: 800, lineHeight: '40px' }}>
+          <TitleContainer className={'title-container'} useBackIcon={useBackIcon}>
+            <AppLabel size={25} style={{ fontWeight: 800, lineHeight: '40px' }}>
               {title}
             </AppLabel>
-            <AppLabel size={32} style={{ fontWeight: 400, opacity: 0.8 }}>
+            <AppLabel size={20} style={{ fontWeight: 400, opacity: 0.8 }}>
               {subTitle}
             </AppLabel>
           </TitleContainer>

@@ -1,31 +1,40 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Home from '@pages/User/Home';
-import AdminHome from '@pages/Admin/AdminHome';
-import Login from '@pages/User/Login';
-import AdminWorkspace from '@pages/Admin/AdminWorkspace';
-import AdminOrder from '@pages/Admin/order/AdminOrder';
-import Register from '@pages/User/Register';
-import AdminProduct from '@pages/Admin/AdminProduct';
-import Order from '@pages/User/order/Order';
-import AdminAccount from '@pages/Admin/AdminAccount';
+import Home from '@pages/user/Home';
+import AdminHome from '@pages/admin/AdminHome';
+import Login from '@pages/user/Login';
+import AdminWorkspace from '@pages/admin/AdminWorkspace';
+import Register from '@pages/user/Register';
+import AdminProduct from '@pages/admin/AdminProduct';
+import Order from '@pages/user/order/Order';
+import AdminAccount from '@pages/admin/AdminAccount';
 import { RecoilRoot } from 'recoil';
 import LoadingModal from '@components/common/modal/LoadingModal';
 import { Global } from '@emotion/react';
 import { globalStyles } from '@styles/globalStyles';
-import OrderBasket from '@pages/User/order/OrderBasket';
-import OrderPay from '@pages/User/order/OrderPay';
-import AdminProductAdd from '@pages/Admin/AdminProductAdd';
-import OrderComplete from '@pages/User/order/OrderComplete';
-import AdminOrderHistory from '@pages/Admin/order/AdminOrderHistory';
-import AdminProductEdit from '@pages/Admin/AdminProductEdit';
+import OrderBasket from '@pages/user/order/OrderBasket';
+import OrderPay from '@pages/user/order/OrderPay';
+import AdminProductAdd from '@pages/admin/AdminProductAdd';
+import OrderComplete from '@pages/user/order/OrderComplete';
+import AdminOrderHistory from '@pages/admin/order/AdminOrderHistory';
+import AdminProductEdit from '@pages/admin/AdminProductEdit';
 import ReactGA from 'react-ga4';
 import RouterChangeTracker from './RouterChangeTracker';
-import MyInfo from '@pages/Admin/MyInfo';
-import AdminProductCategories from '@pages/Admin/AdminProductCategoires';
-import AdminOrderManage from '@pages/Admin/order/AdminOrderManage';
-import ResetPassword from '@pages/User/ResetPassword';
-import Info from '@pages/User/Info';
+import AdminMyInfo from '@pages/admin/AdminMyInfo';
+import AdminProductCategories from '@pages/admin/AdminProductCategoires';
+import AdminTableCount from '@pages/admin/order/AdminTableCount';
+import ResetPassword from '@pages/user/ResetPassword';
+import Info from '@pages/user/Info';
+import SuperAdminHome from '@pages/super-admin/SuperAdminHome';
+import SuperAdminWorkspace from '@pages/super-admin/SuperAdminWorkspace';
+import SuperAdminManage from '@pages/super-admin/SuperAdminManage';
+import SuperAdminUser from '@pages/super-admin/SuperAdminUser';
+import AdminOrder from '@pages/admin/order/AdminOrder';
+import AdminOrderTable from '@pages/admin/order/AdminOrderTable';
+import AdminOrderTableHistory from '@pages/admin/order/AdminOrderTableHistory';
+import AdminOrderRealtime from '@pages/admin/order/AdminOrderRealtime';
+import SuperAdminEmailDomainList from '@pages/super-admin/SuperAdminEmailDomainList';
+import UserEmailDomain from '@pages/user/UserEmailDomain';
 
 ReactGA.initialize('G-XGYLSPGK2G');
 function App() {
@@ -38,22 +47,33 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/order" element={<Order />} />
-        <Route path="/orderbasket" element={<OrderBasket />} />
+        <Route path="/order-basket" element={<OrderBasket />} />
         <Route path="/order-pay" element={<OrderPay />} />
         <Route path="/order-complete" element={<OrderComplete />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/admin" element={<AdminHome />} />
-        <Route path="/admin/register-account" element={<AdminAccount />} />
-        <Route path="/admin/my-info" element={<MyInfo />} />
         <Route path="/info" element={<Info />} />
+        <Route path="/email-domains" element={<UserEmailDomain />} />
+
+        <Route path="/admin" element={<AdminHome />} />
+        <Route path="/admin/my-info" element={<AdminMyInfo />} />
+        <Route path="/admin/register-account" element={<AdminAccount />} />
         <Route path="/admin/workspace/:workspaceId" element={<AdminWorkspace />} />
-        <Route path="/admin/workspace/:workspaceId/orders" element={<AdminOrder />} />
-        <Route path="/admin/workspace/:workspaceId/orders-history" element={<AdminOrderHistory />} />
-        <Route path="/admin/workspace/:workspaceId/orders-manage" element={<AdminOrderManage />} />
+        <Route path="/admin/workspace/:workspaceId/order" element={<AdminOrder />} />
+        <Route path="/admin/workspace/:workspaceId/order/realtime" element={<AdminOrderRealtime />} />
+        <Route path="/admin/workspace/:workspaceId/order/history" element={<AdminOrderHistory />} />
+        <Route path="/admin/workspace/:workspaceId/order/table" element={<AdminOrderTable />} />
+        <Route path="/admin/workspace/:workspaceId/order/table/:tableNumber" element={<AdminOrderTableHistory />} />
+        <Route path="/admin/workspace/:workspaceId/table-count" element={<AdminTableCount />} />
         <Route path="/admin/workspace/:workspaceId/products" element={<AdminProduct />} />
         <Route path="/admin/workspace/:workspaceId/products/add-product" element={<AdminProductAdd />} />
-        <Route path="/admin/workspace/:workspaceId/products/categories" element={<AdminProductCategories />} />
         <Route path="/admin/workspace/:workspaceId/products/edit-product" element={<AdminProductEdit />} />
+        <Route path="/admin/workspace/:workspaceId/products/categories" element={<AdminProductCategories />} />
+
+        <Route path="/super-admin" element={<SuperAdminHome />} />
+        <Route path="/super-admin/workspace" element={<SuperAdminWorkspace />} />
+        <Route path="/super-admin/manage" element={<SuperAdminManage />} />
+        <Route path="/super-admin/user" element={<SuperAdminUser />} />
+        <Route path="/super-admin/email" element={<SuperAdminEmailDomainList />} />
       </Routes>
       <Global styles={globalStyles} />
       <LoadingModal />

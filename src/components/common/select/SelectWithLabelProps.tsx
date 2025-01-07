@@ -1,15 +1,15 @@
 import React from 'react';
 import SelectWithOptions, { SelectWithOptionsProps } from '@components/common/select/SelectWithOptions';
 import styled from '@emotion/styled';
+import { colFlex } from '@styles/flexStyles';
 
 interface SelectWithLabelProps extends SelectWithOptionsProps {
   titleLabel: string;
 }
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
   gap: 12px;
+  ${colFlex()}
 `;
 
 const TitleLabel = styled.label`

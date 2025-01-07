@@ -12,11 +12,6 @@ function useAdminUser() {
   const setAdminUser = useSetRecoilState(adminUserAtom);
   const navigate = useNavigate();
 
-  const isLoggedIn = () => {
-    adminApi.get('/user');
-    return true;
-  };
-
   const fetchAdminUser = () => {
     adminApi
       .get('/user')
@@ -33,25 +28,25 @@ function useAdminUser() {
 
   const createWorkspaces = (name: string, description: string) => {
     adminApi
-      .post('/workspace', { name: name, description: description })
+      .post('/workspace', { name, description })
       .then((res) => {
         setWorkspaces((prev) => [...prev, res.data]);
       })
       .catch((error) => alert(error.response.data.message));
   };
 
-  const leaveWorkspace = (id: number) => {
+  const leaveWorkspace = (workspaceId: number) => {
     adminApi
-      .post('/workspace/leave', { workspaceId: id as unknown as string })
+      .post('/workspace/leave', { workspaceId })
       .then(() => {
-        setWorkspaces((prev) => prev.filter((itm) => itm.id != id));
+        setWorkspaces((prev) => prev.filter((itm) => itm.id != workspaceId));
       })
       .catch((error) => console.error('Failed to leave workspace: ', error));
   };
 
-  const registerAccount = (account: string) => {
+  const registerAccount = (accountUrl: string) => {
     adminApi
-      .post('/user/toss-account', { accountUrl: account })
+      .post('/user/toss-account', { accountUrl })
       .then((res) => {
         setAdminUser(res.data);
         alert('계좌 정보가 성공적으로 저장되었습니다.');
@@ -73,7 +68,7 @@ function useAdminUser() {
       .catch((error) => console.error('Failed to delete user: ', error));
   };
 
-  return { isLoggedIn, fetchWorkspaces, createWorkspaces, leaveWorkspace, registerAccount, fetchAdminUser, deleteUser };
+  return { fetchWorkspaces, createWorkspaces, leaveWorkspace, registerAccount, fetchAdminUser, deleteUser };
 }
 
 export default useAdminUser;

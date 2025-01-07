@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { Color } from '@resources/colors';
 
 export interface AppButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'small' | 'medium' | 'large' | number;
@@ -16,8 +17,8 @@ const Container = styled.button`
     if (typeof props.size === 'number') return `${props.size}px`;
     return sizeMap[props.size || 'medium'];
   }};
-  background: #eb6d09;
-  color: white;
+  background: ${Color.KIO_ORANGE};
+  color: ${Color.WHITE};
   font-size: 18px;
   border: none;
   border-radius: 15px;
@@ -25,6 +26,8 @@ const Container = styled.button`
   padding: 0 18px;
   user-select: none;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+
   &:hover {
     background: #ff7b2b;
   }
@@ -34,7 +37,7 @@ const Container = styled.button`
 `;
 
 function AppButton(props: AppButtonProps) {
-  return <Container {...props} />;
+  return <Container {...props} className={'app-button'} />;
 }
 
 export default AppButton;

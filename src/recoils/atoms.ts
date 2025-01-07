@@ -1,5 +1,6 @@
 import { atom } from 'recoil';
-import { Order, OrderProductBase, Product, ProductCategory, User, Workspace } from '@@types/index';
+import { EmailDomain, Order, OrderProductBase, OrderStatus, PaginationResponse, Product, ProductCategory, User, UserRole, Workspace } from '@@types/index';
+import { defaultPaginationValue } from '@@types/PaginationType';
 
 export const ordersAtom = atom<Order[]>({
   key: 'ordersAtom',
@@ -21,15 +22,15 @@ export const categoriesAtom = atom<ProductCategory[]>({
   default: [],
 });
 
-export const userWorkspaceAtom = atom<Workspace>({
-  key: 'userWorkspaceAtom',
+export const adminWorkspaceAtom = atom<Workspace>({
+  key: 'adminWorkspaceAtom',
   default: {
     name: '',
     description: '',
     owner: {
       name: '',
       email: '',
-      role: '',
+      role: UserRole.ADMIN,
       accountUrl: '',
       id: 0,
       createdAt: '',
@@ -40,6 +41,30 @@ export const userWorkspaceAtom = atom<Workspace>({
     id: 0,
     createdAt: '',
     updatedAt: '',
+    tableCount: 0,
+  },
+});
+
+export const userWorkspaceAtom = atom<Workspace>({
+  key: 'userWorkspaceAtom',
+  default: {
+    name: '',
+    description: '',
+    owner: {
+      name: '',
+      email: '',
+      role: UserRole.ADMIN,
+      accountUrl: '',
+      id: 0,
+      createdAt: '',
+      updatedAt: '',
+    },
+    products: [],
+    productCategories: [],
+    id: 0,
+    createdAt: '',
+    updatedAt: '',
+    tableCount: 0,
   },
 });
 
@@ -48,7 +73,7 @@ export const adminUserAtom = atom<User>({
   default: {
     name: '',
     email: '',
-    role: '',
+    role: UserRole.ADMIN,
     accountUrl: '',
     id: 0,
     createdAt: '',
@@ -64,7 +89,8 @@ export const userOrderAtom = atom<Order>({
     customerName: '',
     orderProducts: [],
     totalPrice: 0,
-    status: '',
+    cancelReason: '',
+    status: OrderStatus.NOT_PAID,
     id: 0,
     createdAt: '',
     updatedAt: '',
@@ -79,4 +105,14 @@ export const orderBasketAtom = atom<OrderProductBase[]>({
 export const isLoadingAtom = atom<boolean>({
   key: 'isLoadingAtom',
   default: false,
+});
+
+export const emailDomainPaginationResponseAtom = atom<PaginationResponse<EmailDomain>>({
+  key: 'emailDomainPaginationResponseAtom',
+  default: defaultPaginationValue,
+});
+
+export const tableOrderPaginationResponseAtom = atom<PaginationResponse<Order>>({
+  key: 'tableOrderPaginationResponseAtom',
+  default: defaultPaginationValue,
 });

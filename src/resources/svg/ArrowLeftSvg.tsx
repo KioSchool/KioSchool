@@ -2,9 +2,16 @@ import * as React from 'react';
 
 interface ArrowLeftSvgProps extends React.SVGProps<SVGSVGElement> {}
 
-const ArrowLeftSvg = (props: ArrowLeftSvgProps) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={40} height={40} fill="none" {...props}>
-    <path stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M17.78 31.667 6.667 20m0 0L17.779 8.334M6.668 20h26.667" />
-  </svg>
-);
+const ArrowLeftSvg = (props: ArrowLeftSvgProps) => {
+  const processedProps = { ...props };
+  // this is a hack to remove the useBackIcon prop from the svg element
+  // @ts-ignore
+  delete processedProps.useBackIcon;
+
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width={25} height={25} fill="none" {...processedProps}>
+      <path d="M10.6663 19L3.99963 12M3.99963 12L10.6663 5M3.99963 12L19.9996 12" stroke="#5C5C5C" strokeWidth={2} />
+    </svg>
+  );
+};
 export default ArrowLeftSvg;

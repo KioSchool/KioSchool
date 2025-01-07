@@ -1,13 +1,11 @@
 import styled from '@emotion/styled';
+import { colFlex } from '@styles/flexStyles';
 import { ReactNode } from 'react';
 
 const ItemContainer = styled.div`
   width: 160px;
   height: 150px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  ${colFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const ButtonContainer = styled.div`
@@ -16,7 +14,7 @@ const ButtonContainer = styled.div`
   height: 70px;
 `;
 
-const ItmeLabel = styled.div`
+const ItemLabel = styled.div`
   width: 156px;
   height: 43px;
   text-align: center;
@@ -24,16 +22,16 @@ const ItmeLabel = styled.div`
   font-weight: 400;
 `;
 
-interface MyInfoContentItmeProps {
+interface MyInfoContentItemProps {
   label: string;
   children: ReactNode;
 }
 
-function MyInfoItemContent({ label, children }: MyInfoContentItmeProps) {
+function MyInfoItemContent({ label, children }: MyInfoContentItemProps) {
   return (
-    <ItemContainer>
-      <ButtonContainer>{children}</ButtonContainer>
-      <ItmeLabel>{label}</ItmeLabel>
+    <ItemContainer className={'my-info-item-container'}>
+      <ButtonContainer className={'button-container'}>{children}</ButtonContainer>
+      <ItemLabel className={'item-label'}>{label}</ItemLabel>
     </ItemContainer>
   );
 }

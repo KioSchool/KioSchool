@@ -1,43 +1,61 @@
 import styled from '@emotion/styled';
 import NavBar from '@components/common/nav/NavBar';
+import { colFlex } from '@styles/flexStyles';
+import TitleNavBar, { TitleNavBarProps } from '../nav/TitleNavBar';
+import { SerializedStyles } from '@emotion/react';
+import { Color } from '@resources/colors';
 
-export const MainContainer = styled.div<{ backgroundColor?: string }>`
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+export const MainContainer = styled.div<{ backgroundColor?: string; useScroll?: boolean }>`
+  width: 100%;
+  height: ${(props) => (props.useScroll ? '100%' : '100vh')};
   box-sizing: border-box;
-  background-color: ${(props) => (props.backgroundColor ? props.backgroundColor : 'white')};
+  background-color: ${(props) => (props.backgroundColor ? props.backgroundColor : Color.WHITE)};
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
-export const SubContainer = styled.div<{ justifyValue: string; flexDirection?: string; alignItems?: string }>`
-  display: flex;
-  width: 65vw;
+export const SubContainer = styled.div<{
+  useFlex: SerializedStyles;
+  customWidth?: string;
+  customHeight?: string;
+  customGap?: string;
+  isTitleNavBar?: boolean;
+}>`
   flex-basis: 0;
   flex-wrap: wrap;
-  flex-direction: ${(props) => props.flexDirection || 'center'};
-  align-items: ${(props) => props.alignItems || 'center'};
-  height: 100%;
-  min-width: 1100px;
-  justify-content: ${(props) => props.justifyValue};
+  width: ${(props) => props.customWidth || '65vw'};
+  height: ${(props) => props.customHeight || '100%'};
+  min-width: 1000px;
+  padding-top: ${(props) => props.isTitleNavBar && '140px'};
+
+  gap: ${(props) => props.customGap};
+  ${(props) => props.useFlex}
 `;
 
 interface Props {
   children: JSX.Element;
-  justifyValue: string;
-  flexDirection?: string;
-  alignItems?: string;
+  useFlex: SerializedStyles;
   backgroundColor?: string;
   useNavBackground?: boolean;
+  customWidth?: string;
+  customHeight?: string;
+  customGap?: string;
+  titleNavBarProps?: TitleNavBarProps;
+  useScroll?: boolean;
 }
 
-function AppContainer({ children, justifyValue, flexDirection, alignItems, backgroundColor, useNavBackground }: Props) {
+function AppContainer({ children, useFlex, backgroundColor, useNavBackground, customWidth, customHeight, customGap, titleNavBarProps, useScroll }: Props) {
   return (
-    <MainContainer backgroundColor={backgroundColor}>
+    <MainContainer backgroundColor={backgroundColor} className={'main-container'} useScroll={useScroll}>
       <NavBar useBackground={useNavBackground} />
-      <SubContainer justifyValue={justifyValue} flexDirection={flexDirection} alignItems={alignItems}>
+      {titleNavBarProps && <TitleNavBar {...titleNavBarProps} />}
+      <SubContainer
+        useFlex={useFlex}
+        customWidth={customWidth}
+        customHeight={customHeight}
+        customGap={customGap}
+        className={'sub-container'}
+        isTitleNavBar={!!titleNavBarProps}
+      >
         {children}
       </SubContainer>
     </MainContainer>

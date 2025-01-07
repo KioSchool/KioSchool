@@ -5,50 +5,47 @@ import { useParams } from 'react-router-dom';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import AppLabel from '@components/common/label/AppLabel';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 interface Props {
   order: Order;
 }
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   padding: 22px;
   width: 350px;
   box-sizing: border-box;
-  background: #f7f7f7;
+  background: ${Color.LIGHT_GREY};
   gap: 7px;
+  ${colFlex({ align: 'center' })}
 `;
 
 const Row = styled.div`
-  display: flex;
-  justify-content: space-between;
   width: 100%;
   padding: 0 5px;
   box-sizing: border-box;
+  ${rowFlex({ justify: 'space-between' })}
 `;
 
 const OrderProductsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
   gap: 5px;
   width: 100%;
+  ${colFlex()}
 `;
 
 const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
   width: 100%;
   padding-top: 10px;
+  ${rowFlex({ justify: 'space-between' })}
 `;
 
 const Button = styled.button`
   width: 80px;
   height: 30px;
   border: none;
-  background: #eb6d09;
-  color: white;
+  background: ${Color.KIO_ORANGE};
+  color: ${Color.WHITE};
   cursor: pointer;
   border-radius: 50px;
   &:hover {
@@ -70,19 +67,19 @@ function NotPaidOrderCard({ order }: Props) {
   };
 
   return (
-    <Container>
+    <Container className={'not-paid-order-card-container'}>
       <AppLabel size={18} style={{ fontWeight: 700 }}>
         테이블 {order.tableNumber}
       </AppLabel>
       <AppLabel size={16}>주문번호 {order.id}번</AppLabel>
-      <Row>
+      <Row className={'not-paid-order-card-row'}>
         <AppLabel size={14}>입금자명: {order.customerName}</AppLabel>
         <AppLabel size={14}>{dateConverter(order.createdAt)}</AppLabel>
       </Row>
       <HorizontalDivider />
-      <OrderProductsContainer>
+      <OrderProductsContainer className={'order-products-container'}>
         {order.orderProducts.map((it) => (
-          <Row key={it.id}>
+          <Row key={it.id} className={'order-product-row'}>
             <AppLabel size={16} style={{ fontWeight: 500 }}>
               {it.productName}
             </AppLabel>
@@ -93,7 +90,7 @@ function NotPaidOrderCard({ order }: Props) {
         ))}
       </OrderProductsContainer>
       <HorizontalDivider />
-      <Row>
+      <Row className={'not-paid-order-card-row'}>
         <AppLabel size={16} style={{ fontWeight: 500 }}>
           총 주문 금액
         </AppLabel>
@@ -101,11 +98,11 @@ function NotPaidOrderCard({ order }: Props) {
           {order.totalPrice.toLocaleString()}원
         </AppLabel>
       </Row>
-      <ButtonContainer>
-        <Button type={'button'} onClick={() => cancelOrder(order.id)}>
+      <ButtonContainer className={'button-container'}>
+        <Button type={'button'} onClick={() => cancelOrder(order.id)} className={'cancel-button'}>
           주문 취소
         </Button>
-        <Button type={'button'} onClick={() => payOrder(order.id)}>
+        <Button type={'button'} onClick={() => payOrder(order.id)} className={'pay-button'}>
           결제 완료
         </Button>
       </ButtonContainer>

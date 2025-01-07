@@ -2,17 +2,16 @@ import { ForwardedRef, forwardRef } from 'react';
 import AppButton from '@components/common/button/AppButton';
 import styled from '@emotion/styled';
 import AppInput from '@components/common/input/AppInput';
+import { rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 const AppInputWithButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
   height: 65px;
   width: 420px;
-  background-color: white;
+  background-color: ${Color.WHITE};
   border-radius: 12px;
   box-shadow: 0 4px 17px 0 rgba(0, 0, 0, 0.1);
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 interface AppInputWithButtonProps {

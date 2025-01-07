@@ -1,24 +1,22 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import { OrderStatus } from '@@types/index';
 
 interface OrderStatusBarProps {
-  status: string;
+  status: OrderStatus;
 }
 
 const Container = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   margin-top: 20px;
   padding: 0 20px;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const CancelContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: 5px;
+  ${colFlex({ align: 'center' })}
 `;
 
 const CurrentStatusLabel = styled(AppLabel)`
@@ -33,21 +31,33 @@ const OtherStatusLabel = styled(AppLabel)`
 `;
 
 function OrderStatusBar({ status }: OrderStatusBarProps) {
-  if (status === 'CANCELLED') {
+  if (status === OrderStatus.CANCELLED) {
     return (
-      <CancelContainer>
-        <CurrentStatusLabel>주문 취소</CurrentStatusLabel>
+      <CancelContainer className={'cancel-container'}>
+        <CurrentStatusLabel className={'cancel-status-label'}>주문 취소</CurrentStatusLabel>
       </CancelContainer>
     );
   }
 
   return (
     <Container>
-      {status === 'NOT_PAID' ? <CurrentStatusLabel>결제 확인 중</CurrentStatusLabel> : <OtherStatusLabel>결제 확인 중</OtherStatusLabel>}
+      {status === OrderStatus.NOT_PAID ? (
+        <CurrentStatusLabel className={'current-status-label'}>결제 확인 중</CurrentStatusLabel>
+      ) : (
+        <OtherStatusLabel className={'other-status-label'}>결제 확인 중</OtherStatusLabel>
+      )}
       {'· · ·'}
-      {status === 'PAID' ? <CurrentStatusLabel>조리중</CurrentStatusLabel> : <OtherStatusLabel>조리중</OtherStatusLabel>}
+      {status === OrderStatus.PAID ? (
+        <CurrentStatusLabel className={'current-status-label'}>조리중</CurrentStatusLabel>
+      ) : (
+        <OtherStatusLabel className={'other-status-label'}>조리중</OtherStatusLabel>
+      )}
       {'· · ·'}
-      {status === 'SERVED' ? <CurrentStatusLabel>서빙 완료</CurrentStatusLabel> : <OtherStatusLabel>서빙 완료</OtherStatusLabel>}
+      {status === OrderStatus.SERVED ? (
+        <CurrentStatusLabel className={'current-status-label'}>서빙 완료</CurrentStatusLabel>
+      ) : (
+        <OtherStatusLabel className={'other-status-label'}>서빙 완료</OtherStatusLabel>
+      )}
     </Container>
   );
 }

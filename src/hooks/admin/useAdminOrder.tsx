@@ -1,11 +1,15 @@
 import useApi from '@hooks/useApi';
-import { Order } from '@@types/index';
+import { Order, OrderStatus, PaginationResponse } from '@@types/index';
 import { useSetRecoilState } from 'recoil';
-import { ordersAtom } from '@recoils/atoms';
+import { ordersAtom, tableOrderPaginationResponseAtom } from '@recoils/atoms';
+import { useSearchParams } from 'react-router-dom';
+import { defaultPaginationValue } from '@@types/PaginationType';
 
 function useAdminOrder(workspaceId: string | undefined) {
   const { adminApi } = useApi();
   const setOrders = useSetRecoilState(ordersAtom);
+  const setTablePaginationResponse = useSetRecoilState(tableOrderPaginationResponseAtom);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const fetchAllOrders = () => {
     adminApi.get<Order[]>('/orders', { params: { workspaceId } }).then((response) => {
@@ -26,13 +30,13 @@ function useAdminOrder(workspaceId: string | undefined) {
   };
 
   const payOrder = (orderId: number) => {
-    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: 'PAID' }).then(() => {
+    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.PAID }).then(() => {
       fetchRealTimeOrders();
     });
   };
 
   const serveOrder = (orderId: number) => {
-    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: 'SERVED' }).then(() => {
+    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.SERVED }).then(() => {
       fetchRealTimeOrders();
     });
   };
@@ -41,13 +45,13 @@ function useAdminOrder(workspaceId: string | undefined) {
     const userInput = confirm('정말로 주문을 취소하시겠습니까?');
     if (!userInput) return;
 
-    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: 'CANCELLED' }).then(() => {
+    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.CANCELLED }).then(() => {
       fetchRealTimeOrders();
     });
   };
 
   const refundOrder = (orderId: number) => {
-    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: 'NOT_PAID' }).then(() => {
+    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.NOT_PAID }).then(() => {
       fetchRealTimeOrders();
     });
   };
@@ -58,7 +62,36 @@ function useAdminOrder(workspaceId: string | undefined) {
     });
   };
 
-  return { fetchAllOrders, payOrder, serveOrder, cancelOrder, fetchTodayOrders: fetchRealTimeOrders, fetchOrders, updateOrderProductServe, refundOrder };
+  const fetchWorkspaceTable = (tableNumber: number, page: number, size: number) => {
+    const params = { workspaceId, tableNumber, page, size };
+
+    const response = adminApi
+      .get<PaginationResponse<Order>>('/orders/table', { params })
+      .then((res) => {
+        setTablePaginationResponse(res.data);
+        searchParams.set('page', params.page.toString());
+        setSearchParams(searchParams);
+        return res.data;
+      })
+      .catch((error) => {
+        console.log(error);
+        return defaultPaginationValue;
+      });
+
+    return response;
+  };
+
+  return {
+    fetchAllOrders,
+    payOrder,
+    serveOrder,
+    cancelOrder,
+    fetchTodayOrders: fetchRealTimeOrders,
+    fetchOrders,
+    updateOrderProductServe,
+    refundOrder,
+    fetchWorkspaceTable,
+  };
 }
 
 export default useAdminOrder;

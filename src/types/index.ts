@@ -4,7 +4,8 @@ export interface Order {
   customerName: string;
   orderProducts: Array<OrderProduct>;
   totalPrice: number;
-  status: string;
+  status: OrderStatus;
+  cancelReason: string;
   id: number;
   createdAt: string;
   updatedAt: string;
@@ -53,15 +54,65 @@ export interface Workspace {
   products: Array<Product>;
   productCategories: Array<ProductCategory>;
   id: number;
+  tableCount: number;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface Sort {
+  sorted: boolean;
+  empty: boolean;
+  unsorted: boolean;
+}
+
+export interface Pageable {
+  pageNumber: number;
+  pageSize: number;
+  sort: Sort;
+  offset: number;
+  paged: boolean;
+  unpaged: boolean;
+}
+
+export interface PaginationResponse<T> {
+  content: T[];
+  pageable: Pageable;
+  totalPages: number;
+  totalElements: number;
+  last: boolean;
+  number: number;
+  size: number;
+  numberOfElements: number;
+  sort: Sort;
+  first: boolean;
+  empty: boolean;
+}
+
+export enum OrderStatus {
+  PAID = 'PAID',
+  SERVED = 'SERVED',
+  CANCELLED = 'CANCELLED',
+  NOT_PAID = 'NOT_PAID',
+}
+
+export enum UserRole {
+  ADMIN = 'ADMIN',
+  SUPER_ADMIN = 'SUPER_ADMIN',
 }
 
 export interface User {
   name: string;
   email: string;
-  role: string;
+  role: UserRole;
   accountUrl: string;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface EmailDomain {
+  name: string;
+  domain: string;
   id: number;
   createdAt: string;
   updatedAt: string;

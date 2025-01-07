@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import { Color } from '@resources/colors';
+import { colFlex } from '@styles/flexStyles';
 import { FormEventHandler, MouseEventHandler } from 'react';
 
 const ModalOverlay = styled.div`
@@ -16,16 +18,13 @@ const ModalContent = styled.form`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: white;
+  background-color: ${Color.WHITE};
   border-radius: 25px;
   padding: 20px;
   z-index: 1010;
   height: 300px;
-  display: flex;
   flex-wrap: wrap;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 interface Props {
   children: JSX.Element;
@@ -36,8 +35,10 @@ interface Props {
 function CreateWorkspaceModal({ children, closeModal, createHandler }: Props) {
   return (
     <>
-      <ModalOverlay onClick={closeModal} />
-      <ModalContent onSubmit={createHandler}>{children}</ModalContent>
+      <ModalOverlay onClick={closeModal} className={'modal-overlay'} />
+      <ModalContent onSubmit={createHandler} className={'modal-content'}>
+        {children}
+      </ModalContent>
     </>
   );
 }

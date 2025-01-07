@@ -10,7 +10,7 @@ function useWorkspace() {
   const fetchWorkspace = (workspaceId: string | undefined | null) => {
     if (!workspaceId) return;
 
-    userApi.get<Workspace>('/workspace', { params: { workspaceId: workspaceId } }).then((res) => {
+    userApi.get<Workspace>('/workspace', { params: { workspaceId } }).then((res) => {
       setUserWorkspace(res.data);
     });
   };
@@ -18,11 +18,9 @@ function useWorkspace() {
   const fetchWorkspaceAccount = async (workspaceId: string | undefined | null) => {
     if (!workspaceId) return;
 
-    const data = await userApi.get<string>('/workspace/account', { params: { workspaceId: workspaceId } }).then((res) => {
+    return userApi.get<string>('/workspace/account', { params: { workspaceId } }).then((res) => {
       return res.data;
     });
-
-    return data;
   };
 
   return { fetchWorkspace, fetchWorkspaceAccount };

@@ -5,36 +5,35 @@ import AppLabel from '@components/common/label/AppLabel';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 interface Props {
   order: Order;
 }
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   padding: 22px;
   width: 350px;
   box-sizing: border-box;
-  background: #f7f7f7;
+  background: ${Color.LIGHT_GREY};
   gap: 7px;
+  ${colFlex({ align: 'center' })}
 `;
 
 const Row = styled.div`
-  display: flex;
-  justify-content: space-between;
   width: 100%;
   padding: 0 5px;
   box-sizing: border-box;
+  ${rowFlex({ justify: 'space-between' })}
 `;
 
 const Button = styled.button`
   width: 80px;
   height: 30px;
   border: none;
-  background: #eb6d09;
-  color: white;
+  background: ${Color.KIO_ORANGE};
+  color: ${Color.WHITE};
   cursor: pointer;
   border-radius: 50px;
   &:hover {
@@ -56,17 +55,17 @@ function ServedOrderCard({ order }: Props) {
   };
 
   return (
-    <Container>
+    <Container className={'served-order-card-container'}>
       <AppLabel size={18} style={{ fontWeight: 700 }}>
         테이블 {order.tableNumber}
       </AppLabel>
-      <Row>
+      <Row className={'served-order-card-row'}>
         <AppLabel size={14}>주문번호 {order.id}번</AppLabel>
         <AppLabel size={14}>{dateConverter(order.createdAt)}</AppLabel>
       </Row>
       <HorizontalDivider />
       {order.orderProducts.map((it) => (
-        <Row key={it.id}>
+        <Row key={it.id} className={'served-order-card-row'}>
           <AppLabel size={16} style={{ fontWeight: 500 }}>
             {it.productName}
           </AppLabel>
@@ -76,7 +75,7 @@ function ServedOrderCard({ order }: Props) {
         </Row>
       ))}
       <HorizontalDivider />
-      <Row>
+      <Row className={'served-order-card-row'}>
         <AppLabel size={16} style={{ fontWeight: 500 }}>
           총 주문 금액
         </AppLabel>
@@ -84,7 +83,7 @@ function ServedOrderCard({ order }: Props) {
           {order.totalPrice.toLocaleString()}원
         </AppLabel>
       </Row>
-      <Button type={'button'} onClick={() => payOrder(order.id)}>
+      <Button type={'button'} onClick={() => payOrder(order.id)} className={'served-order-card-button'}>
         되돌리기
       </Button>
     </Container>

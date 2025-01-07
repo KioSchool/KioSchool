@@ -5,16 +5,22 @@ import React, { useRef, useState } from 'react';
 import CreateWorkspaceModal from './modal/CreateWorkspaceModal';
 import PlusIconSvg from '@resources/svg/PlusIconSvg';
 import AddWorkspaceModalContent from '@components/admin/workspace/AddworkspaceModalContent';
+import { rowFlex } from '@styles/flexStyles';
 
 const AddWorkspaceContainer = styled.form`
   cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 321px;
   height: 332px;
   border-radius: 25px;
-  border: 1px solid #000;
+  background: #eeecec;
+  ${rowFlex({ justify: 'center', align: 'center' })}
+`;
+
+const PlusIcon = styled(PlusIconSvg)`
+  transition: transform 0.1s ease;
+  &:hover {
+    transform: scale(1.2);
+  }
 `;
 
 interface Props {
@@ -56,8 +62,8 @@ function AddWorkspace({ workspaces }: Props) {
 
   return (
     <>
-      <AddWorkspaceContainer onClick={() => setModalOpen(true)}>
-        <PlusIconSvg width={50} height={50} />
+      <AddWorkspaceContainer onClick={() => setModalOpen(true)} className={'add-workspace-container'}>
+        <PlusIcon width={50} height={50} />
       </AddWorkspaceContainer>
 
       {modalOpen && (

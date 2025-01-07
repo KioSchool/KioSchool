@@ -1,6 +1,8 @@
 import React, { ChangeEvent } from 'react';
 import styled from '@emotion/styled';
 import uploadPreview from '@resources/image/uploadPreview.png';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 interface ProductImageInputProps {
   title: string;
@@ -12,26 +14,22 @@ interface ProductImageInputProps {
 }
 
 const ImageInputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
   gap: 15px;
-  align-items: center;
+  ${colFlex({ align: 'center' })}
 `;
 
 const ImageLabelContainer = styled.div`
-  display: flex;
   width: 100%;
-  justify-content: space-between;
-  align-items: center;
   font-size: 14px;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const ImageInputButton = styled.label`
   cursor: pointer;
   padding: 5px 10px;
   border-radius: 8px;
-  background-color: #eb6d09;
-  color: white;
+  background-color: ${Color.KIO_ORANGE};
+  color: ${Color.WHITE};
   &:hover {
     background: #ff7b2b;
   }
@@ -63,13 +61,15 @@ function AppImageInput({ file, title, url, onImageChange, width, height }: Produ
   };
 
   return (
-    <ImageInputContainer>
-      <ImageLabelContainer>
+    <ImageInputContainer className={'app-image-input'}>
+      <ImageLabelContainer className={'image-label-container'}>
         <label>{title}</label>
-        <ImageInputButton htmlFor="img">사진 업로드</ImageInputButton>
-        <ImageInput type="file" id="img" accept="image/*" onChange={onImageChange} />
+        <ImageInputButton htmlFor="img" className={'image-input-button'}>
+          사진 업로드
+        </ImageInputButton>
+        <ImageInput type="file" id="img" accept="image/*" onChange={onImageChange} className={'image-input'} />
       </ImageLabelContainer>
-      <Image src={getImageUrl()} alt="" width={width} height={height} />
+      <Image src={getImageUrl()} alt="" width={width} height={height} className={'image'} />
     </ImageInputContainer>
   );
 }

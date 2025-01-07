@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
+import { rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 interface Props {
   checked: boolean;
@@ -17,9 +19,7 @@ const Container = styled.div`
   cursor: pointer;
   background-color: #dadada;
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 
   &:hover {
     background-color: #c0c0c0;
@@ -27,11 +27,8 @@ const Container = styled.div`
 `;
 
 const Circle = styled.div<{ checked: boolean }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${(props) => (props.checked ? '#eb6d09' : 'white')};
-  color: ${(props) => (props.checked ? 'white' : 'black')};
+  background-color: ${(props) => (props.checked ? Color.KIO_ORANGE : Color.WHITE)};
+  color: ${(props) => (props.checked ? Color.WHITE : 'black')};
   width: 38px;
   height: 38px;
   border-radius: 50px;
@@ -44,6 +41,7 @@ const Circle = styled.div<{ checked: boolean }>`
       transform: translate(50px, 0);
       transition: all 0.5s ease-in-out;
     `}
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 function SwitchButton({ checked, onChange, uncheckedText, checkedText }: Props) {

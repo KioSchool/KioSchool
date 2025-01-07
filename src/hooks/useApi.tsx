@@ -1,16 +1,29 @@
-import axios from 'axios';
+import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { isLoadingAtom } from '@recoils/atoms';
 
-interface UseApiProps {
-  useLoading?: boolean;
-}
-
-function useApi({ useLoading = true }: UseApiProps = {}) {
+function useApi() {
   const navigate = useNavigate();
   const setIsLoading = useSetRecoilState(isLoadingAtom);
   const controller = new AbortController();
+  const map = new Map();
+
+  const startLoading = (key: InternalAxiosRequestConfig<any>) => {
+    const timeOutId = setTimeout(() => {
+      setIsLoading(true);
+    }, 500);
+
+    map.set(key, timeOutId);
+  };
+
+  const stopLoading = (key: InternalAxiosRequestConfig<any>) => {
+    const timeOutId = map.get(key);
+    map.delete(key);
+    clearTimeout(timeOutId);
+
+    if (!map.size) setIsLoading(false);
+  };
 
   const adminApi = axios.create({
     baseURL: process.env.REACT_APP_ENVIRONMENT == 'development' ? 'http://localhost:8080/admin' : 'https://kio-school.fly.dev/admin',
@@ -18,28 +31,29 @@ function useApi({ useLoading = true }: UseApiProps = {}) {
     signal: controller.signal,
   });
 
-  const commonRequestInterceptor = (config: any) => {
-    if (useLoading) setIsLoading(true);
+  const commonRequestInterceptor = (config: InternalAxiosRequestConfig<any>) => {
+    startLoading(config);
     return config;
   };
 
-  const commonResponseInterceptor = (response: any) => {
-    if (useLoading) setIsLoading(false);
+  const commonResponseInterceptor = (response: AxiosResponse<any, any>) => {
+    stopLoading(response.config);
     return response;
   };
 
   const commonErrorInterceptor = (error: any) => {
-    if (useLoading) setIsLoading(false);
+    stopLoading(error.config);
     return Promise.reject(error);
   };
 
   adminApi.interceptors.request.use(commonRequestInterceptor, commonErrorInterceptor);
   adminApi.interceptors.response.use(commonResponseInterceptor, (error) => {
-    if (useLoading) setIsLoading(false);
+    stopLoading(error.config);
+
     if (error.response.status === 403) {
       controller.abort();
       alert('로그인이 필요합니다.');
-      document.cookie = 'isLoggedIn=;';
+      localStorage.setItem('isLoggedIn', 'false');
       navigate('/login');
     }
 
@@ -53,7 +67,26 @@ function useApi({ useLoading = true }: UseApiProps = {}) {
   userApi.interceptors.request.use(commonRequestInterceptor, commonErrorInterceptor);
   userApi.interceptors.response.use(commonResponseInterceptor, commonErrorInterceptor);
 
-  return { adminApi, userApi };
+  const superAdminApi = axios.create({
+    baseURL: process.env.REACT_APP_ENVIRONMENT == 'development' ? 'http://localhost:8080/super-admin' : 'https://kio-school.fly.dev/super-admin',
+    withCredentials: true,
+    signal: controller.signal,
+  });
+
+  superAdminApi.interceptors.request.use(commonRequestInterceptor, commonErrorInterceptor);
+  superAdminApi.interceptors.response.use(commonResponseInterceptor, (error) => {
+    stopLoading(error.config);
+
+    if (error.response.status === 403) {
+      controller.abort();
+      alert('권한이 없습니다.');
+      navigate('/');
+    }
+
+    return Promise.reject(error);
+  });
+
+  return { adminApi, userApi, superAdminApi };
 }
 
 export default useApi;

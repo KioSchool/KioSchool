@@ -1,39 +1,37 @@
 import React from 'react';
-import { Order } from '@@types/index';
+import { Order, OrderStatus } from '@@types/index';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import ArrowUpSvg from '@resources/svg/ArrowUpSvg';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 interface ToggleOrderCardProps {
   order: Order;
 }
 
 const Container = styled.div`
-  display: flex;
-  justify-content: space-between;
   width: 100%;
-  background: #f7f7f7;
+  background: ${Color.LIGHT_GREY};
   padding: 20px 50px;
   box-sizing: border-box;
+  ${rowFlex({ justify: 'space-between' })}
 `;
 
 const ProductContainer = styled.div`
-  display: flex;
-  flex-direction: column;
   width: 200px;
   gap: 4px;
+  ${colFlex()}
 `;
 
 const RightContainer = styled.div`
-  display: flex;
   gap: 15px;
+  ${rowFlex()}
 `;
 
 const OrderInfoContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   gap: 30px;
+  ${colFlex({ justify: 'space-between' })}
 `;
 
 function ToggleOrderCard({ order }: ToggleOrderCardProps) {
@@ -55,15 +53,15 @@ function ToggleOrderCard({ order }: ToggleOrderCardProps) {
     return `${date.getMonth() + 1}월 ${date.getDate()}일 ${isAm ? '오전' : '오후'} ${hour}시 ${date.getMinutes()}분`;
   };
 
-  const orderStatusConverter = (status: string) => {
+  const orderStatusConverter = (status: OrderStatus) => {
     switch (status) {
-      case 'PAID':
+      case OrderStatus.PAID:
         return '결제 완료';
-      case 'NOT_PAID':
+      case OrderStatus.NOT_PAID:
         return '결제 대기';
-      case 'SERVED':
+      case OrderStatus.SERVED:
         return '서빙 완료';
-      case 'CANCELLED':
+      case OrderStatus.CANCELLED:
         return '주문 취소';
       default:
         return '알 수 없음';
@@ -71,11 +69,11 @@ function ToggleOrderCard({ order }: ToggleOrderCardProps) {
   };
 
   return (
-    <Container>
+    <Container className={'toggle-order-card-container'}>
       <AppLabel size={18} style={{ fontWeight: 700 }}>
         주문번호 {order.id}번
       </AppLabel>
-      <ProductContainer>
+      <ProductContainer className={'product-container'}>
         {isClosed ? (
           <AppLabel size={16}>{closedProductLabelText}</AppLabel>
         ) : (
@@ -86,8 +84,8 @@ function ToggleOrderCard({ order }: ToggleOrderCardProps) {
           ))
         )}
       </ProductContainer>
-      <RightContainer>
-        <OrderInfoContainer>
+      <RightContainer className={'right-container'}>
+        <OrderInfoContainer className={'order-info-container'}>
           <AppLabel size={16}>
             {order.customerName} | {order.totalPrice.toLocaleString()}원 | {orderStatusConverter(order.status)}
           </AppLabel>
