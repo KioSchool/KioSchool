@@ -28,13 +28,13 @@ function SuperAdminWorkspace() {
   const { fetchAllWorkspaces } = useSuperAdminWorkspace();
   const isEmptyWorkspaces = workspaces.empty;
 
-  const fetchAndSetWorkspaces = async (page: number, size: number, name: string | undefined) => {
-    const workspaceResponse = await fetchAllWorkspaces(page, size, name);
+  const fetchAndSetWorkspaces = async (page: number, size: number, name: string | undefined, replace?: boolean) => {
+    const workspaceResponse = await fetchAllWorkspaces(page, size, name, replace ?? false);
     setWorkspaces(workspaceResponse);
   };
 
   useEffect(() => {
-    fetchAndSetWorkspaces(0, pageSize, '');
+    fetchAndSetWorkspaces(0, pageSize, '', true);
   }, []);
 
   return (
