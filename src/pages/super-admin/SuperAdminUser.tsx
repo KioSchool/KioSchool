@@ -6,7 +6,7 @@ import Pagination from '@components/common/pagination/Pagination';
 import AppContainer from '@components/common/container/AppContainer';
 import useSuperAdminUser from '@hooks/super-admin/useSuperAdminUser';
 import SuperAdminUserContent from '@components/super-admin/user/SuperAdminUserContent';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
 import { PaginationResponse, User } from '@@types/index';
 import { defaultPaginationValue } from '@@types/PaginationType';
@@ -23,20 +23,24 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 function SuperAdminUser() {
   const pageSize = 6;
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [users, setUsers] = useState<PaginationResponse<User>>(defaultPaginationValue);
   const userInputRef = useRef<HTMLInputElement>(null);
   const { fetchAllUsers } = useSuperAdminUser();
 
   const isEmptyUsers = users.empty;
 
-  const fetchAndSetUsers = async (page: number, size: number, name: string | undefined) => {
-    const userResponse = await fetchAllUsers(page, size, name);
+  const fetchAndSetUsers = async (page: number, size: number, name: string | undefined, replace?: boolean) => {
+    const userResponse = await fetchAllUsers(page, size, name, replace ?? false);
     setUsers(userResponse);
   };
 
   useEffect(() => {
-    fetchAndSetUsers(0, pageSize, '');
-  }, []);
+    const nowPage = Number(searchParams.get('page'));
+    const searchValue = userInputRef.current?.value || '';
+
+    fetchAndSetUsers(nowPage, pageSize, searchValue, true);
+  }, [searchParams]);
 
   return (
     <AppContainer

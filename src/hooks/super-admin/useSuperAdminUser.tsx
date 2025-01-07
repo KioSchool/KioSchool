@@ -13,14 +13,14 @@ function useSuperAdminUser() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { superAdminApi } = useApi();
 
-  const fetchAllUsers = (page: number, size: number, name?: string) => {
+  const fetchAllUsers = (page: number, size: number, name?: string, replace?: boolean) => {
     const params: FetchAllUsersParamsType = { page, size, name };
 
     const response = superAdminApi
       .get<PaginationResponse<User>>('/users', { params })
       .then((res) => {
         searchParams.set('page', params.page.toString());
-        setSearchParams(searchParams);
+        setSearchParams(searchParams, { replace });
         return res.data;
       })
       .catch((error) => {
