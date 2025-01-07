@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import useSuperAdminWorkspace from '@hooks/super-admin/useSuperAdminWorkspace';
 import { colFlex } from '@styles/flexStyles';
 import SuperAdminWorkspaceContent from '@components/super-admin/workspace/SuperAdminWorkspaceContent';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
 import { PaginationResponse, Workspace } from '@@types/index';
 import { useEffect, useRef, useState } from 'react';
@@ -23,6 +23,7 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 function SuperAdminWorkspace() {
   const pageSize = 6;
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [workspaces, setWorkspaces] = useState<PaginationResponse<Workspace>>(defaultPaginationValue);
   const userInputRef = useRef<HTMLInputElement | null>(null);
   const { fetchAllWorkspaces } = useSuperAdminWorkspace();
@@ -34,8 +35,14 @@ function SuperAdminWorkspace() {
   };
 
   useEffect(() => {
-    fetchAndSetWorkspaces(0, pageSize, '', true);
-  }, []);
+    const nowPage = Number(searchParams.get('page'));
+
+    if (userInputRef.current?.value === null) {
+      fetchAndSetWorkspaces(nowPage, pageSize, '', true);
+    } else {
+      fetchAndSetWorkspaces(nowPage, pageSize, userInputRef.current?.value, true);
+    }
+  }, [searchParams]);
 
   return (
     <AppContainer
