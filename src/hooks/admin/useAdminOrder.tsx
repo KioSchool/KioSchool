@@ -62,7 +62,7 @@ function useAdminOrder(workspaceId: string | undefined) {
     });
   };
 
-  const fetchWorkspaceTable = (tableNumber: number, page: number, size: number) => {
+  const fetchWorkspaceTable = (tableNumber: number, page: number, size: number, replace: boolean) => {
     const params = { workspaceId, tableNumber, page, size };
 
     const response = adminApi
@@ -70,7 +70,7 @@ function useAdminOrder(workspaceId: string | undefined) {
       .then((res) => {
         setTablePaginationResponse(res.data);
         searchParams.set('page', params.page.toString());
-        setSearchParams(searchParams);
+        setSearchParams(searchParams, { replace });
         return res.data;
       })
       .catch((error) => {
