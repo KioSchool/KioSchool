@@ -22,7 +22,7 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 
 function UserEmailDomain() {
   const pageSize = 6;
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [emailDomain, setEmailDomain] = useState<PaginationResponse<EmailDomain>>(defaultPaginationValue);
   const userInputRef = useRef<HTMLInputElement>(null);
   const { fetchAllEmailDomain } = useEmail();
@@ -57,7 +57,8 @@ function UserEmailDomain() {
         <Pagination
           totalPageCount={emailDomain.totalPages}
           paginateFunction={(page: number) => {
-            fetchAndSetEmailDomain(page, pageSize, userInputRef.current?.value);
+            searchParams.set('page', page.toString());
+            setSearchParams(searchParams, { replace: false });
           }}
         />
       </>

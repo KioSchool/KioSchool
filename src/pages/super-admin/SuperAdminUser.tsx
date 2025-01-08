@@ -23,7 +23,7 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 function SuperAdminUser() {
   const pageSize = 6;
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [users, setUsers] = useState<PaginationResponse<User>>(defaultPaginationValue);
   const userInputRef = useRef<HTMLInputElement>(null);
   const { fetchAllUsers } = useSuperAdminUser();
@@ -58,7 +58,8 @@ function SuperAdminUser() {
         <Pagination
           totalPageCount={users.totalPages}
           paginateFunction={(page: number) => {
-            fetchAndSetUsers(page, pageSize, userInputRef.current?.value);
+            searchParams.set('page', page.toString());
+            setSearchParams(searchParams, { replace: false });
           }}
         />
       </>

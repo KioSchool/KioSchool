@@ -24,7 +24,7 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 function SuperAdminEmailDomainList() {
   const pageSize = 6;
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const emailDomain = useRecoilValue(emailDomainPaginationResponseAtom);
   const userInputRef = useRef<HTMLInputElement>(null);
   const { fetchAllEmailDomain } = useSuperAdminEmail();
@@ -58,7 +58,8 @@ function SuperAdminEmailDomainList() {
         <Pagination
           totalPageCount={emailDomain.totalPages}
           paginateFunction={(page: number) => {
-            fetchAllEmailDomain(page, pageSize, userInputRef.current?.value, false);
+            searchParams.set('page', page.toString());
+            setSearchParams(searchParams, { replace: false });
           }}
         />
       </>

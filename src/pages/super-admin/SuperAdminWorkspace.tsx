@@ -23,7 +23,7 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 function SuperAdminWorkspace() {
   const pageSize = 6;
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [workspaces, setWorkspaces] = useState<PaginationResponse<Workspace>>(defaultPaginationValue);
   const userInputRef = useRef<HTMLInputElement | null>(null);
   const { fetchAllWorkspaces } = useSuperAdminWorkspace();
@@ -57,7 +57,8 @@ function SuperAdminWorkspace() {
         <Pagination
           totalPageCount={workspaces.totalPages}
           paginateFunction={(page: number) => {
-            fetchAndSetWorkspaces(page, pageSize, userInputRef.current?.value);
+            searchParams.set('page', page.toString());
+            setSearchParams(searchParams, { replace: false });
           }}
         />
       </>

@@ -32,7 +32,7 @@ const EmptyLabel = styled.div`
 `;
 
 function AdminOrderTableHistory() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { workspaceId, tableNumber } = useParams<{ workspaceId: string; tableNumber: string }>();
   const [tableOrders, setTableOrders] = useState<PaginationResponse<Order>>(defaultPaginationValue);
   const { replaceLastPath } = useCustomNavigate();
@@ -77,7 +77,8 @@ function AdminOrderTableHistory() {
           <Pagination
             totalPageCount={tableOrders.totalPages}
             paginateFunction={(page: number) => {
-              fetchAndSetWorkspaceTable(Number(tableNumber), page, pageSize);
+              searchParams.set('page', page.toString());
+              setSearchParams(searchParams, { replace: false });
             }}
           />
         </ContentContainer>
