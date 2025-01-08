@@ -3,7 +3,7 @@ import { Color } from '@resources/colors';
 import ActivatedSearchSvg from '@resources/svg/ActivatedSearchSvg';
 import DeactivatedSearchSvg from '@resources/svg/DeactivatedSearchSvg';
 import { rowFlex } from '@styles/flexStyles';
-import React, { forwardRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 const Input = styled.input`
@@ -35,33 +35,33 @@ const SearchBarContainer = styled.div`
     border-bottom: 0.5px solid black;
   }
 `;
-interface SuperAdminSearchBarProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  fetchContents: (page: number, size: number, name: string | undefined) => Promise<void> | void;
-}
 
-const SuperAdminSearchBar = forwardRef<HTMLInputElement, SuperAdminSearchBarProps>((props, ref) => {
+function SuperAdminSearchBar() {
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const fetchContentsByName = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!(e.key === 'Enter' && ref && typeof ref !== 'function')) return;
+    if (!(e.key === 'Enter' && inputRef && typeof inputRef !== 'function')) return;
 
-    if (ref.current?.value === '') {
+    searchParams.set('page', '0');
+
+    if (inputRef.current?.value === '') {
       searchParams.delete('name');
     } else {
-      searchParams.set('page', '0');
-      searchParams.set('name', String(ref.current?.value));
+      searchParams.set('name', String(inputRef.current?.value));
     }
 
-    setSearchParams(searchParams, { replace: true });
+    setSearchParams(searchParams);
+
+    inputRef.current!.value = '';
   };
 
   return (
     <SearchBarContainer className={'search-bar-container'}>
       {isFocused ? <ActivatedSearchSvg /> : <DeactivatedSearchSvg />}
       <Input
-        {...props}
-        ref={ref}
+        ref={inputRef}
         type="text"
         placeholder={`이름을 입력해주세요`}
         onKeyDown={fetchContentsByName}
@@ -70,6 +70,6 @@ const SuperAdminSearchBar = forwardRef<HTMLInputElement, SuperAdminSearchBarProp
       />
     </SearchBarContainer>
   );
-});
+}
 
 export default SuperAdminSearchBar;
