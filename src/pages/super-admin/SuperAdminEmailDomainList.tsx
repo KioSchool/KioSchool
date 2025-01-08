@@ -35,7 +35,7 @@ function SuperAdminEmailDomainList() {
     const searchValue = searchParams.get('name') || '';
 
     fetchAllEmailDomain(nowPage, pageSize, searchValue);
-  }, [searchParams]);
+  }, [searchParams.toString()]);
 
   return (
     <AppContainer

@@ -53,7 +53,7 @@ function AdminOrderTableHistory() {
     const nowPage = Number(searchParams.get('page'));
 
     fetchAndSetWorkspaceTable(Number(tableNumber), nowPage, pageSize);
-  }, [searchParams]);
+  }, [searchParams.toString()]);
 
   return (
     <AppContainer

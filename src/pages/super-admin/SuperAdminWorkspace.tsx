@@ -38,7 +38,7 @@ function SuperAdminWorkspace() {
     const searchValue = searchParams.get('name') || '';
 
     fetchAndSetWorkspaces(nowPage, pageSize, searchValue);
-  }, [searchParams]);
+  }, [searchParams.toString()]);
 
   return (
     <AppContainer

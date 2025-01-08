@@ -38,7 +38,7 @@ function UserEmailDomain() {
     const searchValue = searchParams.get('name') || '';
 
     fetchAndSetEmailDomain(nowPage, pageSize, searchValue);
-  }, [searchParams]);
+  }, [searchParams.toString()]);
 
   return (
     <AppContainer
@@ -57,7 +57,7 @@ function UserEmailDomain() {
           totalPageCount={emailDomain.totalPages}
           paginateFunction={(page: number) => {
             searchParams.set('page', page.toString());
-            setSearchParams(searchParams, { replace: false });
+            setSearchParams(searchParams);
           }}
         />
       </>

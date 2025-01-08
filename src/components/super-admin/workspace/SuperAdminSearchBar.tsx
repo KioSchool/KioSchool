@@ -45,7 +45,7 @@ function SuperAdminSearchBar() {
     if (inputRef.current) {
       inputRef.current.value = searchParams.get('name') || '';
     }
-  }, [searchParams]);
+  }, [searchParams.toString()]);
 
   const fetchContentsByName = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!(e.key === 'Enter' && inputRef && typeof inputRef !== 'function')) return;

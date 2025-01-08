@@ -39,7 +39,7 @@ function SuperAdminUser() {
     const searchValue = searchParams.get('name') || '';
 
     fetchAndSetUsers(nowPage, pageSize, searchValue);
-  }, [searchParams]);
+  }, [searchParams.toString()]);
 
   return (
     <AppContainer
