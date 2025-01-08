@@ -16,7 +16,7 @@ function useCustomNavigate() {
 
   const navigateWithPage = (path: string, additionalParams = {}) => {
     const params = new URLSearchParams({ page: '0', ...additionalParams });
-    navigate(`${path}?${params.toString()}`);
+    navigate({ pathname: path, search: params.toString() });
   };
 
   return { appendPath, replaceLastPath, navigateWithPage };
