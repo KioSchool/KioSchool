@@ -3,7 +3,7 @@ import { Color } from '@resources/colors';
 import ActivatedSearchSvg from '@resources/svg/ActivatedSearchSvg';
 import DeactivatedSearchSvg from '@resources/svg/DeactivatedSearchSvg';
 import { rowFlex } from '@styles/flexStyles';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 const Input = styled.input`
@@ -41,6 +41,12 @@ function SuperAdminSearchBar() {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.value = searchParams.get('name') || '';
+    }
+  }, [searchParams]);
+
   const fetchContentsByName = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!(e.key === 'Enter' && inputRef && typeof inputRef !== 'function')) return;
 
@@ -53,8 +59,6 @@ function SuperAdminSearchBar() {
     }
 
     setSearchParams(searchParams);
-
-    inputRef.current!.value = '';
   };
 
   return (
