@@ -1,7 +1,7 @@
 import SuperAdminSearchBar from '@components/super-admin/workspace/SuperAdminSearchBar';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Pagination from '@components/common/pagination/Pagination';
 import AppContainer from '@components/common/container/AppContainer';
 import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
@@ -24,7 +24,6 @@ function UserEmailDomain() {
   const pageSize = 6;
   const [searchParams, setSearchParams] = useSearchParams();
   const [emailDomain, setEmailDomain] = useState<PaginationResponse<EmailDomain>>(defaultPaginationValue);
-  const userInputRef = useRef<HTMLInputElement>(null);
   const { fetchAllEmailDomain } = useEmail();
 
   const isEmptyEmailDomain = emailDomain.empty;
@@ -36,7 +35,7 @@ function UserEmailDomain() {
 
   useEffect(() => {
     const nowPage = Number(searchParams.get('page'));
-    const searchValue = userInputRef.current?.value || '';
+    const searchValue = searchParams.get('name') || '';
 
     fetchAndSetEmailDomain(nowPage, pageSize, searchValue);
   }, [searchParams]);
@@ -50,7 +49,7 @@ function UserEmailDomain() {
       titleNavBarProps={{ title: '이메일 도메인 조회', useBackIcon: false }}
     >
       <>
-        <SuperAdminSearchBar ref={userInputRef} fetchContents={fetchAndSetEmailDomain} />
+        <SuperAdminSearchBar />
         <ContentContainer justifyCenter={isEmptyEmailDomain} className={'content-container'}>
           <SuperAdminSearchContents contents={emailDomain} target={'유저'} ContentComponent={EmailDomainContent} />
         </ContentContainer>

@@ -1,7 +1,7 @@
 import SuperAdminSearchBar from '@components/super-admin/workspace/SuperAdminSearchBar';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Pagination from '@components/common/pagination/Pagination';
 import AppContainer from '@components/common/container/AppContainer';
 import useSuperAdminUser from '@hooks/super-admin/useSuperAdminUser';
@@ -25,7 +25,6 @@ function SuperAdminUser() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [users, setUsers] = useState<PaginationResponse<User>>(defaultPaginationValue);
-  const userInputRef = useRef<HTMLInputElement>(null);
   const { fetchAllUsers } = useSuperAdminUser();
 
   const isEmptyUsers = users.empty;
@@ -37,7 +36,7 @@ function SuperAdminUser() {
 
   useEffect(() => {
     const nowPage = Number(searchParams.get('page'));
-    const searchValue = userInputRef.current?.value || '';
+    const searchValue = searchParams.get('name') || '';
 
     fetchAndSetUsers(nowPage, pageSize, searchValue);
   }, [searchParams]);
@@ -51,7 +50,7 @@ function SuperAdminUser() {
       titleNavBarProps={{ title: '전체 유저 관리', onLeftArrowClick: () => navigate('/super-admin/manage') }}
     >
       <>
-        <SuperAdminSearchBar ref={userInputRef} fetchContents={fetchAndSetUsers} />
+        <SuperAdminSearchBar />
         <ContentContainer justifyCenter={isEmptyUsers} className={'content-container'}>
           <SuperAdminSearchContents contents={users} target={'유저'} ContentComponent={SuperAdminUserContent} />
         </ContentContainer>

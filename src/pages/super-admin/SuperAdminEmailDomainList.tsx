@@ -1,7 +1,7 @@
 import SuperAdminSearchBar from '@components/super-admin/workspace/SuperAdminSearchBar';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import Pagination from '@components/common/pagination/Pagination';
 import AppContainer from '@components/common/container/AppContainer';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -26,14 +26,13 @@ function SuperAdminEmailDomainList() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const emailDomain = useRecoilValue(emailDomainPaginationResponseAtom);
-  const userInputRef = useRef<HTMLInputElement>(null);
   const { fetchAllEmailDomain } = useSuperAdminEmail();
 
   const isEmptyEmailDomain = emailDomain.empty;
 
   useEffect(() => {
     const nowPage = Number(searchParams.get('page'));
-    const searchValue = userInputRef.current?.value || '';
+    const searchValue = searchParams.get('name') || '';
 
     fetchAllEmailDomain(nowPage, pageSize, searchValue);
   }, [searchParams]);
@@ -51,7 +50,7 @@ function SuperAdminEmailDomainList() {
       }}
     >
       <>
-        <SuperAdminSearchBar ref={userInputRef} fetchContents={fetchAllEmailDomain} />
+        <SuperAdminSearchBar />
         <ContentContainer justifyCenter={isEmptyEmailDomain} className={'content-container'}>
           <SuperAdminSearchContents contents={emailDomain} target={'이메일'} ContentComponent={SuperAdminEmailDomainContent} />
         </ContentContainer>
