@@ -1,7 +1,7 @@
 import SuperAdminSearchBar from '@components/super-admin/workspace/SuperAdminSearchBar';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Pagination from '@components/common/pagination/Pagination';
 import AppContainer from '@components/common/container/AppContainer';
 import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
@@ -9,6 +9,7 @@ import { EmailDomain, PaginationResponse } from '@@types/index';
 import { defaultPaginationValue } from '@@types/PaginationType';
 import useEmail from '@hooks/user/useEmail';
 import EmailDomainContent from '@components/user/email/EmailDomainContent';
+import { useSearchParams } from 'react-router-dom';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   height: 550px;
@@ -21,8 +22,8 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 
 function UserEmailDomain() {
   const pageSize = 6;
+  const [searchParams, setSearchParams] = useSearchParams();
   const [emailDomain, setEmailDomain] = useState<PaginationResponse<EmailDomain>>(defaultPaginationValue);
-  const userInputRef = useRef<HTMLInputElement>(null);
   const { fetchAllEmailDomain } = useEmail();
 
   const isEmptyEmailDomain = emailDomain.empty;
@@ -33,8 +34,11 @@ function UserEmailDomain() {
   };
 
   useEffect(() => {
-    fetchAndSetEmailDomain(0, pageSize, '');
-  }, []);
+    const nowPage = Number(searchParams.get('page'));
+    const searchValue = searchParams.get('name') || '';
+
+    fetchAndSetEmailDomain(nowPage, pageSize, searchValue);
+  }, [searchParams.toString()]);
 
   return (
     <AppContainer
@@ -45,14 +49,15 @@ function UserEmailDomain() {
       titleNavBarProps={{ title: '이메일 도메인 조회', useBackIcon: false }}
     >
       <>
-        <SuperAdminSearchBar ref={userInputRef} fetchContents={fetchAndSetEmailDomain} />
+        <SuperAdminSearchBar />
         <ContentContainer justifyCenter={isEmptyEmailDomain} className={'content-container'}>
           <SuperAdminSearchContents contents={emailDomain} target={'유저'} ContentComponent={EmailDomainContent} />
         </ContentContainer>
         <Pagination
           totalPageCount={emailDomain.totalPages}
           paginateFunction={(page: number) => {
-            fetchAndSetEmailDomain(page, pageSize, userInputRef.current?.value);
+            searchParams.set('page', page.toString());
+            setSearchParams(searchParams);
           }}
         />
       </>

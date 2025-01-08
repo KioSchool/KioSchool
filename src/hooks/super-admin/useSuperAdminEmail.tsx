@@ -1,7 +1,6 @@
 import { PaginationResponse, EmailDomain } from '@@types/index';
 import useApi from '@hooks/useApi';
 import { emailDomainPaginationResponseAtom } from '@recoils/atoms';
-import { useSearchParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
 interface FetchAllEmailDomainParamsType {
@@ -17,7 +16,6 @@ interface AddEmailDomainParamsType {
 
 function useSuperAdminEmail() {
   const setEmailPaginationResponse = useSetRecoilState(emailDomainPaginationResponseAtom);
-  const [searchParams, setSearchParams] = useSearchParams();
   const { superAdminApi } = useApi();
 
   const fetchAllEmailDomain = (page: number, size: number, name?: string) => {
@@ -26,8 +24,6 @@ function useSuperAdminEmail() {
     superAdminApi
       .get<PaginationResponse<EmailDomain>>('/email-domains', { params })
       .then((res) => {
-        searchParams.set('page', params.page.toString());
-        setSearchParams(searchParams);
         setEmailPaginationResponse(res.data);
       })
       .catch((error) => {

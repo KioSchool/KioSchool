@@ -1,7 +1,6 @@
 import { PaginationResponse, User } from '@@types/index';
 import { defaultPaginationValue } from '@@types/PaginationType';
 import useApi from '@hooks/useApi';
-import { useSearchParams } from 'react-router-dom';
 
 interface FetchAllUsersParamsType {
   page: number;
@@ -10,7 +9,6 @@ interface FetchAllUsersParamsType {
 }
 
 function useSuperAdminUser() {
-  const [searchParams, setSearchParams] = useSearchParams();
   const { superAdminApi } = useApi();
 
   const fetchAllUsers = (page: number, size: number, name?: string) => {
@@ -19,8 +17,6 @@ function useSuperAdminUser() {
     const response = superAdminApi
       .get<PaginationResponse<User>>('/users', { params })
       .then((res) => {
-        searchParams.set('page', params.page.toString());
-        setSearchParams(searchParams);
         return res.data;
       })
       .catch((error) => {
