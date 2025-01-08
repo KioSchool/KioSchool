@@ -30,8 +30,8 @@ function SuperAdminUser() {
 
   const isEmptyUsers = users.empty;
 
-  const fetchAndSetUsers = async (page: number, size: number, name: string | undefined, replace: boolean = false) => {
-    const userResponse = await fetchAllUsers(page, size, name, replace);
+  const fetchAndSetUsers = async (page: number, size: number, name: string | undefined) => {
+    const userResponse = await fetchAllUsers(page, size, name);
     setUsers(userResponse);
   };
 
@@ -39,7 +39,7 @@ function SuperAdminUser() {
     const nowPage = Number(searchParams.get('page'));
     const searchValue = userInputRef.current?.value || '';
 
-    fetchAndSetUsers(nowPage, pageSize, searchValue, true);
+    fetchAndSetUsers(nowPage, pageSize, searchValue);
   }, [searchParams]);
 
   return (
@@ -59,7 +59,7 @@ function SuperAdminUser() {
           totalPageCount={users.totalPages}
           paginateFunction={(page: number) => {
             searchParams.set('page', page.toString());
-            setSearchParams(searchParams, { replace: false });
+            setSearchParams(searchParams);
           }}
         />
       </>
