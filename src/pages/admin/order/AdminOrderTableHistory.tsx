@@ -44,15 +44,15 @@ function AdminOrderTableHistory() {
 
   const pageSize = 6;
 
-  const fetchAndSetWorkspaceTable = async (tableNo: number, page: number, size: number, replace: boolean = false) => {
-    const workspaceTableResponse = await fetchWorkspaceTable(tableNo, page, size, replace);
+  const fetchAndSetWorkspaceTable = async (tableNo: number, page: number, size: number) => {
+    const workspaceTableResponse = await fetchWorkspaceTable(tableNo, page, size);
     setTableOrders(workspaceTableResponse);
   };
 
   useEffect(() => {
     const nowPage = Number(searchParams.get('page'));
 
-    fetchAndSetWorkspaceTable(Number(tableNumber), nowPage, pageSize, true);
+    fetchAndSetWorkspaceTable(Number(tableNumber), nowPage, pageSize);
   }, [searchParams]);
 
   return (
@@ -78,7 +78,7 @@ function AdminOrderTableHistory() {
             totalPageCount={tableOrders.totalPages}
             paginateFunction={(page: number) => {
               searchParams.set('page', page.toString());
-              setSearchParams(searchParams, { replace: false });
+              setSearchParams(searchParams);
             }}
           />
         </ContentContainer>
