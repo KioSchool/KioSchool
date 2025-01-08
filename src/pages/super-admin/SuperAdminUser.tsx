@@ -30,8 +30,8 @@ function SuperAdminUser() {
 
   const isEmptyUsers = users.empty;
 
-  const fetchAndSetUsers = async (page: number, size: number, name: string | undefined, replace?: boolean) => {
-    const userResponse = await fetchAllUsers(page, size, name, replace ?? false);
+  const fetchAndSetUsers = async (page: number, size: number, name: string | undefined, replace: boolean = false) => {
+    const userResponse = await fetchAllUsers(page, size, name, replace);
     setUsers(userResponse);
   };
 

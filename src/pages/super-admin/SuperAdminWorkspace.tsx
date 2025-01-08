@@ -29,8 +29,8 @@ function SuperAdminWorkspace() {
   const { fetchAllWorkspaces } = useSuperAdminWorkspace();
   const isEmptyWorkspaces = workspaces.empty;
 
-  const fetchAndSetWorkspaces = async (page: number, size: number, name: string | undefined, replace?: boolean) => {
-    const workspaceResponse = await fetchAllWorkspaces(page, size, name, replace ?? false);
+  const fetchAndSetWorkspaces = async (page: number, size: number, name: string | undefined, replace: boolean = false) => {
+    const workspaceResponse = await fetchAllWorkspaces(page, size, name, replace);
     setWorkspaces(workspaceResponse);
   };
 

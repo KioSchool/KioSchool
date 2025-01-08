@@ -44,8 +44,8 @@ function AdminOrderTableHistory() {
 
   const pageSize = 6;
 
-  const fetchAndSetWorkspaceTable = async (tableNo: number, page: number, size: number, replace?: boolean) => {
-    const workspaceTableResponse = await fetchWorkspaceTable(tableNo, page, size, replace ?? false);
+  const fetchAndSetWorkspaceTable = async (tableNo: number, page: number, size: number, replace: boolean = false) => {
+    const workspaceTableResponse = await fetchWorkspaceTable(tableNo, page, size, replace);
     setTableOrders(workspaceTableResponse);
   };
 

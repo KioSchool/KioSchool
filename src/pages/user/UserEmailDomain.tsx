@@ -29,8 +29,8 @@ function UserEmailDomain() {
 
   const isEmptyEmailDomain = emailDomain.empty;
 
-  const fetchAndSetEmailDomain = async (page: number, size: number, name: string | undefined, replace?: boolean) => {
-    const emailResponse = await fetchAllEmailDomain(page, size, name, replace ?? false);
+  const fetchAndSetEmailDomain = async (page: number, size: number, name: string | undefined, replace: boolean = false) => {
+    const emailResponse = await fetchAllEmailDomain(page, size, name, replace);
     setEmailDomain(emailResponse);
   };
 
