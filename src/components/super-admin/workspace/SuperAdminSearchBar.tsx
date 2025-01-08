@@ -4,6 +4,7 @@ import ActivatedSearchSvg from '@resources/svg/ActivatedSearchSvg';
 import DeactivatedSearchSvg from '@resources/svg/DeactivatedSearchSvg';
 import { rowFlex } from '@styles/flexStyles';
 import React, { forwardRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 const Input = styled.input`
   width: 100%;
@@ -35,16 +36,24 @@ const SearchBarContainer = styled.div`
   }
 `;
 interface SuperAdminSearchBarProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  fetchContents: (page: number, size: number, name: string | undefined, replace: boolean) => Promise<void> | void;
+  fetchContents: (page: number, size: number, name: string | undefined) => Promise<void> | void;
 }
 
 const SuperAdminSearchBar = forwardRef<HTMLInputElement, SuperAdminSearchBarProps>((props, ref) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const fetchContentsByName = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!(e.key === 'Enter' && ref && typeof ref !== 'function')) return;
 
-    props.fetchContents(0, 6, ref.current?.value, false);
+    if (ref.current?.value === '') {
+      searchParams.delete('name');
+    } else {
+      searchParams.set('page', '0');
+      searchParams.set('name', String(ref.current?.value));
+    }
+
+    setSearchParams(searchParams, { replace: true });
   };
 
   return (

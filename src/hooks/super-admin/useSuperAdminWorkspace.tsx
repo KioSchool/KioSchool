@@ -1,7 +1,6 @@
 import { PaginationResponse, Workspace } from '@@types/index';
 import { defaultPaginationValue } from '@@types/PaginationType';
 import useApi from '@hooks/useApi';
-import { useSearchParams } from 'react-router-dom';
 
 interface FetchAllWorkspacesParamsType {
   page: number;
@@ -10,17 +9,14 @@ interface FetchAllWorkspacesParamsType {
 }
 
 function useSuperAdminWorkspace() {
-  const [searchParams, setSearchParams] = useSearchParams();
   const { superAdminApi } = useApi();
 
-  const fetchAllWorkspaces = (page: number, size: number, name?: string, replace?: boolean) => {
+  const fetchAllWorkspaces = (page: number, size: number, name?: string) => {
     const params: FetchAllWorkspacesParamsType = { page, size, name };
 
     const response = superAdminApi
       .get<PaginationResponse<Workspace>>('/workspaces', { params })
       .then((res) => {
-        searchParams.set('page', params.page.toString());
-        setSearchParams(searchParams, { replace });
         return res.data;
       })
       .catch((error) => {

@@ -29,8 +29,8 @@ function SuperAdminWorkspace() {
   const { fetchAllWorkspaces } = useSuperAdminWorkspace();
   const isEmptyWorkspaces = workspaces.empty;
 
-  const fetchAndSetWorkspaces = async (page: number, size: number, name: string | undefined, replace: boolean = false) => {
-    const workspaceResponse = await fetchAllWorkspaces(page, size, name, replace);
+  const fetchAndSetWorkspaces = async (page: number, size: number, name: string | undefined) => {
+    const workspaceResponse = await fetchAllWorkspaces(page, size, name);
     setWorkspaces(workspaceResponse);
   };
 
@@ -38,7 +38,7 @@ function SuperAdminWorkspace() {
     const nowPage = Number(searchParams.get('page'));
     const searchValue = userInputRef.current?.value || '';
 
-    fetchAndSetWorkspaces(nowPage, pageSize, searchValue, true);
+    fetchAndSetWorkspaces(nowPage, pageSize, searchValue);
   }, [searchParams]);
 
   return (
