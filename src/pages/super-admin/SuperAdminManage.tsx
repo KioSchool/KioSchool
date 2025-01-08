@@ -21,9 +21,9 @@ function SuperAdminManage() {
     <AppContainer useFlex={colFlex({ justify: 'center' })} titleNavBarProps={{ title: '관리 페이지' }}>
       <Container>
         <ButtonContainer>
-          <ImageRouteButton src={orderImage} onClick={() => navigate('/super-admin/workspace')} buttonText={'워크스페이스 조회'} />
-          <ImageRouteButton src={orderImage} onClick={() => navigate('/super-admin/user')} buttonText={'사용자 조회'} />
-          <ImageRouteButton src={orderImage} onClick={() => navigate('/super-admin/email')} buttonText={'이메일 조회'} />
+          <ImageRouteButton src={orderImage} onClick={() => navigate('/super-admin/workspace?page=0')} buttonText={'워크스페이스 조회'} />
+          <ImageRouteButton src={orderImage} onClick={() => navigate('/super-admin/user?page=0')} buttonText={'사용자 조회'} />
+          <ImageRouteButton src={orderImage} onClick={() => navigate('/super-admin/email?page=0')} buttonText={'이메일 조회'} />
         </ButtonContainer>
       </Container>
     </AppContainer>
