@@ -35,7 +35,7 @@ function SuperAdminEmailDomainList() {
     const nowPage = Number(searchParams.get('page'));
     const searchValue = userInputRef.current?.value || '';
 
-    fetchAllEmailDomain(nowPage, pageSize, searchValue, true);
+    fetchAllEmailDomain(nowPage, pageSize, searchValue);
   }, [searchParams]);
 
   return (
@@ -59,7 +59,7 @@ function SuperAdminEmailDomainList() {
           totalPageCount={emailDomain.totalPages}
           paginateFunction={(page: number) => {
             searchParams.set('page', page.toString());
-            setSearchParams(searchParams, { replace: false });
+            setSearchParams(searchParams);
           }}
         />
       </>
