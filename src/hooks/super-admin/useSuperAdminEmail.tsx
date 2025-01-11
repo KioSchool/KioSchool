@@ -40,7 +40,9 @@ function useSuperAdminEmail() {
         fetchAllEmailDomain(0, 6);
       })
       .catch((error) => {
-        console.error(error);
+        if (error.response.status === 400) {
+          alert('중복된 이메일 도메인입니다.');
+        }
       });
   };
 
