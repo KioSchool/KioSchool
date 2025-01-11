@@ -41,7 +41,7 @@ function useSuperAdminEmail() {
       })
       .catch((error) => {
         if (error.response.status === 400) {
-          alert('중복된 이메일 도메인입니다.');
+          alert(error.response.data.message);
         }
       });
   };
