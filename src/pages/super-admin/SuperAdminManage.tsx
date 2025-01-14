@@ -4,8 +4,8 @@ import styled from '@emotion/styled';
 import userImage from '@resources/image/userImage.png';
 import workspaceImage from '@resources/image/workspaceImage.png';
 import emailImage from '@resources/image/emailImage.png';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   width: 100%;
@@ -18,7 +18,7 @@ const ButtonContainer = styled.div`
 `;
 
 function SuperAdminManage() {
-  const navigate = useNavigate();
+  const { navigateWithPage } = useCustomNavigate();
   return (
     <AppContainer useFlex={colFlex({ justify: 'center' })} titleNavBarProps={{ title: '관리 페이지' }}>
       <Container>

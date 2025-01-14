@@ -67,12 +67,12 @@ function MyInfoContent() {
   const { deleteUser } = useAdminUser();
   const user = useRecoilValue(adminUserAtom);
 
-  const { ConfirmModal: DeleteUserConfirmModal, confirm: deleteUserConfirm } = useConfirm(
-    '계정을 탈퇴하시겠습니까?',
-    '확인 후 되돌릴 수 없습니다.',
-    '확인',
-    '취소',
-  );
+  const { ConfirmModal: DeleteUserConfirmModal, confirm: deleteUserConfirm } = useConfirm({
+    title: '계정을 탈퇴하시겠습니까?',
+    description: '확인 후 되돌릴 수 없습니다.',
+    okText: '확인',
+    cancelText: '취소',
+  });
 
   const deleteUserHandler = async () => {
     const userInput = await deleteUserConfirm();

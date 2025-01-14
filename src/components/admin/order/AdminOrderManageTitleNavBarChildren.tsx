@@ -12,7 +12,7 @@ const ButtonContainer = styled.div`
   ${rowFlex({ align: 'center' })}
 `;
 
-function AdminOrderManageTitleNavBarChildren({ handleTableCount, tableCount }: Props) {
+function AdminTableCountTitleNavBarChildren({ handleTableCount, tableCount }: Props) {
   return (
     <ButtonContainer className={'button-container'}>
       <RoundedAppButton
@@ -34,4 +34,4 @@ function AdminOrderManageTitleNavBarChildren({ handleTableCount, tableCount }: P
   );
 }
 
-export default AdminOrderManageTitleNavBarChildren;
+export default AdminTableCountTitleNavBarChildren;

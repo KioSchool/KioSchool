@@ -1,15 +1,16 @@
 import SuperAdminSearchBar from '@components/super-admin/workspace/SuperAdminSearchBar';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Pagination from '@components/common/pagination/Pagination';
 import AppContainer from '@components/common/container/AppContainer';
-import useSuperAdminUser from '@hooks/super-admin/useSuperAdminUser';
-import SuperAdminUserContent from '@components/super-admin/user/SuperAdminUserContent';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
-import { PaginationResponse, User } from '@@types/index';
-import { defaultPaginationValue } from '@@types/PaginationType';
+import useSuperAdminEmail from '@hooks/super-admin/useSuperAdminEmail';
+import SuperAdminEmailDomainContent from '@components/super-admin/email/SuperAdminEmailDomainContent';
+import SuperAdminEmailDomainTitleNavBarChildren from '@components/super-admin/email/SuperAdminEmailDomainTitleNavBarChildren';
+import { useRecoilValue } from 'recoil';
+import { emailDomainPaginationResponseAtom } from '@recoils/atoms';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   height: 550px;
@@ -20,25 +21,20 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
     })}
 `;
 
-function SuperAdminUser() {
+function SuperAdminEmailDomainList() {
   const pageSize = 6;
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [users, setUsers] = useState<PaginationResponse<User>>(defaultPaginationValue);
-  const { fetchAllUsers } = useSuperAdminUser();
+  const emailDomain = useRecoilValue(emailDomainPaginationResponseAtom);
+  const { fetchAllEmailDomain } = useSuperAdminEmail();
 
-  const isEmptyUsers = users.empty;
-
-  const fetchAndSetUsers = async (page: number, size: number, name: string | undefined) => {
-    const userResponse = await fetchAllUsers(page, size, name);
-    setUsers(userResponse);
-  };
+  const isEmptyEmailDomain = emailDomain.empty;
 
   useEffect(() => {
     const nowPage = Number(searchParams.get('page'));
     const searchValue = searchParams.get('name') || '';
 
-    fetchAndSetUsers(nowPage, pageSize, searchValue);
+    fetchAllEmailDomain(nowPage, pageSize, searchValue);
   }, [searchParams.toString()]);
 
   return (
@@ -47,15 +43,19 @@ function SuperAdminUser() {
       customWidth={'1000px'}
       customHeight={'100%'}
       customGap={'20px'}
-      titleNavBarProps={{ title: '전체 유저 관리', onLeftArrowClick: () => navigate('/super-admin/manage') }}
+      titleNavBarProps={{
+        title: '이메일 도메인 관리',
+        onLeftArrowClick: () => navigate('/super-admin/manage'),
+        children: <SuperAdminEmailDomainTitleNavBarChildren />,
+      }}
     >
       <>
         <SuperAdminSearchBar />
-        <ContentContainer justifyCenter={isEmptyUsers} className={'content-container'}>
-          <SuperAdminSearchContents contents={users} target={'유저'} ContentComponent={SuperAdminUserContent} />
+        <ContentContainer justifyCenter={isEmptyEmailDomain} className={'content-container'}>
+          <SuperAdminSearchContents contents={emailDomain} target={'이메일'} ContentComponent={SuperAdminEmailDomainContent} />
         </ContentContainer>
         <Pagination
-          totalPageCount={users.totalPages}
+          totalPageCount={emailDomain.totalPages}
           paginateFunction={(page: number) => {
             searchParams.set('page', page.toString());
             setSearchParams(searchParams);
@@ -66,4 +66,4 @@ function SuperAdminUser() {
   );
 }
 
-export default SuperAdminUser;
+export default SuperAdminEmailDomainList;

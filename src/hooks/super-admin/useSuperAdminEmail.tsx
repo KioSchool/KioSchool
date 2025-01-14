@@ -1,37 +1,63 @@
 import { PaginationResponse, EmailDomain } from '@@types/index';
-import { defaultPaginationValue } from '@@types/PaginationType';
 import useApi from '@hooks/useApi';
-import { useSearchParams } from 'react-router-dom';
+import { emailDomainPaginationResponseAtom } from '@recoils/atoms';
+import { useSetRecoilState } from 'recoil';
 
-interface FetchAllEmailsParamsType {
+interface FetchAllEmailDomainParamsType {
   page: number;
   size: number;
   name?: string;
 }
 
+interface AddEmailDomainParamsType {
+  name: string;
+  domain: string;
+}
+
 function useSuperAdminEmail() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const setEmailPaginationResponse = useSetRecoilState(emailDomainPaginationResponseAtom);
   const { superAdminApi } = useApi();
 
-  const fetchAllEmails = (page: number, size: number, name?: string) => {
-    const params: FetchAllEmailsParamsType = { page, size, name };
+  const fetchAllEmailDomain = (page: number, size: number, name?: string) => {
+    const params: FetchAllEmailDomainParamsType = { page, size, name };
 
-    const response = superAdminApi
-      .get<PaginationResponse<EmailDomain>>('/emails', { params })
+    superAdminApi
+      .get<PaginationResponse<EmailDomain>>('/email-domains', { params })
       .then((res) => {
-        searchParams.set('page', params.page.toString());
-        setSearchParams(searchParams);
-        return res.data;
+        setEmailPaginationResponse(res.data);
       })
       .catch((error) => {
         console.error(error);
-        return defaultPaginationValue;
       });
-
-    return response;
   };
 
-  return { fetchAllEmails };
+  const addEmailDomain = (name: string, domain: string) => {
+    const params: AddEmailDomainParamsType = { name, domain };
+
+    superAdminApi
+      .post('/email-domain', params)
+      .then(() => {
+        fetchAllEmailDomain(0, 6);
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          alert(error.response.data.message);
+        }
+      });
+  };
+
+  const deleteEmailDomain = (domainId: Number) => {
+    superAdminApi
+      .delete('/email-domain', { data: { domainId } })
+      .then(() => {
+        fetchAllEmailDomain(0, 6);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  return { fetchAllEmailDomain, addEmailDomain, deleteEmailDomain };
 }
 
 export default useSuperAdminEmail;

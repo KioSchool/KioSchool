@@ -5,10 +5,10 @@ import styled from '@emotion/styled';
 import useSuperAdminWorkspace from '@hooks/super-admin/useSuperAdminWorkspace';
 import { colFlex } from '@styles/flexStyles';
 import SuperAdminWorkspaceContent from '@components/super-admin/workspace/SuperAdminWorkspaceContent';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
 import { PaginationResponse, Workspace } from '@@types/index';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { defaultPaginationValue } from '@@types/PaginationType';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
@@ -23,8 +23,8 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 function SuperAdminWorkspace() {
   const pageSize = 6;
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [workspaces, setWorkspaces] = useState<PaginationResponse<Workspace>>(defaultPaginationValue);
-  const userInputRef = useRef<HTMLInputElement | null>(null);
   const { fetchAllWorkspaces } = useSuperAdminWorkspace();
   const isEmptyWorkspaces = workspaces.empty;
 
@@ -34,8 +34,11 @@ function SuperAdminWorkspace() {
   };
 
   useEffect(() => {
-    fetchAndSetWorkspaces(0, pageSize, '');
-  }, []);
+    const nowPage = Number(searchParams.get('page'));
+    const searchValue = searchParams.get('name') || '';
+
+    fetchAndSetWorkspaces(nowPage, pageSize, searchValue);
+  }, [searchParams.toString()]);
 
   return (
     <AppContainer
@@ -46,14 +49,15 @@ function SuperAdminWorkspace() {
       titleNavBarProps={{ title: '전체 워크스페이스 관리', onLeftArrowClick: () => navigate('/super-admin/manage') }}
     >
       <>
-        <SuperAdminSearchBar ref={userInputRef} fetchContents={fetchAndSetWorkspaces} />
+        <SuperAdminSearchBar />
         <ContentContainer justifyCenter={isEmptyWorkspaces} className={'content-container'}>
           <SuperAdminSearchContents contents={workspaces} target={'워크스페이스'} ContentComponent={SuperAdminWorkspaceContent} />
         </ContentContainer>
         <Pagination
           totalPageCount={workspaces.totalPages}
           paginateFunction={(page: number) => {
-            fetchAndSetWorkspaces(page, pageSize, userInputRef.current?.value);
+            searchParams.set('page', page.toString());
+            setSearchParams(searchParams);
           }}
         />
       </>

@@ -41,7 +41,7 @@ const LeftContainer = styled.div`
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
-const ArrowLeftButton = styled(ArrowLeftSvg)<{ useBackIcon: boolean }>`
+const ArrowLeftButton = styled(ArrowLeftSvg)<{ useBackIcon?: boolean }>`
   display: ${(props) => (props.useBackIcon ? 'block' : 'none')};
   cursor: pointer;
   position: absolute;

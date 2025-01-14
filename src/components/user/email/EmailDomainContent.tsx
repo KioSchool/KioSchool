@@ -23,13 +23,20 @@ const EmailLabel = styled.div`
   }
 `;
 
-function SuperAdminEmailContent({ name, domain }: EmailDomain) {
+const LabelContainer = styled.div`
+  ${colFlex({ justify: 'center', align: 'start' })}
+  height: 100%;
+`;
+
+function EmailDomainContent({ name, domain }: EmailDomain) {
   return (
-    <SubContainer useFlex={colFlex({ justify: 'center', align: 'start' })} customWidth={'1000px'} customHeight={'80px'} customGap={'5px'}>
-      <EmailLabel className={'email-label'}>{name}</EmailLabel>
-      <SubLabelContainer className={'sub-label-container'}>{domain}</SubLabelContainer>
+    <SubContainer useFlex={rowFlex({ justify: 'space-between', align: 'start' })} customWidth={'1000px'} customHeight={'80px'} customGap={'5px'}>
+      <LabelContainer>
+        <EmailLabel className={'email-label'}>{name}</EmailLabel>
+        <SubLabelContainer className={'sub-label-container'}>{domain}</SubLabelContainer>
+      </LabelContainer>
     </SubContainer>
   );
 }
 
-export default SuperAdminEmailContent;
+export default EmailDomainContent;
