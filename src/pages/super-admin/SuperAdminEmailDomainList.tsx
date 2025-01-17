@@ -1,10 +1,10 @@
 import SuperAdminSearchBar from '@components/super-admin/workspace/SuperAdminSearchBar';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import Pagination from '@components/common/pagination/Pagination';
 import AppContainer from '@components/common/container/AppContainer';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
 import useSuperAdminEmail from '@hooks/super-admin/useSuperAdminEmail';
 import SuperAdminEmailDomainContent from '@components/super-admin/email/SuperAdminEmailDomainContent';
@@ -24,15 +24,18 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 function SuperAdminEmailDomainList() {
   const pageSize = 6;
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const emailDomain = useRecoilValue(emailDomainPaginationResponseAtom);
-  const userInputRef = useRef<HTMLInputElement>(null);
   const { fetchAllEmailDomain } = useSuperAdminEmail();
 
   const isEmptyEmailDomain = emailDomain.empty;
 
   useEffect(() => {
-    fetchAllEmailDomain(0, pageSize);
-  }, []);
+    const nowPage = Number(searchParams.get('page'));
+    const searchValue = searchParams.get('name') || '';
+
+    fetchAllEmailDomain(nowPage, pageSize, searchValue);
+  }, [searchParams.toString()]);
 
   return (
     <AppContainer
@@ -47,14 +50,15 @@ function SuperAdminEmailDomainList() {
       }}
     >
       <>
-        <SuperAdminSearchBar ref={userInputRef} fetchContents={fetchAllEmailDomain} />
+        <SuperAdminSearchBar />
         <ContentContainer justifyCenter={isEmptyEmailDomain} className={'content-container'}>
           <SuperAdminSearchContents contents={emailDomain} target={'이메일'} ContentComponent={SuperAdminEmailDomainContent} />
         </ContentContainer>
         <Pagination
           totalPageCount={emailDomain.totalPages}
           paginateFunction={(page: number) => {
-            fetchAllEmailDomain(page, pageSize, userInputRef.current?.value);
+            searchParams.set('page', page.toString());
+            setSearchParams(searchParams);
           }}
         />
       </>

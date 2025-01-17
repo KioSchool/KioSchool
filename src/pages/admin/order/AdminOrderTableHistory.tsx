@@ -3,7 +3,7 @@ import Pagination from '@components/common/pagination/Pagination';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import OrderTableHistoryContent from '@components/user/order/OrderTableHistoryCotent';
 import { Color } from '@resources/colors';
@@ -32,6 +32,7 @@ const EmptyLabel = styled.div`
 `;
 
 function AdminOrderTableHistory() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { workspaceId, tableNumber } = useParams<{ workspaceId: string; tableNumber: string }>();
   const [tableOrders, setTableOrders] = useState<PaginationResponse<Order>>(defaultPaginationValue);
   const { replaceLastPath } = useCustomNavigate();
@@ -49,8 +50,10 @@ function AdminOrderTableHistory() {
   };
 
   useEffect(() => {
-    fetchAndSetWorkspaceTable(Number(tableNumber), 0, pageSize);
-  }, []);
+    const nowPage = Number(searchParams.get('page'));
+
+    fetchAndSetWorkspaceTable(Number(tableNumber), nowPage, pageSize);
+  }, [searchParams.toString()]);
 
   return (
     <AppContainer
@@ -74,7 +77,8 @@ function AdminOrderTableHistory() {
           <Pagination
             totalPageCount={tableOrders.totalPages}
             paginateFunction={(page: number) => {
-              fetchAndSetWorkspaceTable(Number(tableNumber), page, pageSize);
+              searchParams.set('page', page.toString());
+              setSearchParams(searchParams);
             }}
           />
         </ContentContainer>
