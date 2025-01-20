@@ -11,6 +11,8 @@ import OrderSummaryContents from './OrderSummaryContents';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 import RollBackSvg from '@resources/svg/RollBackSvg';
+import { useState } from 'react';
+import OrderDetailModal from './OrderDetailModal';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -81,9 +83,19 @@ function OrderCard({ orderInfo }: OrderCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { payOrder, cancelOrder, serveOrder, refundOrder } = useAdminOrder(workspaceId);
 
+  const [isModalOpen, setModalOpen] = useState(false);
+
   const createdAtDate = new Date(orderInfo.createdAt.replace(' ', 'T'));
   const currentTime = new Date();
   const orderDelayTime = Math.floor((currentTime.getTime() - createdAtDate.getTime()) / (1000 * 60));
+
+  const openModalHandler = () => {
+    setModalOpen(true);
+  };
+
+  const closeModalHandler = () => {
+    setModalOpen(false);
+  };
 
   const checkClickHandler = () => {
     if (orderInfo.status === OrderStatus.NOT_PAID) {
@@ -106,22 +118,25 @@ function OrderCard({ orderInfo }: OrderCardProps) {
   };
 
   return (
-    <CardContainer>
-      <CardContents>
-        <HeaderContainer>
-          <TitleContainer>
-            <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>{`테이블 ${orderInfo.tableNumber + 1}`}</AppLabel>
-            <AppLabel color={Color.BLACK} size={13}>{`${orderDelayTime}분 전 주문`}</AppLabel>
-          </TitleContainer>
-          <RightIcon />
-        </HeaderContainer>
-        {orderInfo.status === OrderStatus.PAID ? null : <OrderSummaryContents contents={orderInfo} />}
-        <CheckButtonContainer>
-          {orderInfo.status === OrderStatus.SERVED ? null : <CheckIcon onClick={checkClickHandler} />}
-          {orderInfo.status === OrderStatus.NOT_PAID ? <CloseIcon onClick={closeClickHandler} /> : <RollBackIcon onClick={rollBackClickHandler} />}
-        </CheckButtonContainer>
-      </CardContents>
-    </CardContainer>
+    <>
+      <CardContainer>
+        <CardContents>
+          <HeaderContainer>
+            <TitleContainer>
+              <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>{`테이블 ${orderInfo.tableNumber + 1}`}</AppLabel>
+              <AppLabel color={Color.BLACK} size={13}>{`${orderDelayTime}분 전 주문`}</AppLabel>
+            </TitleContainer>
+            <RightIcon onClick={openModalHandler} />
+          </HeaderContainer>
+          {orderInfo.status === OrderStatus.PAID ? null : <OrderSummaryContents contents={orderInfo} />}
+          <CheckButtonContainer>
+            {orderInfo.status === OrderStatus.SERVED ? null : <CheckIcon onClick={checkClickHandler} />}
+            {orderInfo.status === OrderStatus.NOT_PAID ? <CloseIcon onClick={closeClickHandler} /> : <RollBackIcon onClick={rollBackClickHandler} />}
+          </CheckButtonContainer>
+        </CardContents>
+      </CardContainer>
+      <OrderDetailModal isOpen={isModalOpen} orderInfo={orderInfo} onClose={closeModalHandler} />
+    </>
   );
 }
 
