@@ -3,6 +3,7 @@ import { Order } from '@@types/index';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import { colFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 const ContentsContainer = styled.div`
   ${colFlex({ justify: 'space-between' })}
@@ -22,8 +23,8 @@ function NotPaidCardContents({ contents }: NotPaidCardContentsProps) {
 
   return (
     <ContentsContainer>
-      <AppLabel size={15} style={{ marginRight: 'auto' }}>{`${firstProductName} 외 ${totalProductsCount}건`}</AppLabel>
-      <AppLabel size={15} style={{ marginLeft: 'auto' }}>{`총 ${totalPrice.toLocaleString()}원`}</AppLabel>
+      <AppLabel color={Color.BLACK} size={15} style={{ marginRight: 'auto' }}>{`${firstProductName} 외 ${totalProductsCount}건`}</AppLabel>
+      <AppLabel color={Color.BLACK} size={15} style={{ marginLeft: 'auto' }}>{`총 ${totalPrice.toLocaleString()}원`}</AppLabel>
     </ContentsContainer>
   );
 }

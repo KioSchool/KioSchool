@@ -12,6 +12,7 @@ import { rowFlex } from '@styles/flexStyles';
 const CardListContainer = styled.div`
   ${rowFlex()}
   gap: 10px;
+  height: 180px;
 `;
 
 interface OrderCardListProps {

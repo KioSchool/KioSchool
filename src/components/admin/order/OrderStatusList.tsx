@@ -3,6 +3,7 @@ import OrderCardList from './OrderCardList';
 import { OrderStatus } from '@@types/index';
 import { colFlex } from '@styles/flexStyles';
 import AppLabel from '@components/common/label/AppLabel';
+import { Color } from '@resources/colors';
 
 const OrderStatusListContainer = styled.div`
   ${colFlex({ align: 'start' })}
@@ -19,7 +20,7 @@ interface OrderStatusListProps {
 function OrderStatusList({ title, orderStatus }: OrderStatusListProps) {
   return (
     <>
-      <AppLabel size={22} style={{ fontWeight: 700 }}>
+      <AppLabel color={Color.BLACK} size={22} style={{ fontWeight: 700 }}>
         {title}
       </AppLabel>
       <OrderStatusListContainer>

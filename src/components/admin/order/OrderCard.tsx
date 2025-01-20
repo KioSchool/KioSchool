@@ -110,8 +110,8 @@ function OrderCard({ orderInfo }: OrderCardProps) {
       <CardContents>
         <HeaderContainer>
           <TitleContainer>
-            <AppLabel size={17} style={{ fontWeight: 800 }}>{`테이블 ${orderInfo.tableNumber + 1}`}</AppLabel>
-            <AppLabel size={13}>{`${orderDelayTime}분 전 주문`}</AppLabel>
+            <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>{`테이블 ${orderInfo.tableNumber + 1}`}</AppLabel>
+            <AppLabel color={Color.BLACK} size={13}>{`${orderDelayTime}분 전 주문`}</AppLabel>
           </TitleContainer>
           <RightIcon />
         </HeaderContainer>
