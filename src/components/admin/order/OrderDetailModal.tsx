@@ -1,4 +1,4 @@
-import { Order } from '@@types/index';
+import { Order, OrderStatus } from '@@types/index';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
@@ -22,16 +22,26 @@ const ModalContainer = styled.div`
   transform: translate(-50%, -50%);
   background-color: ${Color.WHITE};
   border-radius: 10px;
-  width: 500px;
-  padding: 20px;
+  width: 700px;
+  height: 600px;
+  padding: 30px;
   z-index: 2001;
 `;
 
 const ModalHeader = styled.div`
   ${colFlex({ align: 'start' })}
-  border-bottom: 1px solid ${Color.LIGHT_GREY};
-  padding-bottom: 10px;
-  margin-bottom: 15px;
+  gap: 10px;
+  border-bottom: 20px solid ${Color.LIGHT_GREY};
+`;
+
+const HeaderDetailContainer = styled.div`
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
+  width: 100%;
+`;
+
+const HeaderDetail = styled.div`
+  ${colFlex({ align: 'start' })}
+  gap: 10px;
 `;
 
 const ModalContent = styled.div`
@@ -41,7 +51,6 @@ const ModalContent = styled.div`
 
 const ModalFooter = styled.div`
   ${rowFlex({ justify: 'flex-end' })}
-  margin-top: 20px;
 `;
 
 const CloseButton = styled.button`
@@ -63,6 +72,13 @@ interface OrderDetailModalProps {
   onClose: () => void;
 }
 
+const orderStatusMap: Record<OrderStatus, string> = {
+  [OrderStatus.NOT_PAID]: '주문 완료',
+  [OrderStatus.PAID]: '결제 완료',
+  [OrderStatus.SERVED]: '서빙 완료',
+  [OrderStatus.CANCELLED]: '취소됨',
+};
+
 function OrderDetailModal({ isOpen, onClose, orderInfo }: OrderDetailModalProps) {
   if (!isOpen) return null;
 
@@ -71,16 +87,24 @@ function OrderDetailModal({ isOpen, onClose, orderInfo }: OrderDetailModalProps)
       <ModalOverlay onClick={onClose} />
       <ModalContainer>
         <ModalHeader>
-          <AppLabel size={17} style={{ fontWeight: 800 }}>{`주문번호 ${orderInfo.tableNumber + 1}`}</AppLabel>
-          <AppLabel size={13}>{`주문시각 | ${new Date(orderInfo.createdAt).toLocaleString()}`}</AppLabel>
+          <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>{`주문번호 ${orderInfo.tableNumber + 1}`}</AppLabel>
+          <HeaderDetailContainer>
+            <HeaderDetail>
+              <AppLabel color={Color.BLACK} size={13}>{`테이블 ${orderInfo.tableNumber + 1}`}</AppLabel>
+              <AppLabel color={Color.BLACK} size={13}>{`주문일시 | ${new Date(orderInfo.createdAt).toLocaleString()}`}</AppLabel>
+            </HeaderDetail>
+            <AppLabel color={Color.KIO_ORANGE} size={17} style={{ fontWeight: 600 }}>
+              {orderStatusMap[orderInfo.status]}
+            </AppLabel>
+          </HeaderDetailContainer>
         </ModalHeader>
         <ModalContent>
           {orderInfo.orderProducts.map((product, index) => (
-            <AppLabel key={index} size={14}>
+            <AppLabel color={Color.BLACK} key={index} size={14}>
               {`${product.productName} x ${product.quantity} | ${product.productPrice.toLocaleString()}원`}
             </AppLabel>
           ))}
-          <AppLabel size={15} style={{ fontWeight: 700 }}>{`상품합계: ${orderInfo.totalPrice.toLocaleString()}원`}</AppLabel>
+          <AppLabel color={Color.BLACK} size={15} style={{ fontWeight: 700 }}>{`상품합계: ${orderInfo.totalPrice.toLocaleString()}원`}</AppLabel>
         </ModalContent>
         <ModalFooter>
           <CloseButton onClick={onClose}>닫기</CloseButton>
