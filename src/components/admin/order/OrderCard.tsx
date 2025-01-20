@@ -8,6 +8,8 @@ import CloseSvg from '@resources/svg/CloseSvg';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import NotPaidCardContents from './NotPaidCardContents';
+import useAdminOrder from '@hooks/admin/useAdminOrder';
+import { useParams } from 'react-router-dom';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -68,9 +70,20 @@ interface OrderCardProps {
 }
 
 function OrderCard({ orderInfo }: OrderCardProps) {
+  const { workspaceId } = useParams<{ workspaceId: string }>();
+  const { payOrder, cancelOrder, serveOrder } = useAdminOrder(workspaceId);
+
   const createdAtDate = new Date(orderInfo.createdAt.replace(' ', 'T'));
   const currentTime = new Date();
   const orderDelayTime = Math.floor((currentTime.getTime() - createdAtDate.getTime()) / (1000 * 60));
+
+  const checkClickHandler = () => {
+    if (orderInfo.status === OrderStatus.NOT_PAID) {
+      payOrder(orderInfo.id);
+    } else if (orderInfo.status === OrderStatus.PAID) {
+      serveOrder(orderInfo.id);
+    }
+  };
 
   return (
     <CardContainer>
@@ -84,8 +97,8 @@ function OrderCard({ orderInfo }: OrderCardProps) {
         </HeaderContainer>
         {orderInfo.status === OrderStatus.PAID ? null : <NotPaidCardContents contents={orderInfo} />}
         <CheckButtonContainer>
-          <CheckIcon />
-          <CloseIcon />
+          <CheckIcon onClick={checkClickHandler} />
+          <CloseIcon onClick={() => cancelOrder(orderInfo.id)} />
         </CheckButtonContainer>
       </CardContents>
     </CardContainer>
