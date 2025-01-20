@@ -1,4 +1,5 @@
 import { Order, OrderStatus } from '@@types/index';
+import RoundedAppButton from '@components/common/button/RoundedAppButton';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
@@ -89,20 +90,9 @@ const TotalLabelContainer = styled.div`
 `;
 
 const ModalFooter = styled.div`
-  ${rowFlex({ justify: 'flex-end' })}
-`;
-
-const CloseButton = styled.button`
-  background-color: ${Color.KIO_ORANGE};
-  color: ${Color.WHITE};
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${Color.KIO_ORANGE};
-  }
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
+  padding-top: 15px;
+  width: 100%;
 `;
 
 const CloseIcon = styled(CloseSvg)`
@@ -131,13 +121,13 @@ function OrderDetailModal({ isOpen, onClose, orderInfo }: OrderDetailModalProps)
       <ModalContainer>
         <ModalHeader>
           <ModalHeaderTitle>
-            <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>{`주문번호 ${orderInfo.tableNumber + 1}`}</AppLabel>
+            <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>{`테이블 ${orderInfo.tableNumber + 1}`}</AppLabel>
             <CloseIcon onClick={onClose} />
           </ModalHeaderTitle>
           <HeaderDetailContainer>
             <HeaderDetail>
-              <AppLabel color={Color.BLACK} size={13}>{`테이블 ${orderInfo.tableNumber + 1}`}</AppLabel>
-              <AppLabel color={Color.BLACK} size={13}>{`주문일시 | ${new Date(orderInfo.createdAt).toLocaleString()}`}</AppLabel>
+              <AppLabel color={Color.BLACK} size={13}>{`주문 번호  ${orderInfo.id + 1}`}</AppLabel>
+              <AppLabel color={Color.BLACK} size={13}>{`주문 일시 | ${new Date(orderInfo.createdAt).toLocaleString()}`}</AppLabel>
             </HeaderDetail>
             <AppLabel color={Color.KIO_ORANGE} size={17} style={{ fontWeight: 600 }}>
               {orderStatusMap[orderInfo.status]}
@@ -170,7 +160,8 @@ function OrderDetailModal({ isOpen, onClose, orderInfo }: OrderDetailModalProps)
           </TotalLabelContainer>
         </ModalContent>
         <ModalFooter>
-          <CloseButton onClick={onClose}>닫기</CloseButton>
+          <RoundedAppButton>주문 취소</RoundedAppButton>
+          <RoundedAppButton>주문 확인</RoundedAppButton>
         </ModalFooter>
       </ModalContainer>
     </>
