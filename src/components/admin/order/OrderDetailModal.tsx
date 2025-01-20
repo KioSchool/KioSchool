@@ -1,10 +1,10 @@
 import { Order } from '@@types/index';
-import RoundedAppButton from '@components/common/button/RoundedAppButton';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import { colFlex, rowFlex } from '@styles/flexStyles';
+import { colFlex } from '@styles/flexStyles';
 import ModalHeaderContents from './ModalHeaderContents';
 import ModalMainContents from './ModalMainContents';
+import ModalFooterContents from './ModalFooterContents';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -32,12 +32,6 @@ const ModalContainer = styled.div`
   gap: 15px;
 `;
 
-const ModalFooter = styled.div`
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
-  padding-top: 15px;
-  width: 100%;
-`;
-
 interface OrderDetailModalProps {
   isOpen: boolean;
   orderInfo: Order;
@@ -53,10 +47,7 @@ function OrderDetailModal({ isOpen, onClose, orderInfo }: OrderDetailModalProps)
       <ModalContainer>
         <ModalHeaderContents onClose={onClose} orderInfo={orderInfo} />
         <ModalMainContents orderInfo={orderInfo} />
-        <ModalFooter>
-          <RoundedAppButton>주문 취소</RoundedAppButton>
-          <RoundedAppButton>주문 확인</RoundedAppButton>
-        </ModalFooter>
+        <ModalFooterContents orderStatus={orderInfo.status} id={orderInfo.id} />
       </ModalContainer>
     </>
   );
