@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import OrderCardList from './OrderCardList';
+import { OrderStatus } from '@@types/index';
 
 const StatusTitle = styled.div`
   font-size: '30px';
@@ -7,13 +8,14 @@ const StatusTitle = styled.div`
 
 interface OrderStatusListProps {
   title: string;
+  orderStatus: OrderStatus;
 }
 
-function OrderStatusList({ title }: OrderStatusListProps) {
+function OrderStatusList({ title, orderStatus }: OrderStatusListProps) {
   return (
     <>
       <StatusTitle>{title}</StatusTitle>
-      <OrderCardList />
+      <OrderCardList orderStatus={orderStatus} />
     </>
   );
 }

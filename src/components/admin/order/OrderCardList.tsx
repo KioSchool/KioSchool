@@ -13,8 +13,11 @@ const CardListContainer = styled.div`
   width: 100%;
   ${rowFlex()}
 `;
+interface OrderCardListProps {
+  orderStatus: OrderStatus;
+}
 
-function OrderCardList() {
+function OrderCardList({ orderStatus }: OrderCardListProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { subscribeOrders } = useOrdersWebsocket(workspaceId);
   const { fetchTodayOrders } = useAdminOrder(workspaceId);
@@ -26,11 +29,11 @@ function OrderCardList() {
     fetchTodayOrders();
   }, []);
 
-  const notPaidOrders = orders.filter((it) => it.status === OrderStatus.NOT_PAID);
+  const filteredOrders = orders.filter((it) => it.status === orderStatus);
 
   return (
     <CardListContainer>
-      {notPaidOrders.map((order) => {
+      {filteredOrders.map((order) => {
         return <OrderCard orderInfo={order} />;
       })}
     </CardListContainer>

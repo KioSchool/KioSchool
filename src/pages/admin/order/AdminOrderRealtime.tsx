@@ -7,7 +7,6 @@ import PaidOrderCard from '@components/admin/order/PaidOrderCard';
 import ServedOrderCard from '@components/admin/order/ServedOrderCard';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import styled from '@emotion/styled';
-import VerticalDivider from '@components/common/divider/VerticalDivider';
 import AppLabel from '@components/common/label/AppLabel';
 import _ from 'lodash';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
@@ -119,8 +118,7 @@ function AdminOrderRealtime() {
     <AppContainer useFlex={colFlex({ justify: 'center' })} customGap={'30px'} titleNavBarProps={{ title: '실시간 주문 조회' }}>
       <>
         <KanbanContainer className={'kanban-container'}>
-          <OrderStatusList title={'주문 완료'} />
-          <VerticalDivider />
+          <OrderStatusList title={'주문 완료'} orderStatus={OrderStatus.NOT_PAID} />
           <OrderColumnContainer className={'order-column-container'}>
             <OrderHeader className={'order-header'}>
               <AppLabel size={22} style={{ fontWeight: 600 }}>
@@ -131,7 +129,6 @@ function AdminOrderRealtime() {
               <PaidOrderCard order={it} key={it.id} />
             ))}
           </OrderColumnContainer>
-          <VerticalDivider />
           <OrderColumnContainer className={'order-column-container'}>
             <OrderHeader className={'order-header'}>
               <AppLabel size={22} style={{ fontWeight: 600 }}>
