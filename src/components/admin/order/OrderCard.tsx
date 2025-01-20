@@ -2,8 +2,10 @@ import { Order } from '@@types/index';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
+import CheckSvg from '@resources/svg/CheckSvg';
 import ChevronRightSvg from '@resources/svg/ChevronRightSvg';
 import CloseSvg from '@resources/svg/CloseSvg';
+import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 
 interface OrderCardProps {
@@ -28,13 +30,14 @@ const CardContainer = styled.div`
 `;
 
 const CardContents = styled.div`
-  ${colFlex()}
+  ${colFlex({ align: 'center' })}
   width: 80%;
   height: 80%;
 `;
 
 const HeaderContainer = styled.div`
   ${rowFlex({ justify: 'space-between', align: 'start' })}
+  width: 100%;
 `;
 
 const TitleContainer = styled.div`
@@ -45,25 +48,20 @@ const RightIcon = styled(ChevronRightSvg)`
   margin-top: 3px;
   width: 20px;
   height: 15px;
-  cursor: pointer;
-  transition: transform 0.1s ease;
-
-  &:hover {
-    transform: scale(1.1);
-  }
+  ${expandButtonStyle}
 `;
 
 const CheckButtonContainer = styled.div`
-  ${rowFlex({ align: 'center' })}
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
+  width: 55%;
+`;
+
+const CheckIcon = styled(CheckSvg)`
+  ${expandButtonStyle}
 `;
 
 const CloseIcon = styled(CloseSvg)`
-  cursor: pointer;
-  transition: transform 0.1s ease;
-
-  &:hover {
-    transform: scale(1.1);
-  }
+  ${expandButtonStyle}
 `;
 
 function OrderCard({ orderInfo }: OrderCardProps) {
@@ -82,6 +80,7 @@ function OrderCard({ orderInfo }: OrderCardProps) {
           <RightIcon />
         </HeaderContainer>
         <CheckButtonContainer>
+          <CheckIcon />
           <CloseIcon />
         </CheckButtonContainer>
       </CardContents>
