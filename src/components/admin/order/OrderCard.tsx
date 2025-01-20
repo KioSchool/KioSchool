@@ -18,7 +18,7 @@ import OrderItemList from './OrderItemList';
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
   background-color: ${Color.LIGHT_GREY};
-  width: 180px;
+  width: 200px;
   height: 170px;
   border-radius: 10px;
 
