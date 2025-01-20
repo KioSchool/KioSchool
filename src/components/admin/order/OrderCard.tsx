@@ -10,6 +10,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import NotPaidCardContents from './NotPaidCardContents';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
+import RollBackSvg from '@resources/svg/RollBackSvg';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -51,7 +52,8 @@ const RightIcon = styled(ChevronRightSvg)`
 `;
 
 const CheckButtonContainer = styled.div`
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
+  ${rowFlex({ justify: 'center', align: 'center' })}
+  gap: 35px;
   width: 55%;
 `;
 
@@ -65,13 +67,19 @@ const CloseIcon = styled(CloseSvg)`
   ${expandButtonStyle}
 `;
 
+const RollBackIcon = styled(RollBackSvg)`
+  width: 15px;
+  height: 15px;
+  ${expandButtonStyle}
+`;
+
 interface OrderCardProps {
   orderInfo: Order;
 }
 
 function OrderCard({ orderInfo }: OrderCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { payOrder, cancelOrder, serveOrder } = useAdminOrder(workspaceId);
+  const { payOrder, cancelOrder, serveOrder, refundOrder } = useAdminOrder(workspaceId);
 
   const createdAtDate = new Date(orderInfo.createdAt.replace(' ', 'T'));
   const currentTime = new Date();
@@ -85,20 +93,32 @@ function OrderCard({ orderInfo }: OrderCardProps) {
     }
   };
 
+  const closeClickHandler = () => {
+    cancelOrder(orderInfo.id);
+  };
+
+  const rollBackClickHandler = () => {
+    if (orderInfo.status === OrderStatus.PAID) {
+      refundOrder(orderInfo.id);
+    } else if (orderInfo.status === OrderStatus.SERVED) {
+      payOrder(orderInfo.id);
+    }
+  };
+
   return (
     <CardContainer>
       <CardContents>
         <HeaderContainer>
           <TitleContainer>
             <AppLabel size={17} style={{ fontWeight: 800 }}>{`테이블 ${orderInfo.tableNumber + 1}`}</AppLabel>
-            <AppLabel size={13}>{`${orderDelayTime}분전 주문`}</AppLabel>
+            <AppLabel size={13}>{`${orderDelayTime}분 전 주문`}</AppLabel>
           </TitleContainer>
           <RightIcon />
         </HeaderContainer>
         {orderInfo.status === OrderStatus.PAID ? null : <NotPaidCardContents contents={orderInfo} />}
         <CheckButtonContainer>
-          <CheckIcon onClick={checkClickHandler} />
-          <CloseIcon onClick={() => cancelOrder(orderInfo.id)} />
+          {orderInfo.status === OrderStatus.SERVED ? null : <CheckIcon onClick={checkClickHandler} />}
+          {orderInfo.status === OrderStatus.NOT_PAID ? <CloseIcon onClick={closeClickHandler} /> : <RollBackIcon onClick={rollBackClickHandler} />}
         </CheckButtonContainer>
       </CardContents>
     </CardContainer>

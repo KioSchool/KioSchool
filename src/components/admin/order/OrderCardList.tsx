@@ -35,7 +35,7 @@ function OrderCardList({ orderStatus }: OrderCardListProps) {
   return (
     <CardListContainer>
       {filteredOrders.map((order) => {
-        return <OrderCard orderInfo={order} />;
+        return <OrderCard key={order.id} orderInfo={order} />;
       })}
     </CardListContainer>
   );
