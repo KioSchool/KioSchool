@@ -7,6 +7,12 @@ import { colFlex } from '@styles/flexStyles';
 import AppContainer from '@components/common/container/AppContainer';
 import { OrderStatus } from '@@types/index';
 import OrderStatusList from '@components/admin/order/OrderStatusList';
+import styled from '@emotion/styled';
+
+const HorizontalLine = styled.hr`
+  width: 100%;
+  border: 0.3px solid #eeecec;
+`;
 
 function AdminOrderRealtime() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
@@ -21,10 +27,12 @@ function AdminOrderRealtime() {
   }, []);
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })} customGap={'30px'} titleNavBarProps={{ title: '실시간 주문 조회' }}>
+    <AppContainer useFlex={colFlex({ justify: 'center' })} customGap={'15px'} titleNavBarProps={{ title: '실시간 주문 조회' }}>
       <>
         <OrderStatusList title={'주문 완료'} orderStatus={OrderStatus.NOT_PAID} />
+        <HorizontalLine />
         <OrderStatusList title={'결제 완료'} orderStatus={OrderStatus.PAID} />
+        <HorizontalLine />
         <OrderStatusList title={'서빙 완료'} orderStatus={OrderStatus.SERVED} />
       </>
     </AppContainer>
