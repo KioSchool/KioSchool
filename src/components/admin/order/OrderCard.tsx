@@ -1,4 +1,4 @@
-import { Order } from '@@types/index';
+import { Order, OrderStatus } from '@@types/index';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
@@ -7,16 +7,13 @@ import ChevronRightSvg from '@resources/svg/ChevronRightSvg';
 import CloseSvg from '@resources/svg/CloseSvg';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-
-interface OrderCardProps {
-  orderInfo: Order;
-}
+import NotPaidCardContents from './NotPaidCardContents';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
   background-color: ${Color.LIGHT_GREY};
   width: 180px;
-  height: 150px;
+  height: 170px;
   border-radius: 10px;
 
   &:hover {
@@ -30,9 +27,9 @@ const CardContainer = styled.div`
 `;
 
 const CardContents = styled.div`
-  ${colFlex({ align: 'center' })}
+  ${colFlex({ justify: 'space-between', align: 'center' })}
   width: 80%;
-  height: 80%;
+  height: 85%;
 `;
 
 const HeaderContainer = styled.div`
@@ -57,12 +54,18 @@ const CheckButtonContainer = styled.div`
 `;
 
 const CheckIcon = styled(CheckSvg)`
+  width: 35px;
+  height: 35px;
   ${expandButtonStyle}
 `;
 
 const CloseIcon = styled(CloseSvg)`
   ${expandButtonStyle}
 `;
+
+interface OrderCardProps {
+  orderInfo: Order;
+}
 
 function OrderCard({ orderInfo }: OrderCardProps) {
   const createdAtDate = new Date(orderInfo.createdAt.replace(' ', 'T'));
@@ -79,6 +82,7 @@ function OrderCard({ orderInfo }: OrderCardProps) {
           </TitleContainer>
           <RightIcon />
         </HeaderContainer>
+        {orderInfo.status === OrderStatus.PAID ? null : <NotPaidCardContents contents={orderInfo} />}
         <CheckButtonContainer>
           <CheckIcon />
           <CloseIcon />
