@@ -6,6 +6,13 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import OrderCard from './OrderCard';
+import styled from '@emotion/styled';
+import { rowFlex } from '@styles/flexStyles';
+
+const CardListContainer = styled.div`
+  width: 100%;
+  ${rowFlex()}
+`;
 
 function OrderCardList() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
@@ -22,11 +29,11 @@ function OrderCardList() {
   const notPaidOrders = orders.filter((it) => it.status === OrderStatus.NOT_PAID);
 
   return (
-    <div>
+    <CardListContainer>
       {notPaidOrders.map((order) => {
         return <OrderCard orderInfo={order} />;
       })}
-    </div>
+    </CardListContainer>
   );
 }
 

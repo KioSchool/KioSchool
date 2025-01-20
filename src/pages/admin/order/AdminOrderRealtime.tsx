@@ -4,7 +4,6 @@ import useOrdersWebsocket from '@hooks/user/useOrdersWebsocket';
 import { useRecoilValue } from 'recoil';
 import { ordersAtom, productsAtom } from '@recoils/atoms';
 import PaidOrderCard from '@components/admin/order/PaidOrderCard';
-import NotPaidOrderCard from '@components/admin/order/NotPaidOrderCard';
 import ServedOrderCard from '@components/admin/order/ServedOrderCard';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import styled from '@emotion/styled';
@@ -17,6 +16,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import AppContainer from '@components/common/container/AppContainer';
 import { OrderStatus } from '@@types/index';
 import { Color } from '@resources/colors';
+import OrderStatusList from '@components/admin/order/OrderStatusList';
 
 const KanbanContainer = styled.div`
   width: 100%;
@@ -100,7 +100,6 @@ function AdminOrderRealtime() {
     fetchProducts();
   }, []);
 
-  const notPaidOrders = orders.filter((it) => it.status === OrderStatus.NOT_PAID);
   const paidOrders = orders.filter((it) => it.status === OrderStatus.PAID);
   const servedOrders = orders.filter((it) => it.status === OrderStatus.SERVED).sort((a, b) => b.id - a.id);
 
@@ -120,16 +119,7 @@ function AdminOrderRealtime() {
     <AppContainer useFlex={colFlex({ justify: 'center' })} customGap={'30px'} titleNavBarProps={{ title: '실시간 주문 조회' }}>
       <>
         <KanbanContainer className={'kanban-container'}>
-          <OrderColumnContainer className={'order-column-container'}>
-            <OrderHeader className={'order-header'}>
-              <AppLabel size={22} style={{ fontWeight: 600 }}>
-                결제 대기
-              </AppLabel>
-            </OrderHeader>
-            {notPaidOrders.map((it) => (
-              <NotPaidOrderCard order={it} key={it.id} />
-            ))}
-          </OrderColumnContainer>
+          <OrderStatusList title={'주문 완료'} />
           <VerticalDivider />
           <OrderColumnContainer className={'order-column-container'}>
             <OrderHeader className={'order-header'}>

@@ -1,4 +1,3 @@
-import { Order } from '@@types/index';
 import styled from '@emotion/styled';
 import OrderCardList from './OrderCardList';
 
@@ -8,7 +7,6 @@ const StatusTitle = styled.div`
 
 interface OrderStatusListProps {
   title: string;
-  items: Order;
 }
 
 function OrderStatusList({ title }: OrderStatusListProps) {
