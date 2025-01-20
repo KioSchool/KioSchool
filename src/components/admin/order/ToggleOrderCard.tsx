@@ -1,10 +1,11 @@
 import React from 'react';
-import { Order, OrderStatus } from '@@types/index';
+import { Order } from '@@types/index';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import ArrowUpSvg from '@resources/svg/ArrowUpSvg';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
+import { orderStatusConverter } from '@utils/OrderStatusConverter';
 
 interface ToggleOrderCardProps {
   order: Order;
@@ -51,21 +52,6 @@ function ToggleOrderCard({ order }: ToggleOrderCardProps) {
     const hour = isAm ? date.getHours() : date.getHours() - 12;
 
     return `${date.getMonth() + 1}월 ${date.getDate()}일 ${isAm ? '오전' : '오후'} ${hour}시 ${date.getMinutes()}분`;
-  };
-
-  const orderStatusConverter = (status: OrderStatus) => {
-    switch (status) {
-      case OrderStatus.PAID:
-        return '결제 완료';
-      case OrderStatus.NOT_PAID:
-        return '결제 대기';
-      case OrderStatus.SERVED:
-        return '서빙 완료';
-      case OrderStatus.CANCELLED:
-        return '주문 취소';
-      default:
-        return '알 수 없음';
-    }
   };
 
   return (
