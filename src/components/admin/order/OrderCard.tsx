@@ -3,6 +3,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import ChevronRightSvg from '@resources/svg/ChevronRightSvg';
+import CloseSvg from '@resources/svg/CloseSvg';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 
 interface OrderCardProps {
@@ -52,6 +53,19 @@ const RightIcon = styled(ChevronRightSvg)`
   }
 `;
 
+const CheckButtonContainer = styled.div`
+  ${rowFlex({ align: 'center' })}
+`;
+
+const CloseIcon = styled(CloseSvg)`
+  cursor: pointer;
+  transition: transform 0.1s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
+
 function OrderCard({ orderInfo }: OrderCardProps) {
   const createdAtDate = new Date(orderInfo.createdAt.replace(' ', 'T'));
   const currentTime = new Date();
@@ -67,6 +81,9 @@ function OrderCard({ orderInfo }: OrderCardProps) {
           </TitleContainer>
           <RightIcon />
         </HeaderContainer>
+        <CheckButtonContainer>
+          <CloseIcon />
+        </CheckButtonContainer>
       </CardContents>
     </CardContainer>
   );
