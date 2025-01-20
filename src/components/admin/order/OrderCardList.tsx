@@ -10,9 +10,10 @@ import styled from '@emotion/styled';
 import { rowFlex } from '@styles/flexStyles';
 
 const CardListContainer = styled.div`
-  width: 100%;
   ${rowFlex()}
+  gap: 10px;
 `;
+
 interface OrderCardListProps {
   orderStatus: OrderStatus;
 }
