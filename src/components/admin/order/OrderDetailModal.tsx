@@ -2,6 +2,8 @@ import { Order, OrderStatus } from '@@types/index';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
+import CloseSvg from '@resources/svg/CloseSvg';
+import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const ModalOverlay = styled.div`
@@ -24,14 +26,20 @@ const ModalContainer = styled.div`
   border-radius: 10px;
   width: 700px;
   height: 600px;
-  padding: 30px;
+  padding: 40px;
   z-index: 2001;
 `;
 
 const ModalHeader = styled.div`
   ${colFlex({ align: 'start' })}
   gap: 10px;
+  padding-bottom: 20px;
   border-bottom: 20px solid ${Color.LIGHT_GREY};
+`;
+
+const ModalHeaderTitle = styled.div`
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
+  width: 100%;
 `;
 
 const HeaderDetailContainer = styled.div`
@@ -66,6 +74,10 @@ const CloseButton = styled.button`
   }
 `;
 
+const CloseIcon = styled(CloseSvg)`
+  ${expandButtonStyle}
+`;
+
 interface OrderDetailModalProps {
   isOpen: boolean;
   orderInfo: Order;
@@ -87,7 +99,10 @@ function OrderDetailModal({ isOpen, onClose, orderInfo }: OrderDetailModalProps)
       <ModalOverlay onClick={onClose} />
       <ModalContainer>
         <ModalHeader>
-          <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>{`주문번호 ${orderInfo.tableNumber + 1}`}</AppLabel>
+          <ModalHeaderTitle>
+            <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>{`주문번호 ${orderInfo.tableNumber + 1}`}</AppLabel>
+            <CloseIcon onClick={onClose} />
+          </ModalHeaderTitle>
           <HeaderDetailContainer>
             <HeaderDetail>
               <AppLabel color={Color.BLACK} size={13}>{`테이블 ${orderInfo.tableNumber + 1}`}</AppLabel>
