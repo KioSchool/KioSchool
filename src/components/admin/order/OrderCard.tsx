@@ -18,7 +18,11 @@ const CardContainer = styled.div`
 
   &:hover {
     background-color: ${Color.KIO_ORANGE};
-    color: ${Color.WHITE};
+
+    & * {
+      color: ${Color.WHITE};
+      stroke: ${Color.WHITE};
+    }
   }
 `;
 
