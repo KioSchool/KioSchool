@@ -1,10 +1,10 @@
 import { Order } from '@@types/index';
 import RoundedAppButton from '@components/common/button/RoundedAppButton';
-import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import ModalHeaderContents from './ModalHeaderContents';
+import ModalMainContents from './ModalMainContents';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -32,40 +32,6 @@ const ModalContainer = styled.div`
   gap: 15px;
 `;
 
-const HorizontalLine = styled.hr`
-  width: 100%;
-  border: 0.3px solid #eeecec;
-`;
-
-const ModalContent = styled.div`
-  ${colFlex({ justify: 'space-between', align: 'start' })}
-  gap: 10px;
-`;
-
-const OrderProductContainer = styled.div`
-  ${colFlex({ justify: 'start' })}
-  width: 100%;
-  height: 300px;
-  gap: 15px;
-  overflow-y: auto;
-`;
-
-const ProductContainer = styled.div`
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
-  width: 100%;
-
-  &:hover {
-    & * {
-      color: ${Color.KIO_ORANGE};
-    }
-  }
-`;
-
-const TotalLabelContainer = styled.div`
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
-  width: 100%;
-`;
-
 const ModalFooter = styled.div`
   ${rowFlex({ justify: 'space-between', align: 'center' })}
   padding-top: 15px;
@@ -86,31 +52,7 @@ function OrderDetailModal({ isOpen, onClose, orderInfo }: OrderDetailModalProps)
       <ModalOverlay onClick={onClose} />
       <ModalContainer>
         <ModalHeaderContents onClose={onClose} orderInfo={orderInfo} />
-        <ModalContent>
-          <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: 700 }}>
-            주문 내역
-          </AppLabel>
-          <HorizontalLine />
-          <OrderProductContainer>
-            {orderInfo.orderProducts.map((product, index) => (
-              <ProductContainer>
-                <AppLabel color={Color.BLACK} key={index} size={20}>
-                  {`${product.productName} x ${product.quantity}`}
-                </AppLabel>
-                <AppLabel color={Color.BLACK} key={index} size={20}>
-                  {`${product.productPrice.toLocaleString()}원`}
-                </AppLabel>
-              </ProductContainer>
-            ))}
-          </OrderProductContainer>
-          <HorizontalLine />
-          <TotalLabelContainer>
-            <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: 700 }}>
-              {'상품 합계'}
-            </AppLabel>
-            <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: 700 }}>{`${orderInfo.totalPrice.toLocaleString()}원`}</AppLabel>
-          </TotalLabelContainer>
-        </ModalContent>
+        <ModalMainContents orderInfo={orderInfo} />
         <ModalFooter>
           <RoundedAppButton>주문 취소</RoundedAppButton>
           <RoundedAppButton>주문 확인</RoundedAppButton>
