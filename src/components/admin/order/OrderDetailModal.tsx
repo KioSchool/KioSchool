@@ -18,6 +18,7 @@ const ModalOverlay = styled.div`
 `;
 
 const ModalContainer = styled.div`
+  ${colFlex()}
   position: fixed;
   top: 50%;
   left: 50%;
@@ -28,12 +29,18 @@ const ModalContainer = styled.div`
   height: 600px;
   padding: 40px;
   z-index: 2001;
+  gap: 15px;
+`;
+
+const HorizontalLine = styled.hr`
+  width: 100%;
+  border: 0.3px solid #eeecec;
 `;
 
 const ModalHeader = styled.div`
-  ${colFlex({ align: 'start' })}
+  ${colFlex({ justify: 'space-between', align: 'start' })}
   gap: 10px;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
   border-bottom: 20px solid ${Color.LIGHT_GREY};
 `;
 
@@ -55,6 +62,30 @@ const HeaderDetail = styled.div`
 const ModalContent = styled.div`
   ${colFlex({ justify: 'space-between', align: 'start' })}
   gap: 10px;
+`;
+
+const OrderProductContainer = styled.div`
+  ${colFlex({ justify: 'start' })}
+  width: 100%;
+  height: 300px;
+  gap: 15px;
+  overflow-y: auto;
+`;
+
+const ProductContainer = styled.div`
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
+  width: 100%;
+
+  &:hover {
+    & * {
+      color: ${Color.KIO_ORANGE};
+    }
+  }
+`;
+
+const TotalLabelContainer = styled.div`
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
+  width: 100%;
 `;
 
 const ModalFooter = styled.div`
@@ -114,12 +145,29 @@ function OrderDetailModal({ isOpen, onClose, orderInfo }: OrderDetailModalProps)
           </HeaderDetailContainer>
         </ModalHeader>
         <ModalContent>
-          {orderInfo.orderProducts.map((product, index) => (
-            <AppLabel color={Color.BLACK} key={index} size={14}>
-              {`${product.productName} x ${product.quantity} | ${product.productPrice.toLocaleString()}원`}
+          <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: 700 }}>
+            주문 내역
+          </AppLabel>
+          <HorizontalLine />
+          <OrderProductContainer>
+            {orderInfo.orderProducts.map((product, index) => (
+              <ProductContainer>
+                <AppLabel color={Color.BLACK} key={index} size={20}>
+                  {`${product.productName} x ${product.quantity}`}
+                </AppLabel>
+                <AppLabel color={Color.BLACK} key={index} size={20}>
+                  {`${product.productPrice.toLocaleString()}원`}
+                </AppLabel>
+              </ProductContainer>
+            ))}
+          </OrderProductContainer>
+          <HorizontalLine />
+          <TotalLabelContainer>
+            <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: 700 }}>
+              {'상품 합계'}
             </AppLabel>
-          ))}
-          <AppLabel color={Color.BLACK} size={15} style={{ fontWeight: 700 }}>{`상품합계: ${orderInfo.totalPrice.toLocaleString()}원`}</AppLabel>
+            <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: 700 }}>{`${orderInfo.totalPrice.toLocaleString()}원`}</AppLabel>
+          </TotalLabelContainer>
         </ModalContent>
         <ModalFooter>
           <CloseButton onClick={onClose}>닫기</CloseButton>
