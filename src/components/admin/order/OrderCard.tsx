@@ -7,7 +7,7 @@ import ChevronRightSvg from '@resources/svg/ChevronRightSvg';
 import CloseSvg from '@resources/svg/CloseSvg';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import NotPaidCardContents from './NotPaidCardContents';
+import OrderSummaryContents from './OrderSummaryContents';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 import RollBackSvg from '@resources/svg/RollBackSvg';
@@ -115,7 +115,7 @@ function OrderCard({ orderInfo }: OrderCardProps) {
           </TitleContainer>
           <RightIcon />
         </HeaderContainer>
-        {orderInfo.status === OrderStatus.PAID ? null : <NotPaidCardContents contents={orderInfo} />}
+        {orderInfo.status === OrderStatus.PAID ? null : <OrderSummaryContents contents={orderInfo} />}
         <CheckButtonContainer>
           {orderInfo.status === OrderStatus.SERVED ? null : <CheckIcon onClick={checkClickHandler} />}
           {orderInfo.status === OrderStatus.NOT_PAID ? <CloseIcon onClick={closeClickHandler} /> : <RollBackIcon onClick={rollBackClickHandler} />}

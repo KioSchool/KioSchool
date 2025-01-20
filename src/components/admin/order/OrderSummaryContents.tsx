@@ -11,11 +11,11 @@ const ContentsContainer = styled.div`
   height: 53px;
 `;
 
-interface NotPaidCardContentsProps {
+interface OrderSummaryContentsProps {
   contents: Order;
 }
 
-function NotPaidCardContents({ contents }: NotPaidCardContentsProps) {
+function OrderSummaryContents({ contents }: OrderSummaryContentsProps) {
   const { orderProducts, totalPrice } = contents;
 
   const firstProductName = orderProducts.length > 0 ? orderProducts[0].productName : '상품 없음';
@@ -29,4 +29,4 @@ function NotPaidCardContents({ contents }: NotPaidCardContentsProps) {
   );
 }
 
-export default NotPaidCardContents;
+export default OrderSummaryContents;
