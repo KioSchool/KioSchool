@@ -2,7 +2,8 @@ import { Order } from '@@types/index';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import { colFlex } from '@styles/flexStyles';
+import ChevronRightSvg from '@resources/svg/ChevronRightSvg';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 interface OrderCardProps {
   orderInfo: Order;
@@ -15,7 +16,7 @@ const CardContainer = styled.div`
   height: 150px;
   border-radius: 10px;
 
-  :hover {
+  &:hover {
     background-color: ${Color.KIO_ORANGE};
     color: ${Color.WHITE};
   }
@@ -28,11 +29,23 @@ const CardContents = styled.div`
 `;
 
 const HeaderContainer = styled.div`
-  ${colFlex({ justify: 'space-between' })}
+  ${rowFlex({ justify: 'space-between', align: 'start' })}
 `;
 
 const TitleContainer = styled.div`
   ${colFlex({ align: 'start' })}
+`;
+
+const RightIcon = styled(ChevronRightSvg)`
+  margin-top: 3px;
+  width: 20px;
+  height: 15px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 function OrderCard({ orderInfo }: OrderCardProps) {
@@ -46,8 +59,9 @@ function OrderCard({ orderInfo }: OrderCardProps) {
         <HeaderContainer>
           <TitleContainer>
             <AppLabel size={17} style={{ fontWeight: 800 }}>{`테이블 ${orderInfo.tableNumber + 1}`}</AppLabel>
-            <AppLabel size={13}>{`${orderDelayTime} 분전 주문`}</AppLabel>
+            <AppLabel size={13}>{`${orderDelayTime}분전 주문`}</AppLabel>
           </TitleContainer>
+          <RightIcon />
         </HeaderContainer>
       </CardContents>
     </CardContainer>
