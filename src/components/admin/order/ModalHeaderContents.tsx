@@ -48,7 +48,7 @@ function ModalHeaderContents({ onClose, orderInfo }: ModalHeaderContentsProps) {
       <HeaderDetailContainer>
         <HeaderDetail>
           <AppLabel color={Color.BLACK} size={13}>{`주문 번호  ${orderInfo.id + 1}`}</AppLabel>
-          <AppLabel color={Color.BLACK} size={13}>{`주문 일시 | ${new Date(orderInfo.createdAt).toLocaleString()}`}</AppLabel>
+          <AppLabel color={Color.BLACK} size={13}>{`${orderInfo.customerName} | ${new Date(orderInfo.createdAt).toLocaleString()}`}</AppLabel>
         </HeaderDetail>
         <AppLabel color={Color.KIO_ORANGE} size={17} style={{ fontWeight: 600 }}>
           {orderStatusConverter(orderInfo.status)}
