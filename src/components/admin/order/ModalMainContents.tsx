@@ -50,12 +50,12 @@ function ModalMainContents({ orderInfo }: ModalMainContentsProps) {
       </AppLabel>
       <HorizontalLine />
       <OrderProductContainer>
-        {orderInfo.orderProducts.map((product, index) => (
-          <ProductContainer>
-            <AppLabel color={Color.BLACK} key={index} size={20}>
+        {orderInfo.orderProducts.map((product) => (
+          <ProductContainer key={product.id}>
+            <AppLabel color={Color.BLACK} size={20}>
               {`${product.productName} x ${product.quantity}`}
             </AppLabel>
-            <AppLabel color={Color.BLACK} key={index} size={20}>
+            <AppLabel color={Color.BLACK} size={20}>
               {`${product.productPrice.toLocaleString()}원`}
             </AppLabel>
           </ProductContainer>

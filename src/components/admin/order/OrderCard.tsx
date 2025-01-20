@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 import RollBackSvg from '@resources/svg/RollBackSvg';
 import { useState } from 'react';
 import OrderDetailModal from './OrderDetailModal';
+import OrderItemList from './OrderItemList';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -128,7 +129,7 @@ function OrderCard({ orderInfo }: OrderCardProps) {
             </TitleContainer>
             <RightIcon onClick={openModalHandler} />
           </HeaderContainer>
-          {orderInfo.status === OrderStatus.PAID ? null : <OrderSummaryContents contents={orderInfo} />}
+          {orderInfo.status === OrderStatus.PAID ? <OrderItemList orderInfo={orderInfo} /> : <OrderSummaryContents contents={orderInfo} />}
           <CheckButtonContainer>
             {orderInfo.status === OrderStatus.SERVED ? null : <CheckIcon onClick={checkClickHandler} />}
             {orderInfo.status === OrderStatus.NOT_PAID ? <CloseIcon onClick={closeClickHandler} /> : <RollBackIcon onClick={rollBackClickHandler} />}
