@@ -29,13 +29,17 @@ function areOrdersEqual(prevOrders: Order[], nextOrders: Order[]) {
 
   return prevOrders.every((prevOrder, index) => {
     const nextOrder = nextOrders[index];
-    return (
-      prevOrder.id === nextOrder.id &&
-      prevOrder.orderProducts.every((prevProduct, productIndex) => {
-        const nextProduct = nextOrder.orderProducts[productIndex];
-        return prevProduct.isServed === nextProduct.isServed && prevProduct.servedCount === nextProduct.servedCount;
-      })
-    );
+
+    const hasSameOrderId = prevOrder.id === nextOrder.id;
+
+    const areProductsEqual = prevOrder.orderProducts.every((prevProduct, productIndex) => {
+      const nextProduct = nextOrder.orderProducts[productIndex];
+      const hasSameServedStatus = prevProduct.isServed === nextProduct.isServed;
+      const hasSameServedCount = prevProduct.servedCount === nextProduct.servedCount;
+      return hasSameServedStatus && hasSameServedCount;
+    });
+
+    return hasSameOrderId && areProductsEqual;
   });
 }
 

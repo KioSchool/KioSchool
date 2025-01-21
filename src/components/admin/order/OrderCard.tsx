@@ -81,14 +81,15 @@ interface OrderCardProps {
 }
 
 function areOrderInfoEqual(prevOrder: Order, nextOrder: Order) {
-  if (prevOrder.id !== nextOrder.id || prevOrder.status !== nextOrder.status) {
-    return false;
-  }
+  const isSameOrderId = prevOrder.id === nextOrder.id;
+  const hasSameStatus = prevOrder.status === nextOrder.status;
 
-  return prevOrder.orderProducts.every((prevProduct, index) => {
+  const areAllServedCountsEqual = prevOrder.orderProducts.every((prevProduct, index) => {
     const nextProduct = nextOrder.orderProducts[index];
     return prevProduct.servedCount === nextProduct.servedCount;
   });
+
+  return isSameOrderId && hasSameStatus && areAllServedCountsEqual;
 }
 
 const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => {
