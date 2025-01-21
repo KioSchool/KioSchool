@@ -34,24 +34,24 @@ const CloseIcon = styled(CloseSvg)`
 `;
 
 interface ModalHeaderContentsProps {
-  orderInfo: Order;
+  order: Order;
   onClose: () => void;
 }
 
-function ModalHeaderContents({ onClose, orderInfo }: ModalHeaderContentsProps) {
+function ModalHeaderContents({ onClose, order }: ModalHeaderContentsProps) {
   return (
     <ModalHeader>
       <ModalHeaderTitle>
-        <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: 800 }}>{`테이블 ${orderInfo.tableNumber + 1}`}</AppLabel>
+        <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: 800 }}>{`테이블 ${order.tableNumber}`}</AppLabel>
         <CloseIcon onClick={onClose} />
       </ModalHeaderTitle>
       <HeaderDetailContainer>
         <HeaderDetail>
-          <AppLabel color={Color.BLACK} size={17}>{`주문 번호  ${orderInfo.id + 1}`}</AppLabel>
-          <AppLabel color={Color.BLACK} size={17}>{`${orderInfo.customerName} | ${new Date(orderInfo.createdAt).toLocaleString()}`}</AppLabel>
+          <AppLabel color={Color.BLACK} size={17}>{`주문 번호  ${order.id}`}</AppLabel>
+          <AppLabel color={Color.BLACK} size={17}>{`${order.customerName} | ${new Date(order.createdAt).toLocaleString()}`}</AppLabel>
         </HeaderDetail>
         <AppLabel color={Color.KIO_ORANGE} size={20} style={{ fontWeight: 600 }}>
-          {orderStatusConverter(orderInfo.status)}
+          {orderStatusConverter(order.status)}
         </AppLabel>
       </HeaderDetailContainer>
     </ModalHeader>

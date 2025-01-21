@@ -10,14 +10,14 @@ const CardListContainer = styled.div`
 `;
 
 interface OrderCardListProps {
-  filteredOrders: Order[];
+  orders: Order[];
 }
 
-function OrderCardList({ filteredOrders }: OrderCardListProps) {
+function OrderCardList({ orders }: OrderCardListProps) {
   return (
     <CardListContainer>
-      {filteredOrders.map((order) => {
-        return <OrderCard key={order.id} orderInfo={order} />;
+      {orders.map((order) => {
+        return <OrderCard key={order.id} order={order} />;
       })}
     </CardListContainer>
   );

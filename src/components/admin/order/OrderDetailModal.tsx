@@ -34,20 +34,20 @@ const ModalContainer = styled.div`
 
 interface OrderDetailModalProps {
   isOpen: boolean;
-  orderInfo: Order;
+  order: Order;
   onClose: () => void;
 }
 
-function OrderDetailModal({ isOpen, onClose, orderInfo }: OrderDetailModalProps) {
+function OrderDetailModal({ isOpen, onClose, order }: OrderDetailModalProps) {
   if (!isOpen) return null;
 
   return (
     <>
       <ModalOverlay onClick={onClose} />
       <ModalContainer>
-        <ModalHeaderContents onClose={onClose} orderInfo={orderInfo} />
-        <ModalMainContents orderInfo={orderInfo} />
-        <ModalFooterContents orderStatus={orderInfo.status} id={orderInfo.id} />
+        <ModalHeaderContents onClose={onClose} order={order} />
+        <ModalMainContents order={order} />
+        <ModalFooterContents orderStatus={order.status} id={order.id} />
       </ModalContainer>
     </>
   );

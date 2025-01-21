@@ -77,7 +77,7 @@ const RollBackIcon = styled(RollBackSvg)`
 `;
 
 interface OrderCardProps {
-  orderInfo: Order;
+  order: Order;
 }
 
 function areOrderInfoEqual(prevOrder: Order, nextOrder: Order) {
@@ -92,16 +92,16 @@ function areOrderInfoEqual(prevOrder: Order, nextOrder: Order) {
 }
 
 const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => {
-  return areOrderInfoEqual(prevProps.orderInfo, nextProps.orderInfo);
+  return areOrderInfoEqual(prevProps.order, nextProps.order);
 };
 
-function OrderCard({ orderInfo }: OrderCardProps) {
+function OrderCard({ order }: OrderCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { payOrder, cancelOrder, serveOrder, refundOrder } = useAdminOrder(workspaceId);
 
   const [isModalOpen, setModalOpen] = useState(false);
 
-  const createdAtDate = new Date(orderInfo.createdAt.replace(' ', 'T'));
+  const createdAtDate = new Date(order.createdAt.replace(' ', 'T'));
   const currentTime = new Date();
   const orderDelayTime = Math.floor((currentTime.getTime() - createdAtDate.getTime()) / (1000 * 60));
 
@@ -116,22 +116,22 @@ function OrderCard({ orderInfo }: OrderCardProps) {
   };
 
   const checkClickHandler = () => {
-    if (orderInfo.status === OrderStatus.NOT_PAID) {
-      payOrder(orderInfo.id);
-    } else if (orderInfo.status === OrderStatus.PAID) {
-      serveOrder(orderInfo.id);
+    if (order.status === OrderStatus.NOT_PAID) {
+      payOrder(order.id);
+    } else if (order.status === OrderStatus.PAID) {
+      serveOrder(order.id);
     }
   };
 
   const closeClickHandler = () => {
-    cancelOrder(orderInfo.id);
+    cancelOrder(order.id);
   };
 
   const rollBackClickHandler = () => {
-    if (orderInfo.status === OrderStatus.PAID) {
-      refundOrder(orderInfo.id);
-    } else if (orderInfo.status === OrderStatus.SERVED) {
-      payOrder(orderInfo.id);
+    if (order.status === OrderStatus.PAID) {
+      refundOrder(order.id);
+    } else if (order.status === OrderStatus.SERVED) {
+      payOrder(order.id);
     }
   };
 
@@ -142,20 +142,20 @@ function OrderCard({ orderInfo }: OrderCardProps) {
           <HeaderContainer>
             <TitleContainer>
               <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>
-                {orderInfo.status === OrderStatus.NOT_PAID ? orderInfo.customerName : `테이블 ${orderInfo.tableNumber + 1}`}
+                {order.status === OrderStatus.NOT_PAID ? order.customerName : `테이블 ${order.tableNumber}`}
               </AppLabel>
               <AppLabel color={Color.BLACK} size={13}>{`${orderDelayTime}분 전 주문`}</AppLabel>
             </TitleContainer>
             <RightIcon onClick={openModalHandler} />
           </HeaderContainer>
-          {orderInfo.status === OrderStatus.PAID ? <OrderItemList orderInfo={orderInfo} /> : <OrderSummaryContents contents={orderInfo} />}
+          {order.status === OrderStatus.PAID ? <OrderItemList order={order} /> : <OrderSummaryContents contents={order} />}
           <CheckButtonContainer>
-            {orderInfo.status === OrderStatus.SERVED ? null : <CheckIcon onClick={checkClickHandler} />}
-            {orderInfo.status === OrderStatus.NOT_PAID ? <CloseIcon onClick={closeClickHandler} /> : <RollBackIcon onClick={rollBackClickHandler} />}
+            {order.status === OrderStatus.SERVED ? null : <CheckIcon onClick={checkClickHandler} />}
+            {order.status === OrderStatus.NOT_PAID ? <CloseIcon onClick={closeClickHandler} /> : <RollBackIcon onClick={rollBackClickHandler} />}
           </CheckButtonContainer>
         </CardContents>
       </CardContainer>
-      <OrderDetailModal isOpen={isModalOpen} orderInfo={orderInfo} onClose={closeModalHandler} />
+      <OrderDetailModal isOpen={isModalOpen} order={order} onClose={closeModalHandler} />
     </>
   );
 }

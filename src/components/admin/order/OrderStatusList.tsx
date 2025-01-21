@@ -14,7 +14,7 @@ const OrderStatusListContainer = styled.div`
 `;
 
 interface OrderStatusListProps {
-  filteredOrders: Order[];
+  orders: Order[];
   title: string;
 }
 
@@ -34,17 +34,17 @@ function areOrdersEqual(prevOrders: Order[], nextOrders: Order[]) {
 }
 
 const arePropsEqual = (prevProps: OrderStatusListProps, nextProps: OrderStatusListProps) => {
-  return areOrdersEqual(prevProps.filteredOrders, nextProps.filteredOrders);
+  return areOrdersEqual(prevProps.orders, nextProps.orders);
 };
 
-function OrderStatusList({ filteredOrders, title }: OrderStatusListProps) {
+function OrderStatusList({ orders, title }: OrderStatusListProps) {
   return (
     <>
       <AppLabel color={Color.BLACK} size={22} style={{ fontWeight: 700 }}>
         {title}
       </AppLabel>
       <OrderStatusListContainer>
-        <OrderCardList filteredOrders={filteredOrders} />
+        <OrderCardList orders={orders} />
       </OrderStatusListContainer>
     </>
   );

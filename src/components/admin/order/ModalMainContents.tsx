@@ -76,22 +76,22 @@ const MinusIcon = styled(MinusButtonSvg)`
 `;
 
 interface ModalMainContentsProps {
-  orderInfo: Order;
+  order: Order;
 }
 
-function ModalMainContents({ orderInfo }: ModalMainContentsProps) {
+function ModalMainContents({ order }: ModalMainContentsProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { updateOrderProductCount } = useAdminOrder(workspaceId);
 
-  const isPaidStatus = orderInfo.status === OrderStatus.PAID;
-  const isAllServed = orderInfo.orderProducts.every((product) => product.isServed === true);
+  const isPaidStatus = order.status === OrderStatus.PAID;
+  const isAllServed = order.orderProducts.every((product) => product.isServed);
 
-  const handleIncrease = (productId: number, prevServedCount: number) => {
-    updateOrderProductCount(productId, prevServedCount + 1);
+  const handleIncrease = (productId: number, prevServedCount: number, isServed: boolean) => {
+    if (!isServed) updateOrderProductCount(productId, prevServedCount + 1);
   };
 
   const handleDecrease = (productId: number, prevServedCount: number) => {
-    updateOrderProductCount(productId, prevServedCount - 1);
+    if (prevServedCount > 0) updateOrderProductCount(productId, prevServedCount - 1);
   };
 
   return (
@@ -108,7 +108,7 @@ function ModalMainContents({ orderInfo }: ModalMainContentsProps) {
       </TitleContainer>
       <HorizontalLine />
       <OrderProductContainer>
-        {orderInfo.orderProducts.map((product) => (
+        {order.orderProducts.map((product) => (
           <ProductContainer key={product.id}>
             <ProductRightContainer>
               <AppLabel color={Color.BLACK} size={20}>
@@ -124,7 +124,7 @@ function ModalMainContents({ orderInfo }: ModalMainContentsProps) {
                 <ButtonContainer>
                   <MinusIcon
                     onClick={() => {
-                      if (product.servedCount > 0) handleDecrease(product.id, product.servedCount);
+                      handleDecrease(product.id, product.servedCount);
                     }}
                   />
                   <AppLabel color={Color.BLACK} size={20}>
@@ -132,7 +132,7 @@ function ModalMainContents({ orderInfo }: ModalMainContentsProps) {
                   </AppLabel>
                   <PlusIcon
                     onClick={() => {
-                      if (!product.isServed) handleIncrease(product.id, product.servedCount);
+                      handleIncrease(product.id, product.servedCount, product.isServed);
                     }}
                   />
                 </ButtonContainer>
@@ -147,7 +147,7 @@ function ModalMainContents({ orderInfo }: ModalMainContentsProps) {
           {'상품 합계'}
         </AppLabel>
         <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: 700 }}>
-          {`${orderInfo.totalPrice.toLocaleString()}원`}
+          {`${order.totalPrice.toLocaleString()}원`}
         </AppLabel>
       </TotalLabelContainer>
     </ModalContent>

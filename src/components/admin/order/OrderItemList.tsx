@@ -22,13 +22,13 @@ const StyledText = styled.div<{ $isServed: boolean }>`
 `;
 
 interface OrderItemListProps {
-  orderInfo: Order;
+  order: Order;
 }
 
-function OrderItemList({ orderInfo }: OrderItemListProps) {
+function OrderItemList({ order }: OrderItemListProps) {
   return (
     <ListContainer>
-      {orderInfo.orderProducts.map((product) => (
+      {order.orderProducts.map((product) => (
         <ItemContainer key={product.id}>
           <StyledText $isServed={product.isServed}>{product.productName}</StyledText>
           <StyledText $isServed={product.isServed}>{product.quantity}</StyledText>

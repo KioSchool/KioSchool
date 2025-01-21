@@ -19,7 +19,7 @@ function OrderSummaryContents({ contents }: OrderSummaryContentsProps) {
   const { orderProducts, totalPrice } = contents;
 
   const firstProductName = orderProducts.length > 0 ? orderProducts[0].productName : '상품 없음';
-  const totalProductsCount = orderProducts.reduce((acc, product) => acc + product.quantity, 0);
+  const totalProductsCount = orderProducts.reduce((acc, product) => acc + product.quantity, 0) - 1;
 
   return (
     <ContentsContainer>
