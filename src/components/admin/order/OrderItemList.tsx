@@ -28,10 +28,10 @@ interface OrderItemListProps {
 function OrderItemList({ order }: OrderItemListProps) {
   return (
     <ListContainer>
-      {order.orderProducts.map((product) => (
-        <ItemContainer key={product.id}>
-          <StyledText $isServed={product.isServed}>{product.productName}</StyledText>
-          <StyledText $isServed={product.isServed}>{product.quantity}</StyledText>
+      {order.orderProducts.map((orderProduct) => (
+        <ItemContainer key={orderProduct.id}>
+          <StyledText $isServed={orderProduct.isServed}>{orderProduct.productName}</StyledText>
+          <StyledText $isServed={orderProduct.isServed}>{orderProduct.quantity}</StyledText>
         </ItemContainer>
       ))}
     </ListContainer>
