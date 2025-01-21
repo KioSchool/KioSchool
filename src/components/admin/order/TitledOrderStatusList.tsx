@@ -1,16 +1,22 @@
 import React, { memo } from 'react';
 import styled from '@emotion/styled';
-import OrderCardList from './OrderCardList';
 import { Order } from '@@types/index';
-import { colFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import AppLabel from '@components/common/label/AppLabel';
 import { Color } from '@resources/colors';
+import OrderCard from './OrderCard';
 
-const OrderStatusListContainer = styled.div`
+const OrderCardListContainer = styled.div`
   ${colFlex({ align: 'start' })}
   gap: 10px;
   width: 100%;
   overflow-x: auto;
+`;
+
+const CardListContainer = styled.div`
+  ${rowFlex()}
+  gap: 10px;
+  height: 180px;
 `;
 
 interface OrderStatusListProps {
@@ -37,17 +43,21 @@ const arePropsEqual = (prevProps: OrderStatusListProps, nextProps: OrderStatusLi
   return areOrdersEqual(prevProps.orders, nextProps.orders);
 };
 
-function OrderStatusList({ orders, title }: OrderStatusListProps) {
+function TitledOrderStatusList({ orders, title }: OrderStatusListProps) {
   return (
     <>
       <AppLabel color={Color.BLACK} size={22} style={{ fontWeight: 700 }}>
         {title}
       </AppLabel>
-      <OrderStatusListContainer>
-        <OrderCardList orders={orders} />
-      </OrderStatusListContainer>
+      <OrderCardListContainer>
+        <CardListContainer>
+          {orders.map((order) => {
+            return <OrderCard key={order.id} order={order} />;
+          })}
+        </CardListContainer>
+      </OrderCardListContainer>
     </>
   );
 }
 
-export default memo(OrderStatusList, arePropsEqual);
+export default memo(TitledOrderStatusList, arePropsEqual);

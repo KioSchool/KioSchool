@@ -6,7 +6,7 @@ import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { colFlex } from '@styles/flexStyles';
 import AppContainer from '@components/common/container/AppContainer';
 import { OrderStatus } from '@@types/index';
-import OrderStatusList from '@components/admin/order/OrderStatusList';
+import TitledOrderStatusList from '@components/admin/order/TitledOrderStatusList';
 import styled from '@emotion/styled';
 import { ordersAtom } from '@recoils/atoms';
 import { useRecoilValue } from 'recoil';
@@ -36,11 +36,11 @@ function AdminOrderRealtime() {
   return (
     <AppContainer useFlex={colFlex({ justify: 'center' })} customGap={'15px'} titleNavBarProps={{ title: '실시간 주문 조회' }}>
       <>
-        <OrderStatusList orders={notPaidOrders} title={'주문 완료'} />
+        <TitledOrderStatusList orders={notPaidOrders} title={'주문 완료'} />
         <HorizontalLine />
-        <OrderStatusList orders={paidOrders} title={'결제 완료'} />
+        <TitledOrderStatusList orders={paidOrders} title={'결제 완료'} />
         <HorizontalLine />
-        <OrderStatusList orders={servedOrders} title={'서빙 완료'} />
+        <TitledOrderStatusList orders={servedOrders} title={'서빙 완료'} />
       </>
     </AppContainer>
   );
