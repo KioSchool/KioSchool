@@ -14,6 +14,7 @@ import { useParams } from 'react-router-dom';
 import OrderDetailModal from '@components/admin/order/modal/OrderDetailModal';
 import { extractMinFromDate } from '@utils/FormatDate';
 import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
+import useModal from '@hooks/useModal'; // 새로 만든 커스텀 훅 import
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -83,7 +84,7 @@ function NotPaidOrderCard({ order }: OrderCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { payOrder, cancelOrder } = useAdminOrder(workspaceId);
 
-  const [isModalOpen, setModalOpen] = useState(false);
+  const { isModalOpen, openModal, closeModal } = useModal();
   const [orderDelayTime, setOrderDelayTime] = useState<number>(extractMinFromDate(order.createdAt));
 
   useEffect(() => {
@@ -95,16 +96,6 @@ function NotPaidOrderCard({ order }: OrderCardProps) {
 
     return () => clearInterval(interval);
   }, []);
-
-  const openModalHandler = () => {
-    setModalOpen(true);
-    document.body.style.overflow = 'hidden';
-  };
-
-  const closeModalHandler = () => {
-    setModalOpen(false);
-    document.body.style.overflow = 'auto';
-  };
 
   const checkClickHandler = () => {
     payOrder(order.id);
@@ -125,7 +116,7 @@ function NotPaidOrderCard({ order }: OrderCardProps) {
               </AppLabel>
               <AppLabel color={Color.BLACK} size={13}>{`${orderDelayTime}분 전 주문`}</AppLabel>
             </TitleContainer>
-            <RightIcon onClick={openModalHandler} />
+            <RightIcon onClick={openModal} />
           </HeaderContainer>
           <OrderSummaryContents contents={order} />
           <CheckButtonContainer>
@@ -134,7 +125,7 @@ function NotPaidOrderCard({ order }: OrderCardProps) {
           </CheckButtonContainer>
         </CardContents>
       </CardContainer>
-      <OrderDetailModal isOpen={isModalOpen} order={order} onClose={closeModalHandler} />
+      <OrderDetailModal isOpen={isModalOpen} order={order} onClose={closeModal} />
     </>
   );
 }

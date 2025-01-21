@@ -14,6 +14,7 @@ import OrderDetailModal from '@components/admin/order/modal/OrderDetailModal';
 import OrderItemList from '@components/admin/order/OrderItemList';
 import { extractMinFromDate } from '@utils/FormatDate';
 import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
+import useModal from '@hooks/useModal';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -85,7 +86,7 @@ function PaidOrderCard({ order }: OrderCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { serveOrder, refundOrder } = useAdminOrder(workspaceId);
 
-  const [isModalOpen, setModalOpen] = useState(false);
+  const { isModalOpen, openModal, closeModal } = useModal();
   const [orderDelayTime, setOrderDelayTime] = useState<number>(extractMinFromDate(order.createdAt));
 
   useEffect(() => {
@@ -97,16 +98,6 @@ function PaidOrderCard({ order }: OrderCardProps) {
 
     return () => clearInterval(interval);
   }, []);
-
-  const openModalHandler = () => {
-    setModalOpen(true);
-    document.body.style.overflow = 'hidden';
-  };
-
-  const closeModalHandler = () => {
-    setModalOpen(false);
-    document.body.style.overflow = 'auto';
-  };
 
   const checkClickHandler = () => {
     serveOrder(order.id);
@@ -127,7 +118,7 @@ function PaidOrderCard({ order }: OrderCardProps) {
               </AppLabel>
               <AppLabel color={Color.BLACK} size={13}>{`${orderDelayTime}분 전 주문`}</AppLabel>
             </TitleContainer>
-            <RightIcon onClick={openModalHandler} />
+            <RightIcon onClick={openModal} />
           </HeaderContainer>
           <OrderItemList order={order} />
           <CheckButtonContainer>
@@ -136,7 +127,7 @@ function PaidOrderCard({ order }: OrderCardProps) {
           </CheckButtonContainer>
         </CardContents>
       </CardContainer>
-      <OrderDetailModal isOpen={isModalOpen} order={order} onClose={closeModalHandler} />
+      <OrderDetailModal isOpen={isModalOpen} order={order} onClose={closeModal} />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import { Order } from '@@types/index';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom';
 import RollBackSvg from '@resources/svg/RollBackSvg';
 import OrderDetailModal from '@components/admin/order/modal/OrderDetailModal';
 import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
+import useModal from '@hooks/useModal';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -77,17 +78,7 @@ function ServedOrderCard({ order }: OrderCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { payOrder } = useAdminOrder(workspaceId);
 
-  const [isModalOpen, setModalOpen] = useState(false);
-
-  const openModalHandler = () => {
-    setModalOpen(true);
-    document.body.style.overflow = 'hidden';
-  };
-
-  const closeModalHandler = () => {
-    setModalOpen(false);
-    document.body.style.overflow = 'auto';
-  };
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   const rollBackClickHandler = () => {
     payOrder(order.id);
@@ -106,7 +97,7 @@ function ServedOrderCard({ order }: OrderCardProps) {
                 {`주문 번호 ${order.id}`}
               </AppLabel>
             </TitleContainer>
-            <RightIcon onClick={openModalHandler} />
+            <RightIcon onClick={openModal} />
           </HeaderContainer>
           <OrderSummaryContents contents={order} />
           <CheckButtonContainer>
@@ -114,7 +105,7 @@ function ServedOrderCard({ order }: OrderCardProps) {
           </CheckButtonContainer>
         </CardContents>
       </CardContainer>
-      <OrderDetailModal isOpen={isModalOpen} order={order} onClose={closeModalHandler} />
+      <OrderDetailModal isOpen={isModalOpen} order={order} onClose={closeModal} />
     </>
   );
 }
