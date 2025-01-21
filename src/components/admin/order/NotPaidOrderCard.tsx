@@ -13,6 +13,7 @@ import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 import OrderDetailModal from '@components/admin/order/modal/OrderDetailModal';
 import { extractMinFromDate } from '@utils/FormatDate';
+import { areOrderInfoEqual } from '@utils/MemoCompareFunction.';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -71,18 +72,6 @@ const CloseIcon = styled(CloseSvg)`
 
 interface OrderCardProps {
   order: Order;
-}
-
-function areOrderInfoEqual(prevOrder: Order, nextOrder: Order) {
-  const isSameOrderId = prevOrder.id === nextOrder.id;
-  const hasSameStatus = prevOrder.status === nextOrder.status;
-
-  const areAllServedCountsEqual = prevOrder.orderProducts.every((prevProduct, index) => {
-    const nextProduct = nextOrder.orderProducts[index];
-    return prevProduct.servedCount === nextProduct.servedCount;
-  });
-
-  return isSameOrderId && hasSameStatus && areAllServedCountsEqual;
 }
 
 const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => {

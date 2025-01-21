@@ -13,6 +13,7 @@ import RollBackSvg from '@resources/svg/RollBackSvg';
 import OrderDetailModal from '@components/admin/order/modal/OrderDetailModal';
 import OrderItemList from '@components/admin/order/OrderItemList';
 import { extractMinFromDate } from '@utils/FormatDate';
+import { areOrderInfoEqual } from '@utils/MemoCompareFunction.';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -73,18 +74,6 @@ const RollBackIcon = styled(RollBackSvg)`
 
 interface OrderCardProps {
   order: Order;
-}
-
-function areOrderInfoEqual(prevOrder: Order, nextOrder: Order) {
-  const isSameOrderId = prevOrder.id === nextOrder.id;
-  const hasSameStatus = prevOrder.status === nextOrder.status;
-
-  const areAllServedCountsEqual = prevOrder.orderProducts.every((prevProduct, index) => {
-    const nextProduct = nextOrder.orderProducts[index];
-    return prevProduct.servedCount === nextProduct.servedCount;
-  });
-
-  return isSameOrderId && hasSameStatus && areAllServedCountsEqual;
 }
 
 const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => {
