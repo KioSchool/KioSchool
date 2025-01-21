@@ -34,12 +34,12 @@ const CloseIcon = styled(CloseSvg)`
   ${expandButtonStyle}
 `;
 
-interface ModalHeaderContentsProps {
+interface OrderModalHeaderContentsProps {
   order: Order;
   onClose: () => void;
 }
 
-function OrderModalHeaderContents({ onClose, order }: ModalHeaderContentsProps) {
+function OrderModalHeaderContents({ onClose, order }: OrderModalHeaderContentsProps) {
   return (
     <ModalHeader>
       <ModalHeaderTitle>

@@ -1,6 +1,6 @@
 import { Order } from '@@types/index';
 
-export const areOrderInfoEqual = (prevOrder: Order, nextOrder: Order) => {
+export const areOrdersEquivalent = (prevOrder: Order, nextOrder: Order) => {
   const isSameOrderId = prevOrder.id === nextOrder.id;
   const hasSameStatus = prevOrder.status === nextOrder.status;
   const hasSameProductsLength = prevOrder.orderProducts.length === nextOrder.orderProducts.length;

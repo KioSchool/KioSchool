@@ -11,7 +11,7 @@ import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 import RollBackSvg from '@resources/svg/RollBackSvg';
 import OrderDetailModal from '@components/admin/order/modal/OrderDetailModal';
-import { areOrderInfoEqual } from '@utils/MemoCompareFunction.';
+import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -70,7 +70,7 @@ interface OrderCardProps {
 }
 
 const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => {
-  return areOrderInfoEqual(prevProps.order, nextProps.order);
+  return areOrdersEquivalent(prevProps.order, nextProps.order);
 };
 
 function ServedOrderCard({ order }: OrderCardProps) {

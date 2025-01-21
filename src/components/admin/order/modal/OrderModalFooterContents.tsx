@@ -10,7 +10,7 @@ const ModalFooter = styled.div`
   padding: 15px 40px 40px 40px;
 `;
 
-interface ModalFooterContentsProps {
+interface OrderModalFooterContentsProps {
   orderStatus: OrderStatus;
   id: number;
 }
@@ -34,7 +34,7 @@ const getActions = (orderStatus: OrderStatus, actionHandlers: Record<string, () 
   }
 };
 
-function OrderModalFooterContents({ orderStatus, id }: ModalFooterContentsProps) {
+function OrderModalFooterContents({ orderStatus, id }: OrderModalFooterContentsProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { payOrder, cancelOrder, serveOrder, refundOrder } = useAdminOrder(workspaceId);
 

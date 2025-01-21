@@ -7,6 +7,7 @@ import { Color } from '@resources/colors';
 import NotPaidOrderCard from './NotPaidOrderCard';
 import PaidOrderCard from './PaidOrderCard';
 import ServedOrderCard from './ServedOrderCard';
+import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
 
 const OrderCardListContainer = styled.div`
   ${colFlex({ align: 'start' })}
@@ -31,17 +32,7 @@ function areOrdersEqual(prevOrders: Order[], nextOrders: Order[]) {
 
   return prevOrders.every((prevOrder, index) => {
     const nextOrder = nextOrders[index];
-
-    const hasSameOrderId = prevOrder.id === nextOrder.id;
-
-    const areProductsEqual = prevOrder.orderProducts.every((prevProduct, productIndex) => {
-      const nextProduct = nextOrder.orderProducts[productIndex];
-      const hasSameServedStatus = prevProduct.isServed === nextProduct.isServed;
-      const hasSameServedCount = prevProduct.servedCount === nextProduct.servedCount;
-      return hasSameServedStatus && hasSameServedCount;
-    });
-
-    return hasSameOrderId && areProductsEqual;
+    return areOrdersEquivalent(prevOrder, nextOrder);
   });
 }
 

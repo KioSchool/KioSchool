@@ -13,7 +13,7 @@ import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 import OrderDetailModal from '@components/admin/order/modal/OrderDetailModal';
 import { extractMinFromDate } from '@utils/FormatDate';
-import { areOrderInfoEqual } from '@utils/MemoCompareFunction.';
+import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -76,7 +76,7 @@ interface OrderCardProps {
 }
 
 const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => {
-  return areOrderInfoEqual(prevProps.order, nextProps.order);
+  return areOrdersEquivalent(prevProps.order, nextProps.order);
 };
 
 function NotPaidOrderCard({ order }: OrderCardProps) {
@@ -84,7 +84,7 @@ function NotPaidOrderCard({ order }: OrderCardProps) {
   const { payOrder, cancelOrder } = useAdminOrder(workspaceId);
 
   const [isModalOpen, setModalOpen] = useState(false);
-  const [orderDelayTime, setOrderDelayTime] = useState<Number>(extractMinFromDate(order.createdAt));
+  const [orderDelayTime, setOrderDelayTime] = useState<number>(extractMinFromDate(order.createdAt));
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -94,7 +94,7 @@ function NotPaidOrderCard({ order }: OrderCardProps) {
     }, 10000);
 
     return () => clearInterval(interval);
-  }, [order.createdAt]);
+  }, []);
 
   const openModalHandler = () => {
     setModalOpen(true);

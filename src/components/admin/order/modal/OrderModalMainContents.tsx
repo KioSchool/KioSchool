@@ -1,4 +1,4 @@
-import { Order, OrderStatus } from '@@types/index';
+import { Order, OrderProduct, OrderStatus } from '@@types/index';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
@@ -76,23 +76,23 @@ const MinusIcon = styled(MinusButtonSvg)`
   ${expandButtonStyle};
 `;
 
-interface ModalMainContentsProps {
+interface OrderModalMainContentsProps {
   order: Order;
 }
 
-function OrderModalMainContents({ order }: ModalMainContentsProps) {
+function OrderModalMainContents({ order }: OrderModalMainContentsProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { updateOrderProductCount } = useAdminOrder(workspaceId);
 
   const isPaidStatus = order.status === OrderStatus.PAID;
-  const isAllServed = order.orderProducts.every((product) => product.isServed);
+  const isAllServed = order.orderProducts.every((orderProduct) => orderProduct.isServed);
 
-  const handleIncrease = (productId: number, prevServedCount: number, isServed: boolean) => {
-    if (!isServed) updateOrderProductCount(productId, prevServedCount + 1);
+  const handleIncrease = (orderProduct: OrderProduct) => {
+    if (!orderProduct.isServed) updateOrderProductCount(orderProduct.id, orderProduct.servedCount + 1);
   };
 
-  const handleDecrease = (productId: number, prevServedCount: number) => {
-    if (prevServedCount > 0) updateOrderProductCount(productId, prevServedCount - 1);
+  const handleDecrease = (orderProduct: OrderProduct) => {
+    if (orderProduct.servedCount > 0) updateOrderProductCount(orderProduct.id, orderProduct.servedCount - 1);
   };
 
   return (
@@ -109,31 +109,31 @@ function OrderModalMainContents({ order }: ModalMainContentsProps) {
       </TitleContainer>
       <HorizontalLine />
       <OrderProductContainer>
-        {order.orderProducts.map((product) => (
-          <ProductContainer key={product.id}>
+        {order.orderProducts.map((orderProduct) => (
+          <ProductContainer key={orderProduct.id}>
             <ProductRightContainer>
               <AppLabel color={Color.BLACK} size={20}>
-                {`${product.productName}`}
+                {`${orderProduct.productName}`}
               </AppLabel>
-              {product.isServed && <CheckSvg />}
+              {orderProduct.isServed && <CheckSvg />}
             </ProductRightContainer>
             <ProductLeftContainer>
               <AppLabel color={Color.BLACK} size={20}>
-                {`${product.productPrice.toLocaleString()}원`}
+                {`${orderProduct.productPrice.toLocaleString()}원`}
               </AppLabel>
               {isPaidStatus && (
                 <ButtonContainer>
                   <MinusIcon
                     onClick={() => {
-                      handleDecrease(product.id, product.servedCount);
+                      handleDecrease(orderProduct);
                     }}
                   />
                   <AppLabel color={Color.BLACK} size={20}>
-                    {`${product.servedCount} / ${product.quantity}`}
+                    {`${orderProduct.servedCount} / ${orderProduct.quantity}`}
                   </AppLabel>
                   <PlusIcon
                     onClick={() => {
-                      handleIncrease(product.id, product.servedCount, product.isServed);
+                      handleIncrease(orderProduct);
                     }}
                   />
                 </ButtonContainer>
