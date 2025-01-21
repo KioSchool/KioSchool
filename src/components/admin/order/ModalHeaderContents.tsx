@@ -5,6 +5,7 @@ import { Color } from '@resources/colors';
 import CloseSvg from '@resources/svg/CloseSvg';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { formatDate } from '@utils/FormatDate';
 import { orderStatusConverter } from '@utils/OrderStatusConverter';
 
 const ModalHeader = styled.div`
@@ -48,7 +49,7 @@ function ModalHeaderContents({ onClose, order }: ModalHeaderContentsProps) {
       <HeaderDetailContainer>
         <HeaderDetail>
           <AppLabel color={Color.BLACK} size={17}>{`주문 번호  ${order.id}`}</AppLabel>
-          <AppLabel color={Color.BLACK} size={17}>{`${order.customerName} | ${new Date(order.createdAt).toLocaleString()}`}</AppLabel>
+          <AppLabel color={Color.BLACK} size={17}>{`${order.customerName} | ${formatDate(order.createdAt)}`}</AppLabel>
         </HeaderDetail>
         <AppLabel color={Color.KIO_ORANGE} size={20} style={{ fontWeight: 600 }}>
           {orderStatusConverter(order.status)}
