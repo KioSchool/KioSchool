@@ -43,10 +43,11 @@ const HeaderContainer = styled.div`
 
 const TitleContainer = styled.div`
   ${colFlex({ align: 'start' })}
+  padding-top: 3px;
 `;
 
 const RightIcon = styled(ChevronRightSvg)`
-  margin-top: 3px;
+  margin-top: 6px;
   width: 20px;
   height: 15px;
   ${expandButtonStyle}
