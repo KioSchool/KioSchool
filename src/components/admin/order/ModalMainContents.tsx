@@ -30,7 +30,7 @@ const OrderProductContainer = styled.div`
 `;
 
 const TitleContainer = styled.div`
-  ${rowFlex({ justify: 'start', align: 'center' })}
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
   width: 100%;
   gap: 10px;
 `;
@@ -101,7 +101,7 @@ function ModalMainContents({ orderInfo }: ModalMainContentsProps) {
           주문 내역
         </AppLabel>
         {isPaidStatus && (
-          <AppLabel color={Color.GREY} size={20}>
+          <AppLabel color={isAllServed ? Color.KIO_ORANGE : Color.GREY} size={20} style={{ fontWeight: 700 }}>
             {isAllServed ? '모든 서빙 완료' : '서빙 미완료'}
           </AppLabel>
         )}
