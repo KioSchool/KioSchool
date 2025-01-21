@@ -94,7 +94,7 @@ function NotPaidOrderCard({ order }: OrderCardProps) {
   const { payOrder, cancelOrder } = useAdminOrder(workspaceId);
 
   const [isModalOpen, setModalOpen] = useState(false);
-  const [orderDelayTime, setOrderDelayTime] = useState<Number>();
+  const [orderDelayTime, setOrderDelayTime] = useState<Number>(extractMinFromDate(order.createdAt));
 
   useEffect(() => {
     const interval = setInterval(() => {
