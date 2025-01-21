@@ -8,6 +8,8 @@ import AppContainer from '@components/common/container/AppContainer';
 import { OrderStatus } from '@@types/index';
 import OrderStatusList from '@components/admin/order/OrderStatusList';
 import styled from '@emotion/styled';
+import { ordersAtom } from '@recoils/atoms';
+import { useRecoilValue } from 'recoil';
 
 const HorizontalLine = styled.hr`
   width: 100%;
@@ -20,6 +22,11 @@ function AdminOrderRealtime() {
   const { fetchTodayOrders } = useAdminOrder(workspaceId);
   const { fetchProducts } = useAdminProducts(workspaceId);
 
+  const orders = useRecoilValue(ordersAtom);
+  const notPaidOrders = orders.filter((order) => order.status === OrderStatus.NOT_PAID);
+  const paidOrders = orders.filter((order) => order.status === OrderStatus.PAID);
+  const servedOrders = orders.filter((order) => order.status === OrderStatus.SERVED);
+
   useEffect(() => {
     subscribeOrders();
     fetchTodayOrders();
@@ -29,11 +36,11 @@ function AdminOrderRealtime() {
   return (
     <AppContainer useFlex={colFlex({ justify: 'center' })} customGap={'15px'} titleNavBarProps={{ title: '실시간 주문 조회' }}>
       <>
-        <OrderStatusList orderStatus={OrderStatus.NOT_PAID} />
+        <OrderStatusList filteredOrders={notPaidOrders} title={'주문 완료'} />
         <HorizontalLine />
-        <OrderStatusList orderStatus={OrderStatus.PAID} />
+        <OrderStatusList filteredOrders={paidOrders} title={'결제 완료'} />
         <HorizontalLine />
-        <OrderStatusList orderStatus={OrderStatus.SERVED} />
+        <OrderStatusList filteredOrders={servedOrders} title={'서빙 완료'} />
       </>
     </AppContainer>
   );

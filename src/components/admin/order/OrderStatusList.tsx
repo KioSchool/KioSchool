@@ -1,10 +1,10 @@
+import React, { memo } from 'react';
 import styled from '@emotion/styled';
 import OrderCardList from './OrderCardList';
-import { OrderStatus } from '@@types/index';
+import { Order } from '@@types/index';
 import { colFlex } from '@styles/flexStyles';
 import AppLabel from '@components/common/label/AppLabel';
 import { Color } from '@resources/colors';
-import { orderStatusConverter } from '@utils/OrderStatusConverter';
 
 const OrderStatusListContainer = styled.div`
   ${colFlex({ align: 'start' })}
@@ -14,20 +14,40 @@ const OrderStatusListContainer = styled.div`
 `;
 
 interface OrderStatusListProps {
-  orderStatus: OrderStatus;
+  filteredOrders: Order[];
+  title: string;
 }
 
-function OrderStatusList({ orderStatus }: OrderStatusListProps) {
+function areOrdersEqual(prevOrders: Order[], nextOrders: Order[]) {
+  if (prevOrders.length !== nextOrders.length) return false;
+
+  return prevOrders.every((prevOrder, index) => {
+    const nextOrder = nextOrders[index];
+    return (
+      prevOrder.id === nextOrder.id &&
+      prevOrder.orderProducts.every((prevProduct, productIndex) => {
+        const nextProduct = nextOrder.orderProducts[productIndex];
+        return prevProduct.isServed === nextProduct.isServed && prevProduct.servedCount === nextProduct.servedCount;
+      })
+    );
+  });
+}
+
+const arePropsEqual = (prevProps: OrderStatusListProps, nextProps: OrderStatusListProps) => {
+  return areOrdersEqual(prevProps.filteredOrders, nextProps.filteredOrders);
+};
+
+function OrderStatusList({ filteredOrders, title }: OrderStatusListProps) {
   return (
     <>
       <AppLabel color={Color.BLACK} size={22} style={{ fontWeight: 700 }}>
-        {orderStatusConverter(orderStatus)}
+        {title}
       </AppLabel>
       <OrderStatusListContainer>
-        <OrderCardList orderStatus={orderStatus} />
+        <OrderCardList filteredOrders={filteredOrders} />
       </OrderStatusListContainer>
     </>
   );
 }
 
-export default OrderStatusList;
+export default memo(OrderStatusList, arePropsEqual);
