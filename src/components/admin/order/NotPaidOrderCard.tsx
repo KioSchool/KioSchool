@@ -1,113 +1,133 @@
-import React from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { Order } from '@@types/index';
-import styled from '@emotion/styled';
-import { useParams } from 'react-router-dom';
-import useAdminOrder from '@hooks/admin/useAdminOrder';
 import AppLabel from '@components/common/label/AppLabel';
-import HorizontalDivider from '@components/common/divider/HorizontalDivider';
-import { colFlex, rowFlex } from '@styles/flexStyles';
+import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
+import CheckSvg from '@resources/svg/CheckSvg';
+import ChevronRightSvg from '@resources/svg/ChevronRightSvg';
+import CloseSvg from '@resources/svg/CloseSvg';
+import { expandButtonStyle } from '@styles/buttonStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import OrderSummaryContents from './OrderSummaryContents';
+import useAdminOrder from '@hooks/admin/useAdminOrder';
+import { useParams } from 'react-router-dom';
+import OrderDetailModal from '@components/admin/order/modal/OrderDetailModal';
+import { extractMinFromDate } from '@utils/FormatDate';
+import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
+import useModal from '@hooks/useModal'; // 새로 만든 커스텀 훅 import
 
-interface Props {
-  order: Order;
-}
+const CardContainer = styled.div`
+  ${colFlex({ justify: 'center', align: 'center' })}
+  background-color: ${Color.LIGHT_GREY};
+  width: 200px;
+  height: 170px;
+  border-radius: 10px;
 
-const Container = styled.div`
-  padding: 22px;
-  width: 350px;
-  box-sizing: border-box;
-  background: ${Color.LIGHT_GREY};
-  gap: 7px;
-  ${colFlex({ align: 'center' })}
-`;
-
-const Row = styled.div`
-  width: 100%;
-  padding: 0 5px;
-  box-sizing: border-box;
-  ${rowFlex({ justify: 'space-between' })}
-`;
-
-const OrderProductsContainer = styled.div`
-  gap: 5px;
-  width: 100%;
-  ${colFlex()}
-`;
-
-const ButtonContainer = styled.div`
-  width: 100%;
-  padding-top: 10px;
-  ${rowFlex({ justify: 'space-between' })}
-`;
-
-const Button = styled.button`
-  width: 80px;
-  height: 30px;
-  border: none;
-  background: ${Color.KIO_ORANGE};
-  color: ${Color.WHITE};
-  cursor: pointer;
-  border-radius: 50px;
   &:hover {
-    background: #ff8c3a;
+    background-color: ${Color.KIO_ORANGE};
+
+    & * {
+      color: ${Color.WHITE};
+      stroke: ${Color.WHITE};
+    }
   }
 `;
 
-function NotPaidOrderCard({ order }: Props) {
+const CardContents = styled.div`
+  ${colFlex({ justify: 'space-between', align: 'center' })}
+  width: 80%;
+  height: 85%;
+`;
+
+const HeaderContainer = styled.div`
+  ${rowFlex({ justify: 'space-between', align: 'start' })}
+  width: 100%;
+`;
+
+const TitleContainer = styled.div`
+  ${colFlex({ align: 'start' })}
+  padding-top: 3px;
+`;
+
+const RightIcon = styled(ChevronRightSvg)`
+  margin-top: 6px;
+  width: 20px;
+  height: 15px;
+  ${expandButtonStyle}
+`;
+
+const CheckButtonContainer = styled.div`
+  ${rowFlex({ justify: 'center', align: 'center' })}
+  gap: 35px;
+  width: 55%;
+`;
+
+const CheckIcon = styled(CheckSvg)`
+  width: 25px;
+  height: 25px;
+  ${expandButtonStyle}
+`;
+
+const CloseIcon = styled(CloseSvg)`
+  ${expandButtonStyle}
+`;
+
+interface OrderCardProps {
+  order: Order;
+}
+
+const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => {
+  return areOrdersEquivalent(prevProps.order, nextProps.order);
+};
+
+function NotPaidOrderCard({ order }: OrderCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { payOrder, cancelOrder } = useAdminOrder(workspaceId);
 
-  const dateConverter = (dateStr: string) => {
-    const date = new Date(dateStr);
+  const { isModalOpen, openModal, closeModal } = useModal();
+  const [orderDelayTime, setOrderDelayTime] = useState<number>(extractMinFromDate(order.createdAt));
 
-    const isAm = date.getHours() < 12;
-    const hour = isAm ? date.getHours() : date.getHours() - 12;
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const updatedDelayTime = extractMinFromDate(order.createdAt);
 
-    return `${hour}시 ${date.getMinutes()}분`;
+      setOrderDelayTime((prevDelayTime) => (prevDelayTime !== updatedDelayTime ? updatedDelayTime : prevDelayTime));
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const checkClickHandler = () => {
+    payOrder(order.id);
+  };
+
+  const closeClickHandler = () => {
+    cancelOrder(order.id);
   };
 
   return (
-    <Container className={'not-paid-order-card-container'}>
-      <AppLabel size={18} style={{ fontWeight: 700 }}>
-        테이블 {order.tableNumber}
-      </AppLabel>
-      <AppLabel size={16}>주문번호 {order.id}번</AppLabel>
-      <Row className={'not-paid-order-card-row'}>
-        <AppLabel size={14}>입금자명: {order.customerName}</AppLabel>
-        <AppLabel size={14}>{dateConverter(order.createdAt)}</AppLabel>
-      </Row>
-      <HorizontalDivider />
-      <OrderProductsContainer className={'order-products-container'}>
-        {order.orderProducts.map((it) => (
-          <Row key={it.id} className={'order-product-row'}>
-            <AppLabel size={16} style={{ fontWeight: 500 }}>
-              {it.productName}
-            </AppLabel>
-            <AppLabel size={16} style={{ fontWeight: 500 }}>
-              {it.quantity}개
-            </AppLabel>
-          </Row>
-        ))}
-      </OrderProductsContainer>
-      <HorizontalDivider />
-      <Row className={'not-paid-order-card-row'}>
-        <AppLabel size={16} style={{ fontWeight: 500 }}>
-          총 주문 금액
-        </AppLabel>
-        <AppLabel size={16} style={{ fontWeight: 500 }}>
-          {order.totalPrice.toLocaleString()}원
-        </AppLabel>
-      </Row>
-      <ButtonContainer className={'button-container'}>
-        <Button type={'button'} onClick={() => cancelOrder(order.id)} className={'cancel-button'}>
-          주문 취소
-        </Button>
-        <Button type={'button'} onClick={() => payOrder(order.id)} className={'pay-button'}>
-          결제 완료
-        </Button>
-      </ButtonContainer>
-    </Container>
+    <>
+      <CardContainer>
+        <CardContents>
+          <HeaderContainer>
+            <TitleContainer>
+              <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>
+                {order.customerName}
+              </AppLabel>
+              <AppLabel color={Color.BLACK} size={13}>{`${orderDelayTime}분 전 주문`}</AppLabel>
+            </TitleContainer>
+            <RightIcon onClick={openModal} />
+          </HeaderContainer>
+          <OrderSummaryContents contents={order} />
+          <CheckButtonContainer>
+            <CheckIcon onClick={checkClickHandler} />
+            <CloseIcon onClick={closeClickHandler} />
+          </CheckButtonContainer>
+        </CardContents>
+      </CardContainer>
+      <OrderDetailModal isOpen={isModalOpen} order={order} onClose={closeModal} />
+    </>
   );
 }
 
-export default NotPaidOrderCard;
+export default memo(NotPaidOrderCard, arePropsEqual);
