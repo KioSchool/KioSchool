@@ -92,10 +92,12 @@ function OrderCard({ orderInfo }: OrderCardProps) {
 
   const openModalHandler = () => {
     setModalOpen(true);
+    document.body.style.overflow = 'hidden';
   };
 
   const closeModalHandler = () => {
     setModalOpen(false);
+    document.body.style.overflow = 'auto';
   };
 
   const checkClickHandler = () => {
