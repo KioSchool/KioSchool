@@ -1,5 +1,4 @@
 import { Order } from '@@types/index';
-import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
@@ -16,6 +15,12 @@ const ItemContainer = styled.div`
   width: 100%;
 `;
 
+const StyledText = styled.div<{ $isServed: boolean }>`
+  font-size: 15px;
+  color: ${({ $isServed }) => ($isServed ? Color.GREY : Color.BLACK)};
+  text-decoration: ${({ $isServed }) => ($isServed ? 'line-through' : 'none')};
+`;
+
 interface OrderItemListProps {
   orderInfo: Order;
 }
@@ -25,12 +30,8 @@ function OrderItemList({ orderInfo }: OrderItemListProps) {
     <ListContainer>
       {orderInfo.orderProducts.map((product) => (
         <ItemContainer key={product.id}>
-          <AppLabel color={Color.BLACK} size={15}>
-            {product.productName}
-          </AppLabel>
-          <AppLabel color={Color.BLACK} size={15}>
-            {product.quantity}
-          </AppLabel>
+          <StyledText $isServed={product.isServed}>{product.productName}</StyledText>
+          <StyledText $isServed={product.isServed}>{product.quantity}</StyledText>
         </ItemContainer>
       ))}
     </ListContainer>
