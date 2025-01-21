@@ -6,6 +6,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import { Color } from '@resources/colors';
 import NotPaidOrderCard from './NotPaidOrderCard';
 import PaidOrderCard from './PaidOrderCard';
+import ServedOrderCard from './ServedOrderCard';
 
 const OrderCardListContainer = styled.div`
   ${colFlex({ align: 'start' })}
@@ -62,7 +63,7 @@ function TitledOrderStatusList({ orders, title }: OrderStatusListProps) {
             } else if (order.status === OrderStatus.PAID) {
               return <PaidOrderCard order={order} />;
             } else if (order.status === OrderStatus.SERVED) {
-              return <NotPaidOrderCard order={order} />;
+              return <ServedOrderCard order={order} />;
             }
           })}
         </CardListContainer>
