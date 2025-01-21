@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
 import styled from '@emotion/styled';
-import { Order } from '@@types/index';
+import { Order, OrderStatus } from '@@types/index';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import AppLabel from '@components/common/label/AppLabel';
 import { Color } from '@resources/colors';
-import OrderCard from './OrderCard';
+import NotPaidOrderCard from './NotPaidOrderCard';
 
 const OrderCardListContainer = styled.div`
   ${colFlex({ align: 'start' })}
@@ -56,7 +56,13 @@ function TitledOrderStatusList({ orders, title }: OrderStatusListProps) {
       <OrderCardListContainer>
         <CardListContainer>
           {orders.map((order) => {
-            return <OrderCard key={order.id} order={order} />;
+            if (order.status === OrderStatus.NOT_PAID) {
+              return <NotPaidOrderCard order={order} />;
+            } else if (order.status === OrderStatus.PAID) {
+              return <NotPaidOrderCard order={order} />;
+            } else if (order.status === OrderStatus.SERVED) {
+              return <NotPaidOrderCard order={order} />;
+            }
           })}
         </CardListContainer>
       </OrderCardListContainer>
