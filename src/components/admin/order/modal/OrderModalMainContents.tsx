@@ -18,6 +18,7 @@ const HorizontalLine = styled.hr`
 const ModalContent = styled.div`
   ${colFlex({ justify: 'space-between', align: 'start' })}
   gap: 10px;
+  padding: 10px 40px;
 `;
 
 const OrderProductContainer = styled.div`

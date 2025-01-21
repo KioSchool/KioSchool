@@ -7,8 +7,7 @@ import { useParams } from 'react-router-dom';
 
 const ModalFooter = styled.div`
   ${rowFlex({ justify: 'space-between', align: 'center' })}
-  padding-top: 15px;
-  width: 100%;
+  padding: 15px 40px 40px 40px;
 `;
 
 interface ModalFooterContentsProps {

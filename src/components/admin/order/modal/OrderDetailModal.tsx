@@ -18,7 +18,7 @@ const ModalOverlay = styled.div`
 `;
 
 const ModalContainer = styled.div`
-  ${colFlex()}
+  ${colFlex({ justify: 'center' })}
   position: fixed;
   top: 50%;
   left: 50%;
@@ -26,8 +26,6 @@ const ModalContainer = styled.div`
   background-color: ${Color.WHITE};
   border-radius: 10px;
   width: 700px;
-  height: 600px;
-  padding: 40px;
   z-index: 2001;
   gap: 15px;
 `;
