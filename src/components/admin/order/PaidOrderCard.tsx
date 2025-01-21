@@ -5,13 +5,13 @@ import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import CheckSvg from '@resources/svg/CheckSvg';
 import ChevronRightSvg from '@resources/svg/ChevronRightSvg';
-import CloseSvg from '@resources/svg/CloseSvg';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import OrderSummaryContents from './OrderSummaryContents';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
+import RollBackSvg from '@resources/svg/RollBackSvg';
 import OrderDetailModal from '@components/admin/order/modal/OrderDetailModal';
+import OrderItemList from '@components/admin/order/OrderItemList';
 import { extractMinFromDate } from '@utils/FormatDate';
 
 const CardContainer = styled.div`
@@ -65,7 +65,9 @@ const CheckIcon = styled(CheckSvg)`
   ${expandButtonStyle}
 `;
 
-const CloseIcon = styled(CloseSvg)`
+const RollBackIcon = styled(RollBackSvg)`
+  width: 15px;
+  height: 15px;
   ${expandButtonStyle}
 `;
 
@@ -89,9 +91,9 @@ const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => 
   return areOrderInfoEqual(prevProps.order, nextProps.order);
 };
 
-function NotPaidOrderCard({ order }: OrderCardProps) {
+function PaidOrderCard({ order }: OrderCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { payOrder, cancelOrder } = useAdminOrder(workspaceId);
+  const { serveOrder, refundOrder } = useAdminOrder(workspaceId);
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [orderDelayTime, setOrderDelayTime] = useState<Number>();
@@ -117,11 +119,11 @@ function NotPaidOrderCard({ order }: OrderCardProps) {
   };
 
   const checkClickHandler = () => {
-    payOrder(order.id);
+    serveOrder(order.id);
   };
 
-  const closeClickHandler = () => {
-    cancelOrder(order.id);
+  const rollBackClickHandler = () => {
+    refundOrder(order.id);
   };
 
   return (
@@ -131,16 +133,16 @@ function NotPaidOrderCard({ order }: OrderCardProps) {
           <HeaderContainer>
             <TitleContainer>
               <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>
-                {order.customerName}
+                {`테이블 ${order.tableNumber}`}
               </AppLabel>
               <AppLabel color={Color.BLACK} size={13}>{`${orderDelayTime}분 전 주문`}</AppLabel>
             </TitleContainer>
             <RightIcon onClick={openModalHandler} />
           </HeaderContainer>
-          <OrderSummaryContents contents={order} />
+          <OrderItemList order={order} />
           <CheckButtonContainer>
             <CheckIcon onClick={checkClickHandler} />
-            <CloseIcon onClick={closeClickHandler} />
+            <RollBackIcon onClick={rollBackClickHandler} />
           </CheckButtonContainer>
         </CardContents>
       </CardContainer>
@@ -149,4 +151,4 @@ function NotPaidOrderCard({ order }: OrderCardProps) {
   );
 }
 
-export default memo(NotPaidOrderCard, arePropsEqual);
+export default memo(PaidOrderCard, arePropsEqual);

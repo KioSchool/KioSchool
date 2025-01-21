@@ -5,6 +5,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import AppLabel from '@components/common/label/AppLabel';
 import { Color } from '@resources/colors';
 import NotPaidOrderCard from './NotPaidOrderCard';
+import PaidOrderCard from './PaidOrderCard';
 
 const OrderCardListContainer = styled.div`
   ${colFlex({ align: 'start' })}
@@ -59,7 +60,7 @@ function TitledOrderStatusList({ orders, title }: OrderStatusListProps) {
             if (order.status === OrderStatus.NOT_PAID) {
               return <NotPaidOrderCard order={order} />;
             } else if (order.status === OrderStatus.PAID) {
-              return <NotPaidOrderCard order={order} />;
+              return <PaidOrderCard order={order} />;
             } else if (order.status === OrderStatus.SERVED) {
               return <NotPaidOrderCard order={order} />;
             }
