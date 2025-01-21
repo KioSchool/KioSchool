@@ -59,11 +59,11 @@ function TitledOrderStatusList({ orders, title }: OrderStatusListProps) {
         <CardListContainer>
           {orders.map((order) => {
             if (order.status === OrderStatus.NOT_PAID) {
-              return <NotPaidOrderCard order={order} />;
+              return <NotPaidOrderCard key={order.id} order={order} />;
             } else if (order.status === OrderStatus.PAID) {
-              return <PaidOrderCard order={order} />;
+              return <PaidOrderCard key={order.id} order={order} />;
             } else if (order.status === OrderStatus.SERVED) {
-              return <ServedOrderCard order={order} />;
+              return <ServedOrderCard key={order.id} order={order} />;
             }
           })}
         </CardListContainer>
