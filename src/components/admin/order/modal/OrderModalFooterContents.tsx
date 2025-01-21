@@ -16,21 +16,45 @@ interface ModalFooterContentsProps {
   id: number;
 }
 
+const getActions = (orderStatus: OrderStatus, actionHandlers: Record<string, () => void>) => {
+  switch (orderStatus) {
+    case OrderStatus.NOT_PAID:
+      return [
+        { label: '주문 취소', onClick: actionHandlers.cancelOrder },
+        { label: '결제 완료', onClick: actionHandlers.payOrder },
+      ];
+    case OrderStatus.PAID:
+      return [
+        { label: '되돌리기', onClick: actionHandlers.refundOrder },
+        { label: '서빙 완료', onClick: actionHandlers.serveOrder },
+      ];
+    case OrderStatus.SERVED:
+      return [{ label: '되돌리기', onClick: actionHandlers.payOrder }];
+    default:
+      return [];
+  }
+};
+
 function OrderModalFooterContents({ orderStatus, id }: ModalFooterContentsProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { payOrder, cancelOrder, serveOrder, refundOrder } = useAdminOrder(workspaceId);
 
+  const actionHandlers = {
+    payOrder: () => payOrder(id),
+    cancelOrder: () => cancelOrder(id),
+    serveOrder: () => serveOrder(id),
+    refundOrder: () => refundOrder(id),
+  };
+
+  const actions = getActions(orderStatus, actionHandlers);
+
   return (
     <ModalFooter>
-      {orderStatus === OrderStatus.NOT_PAID ? (
-        <RoundedAppButton onClick={() => cancelOrder(id)}>주문 취소</RoundedAppButton>
-      ) : (
-        <RoundedAppButton onClick={() => (orderStatus === OrderStatus.PAID ? refundOrder(id) : payOrder(id))}>되돌리기</RoundedAppButton>
-      )}
-
-      {orderStatus === OrderStatus.NOT_PAID && <RoundedAppButton onClick={() => payOrder(id)}>결제 완료</RoundedAppButton>}
-      {orderStatus === OrderStatus.PAID && <RoundedAppButton onClick={() => serveOrder(id)}>서빙 완료</RoundedAppButton>}
-      {orderStatus === OrderStatus.SERVED && null}
+      {actions.map((action, index) => (
+        <RoundedAppButton key={index} onClick={action.onClick}>
+          {action.label}
+        </RoundedAppButton>
+      ))}
     </ModalFooter>
   );
 }
