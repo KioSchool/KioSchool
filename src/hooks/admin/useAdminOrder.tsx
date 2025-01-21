@@ -77,6 +77,12 @@ function useAdminOrder(workspaceId: string | undefined) {
     return response;
   };
 
+  const updateOrderProductCount = (orderProductId: number, servedCount: number) => {
+    adminApi.put('/order/product', { workspaceId, orderProductId, servedCount }).catch((error) => {
+      console.log(error);
+    });
+  };
+
   return {
     fetchAllOrders,
     payOrder,
@@ -87,6 +93,7 @@ function useAdminOrder(workspaceId: string | undefined) {
     updateOrderProductServe,
     refundOrder,
     fetchWorkspaceTable,
+    updateOrderProductCount,
   };
 }
 
