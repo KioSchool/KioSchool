@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Order, OrderStatus } from '@@types/index';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
@@ -8,6 +7,8 @@ import PlusButtonSvg from '@resources/svg/PlusButtonSvg';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import CheckSvg from '@resources/svg/CheckSvg';
+import useAdminOrder from '@hooks/admin/useAdminOrder';
+import { useParams } from 'react-router-dom';
 
 const HorizontalLine = styled.hr`
   width: 100%;
@@ -79,46 +80,18 @@ interface ModalMainContentsProps {
 }
 
 function ModalMainContents({ orderInfo }: ModalMainContentsProps) {
+  const { workspaceId } = useParams<{ workspaceId: string }>();
+  const { updateOrderProductCount } = useAdminOrder(workspaceId);
+
   const isPaidStatus = orderInfo.status === OrderStatus.PAID;
+  const isAllServed = orderInfo.orderProducts.every((product) => product.isServed === true);
 
-  const [servedQuantities, setServedQuantities] = useState(orderInfo.orderProducts.map((product) => ({ id: product.id, served: 0 })));
-
-  const isAllServed = servedQuantities.every((servedProduct) => {
-    const matchingOrderProduct = orderInfo.orderProducts.find((product) => product.id === servedProduct.id);
-
-    return servedProduct.served === matchingOrderProduct?.quantity;
-  });
-
-  const handleIncrease = (id: number) => {
-    setServedQuantities((prev) =>
-      prev.map((item) => {
-        if (item.id !== id) {
-          return item;
-        }
-
-        const maxQuantity = orderInfo.orderProducts.find((product) => product.id === id)?.quantity || 0;
-
-        return {
-          ...item,
-          served: Math.min(item.served + 1, maxQuantity),
-        };
-      }),
-    );
+  const handleIncrease = (productId: number, prevServedCount: number) => {
+    updateOrderProductCount(productId, prevServedCount + 1);
   };
 
-  const handleDecrease = (id: number) => {
-    setServedQuantities((prev) =>
-      prev.map((item) => {
-        if (item.id !== id) {
-          return item;
-        }
-
-        return {
-          ...item,
-          served: Math.max(item.served - 1, 0),
-        };
-      }),
-    );
+  const handleDecrease = (productId: number, prevServedCount: number) => {
+    updateOrderProductCount(productId, prevServedCount - 1);
   };
 
   return (
@@ -135,34 +108,38 @@ function ModalMainContents({ orderInfo }: ModalMainContentsProps) {
       </TitleContainer>
       <HorizontalLine />
       <OrderProductContainer>
-        {orderInfo.orderProducts.map((product) => {
-          const servedQuantity = servedQuantities.find((item) => item.id === product.id)?.served || 0;
-          const isProductFullyServed = servedQuantity === product.quantity;
-          return (
-            <ProductContainer key={product.id}>
-              <ProductRightContainer>
-                <AppLabel color={Color.BLACK} size={20}>
-                  {`${product.productName}`}
-                </AppLabel>
-                {isProductFullyServed && <CheckSvg />}
-              </ProductRightContainer>
-              <ProductLeftContainer>
-                <AppLabel color={Color.BLACK} size={20}>
-                  {`${product.productPrice.toLocaleString()}원`}
-                </AppLabel>
-                {isPaidStatus && (
-                  <ButtonContainer>
-                    <MinusIcon onClick={() => handleDecrease(product.id)} />
-                    <AppLabel color={Color.BLACK} size={20}>
-                      {`${servedQuantity} / ${product.quantity}`}
-                    </AppLabel>
-                    <PlusIcon onClick={() => handleIncrease(product.id)} />
-                  </ButtonContainer>
-                )}
-              </ProductLeftContainer>
-            </ProductContainer>
-          );
-        })}
+        {orderInfo.orderProducts.map((product) => (
+          <ProductContainer key={product.id}>
+            <ProductRightContainer>
+              <AppLabel color={Color.BLACK} size={20}>
+                {`${product.productName}`}
+              </AppLabel>
+              {product.isServed && <CheckSvg />}
+            </ProductRightContainer>
+            <ProductLeftContainer>
+              <AppLabel color={Color.BLACK} size={20}>
+                {`${product.productPrice.toLocaleString()}원`}
+              </AppLabel>
+              {isPaidStatus && (
+                <ButtonContainer>
+                  <MinusIcon
+                    onClick={() => {
+                      if (product.servedCount > 0) handleDecrease(product.id, product.servedCount);
+                    }}
+                  />
+                  <AppLabel color={Color.BLACK} size={20}>
+                    {`${product.servedCount} / ${product.quantity}`}
+                  </AppLabel>
+                  <PlusIcon
+                    onClick={() => {
+                      if (!product.isServed) handleIncrease(product.id, product.servedCount);
+                    }}
+                  />
+                </ButtonContainer>
+              )}
+            </ProductLeftContainer>
+          </ProductContainer>
+        ))}
       </OrderProductContainer>
       <HorizontalLine />
       <TotalLabelContainer>
