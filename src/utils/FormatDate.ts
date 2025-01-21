@@ -11,3 +11,9 @@ export const formatDate = (date: string) => {
 
   return formattedDate.replace(/\./g, '.').replace(' ', ' ');
 };
+
+export const extractMinFromDate = (date: string) => {
+  const createdAtDate = new Date(date.replace(' ', 'T'));
+  const currentTime = new Date();
+  return Math.floor((currentTime.getTime() - createdAtDate.getTime()) / (1000 * 60));
+};
