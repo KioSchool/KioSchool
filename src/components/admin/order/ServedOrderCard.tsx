@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState } from 'react';
 import { Order } from '@@types/index';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
@@ -11,7 +11,6 @@ import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 import RollBackSvg from '@resources/svg/RollBackSvg';
 import OrderDetailModal from '@components/admin/order/modal/OrderDetailModal';
-import { extractMinFromDate } from '@utils/FormatDate';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -89,17 +88,6 @@ function ServedOrderCard({ order }: OrderCardProps) {
   const { payOrder } = useAdminOrder(workspaceId);
 
   const [isModalOpen, setModalOpen] = useState(false);
-  const [orderDelayTime, setOrderDelayTime] = useState<Number>(extractMinFromDate(order.createdAt));
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const updatedDelayTime = extractMinFromDate(order.createdAt);
-
-      setOrderDelayTime((prevDelayTime) => (prevDelayTime !== updatedDelayTime ? updatedDelayTime : prevDelayTime));
-    }, 10000);
-
-    return () => clearInterval(interval);
-  }, [order.createdAt]);
 
   const openModalHandler = () => {
     setModalOpen(true);
@@ -124,7 +112,9 @@ function ServedOrderCard({ order }: OrderCardProps) {
               <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>
                 {`테이블 ${order.tableNumber}`}
               </AppLabel>
-              <AppLabel color={Color.BLACK} size={13}>{`${orderDelayTime}분 전 주문`}</AppLabel>
+              <AppLabel color={Color.BLACK} size={13}>
+                {`주문 번호 ${order.id}`}
+              </AppLabel>
             </TitleContainer>
             <RightIcon onClick={openModalHandler} />
           </HeaderContainer>
