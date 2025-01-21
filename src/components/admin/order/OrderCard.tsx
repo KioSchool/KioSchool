@@ -1,3 +1,4 @@
+import React, { memo, useState } from 'react';
 import { Order, OrderStatus } from '@@types/index';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
@@ -11,7 +12,6 @@ import OrderSummaryContents from './OrderSummaryContents';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 import RollBackSvg from '@resources/svg/RollBackSvg';
-import { useState } from 'react';
 import OrderDetailModal from './OrderDetailModal';
 import OrderItemList from './OrderItemList';
 
@@ -80,6 +80,21 @@ interface OrderCardProps {
   orderInfo: Order;
 }
 
+function areOrderInfoEqual(prevOrder: Order, nextOrder: Order) {
+  if (prevOrder.id !== nextOrder.id || prevOrder.status !== nextOrder.status) {
+    return false;
+  }
+
+  return prevOrder.orderProducts.every((prevProduct, index) => {
+    const nextProduct = nextOrder.orderProducts[index];
+    return prevProduct.servedCount === nextProduct.servedCount;
+  });
+}
+
+const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => {
+  return areOrderInfoEqual(prevProps.orderInfo, nextProps.orderInfo);
+};
+
 function OrderCard({ orderInfo }: OrderCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { payOrder, cancelOrder, serveOrder, refundOrder } = useAdminOrder(workspaceId);
@@ -145,4 +160,4 @@ function OrderCard({ orderInfo }: OrderCardProps) {
   );
 }
 
-export default OrderCard;
+export default memo(OrderCard, arePropsEqual);
