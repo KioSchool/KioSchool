@@ -16,7 +16,7 @@ interface ModalFooterContentsProps {
   id: number;
 }
 
-function ModalFooterContents({ orderStatus, id }: ModalFooterContentsProps) {
+function OrderModalFooterContents({ orderStatus, id }: ModalFooterContentsProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { payOrder, cancelOrder, serveOrder, refundOrder } = useAdminOrder(workspaceId);
 
@@ -35,4 +35,4 @@ function ModalFooterContents({ orderStatus, id }: ModalFooterContentsProps) {
   );
 }
 
-export default ModalFooterContents;
+export default OrderModalFooterContents;

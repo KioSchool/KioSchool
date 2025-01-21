@@ -39,7 +39,7 @@ interface ModalHeaderContentsProps {
   onClose: () => void;
 }
 
-function ModalHeaderContents({ onClose, order }: ModalHeaderContentsProps) {
+function OrderModalHeaderContents({ onClose, order }: ModalHeaderContentsProps) {
   return (
     <ModalHeader>
       <ModalHeaderTitle>
@@ -59,4 +59,4 @@ function ModalHeaderContents({ onClose, order }: ModalHeaderContentsProps) {
   );
 }
 
-export default ModalHeaderContents;
+export default OrderModalHeaderContents;

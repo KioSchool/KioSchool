@@ -12,8 +12,8 @@ import OrderSummaryContents from './OrderSummaryContents';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 import RollBackSvg from '@resources/svg/RollBackSvg';
-import OrderDetailModal from './OrderDetailModal';
-import OrderItemList from './OrderItemList';
+import OrderDetailModal from '@components/admin/order/modal/OrderDetailModal';
+import OrderItemList from '@components/admin/order/OrderItemList';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}

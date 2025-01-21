@@ -79,7 +79,7 @@ interface ModalMainContentsProps {
   order: Order;
 }
 
-function ModalMainContents({ order }: ModalMainContentsProps) {
+function OrderModalMainContents({ order }: ModalMainContentsProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { updateOrderProductCount } = useAdminOrder(workspaceId);
 
@@ -154,4 +154,4 @@ function ModalMainContents({ order }: ModalMainContentsProps) {
   );
 }
 
-export default ModalMainContents;
+export default OrderModalMainContents;

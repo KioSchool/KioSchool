@@ -2,9 +2,9 @@ import { Order } from '@@types/index';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import ModalHeaderContents from './ModalHeaderContents';
-import ModalMainContents from './ModalMainContents';
-import ModalFooterContents from './ModalFooterContents';
+import OrderModalFooterContents from '@components/admin/order/modal/OrderModalFooterContents';
+import OrderModalMainContents from '@components/admin/order/modal/OrderModalMainContents';
+import OrderModalHeaderContents from '@components/admin/order/modal/OrderModalHeaderContents';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -45,9 +45,9 @@ function OrderDetailModal({ isOpen, onClose, order }: OrderDetailModalProps) {
     <>
       <ModalOverlay onClick={onClose} />
       <ModalContainer>
-        <ModalHeaderContents onClose={onClose} order={order} />
-        <ModalMainContents order={order} />
-        <ModalFooterContents orderStatus={order.status} id={order.id} />
+        <OrderModalHeaderContents onClose={onClose} order={order} />
+        <OrderModalMainContents order={order} />
+        <OrderModalFooterContents orderStatus={order.status} id={order.id} />
       </ModalContainer>
     </>
   );
