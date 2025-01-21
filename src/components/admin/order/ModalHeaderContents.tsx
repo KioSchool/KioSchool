@@ -26,7 +26,7 @@ const HeaderDetailContainer = styled.div`
 
 const HeaderDetail = styled.div`
   ${colFlex({ align: 'start' })}
-  gap: 10px;
+  gap: 5px;
 `;
 
 const CloseIcon = styled(CloseSvg)`
@@ -42,15 +42,15 @@ function ModalHeaderContents({ onClose, orderInfo }: ModalHeaderContentsProps) {
   return (
     <ModalHeader>
       <ModalHeaderTitle>
-        <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>{`테이블 ${orderInfo.tableNumber + 1}`}</AppLabel>
+        <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: 800 }}>{`테이블 ${orderInfo.tableNumber + 1}`}</AppLabel>
         <CloseIcon onClick={onClose} />
       </ModalHeaderTitle>
       <HeaderDetailContainer>
         <HeaderDetail>
-          <AppLabel color={Color.BLACK} size={13}>{`주문 번호  ${orderInfo.id + 1}`}</AppLabel>
-          <AppLabel color={Color.BLACK} size={13}>{`${orderInfo.customerName} | ${new Date(orderInfo.createdAt).toLocaleString()}`}</AppLabel>
+          <AppLabel color={Color.BLACK} size={17}>{`주문 번호  ${orderInfo.id + 1}`}</AppLabel>
+          <AppLabel color={Color.BLACK} size={17}>{`${orderInfo.customerName} | ${new Date(orderInfo.createdAt).toLocaleString()}`}</AppLabel>
         </HeaderDetail>
-        <AppLabel color={Color.KIO_ORANGE} size={17} style={{ fontWeight: 600 }}>
+        <AppLabel color={Color.KIO_ORANGE} size={20} style={{ fontWeight: 600 }}>
           {orderStatusConverter(orderInfo.status)}
         </AppLabel>
       </HeaderDetailContainer>
