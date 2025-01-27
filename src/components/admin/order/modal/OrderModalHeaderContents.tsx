@@ -12,7 +12,7 @@ const ModalHeader = styled.div`
   ${colFlex({ justify: 'space-between', align: 'start' })}
   gap: 10px;
   padding: 40px 40px 20px 40px;
-  border-bottom: 20px solid ${Color.LIGHT_GREY};
+  border-bottom: 12px solid ${Color.LIGHT_GREY};
 `;
 
 const ModalHeaderTitle = styled.div`

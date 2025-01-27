@@ -12,7 +12,7 @@ import { useParams } from 'react-router-dom';
 
 const HorizontalLine = styled.hr`
   width: 100%;
-  border: 0.3px solid #eeecec;
+  border: 1px solid #eeecec;
 `;
 
 const ModalContent = styled.div`
@@ -119,7 +119,7 @@ function OrderModalMainContents({ order }: OrderModalMainContentsProps) {
             </ProductRightContainer>
             <ProductLeftContainer>
               <AppLabel color={Color.BLACK} size={20}>
-                {`${orderProduct.productPrice.toLocaleString()}원`}
+                {`${(orderProduct.productPrice * orderProduct.servedCount).toLocaleString()}원`}
               </AppLabel>
               {isPaidStatus && (
                 <ButtonContainer>
