@@ -14,7 +14,7 @@ import { useParams } from 'react-router-dom';
 import OrderDetailModal from '@components/admin/order/modal/OrderDetailModal';
 import { extractMinFromDate } from '@utils/FormatDate';
 import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
-import useModal from '@hooks/useModal'; // 새로 만든 커스텀 훅 import
+import useModal from '@hooks/useModal';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
