@@ -15,7 +15,7 @@ const Container = styled.div`
 `;
 
 function AdminOrder() {
-  const { replaceLastPath } = useCustomNavigate();
+  const { replaceLastPath, navigateWithPage } = useCustomNavigate();
 
   return (
     <AppContainer
@@ -26,7 +26,7 @@ function AdminOrder() {
         <ButtonContainer className={'button-container'}>
           <ImageRouteButton src={orderImage} onClick={() => replaceLastPath('/order/realtime')} buttonText={'실시간 주문 조회'} />
           <ImageRouteButton src={orderHistoryImage} onClick={() => replaceLastPath('/order/history')} buttonText={'전체 주문 조회'} />
-          <ImageRouteButton src={orderManageImage} onClick={() => replaceLastPath('/order/table')} buttonText={'테이블별 주문 조회'} />
+          <ImageRouteButton src={orderManageImage} onClick={() => navigateWithPage('/order/table')} buttonText={'테이블별 주문 조회'} />
         </ButtonContainer>
         <AppFooter />
       </Container>
