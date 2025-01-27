@@ -119,7 +119,7 @@ function OrderModalMainContents({ order }: OrderModalMainContentsProps) {
             </ProductRightContainer>
             <ProductLeftContainer>
               <AppLabel color={Color.BLACK} size={20}>
-                {`${orderProduct.productPrice * orderProduct.servedCount}원`}
+                {`${(orderProduct.productPrice * orderProduct.servedCount).toLocaleString()}원`}
               </AppLabel>
               {isPaidStatus && (
                 <ButtonContainer>
@@ -148,7 +148,7 @@ function OrderModalMainContents({ order }: OrderModalMainContentsProps) {
           {'상품 합계'}
         </AppLabel>
         <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: 700 }}>
-          {`${order.totalPrice}원`}
+          {`${order.totalPrice.toLocaleString()}원`}
         </AppLabel>
       </TotalLabelContainer>
     </ModalContent>
