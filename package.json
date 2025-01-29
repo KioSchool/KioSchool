@@ -19,6 +19,7 @@
     "@types/react-datepicker": "^6.0.1",
     "@types/react-dom": "^18.0.6",
     "axios": "1.6.0",
+    "html-to-image": "^1.11.11",
     "jsqr": "^1.4.0",
     "lodash": "^4.17.21",
     "qrcode.react": "^4.1.0",

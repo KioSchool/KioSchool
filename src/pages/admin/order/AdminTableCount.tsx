@@ -12,6 +12,7 @@ import { Color } from '@resources/colors';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { adminWorkspaceAtom } from '@recoils/atoms';
+import { toPng } from 'html-to-image';
 
 const Container = styled.div`
   width: 100vw;
@@ -40,13 +41,22 @@ const QRCodeContainer = styled.div`
   padding: 10px;
 `;
 
-const QRCodeCard = styled.div`
+const QRCodeCardContainer = styled.div`
   gap: 10px;
   width: 200px;
   height: 230px;
   border-radius: 20px;
   padding: 10px;
   box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.1);
+  ${colFlex({ align: 'center' })}
+`;
+
+const QRCodeCard = styled.div`
+  background: ${Color.WHITE};
+  gap: 10px;
+  width: 200px;
+  height: 230px;
+  border-radius: 20px;
   ${colFlex({ align: 'center' })}
 `;
 
@@ -73,7 +83,7 @@ function AdminTableCount() {
   const { fetchWorkspace, updateWorkspaceTableCount } = useAdminWorkspace();
   const setAdminWorkspace = useSetRecoilState(adminWorkspaceAtom);
   const workspace = useRecoilValue(adminWorkspaceAtom);
-  const QRCodeCanvasRefs = useRef<{ [key: number]: HTMLCanvasElement | null }>([]);
+  const QRCodeRefs = useRef<{ [key: number]: HTMLDivElement | null }>([]);
 
   const [debouncedId, setDebouncedId] = useState<NodeJS.Timeout>();
   const baseUrl = `${location.protocol}//${location.host}`;
@@ -93,16 +103,18 @@ function AdminTableCount() {
   };
 
   const downloadQrCode = (tableNo: number) => {
-    const canvas = QRCodeCanvasRefs.current[tableNo];
-    if (!canvas) {
+    const qrCode = QRCodeRefs.current[tableNo];
+    if (!qrCode) {
       alert('다운로드 오류가 발생했습니다!');
       return;
     }
 
-    const link = document.createElement('a');
-    link.download = `${tableNo}번 테이블 QR코드.png`;
-    link.href = canvas.toDataURL('image/png');
-    link.click();
+    toPng(qrCode).then((dataUrl) => {
+      const link = document.createElement('a');
+      link.download = `${tableNo}번 테이블 QR코드.png`;
+      link.href = dataUrl;
+      link.click();
+    });
   };
 
   useEffect(() => {
@@ -129,17 +141,15 @@ function AdminTableCount() {
           </DeviceFrameset>
           <QRCodeContainer className={'qrcode-container'}>
             {Array.from({ length: workspace.tableCount }, (_, index) => (
-              <QRCodeCard key={index} className={'qrcode-card'}>
-                <TableLink href={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${index + 1}`} target={'_blank'}>
-                  {index + 1}번 테이블
-                </TableLink>
-                <QRCodeCanvas
-                  value={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${index + 1}`}
-                  size={150}
-                  ref={(el) => (QRCodeCanvasRefs.current[index + 1] = el)}
-                />
+              <QRCodeCardContainer key={index}>
+                <QRCodeCard className={'qrcode-card'} ref={(el) => (QRCodeRefs.current[index + 1] = el)}>
+                  <TableLink href={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${index + 1}`} target={'_blank'}>
+                    {index + 1}번 테이블
+                  </TableLink>
+                  <QRCodeCanvas value={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${index + 1}`} size={150} />
+                </QRCodeCard>
                 <QRCodeDownloadButton onClick={() => downloadQrCode(index + 1)}>다운로드</QRCodeDownloadButton>
-              </QRCodeCard>
+              </QRCodeCardContainer>
             ))}
           </QRCodeContainer>
         </ContentContainer>
