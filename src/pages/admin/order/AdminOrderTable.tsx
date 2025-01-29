@@ -52,7 +52,7 @@ function AdminOrderTable() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchWorkspace } = useAdminWorkspace();
   const workspace = useRecoilValue(adminWorkspaceAtom);
-  const { appendPath, replaceLastPath } = useCustomNavigate();
+  const { appendPathWithPage, replaceLastPath } = useCustomNavigate();
 
   useEffect(() => {
     fetchWorkspace(workspaceId);
@@ -66,7 +66,7 @@ function AdminOrderTable() {
       <Container className={'admin-order-table-container'}>
         <TableListContainer tableCount={workspace.tableCount} className={'table-list-container'}>
           {Array.from({ length: workspace.tableCount }, (_, index) => (
-            <TableCell key={index} onClick={() => appendPath(`/${index + 1}`)}>
+            <TableCell key={index} onClick={() => appendPathWithPage(`/${index + 1}`)}>
               {index + 1}번
             </TableCell>
           ))}
