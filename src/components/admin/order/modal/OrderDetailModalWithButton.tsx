@@ -5,6 +5,10 @@ import { colFlex } from '@styles/flexStyles';
 import OrderModalFooterContents from '@components/admin/order/modal/OrderModalFooterContents';
 import OrderModalMainContents from '@components/admin/order/modal/OrderModalMainContents';
 import OrderModalHeaderContents from '@components/admin/order/modal/OrderModalHeaderContents';
+import useModal from '@hooks/useModal';
+import ChevronRightSvg from '@resources/svg/ChevronRightSvg';
+import { expandButtonStyle } from '@styles/buttonStyles';
+import { createPortal } from 'react-dom';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -30,25 +34,35 @@ const ModalContainer = styled.div`
   gap: 15px;
 `;
 
-interface OrderDetailModalProps {
-  isOpen: boolean;
+const RightIcon = styled(ChevronRightSvg)`
+  margin-top: 6px;
+  width: 20px;
+  height: 15px;
+  ${expandButtonStyle}
+`;
+
+interface Props {
   order: Order;
-  onClose: () => void;
 }
 
-function OrderDetailModal({ isOpen, onClose, order }: OrderDetailModalProps) {
-  if (!isOpen) return null;
+function OrderDetailModalWithButton({ order }: Props) {
+  const { isModalOpen, openModal, closeModal } = useModal();
 
-  return (
+  if (!isModalOpen) {
+    return <RightIcon onClick={openModal} />;
+  }
+
+  return createPortal(
     <>
-      <ModalOverlay onClick={onClose} />
+      <ModalOverlay onClick={closeModal} />
       <ModalContainer>
-        <OrderModalHeaderContents onClose={onClose} order={order} />
+        <OrderModalHeaderContents onClose={closeModal} order={order} />
         <OrderModalMainContents order={order} />
         <OrderModalFooterContents orderStatus={order.status} id={order.id} />
       </ModalContainer>
-    </>
+    </>,
+    document.getElementById('modal-root') as HTMLElement,
   );
 }
 
-export default OrderDetailModal;
+export default OrderDetailModalWithButton;
