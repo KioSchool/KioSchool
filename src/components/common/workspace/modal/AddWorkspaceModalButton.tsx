@@ -23,7 +23,7 @@ const ModalOverlay = styled.div`
 `;
 
 function AddWorkspaceModalButton() {
-  const { isModalOpen, openModal, closeModal } = useModal();
+  const { isModalOpen, openModal, closeModal, modalKey } = useModal();
 
   if (!isModalOpen) {
     return <PlusIcon onClick={() => openModal()} width={50} height={50} />;
@@ -34,7 +34,7 @@ function AddWorkspaceModalButton() {
       <ModalOverlay onClick={() => closeModal()} className={'modal-overlay'} />
       <AddWorkspaceModalContent closeModal={closeModal} />
     </>,
-    document.getElementById('modal-root') as HTMLElement,
+    document.getElementById(modalKey) as HTMLElement,
   );
 }
 

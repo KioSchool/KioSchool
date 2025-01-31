@@ -46,7 +46,7 @@ interface Props {
 }
 
 function OrderDetailModalButton({ order }: Props) {
-  const { isModalOpen, openModal, closeModal } = useModal();
+  const { isModalOpen, openModal, closeModal, modalKey } = useModal();
 
   if (!isModalOpen) {
     return <RightIcon onClick={openModal} />;
@@ -61,7 +61,7 @@ function OrderDetailModalButton({ order }: Props) {
         <OrderModalFooterContents orderStatus={order.status} id={order.id} />
       </ModalContainer>
     </>,
-    document.getElementById('modal-root') as HTMLElement,
+    document.getElementById(modalKey) as HTMLElement,
   );
 }
 
