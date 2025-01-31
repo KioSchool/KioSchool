@@ -22,7 +22,7 @@ const ModalOverlay = styled.div`
   z-index: 1002;
 `;
 
-function AddWorkspaceModalWithButton() {
+function AddWorkspaceModalButton() {
   const { isModalOpen, openModal, closeModal } = useModal();
 
   if (!isModalOpen) {
@@ -38,4 +38,4 @@ function AddWorkspaceModalWithButton() {
   );
 }
 
-export default AddWorkspaceModalWithButton;
+export default AddWorkspaceModalButton;

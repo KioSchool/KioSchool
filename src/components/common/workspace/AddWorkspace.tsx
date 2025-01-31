@@ -3,7 +3,7 @@ import { Workspace } from '@@types/index';
 import React from 'react';
 import { rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import AddWorkspaceModalWithButton from './modal/AddWorkspaceModalWithButton';
+import AddWorkspaceModalButton from './modal/AddWorkspaceModalButton';
 
 const AddWorkspaceContainer = styled.form`
   cursor: pointer;
@@ -25,7 +25,7 @@ function AddWorkspace({ workspaces }: Props) {
 
   return (
     <AddWorkspaceContainer className={'add-workspace-container'}>
-      <AddWorkspaceModalWithButton />
+      <AddWorkspaceModalButton />
     </AddWorkspaceContainer>
   );
 }

@@ -10,7 +10,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import OrderSummaryContents from './OrderSummaryContents';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
-import OrderDetailModalWithButton from '@components/admin/order/modal/OrderDetailModalWithButton';
+import OrderDetailModalButton from '@components/admin/order/modal/OrderDetailModalButton';
 import { extractMinFromDate } from '@utils/FormatDate';
 import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
 
@@ -105,7 +105,7 @@ function NotPaidOrderCard({ order }: OrderCardProps) {
               </AppLabel>
               <AppLabel color={Color.BLACK} size={13}>{`${orderDelayTime}분 전 주문`}</AppLabel>
             </TitleContainer>
-            <OrderDetailModalWithButton order={order} />
+            <OrderDetailModalButton order={order} />
           </HeaderContainer>
           <OrderSummaryContents contents={order} />
           <CheckButtonContainer>

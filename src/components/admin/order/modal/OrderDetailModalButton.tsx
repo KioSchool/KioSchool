@@ -45,7 +45,7 @@ interface Props {
   order: Order;
 }
 
-function OrderDetailModalWithButton({ order }: Props) {
+function OrderDetailModalButton({ order }: Props) {
   const { isModalOpen, openModal, closeModal } = useModal();
 
   if (!isModalOpen) {
@@ -65,4 +65,4 @@ function OrderDetailModalWithButton({ order }: Props) {
   );
 }
 
-export default OrderDetailModalWithButton;
+export default OrderDetailModalButton;
