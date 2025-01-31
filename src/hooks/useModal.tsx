@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 function useModal() {
+  const modalKey = 'modal-root';
   const [isModalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {
@@ -15,7 +16,7 @@ function useModal() {
     document.body.style.overflow = 'auto';
   };
 
-  return { isModalOpen, openModal, closeModal };
+  return { isModalOpen, openModal, closeModal, modalKey };
 }
 
 export default useModal;

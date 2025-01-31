@@ -3,16 +3,14 @@ import { Order } from '@@types/index';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import ChevronRightSvg from '@resources/svg/ChevronRightSvg';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import OrderSummaryContents from './OrderSummaryContents';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 import RollBackSvg from '@resources/svg/RollBackSvg';
-import OrderDetailModal from '@components/admin/order/modal/OrderDetailModal';
+import OrderDetailModalButton from '@components/admin/order/modal/OrderDetailModalButton';
 import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
-import useModal from '@hooks/useModal';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -47,13 +45,6 @@ const TitleContainer = styled.div`
   padding-top: 3px;
 `;
 
-const RightIcon = styled(ChevronRightSvg)`
-  margin-top: 6px;
-  width: 20px;
-  height: 15px;
-  ${expandButtonStyle}
-`;
-
 const CheckButtonContainer = styled.div`
   ${rowFlex({ justify: 'center', align: 'center' })}
   gap: 35px;
@@ -78,8 +69,6 @@ function ServedOrderCard({ order }: OrderCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { payOrder } = useAdminOrder(workspaceId);
 
-  const { isModalOpen, openModal, closeModal } = useModal();
-
   const rollBackClickHandler = () => {
     payOrder(order.id);
   };
@@ -97,7 +86,7 @@ function ServedOrderCard({ order }: OrderCardProps) {
                 {`주문 번호 ${order.id}`}
               </AppLabel>
             </TitleContainer>
-            <RightIcon onClick={openModal} />
+            <OrderDetailModalButton order={order} />
           </HeaderContainer>
           <OrderSummaryContents contents={order} />
           <CheckButtonContainer>
@@ -105,7 +94,6 @@ function ServedOrderCard({ order }: OrderCardProps) {
           </CheckButtonContainer>
         </CardContents>
       </CardContainer>
-      <OrderDetailModal isOpen={isModalOpen} order={order} onClose={closeModal} />
     </>
   );
 }
