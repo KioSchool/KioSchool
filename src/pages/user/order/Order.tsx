@@ -48,9 +48,7 @@ function Order() {
     (product) => product.productCategory?.id,
   );
   const rawProductCategories = useRecoilValue(categoriesAtom);
-  const productCategories = rawProductCategories.filter((it) => productsByCategory[it.id]);
   const productsMap = _.keyBy(workspace.products, 'id');
-  const categoryMap = _.keyBy(rawProductCategories, 'id');
 
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
@@ -80,19 +78,25 @@ function Order() {
         <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategory} />
       </Header>
       <ContentContainer className={'order-content'}>
-        {productCategories
-          .map((it) => it.id)
-          .map((categoryId) => (
-            <div id={`product_category_${categoryId}`} key={`product_category_${categoryId}`}>
-              <AppLabel size={22}>{categoryMap[categoryId].name}</AppLabel>
-              {productsByCategory[categoryId].map((product) => (
-                <ProductContainer key={`product${product.id}`} className={'product-container'}>
+        {Object.values(productsByCategory).map((categoryItems) => {
+          if (!categoryItems.length) return null;
+
+          const category = categoryItems[0]?.productCategory;
+          if (!category) return null;
+
+          return (
+            <div id={`product_category_${category.id}`} key={`product_category_${category.id}`}>
+              <AppLabel size={22}>{category.name}</AppLabel>
+              {categoryItems.map((product) => (
+                <ProductContainer key={`product${product.id}`} className="product-container">
                   <ProductCard product={product} />
                   <HorizontalDivider />
                 </ProductContainer>
               ))}
             </div>
-          ))}
+          );
+        })}
+
         {productsByCategory.undefined && (
           <div id={`product_category_undefined`} key={`product_category_undefined`}>
             <AppLabel size={22}>기본메뉴</AppLabel>
