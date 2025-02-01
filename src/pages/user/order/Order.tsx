@@ -87,12 +87,17 @@ function Order() {
           return (
             <div id={`product_category_${category.id}`} key={`product_category_${category.id}`}>
               <AppLabel size={22}>{category.name}</AppLabel>
-              {categoryItems.map((product) => (
-                <ProductContainer key={`product${product.id}`} className="product-container">
-                  <ProductCard product={product} />
-                  <HorizontalDivider />
-                </ProductContainer>
-              ))}
+              {categoryItems.map((product) => {
+                const productInBasket = orderBasket.find((item) => item.productId === product.id);
+                const quantity = productInBasket ? productInBasket.quantity : 0;
+
+                return (
+                  <ProductContainer key={`product${product.id}`} className="product-container">
+                    <ProductCard product={product} quantity={quantity} />
+                    <HorizontalDivider />
+                  </ProductContainer>
+                );
+              })}
             </div>
           );
         })}
@@ -100,14 +105,20 @@ function Order() {
         {productsByCategory.undefined && (
           <div id={`product_category_undefined`} key={`product_category_undefined`}>
             <AppLabel size={22}>기본메뉴</AppLabel>
-            {productsByCategory.undefined?.map((product) => (
-              <ProductContainer key={`product${product.id}`} className={'product-container'}>
-                <ProductCard product={product} />
-                <HorizontalDivider />
-              </ProductContainer>
-            ))}
+            {productsByCategory.undefined?.map((product) => {
+              const productInBasket = orderBasket.find((item) => item.productId === product.id);
+              const quantity = productInBasket ? productInBasket.quantity : 0;
+
+              return (
+                <ProductContainer key={`product${product.id}`} className={'product-container'}>
+                  <ProductCard product={product} quantity={quantity} />
+                  <HorizontalDivider />
+                </ProductContainer>
+              );
+            })}
           </div>
         )}
+
         <AppFooter fixed={false} />
       </ContentContainer>
       <OrderButton
