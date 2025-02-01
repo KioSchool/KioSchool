@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { useLocation } from 'react-router-dom';
+import { ReactNode } from 'react';
+import { useLocation, useNavigationType } from 'react-router-dom';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import './pageTransition.css';
 
 interface AnimatedRouteProps {
@@ -9,11 +9,14 @@ interface AnimatedRouteProps {
 
 function AnimatedRoute({ children }: AnimatedRouteProps) {
   const location = useLocation();
+  const navigationType = useNavigationType();
+
+  const direction = navigationType === 'POP' ? 'backward' : 'forward';
 
   return (
     <TransitionGroup component={null}>
-      <CSSTransition key={location.pathname} timeout={300} classNames="page" unmountOnExit>
-        <div className="page">{children}</div>
+      <CSSTransition key={location.pathname} timeout={300} classNames={`page-${direction}`} unmountOnExit>
+        <div>{children}</div>
       </CSSTransition>
     </TransitionGroup>
   );
