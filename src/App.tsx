@@ -1,3 +1,4 @@
+// App.tsx
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Home from '@pages/user/Home';
@@ -35,8 +36,10 @@ import AdminOrderTableHistory from '@pages/admin/order/AdminOrderTableHistory';
 import AdminOrderRealtime from '@pages/admin/order/AdminOrderRealtime';
 import SuperAdminEmailDomainList from '@pages/super-admin/SuperAdminEmailDomainList';
 import UserEmailDomain from '@pages/user/UserEmailDomain';
+import AnimatedRoute from './AnimatedRoute';
 
 ReactGA.initialize('G-XGYLSPGK2G');
+
 function App() {
   RouterChangeTracker();
 
@@ -46,10 +49,6 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/order" element={<Order />} />
-        <Route path="/order-basket" element={<OrderBasket />} />
-        <Route path="/order-pay" element={<OrderPay />} />
-        <Route path="/order-complete" element={<OrderComplete />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/info" element={<Info />} />
         <Route path="/email-domains" element={<UserEmailDomain />} />
@@ -74,6 +73,39 @@ function App() {
         <Route path="/super-admin/manage" element={<SuperAdminManage />} />
         <Route path="/super-admin/user" element={<SuperAdminUser />} />
         <Route path="/super-admin/email" element={<SuperAdminEmailDomainList />} />
+
+        <Route
+          path="/order"
+          element={
+            <AnimatedRoute>
+              <Order />
+            </AnimatedRoute>
+          }
+        />
+        <Route
+          path="/order-basket"
+          element={
+            <AnimatedRoute>
+              <OrderBasket />
+            </AnimatedRoute>
+          }
+        />
+        <Route
+          path="/order-pay"
+          element={
+            <AnimatedRoute>
+              <OrderPay />
+            </AnimatedRoute>
+          }
+        />
+        <Route
+          path="/order-complete"
+          element={
+            <AnimatedRoute>
+              <OrderComplete />
+            </AnimatedRoute>
+          }
+        />
       </Routes>
       <Global styles={globalStyles} />
       <LoadingModal />
