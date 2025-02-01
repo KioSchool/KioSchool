@@ -1,10 +1,15 @@
+import { useSetRecoilState } from 'recoil';
+import { orderBasketAtom } from '@recoils/atoms';
 import { Product } from '@@types/index';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import PlusButtonSvg from '@resources/svg/PlusButtonSvg';
+import MinusButtonSvg from '@resources/svg/MinusButtonSvg';
 
 interface ProductCardProps {
   product: Product;
+  quantity: number;
 }
 
 const Container = styled.div`
@@ -21,7 +26,6 @@ const LabelContainer = styled.div`
 `;
 
 const ImageContainer = styled.div`
-  display: flex;
   ${rowFlex({ justify: 'flex-end' })}
 `;
 
@@ -33,7 +37,42 @@ const StyledImage = styled.img`
   border-radius: 10px;
 `;
 
-function ProductCard({ product }: ProductCardProps) {
+const AddButton = styled(PlusButtonSvg)`
+  cursor: pointer;
+`;
+
+const RemoveButton = styled(MinusButtonSvg)`
+  cursor: pointer;
+`;
+
+const QuantityLabel = styled.span`
+  margin: 0 10px;
+  font-size: 18px;
+`;
+
+function ProductCard({ product, quantity }: ProductCardProps) {
+  const setOrderBasket = useSetRecoilState(orderBasketAtom);
+
+  const handleAddProduct = () => {
+    setOrderBasket((prev) => {
+      const existingItem = prev.find((prevProduct) => prevProduct.productId === product.id);
+      if (existingItem) {
+        return prev.map((prevProduct) => (prevProduct.productId === product.id ? { ...prevProduct, quantity: prevProduct.quantity + 1 } : prevProduct));
+      }
+      return [...prev, { productId: product.id, quantity: 1 }];
+    });
+  };
+
+  const handleRemoveProduct = () => {
+    setOrderBasket((prev) => {
+      const existingItem = prev.find((prevProduct) => prevProduct.productId === product.id);
+      if (existingItem && existingItem.quantity > 1) {
+        return prev.map((prevProduct) => (prevProduct.productId === product.id ? { ...prevProduct, quantity: prevProduct.quantity - 1 } : prevProduct));
+      }
+      return prev.filter((prevProduct) => prevProduct.productId !== product.id);
+    });
+  };
+
   if (!product) return null;
 
   return (
@@ -46,6 +85,9 @@ function ProductCard({ product }: ProductCardProps) {
         </AppLabel>
       </LabelContainer>
       <ImageContainer className="image-container">
+        <RemoveButton onClick={handleRemoveProduct} />
+        <QuantityLabel>{quantity}</QuantityLabel>
+        <AddButton onClick={handleAddProduct} />
         <StyledImage src={product.imageUrl} alt={product.name} />
       </ImageContainer>
     </Container>
