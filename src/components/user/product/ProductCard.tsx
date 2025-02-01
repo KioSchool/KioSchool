@@ -1,9 +1,7 @@
 import { Product } from '@@types/index';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
-import React, { useState } from 'react';
-import ProductDialog from '@components/user/product/ProductDialog';
-import { colFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 interface ProductCardProps {
   product: Product;
@@ -22,34 +20,35 @@ const LabelContainer = styled.div`
   ${colFlex()}
 `;
 
-const ImageContainer = styled.div``;
+const ImageContainer = styled.div`
+  display: flex;
+  ${rowFlex({ justify: 'flex-end' })}
+`;
+
+const StyledImage = styled.img`
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border: none;
+  border-radius: 10px;
+`;
 
 function ProductCard({ product }: ProductCardProps) {
-  const [openDialog, setOpenDialog] = useState<boolean>(false);
-
-  if (!product) return <div></div>;
+  if (!product) return null;
 
   return (
-    <>
-      {openDialog && <ProductDialog product={product} closeDialog={() => setOpenDialog(false)} />}
-      <Container onClick={() => setOpenDialog(true)} className={'product-card-container'}>
-        <LabelContainer className={'label-container'}>
-          <AppLabel size={20}>{product.name}</AppLabel>
-          <AppLabel size={13}>{product.description}</AppLabel>
-          <AppLabel size={22} style={{ marginTop: 'auto' }}>
-            {product.price.toLocaleString()}원
-          </AppLabel>
-        </LabelContainer>
-        <ImageContainer className={'image-container'}>
-          <img
-            src={product.imageUrl}
-            alt={product.name}
-            style={{ float: 'right', width: '90px', height: '90px', objectFit: 'cover', border: 'none', borderRadius: '10px' }}
-            className={'product-image'}
-          />
-        </ImageContainer>
-      </Container>
-    </>
+    <Container className="product-card-container">
+      <LabelContainer className="label-container">
+        <AppLabel size={20}>{product.name}</AppLabel>
+        <AppLabel size={13}>{product.description}</AppLabel>
+        <AppLabel size={22} style={{ marginTop: 'auto' }}>
+          {product.price.toLocaleString()}원
+        </AppLabel>
+      </LabelContainer>
+      <ImageContainer className="image-container">
+        <StyledImage src={product.imageUrl} alt={product.name} />
+      </ImageContainer>
+    </Container>
   );
 }
 
