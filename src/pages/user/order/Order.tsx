@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
@@ -63,6 +63,8 @@ function Order() {
     return acc + productsMap[cur.productId].price * cur.quantity;
   }, 0);
 
+  const categoryRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
   useEffect(() => {
     fetchWorkspace(workspaceId);
     fetchCategories();
@@ -75,7 +77,7 @@ function Order() {
         <AppLabel size={'small'} style={{ color: 'gray' }}>
           {tableNo}번 테이블
         </AppLabel>
-        <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategory} />
+        <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategory} categoryRefs={categoryRefs} />
       </Header>
       <ContentContainer className={'order-content'}>
         {Object.values(productsByCategory).map((categoryItems) => {
@@ -85,7 +87,7 @@ function Order() {
           if (!category) return null;
 
           return (
-            <div id={`product_category_${category.id}`} key={`product_category_${category.id}`}>
+            <div ref={(el) => (categoryRefs.current[category.id] = el)} key={`product_category_${category.id}`}>
               <AppLabel size={22}>{category.name}</AppLabel>
               {categoryItems.map((product) => {
                 const productInBasket = orderBasket.find((item) => item.productId === product.id);
@@ -103,7 +105,7 @@ function Order() {
         })}
 
         {productsByCategory.undefined && (
-          <div id={`product_category_undefined`} key={`product_category_undefined`}>
+          <div ref={(el) => (categoryRefs.current['.'] = el)} key={`product_category_undefined`}>
             <AppLabel size={22}>기본메뉴</AppLabel>
             {productsByCategory.undefined?.map((product) => {
               const productInBasket = orderBasket.find((item) => item.productId === product.id);

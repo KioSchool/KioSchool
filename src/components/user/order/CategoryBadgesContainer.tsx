@@ -8,6 +8,7 @@ import { rowFlex } from '@styles/flexStyles';
 interface CategoryBadgesContainerProps {
   productCategories: ProductCategory[];
   productsByCategory: _.Dictionary<Product[]>;
+  categoryRefs: React.MutableRefObject<Record<string, HTMLDivElement | null>>;
 }
 
 const Container = styled.div`
@@ -24,16 +25,20 @@ const Container = styled.div`
   }
 `;
 
-function CategoryBadgesContainer({ productCategories, productsByCategory }: CategoryBadgesContainerProps) {
+function CategoryBadgesContainer({ productCategories, productsByCategory, categoryRefs }: CategoryBadgesContainerProps) {
   const scrollToCategory = (categoryId: string) => {
-    const categoryElement = document.getElementById(categoryId);
-    const elementPosition = categoryElement?.getBoundingClientRect().top;
-    const headerHeight = 110;
-    const offsetPosition = elementPosition ? elementPosition + window.scrollY - headerHeight : 0;
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: 'smooth',
-    });
+    const categoryElement = categoryRefs.current[categoryId];
+
+    if (categoryElement) {
+      const elementPosition = categoryElement.getBoundingClientRect().top;
+      const headerHeight = 110;
+      const offsetPosition = elementPosition + window.scrollY - headerHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      });
+    }
   };
 
   return (
@@ -41,13 +46,13 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
       {productCategories.map(
         (category) =>
           productsByCategory[category.id] && (
-            <AppBadge onClick={() => scrollToCategory(`product_category_${category.id}`)} key={`category_${category.id}`}>
+            <AppBadge onClick={() => scrollToCategory(String(category.id))} key={`category_${category.id}`}>
               {category.name}
             </AppBadge>
           ),
       )}
       {productsByCategory.undefined && (
-        <AppBadge onClick={() => scrollToCategory(`product_category_undefined`)} key={`category_null`}>
+        <AppBadge onClick={() => scrollToCategory('.')} key={`category_null`}>
           기본 메뉴
         </AppBadge>
       )}
