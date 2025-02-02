@@ -4,8 +4,6 @@ import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
 import AppLabel from '@components/common/label/AppLabel';
 import { QRCodeCanvas } from 'qrcode.react';
-import { DeviceFrameset } from 'react-device-frameset';
-import 'react-device-frameset/styles/marvel-devices.min.css';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import AdminTableCountTitleNavBarChildren from '@components/admin/order/AdminOrderManageTitleNavBarChildren';
 import { Color } from '@resources/colors';
@@ -13,6 +11,7 @@ import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { adminWorkspaceAtom } from '@recoils/atoms';
 import { toPng } from 'html-to-image';
+import PreviewContainer from '@components/common/container/PreviewContainer';
 
 const Container = styled.div`
   width: 100vw;
@@ -26,9 +25,10 @@ const ContentContainer = styled.div`
   ${rowFlex({ justify: 'space-around' })}
 `;
 
-const PreviewContainer = styled.iframe`
+const PreviewContent = styled.iframe`
   width: 100%;
   height: 100%;
+  border: none;
 `;
 
 const QRCodeContainer = styled.div`
@@ -136,9 +136,9 @@ function AdminTableCount() {
       <Container className={'admin-order-manage-container'}>
         <AppLabel>테이블 개수는 {workspace.tableCount}개 입니다.</AppLabel>
         <ContentContainer className={'content-container'}>
-          <DeviceFrameset device="iPhone X" width={360} height={700}>
-            <PreviewContainer src={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=1&preview=true`} />
-          </DeviceFrameset>
+          <PreviewContainer>
+            <PreviewContent src={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=1&preview=true`} />
+          </PreviewContainer>
           <QRCodeContainer className={'qrcode-container'}>
             {Array.from({ length: workspace.tableCount }, (_, index) => (
               <QRCodeCardContainer key={index}>
