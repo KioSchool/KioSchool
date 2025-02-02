@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 interface PreviewContainerProps {
   children: JSX.Element;
@@ -8,6 +10,13 @@ interface PreviewContainerProps {
 }
 
 const Container = styled.div<{ width: number; height: number }>`
+  ${colFlex({ justify: 'center', align: 'center' })}
+  width: ${(props) => props.width}px;
+  height: ${(props) => props.height + 30}px;
+  gap: 25px;
+`;
+
+const DeviceContainer = styled.div<{ width: number; height: number }>`
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
   border-radius: 28px;
@@ -15,10 +24,28 @@ const Container = styled.div<{ width: number; height: number }>`
   overflow: hidden;
 `;
 
+const IndicatorContainer = styled.div`
+  ${rowFlex({ justify: 'center', align: 'center' })}
+  width: 100%;
+  height: 30px;
+`;
+
+const FooterContainer = styled.div`
+  ${rowFlex({ justify: 'center', align: 'center' })}
+  width: 100%;
+  height: 30px;
+  font-size: 15px;
+  color: ${Color.GREY};
+`;
+
 function PreviewContainer({ children, width = 360, height = 700 }: PreviewContainerProps) {
   return (
     <Container width={width} height={height}>
-      {children}
+      <DeviceContainer width={width} height={height}>
+        <IndicatorContainer />
+        {children}
+      </DeviceContainer>
+      <FooterContainer>주문화면 미리보기</FooterContainer>
     </Container>
   );
 }
