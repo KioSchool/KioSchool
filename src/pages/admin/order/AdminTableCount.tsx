@@ -4,7 +4,6 @@ import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
 import AppLabel from '@components/common/label/AppLabel';
 import { QRCodeCanvas } from 'qrcode.react';
-import 'react-device-frameset/styles/marvel-devices.min.css';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import AdminTableCountTitleNavBarChildren from '@components/admin/order/AdminOrderManageTitleNavBarChildren';
 import { Color } from '@resources/colors';
