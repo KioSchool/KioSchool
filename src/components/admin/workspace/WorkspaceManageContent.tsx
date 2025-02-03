@@ -2,6 +2,7 @@ import RouterButton from '@components/common/button/RouterButton';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import productImage from '@resources/image/productImage.png';
 
 const Container = styled.div`
   width: 90%;
@@ -23,8 +24,8 @@ const ButtonContainer = styled.div`
 
 function WorkspaceManageContent() {
   const buttonContents = [
-    { name: '주점 정보 관리', path: '/table-count' },
-    { name: '테이블 관리', path: '/table-count' },
+    { name: '주점 정보 관리', path: '/table-count', imageSrc: productImage },
+    { name: '테이블 관리', path: '/table-count', imageSrc: productImage },
   ];
 
   return (
