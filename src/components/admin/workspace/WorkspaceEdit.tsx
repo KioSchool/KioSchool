@@ -39,8 +39,8 @@ const TitleInput = styled.input`
 
 const ImageContainer = styled.div`
   width: 100%;
-  height: 230px;
-  padding-top: 10px;
+  height: 200px;
+  padding: 10px 0;
   border-top: 1px solid ${Color.HEAVY_GREY};
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
@@ -59,14 +59,37 @@ const ImageInputContainer = styled.div`
 
 const ImageInput = styled.input`
   width: 260px;
-  height: 80%;
+  height: 100%;
   border-radius: 10px;
   border: none;
   background: ${Color.LIGHT_GREY};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
-const DescriptionContainer = styled.div``;
+
+const DescriptionContainer = styled.div`
+  width: 100%;
+  height: 150px;
+  padding: 10px 0;
+  border-top: 1px solid ${Color.HEAVY_GREY};
+  ${rowFlex({ justify: 'center', align: 'start' })}
+`;
+
+const DescriptionLabelContainer = styled.div`
+  width: 15%;
+  height: 100%;
+  ${colFlex({ justify: 'start', align: 'center' })}
+`;
+
+const DescriptionInput = styled.input`
+  width: 85%;
+  height: 100%;
+  border-radius: 10px;
+  border: none;
+  background: ${Color.LIGHT_GREY};
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
+`;
+
 const NoticeContainer = styled.div``;
 
 function WorkspaceEdit() {
@@ -102,7 +125,12 @@ function WorkspaceEdit() {
             <ImageInput />
           </ImageInputContainer>
         </ImageContainer>
-        <DescriptionContainer></DescriptionContainer>
+        <DescriptionContainer>
+          <DescriptionLabelContainer>
+            <AppLabel size={20}>주점 설명</AppLabel>
+          </DescriptionLabelContainer>
+          <DescriptionInput />
+        </DescriptionContainer>
         <NoticeContainer></NoticeContainer>
       </ContentContainer>
     </AppContainer>
