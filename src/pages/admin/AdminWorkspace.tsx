@@ -1,21 +1,19 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import useCustomNavigate from '@hooks/useCustomNavigate';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { useRecoilValue } from 'recoil';
 import { adminWorkspaceAtom } from '@recoils/atoms';
 import styled from '@emotion/styled';
-import ImageRouteButton from '@components/common/button/ImageRouteButton';
 import AppContainer from '@components/common/container/AppContainer';
 import AppFooter from '@components/common/footer/AppFooter';
-import orderImage from '@resources/image/orderImage.png';
-import productImage from '@resources/image/productImage.png';
-import orderManageImage from '@resources/image/orderManageImage.png';
-import { colFlex, rowFlex } from '@styles/flexStyles';
+import { rowFlex } from '@styles/flexStyles';
+import PreviewContainer from '@components/common/container/PreviewContainer';
+import { Color } from '@resources/colors';
 
-const Container = styled.div`
+const ContentContainer = styled.div`
   width: 100%;
-  ${colFlex({ align: 'center' })}
+  ${rowFlex({ justify: 'center', align: 'center' })}
+  gap: 80px;
 `;
 
 export const ButtonContainer = styled.div`
@@ -23,12 +21,25 @@ export const ButtonContainer = styled.div`
   ${rowFlex()}
 `;
 
+const PreviewContent = styled.iframe`
+  width: 100%;
+  height: 100%;
+  border: none;
+`;
+
+const RouteContainer = styled.div`
+  width: 800px;
+  height: 670px;
+  border-radius: 10px;
+  background-color: ${Color.LIGHT_GREY};
+`;
+
 function AdminWorkspace() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchWorkspace } = useAdminWorkspace();
   const navigate = useNavigate();
   const workspace = useRecoilValue(adminWorkspaceAtom);
-  const { appendPath } = useCustomNavigate();
+  const baseUrl = `${location.protocol}//${location.host}`;
 
   useEffect(() => {
     fetchWorkspace(workspaceId);
@@ -36,17 +47,19 @@ function AdminWorkspace() {
 
   return (
     <AppContainer
-      useFlex={colFlex({ justify: 'center' })}
+      useFlex={rowFlex({ justify: 'center', align: 'center' })}
+      customWidth={'100vw'}
       titleNavBarProps={{ title: workspace.name, subTitle: workspace.description, onLeftArrowClick: () => navigate('/admin') }}
     >
-      <Container className={'admin-workspace-container'}>
-        <ButtonContainer className={'button-container'}>
-          <ImageRouteButton src={orderImage} onClick={() => appendPath('/order')} buttonText={'주문 조회'} />
-          <ImageRouteButton src={productImage} onClick={() => appendPath('/products')} buttonText={'상품 관리'} />
-          <ImageRouteButton src={orderManageImage} onClick={() => appendPath('/table-count')} buttonText={'테이블 개수 관리'} />
-        </ButtonContainer>
+      <>
+        <ContentContainer>
+          <PreviewContainer>
+            <PreviewContent src={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=1&preview=true`} />
+          </PreviewContainer>
+          <RouteContainer></RouteContainer>
+        </ContentContainer>
         <AppFooter />
-      </Container>
+      </>
     </AppContainer>
   );
 }
