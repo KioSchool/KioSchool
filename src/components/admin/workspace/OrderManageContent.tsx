@@ -23,9 +23,9 @@ const ButtonContainer = styled.div`
 
 function OrderManageContent() {
   const buttonContents = [
-    { name: '실시간 주문 조회', path: 'order/realtime' },
-    { name: '전체 주문 조회', path: 'order/history' },
-    { name: '테이블 주문 조회', path: 'order/table' },
+    { name: '실시간 주문 조회', path: '/order/realtime' },
+    { name: '전체 주문 조회', path: '/order/history' },
+    { name: '테이블 주문 조회', path: '/order/table' },
   ];
 
   return (
