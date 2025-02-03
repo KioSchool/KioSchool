@@ -90,7 +90,29 @@ const DescriptionInput = styled.input`
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
 `;
 
-const NoticeContainer = styled.div``;
+const NoticeContainer = styled.div`
+  width: 100%;
+  height: 150px;
+  padding: 10px 0;
+  border-top: 1px solid ${Color.HEAVY_GREY};
+  border-bottom: 2px solid ${Color.HEAVY_GREY};
+  ${rowFlex({ justify: 'center', align: 'start' })}
+`;
+
+const NoticeLabelContainer = styled.div`
+  width: 15%;
+  height: 100%;
+  ${colFlex({ justify: 'start', align: 'center' })}
+`;
+
+const NoticeInput = styled.input`
+  width: 85%;
+  height: 100%;
+  border-radius: 10px;
+  border: none;
+  background: ${Color.LIGHT_GREY};
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
+`;
 
 function WorkspaceEdit() {
   const navigate = useNavigate();
@@ -131,7 +153,12 @@ function WorkspaceEdit() {
           </DescriptionLabelContainer>
           <DescriptionInput />
         </DescriptionContainer>
-        <NoticeContainer></NoticeContainer>
+        <NoticeContainer>
+          <NoticeLabelContainer>
+            <AppLabel size={20}>공지 사항</AppLabel>
+          </NoticeLabelContainer>
+          <NoticeInput />
+        </NoticeContainer>
       </ContentContainer>
     </AppContainer>
   );
