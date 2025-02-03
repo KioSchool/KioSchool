@@ -1,3 +1,4 @@
+import RoundedAppButton from '@components/common/button/RoundedAppButton';
 import AppContainer from '@components/common/container/AppContainer';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
@@ -114,6 +115,12 @@ const NoticeInput = styled.input`
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
 `;
 
+const SubmitButtonContainer = styled.div`
+  width: 100%;
+  height: 50px;
+  ${rowFlex({ justify: 'end', align: 'center' })}
+`;
+
 function WorkspaceEdit() {
   const navigate = useNavigate();
   const { workspaceId } = useParams<{ workspaceId: string }>();
@@ -159,6 +166,9 @@ function WorkspaceEdit() {
           </NoticeLabelContainer>
           <NoticeInput />
         </NoticeContainer>
+        <SubmitButtonContainer>
+          <RoundedAppButton>수정 완료</RoundedAppButton>
+        </SubmitButtonContainer>
       </ContentContainer>
     </AppContainer>
   );
