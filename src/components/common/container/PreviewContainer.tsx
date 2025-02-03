@@ -57,7 +57,7 @@ const FooterContainer = styled.div`
   gap: 10px;
 `;
 
-function PreviewContainer({ children, width = 360, height = 700 }: PreviewContainerProps) {
+function PreviewContainer({ children, width = 280, height = 630 }: PreviewContainerProps) {
   return (
     <Container width={width} height={height}>
       <DeviceContainer width={width} height={height}>
