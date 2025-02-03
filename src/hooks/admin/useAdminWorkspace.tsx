@@ -43,6 +43,7 @@ function useAdminWorkspace() {
         description,
         notice,
       })
+      .then((res) => setAdminWorkspace(res.data))
       .catch((error) => {
         alert(error.response.data.message);
       });
