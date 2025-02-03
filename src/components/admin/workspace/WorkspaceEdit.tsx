@@ -172,13 +172,6 @@ function WorkspaceEdit() {
       return;
     }
 
-    console.log('제출할 데이터', {
-      workspaceId,
-      name: title,
-      description,
-      notice,
-    });
-
     updateWorkspaceInfo(Number(workspaceId), title, description, notice);
     navigate(`/admin/workspace/${workspaceId}`);
   };
