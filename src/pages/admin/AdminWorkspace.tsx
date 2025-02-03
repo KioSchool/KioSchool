@@ -6,9 +6,10 @@ import { adminWorkspaceAtom } from '@recoils/atoms';
 import styled from '@emotion/styled';
 import AppContainer from '@components/common/container/AppContainer';
 import AppFooter from '@components/common/footer/AppFooter';
-import { rowFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import PreviewContainer from '@components/common/container/PreviewContainer';
 import { Color } from '@resources/colors';
+import OrderManageContent from '@components/admin/workspace/OrderManageContent';
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -32,6 +33,7 @@ const RouteContainer = styled.div`
   height: 670px;
   border-radius: 10px;
   background-color: ${Color.LIGHT_GREY};
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 function AdminWorkspace() {
@@ -56,7 +58,9 @@ function AdminWorkspace() {
           <PreviewContainer>
             <PreviewContent src={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=1&preview=true`} />
           </PreviewContainer>
-          <RouteContainer></RouteContainer>
+          <RouteContainer>
+            <OrderManageContent />
+          </RouteContainer>
         </ContentContainer>
         <AppFooter />
       </>
