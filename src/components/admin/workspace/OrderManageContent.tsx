@@ -17,7 +17,8 @@ const TitleContainer = styled.div`
 const ButtonContainer = styled.div`
   width: 100%;
   height: 130px;
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
+  gap: 15px;
+  ${rowFlex({ justify: 'start', align: 'center' })}
 `;
 
 function OrderManageContent() {
@@ -26,6 +27,7 @@ function OrderManageContent() {
     { name: '전체 주문 조회', path: 'order/history' },
     { name: '테이블 주문 조회', path: 'order/table' },
   ];
+
   return (
     <Container>
       <TitleContainer>
