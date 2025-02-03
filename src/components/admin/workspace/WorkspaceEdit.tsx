@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { adminWorkspaceAtom } from '@recoils/atoms';
 import { Color } from '@resources/colors';
-import { rowFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -29,15 +29,43 @@ const TitleLabelContainer = styled.div`
 
 const TitleInput = styled.input`
   width: 85%;
-  height: 70%;
+  height: 65%;
   border-radius: 10px;
   border: none;
   background: ${Color.LIGHT_GREY};
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
+  ${colFlex({ justify: 'start', align: 'center' })}
+`;
+
+const ImageContainer = styled.div`
+  width: 100%;
+  height: 230px;
+  padding-top: 10px;
+  border-top: 1px solid ${Color.HEAVY_GREY};
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
-const ImageContainer = styled.div``;
+const ImageLabelContainer = styled.div`
+  width: 15%;
+  height: 100%;
+  ${colFlex({ justify: 'start', align: 'center' })}
+`;
+
+const ImageInputContainer = styled.div`
+  width: 85%;
+  height: 100%;
+  ${rowFlex({ justify: 'space-between', align: 'start' })}
+`;
+
+const ImageInput = styled.input`
+  width: 260px;
+  height: 80%;
+  border-radius: 10px;
+  border: none;
+  background: ${Color.LIGHT_GREY};
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
+  ${rowFlex({ justify: 'center', align: 'center' })}
+`;
 const DescriptionContainer = styled.div``;
 const NoticeContainer = styled.div``;
 
@@ -64,8 +92,16 @@ function WorkspaceEdit() {
           </TitleLabelContainer>
           <TitleInput />
         </TitleContainer>
-
-        <ImageContainer></ImageContainer>
+        <ImageContainer>
+          <ImageLabelContainer>
+            <AppLabel size={20}>대표 사진</AppLabel>
+          </ImageLabelContainer>
+          <ImageInputContainer>
+            <ImageInput />
+            <ImageInput />
+            <ImageInput />
+          </ImageInputContainer>
+        </ImageContainer>
         <DescriptionContainer></DescriptionContainer>
         <NoticeContainer></NoticeContainer>
       </ContentContainer>
