@@ -1,3 +1,6 @@
+import React, { useEffect, useRef } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import RoundedAppButton from '@components/common/button/RoundedAppButton';
 import AppContainer from '@components/common/container/AppContainer';
 import AppLabel from '@components/common/label/AppLabel';
@@ -6,9 +9,6 @@ import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { adminWorkspaceAtom } from '@recoils/atoms';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -147,16 +147,36 @@ function WorkspaceEdit() {
   const { fetchWorkspace } = useAdminWorkspace();
   const workspace = useRecoilValue(adminWorkspaceAtom);
 
+  const titleRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLInputElement>(null);
+  const noticeRef = useRef<HTMLInputElement>(null);
+  const imageFileRef1 = useRef<HTMLInputElement>(null);
+  const imageFileRef2 = useRef<HTMLInputElement>(null);
+  const imageFileRef3 = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     fetchWorkspace(workspaceId);
   }, []);
+
+  const handleSubmit = () => {
+    const title = titleRef.current?.value;
+    const description = descriptionRef.current?.value;
+    const notice = noticeRef.current?.value;
+
+    console.log('제출할 데이터', {
+      workspaceId: Number(workspaceId),
+      name: title,
+      description,
+      notice,
+    });
+  };
 
   return (
     <AppContainer
       useFlex={rowFlex({ justify: 'center' })}
       customWidth={'1000px'}
       titleNavBarProps={{
-        title: workspace.name,
+        title: workspace?.name || '',
         subTitle: '워크스페이스 관리',
         onLeftArrowClick: () => navigate(-1),
       }}
@@ -166,32 +186,32 @@ function WorkspaceEdit() {
           <TitleLabelContainer>
             <AppLabel size={20}>주점명</AppLabel>
           </TitleLabelContainer>
-          <TitleInput />
+          <TitleInput ref={titleRef} defaultValue={workspace?.name || ''} />
         </TitleContainer>
         <ImageContainer>
           <ImageLabelContainer>
             <AppLabel size={20}>대표 사진</AppLabel>
           </ImageLabelContainer>
           <ImageInputContainer>
-            <ImageInput />
-            <ImageInput />
-            <ImageInput />
+            <ImageInput type="file" ref={imageFileRef1} />
+            <ImageInput type="file" ref={imageFileRef2} />
+            <ImageInput type="file" ref={imageFileRef3} />
           </ImageInputContainer>
         </ImageContainer>
         <DescriptionContainer>
           <DescriptionLabelContainer>
             <AppLabel size={20}>주점 설명</AppLabel>
           </DescriptionLabelContainer>
-          <DescriptionInput />
+          <DescriptionInput ref={descriptionRef} defaultValue={workspace?.description || ''} />
         </DescriptionContainer>
         <NoticeContainer>
           <NoticeLabelContainer>
             <AppLabel size={20}>공지 사항</AppLabel>
           </NoticeLabelContainer>
-          <NoticeInput />
+          <NoticeInput ref={noticeRef} defaultValue={workspace?.notice || ''} />
         </NoticeContainer>
         <SubmitButtonContainer>
-          <RoundedAppButton>수정 완료</RoundedAppButton>
+          <RoundedAppButton onClick={handleSubmit}>수정 완료</RoundedAppButton>
         </SubmitButtonContainer>
       </ContentContainer>
     </AppContainer>
