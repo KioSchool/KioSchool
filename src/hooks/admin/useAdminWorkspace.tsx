@@ -49,7 +49,16 @@ function useAdminWorkspace() {
       });
   };
 
-  return { fetchWorkspace, updateWorkspaceTableCount, updateWorkspaceInfo };
+  const updateWorkspaceImage = (workspaceId: number, imageIds: Array<number>, imageFiles: Array<string>) => {
+    adminApi
+      .put<Workspace>('/workspace/image', { body: { workspaceId, imageIds }, imageFiles })
+      .then((res) => setAdminWorkspace(res.data))
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
+  };
+
+  return { fetchWorkspace, updateWorkspaceTableCount, updateWorkspaceInfo, updateWorkspaceImage };
 }
 
 export default useAdminWorkspace;
