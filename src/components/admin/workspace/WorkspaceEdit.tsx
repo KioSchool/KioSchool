@@ -36,6 +36,11 @@ const TitleInput = styled.input`
   background: ${Color.LIGHT_GREY};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
   ${colFlex({ justify: 'start', align: 'center' })}
+
+  &:focus {
+    outline: none;
+    border: 1px solid ${Color.KIO_ORANGE};
+  }
 `;
 
 const ImageContainer = styled.div`
@@ -66,6 +71,11 @@ const ImageInput = styled.input`
   background: ${Color.LIGHT_GREY};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
   ${rowFlex({ justify: 'center', align: 'center' })}
+
+  &:focus {
+    outline: none;
+    border: 1px solid ${Color.KIO_ORANGE};
+  }
 `;
 
 const DescriptionContainer = styled.div`
@@ -89,6 +99,11 @@ const DescriptionInput = styled.input`
   border: none;
   background: ${Color.LIGHT_GREY};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
+
+  &:focus {
+    outline: none;
+    border: 1px solid ${Color.KIO_ORANGE};
+  }
 `;
 
 const NoticeContainer = styled.div`
@@ -113,6 +128,11 @@ const NoticeInput = styled.input`
   border: none;
   background: ${Color.LIGHT_GREY};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
+
+  &:focus {
+    outline: none;
+    border: 1px solid ${Color.KIO_ORANGE};
+  }
 `;
 
 const SubmitButtonContainer = styled.div`
@@ -135,7 +155,11 @@ function WorkspaceEdit() {
     <AppContainer
       useFlex={rowFlex({ justify: 'center' })}
       customWidth={'1000px'}
-      titleNavBarProps={{ title: workspace.name, subTitle: '워크스페이스 관리', onLeftArrowClick: () => navigate(-1) }}
+      titleNavBarProps={{
+        title: workspace.name,
+        subTitle: '워크스페이스 관리',
+        onLeftArrowClick: () => navigate(-1),
+      }}
     >
       <ContentContainer>
         <TitleContainer>
