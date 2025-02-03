@@ -58,6 +58,7 @@ function App() {
         <Route path="/admin/my-info" element={<AdminMyInfo />} />
         <Route path="/admin/register-account" element={<AdminAccount />} />
         <Route path="/admin/workspace/:workspaceId" element={<AdminWorkspace />} />
+        <Route path="/admin/workspace/:workspaceId/edit" element={<WorkspaceEdit />} />
         <Route path="/admin/workspace/:workspaceId/order" element={<AdminOrder />} />
         <Route path="/admin/workspace/:workspaceId/order/realtime" element={<AdminOrderRealtime />} />
         <Route path="/admin/workspace/:workspaceId/order/history" element={<AdminOrderHistory />} />
