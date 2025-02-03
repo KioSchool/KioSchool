@@ -144,7 +144,7 @@ const SubmitButtonContainer = styled.div`
 function WorkspaceEdit() {
   const navigate = useNavigate();
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchWorkspace } = useAdminWorkspace();
+  const { fetchWorkspace, updateWorkspaceInfo } = useAdminWorkspace();
   const workspace = useRecoilValue(adminWorkspaceAtom);
 
   const titleRef = useRef<HTMLInputElement>(null);
@@ -163,12 +163,24 @@ function WorkspaceEdit() {
     const description = descriptionRef.current?.value;
     const notice = noticeRef.current?.value;
 
+    if (!title || title.trim() === '') {
+      alert('주점명을 입력해주세요.');
+      return;
+    }
+    if (!description || description.trim() === '') {
+      alert('주점 설명을 입력해주세요.');
+      return;
+    }
+
     console.log('제출할 데이터', {
-      workspaceId: Number(workspaceId),
+      workspaceId,
       name: title,
       description,
       notice,
     });
+
+    updateWorkspaceInfo(Number(workspaceId), title, description, notice);
+    navigate(`/admin/workspace/${workspaceId}`);
   };
 
   return (

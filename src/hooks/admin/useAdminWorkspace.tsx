@@ -35,7 +35,20 @@ function useAdminWorkspace() {
       });
   };
 
-  return { fetchWorkspace, updateWorkspaceTableCount };
+  const updateWorkspaceInfo = (workspaceId: number, name: string, description: string, notice?: string) => {
+    adminApi
+      .put<Workspace>('/workspace/info', {
+        workspaceId,
+        name,
+        description,
+        notice,
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
+  };
+
+  return { fetchWorkspace, updateWorkspaceTableCount, updateWorkspaceInfo };
 }
 
 export default useAdminWorkspace;
