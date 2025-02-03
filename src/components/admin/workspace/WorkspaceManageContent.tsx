@@ -24,7 +24,7 @@ const ButtonContainer = styled.div`
 
 function WorkspaceManageContent() {
   const buttonContents = [
-    { name: '주점 정보 관리', path: '/table-count', imageSrc: productImage },
+    { name: '주점 정보 관리', path: '/edit', imageSrc: productImage },
     { name: '테이블 관리', path: '/table-count', imageSrc: productImage },
   ];
 
