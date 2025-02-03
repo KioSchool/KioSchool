@@ -23,8 +23,8 @@ const ButtonContainer = styled.div`
 
 function ProductManageContent() {
   const buttonContents = [
-    { name: '상품 관리', path: 'order/products' },
-    { name: '카테고리 관리', path: 'order/products/categories' },
+    { name: '상품 관리', path: '/products' },
+    { name: '카테고리 관리', path: '/products/categories' },
   ];
 
   return (
