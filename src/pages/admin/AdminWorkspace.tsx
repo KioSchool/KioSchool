@@ -11,6 +11,7 @@ import PreviewContainer from '@components/common/container/PreviewContainer';
 import { Color } from '@resources/colors';
 import OrderManageContent from '@components/admin/workspace/OrderManageContent';
 import ProductManageContent from '@components/admin/workspace/ProductManageContent';
+import WorkspaceManageContent from '@components/admin/workspace/WorkspaceManageContent';
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -62,6 +63,7 @@ function AdminWorkspace() {
           <RouteContainer>
             <OrderManageContent />
             <ProductManageContent />
+            <WorkspaceManageContent />
           </RouteContainer>
         </ContentContainer>
         <AppFooter />
