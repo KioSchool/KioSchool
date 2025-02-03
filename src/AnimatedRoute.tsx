@@ -16,7 +16,7 @@ function AnimatedRoute({ children }: AnimatedRouteProps) {
   return (
     <TransitionGroup component={null}>
       <CSSTransition key={location.pathname} timeout={300} classNames={`page-${direction}`} unmountOnExit>
-        <div>{children}</div>
+        {children}
       </CSSTransition>
     </TransitionGroup>
   );
