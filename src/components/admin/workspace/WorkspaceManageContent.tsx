@@ -17,7 +17,8 @@ const TitleContainer = styled.div`
 const ButtonContainer = styled.div`
   width: 100%;
   height: 130px;
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
+  gap: 15px;
+  ${rowFlex({ justify: 'start', align: 'center' })}
 `;
 
 function WorkspaceManageContent() {
@@ -25,6 +26,7 @@ function WorkspaceManageContent() {
     { name: '주점 정보 관리', path: 'order/table-count' },
     { name: '테이블 관리', path: 'order/table-count' },
   ];
+
   return (
     <Container>
       <TitleContainer>
