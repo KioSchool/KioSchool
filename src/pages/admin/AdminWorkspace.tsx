@@ -10,6 +10,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import PreviewContainer from '@components/common/container/PreviewContainer';
 import { Color } from '@resources/colors';
 import OrderManageContent from '@components/admin/workspace/OrderManageContent';
+import ProductManageContent from '@components/admin/workspace/ProductManageContent';
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -60,6 +61,7 @@ function AdminWorkspace() {
           </PreviewContainer>
           <RouteContainer>
             <OrderManageContent />
+            <ProductManageContent />
           </RouteContainer>
         </ContentContainer>
         <AppFooter />
