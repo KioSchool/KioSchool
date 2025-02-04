@@ -52,9 +52,12 @@ function useAdminWorkspace() {
       });
   };
 
-  const createFormData = (parameter: any, files: Array<File | null>) => {
+  const createFormData = (parameter: any, files?: Array<File | null>) => {
     const data = new FormData();
     data.append('body', new Blob([JSON.stringify(parameter)], { type: 'application/json' }));
+
+    if (!files) return data;
+
     files.forEach((file) => {
       if (file) {
         data.append('imageFiles', file, file.name);
@@ -64,9 +67,7 @@ function useAdminWorkspace() {
     return data;
   };
 
-  const updateWorkspaceImage = (workspaceId: number, imageIds: Array<number | null>, imageFiles: Array<File | null>) => {
-    console.log(`imagIds: ${imageIds}, imageFiles: ${imageFiles}`);
-    console.log(imageFiles);
+  const updateWorkspaceImage = (workspaceId: number, imageIds: Array<number | null>, imageFiles?: Array<File | null>) => {
     const data = createFormData({ workspaceId, imageIds }, imageFiles);
 
     adminApi
