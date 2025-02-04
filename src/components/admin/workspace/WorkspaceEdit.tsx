@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import RoundedAppButton from '@components/common/button/RoundedAppButton';
@@ -9,6 +9,9 @@ import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { adminWorkspaceAtom } from '@recoils/atoms';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Image } from '@@types/index';
+import PlusIconSvg from '@resources/svg/PlusIconSvg';
+import { expandButtonStyle } from '@styles/buttonStyles';
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -63,7 +66,18 @@ const ImageInputContainer = styled.div`
   ${rowFlex({ justify: 'space-between', align: 'start' })}
 `;
 
-const ImageInput = styled.input`
+const ImageInput = styled.img`
+  width: 260px;
+  height: 100%;
+  border-radius: 10px;
+  border: none;
+  background: ${Color.LIGHT_GREY};
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
+  cursor: pointer;
+  ${rowFlex({ justify: 'center', align: 'center' })}
+`;
+
+const ImageDummyInput = styled.div`
   width: 260px;
   height: 100%;
   border-radius: 10px;
@@ -71,11 +85,13 @@ const ImageInput = styled.input`
   background: ${Color.LIGHT_GREY};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
   ${rowFlex({ justify: 'center', align: 'center' })}
+  cursor: pointer;
+`;
 
-  &:focus {
-    outline: none;
-    border: 1px solid ${Color.KIO_ORANGE};
-  }
+const PlusIcon = styled(PlusIconSvg)`
+  width: 30px;
+  height: 30px;
+  ${expandButtonStyle}
 `;
 
 const DescriptionContainer = styled.div`
@@ -144,19 +160,55 @@ const SubmitButtonContainer = styled.div`
 function WorkspaceEdit() {
   const navigate = useNavigate();
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchWorkspace, updateWorkspaceInfo } = useAdminWorkspace();
+  const { fetchWorkspace, updateWorkspaceInfo, updateWorkspaceImage } = useAdminWorkspace();
   const workspace = useRecoilValue(adminWorkspaceAtom);
 
   const titleRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLInputElement>(null);
   const noticeRef = useRef<HTMLInputElement>(null);
-  const imageFileRef1 = useRef<HTMLInputElement>(null);
-  const imageFileRef2 = useRef<HTMLInputElement>(null);
-  const imageFileRef3 = useRef<HTMLInputElement>(null);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+
+  const [selectedFiles, setSelectedFiles] = useState<(File | null)[]>([null, null, null]);
+
+  const displayImages: Array<Image | null> = [...workspace.images];
+  while (displayImages.length < 3) {
+    displayImages.push(null);
+  }
 
   useEffect(() => {
     fetchWorkspace(workspaceId);
   }, []);
+
+  const handleImageClick = (index: number) => {
+    setSelectedImageIndex(index);
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (file && selectedImageIndex !== null) {
+      const index = selectedImageIndex;
+
+      const newFiles = [...selectedFiles];
+      newFiles[index] = file;
+      setSelectedFiles(newFiles);
+
+      const imageIds: Array<number | null> = [];
+      const imageFiles: Array<File | null> = [];
+
+      for (let i = 0; i < 3; i++) {
+        const existingImage: Image | null = workspace.images?.[i] || null;
+
+        imageIds.push(existingImage ? existingImage.id : null);
+        imageFiles.push(newFiles[i]);
+      }
+
+      updateWorkspaceImage(Number(workspaceId), imageIds, imageFiles);
+    }
+  };
 
   const handleSubmit = () => {
     const title = titleRef.current?.value;
@@ -173,7 +225,6 @@ function WorkspaceEdit() {
     }
 
     updateWorkspaceInfo(Number(workspaceId), title, description, notice);
-    navigate(`/admin/workspace/${workspaceId}`);
   };
 
   return (
@@ -198,9 +249,15 @@ function WorkspaceEdit() {
             <AppLabel size={20}>대표 사진</AppLabel>
           </ImageLabelContainer>
           <ImageInputContainer>
-            <ImageInput type="file" ref={imageFileRef1} />
-            <ImageInput type="file" ref={imageFileRef2} />
-            <ImageInput type="file" ref={imageFileRef3} />
+            {displayImages.map((img, index) =>
+              img ? (
+                <ImageInput key={img.id} src={img.url} onClick={() => handleImageClick(index)} />
+              ) : (
+                <ImageDummyInput key={`${index}-dummy`} onClick={() => handleImageClick(index)}>
+                  <PlusIcon />
+                </ImageDummyInput>
+              ),
+            )}
           </ImageInputContainer>
         </ImageContainer>
         <DescriptionContainer>
@@ -218,6 +275,7 @@ function WorkspaceEdit() {
         <SubmitButtonContainer>
           <RoundedAppButton onClick={handleSubmit}>수정 완료</RoundedAppButton>
         </SubmitButtonContainer>
+        <input type="file" accept="image/*" style={{ display: 'none' }} ref={fileInputRef} onChange={handleFileChange} />
       </ContentContainer>
     </AppContainer>
   );
