@@ -39,7 +39,7 @@ const TitleInput = styled.input`
   background: ${Color.LIGHT_GREY};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
   ${colFlex({ justify: 'start', align: 'center' })}
-
+  padding: 0 10px;
   &:focus {
     outline: none;
     border: 1px solid ${Color.KIO_ORANGE};
@@ -48,7 +48,7 @@ const TitleInput = styled.input`
 
 const ImageContainer = styled.div`
   width: 100%;
-  height: 200px;
+  height: 150px;
   padding: 10px 0;
   border-top: 1px solid ${Color.HEAVY_GREY};
   ${rowFlex({ justify: 'center', align: 'center' })}
@@ -66,15 +66,19 @@ const ImageInputContainer = styled.div`
   ${rowFlex({ justify: 'space-between', align: 'start' })}
 `;
 
-const ImageInput = styled.img`
-  width: 260px;
+const ImageInput = styled.input`
+  width: 270px;
   height: 100%;
   border-radius: 10px;
   border: none;
   background: ${Color.LIGHT_GREY};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
-  cursor: pointer;
   ${rowFlex({ justify: 'center', align: 'center' })}
+
+  &:focus {
+    outline: none;
+    border: 1px solid ${Color.KIO_ORANGE};
+  }
 `;
 
 const ImageDummyInput = styled.div`
@@ -108,14 +112,14 @@ const DescriptionLabelContainer = styled.div`
   ${colFlex({ justify: 'start', align: 'center' })}
 `;
 
-const DescriptionInput = styled.input`
-  width: 85%;
-  height: 100%;
+const DescriptionInput = styled.textarea`
+  width: 833px;
+  height: 130px;
   border-radius: 10px;
   border: none;
   background: ${Color.LIGHT_GREY};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
-
+  padding: 10px;
   &:focus {
     outline: none;
     border: 1px solid ${Color.KIO_ORANGE};
@@ -137,14 +141,14 @@ const NoticeLabelContainer = styled.div`
   ${colFlex({ justify: 'start', align: 'center' })}
 `;
 
-const NoticeInput = styled.input`
-  width: 85%;
-  height: 100%;
+const NoticeInput = styled.textarea`
+  width: 833px;
+  height: 130px;
   border-radius: 10px;
   border: none;
   background: ${Color.LIGHT_GREY};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
-
+  padding: 10px;
   &:focus {
     outline: none;
     border: 1px solid ${Color.KIO_ORANGE};
@@ -164,8 +168,8 @@ function WorkspaceEdit() {
   const workspace = useRecoilValue(adminWorkspaceAtom);
 
   const titleRef = useRef<HTMLInputElement>(null);
-  const descriptionRef = useRef<HTMLInputElement>(null);
-  const noticeRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const noticeRef = useRef<HTMLTextAreaElement>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
@@ -253,11 +257,7 @@ function WorkspaceEdit() {
     updateWorkspaceInfo(Number(workspaceId), title, description, notice);
 
     const { imageIds, imageFiles } = getImageInfo();
-    if (!imageFiles.length) {
-      updateWorkspaceImage(Number(workspaceId), imageIds);
-    } else {
-      updateWorkspaceImage(Number(workspaceId), imageIds, imageFiles);
-    }
+    updateWorkspaceImage(Number(workspaceId), imageIds, imageFiles);
   };
 
   return (
