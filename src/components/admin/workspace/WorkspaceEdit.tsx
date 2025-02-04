@@ -173,7 +173,6 @@ function WorkspaceEdit() {
     }
 
     updateWorkspaceInfo(Number(workspaceId), title, description, notice);
-    navigate(`/admin/workspace/${workspaceId}`);
   };
 
   return (
