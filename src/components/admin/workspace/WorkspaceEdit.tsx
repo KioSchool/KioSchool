@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import RoundedAppButton from '@components/common/button/RoundedAppButton';
@@ -9,6 +9,9 @@ import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { adminWorkspaceAtom } from '@recoils/atoms';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { WorkspaceImage } from '@@types/index';
+import PlusIconSvg from '@resources/svg/PlusIconSvg';
+import { expandButtonStyle } from '@styles/buttonStyles';
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -36,7 +39,7 @@ const TitleInput = styled.input`
   background: ${Color.LIGHT_GREY};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
   ${colFlex({ justify: 'start', align: 'center' })}
-  padding: 0 10px;
+
   &:focus {
     outline: none;
     border: 1px solid ${Color.KIO_ORANGE};
@@ -45,7 +48,7 @@ const TitleInput = styled.input`
 
 const ImageContainer = styled.div`
   width: 100%;
-  height: 150px;
+  height: 200px;
   padding: 10px 0;
   border-top: 1px solid ${Color.HEAVY_GREY};
   ${rowFlex({ justify: 'center', align: 'center' })}
@@ -63,19 +66,32 @@ const ImageInputContainer = styled.div`
   ${rowFlex({ justify: 'space-between', align: 'start' })}
 `;
 
-const ImageInput = styled.input`
-  width: 270px;
+const ImageInput = styled.img`
+  width: 260px;
+  height: 100%;
+  border-radius: 10px;
+  border: none;
+  background: ${Color.LIGHT_GREY};
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
+  cursor: pointer;
+  ${rowFlex({ justify: 'center', align: 'center' })}
+`;
+
+const ImageDummyInput = styled.div`
+  width: 260px;
   height: 100%;
   border-radius: 10px;
   border: none;
   background: ${Color.LIGHT_GREY};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
   ${rowFlex({ justify: 'center', align: 'center' })}
+  cursor: pointer;
+`;
 
-  &:focus {
-    outline: none;
-    border: 1px solid ${Color.KIO_ORANGE};
-  }
+const PlusIcon = styled(PlusIconSvg)`
+  width: 30px;
+  height: 30px;
+  ${expandButtonStyle}
 `;
 
 const DescriptionContainer = styled.div`
@@ -92,14 +108,14 @@ const DescriptionLabelContainer = styled.div`
   ${colFlex({ justify: 'start', align: 'center' })}
 `;
 
-const DescriptionInput = styled.textarea`
-  width: 833px;
-  height: 130px;
+const DescriptionInput = styled.input`
+  width: 85%;
+  height: 100%;
   border-radius: 10px;
   border: none;
   background: ${Color.LIGHT_GREY};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
-  padding: 10px;
+
   &:focus {
     outline: none;
     border: 1px solid ${Color.KIO_ORANGE};
@@ -121,14 +137,14 @@ const NoticeLabelContainer = styled.div`
   ${colFlex({ justify: 'start', align: 'center' })}
 `;
 
-const NoticeInput = styled.textarea`
-  width: 833px;
-  height: 130px;
+const NoticeInput = styled.input`
+  width: 85%;
+  height: 100%;
   border-radius: 10px;
   border: none;
   background: ${Color.LIGHT_GREY};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
-  padding: 10px;
+
   &:focus {
     outline: none;
     border: 1px solid ${Color.KIO_ORANGE};
@@ -144,19 +160,81 @@ const SubmitButtonContainer = styled.div`
 function WorkspaceEdit() {
   const navigate = useNavigate();
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchWorkspace, updateWorkspaceInfo } = useAdminWorkspace();
+  const { fetchWorkspace, updateWorkspaceInfo, updateWorkspaceImage } = useAdminWorkspace();
   const workspace = useRecoilValue(adminWorkspaceAtom);
 
   const titleRef = useRef<HTMLInputElement>(null);
-  const descriptionRef = useRef<HTMLTextAreaElement>(null);
-  const noticeRef = useRef<HTMLTextAreaElement>(null);
-  const imageFileRef1 = useRef<HTMLInputElement>(null);
-  const imageFileRef2 = useRef<HTMLInputElement>(null);
-  const imageFileRef3 = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLInputElement>(null);
+  const noticeRef = useRef<HTMLInputElement>(null);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+
+  const [selectedImages, setSelectedImages] = useState<(File | null)[]>([null, null, null]);
+  const [displayImages, setDisplayImages] = useState<(WorkspaceImage | null)[]>(() => {
+    const images: Array<WorkspaceImage | null> = [...workspace.images];
+    while (images.length < 3) {
+      images.push(null);
+    }
+    return images;
+  });
 
   useEffect(() => {
     fetchWorkspace(workspaceId);
   }, []);
+
+  const handleImageClick = (index: number) => {
+    if (displayImages[index]) {
+      if (window.confirm('정말 삭제하겠습니까?')) {
+        setDisplayImages((prevImages) => {
+          const newArray = [...prevImages];
+          newArray[index] = null;
+          return newArray;
+        });
+
+        setSelectedImages((prevImages) => {
+          const newArray = [...prevImages];
+          newArray[index] = null;
+          return newArray;
+        });
+      }
+    } else {
+      setSelectedImageIndex(index);
+      fileInputRef.current?.click();
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (file && selectedImageIndex !== null) {
+      const index = selectedImageIndex;
+
+      setSelectedImages((prevImages) => {
+        const newArray = [...prevImages];
+        newArray[index] = file;
+        return newArray;
+      });
+    }
+  };
+
+  const getImageInfo = () => {
+    const newImages = [...selectedImages];
+
+    const imageIds: Array<number | null> = [];
+    const imageFiles: Array<File | null> = [];
+
+    for (let i = 0; i < 3; i++) {
+      const existingImage: WorkspaceImage | null = displayImages?.[i] || null;
+
+      imageIds.push(existingImage ? existingImage.id : null);
+      if (newImages[i]) {
+        imageFiles.push(newImages[i]);
+      }
+    }
+
+    return { imageIds, imageFiles };
+  };
 
   const handleSubmit = () => {
     const title = titleRef.current?.value;
@@ -173,6 +251,13 @@ function WorkspaceEdit() {
     }
 
     updateWorkspaceInfo(Number(workspaceId), title, description, notice);
+
+    const { imageIds, imageFiles } = getImageInfo();
+    if (!imageFiles.length) {
+      updateWorkspaceImage(Number(workspaceId), imageIds);
+    } else {
+      updateWorkspaceImage(Number(workspaceId), imageIds, imageFiles);
+    }
   };
 
   return (
@@ -197,9 +282,15 @@ function WorkspaceEdit() {
             <AppLabel size={20}>대표 사진</AppLabel>
           </ImageLabelContainer>
           <ImageInputContainer>
-            <ImageInput type="file" ref={imageFileRef1} />
-            <ImageInput type="file" ref={imageFileRef2} />
-            <ImageInput type="file" ref={imageFileRef3} />
+            {displayImages.map((img, index) =>
+              img ? (
+                <ImageInput key={img.id} src={img.url} onClick={() => handleImageClick(index)} />
+              ) : (
+                <ImageDummyInput key={`${index}-dummy`} onClick={() => handleImageClick(index)}>
+                  <PlusIcon />
+                </ImageDummyInput>
+              ),
+            )}
           </ImageInputContainer>
         </ImageContainer>
         <DescriptionContainer>
@@ -217,6 +308,7 @@ function WorkspaceEdit() {
         <SubmitButtonContainer>
           <RoundedAppButton onClick={handleSubmit}>수정 완료</RoundedAppButton>
         </SubmitButtonContainer>
+        <input type="file" accept="image/*" style={{ display: 'none' }} ref={fileInputRef} onChange={handleFileChange} />
       </ContentContainer>
     </AppContainer>
   );
