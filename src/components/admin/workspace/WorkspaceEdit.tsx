@@ -163,11 +163,11 @@ function WorkspaceEdit() {
     const description = descriptionRef.current?.value;
     const notice = noticeRef.current?.value;
 
-    if (!title || title.trim() === '') {
+    if (!title || !title.trim()) {
       alert('주점명을 입력해주세요.');
       return;
     }
-    if (!description || description.trim() === '') {
+    if (!description || !description.trim()) {
       alert('주점 설명을 입력해주세요.');
       return;
     }
