@@ -35,6 +35,7 @@ import AdminOrderTableHistory from '@pages/admin/order/AdminOrderTableHistory';
 import AdminOrderRealtime from '@pages/admin/order/AdminOrderRealtime';
 import SuperAdminEmailDomainList from '@pages/super-admin/SuperAdminEmailDomainList';
 import UserEmailDomain from '@pages/user/UserEmailDomain';
+import WorkspaceEdit from '@components/admin/workspace/WorkspaceEdit';
 
 ReactGA.initialize('G-XGYLSPGK2G');
 function App() {
