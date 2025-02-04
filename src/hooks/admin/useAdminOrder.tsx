@@ -2,7 +2,7 @@ import useApi from '@hooks/useApi';
 import { Order, OrderStatus, PaginationResponse } from '@@types/index';
 import { useSetRecoilState } from 'recoil';
 import { ordersAtom, tableOrderPaginationResponseAtom } from '@recoils/atoms';
-import { defaultPaginationValue } from '@@types/PaginationType';
+import { defaultPaginationValue } from '@@types/defaultValues';
 
 function useAdminOrder(workspaceId: string | undefined) {
   const { adminApi } = useApi();

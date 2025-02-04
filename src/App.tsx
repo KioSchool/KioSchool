@@ -35,6 +35,7 @@ import AdminOrderTableHistory from '@pages/admin/order/AdminOrderTableHistory';
 import AdminOrderRealtime from '@pages/admin/order/AdminOrderRealtime';
 import SuperAdminEmailDomainList from '@pages/super-admin/SuperAdminEmailDomainList';
 import UserEmailDomain from '@pages/user/UserEmailDomain';
+import WorkspaceEdit from '@components/admin/workspace/WorkspaceEdit';
 
 ReactGA.initialize('G-XGYLSPGK2G');
 function App() {
@@ -58,6 +59,7 @@ function App() {
         <Route path="/admin/my-info" element={<AdminMyInfo />} />
         <Route path="/admin/register-account" element={<AdminAccount />} />
         <Route path="/admin/workspace/:workspaceId" element={<AdminWorkspace />} />
+        <Route path="/admin/workspace/:workspaceId/edit" element={<WorkspaceEdit />} />
         <Route path="/admin/workspace/:workspaceId/order" element={<AdminOrder />} />
         <Route path="/admin/workspace/:workspaceId/order/realtime" element={<AdminOrderRealtime />} />
         <Route path="/admin/workspace/:workspaceId/order/history" element={<AdminOrderHistory />} />

@@ -9,7 +9,7 @@ import OrderTableHistoryContent from '@components/user/order/OrderTableHistoryCo
 import { Color } from '@resources/colors';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { Order, PaginationResponse } from '@@types/index';
-import { defaultPaginationValue } from '@@types/PaginationType';
+import { defaultPaginationValue } from '@@types/defaultValues';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   margin-top: 20px;

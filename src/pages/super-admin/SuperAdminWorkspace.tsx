@@ -9,7 +9,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
 import { PaginationResponse, Workspace } from '@@types/index';
 import { useEffect, useState } from 'react';
-import { defaultPaginationValue } from '@@types/PaginationType';
+import { defaultPaginationValue } from '@@types/defaultValues';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   height: 550px;
