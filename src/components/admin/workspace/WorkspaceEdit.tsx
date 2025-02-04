@@ -36,7 +36,7 @@ const TitleInput = styled.input`
   background: ${Color.LIGHT_GREY};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
   ${colFlex({ justify: 'start', align: 'center' })}
-
+  padding: 0 10px;
   &:focus {
     outline: none;
     border: 1px solid ${Color.KIO_ORANGE};
@@ -92,14 +92,14 @@ const DescriptionLabelContainer = styled.div`
   ${colFlex({ justify: 'start', align: 'center' })}
 `;
 
-const DescriptionInput = styled.input`
-  width: 85%;
-  height: 100%;
+const DescriptionInput = styled.textarea`
+  width: 833px;
+  height: 130px;
   border-radius: 10px;
   border: none;
   background: ${Color.LIGHT_GREY};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
-
+  padding: 10px;
   &:focus {
     outline: none;
     border: 1px solid ${Color.KIO_ORANGE};
@@ -121,14 +121,14 @@ const NoticeLabelContainer = styled.div`
   ${colFlex({ justify: 'start', align: 'center' })}
 `;
 
-const NoticeInput = styled.input`
-  width: 85%;
-  height: 100%;
+const NoticeInput = styled.textarea`
+  width: 833px;
+  height: 130px;
   border-radius: 10px;
   border: none;
   background: ${Color.LIGHT_GREY};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
-
+  padding: 10px;
   &:focus {
     outline: none;
     border: 1px solid ${Color.KIO_ORANGE};
@@ -148,8 +148,8 @@ function WorkspaceEdit() {
   const workspace = useRecoilValue(adminWorkspaceAtom);
 
   const titleRef = useRef<HTMLInputElement>(null);
-  const descriptionRef = useRef<HTMLInputElement>(null);
-  const noticeRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const noticeRef = useRef<HTMLTextAreaElement>(null);
   const imageFileRef1 = useRef<HTMLInputElement>(null);
   const imageFileRef2 = useRef<HTMLInputElement>(null);
   const imageFileRef3 = useRef<HTMLInputElement>(null);
