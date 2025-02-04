@@ -3,6 +3,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import productImage from '@resources/image/productImage.png';
+import { Color } from '@resources/colors';
 
 const Container = styled.div`
   width: 90%;
@@ -31,7 +32,7 @@ function WorkspaceManageContent() {
   return (
     <Container>
       <TitleContainer>
-        <AppLabel size={22} style={{ color: '#5C5C5C', fontWeight: 600 }}>
+        <AppLabel size={22} style={{ color: Color.GREY, fontWeight: 600 }}>
           주문 관리
         </AppLabel>
       </TitleContainer>

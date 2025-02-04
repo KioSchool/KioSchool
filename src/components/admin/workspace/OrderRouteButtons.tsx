@@ -5,6 +5,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import productImage from '@resources/image/productImage.png';
 import orderImage from '@resources/image/orderImage.png';
 import workspaceImage from '@resources/image/workspaceImage.png';
+import { Color } from '@resources/colors';
 
 const Container = styled.div`
   width: 90%;
@@ -34,7 +35,7 @@ function OrderManageContent() {
   return (
     <Container>
       <TitleContainer>
-        <AppLabel size={22} style={{ color: '#5C5C5C', fontWeight: 600 }}>
+        <AppLabel size={22} style={{ color: Color.GREY, fontWeight: 600 }}>
           주문 관리
         </AppLabel>
       </TitleContainer>
