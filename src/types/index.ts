@@ -47,6 +47,25 @@ export interface ProductCategory {
   updatedAt: string;
 }
 
+export interface ProductAddedImage extends Product {
+  image: {};
+}
+export type ProductEdit = Omit<ProductAddedImage, 'createdAt' | 'updatedAt' | 'imageUrl'>;
+
+export interface ProductStateType {
+  name: string;
+  description: string;
+  price: number;
+  productId?: string;
+  workspaceId: string | undefined;
+  productCategoryId: string;
+}
+
+export interface ProductActionType {
+  type: string;
+  payload: any;
+}
+
 export interface Workspace {
   name: string;
   description: string;

@@ -1,4 +1,17 @@
-import { Order, OrderProduct, OrderProductBase, OrderStatus, PaginationResponse, Product, ProductCategory, User, UserRole, Workspace, WorkspaceImage } from '.';
+import {
+  Order,
+  OrderProduct,
+  OrderProductBase,
+  OrderStatus,
+  PaginationResponse,
+  Product,
+  ProductCategory,
+  ProductEdit,
+  User,
+  UserRole,
+  Workspace,
+  WorkspaceImage,
+} from '.';
 
 export const defaultCategoryValue: ProductCategory = {
   id: 0,
@@ -84,6 +97,25 @@ export const defaultProductValue: Product = {
   createdAt: '',
   updatedAt: '',
   productCategory: defaultCategoryValue,
+};
+
+export const defaultProductEditValue: ProductEdit = {
+  name: '',
+  description: '',
+  price: 0,
+  id: 0,
+  isSellable: true,
+  image: {
+    url: '',
+    file: null,
+  },
+  productCategory: {
+    id: 0,
+    name: '',
+    index: 0,
+    createdAt: '',
+    updatedAt: '',
+  },
 };
 
 export const defaultUserValue: User = {
