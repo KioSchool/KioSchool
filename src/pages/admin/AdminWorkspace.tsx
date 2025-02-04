@@ -9,9 +9,9 @@ import AppFooter from '@components/common/footer/AppFooter';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import PreviewContainer from '@components/common/container/PreviewContainer';
 import { Color } from '@resources/colors';
-import OrderManageContent from '@components/admin/workspace/OrderManageContent';
-import ProductManageContent from '@components/admin/workspace/ProductManageContent';
-import WorkspaceManageContent from '@components/admin/workspace/WorkspaceManageContent';
+import OrderRouteButtons from '@components/admin/workspace/OrderRouteButtons';
+import ProductRouteButtons from '@components/admin/workspace/ProductRouteButtons';
+import WorkspaceRouteButtons from '@components/admin/workspace/WorkspaceRouteButtons';
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -61,9 +61,9 @@ function AdminWorkspace() {
             <PreviewContent src={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=1&preview=true`} />
           </PreviewContainer>
           <RouteContainer>
-            <OrderManageContent />
-            <ProductManageContent />
-            <WorkspaceManageContent />
+            <OrderRouteButtons />
+            <ProductRouteButtons />
+            <WorkspaceRouteButtons />
           </RouteContainer>
         </ContentContainer>
         <AppFooter />
