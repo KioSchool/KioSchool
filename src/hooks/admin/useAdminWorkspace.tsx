@@ -43,15 +43,34 @@ function useAdminWorkspace() {
         description,
         notice,
       })
-      .then((res) => setAdminWorkspace(res.data))
+      .then((res) => {
+        setAdminWorkspace(res.data);
+        navigate(`/admin/workspace/${workspaceId}`);
+      })
       .catch((error) => {
         alert(error.response.data.message);
       });
   };
 
-  const updateWorkspaceImage = (workspaceId: number, imageIds: Array<number>, imageFiles: Array<string>) => {
+  const createFormData = (parameter: any, files: Array<File | null>) => {
+    const data = new FormData();
+    data.append('body', new Blob([JSON.stringify(parameter)], { type: 'application/json' }));
+    files.forEach((file) => {
+      if (file) {
+        data.append('imageFiles', file, file.name);
+      }
+    });
+
+    return data;
+  };
+
+  const updateWorkspaceImage = (workspaceId: number, imageIds: Array<number | null>, imageFiles: Array<File | null>) => {
+    console.log(`imagIds: ${imageIds}, imageFiles: ${imageFiles}`);
+    console.log(imageFiles);
+    const data = createFormData({ workspaceId, imageIds }, imageFiles);
+
     adminApi
-      .put<Workspace>('/workspace/image', { body: { workspaceId, imageIds }, imageFiles })
+      .put<Workspace>('/workspace/image', data)
       .then((res) => setAdminWorkspace(res.data))
       .catch((error) => {
         alert(error.response.data.message);
