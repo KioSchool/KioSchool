@@ -43,7 +43,10 @@ function useAdminWorkspace() {
         description,
         notice,
       })
-      .then((res) => setAdminWorkspace(res.data))
+      .then((res) => {
+        setAdminWorkspace(res.data);
+        navigate(`/admin/workspace/${workspaceId}`);
+      })
       .catch((error) => {
         alert(error.response.data.message);
       });
