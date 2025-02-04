@@ -1,9 +1,6 @@
 import { atom } from 'recoil';
 import { EmailDomain, Order, OrderProductBase, PaginationResponse, Product, ProductCategory, User, Workspace } from '@@types/index';
-import { defaultPaginationValue } from '@@types/PaginationType';
-import { defaultWorkspaceValue } from '@@types/WorkspaceType';
-import { defaultUserValue } from '@@types/UserType';
-import { defaultUserOrderValue } from '@@types/OrderType';
+import { defaultPaginationValue, defaultWorkspaceValue, defaultUserValue, defaultUserOrderValue } from '@@types/defaultValues';
 
 export const ordersAtom = atom<Order[]>({
   key: 'ordersAtom',

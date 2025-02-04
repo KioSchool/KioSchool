@@ -1,5 +1,5 @@
 import { PaginationResponse, User } from '@@types/index';
-import { defaultPaginationValue } from '@@types/PaginationType';
+import { defaultPaginationValue } from '@@types/defaultValues';
 import useApi from '@hooks/useApi';
 
 interface FetchAllUsersParamsType {

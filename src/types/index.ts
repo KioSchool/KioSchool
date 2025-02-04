@@ -53,7 +53,7 @@ export interface Workspace {
   owner: User;
   products: Array<Product>;
   productCategories: Array<ProductCategory>;
-  images: Array<Image>;
+  images: Array<WorkspaceImage>;
   notice: string;
   tableCount: number;
   id: number;
@@ -61,7 +61,7 @@ export interface Workspace {
   updatedAt: string;
 }
 
-export interface Image {
+export interface WorkspaceImage {
   url: string;
   id: number;
   createdAt: string;
