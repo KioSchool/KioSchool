@@ -14,7 +14,7 @@ const Container = styled.div`
 
 const TitleContainer = styled.div`
   width: 300px;
-  height: 50px;
+  height: 35px;
 `;
 
 const ButtonContainer = styled.div`
@@ -34,7 +34,7 @@ function OrderManageContent() {
   return (
     <Container>
       <TitleContainer>
-        <AppLabel size={25} style={{ color: '#5C5C5C', fontWeight: 600 }}>
+        <AppLabel size={22} style={{ color: '#5C5C5C', fontWeight: 600 }}>
           주문 관리
         </AppLabel>
       </TitleContainer>

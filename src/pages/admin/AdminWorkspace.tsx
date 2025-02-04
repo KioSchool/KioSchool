@@ -35,7 +35,7 @@ const RouteContainer = styled.div`
   height: 670px;
   border-radius: 10px;
   background-color: ${Color.LIGHT_GREY};
-  ${colFlex({ justify: 'center', align: 'center' })}
+  ${colFlex({ justify: 'space-evenly', align: 'center' })}
 `;
 
 function AdminWorkspace() {
