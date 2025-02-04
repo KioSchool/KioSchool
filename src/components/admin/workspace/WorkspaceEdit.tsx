@@ -45,7 +45,7 @@ const TitleInput = styled.input`
 
 const ImageContainer = styled.div`
   width: 100%;
-  height: 200px;
+  height: 150px;
   padding: 10px 0;
   border-top: 1px solid ${Color.HEAVY_GREY};
   ${rowFlex({ justify: 'center', align: 'center' })}
@@ -64,7 +64,7 @@ const ImageInputContainer = styled.div`
 `;
 
 const ImageInput = styled.input`
-  width: 260px;
+  width: 270px;
   height: 100%;
   border-radius: 10px;
   border: none;
