@@ -1,8 +1,10 @@
-export const expandButtonStyle = `
+import { css } from '@emotion/react';
+
+export const expandButtonStyle = (props: { scaleSize?: string }) => css`
   cursor: pointer;
   transition: transform 0.1s ease;
 
   &:hover {
-    transform: scale(1.1);
+    transform: scale(${props.scaleSize || '1.1'});
   }
 `;

@@ -3,6 +3,7 @@ import AppLabel from '../label/AppLabel';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import { Color } from '@resources/colors';
+import { expandButtonStyle } from '@styles/buttonStyles';
 
 const Container = styled.div<{ src?: string }>`
   width: 230px;
@@ -11,14 +12,11 @@ const Container = styled.div<{ src?: string }>`
   border-radius: 10px;
   box-shadow: 0px 3px 15px 0px rgba(0, 0, 0, 0.06);
   ${colFlex({ justify: 'end' })}
-  cursor: pointer;
 
+  ${expandButtonStyle({ scaleSize: '1.03' })}
+  
   & * {
     cursor: pointer;
-  }
-
-  &:hover {
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, ${Color.KIO_ORANGE} 120%), url(${({ src }) => src});
   }
 `;
 
@@ -41,7 +39,7 @@ function RouterButton({ name, path, imageSrc }: Props) {
   return (
     <Container src={imageSrc} onClick={() => appendPath(path)}>
       <TitleContainer>
-        <AppLabel color={Color.WHITE} size={18} style={{ textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)' }}>
+        <AppLabel color={Color.WHITE} size={20} style={{ textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)', fontWeight: 600 }}>
           {name}
         </AppLabel>
       </TitleContainer>
