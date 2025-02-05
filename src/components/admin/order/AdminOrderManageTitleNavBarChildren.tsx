@@ -5,6 +5,7 @@ import { rowFlex } from '@styles/flexStyles';
 interface Props {
   tableCount: number;
   handleTableCount: (tableNo: number) => void;
+  downloadQrCode: () => void;
 }
 
 const ButtonContainer = styled.div`
@@ -12,7 +13,7 @@ const ButtonContainer = styled.div`
   ${rowFlex({ align: 'center' })}
 `;
 
-function AdminTableCountTitleNavBarChildren({ handleTableCount, tableCount }: Props) {
+function AdminTableCountTitleNavBarChildren({ handleTableCount, downloadQrCode, tableCount }: Props) {
   return (
     <ButtonContainer className={'button-container'}>
       <RoundedAppButton
@@ -30,6 +31,7 @@ function AdminTableCountTitleNavBarChildren({ handleTableCount, tableCount }: Pr
       >
         테이블 삭제
       </RoundedAppButton>
+      <RoundedAppButton onClick={downloadQrCode}>QR코드 전체 다운로드</RoundedAppButton>
     </ButtonContainer>
   );
 }
