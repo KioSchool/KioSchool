@@ -10,8 +10,8 @@ import { Color } from '@resources/colors';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { adminWorkspaceAtom } from '@recoils/atoms';
-import { toPng } from 'html-to-image';
 import PreviewContainer from '@components/common/container/PreviewContainer';
+import { toPng } from 'html-to-image';
 
 const Container = styled.div`
   width: 100vw;
@@ -37,27 +37,25 @@ const QRCodeContainer = styled.div`
   height: 700px;
   overflow: auto;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  padding: 10px;
-`;
-
-const QRCodeCardContainer = styled.div`
-  gap: 10px;
-  width: 200px;
-  height: 230px;
-  border-radius: 20px;
-  padding: 10px;
-  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.1);
-  ${colFlex({ align: 'center' })}
+  gap: 20px;
+  padding: 10px 20px;
 `;
 
 const QRCodeCard = styled.div`
+  ${colFlex({ align: 'center' })}
   background: ${Color.WHITE};
   gap: 10px;
   width: 200px;
-  height: 230px;
   border-radius: 20px;
-  ${colFlex({ align: 'center' })}
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  box-sizing: border-box;
+`;
+
+const QRCodeImage = styled(QRCodeCanvas)`
+  width: 150px;
+  height: 150px;
+  cursor: pointer;
 `;
 
 const TableLink = styled.a`
@@ -66,16 +64,6 @@ const TableLink = styled.a`
   padding: 5px 10px;
   background: ${Color.KIO_ORANGE};
   border-radius: 10px;
-`;
-
-const QRCodeDownloadButton = styled.label`
-  width: 100px;
-  height: 30px;
-  border: 1px solid ${Color.KIO_ORANGE};
-  border-radius: 10px;
-  cursor: pointer;
-  user-select: none;
-  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 function AdminTableCount() {
@@ -141,15 +129,12 @@ function AdminTableCount() {
           </PreviewContainer>
           <QRCodeContainer className={'qrcode-container'}>
             {Array.from({ length: workspace.tableCount }, (_, index) => (
-              <QRCodeCardContainer key={index}>
-                <QRCodeCard className={'qrcode-card'} ref={(el) => (QRCodeRefs.current[index + 1] = el)}>
-                  <TableLink href={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${index + 1}`} target={'_blank'}>
-                    {index + 1}번 테이블
-                  </TableLink>
-                  <QRCodeCanvas value={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${index + 1}`} size={150} />
-                </QRCodeCard>
-                <QRCodeDownloadButton onClick={() => downloadQrCode(index + 1)}>다운로드</QRCodeDownloadButton>
-              </QRCodeCardContainer>
+              <QRCodeCard key={index} className={'qrcode-card'} ref={(el) => (QRCodeRefs.current[index + 1] = el)}>
+                <TableLink href={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${index + 1}`} target={'_blank'}>
+                  {index + 1}번 테이블
+                </TableLink>
+                <QRCodeImage value={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${index + 1}`} onClick={() => downloadQrCode(index + 1)} />
+              </QRCodeCard>
             ))}
           </QRCodeContainer>
         </ContentContainer>
