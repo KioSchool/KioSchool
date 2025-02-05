@@ -46,6 +46,7 @@ const QRCodeCard = styled.div`
   background: ${Color.WHITE};
   gap: 10px;
   width: 200px;
+  height: 200px;
   border-radius: 20px;
   box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.1);
   padding: 10px;
