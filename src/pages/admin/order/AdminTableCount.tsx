@@ -72,6 +72,7 @@ function AdminTableCount() {
   const setAdminWorkspace = useSetRecoilState(adminWorkspaceAtom);
   const workspace = useRecoilValue(adminWorkspaceAtom);
   const QRCodeRefs = useRef<{ [key: number]: HTMLDivElement | null }>([]);
+  const QRCodeContainerRef = useRef<HTMLDivElement | null>(null);
 
   const [debouncedId, setDebouncedId] = useState<NodeJS.Timeout>();
   const baseUrl = `${location.protocol}//${location.host}`;
@@ -88,6 +89,25 @@ function AdminTableCount() {
     }, 300);
 
     setDebouncedId(delayDebouncedId);
+  };
+
+  const dowloadAllQrCode = () => {
+    const qrCodeContainer = QRCodeContainerRef.current;
+    if (!qrCodeContainer) {
+      alert('다운로드 오류가 발생했습니다!');
+      return;
+    }
+
+    const originalHeight = qrCodeContainer.style.height;
+    qrCodeContainer.style.height = 'auto';
+
+    toPng(qrCodeContainer).then((dataUrl) => {
+      const link = document.createElement('a');
+      link.download = `${workspace.name} QR코드.png`;
+      link.href = dataUrl;
+      link.click();
+      qrCodeContainer.style.height = originalHeight;
+    });
   };
 
   const downloadQrCode = (tableNo: number) => {
@@ -118,7 +138,9 @@ function AdminTableCount() {
       useScroll={true}
       titleNavBarProps={{
         title: '테이블 개수 관리',
-        children: <AdminTableCountTitleNavBarChildren handleTableCount={handleTableCount} tableCount={workspace.tableCount} />,
+        children: (
+          <AdminTableCountTitleNavBarChildren handleTableCount={handleTableCount} downloadQrCode={dowloadAllQrCode} tableCount={workspace.tableCount} />
+        ),
       }}
     >
       <Container className={'admin-order-manage-container'}>
@@ -127,7 +149,7 @@ function AdminTableCount() {
           <PreviewContainer>
             <PreviewContent src={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=1&preview=true`} />
           </PreviewContainer>
-          <QRCodeContainer className={'qrcode-container'}>
+          <QRCodeContainer className={'qrcode-container'} ref={QRCodeContainerRef}>
             {Array.from({ length: workspace.tableCount }, (_, index) => (
               <QRCodeCard key={index} className={'qrcode-card'} ref={(el) => (QRCodeRefs.current[index + 1] = el)}>
                 <TableLink href={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${index + 1}`} target={'_blank'}>
