@@ -12,6 +12,7 @@ const ImageInput = styled.img`
   border: none;
   background: ${Color.LIGHT_GREY};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
+  object-fit: cover;
   cursor: pointer;
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
