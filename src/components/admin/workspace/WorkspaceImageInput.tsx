@@ -44,23 +44,18 @@ function WorkspaceImageInput({ images, handleImageClick }: WorkspaceImageInputPr
   const validImages = images.filter((img): img is WorkspaceImage => img !== null);
   const dummyLength = maxImageInputSize - validImages.length;
 
-  const plusDummyInput = (
-    <ImageDummyInput onClick={() => handleImageClick(validImages.length)}>
-      <PlusIcon />
-    </ImageDummyInput>
-  );
-  const dummyInput = <ImageDummyInput />;
-
-  const DummyInputs = () => {
+  const renderDummyInputs = () => {
     const dummyArray = [];
-
     for (let i = 0; i < dummyLength; i++) {
-      if (i == 0) {
-        dummyArray.push(plusDummyInput);
-        continue;
+      if (i === 0) {
+        dummyArray.push(
+          <ImageDummyInput key={`dummy-${validImages.length}`} onClick={() => handleImageClick(validImages.length)}>
+            <PlusIcon />
+          </ImageDummyInput>,
+        );
+      } else {
+        dummyArray.push(<ImageDummyInput key={`dummy-${validImages.length + i}`} />);
       }
-
-      dummyArray.push(dummyInput);
     }
 
     return dummyArray;
@@ -71,7 +66,7 @@ function WorkspaceImageInput({ images, handleImageClick }: WorkspaceImageInputPr
       {validImages.map((image, index) => (
         <ImageInput key={image.id} src={image.url} onClick={() => handleImageClick(index)} />
       ))}
-      {DummyInputs()}
+      {renderDummyInputs()}
     </>
   );
 }
