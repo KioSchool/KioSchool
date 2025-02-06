@@ -12,6 +12,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { WorkspaceImage } from '@@types/index';
 import PlusIconSvg from '@resources/svg/PlusIconSvg';
 import { expandButtonStyle } from '@styles/buttonStyles';
+import { removeAndPushNull } from '@utils/workspaceEdit';
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -185,21 +186,12 @@ function WorkspaceEdit() {
 
   const handleImageClick = (index: number) => {
     if (displayImages[index]) {
-      if (window.confirm('정말 삭제하겠습니까?')) {
-        setDisplayImages((prevImages) => {
-          const newArray = [...prevImages];
-          newArray.splice(index, 1);
-          newArray.push(null);
-          return newArray;
-        });
-
-        setSelectedImages((prevImages) => {
-          const newArray = [...prevImages];
-          newArray.splice(index, 1);
-          newArray.push(null);
-          return newArray;
-        });
+      if (!window.confirm('정말 삭제하겠습니까?')) {
+        return;
       }
+
+      setDisplayImages((prevImages) => removeAndPushNull(prevImages, index));
+      setSelectedImages((prevImages) => removeAndPushNull(prevImages, index));
     } else {
       setSelectedImageIndex(index);
       fileInputRef.current?.click();
