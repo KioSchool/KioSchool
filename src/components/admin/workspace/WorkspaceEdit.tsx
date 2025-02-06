@@ -13,6 +13,19 @@ import { WorkspaceImage } from '@@types/index';
 import { removeAndPushNull } from '@utils/workspaceEdit';
 import WorkspaceImageInput from './WorkspaceImageInput';
 
+const textAreaStyle = `
+  border-radius: 10px;
+  border: none;
+  background: ${Color.LIGHT_GREY};
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
+  padding: 10px;
+  
+  &:focus {
+    outline: none;
+    border: 1px solid ${Color.KIO_ORANGE};
+  }
+`;
+
 const ContentContainer = styled.div`
   width: 100%;
   height: 100%;
@@ -34,16 +47,8 @@ const TitleLabelContainer = styled.div`
 const TitleInput = styled.input`
   width: 85%;
   height: 65%;
-  border-radius: 10px;
-  border: none;
-  background: ${Color.LIGHT_GREY};
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
-  ${colFlex({ justify: 'start', align: 'center' })}
+  ${textAreaStyle}
   padding: 0 10px;
-  &:focus {
-    outline: none;
-    border: 1px solid ${Color.KIO_ORANGE};
-  }
 `;
 
 const ImageContainer = styled.div`
@@ -83,15 +88,7 @@ const DescriptionLabelContainer = styled.div`
 const DescriptionInput = styled.textarea`
   width: 833px;
   height: 130px;
-  border-radius: 10px;
-  border: none;
-  background: ${Color.LIGHT_GREY};
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
-  padding: 10px;
-  &:focus {
-    outline: none;
-    border: 1px solid ${Color.KIO_ORANGE};
-  }
+  ${textAreaStyle}
 `;
 
 const NoticeContainer = styled.div`
@@ -112,15 +109,7 @@ const NoticeLabelContainer = styled.div`
 const NoticeInput = styled.textarea`
   width: 833px;
   height: 130px;
-  border-radius: 10px;
-  border: none;
-  background: ${Color.LIGHT_GREY};
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
-  padding: 10px;
-  &:focus {
-    outline: none;
-    border: 1px solid ${Color.KIO_ORANGE};
-  }
+  ${textAreaStyle}
 `;
 
 const SubmitButtonContainer = styled.div`
