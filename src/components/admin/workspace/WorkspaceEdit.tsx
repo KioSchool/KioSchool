@@ -188,13 +188,15 @@ function WorkspaceEdit() {
       if (window.confirm('정말 삭제하겠습니까?')) {
         setDisplayImages((prevImages) => {
           const newArray = [...prevImages];
-          newArray[index] = null;
+          newArray.splice(index, 1);
+          newArray.push(null);
           return newArray;
         });
 
         setSelectedImages((prevImages) => {
           const newArray = [...prevImages];
-          newArray[index] = null;
+          newArray.splice(index, 1);
+          newArray.push(null);
           return newArray;
         });
       }
@@ -215,6 +217,23 @@ function WorkspaceEdit() {
         newArray[index] = file;
         return newArray;
       });
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setDisplayImages((prevImages) => {
+          const newArray = [...prevImages];
+          const newImage = {
+            id: Math.random(),
+            url: String(reader.result),
+            createdAt: '',
+            updatedAt: '',
+          };
+          newArray[index] = newImage;
+          return newArray;
+        });
+      };
+      reader.readAsDataURL(file);
+      setSelectedImageIndex(null);
     }
   };
 
@@ -225,7 +244,7 @@ function WorkspaceEdit() {
     const imageFiles: Array<File | null> = [];
 
     for (let i = 0; i < 3; i++) {
-      const existingImage: WorkspaceImage | null = displayImages?.[i] || null;
+      const existingImage: WorkspaceImage | { id: number; url: string; createdAt: string; updatedAt: string } | null = displayImages?.[i] || null;
 
       imageIds.push(existingImage ? existingImage.id : null);
       if (newImages[i]) {
