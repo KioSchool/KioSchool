@@ -10,7 +10,7 @@ import { adminWorkspaceAtom } from '@recoils/atoms';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { WorkspaceImage } from '@@types/index';
-import { removeAndPushNull } from '@utils/workspaceEdit';
+import { getImageInfo, initWorkspaceImages, removeAndPushNull } from '@utils/workspaceEdit';
 import WorkspaceImageInput from './WorkspaceImageInput';
 
 const textAreaStyle = `
@@ -19,7 +19,7 @@ const textAreaStyle = `
   background: ${Color.LIGHT_GREY};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
   padding: 10px;
-  
+
   &:focus {
     outline: none;
     border: 1px solid ${Color.KIO_ORANGE};
@@ -132,13 +132,7 @@ function WorkspaceEdit() {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
   const [selectedImages, setSelectedImages] = useState<(File | null)[]>([null, null, null]);
-  const [displayImages, setDisplayImages] = useState<(WorkspaceImage | null)[]>(() => {
-    const images: Array<WorkspaceImage | null> = [...workspace.images];
-    while (images.length < 3) {
-      images.push(null);
-    }
-    return images;
-  });
+  const [displayImages, setDisplayImages] = useState<(WorkspaceImage | null)[]>(() => initWorkspaceImages(workspace.images));
 
   useEffect(() => {
     fetchWorkspace(workspaceId);
@@ -184,27 +178,10 @@ function WorkspaceEdit() {
           return newArray;
         });
       };
+
       reader.readAsDataURL(file);
       setSelectedImageIndex(null);
     }
-  };
-
-  const getImageInfo = () => {
-    const newImages = [...selectedImages];
-
-    const imageIds: Array<number | null> = [];
-    const imageFiles: Array<File | null> = [];
-
-    for (let i = 0; i < 3; i++) {
-      const existingImage: WorkspaceImage | { id: number; url: string; createdAt: string; updatedAt: string } | null = displayImages?.[i] || null;
-
-      imageIds.push(existingImage ? existingImage.id : null);
-      if (newImages[i]) {
-        imageFiles.push(newImages[i]);
-      }
-    }
-
-    return { imageIds, imageFiles };
   };
 
   const handleSubmit = () => {
@@ -223,7 +200,7 @@ function WorkspaceEdit() {
 
     updateWorkspaceInfo(Number(workspaceId), title, description, notice);
 
-    const { imageIds, imageFiles } = getImageInfo();
+    const { imageIds, imageFiles } = getImageInfo(selectedImages, displayImages);
     updateWorkspaceImage(Number(workspaceId), imageIds, imageFiles);
   };
 
