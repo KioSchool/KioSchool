@@ -30,6 +30,7 @@ const ImageDummyInput = styled.div`
 const PlusIcon = styled(PlusIconSvg)`
   width: 30px;
   height: 30px;
+  color: ${Color.GREY};
   ${expandButtonStyle};
 `;
 
@@ -39,17 +40,38 @@ interface WorkspaceImageInputProps {
 }
 
 function WorkspaceImageInput({ images, handleImageClick }: WorkspaceImageInputProps) {
+  const maxImageInputSize = 3;
+  const validImages = images.filter((img): img is WorkspaceImage => img !== null);
+  const dummyLength = maxImageInputSize - validImages.length;
+
+  const plusDummyInput = (
+    <ImageDummyInput onClick={() => handleImageClick(validImages.length)}>
+      <PlusIcon />
+    </ImageDummyInput>
+  );
+  const dummyInput = <ImageDummyInput />;
+
+  const DummyInputs = () => {
+    const dummyArray = [];
+
+    for (let i = 0; i < dummyLength; i++) {
+      if (i == 0) {
+        dummyArray.push(plusDummyInput);
+        continue;
+      }
+
+      dummyArray.push(dummyInput);
+    }
+
+    return dummyArray;
+  };
+
   return (
     <>
-      {images.map((image, index) =>
-        image ? (
-          <ImageInput key={image.id} src={image.url} onClick={() => handleImageClick(index)} />
-        ) : (
-          <ImageDummyInput key={`${index}-dummy`} onClick={() => handleImageClick(index)}>
-            <PlusIcon />
-          </ImageDummyInput>
-        ),
-      )}
+      {validImages.map((image, index) => (
+        <ImageInput key={image.id} src={image.url} onClick={() => handleImageClick(index)} />
+      ))}
+      {DummyInputs()}
     </>
   );
 }
