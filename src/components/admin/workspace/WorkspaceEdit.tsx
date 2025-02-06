@@ -66,19 +66,15 @@ const ImageInputContainer = styled.div`
   ${rowFlex({ justify: 'space-between', align: 'start' })}
 `;
 
-const ImageInput = styled.input`
-  width: 270px;
+const ImageInput = styled.img`
+  width: 260px;
   height: 100%;
   border-radius: 10px;
   border: none;
   background: ${Color.LIGHT_GREY};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
+  cursor: pointer;
   ${rowFlex({ justify: 'center', align: 'center' })}
-
-  &:focus {
-    outline: none;
-    border: 1px solid ${Color.KIO_ORANGE};
-  }
 `;
 
 const ImageDummyInput = styled.div`
@@ -95,7 +91,7 @@ const ImageDummyInput = styled.div`
 const PlusIcon = styled(PlusIconSvg)`
   width: 30px;
   height: 30px;
-  ${expandButtonStyle}
+  ${expandButtonStyle};
 `;
 
 const DescriptionContainer = styled.div`
