@@ -15,12 +15,12 @@ const BaseImageStyle = css`
   background: ${Color.LIGHT_GREY};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
   ${rowFlex({ justify: 'center', align: 'center' })}
-  cursor: pointer;
 `;
 
 const ImageInput = styled.img`
   object-fit: cover;
   ${BaseImageStyle}
+  ${expandButtonStyle({ scaleSize: '1.03' })};
 `;
 
 const ImageDummyInput = styled.div`
@@ -71,8 +71,8 @@ function WorkspaceImageInput({ images, handleImageClick }: WorkspaceImageInputPr
     const dummies = [];
     for (let i = 0; i < dummyLength; i++) {
       dummies.push(
-        <ImageDummyInput key={`dummy-${validImagesCount + i}`} onClick={() => i === 0 && handleImageClick(validImagesCount)}>
-          {i === 0 && <PlusIcon />}
+        <ImageDummyInput key={`dummy-${validImagesCount + i}`}>
+          {i === 0 && <PlusIcon onClick={() => i === 0 && handleImageClick(validImagesCount)} />}
         </ImageDummyInput>,
       );
     }
