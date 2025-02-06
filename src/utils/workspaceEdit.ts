@@ -15,18 +15,29 @@ export const initWorkspaceImages = (workspaceImages: Array<WorkspaceImage | null
   return images;
 };
 
-export const getImageInfo = (selectedImages: Array<File | null>, displayImages: Array<WorkspaceImage | null>) => {
-  const newImages = [...selectedImages];
-
+export const getImageInfo = (displayImages: Array<WorkspaceImage | File | null>) => {
+  // Initialize arrays to hold IDs and files.
+  // Here, we’re filling in a placeholder (null) if no valid value is present.
   const imageIds: Array<number | null> = [];
   const imageFiles: Array<File | null> = [];
 
+  // Loop through the first three images.
   for (let i = 0; i < 3; i++) {
-    const existingImage: WorkspaceImage | { id: number; url: string; createdAt: string; updatedAt: string } | null = displayImages?.[i] || null;
+    const item = displayImages[i] ?? null;
 
-    imageIds.push(existingImage ? existingImage.id : null);
-    if (newImages[i]) {
-      imageFiles.push(newImages[i]);
+    if (item instanceof File) {
+      // If the item is a File, push the file and push null for the id.
+      imageFiles.push(item);
+      imageIds.push(null);
+    } else if (item !== null) {
+      // If the item is not null and not a File, assume it’s a WorkspaceImage.
+      // (If you have more types, you may need to adjust the type guard accordingly.)
+      imageIds.push(item.id);
+      imageFiles.push(null);
+    } else {
+      // If the item is null, push nulls in both arrays.
+      imageIds.push(null);
+      imageFiles.push(null);
     }
   }
 

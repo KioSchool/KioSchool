@@ -131,8 +131,7 @@ function WorkspaceEdit() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
-  const [selectedImages, setSelectedImages] = useState<(File | null)[]>([null, null, null]);
-  const [displayImages, setDisplayImages] = useState<(WorkspaceImage | null)[]>(() => initWorkspaceImages(workspace.images));
+  const [displayImages, setDisplayImages] = useState<(WorkspaceImage | File | null)[]>(() => initWorkspaceImages(workspace.images));
 
   useEffect(() => {
     fetchWorkspace(workspaceId);
@@ -145,7 +144,6 @@ function WorkspaceEdit() {
       }
 
       setDisplayImages((prevImages) => removeAndPushNull(prevImages, index));
-      setSelectedImages((prevImages) => removeAndPushNull(prevImages, index));
     } else {
       setSelectedImageIndex(index);
       fileInputRef.current?.click();
@@ -158,28 +156,11 @@ function WorkspaceEdit() {
     if (file && selectedImageIndex !== null) {
       const index = selectedImageIndex;
 
-      setSelectedImages((prevImages) => {
+      setDisplayImages((prevImages) => {
         const newArray = [...prevImages];
         newArray[index] = file;
         return newArray;
       });
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setDisplayImages((prevImages) => {
-          const newArray = [...prevImages];
-          const newImage = {
-            id: Math.random(),
-            url: String(reader.result),
-            createdAt: '',
-            updatedAt: '',
-          };
-          newArray[index] = newImage;
-          return newArray;
-        });
-      };
-
-      reader.readAsDataURL(file);
     }
   };
 
@@ -197,7 +178,7 @@ function WorkspaceEdit() {
       return;
     }
 
-    const { imageIds, imageFiles } = getImageInfo(selectedImages, displayImages);
+    const { imageIds, imageFiles } = getImageInfo(displayImages);
     updateWorkspaceInfoAndImage(Number(workspaceId), title, description, notice, imageIds, imageFiles);
   };
 
