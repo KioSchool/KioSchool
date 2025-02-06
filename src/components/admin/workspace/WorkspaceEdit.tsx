@@ -121,7 +121,7 @@ const SubmitButtonContainer = styled.div`
 function WorkspaceEdit() {
   const navigate = useNavigate();
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchWorkspace, updateWorkspaceInfo, updateWorkspaceImage } = useAdminWorkspace();
+  const { fetchWorkspace, updateWorkspaceInfoAndImage } = useAdminWorkspace();
   const workspace = useRecoilValue(adminWorkspaceAtom);
 
   const titleRef = useRef<HTMLInputElement>(null);
@@ -152,7 +152,7 @@ function WorkspaceEdit() {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAddNewImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
     if (file && selectedImageIndex !== null) {
@@ -180,7 +180,6 @@ function WorkspaceEdit() {
       };
 
       reader.readAsDataURL(file);
-      setSelectedImageIndex(null);
     }
   };
 
@@ -198,10 +197,8 @@ function WorkspaceEdit() {
       return;
     }
 
-    updateWorkspaceInfo(Number(workspaceId), title, description, notice);
-
     const { imageIds, imageFiles } = getImageInfo(selectedImages, displayImages);
-    updateWorkspaceImage(Number(workspaceId), imageIds, imageFiles);
+    updateWorkspaceInfoAndImage(Number(workspaceId), title, description, notice, imageIds, imageFiles);
   };
 
   return (
@@ -244,7 +241,7 @@ function WorkspaceEdit() {
         <SubmitButtonContainer>
           <RoundedAppButton onClick={handleSubmit}>수정 완료</RoundedAppButton>
         </SubmitButtonContainer>
-        <input type="file" accept="image/*" style={{ display: 'none' }} ref={fileInputRef} onChange={handleFileChange} />
+        <input type="file" accept="image/*" style={{ display: 'none' }} ref={fileInputRef} onChange={handleAddNewImage} />
       </ContentContainer>
     </AppContainer>
   );

@@ -36,20 +36,12 @@ function useAdminWorkspace() {
   };
 
   const updateWorkspaceInfo = (workspaceId: number, name: string, description: string, notice?: string) => {
-    adminApi
-      .put<Workspace>('/workspace/info', {
-        workspaceId,
-        name,
-        description,
-        notice,
-      })
-      .then((res) => {
-        setAdminWorkspace(res.data);
-        navigate(`/admin/workspace/${workspaceId}`);
-      })
-      .catch((error) => {
-        alert(error.response.data.message);
-      });
+    return adminApi.put<Workspace>('/workspace/info', {
+      workspaceId,
+      name,
+      description,
+      notice,
+    });
   };
 
   const createFormData = (parameter: any, files: Array<File | null>) => {
@@ -68,15 +60,28 @@ function useAdminWorkspace() {
   const updateWorkspaceImage = (workspaceId: number, imageIds: Array<number | null>, imageFiles: Array<File | null>) => {
     const data = createFormData({ workspaceId, imageIds }, imageFiles);
 
-    adminApi
-      .put<Workspace>('/workspace/image', data)
-      .then((res) => setAdminWorkspace(res.data))
+    return adminApi.put<Workspace>('/workspace/image', data);
+  };
+
+  const updateWorkspaceInfoAndImage = (
+    workspaceId: number,
+    name: string,
+    description: string,
+    notice: string | undefined,
+    imageIds: Array<number | null>,
+    imageFiles: Array<File | null>,
+  ) => {
+    Promise.all([updateWorkspaceInfo(workspaceId, name, description, notice), updateWorkspaceImage(workspaceId, imageIds, imageFiles)])
+      .then(([infoResponse]) => {
+        setAdminWorkspace(infoResponse.data);
+        navigate(`/admin/workspace/${workspaceId}`);
+      })
       .catch((error) => {
-        alert(error.response.data.message);
+        console.error(error);
       });
   };
 
-  return { fetchWorkspace, updateWorkspaceTableCount, updateWorkspaceInfo, updateWorkspaceImage };
+  return { fetchWorkspace, updateWorkspaceTableCount, updateWorkspaceInfoAndImage };
 }
 
 export default useAdminWorkspace;
