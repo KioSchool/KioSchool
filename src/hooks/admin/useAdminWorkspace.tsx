@@ -77,7 +77,7 @@ function useAdminWorkspace() {
         navigate(`/admin/workspace/${workspaceId}`);
       })
       .catch((error) => {
-        console.error(error);
+        alert(error.response.data.message);
       });
   };
 
