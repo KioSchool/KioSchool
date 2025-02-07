@@ -11,7 +11,7 @@ import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { WorkspaceImage } from '@@types/index';
 import { extractImageIdsAndFiles, initWorkspaceImages, removeAndPushNull } from '@utils/workspaceEdit';
-import WorkspaceImageInput from '../../components/admin/workspace/WorkspaceImageInput';
+import WorkspaceImageInput from '@components/admin/workspace/WorkspaceImageInput';
 
 const textAreaStyle = `
   border-radius: 10px;
