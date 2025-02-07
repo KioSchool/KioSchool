@@ -1,10 +1,10 @@
 import { WorkspaceImage } from '@@types/index';
 
 export const removeAndPushNull = <T>(array: (T | null)[], index: number): (T | null)[] => {
-  const newArray = [...array];
-  newArray.splice(index, 1);
-  newArray.push(null);
-  return newArray;
+  const updatedItems = [...array];
+  updatedItems.splice(index, 1);
+  updatedItems.push(null);
+  return updatedItems;
 };
 
 export const initWorkspaceImages = (workspaceImages: Array<WorkspaceImage | null>) => {
@@ -15,18 +15,20 @@ export const initWorkspaceImages = (workspaceImages: Array<WorkspaceImage | null
   return images;
 };
 
-export const getImageInfo = (displayImages: Array<WorkspaceImage | File | null>) => {
+export const extractImageIdsAndFiles = (displayImages: Array<WorkspaceImage | File | null>) => {
   const imageIds: Array<number | null> = [];
   const imageFiles: Array<File | null> = [];
 
   for (let i = 0; i < 3; i++) {
-    const item = displayImages[i] ?? null;
+    const image = displayImages[i] ?? null;
 
-    if (item instanceof File) {
-      imageFiles.push(item);
+    const isFile = image instanceof File;
+
+    if (isFile) {
       imageIds.push(null);
-    } else if (item !== null) {
-      imageIds.push(item.id);
+      imageFiles.push(image);
+    } else if (image) {
+      imageIds.push(image.id);
       imageFiles.push(null);
     } else {
       imageIds.push(null);
