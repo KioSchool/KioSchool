@@ -71,7 +71,10 @@ function useAdminWorkspace() {
     imageIds: Array<number | null>,
     imageFiles: Array<File | null>,
   ) => {
-    Promise.all([updateWorkspaceInfo(workspaceId, name, description, notice), updateWorkspaceImage(workspaceId, imageIds, imageFiles)])
+    const updateWorkspaceInfoResult = updateWorkspaceInfo(workspaceId, name, description, notice);
+    const updateWorkspaceImageResult = updateWorkspaceImage(workspaceId, imageIds, imageFiles);
+
+    Promise.all([updateWorkspaceInfoResult, updateWorkspaceImageResult])
       .then(([infoResponse]) => {
         setAdminWorkspace(infoResponse.data);
         navigate(`/admin/workspace/${workspaceId}`);
