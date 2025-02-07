@@ -11,7 +11,7 @@ import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { WorkspaceImage } from '@@types/index';
 import { extractImageIdsAndFiles, initWorkspaceImages, removeAndPushNull } from '@utils/workspaceEdit';
-import WorkspaceImageInput from './WorkspaceImageInput';
+import WorkspaceImageInput from '../../components/admin/workspace/WorkspaceImageInput';
 
 const textAreaStyle = `
   border-radius: 10px;
@@ -119,7 +119,7 @@ const SubmitButtonContainer = styled.div`
   ${rowFlex({ justify: 'end', align: 'center' })}
 `;
 
-function WorkspaceEdit() {
+function AdminWorkspaceEdit() {
   const navigate = useNavigate();
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchWorkspace, updateWorkspaceInfoAndImage } = useAdminWorkspace();
@@ -226,4 +226,4 @@ function WorkspaceEdit() {
   );
 }
 
-export default WorkspaceEdit;
+export default AdminWorkspaceEdit;
