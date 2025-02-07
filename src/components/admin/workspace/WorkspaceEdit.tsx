@@ -10,7 +10,7 @@ import { adminWorkspaceAtom } from '@recoils/atoms';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { WorkspaceImage } from '@@types/index';
-import { getImageInfo, initWorkspaceImages, removeAndPushNull } from '@utils/workspaceEdit';
+import { extractImageIdsAndFiles, initWorkspaceImages, removeAndPushNull } from '@utils/workspaceEdit';
 import WorkspaceImageInput from './WorkspaceImageInput';
 
 const textAreaStyle = `
@@ -154,12 +154,10 @@ function WorkspaceEdit() {
     const file = e.target.files?.[0];
 
     if (file && selectedImageIndex !== null) {
-      const index = selectedImageIndex;
-
       setDisplayImages((prevImages) => {
-        const newArray = [...prevImages];
-        newArray[index] = file;
-        return newArray;
+        const updatedImages = [...prevImages];
+        updatedImages[selectedImageIndex] = file;
+        return updatedImages;
       });
     }
   };
@@ -178,7 +176,7 @@ function WorkspaceEdit() {
       return;
     }
 
-    const { imageIds, imageFiles } = getImageInfo(displayImages);
+    const { imageIds, imageFiles } = extractImageIdsAndFiles(displayImages);
     updateWorkspaceInfoAndImage(Number(workspaceId), title, description, notice, imageIds, imageFiles);
   };
 
