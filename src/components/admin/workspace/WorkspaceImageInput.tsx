@@ -17,21 +17,21 @@ const BaseImageStyle = css`
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
-const ImageInput = styled.img`
+const ImageContent = styled.img`
   object-fit: cover;
   ${BaseImageStyle}
   ${expandButtonStyle({ scaleSize: '1.03' })};
 `;
 
-const ImageDummyInput = styled.div`
+const DummyContent = styled.div`
   ${BaseImageStyle}
+  cursor: pointer;
 `;
 
 const PlusIcon = styled(PlusIconSvg)`
   width: 30px;
   height: 30px;
   color: ${Color.GREY};
-  ${expandButtonStyle};
 `;
 
 interface WorkspaceImageInputProps {
@@ -40,7 +40,7 @@ interface WorkspaceImageInputProps {
 }
 
 function WorkspaceImageInput({ images, handleImageClick }: WorkspaceImageInputProps) {
-  const [previews, setPreviews] = useState<(string | null)[]>([]);
+  const [previewURLs, setPreviewURLs] = useState<(string | null)[]>([]);
 
   useEffect(() => {
     const objectURLs: string[] = [];
@@ -56,7 +56,7 @@ function WorkspaceImageInput({ images, handleImageClick }: WorkspaceImageInputPr
       return null;
     });
 
-    setPreviews(newPreviews);
+    setPreviewURLs(newPreviews);
 
     return () => {
       objectURLs.forEach((url) => URL.revokeObjectURL(url));
@@ -71,17 +71,17 @@ function WorkspaceImageInput({ images, handleImageClick }: WorkspaceImageInputPr
     const dummies = [];
     for (let i = 0; i < dummyLength; i++) {
       dummies.push(
-        <ImageDummyInput key={`dummy-${validImagesCount + i}`}>
-          {i === 0 && <PlusIcon onClick={() => i === 0 && handleImageClick(validImagesCount)} />}
-        </ImageDummyInput>,
+        <DummyContent key={`dummy-${validImagesCount + i}`} onClick={() => i === 0 && handleImageClick(validImagesCount)}>
+          {i === 0 && <PlusIcon />}
+        </DummyContent>,
       );
     }
     return dummies;
-  }, [dummyLength, validImagesCount, handleImageClick]);
+  }, [validImagesCount]);
 
   return (
     <>
-      {previews.map((url, index) => (url ? <ImageInput key={index} src={url} onClick={() => handleImageClick(index)} /> : null))}
+      {previewURLs.map((url, index) => (url ? <ImageContent key={index} src={url} onClick={() => handleImageClick(index)} /> : null))}
       {dummyInputs}
     </>
   );
