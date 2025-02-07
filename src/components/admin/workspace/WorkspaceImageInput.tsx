@@ -5,7 +5,7 @@ import { Color } from '@resources/colors';
 import PlusIconSvg from '@resources/svg/PlusIconSvg';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { rowFlex } from '@styles/flexStyles';
-import { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, forwardRef } from 'react';
 
 const BaseImageStyle = css`
   width: 260px;
@@ -20,7 +20,7 @@ const BaseImageStyle = css`
 const ImageContent = styled.img`
   object-fit: cover;
   ${BaseImageStyle}
-  ${expandButtonStyle({ scaleSize: '1.03' })};
+  ${expandButtonStyle({ scaleSize: '1.03' })}
 `;
 
 const DummyContent = styled.div`
@@ -34,12 +34,17 @@ const PlusIcon = styled(PlusIconSvg)`
   color: ${Color.GREY};
 `;
 
+const HiddenInput = styled.input`
+  display: none;
+`;
+
 interface WorkspaceImageInputProps {
   images: Array<WorkspaceImage | File | null>;
   handleImageClick: (index: number) => void;
+  handleAddNewImage: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function WorkspaceImageInput({ images, handleImageClick }: WorkspaceImageInputProps) {
+const WorkspaceImageInput = forwardRef<HTMLInputElement, WorkspaceImageInputProps>(({ images, handleImageClick, handleAddNewImage }, ref) => {
   const [previewURLs, setPreviewURLs] = useState<(string | null)[]>([]);
 
   useEffect(() => {
@@ -77,14 +82,15 @@ function WorkspaceImageInput({ images, handleImageClick }: WorkspaceImageInputPr
       );
     }
     return dummies;
-  }, [validImagesCount]);
+  }, [validImagesCount, dummyLength, handleImageClick]);
 
   return (
     <>
+      <HiddenInput type="file" accept="image/*" ref={ref} onChange={handleAddNewImage} />
       {previewURLs.map((url, index) => (url ? <ImageContent key={index} src={url} onClick={() => handleImageClick(index)} /> : null))}
       {dummyInputs}
     </>
   );
-}
+});
 
 export default WorkspaceImageInput;

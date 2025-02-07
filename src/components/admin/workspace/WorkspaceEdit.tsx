@@ -19,6 +19,7 @@ const textAreaStyle = `
   background: ${Color.LIGHT_GREY};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
   padding: 10px;
+  resize: none;
 
   &:focus {
     outline: none;
@@ -202,7 +203,7 @@ function WorkspaceEdit() {
             <AppLabel size={20}>대표 사진</AppLabel>
           </ImageLabelContainer>
           <ImageInputContainer>
-            <WorkspaceImageInput images={displayImages} handleImageClick={handleImageClick} />
+            <WorkspaceImageInput images={displayImages} handleImageClick={handleImageClick} ref={fileInputRef} handleAddNewImage={handleAddNewImage} />
           </ImageInputContainer>
         </ImageContainer>
         <DescriptionContainer>
@@ -220,7 +221,6 @@ function WorkspaceEdit() {
         <SubmitButtonContainer>
           <RoundedAppButton onClick={handleSubmit}>수정 완료</RoundedAppButton>
         </SubmitButtonContainer>
-        <input type="file" accept="image/*" style={{ display: 'none' }} ref={fileInputRef} onChange={handleAddNewImage} />
       </ContentContainer>
     </AppContainer>
   );
