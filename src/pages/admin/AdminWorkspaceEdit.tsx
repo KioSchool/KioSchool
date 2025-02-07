@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import RoundedAppButton from '@components/common/button/RoundedAppButton';
@@ -9,6 +9,23 @@ import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { adminWorkspaceAtom } from '@recoils/atoms';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { WorkspaceImage } from '@@types/index';
+import { extractImageIdsAndFiles, initWorkspaceImages, removeAndPushNull } from '@utils/workspaceEdit';
+import WorkspaceImageInput from '@components/admin/workspace/WorkspaceImageInput';
+
+const textAreaStyle = `
+  border-radius: 10px;
+  border: none;
+  background: ${Color.LIGHT_GREY};
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
+  padding: 10px;
+  resize: none;
+
+  &:focus {
+    outline: none;
+    border: 1px solid ${Color.KIO_ORANGE};
+  }
+`;
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -31,16 +48,8 @@ const TitleLabelContainer = styled.div`
 const TitleInput = styled.input`
   width: 85%;
   height: 65%;
-  border-radius: 10px;
-  border: none;
-  background: ${Color.LIGHT_GREY};
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
-  ${colFlex({ justify: 'start', align: 'center' })}
+  ${textAreaStyle}
   padding: 0 10px;
-  &:focus {
-    outline: none;
-    border: 1px solid ${Color.KIO_ORANGE};
-  }
 `;
 
 const ImageContainer = styled.div`
@@ -63,21 +72,6 @@ const ImageInputContainer = styled.div`
   ${rowFlex({ justify: 'space-between', align: 'start' })}
 `;
 
-const ImageInput = styled.input`
-  width: 270px;
-  height: 100%;
-  border-radius: 10px;
-  border: none;
-  background: ${Color.LIGHT_GREY};
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
-  ${rowFlex({ justify: 'center', align: 'center' })}
-
-  &:focus {
-    outline: none;
-    border: 1px solid ${Color.KIO_ORANGE};
-  }
-`;
-
 const DescriptionContainer = styled.div`
   width: 100%;
   height: 150px;
@@ -95,15 +89,7 @@ const DescriptionLabelContainer = styled.div`
 const DescriptionInput = styled.textarea`
   width: 833px;
   height: 130px;
-  border-radius: 10px;
-  border: none;
-  background: ${Color.LIGHT_GREY};
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
-  padding: 10px;
-  &:focus {
-    outline: none;
-    border: 1px solid ${Color.KIO_ORANGE};
-  }
+  ${textAreaStyle}
 `;
 
 const NoticeContainer = styled.div`
@@ -124,15 +110,7 @@ const NoticeLabelContainer = styled.div`
 const NoticeInput = styled.textarea`
   width: 833px;
   height: 130px;
-  border-radius: 10px;
-  border: none;
-  background: ${Color.LIGHT_GREY};
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
-  padding: 10px;
-  &:focus {
-    outline: none;
-    border: 1px solid ${Color.KIO_ORANGE};
-  }
+  ${textAreaStyle}
 `;
 
 const SubmitButtonContainer = styled.div`
@@ -141,22 +119,49 @@ const SubmitButtonContainer = styled.div`
   ${rowFlex({ justify: 'end', align: 'center' })}
 `;
 
-function WorkspaceEdit() {
+function AdminWorkspaceEdit() {
   const navigate = useNavigate();
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchWorkspace, updateWorkspaceInfo } = useAdminWorkspace();
+  const { fetchWorkspace, updateWorkspaceInfoAndImage } = useAdminWorkspace();
   const workspace = useRecoilValue(adminWorkspaceAtom);
 
   const titleRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const noticeRef = useRef<HTMLTextAreaElement>(null);
-  const imageFileRef1 = useRef<HTMLInputElement>(null);
-  const imageFileRef2 = useRef<HTMLInputElement>(null);
-  const imageFileRef3 = useRef<HTMLInputElement>(null);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+
+  const [displayImages, setDisplayImages] = useState<(WorkspaceImage | File | null)[]>(() => initWorkspaceImages(workspace.images));
 
   useEffect(() => {
     fetchWorkspace(workspaceId);
   }, []);
+
+  const handleImageClick = (index: number) => {
+    if (displayImages[index]) {
+      if (!window.confirm('정말 삭제하겠습니까?')) {
+        return;
+      }
+
+      setDisplayImages((prevImages) => removeAndPushNull(prevImages, index));
+    } else {
+      setSelectedImageIndex(index);
+      fileInputRef.current?.click();
+    }
+  };
+
+  const handleAddNewImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (file && selectedImageIndex !== null) {
+      setDisplayImages((prevImages) => {
+        const updatedImages = [...prevImages];
+        updatedImages[selectedImageIndex] = file;
+        return updatedImages;
+      });
+    }
+  };
 
   const handleSubmit = () => {
     const title = titleRef.current?.value;
@@ -172,7 +177,8 @@ function WorkspaceEdit() {
       return;
     }
 
-    updateWorkspaceInfo(Number(workspaceId), title, description, notice);
+    const { imageIds, imageFiles } = extractImageIdsAndFiles(displayImages);
+    updateWorkspaceInfoAndImage(Number(workspaceId), title, description, notice, imageIds, imageFiles);
   };
 
   return (
@@ -197,9 +203,7 @@ function WorkspaceEdit() {
             <AppLabel size={20}>대표 사진</AppLabel>
           </ImageLabelContainer>
           <ImageInputContainer>
-            <ImageInput type="file" ref={imageFileRef1} />
-            <ImageInput type="file" ref={imageFileRef2} />
-            <ImageInput type="file" ref={imageFileRef3} />
+            <WorkspaceImageInput images={displayImages} handleImageClick={handleImageClick} ref={fileInputRef} handleAddNewImage={handleAddNewImage} />
           </ImageInputContainer>
         </ImageContainer>
         <DescriptionContainer>
@@ -222,4 +226,4 @@ function WorkspaceEdit() {
   );
 }
 
-export default WorkspaceEdit;
+export default AdminWorkspaceEdit;

@@ -6,7 +6,7 @@ const PlusIconSvg = (props: PlusIconSvgProps) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={51} height={51} viewBox="0 0 51 51" fill="none" {...props}>
       <g filter="url(#filter0_d_1357_1404)">
-        <path d="M25.5 10.2L25.5 40.8M40.8 25.4999L10.2 25.5" stroke="white" strokeWidth="2" strokeLinecap="round" />
+        <path d="M25.5 10.2L25.5 40.8M40.8 25.4999L10.2 25.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
       </g>
       <defs>
         <filter id="filter0_d_1357_1404" x="-6" y="-4" width="63" height="63" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">

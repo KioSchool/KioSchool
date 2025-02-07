@@ -5,13 +5,13 @@ import { useRecoilValue } from 'recoil';
 import { adminWorkspaceAtom } from '@recoils/atoms';
 import styled from '@emotion/styled';
 import AppContainer from '@components/common/container/AppContainer';
-import AppFooter from '@components/common/footer/AppFooter';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import PreviewContainer from '@components/common/container/PreviewContainer';
 import { Color } from '@resources/colors';
 import OrderRouteButtons from '@components/admin/workspace/OrderRouteButtons';
 import ProductRouteButtons from '@components/admin/workspace/ProductRouteButtons';
 import WorkspaceRouteButtons from '@components/admin/workspace/WorkspaceRouteButtons';
+import AppFooter from '@components/common/footer/AppFooter';
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -32,7 +32,7 @@ const PreviewContent = styled.iframe`
 
 const RouteContainer = styled.div`
   width: 800px;
-  height: 670px;
+  height: 80%;
   border-radius: 10px;
   background-color: ${Color.LIGHT_GREY};
   ${colFlex({ justify: 'space-evenly', align: 'center' })}
@@ -57,7 +57,7 @@ function AdminWorkspace() {
     >
       <>
         <ContentContainer>
-          <PreviewContainer>
+          <PreviewContainer width={300} height={600}>
             <PreviewContent src={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=1&preview=true`} />
           </PreviewContainer>
           <RouteContainer>

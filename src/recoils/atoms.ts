@@ -1,6 +1,7 @@
 import { atom } from 'recoil';
 import { EmailDomain, Order, OrderProductBase, PaginationResponse, Product, ProductCategory, User, Workspace } from '@@types/index';
 import { defaultPaginationValue, defaultWorkspaceValue, defaultUserValue, defaultUserOrderValue } from '@@types/defaultValues';
+import { recoilPersist } from 'recoil-persist';
 
 export const ordersAtom = atom<Order[]>({
   key: 'ordersAtom',
@@ -22,9 +23,15 @@ export const categoriesAtom = atom<ProductCategory[]>({
   default: [],
 });
 
+const { persistAtom } = recoilPersist({
+  key: 'workspace-atom',
+  storage: localStorage,
+});
+
 export const adminWorkspaceAtom = atom<Workspace>({
   key: 'adminWorkspaceAtom',
   default: defaultWorkspaceValue,
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const userWorkspaceAtom = atom<Workspace>({
