@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo } from 'react';
 import { Order } from '@@types/index';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
@@ -11,8 +11,8 @@ import { useParams } from 'react-router-dom';
 import RollBackSvg from '@resources/svg/RollBackSvg';
 import OrderDetailModalButton from '@components/admin/order/modal/OrderDetailModalButton';
 import OrderItemList from '@components/admin/order/OrderItemList';
-import { extractMinFromDate } from '@utils/FormatDate';
 import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
+import useDelayTime from '@hooks/useDelayTime';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -76,18 +76,7 @@ const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => 
 function PaidOrderCard({ order }: OrderCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { serveOrder, refundOrder } = useAdminOrder(workspaceId);
-
-  const [orderDelayTime, setOrderDelayTime] = useState<number>(extractMinFromDate(order.createdAt));
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const updatedDelayTime = extractMinFromDate(order.createdAt);
-
-      setOrderDelayTime((prevDelayTime) => (prevDelayTime !== updatedDelayTime ? updatedDelayTime : prevDelayTime));
-    }, 10000);
-
-    return () => clearInterval(interval);
-  }, []);
+  const { delayMinutes } = useDelayTime({ date: order.createdAt });
 
   const checkClickHandler = () => {
     serveOrder(order.id);
@@ -106,7 +95,7 @@ function PaidOrderCard({ order }: OrderCardProps) {
               <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>
                 {`테이블 ${order.tableNumber}`}
               </AppLabel>
-              <AppLabel color={Color.BLACK} size={13}>{`${orderDelayTime}분 전 주문`}</AppLabel>
+              <AppLabel color={Color.BLACK} size={13}>{`${delayMinutes}분 전 주문`}</AppLabel>
             </TitleContainer>
             <OrderDetailModalButton order={order} />
           </HeaderContainer>
