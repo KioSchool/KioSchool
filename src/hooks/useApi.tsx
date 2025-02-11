@@ -14,6 +14,8 @@ function useApi() {
       setIsLoading(true);
     }, 500);
 
+    console.log('test');
+
     map.set(key, timeOutId);
   };
 
