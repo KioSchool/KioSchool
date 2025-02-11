@@ -32,8 +32,8 @@ function WorkspaceManageContent() {
   return (
     <Container>
       <TitleContainer>
-        <AppLabel size={22} color={Color.GREY} style={{ fontWeight: 600 }}>
-          주문 관리
+        <AppLabel size={19} color={Color.GREY} style={{ fontWeight: 600 }}>
+          주점 관리
         </AppLabel>
       </TitleContainer>
       <ButtonContainer>
