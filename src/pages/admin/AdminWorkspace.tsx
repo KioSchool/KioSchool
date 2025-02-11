@@ -15,7 +15,7 @@ import AppFooter from '@components/common/footer/AppFooter';
 
 const ContentContainer = styled.div`
   width: 100%;
-  ${rowFlex({ justify: 'center', align: 'center' })}
+  ${rowFlex({ justify: 'center', align: 'start' })}
   gap: 80px;
 `;
 
