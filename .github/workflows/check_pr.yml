@@ -1,4 +1,4 @@
-name: Check Prettier
+name: Check PR
 on:
   pull_request:
     branches:
@@ -34,3 +34,13 @@ jobs:
 
       - name: Check prettier
         run: yarn prettier --check src/*.{ts,tsx}
+
+  check-pr-title:
+    name: Check PR title
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check PR title
+        uses: Slashgear/action-check-pr-title@v4.3.0
+        with:
+          regexp: '(EDIT|FIX|ADD|REFACTOR|REMOVE|DEPLOY|REVERT) - .+'
