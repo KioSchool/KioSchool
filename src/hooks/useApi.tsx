@@ -26,7 +26,7 @@ function useApi() {
   };
 
   const adminApi = axios.create({
-    baseURL: process.env.REACT_APP_ENVIRONMENT == 'development' ? 'http://localhost:8080/admin' : 'https://kio-school.fly.dev/admin',
+    baseURL: process.env.REACT_APP_ENVIRONMENT == 'development' ? 'http://localhost:8080/admin' : 'https://api.kio-school.com/admin',
     withCredentials: true,
     signal: controller.signal,
   });
@@ -61,14 +61,14 @@ function useApi() {
   });
 
   const userApi = axios.create({
-    baseURL: process.env.REACT_APP_ENVIRONMENT == 'development' ? 'http://localhost:8080' : 'https://kio-school.fly.dev',
+    baseURL: process.env.REACT_APP_ENVIRONMENT == 'development' ? 'http://localhost:8080' : 'https://api.kio-school.com',
     withCredentials: true,
   });
   userApi.interceptors.request.use(commonRequestInterceptor, commonErrorInterceptor);
   userApi.interceptors.response.use(commonResponseInterceptor, commonErrorInterceptor);
 
   const superAdminApi = axios.create({
-    baseURL: process.env.REACT_APP_ENVIRONMENT == 'development' ? 'http://localhost:8080/super-admin' : 'https://kio-school.fly.dev/super-admin',
+    baseURL: process.env.REACT_APP_ENVIRONMENT == 'development' ? 'http://localhost:8080/super-admin' : 'https://api.kio-school.com/super-admin',
     withCredentials: true,
     signal: controller.signal,
   });
