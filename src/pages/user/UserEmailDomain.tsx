@@ -6,7 +6,7 @@ import Pagination from '@components/common/pagination/Pagination';
 import AppContainer from '@components/common/container/AppContainer';
 import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
 import { EmailDomain, PaginationResponse } from '@@types/index';
-import { defaultPaginationValue } from '@@types/PaginationType';
+import { defaultPaginationValue } from '@@types/defaultValues';
 import useEmail from '@hooks/user/useEmail';
 import EmailDomainContent from '@components/user/email/EmailDomainContent';
 import { useSearchParams } from 'react-router-dom';

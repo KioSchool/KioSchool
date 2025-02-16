@@ -6,13 +6,14 @@ import { categoriesAtom } from '@recoils/atoms';
 import React, { ChangeEvent, useEffect, useReducer } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { initState, ProductActionType, ProductEdit, ProductStateType } from '@@types/ProductTypes';
 import SelectWithLabel from '@components/common/select/SelectWithLabelProps';
 import AppImageInput from '@components/common/input/AppImageInput';
 import useConfirm from '@hooks/useConfirm';
 import { colFlex } from '@styles/flexStyles';
 import RoundedAppButton from '@components/common/button/RoundedAppButton';
 import AppContainer from '@components/common/container/AppContainer';
+import { defaultProductEditValue } from '@@types/defaultValues';
+import { ProductActionType, ProductEdit, ProductStateType } from '@@types/index';
 
 function reducer(state: ProductEdit, action: ProductActionType) {
   switch (action.type) {
@@ -53,7 +54,7 @@ function AdminProductEdit() {
   const productId = Number(searchParams.get('productId'));
 
   const navigate = useNavigate();
-  const [productState, dispatch] = useReducer(reducer, initState);
+  const [productState, dispatch] = useReducer(reducer, defaultProductEditValue);
   const { ConfirmModal, confirm } = useConfirm({
     title: `'${productState.name}' 상품을 삭제하시겠습니까?`,
     description: '확인 후 되돌릴 수 없습니다.',

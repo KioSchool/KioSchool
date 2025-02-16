@@ -9,7 +9,7 @@ import SuperAdminUserContent from '@components/super-admin/user/SuperAdminUserCo
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
 import { PaginationResponse, User } from '@@types/index';
-import { defaultPaginationValue } from '@@types/PaginationType';
+import { defaultPaginationValue } from '@@types/defaultValues';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   height: 550px;

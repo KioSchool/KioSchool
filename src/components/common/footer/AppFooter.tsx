@@ -30,15 +30,13 @@ function AppFooter({ fixed = true }: AppFooterProps) {
   if (!fixed)
     return (
       <NonFixedContainer className={'app-footer'}>
-        <AppLabel size={16}>©건국대학교 컴퓨터공학부 학생회 ITZI</AppLabel>
-        <AppLabel size={16}>All rights reserved.</AppLabel>
+        <AppLabel size={16}>©KioSchool All rights reserved.</AppLabel>
       </NonFixedContainer>
     );
 
   return (
     <FixedContainer className={'app-footer'}>
-      <AppLabel size={16}>©건국대학교 컴퓨터공학부 학생회 ITZI</AppLabel>
-      <AppLabel size={16}>All rights reserved.</AppLabel>
+      <AppLabel size={16}>©KioSchool All rights reserved.</AppLabel>
     </FixedContainer>
   );
 }

@@ -2,7 +2,7 @@ import useApi from '@hooks/useApi';
 import { Order, OrderStatus, PaginationResponse } from '@@types/index';
 import { useSetRecoilState } from 'recoil';
 import { ordersAtom, tableOrderPaginationResponseAtom } from '@recoils/atoms';
-import { defaultPaginationValue } from '@@types/PaginationType';
+import { defaultPaginationValue } from '@@types/defaultValues';
 
 function useAdminOrder(workspaceId: string | undefined) {
   const { adminApi } = useApi();
@@ -28,14 +28,14 @@ function useAdminOrder(workspaceId: string | undefined) {
   };
 
   const payOrder = (orderId: number) => {
-    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.PAID }).then(() => {
-      fetchRealTimeOrders();
+    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.PAID }).catch((error) => {
+      console.log(error);
     });
   };
 
   const serveOrder = (orderId: number) => {
-    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.SERVED }).then(() => {
-      fetchRealTimeOrders();
+    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.SERVED }).catch((error) => {
+      console.log(error);
     });
   };
 
@@ -43,20 +43,20 @@ function useAdminOrder(workspaceId: string | undefined) {
     const userInput = confirm('정말로 주문을 취소하시겠습니까?');
     if (!userInput) return;
 
-    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.CANCELLED }).then(() => {
-      fetchRealTimeOrders();
+    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.CANCELLED }).catch((error) => {
+      console.log(error);
     });
   };
 
   const refundOrder = (orderId: number) => {
-    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.NOT_PAID }).then(() => {
-      fetchRealTimeOrders();
+    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.NOT_PAID }).catch((error) => {
+      console.log(error);
     });
   };
 
   const updateOrderProductServe = (orderProductId: number, isServed: boolean) => {
-    adminApi.post<Order>('/order/product', { workspaceId, orderProductId, isServed }).then(() => {
-      fetchRealTimeOrders();
+    adminApi.post<Order>('/order/product', { workspaceId, orderProductId, isServed }).catch((error) => {
+      console.log(error);
     });
   };
 
@@ -77,6 +77,12 @@ function useAdminOrder(workspaceId: string | undefined) {
     return response;
   };
 
+  const updateOrderProductCount = (orderProductId: number, servedCount: number) => {
+    adminApi.put('/order/product', { workspaceId, orderProductId, servedCount }).catch((error) => {
+      console.log(error);
+    });
+  };
+
   return {
     fetchAllOrders,
     payOrder,
@@ -87,6 +93,7 @@ function useAdminOrder(workspaceId: string | undefined) {
     updateOrderProductServe,
     refundOrder,
     fetchWorkspaceTable,
+    updateOrderProductCount,
   };
 }
 

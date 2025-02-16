@@ -5,7 +5,7 @@ import { isLoadingAtom } from '@recoils/atoms';
 import { rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
-  z-index: 1002;
+  z-index: 5002;
   position: fixed;
   top: 0;
   left: 0;

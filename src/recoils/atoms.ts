@@ -1,6 +1,7 @@
 import { atom } from 'recoil';
-import { EmailDomain, Order, OrderProductBase, OrderStatus, PaginationResponse, Product, ProductCategory, User, UserRole, Workspace } from '@@types/index';
-import { defaultPaginationValue } from '@@types/PaginationType';
+import { EmailDomain, Order, OrderProductBase, PaginationResponse, Product, ProductCategory, User, Workspace } from '@@types/index';
+import { defaultPaginationValue, defaultWorkspaceValue, defaultUserValue, defaultUserOrderValue } from '@@types/defaultValues';
+import { recoilPersist } from 'recoil-persist';
 
 export const ordersAtom = atom<Order[]>({
   key: 'ordersAtom',
@@ -22,79 +23,30 @@ export const categoriesAtom = atom<ProductCategory[]>({
   default: [],
 });
 
+const { persistAtom } = recoilPersist({
+  key: 'workspace-atom',
+  storage: localStorage,
+});
+
 export const adminWorkspaceAtom = atom<Workspace>({
   key: 'adminWorkspaceAtom',
-  default: {
-    name: '',
-    description: '',
-    owner: {
-      name: '',
-      email: '',
-      role: UserRole.ADMIN,
-      accountUrl: '',
-      id: 0,
-      createdAt: '',
-      updatedAt: '',
-    },
-    products: [],
-    productCategories: [],
-    id: 0,
-    createdAt: '',
-    updatedAt: '',
-    tableCount: 0,
-  },
+  default: defaultWorkspaceValue,
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const userWorkspaceAtom = atom<Workspace>({
   key: 'userWorkspaceAtom',
-  default: {
-    name: '',
-    description: '',
-    owner: {
-      name: '',
-      email: '',
-      role: UserRole.ADMIN,
-      accountUrl: '',
-      id: 0,
-      createdAt: '',
-      updatedAt: '',
-    },
-    products: [],
-    productCategories: [],
-    id: 0,
-    createdAt: '',
-    updatedAt: '',
-    tableCount: 0,
-  },
+  default: defaultWorkspaceValue,
 });
 
 export const adminUserAtom = atom<User>({
   key: 'adminUserAtom',
-  default: {
-    name: '',
-    email: '',
-    role: UserRole.ADMIN,
-    accountUrl: '',
-    id: 0,
-    createdAt: '',
-    updatedAt: '',
-  },
+  default: defaultUserValue,
 });
 
 export const userOrderAtom = atom<Order>({
   key: 'userOrderAtom',
-  default: {
-    tableNumber: 0,
-    phoneNumber: '',
-    customerName: '',
-    orderProducts: [],
-    totalPrice: 0,
-    cancelReason: '',
-    status: OrderStatus.NOT_PAID,
-    id: 0,
-    createdAt: '',
-    updatedAt: '',
-  },
+  default: defaultUserOrderValue,
 });
 
 export const orderBasketAtom = atom<OrderProductBase[]>({

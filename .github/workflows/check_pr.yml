@@ -1,4 +1,4 @@
-name: Check Prettier
+name: Check PR
 on:
   pull_request:
     branches:
@@ -19,20 +19,28 @@ jobs:
           node-version: '16.x'
           cache: 'yarn'
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "dir=$(yarn cache dir)" >>$GITHUB_OUTPUT
-
       - name: Cache node modules
         uses: actions/cache@v3
+        id: cache
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          path: '**/node_modules'
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
 
       - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install
 
       - name: Check prettier
         run: yarn prettier --check src/*.{ts,tsx}
+
+  check-pr-title:
+    name: Check PR title
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check PR title
+        uses: Slashgear/action-check-pr-title@v4.3.0
+        with:
+          regexp: '(EDIT|FIX|ADD|REFACTOR|REMOVE|DEPLOY|REVERT) - .+'

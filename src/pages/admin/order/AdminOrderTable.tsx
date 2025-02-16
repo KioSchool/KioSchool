@@ -6,7 +6,7 @@ import { adminWorkspaceAtom } from '@recoils/atoms';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 const Container = styled.div`
@@ -49,10 +49,11 @@ const TableCell = styled.div`
 `;
 
 function AdminOrderTable() {
+  const navigate = useNavigate();
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchWorkspace } = useAdminWorkspace();
   const workspace = useRecoilValue(adminWorkspaceAtom);
-  const { appendPath, replaceLastPath } = useCustomNavigate();
+  const { appendPathWithPage } = useCustomNavigate();
 
   useEffect(() => {
     fetchWorkspace(workspaceId);
@@ -61,12 +62,16 @@ function AdminOrderTable() {
   return (
     <AppContainer
       useFlex={colFlex({ justify: 'center' })}
-      titleNavBarProps={{ title: '테이블 주문 조회', subTitle: '테이블 별 주문 내역을 조회합니다.', onLeftArrowClick: () => replaceLastPath('') }}
+      titleNavBarProps={{
+        title: '테이블 주문 조회',
+        subTitle: '테이블 별 주문 내역을 조회합니다.',
+        onLeftArrowClick: () => navigate(`/admin/workspace/${workspaceId}`),
+      }}
     >
       <Container className={'admin-order-table-container'}>
         <TableListContainer tableCount={workspace.tableCount} className={'table-list-container'}>
           {Array.from({ length: workspace.tableCount }, (_, index) => (
-            <TableCell key={index} onClick={() => appendPath(`/${index + 1}`)}>
+            <TableCell key={index} onClick={() => appendPathWithPage(`/${index + 1}`)}>
               {index + 1}번
             </TableCell>
           ))}
