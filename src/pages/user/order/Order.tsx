@@ -50,11 +50,11 @@ function Order() {
   const rawProductCategories = useRecoilValue(categoriesAtom);
   const sellableProducts = workspace.products.filter((it) => it.isSellable);
 
-  const productsGroupedByCategoryId = _.groupBy<Product>(sellableProducts, (product) => product.productCategory?.id);
+  const productsByCategoryId = _.groupBy<Product>(sellableProducts, (product) => product.productCategory?.id);
 
   const productsWithCategory = rawProductCategories.map((category) => ({
     category,
-    products: productsGroupedByCategoryId[category.id] || [],
+    products: productsByCategoryId[category.id] || [],
   }));
 
   const productsMap = _.keyBy(workspace.products, 'id');
@@ -86,7 +86,7 @@ function Order() {
         <AppLabel size={'small'} color={Color.GREY}>
           {tableNo}번 테이블
         </AppLabel>
-        <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsGroupedByCategoryId} categoryRefs={categoryRefs} />
+        <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategoryId} categoryRefs={categoryRefs} />
       </Header>
       <ContentContainer className={'order-content'}>
         {productsWithCategory.map(({ category, products }) => {
@@ -97,7 +97,7 @@ function Order() {
               <AppLabel size={22}>{category.name}</AppLabel>
               {products.map((product) => {
                 const productInBasket = orderBasket.find((item) => item.productId === product.id);
-                const quantity = productInBasket ? productInBasket.quantity : 0;
+                const quantity = productInBasket?.quantity || 0;
                 return (
                   <ProductContainer key={`product${product.id}`} className="product-container">
                     <ProductCard product={product} quantity={quantity} />
@@ -109,10 +109,10 @@ function Order() {
           );
         })}
 
-        {productsGroupedByCategoryId.undefined && (
+        {productsByCategoryId.undefined && (
           <NormalCategoryProductsContainer ref={(el) => (categoryRefs.current['.'] = el)} key={`product_category_undefined`}>
             <AppLabel size={22}>기본메뉴</AppLabel>
-            {productsGroupedByCategoryId.undefined.map((product) => {
+            {productsByCategoryId.undefined.map((product) => {
               const productInBasket = orderBasket.find((item) => item.productId === product.id);
               const quantity = productInBasket ? productInBasket.quantity : 0;
               return (
