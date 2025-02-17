@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { useLocation, useNavigationType } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import './resources/pageTransition.css';
+import '@resources/css/pageTransition.css';
 
 interface AnimatedRouteProps {
   children: ReactNode;
