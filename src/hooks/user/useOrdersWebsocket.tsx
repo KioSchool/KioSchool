@@ -5,7 +5,7 @@ function useOrdersWebsocket(workspaceId: string | undefined) {
   const { fetchTodayOrders } = useAdminOrder(workspaceId);
 
   const subscribeOrders = () => {
-    const url = process.env.REACT_APP_ENVIRONMENT === 'development' ? 'ws://localhost:8080/ws' : 'wss://kio-school.fly.dev/ws';
+    const url = process.env.REACT_APP_ENVIRONMENT === 'development' ? 'ws://localhost:8080/ws' : 'wss://api.kio-school.com/ws';
     const client = new StompJs.Client({
       brokerURL: url,
       debug: (str) => {
