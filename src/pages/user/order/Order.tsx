@@ -35,6 +35,8 @@ const Header = styled.div`
 
 const CategorizedProductsContainer = styled.div``;
 
+const NormalCategoryProductsContainer = styled.div``;
+
 const ContentContainer = styled.div`
   padding: 30px;
 `;
@@ -45,11 +47,16 @@ const ProductContainer = styled.div`
 
 function Order() {
   const workspace = useRecoilValue(userWorkspaceAtom);
-  const productsByCategory = _.groupBy<Product>(
-    workspace.products.filter((it) => it.isSellable),
-    (product) => product.productCategory?.id,
-  );
   const rawProductCategories = useRecoilValue(categoriesAtom);
+  const sellableProducts = workspace.products.filter((it) => it.isSellable);
+
+  const productsGroupedByCategoryId = _.groupBy<Product>(sellableProducts, (product) => product.productCategory?.id);
+
+  const productsWithCategory = rawProductCategories.map((category) => ({
+    category,
+    products: productsGroupedByCategoryId[category.id] || [],
+  }));
+
   const productsMap = _.keyBy(workspace.products, 'id');
 
   const [searchParams] = useSearchParams();
@@ -76,17 +83,14 @@ function Order() {
     <Container className={'order-container'}>
       <Header className={'order-header'}>
         <AppLabel size={'medium'}>{workspace.name}</AppLabel>
-        <AppLabel size={'small'} style={{ color: 'gray' }}>
+        <AppLabel size={'small'} color={Color.GREY}>
           {tableNo}번 테이블
         </AppLabel>
-        <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategory} categoryRefs={categoryRefs} />
+        <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsGroupedByCategoryId} categoryRefs={categoryRefs} />
       </Header>
       <ContentContainer className={'order-content'}>
-        {Object.values(productsByCategory).map((products) => {
+        {productsWithCategory.map(({ category, products }) => {
           if (!products.length) return null;
-
-          const category = products[0]?.productCategory;
-          if (!category) return null;
 
           return (
             <CategorizedProductsContainer ref={(el) => (categoryRefs.current[category.id] = el)} key={`product_category_${category.id}`}>
@@ -94,7 +98,6 @@ function Order() {
               {products.map((product) => {
                 const productInBasket = orderBasket.find((item) => item.productId === product.id);
                 const quantity = productInBasket ? productInBasket.quantity : 0;
-
                 return (
                   <ProductContainer key={`product${product.id}`} className="product-container">
                     <ProductCard product={product} quantity={quantity} />
@@ -106,13 +109,12 @@ function Order() {
           );
         })}
 
-        {productsByCategory.undefined && (
-          <div ref={(el) => (categoryRefs.current['.'] = el)} key={`product_category_undefined`}>
+        {productsGroupedByCategoryId.undefined && (
+          <NormalCategoryProductsContainer ref={(el) => (categoryRefs.current['.'] = el)} key={`product_category_undefined`}>
             <AppLabel size={22}>기본메뉴</AppLabel>
-            {productsByCategory.undefined?.map((product) => {
+            {productsGroupedByCategoryId.undefined.map((product) => {
               const productInBasket = orderBasket.find((item) => item.productId === product.id);
               const quantity = productInBasket ? productInBasket.quantity : 0;
-
               return (
                 <ProductContainer key={`product${product.id}`} className={'product-container'}>
                   <ProductCard product={product} quantity={quantity} />
@@ -120,7 +122,7 @@ function Order() {
                 </ProductContainer>
               );
             })}
-          </div>
+          </NormalCategoryProductsContainer>
         )}
 
         <AppFooter fixed={false} />
@@ -130,7 +132,6 @@ function Order() {
         buttonLabel={`${totalAmount.toLocaleString()}원 장바구니`}
         onClick={() => {
           if (isPreview) return;
-
           navigate({
             pathname: '/order-basket',
             search: createSearchParams({
