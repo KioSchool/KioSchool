@@ -33,6 +33,8 @@ const Header = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
+const CategorizedProductsContainer = styled.div``;
+
 const ContentContainer = styled.div`
   padding: 30px;
 `;
@@ -80,16 +82,16 @@ function Order() {
         <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategory} categoryRefs={categoryRefs} />
       </Header>
       <ContentContainer className={'order-content'}>
-        {Object.values(productsByCategory).map((categoryItems) => {
-          if (!categoryItems.length) return null;
+        {Object.values(productsByCategory).map((products) => {
+          if (!products.length) return null;
 
-          const category = categoryItems[0]?.productCategory;
+          const category = products[0]?.productCategory;
           if (!category) return null;
 
           return (
-            <div ref={(el) => (categoryRefs.current[category.id] = el)} key={`product_category_${category.id}`}>
+            <CategorizedProductsContainer ref={(el) => (categoryRefs.current[category.id] = el)} key={`product_category_${category.id}`}>
               <AppLabel size={22}>{category.name}</AppLabel>
-              {categoryItems.map((product) => {
+              {products.map((product) => {
                 const productInBasket = orderBasket.find((item) => item.productId === product.id);
                 const quantity = productInBasket ? productInBasket.quantity : 0;
 
@@ -100,7 +102,7 @@ function Order() {
                   </ProductContainer>
                 );
               })}
-            </div>
+            </CategorizedProductsContainer>
           );
         })}
 
