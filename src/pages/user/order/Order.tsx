@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
@@ -33,6 +33,10 @@ const Header = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
+const CategorizedProductsContainer = styled.div``;
+
+const NormalCategoryProductsContainer = styled.div``;
+
 const ContentContainer = styled.div`
   padding: 30px;
 `;
@@ -43,14 +47,17 @@ const ProductContainer = styled.div`
 
 function Order() {
   const workspace = useRecoilValue(userWorkspaceAtom);
-  const productsByCategory = _.groupBy<Product>(
-    workspace.products.filter((it) => it.isSellable),
-    (product) => product.productCategory?.id,
-  );
   const rawProductCategories = useRecoilValue(categoriesAtom);
-  const productCategories = rawProductCategories.filter((it) => productsByCategory[it.id]);
+  const sellableProducts = workspace.products.filter((it) => it.isSellable);
+
+  const productsByCategoryId = _.groupBy<Product>(sellableProducts, (product) => product.productCategory?.id);
+
+  const productsWithCategory = rawProductCategories.map((category) => ({
+    category,
+    products: productsByCategoryId[category.id] || [],
+  }));
+
   const productsMap = _.keyBy(workspace.products, 'id');
-  const categoryMap = _.keyBy(rawProductCategories, 'id');
 
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
@@ -65,6 +72,8 @@ function Order() {
     return acc + productsMap[cur.productId].price * cur.quantity;
   }, 0);
 
+  const categoryRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
   useEffect(() => {
     fetchWorkspace(workspaceId);
     fetchCategories();
@@ -74,36 +83,48 @@ function Order() {
     <Container className={'order-container'}>
       <Header className={'order-header'}>
         <AppLabel size={'medium'}>{workspace.name}</AppLabel>
-        <AppLabel size={'small'} style={{ color: 'gray' }}>
+        <AppLabel size={'small'} color={Color.GREY}>
           {tableNo}번 테이블
         </AppLabel>
-        <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategory} />
+        <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategoryId} categoryRefs={categoryRefs} />
       </Header>
       <ContentContainer className={'order-content'}>
-        {productCategories
-          .map((it) => it.id)
-          .map((categoryId) => (
-            <div id={`product_category_${categoryId}`} key={`product_category_${categoryId}`}>
-              <AppLabel size={22}>{categoryMap[categoryId].name}</AppLabel>
-              {productsByCategory[categoryId].map((product) => (
+        {productsWithCategory.map(({ category, products }) => {
+          if (!products.length) return null;
+
+          return (
+            <CategorizedProductsContainer ref={(el) => (categoryRefs.current[category.id] = el)} key={`product_category_${category.id}`}>
+              <AppLabel size={22}>{category.name}</AppLabel>
+              {products.map((product) => {
+                const productInBasket = orderBasket.find((item) => item.productId === product.id);
+                const quantity = productInBasket?.quantity || 0;
+                return (
+                  <ProductContainer key={`product${product.id}`} className="product-container">
+                    <ProductCard product={product} quantity={quantity} />
+                    <HorizontalDivider />
+                  </ProductContainer>
+                );
+              })}
+            </CategorizedProductsContainer>
+          );
+        })}
+
+        {productsByCategoryId.undefined && (
+          <NormalCategoryProductsContainer ref={(el) => (categoryRefs.current['.'] = el)} key={`product_category_undefined`}>
+            <AppLabel size={22}>기본메뉴</AppLabel>
+            {productsByCategoryId.undefined.map((product) => {
+              const productInBasket = orderBasket.find((item) => item.productId === product.id);
+              const quantity = productInBasket?.quantity || 0;
+              return (
                 <ProductContainer key={`product${product.id}`} className={'product-container'}>
-                  <ProductCard product={product} />
+                  <ProductCard product={product} quantity={quantity} />
                   <HorizontalDivider />
                 </ProductContainer>
-              ))}
-            </div>
-          ))}
-        {productsByCategory.undefined && (
-          <div id={`product_category_undefined`} key={`product_category_undefined`}>
-            <AppLabel size={22}>기본메뉴</AppLabel>
-            {productsByCategory.undefined?.map((product) => (
-              <ProductContainer key={`product${product.id}`} className={'product-container'}>
-                <ProductCard product={product} />
-                <HorizontalDivider />
-              </ProductContainer>
-            ))}
-          </div>
+              );
+            })}
+          </NormalCategoryProductsContainer>
         )}
+
         <AppFooter fixed={false} />
       </ContentContainer>
       <OrderButton
@@ -111,7 +132,6 @@ function Order() {
         buttonLabel={`${totalAmount.toLocaleString()}원 장바구니`}
         onClick={() => {
           if (isPreview) return;
-
           navigate({
             pathname: '/order-basket',
             search: createSearchParams({
