@@ -114,7 +114,7 @@ function Order() {
             <AppLabel size={22}>기본메뉴</AppLabel>
             {productsByCategoryId.undefined.map((product) => {
               const productInBasket = orderBasket.find((item) => item.productId === product.id);
-              const quantity = productInBasket ? productInBasket.quantity : 0;
+              const quantity = productInBasket?.quantity || 0;
               return (
                 <ProductContainer key={`product${product.id}`} className={'product-container'}>
                   <ProductCard product={product} quantity={quantity} />
