@@ -7,11 +7,6 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import PlusButtonSvg from '@resources/svg/PlusButtonSvg';
 import MinusButtonSvg from '@resources/svg/MinusButtonSvg';
 
-interface ProductCardProps {
-  product: Product;
-  quantity: number;
-}
-
 const Container = styled.div`
   max-width: 100vw;
   padding: 10px;
@@ -50,15 +45,22 @@ const QuantityLabel = styled.span`
   font-size: 18px;
 `;
 
+interface ProductCardProps {
+  product: Product;
+  quantity: number;
+}
+
 function ProductCard({ product, quantity }: ProductCardProps) {
   const setOrderBasket = useSetRecoilState(orderBasketAtom);
 
   const handleAddProduct = () => {
     setOrderBasket((prev) => {
       const existingItem = prev.find((prevProduct) => prevProduct.productId === product.id);
+
       if (existingItem) {
         return prev.map((prevProduct) => (prevProduct.productId === product.id ? { ...prevProduct, quantity: prevProduct.quantity + 1 } : prevProduct));
       }
+
       return [...prev, { productId: product.id, quantity: 1 }];
     });
   };
@@ -66,9 +68,11 @@ function ProductCard({ product, quantity }: ProductCardProps) {
   const handleRemoveProduct = () => {
     setOrderBasket((prev) => {
       const existingItem = prev.find((prevProduct) => prevProduct.productId === product.id);
+
       if (existingItem && existingItem.quantity > 1) {
         return prev.map((prevProduct) => (prevProduct.productId === product.id ? { ...prevProduct, quantity: prevProduct.quantity - 1 } : prevProduct));
       }
+
       return prev.filter((prevProduct) => prevProduct.productId !== product.id);
     });
   };
