@@ -6,7 +6,7 @@ import infoMainPhoneImage from '@resources/image/infoMainPhoneImage.png';
 import InfoMainDescription from '@components/user/info/info-main/InfoMainDescription';
 
 const Container = styled.div`
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   user-select: none;
   ${rowFlex({ align: 'center', justify: 'center' })};
