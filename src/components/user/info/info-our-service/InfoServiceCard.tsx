@@ -6,12 +6,6 @@ import { lineSeedKrFont } from '@styles/fonts';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import JSX = jsx.JSX;
 
-interface InfoServiceCardProps {
-  svg: JSX.Element;
-  title: string;
-  description: string;
-}
-
 const Container = styled.div`
   width: 350px;
   height: 350px;
@@ -40,6 +34,12 @@ const Description = styled.div`
   color: #5b5b5b;
   ${lineSeedKrFont}
 `;
+
+interface InfoServiceCardProps {
+  svg: JSX.Element;
+  title: string;
+  description: string;
+}
 
 function InfoServiceCard({ svg, title, description }: InfoServiceCardProps) {
   return (
