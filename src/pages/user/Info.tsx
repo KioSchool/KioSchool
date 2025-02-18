@@ -1,6 +1,6 @@
 import { colFlex } from '@styles/flexStyles';
 import AppContainer from '@components/common/container/AppContainer';
-import InfoMain from '@components/user/info/InfoMain';
+import InfoMain from '@components/user/info/info-main/InfoMain';
 import InfoBenefit from '@components/user/info/InfoBenefit';
 import InfoStatisticAndReview from '@components/user/info/InfoStatisticAndReview';
 import InfoOurService from '@components/user/info/InfoOurService';
