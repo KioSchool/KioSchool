@@ -42,7 +42,7 @@ function OrderImageSlider({ images }: OrderImageSliderProps) {
   return (
     <Container>
       <EmblaViewport ref={emblaRef}>
-        <ImageContainer>{images.map((img, index) => (img ? <ImageContent key={index} src={img.url} alt={`Slide ${index + 1}`} /> : null))}</ImageContainer>
+        <ImageContainer>{images.map((img, index) => (img ? <ImageContent key={img.id} src={img.url} alt={`Slide ${index + 1}`} /> : null))}</ImageContainer>
       </EmblaViewport>
     </Container>
   );
