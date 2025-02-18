@@ -15,7 +15,7 @@ import useProduct from '@hooks/user/useProduct';
 import AppFooter from '@components/common/footer/AppFooter';
 import { colFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import WorkspaceImages from '@pages/user/order/WorkspaceImages';
+import OrderImageSlider from '@components/admin/order/OrderImageSlider';
 
 const Container = styled.div`
   width: 100vw;
@@ -82,7 +82,7 @@ function Order() {
   return (
     <Container className={'order-container'}>
       <Header className={'order-header'}>
-        <WorkspaceImages />
+        <OrderImageSlider images={workspace.images} />
         <AppLabel size={'medium'}>{workspace.name}</AppLabel>
         <AppLabel size={'small'} color={Color.GREY}>
           {tableNo}번 테이블
