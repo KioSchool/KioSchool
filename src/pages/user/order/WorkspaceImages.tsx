@@ -33,6 +33,7 @@ const WorkspaceImage = styled.img`
   padding-left: var(--slide-spacing);
   height: var(--slide-height);
   width: 100%;
+  height: 200px;
 `;
 
 function WorkspaceImages() {
