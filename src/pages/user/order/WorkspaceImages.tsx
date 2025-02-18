@@ -13,7 +13,7 @@ const Container = styled.div`
   margin: auto;
   --slide-height: 19rem;
   --slide-spacing: 1rem;
-  --slide-size: 70%;
+  --slide-size: 100%;
 `;
 
 const EmblaViewport = styled.div`
@@ -27,6 +27,7 @@ const ImageContainer = styled.div`
 `;
 
 const WorkspaceImage = styled.img`
+  object-fit: cover;
   transform: translate3d(0, 0, 0);
   flex: 0 0 var(--slide-size);
   padding-left: var(--slide-spacing);
@@ -40,7 +41,7 @@ function WorkspaceImages() {
   const { fetchWorkspace } = useWorkspace();
   const workspace = useRecoilValue(userWorkspaceAtom);
 
-  const [emblaRef] = useEmblaCarousel({ loop: true }, [Autoplay({ playOnInit: true, delay: 3000 })]);
+  const [emblaRef] = useEmblaCarousel({ loop: true }, [Autoplay({ playOnInit: true, delay: 3000, stopOnInteraction: false })]);
 
   useEffect(() => {
     fetchWorkspace(workspaceId);
