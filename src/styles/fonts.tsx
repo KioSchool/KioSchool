@@ -17,4 +17,11 @@ export const lineSeedKrFont = css`
     font-weight: 700;
     font-style: normal;
   }
+
+  @font-face {
+    font-family: 'LINESeedKR-Rg';
+    src: url('https://cdn.jsdelivr.net/gh/wizfile/font/LINESeedKR-Rg.eot');
+    src: url('https://cdn.jsdelivr.net/gh/wizfile/font/LINESeedKR-Rg.woff') format('woff');
+    font-style: normal;
+  }
 `;
