@@ -1,7 +1,7 @@
 import { colFlex } from '@styles/flexStyles';
 import AppContainer from '@components/common/container/AppContainer';
 import InfoMain from '@components/user/info/info-main/InfoMain';
-import InfoBenefit from '@components/user/info/InfoBenefit';
+import InfoBenefit from '@components/user/info/info-benefit/InfoBenefit';
 import InfoStatisticAndReview from '@components/user/info/InfoStatisticAndReview';
 import InfoOurService from '@components/user/info/InfoOurService';
 import InfoCreatorsWords from '@components/user/info/InfoCreatorsWords';
