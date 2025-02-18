@@ -10,7 +10,7 @@ import { rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
   max-width: 48rem;
-  margin: auto;
+  width: 100%;
   --slide-height: 19rem;
   --slide-spacing: 1rem;
   --slide-size: 100%;
