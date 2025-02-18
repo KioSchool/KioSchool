@@ -15,10 +15,11 @@ import useProduct from '@hooks/user/useProduct';
 import AppFooter from '@components/common/footer/AppFooter';
 import { colFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
+import OrderImageSlider from '@components/admin/order/OrderImageSlider';
 
 const Container = styled.div`
   width: 100vw;
-  padding: 60px 0 80px;
+  padding: 0 0 80px;
   box-sizing: border-box;
 `;
 
@@ -27,7 +28,6 @@ const Header = styled.div`
   position: sticky;
   top: 0;
   width: 100vw;
-  height: 110px;
   flex-basis: 0;
   z-index: 100;
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -82,6 +82,7 @@ function Order() {
   return (
     <Container className={'order-container'}>
       <Header className={'order-header'}>
+        <OrderImageSlider images={workspace.images} />
         <AppLabel size={'medium'}>{workspace.name}</AppLabel>
         <AppLabel size={'small'} color={Color.GREY}>
           {tableNo}번 테이블
