@@ -3,9 +3,12 @@ import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
-  width: 30px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 35px;
   height: 20px;
-  border-radius: 20px;
+  border-radius: 30px;
   background: rgba(3, 3, 3, 0.5);
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
@@ -13,6 +16,7 @@ const Container = styled.div`
 const LabelContainer = styled.div`
   font-size: 10px;
   color: ${Color.WHITE};
+  text-align: center;
 `;
 
 interface SelectedSnapDisplayProps {

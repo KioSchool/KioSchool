@@ -4,6 +4,8 @@ import Autoplay from 'embla-carousel-autoplay';
 import useEmblaCarousel from 'embla-carousel-react';
 import { rowFlex } from '@styles/flexStyles';
 import { WorkspaceImage } from '@@types/index';
+import SelectedSnapDisplay from '@components/common/slider/SliderSelectedSnapDisplay';
+import useSelectedSnapDisplay from '@hooks/useSlider';
 
 const Container = styled.div`
   max-width: 48rem;
@@ -15,6 +17,7 @@ const Container = styled.div`
 
 const EmblaViewport = styled.div`
   overflow: hidden;
+  position: relative;
 `;
 
 const ImageContainer = styled.div`
@@ -37,12 +40,14 @@ interface OrderImageSliderProps {
 }
 
 function OrderImageSlider({ images }: OrderImageSliderProps) {
-  const [emblaRef] = useEmblaCarousel({ loop: true }, [Autoplay({ playOnInit: true, delay: 3000, stopOnInteraction: false })]);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay({ playOnInit: true, delay: 3000, stopOnInteraction: false })]);
+  const { selectedSnap, snapCount } = useSelectedSnapDisplay(emblaApi);
 
   return (
     <Container>
       <EmblaViewport ref={emblaRef}>
         <ImageContainer>{images.map((img, index) => (img ? <ImageContent key={img.id} src={img.url} alt={`Slide ${index + 1}`} /> : null))}</ImageContainer>
+        <SelectedSnapDisplay selectedSnap={selectedSnap} snapCount={snapCount} />
       </EmblaViewport>
     </Container>
   );
