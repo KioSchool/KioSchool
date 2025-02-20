@@ -16,6 +16,7 @@ import AppFooter from '@components/common/footer/AppFooter';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import OrderImageSlider from '@components/admin/order/OrderImageSlider';
+import ArrowLeftSvg from '@resources/svg/ArrowLeftSvg';
 
 const Container = styled.div`
   width: 100%;
@@ -58,9 +59,37 @@ const OrderStickyNavBar = styled.div<{ isShow: boolean }>`
   transition: transform 0.1s ease-in-out;
   transform: translateY(${({ isShow }) => (isShow ? '0' : '-100%')});
   z-index: 1000;
-  ${rowFlex({ justify: 'start', align: 'center' })}
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
+const LeftContainer = styled.div`
+  padding-left: 10px;
+  width: 100px;
+  height: 100%;
+  gap: 5px;
+  ${rowFlex({ justify: 'space-evenly', align: 'center' })}
+`;
+
+const RightContainer = styled.div`
+  padding-right: 10px;
+  ${rowFlex({ align: 'center' })}
+`;
+
+const ArrowLeftButton = styled(ArrowLeftSvg)`
+  cursor: pointer;
+  transition: transform 0.1s ease;
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
+
+const ShareButton = styled(ArrowLeftSvg)`
+  cursor: pointer;
+  transition: transform 0.1s ease;
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
 function Order() {
   const workspace = useRecoilValue(userWorkspaceAtom);
   const rawProductCategories = useRecoilValue(categoriesAtom);
@@ -116,11 +145,19 @@ function Order() {
   return (
     <Container className={'order-container'}>
       <OrderStickyNavBar isShow={isShowNavBar}>
-        <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: '600' }}>
-          {workspace.name}
-        </AppLabel>
+        <LeftContainer>
+          <ArrowLeftButton />
+          <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: '600' }}>
+            {workspace.name}
+          </AppLabel>
+        </LeftContainer>
+        <RightContainer>
+          <ShareButton />
+        </RightContainer>
       </OrderStickyNavBar>
+
       <OrderImageSlider images={workspace.images} />
+
       <HeaderLabelContainer ref={headerRef}>
         <AppLabel color={Color.BLACK} size={25} style={{ fontWeight: '600' }}>
           {workspace.name}
