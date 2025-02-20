@@ -101,23 +101,6 @@ function Order() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const onClickShare = async () => {
-    if (!navigator.share) {
-      alert('이 브라우저는 Web Share API를 지원하지 않습니다. 다른 브라우저를 사용해주세요.');
-      return;
-    }
-
-    try {
-      await navigator.share({
-        title: document.title,
-        text: `키오스쿨에서 같이 주문해요!!`,
-        url: window.location.href,
-      });
-    } catch (error) {
-      alert(`공유 실패: ${error}`);
-    }
-  };
-
   return (
     <Container className={'order-container'}>
       <OrderImageSlider images={workspace.images} />
@@ -131,7 +114,7 @@ function Order() {
         </AppLabel>
       </Header>
 
-      <OrderStickyNavBar showNavBar={showNavBar} workspaceName={workspace.name} onClickShare={onClickShare} />
+      <OrderStickyNavBar showNavBar={showNavBar} workspaceName={workspace.name} />
 
       <StickyHeader>
         <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategoryId} categoryRefs={categoryRefs} />
