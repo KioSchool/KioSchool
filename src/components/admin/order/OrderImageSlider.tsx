@@ -5,7 +5,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { rowFlex } from '@styles/flexStyles';
 import { WorkspaceImage } from '@@types/index';
 import SelectedSnapDisplay from '@components/common/slider/SliderSelectedSnapDisplay';
-import useSelectedSnapDisplay from '@hooks/useSlider';
+import useSelectedSnapDisplay from '@hooks/useSelectedSnapDisplay';
 
 const Container = styled.div`
   max-width: 48rem;
