@@ -145,6 +145,22 @@ function Order() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const onClickShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: document.title,
+          text: `${workspace.name}의 ${tableNo}번 테이블에서 주문하기기`,
+          url: window.location.href,
+        });
+      } catch (error) {
+        alert(`공유 실패: ${error}`);
+      }
+    } else {
+      alert('이 브라우저는 Web Share API를 지원하지 않습니다. 다른 브라우저를 사용해주세요.');
+    }
+  };
+
   return (
     <Container className={'order-container'}>
       <OrderStickyNavBar isShow={isShowNavBar}>
@@ -155,7 +171,7 @@ function Order() {
           </AppLabel>
         </LeftContainer>
         <RightContainer>
-          <ShareButton />
+          <ShareButton onClick={onClickShare} />
         </RightContainer>
       </OrderStickyNavBar>
 
