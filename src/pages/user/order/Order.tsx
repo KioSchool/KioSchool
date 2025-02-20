@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
@@ -16,21 +16,27 @@ import AppFooter from '@components/common/footer/AppFooter';
 import { colFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import OrderImageSlider from '@components/admin/order/OrderImageSlider';
+import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
 
 const Container = styled.div`
-  width: 100vw;
-  padding: 0 0 80px;
+  width: 100%;
   box-sizing: border-box;
+  ${colFlex({ align: 'center' })}
+`;
+
+const StickyHeader = styled.div`
+  width: 100%;
+  position: sticky;
+  top: 45px;
+  background: ${Color.WHITE};
+  z-index: 1000;
 `;
 
 const Header = styled.div`
-  background: ${Color.WHITE};
-  position: sticky;
-  top: 0;
-  width: 100vw;
-  flex-basis: 0;
-  z-index: 100;
+  width: 100%;
+  height: 120px;
   ${colFlex({ justify: 'center', align: 'center' })}
+  gap: 7px;
 `;
 
 const CategorizedProductsContainer = styled.div``;
@@ -38,7 +44,7 @@ const CategorizedProductsContainer = styled.div``;
 const NormalCategoryProductsContainer = styled.div``;
 
 const ContentContainer = styled.div`
-  padding: 30px;
+  width: 100%;
 `;
 
 const ProductContainer = styled.div`
@@ -74,21 +80,46 @@ function Order() {
 
   const categoryRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
+  const headerRef = useRef<HTMLDivElement>(null);
+  const [showNavBar, setIsShowNavBar] = useState(false);
+
   useEffect(() => {
     fetchWorkspace(workspaceId);
     fetchCategories();
+
+    const handleScroll = () => {
+      if (!headerRef.current) return;
+
+      const bufferedHeight = 65;
+      const headerBottom = headerRef.current.getBoundingClientRect().bottom;
+      const isShow = headerBottom - bufferedHeight <= 0;
+
+      setIsShowNavBar(isShow);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
     <Container className={'order-container'}>
-      <Header className={'order-header'}>
-        <OrderImageSlider images={workspace.images} />
-        <AppLabel size={'medium'}>{workspace.name}</AppLabel>
-        <AppLabel size={'small'} color={Color.GREY}>
-          {tableNo}번 테이블
+      <OrderImageSlider images={workspace.images} />
+
+      <Header ref={headerRef}>
+        <AppLabel color={Color.BLACK} size={25} style={{ fontWeight: '600' }}>
+          {workspace.name}
         </AppLabel>
-        <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategoryId} categoryRefs={categoryRefs} />
+        <AppLabel size={'small'} color={Color.GREY}>
+          {workspace.description}
+        </AppLabel>
       </Header>
+
+      <OrderStickyNavBar showNavBar={showNavBar} workspaceName={workspace.name} />
+
+      <StickyHeader>
+        <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategoryId} categoryRefs={categoryRefs} />
+      </StickyHeader>
+
       <ContentContainer className={'order-content'}>
         {productsWithCategory.map(({ category, products }) => {
           if (!products.length) return null;
