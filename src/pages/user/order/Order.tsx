@@ -13,11 +13,10 @@ import _ from 'lodash';
 import OrderButton from '@components/user/order/OrderButton';
 import useProduct from '@hooks/user/useProduct';
 import AppFooter from '@components/common/footer/AppFooter';
-import { colFlex, rowFlex } from '@styles/flexStyles';
+import { colFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import OrderImageSlider from '@components/admin/order/OrderImageSlider';
-import ArrowLeftSvg from '@resources/svg/ArrowLeftSvg';
-import ShareSvg from '@resources/svg/ShareSvg';
+import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
 
 const Container = styled.div`
   width: 100%;
@@ -50,48 +49,6 @@ const ContentContainer = styled.div`
 
 const ProductContainer = styled.div`
   padding: 10px;
-`;
-
-const OrderStickyNavBar = styled.div<{ isShow: boolean }>`
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 45px;
-  background: ${Color.WHITE};
-  transition: transform 0.1s ease-in-out;
-  transform: translateY(${({ isShow }) => (isShow ? '0' : '-100%')});
-  z-index: 1000;
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
-`;
-
-const LeftContainer = styled.div`
-  padding-left: 10px;
-  width: 100px;
-  height: 100%;
-  gap: 5px;
-  ${rowFlex({ justify: 'space-evenly', align: 'center' })}
-`;
-
-const RightContainer = styled.div`
-  padding-right: 10px;
-  ${rowFlex({ align: 'center' })}
-`;
-
-const ArrowLeftButton = styled(ArrowLeftSvg)`
-  cursor: pointer;
-  fill: ${Color.BLACK};
-  transition: transform 0.1s ease;
-  &:hover {
-    transform: scale(1.1);
-  }
-`;
-
-const ShareButton = styled(ShareSvg)`
-  cursor: pointer;
-  transition: transform 0.1s ease;
-  &:hover {
-    transform: scale(1.1);
-  }
 `;
 
 function Order() {
@@ -163,18 +120,6 @@ function Order() {
 
   return (
     <Container className={'order-container'}>
-      <OrderStickyNavBar isShow={showNavBar}>
-        <LeftContainer>
-          <ArrowLeftButton />
-          <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: '600' }}>
-            {workspace.name}
-          </AppLabel>
-        </LeftContainer>
-        <RightContainer>
-          <ShareButton onClick={onClickShare} />
-        </RightContainer>
-      </OrderStickyNavBar>
-
       <OrderImageSlider images={workspace.images} />
 
       <Header ref={headerRef}>
@@ -186,9 +131,12 @@ function Order() {
         </AppLabel>
       </Header>
 
+      <OrderStickyNavBar showNavBar={showNavBar} workspaceName={workspace.name} onClickShare={onClickShare} />
+
       <StickyHeader>
         <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategoryId} categoryRefs={categoryRefs} />
       </StickyHeader>
+
       <ContentContainer className={'order-content'}>
         {productsWithCategory.map(({ category, products }) => {
           if (!products.length) return null;
