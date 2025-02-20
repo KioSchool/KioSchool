@@ -17,6 +17,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import OrderImageSlider from '@components/admin/order/OrderImageSlider';
 import ArrowLeftSvg from '@resources/svg/ArrowLeftSvg';
+import ShareSvg from '@resources/svg/ShareSvg';
 
 const Container = styled.div`
   width: 100%;
@@ -77,19 +78,21 @@ const RightContainer = styled.div`
 
 const ArrowLeftButton = styled(ArrowLeftSvg)`
   cursor: pointer;
+  fill: ${Color.BLACK};
   transition: transform 0.1s ease;
   &:hover {
     transform: scale(1.1);
   }
 `;
 
-const ShareButton = styled(ArrowLeftSvg)`
+const ShareButton = styled(ShareSvg)`
   cursor: pointer;
   transition: transform 0.1s ease;
   &:hover {
     transform: scale(1.1);
   }
 `;
+
 function Order() {
   const workspace = useRecoilValue(userWorkspaceAtom);
   const rawProductCategories = useRecoilValue(categoriesAtom);
