@@ -32,6 +32,14 @@ const Header = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
+const HeaderLabelContainer = styled.div`
+  width: 100%;
+  height: 120px;
+  ${colFlex({ justify: 'center', align: 'center' })}
+  gap: 7px;
+  border-bottom: 10px solid ${Color.LIGHT_GREY};
+`;
+
 const CategorizedProductsContainer = styled.div``;
 
 const NormalCategoryProductsContainer = styled.div``;
@@ -82,10 +90,14 @@ function Order() {
     <Container className={'order-container'}>
       <Header className={'order-header'}>
         <OrderImageSlider images={workspace.images} />
-        <AppLabel size={'medium'}>{workspace.name}</AppLabel>
-        <AppLabel size={'small'} color={Color.GREY}>
-          {tableNo}번 테이블
-        </AppLabel>
+        <HeaderLabelContainer>
+          <AppLabel color={Color.BLACK} size={25} style={{ fontWeight: '600' }}>
+            {workspace.name}
+          </AppLabel>
+          <AppLabel size={'small'} color={Color.GREY}>
+            {workspace.description}
+          </AppLabel>
+        </HeaderLabelContainer>
         <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategoryId} categoryRefs={categoryRefs} />
       </Header>
       <ContentContainer className={'order-content'}>
