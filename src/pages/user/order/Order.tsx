@@ -33,7 +33,7 @@ const StickyHeader = styled.div`
   z-index: 1000;
 `;
 
-const HeaderLabelContainer = styled.div`
+const Header = styled.div`
   width: 100%;
   height: 120px;
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -124,7 +124,7 @@ function Order() {
   const categoryRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const headerRef = useRef<HTMLDivElement>(null);
-  const [isShowNavBar, setIsShowNavBar] = useState(false);
+  const [showNavBar, setIsShowNavBar] = useState(false);
 
   useEffect(() => {
     fetchWorkspace(workspaceId);
@@ -133,13 +133,11 @@ function Order() {
     const handleScroll = () => {
       if (!headerRef.current) return;
 
+      const bufferedHeight = 65;
       const headerBottom = headerRef.current.getBoundingClientRect().bottom;
+      const isShow = headerBottom - bufferedHeight <= 0;
 
-      if (headerBottom - 65 <= 0) {
-        setIsShowNavBar(true);
-      } else {
-        setIsShowNavBar(false);
-      }
+      setIsShowNavBar(isShow);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -147,24 +145,25 @@ function Order() {
   }, []);
 
   const onClickShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: document.title,
-          text: `${workspace.name}의 ${tableNo}번 테이블에서 주문하기기`,
-          url: window.location.href,
-        });
-      } catch (error) {
-        alert(`공유 실패: ${error}`);
-      }
-    } else {
+    if (!navigator.share) {
       alert('이 브라우저는 Web Share API를 지원하지 않습니다. 다른 브라우저를 사용해주세요.');
+      return;
+    }
+
+    try {
+      await navigator.share({
+        title: document.title,
+        text: `키오스쿨에서 같이 주문해요!!`,
+        url: window.location.href,
+      });
+    } catch (error) {
+      alert(`공유 실패: ${error}`);
     }
   };
 
   return (
     <Container className={'order-container'}>
-      <OrderStickyNavBar isShow={isShowNavBar}>
+      <OrderStickyNavBar isShow={showNavBar}>
         <LeftContainer>
           <ArrowLeftButton />
           <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: '600' }}>
@@ -178,14 +177,14 @@ function Order() {
 
       <OrderImageSlider images={workspace.images} />
 
-      <HeaderLabelContainer ref={headerRef}>
+      <Header ref={headerRef}>
         <AppLabel color={Color.BLACK} size={25} style={{ fontWeight: '600' }}>
           {workspace.name}
         </AppLabel>
         <AppLabel size={'small'} color={Color.GREY}>
           {workspace.description}
         </AppLabel>
-      </HeaderLabelContainer>
+      </Header>
 
       <StickyHeader>
         <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategoryId} categoryRefs={categoryRefs} />
