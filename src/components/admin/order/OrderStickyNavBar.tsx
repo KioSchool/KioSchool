@@ -62,7 +62,7 @@ function OrderStickyNavBar({ showNavBar, workspaceName }: OrderStickyNavBarProps
 
     try {
       await navigator.share({
-        title: document.title,
+        title: workspaceName,
         text: `키오스쿨에서 같이 주문해요!!`,
         url: window.location.href,
       });
