@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
@@ -13,7 +13,7 @@ import _ from 'lodash';
 import OrderButton from '@components/user/order/OrderButton';
 import useProduct from '@hooks/user/useProduct';
 import AppFooter from '@components/common/footer/AppFooter';
-import { colFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import OrderImageSlider from '@components/admin/order/OrderImageSlider';
 
@@ -25,7 +25,7 @@ const Container = styled.div`
 const StickyHeader = styled.div`
   width: 100%;
   position: sticky;
-  top: 0;
+  top: 45px;
   background: ${Color.WHITE};
   z-index: 1000;
 `;
@@ -35,7 +35,6 @@ const HeaderLabelContainer = styled.div`
   height: 120px;
   ${colFlex({ justify: 'center', align: 'center' })}
   gap: 7px;
-  border-bottom: 10px solid ${Color.LIGHT_GREY};
 `;
 
 const CategorizedProductsContainer = styled.div``;
@@ -48,6 +47,18 @@ const ContentContainer = styled.div`
 
 const ProductContainer = styled.div`
   padding: 10px;
+`;
+
+const OrderStickyNavBar = styled.div<{ isShow: boolean }>`
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 45px;
+  background: ${Color.WHITE};
+  transition: transform 0.1s ease-in-out;
+  transform: translateY(${({ isShow }) => (isShow ? '0' : '-100%')});
+  z-index: 1000;
+  ${rowFlex({ justify: 'start', align: 'center' })}
 `;
 
 function Order() {
@@ -79,23 +90,47 @@ function Order() {
 
   const categoryRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
+  const headerRef = useRef<HTMLDivElement>(null);
+  const [isShowNavBar, setIsShowNavBar] = useState(false);
+
   useEffect(() => {
     fetchWorkspace(workspaceId);
     fetchCategories();
+
+    const handleScroll = () => {
+      if (!headerRef.current) return;
+
+      const headerBottom = headerRef.current.getBoundingClientRect().bottom;
+
+      if (headerBottom - 65 <= 0) {
+        setIsShowNavBar(true);
+      } else {
+        setIsShowNavBar(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
     <Container className={'order-container'}>
+      <OrderStickyNavBar isShow={isShowNavBar}>
+        <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: '600' }}>
+          {workspace.name}
+        </AppLabel>
+      </OrderStickyNavBar>
       <OrderImageSlider images={workspace.images} />
+      <HeaderLabelContainer ref={headerRef}>
+        <AppLabel color={Color.BLACK} size={25} style={{ fontWeight: '600' }}>
+          {workspace.name}
+        </AppLabel>
+        <AppLabel size={'small'} color={Color.GREY}>
+          {workspace.description}
+        </AppLabel>
+      </HeaderLabelContainer>
+
       <StickyHeader>
-        <HeaderLabelContainer>
-          <AppLabel color={Color.BLACK} size={25} style={{ fontWeight: '600' }}>
-            {workspace.name}
-          </AppLabel>
-          <AppLabel size={'small'} color={Color.GREY}>
-            {workspace.description}
-          </AppLabel>
-        </HeaderLabelContainer>
         <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategoryId} categoryRefs={categoryRefs} />
       </StickyHeader>
       <ContentContainer className={'order-content'}>

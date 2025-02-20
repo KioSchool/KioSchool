@@ -4,6 +4,7 @@ import AppBadge from '@components/common/badge/AppBadge';
 import { Product, ProductCategory } from '@@types/index';
 import _ from 'lodash';
 import { rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 interface CategoryBadgesContainerProps {
   productCategories: ProductCategory[];
@@ -19,6 +20,7 @@ const Container = styled.div`
   gap: 8px;
   overflow: scroll;
   ${rowFlex({ align: 'center' })}
+  border-top: 10px solid ${Color.LIGHT_GREY};
 
   &::-webkit-scrollbar {
     display: none;
