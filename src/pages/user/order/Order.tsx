@@ -18,8 +18,7 @@ import { Color } from '@resources/colors';
 import OrderImageSlider from '@components/admin/order/OrderImageSlider';
 
 const Container = styled.div`
-  width: 100vw;
-  padding: 0 0 80px;
+  width: 100%;
   box-sizing: border-box;
 `;
 
@@ -27,7 +26,7 @@ const Header = styled.div`
   background: ${Color.WHITE};
   position: sticky;
   top: 0;
-  width: 100vw;
+  width: 100%;
   flex-basis: 0;
   z-index: 100;
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -38,7 +37,7 @@ const CategorizedProductsContainer = styled.div``;
 const NormalCategoryProductsContainer = styled.div``;
 
 const ContentContainer = styled.div`
-  padding: 30px;
+  width: 100%;
 `;
 
 const ProductContainer = styled.div`
