@@ -22,6 +22,7 @@ import ShareSvg from '@resources/svg/ShareSvg';
 const Container = styled.div`
   width: 100%;
   box-sizing: border-box;
+  ${colFlex({ align: 'center' })}
 `;
 
 const StickyHeader = styled.div`
