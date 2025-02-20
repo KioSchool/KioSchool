@@ -22,14 +22,12 @@ const Container = styled.div`
   box-sizing: border-box;
 `;
 
-const Header = styled.div`
-  background: ${Color.WHITE};
+const StickyHeader = styled.div`
+  width: 100%;
   position: sticky;
   top: 0;
-  width: 100%;
-  flex-basis: 0;
-  z-index: 100;
-  ${colFlex({ justify: 'center', align: 'center' })}
+  background: ${Color.WHITE};
+  z-index: 1000;
 `;
 
 const HeaderLabelContainer = styled.div`
@@ -88,8 +86,8 @@ function Order() {
 
   return (
     <Container className={'order-container'}>
-      <Header className={'order-header'}>
-        <OrderImageSlider images={workspace.images} />
+      <OrderImageSlider images={workspace.images} />
+      <StickyHeader>
         <HeaderLabelContainer>
           <AppLabel color={Color.BLACK} size={25} style={{ fontWeight: '600' }}>
             {workspace.name}
@@ -99,7 +97,7 @@ function Order() {
           </AppLabel>
         </HeaderLabelContainer>
         <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategoryId} categoryRefs={categoryRefs} />
-      </Header>
+      </StickyHeader>
       <ContentContainer className={'order-content'}>
         {productsWithCategory.map(({ category, products }) => {
           if (!products.length) return null;
