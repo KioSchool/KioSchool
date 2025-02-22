@@ -6,18 +6,28 @@ import InfoStatisticAndReview from '@components/user/info/info-statistic-and-rev
 import InfoOurService from '@components/user/info/info-our-service/InfoOurService';
 import InfoCreatorsWords from '@components/user/info/info-creators-word/InfoCreatorsWords';
 import InfoFooter from '@components/user/info/info-footer/InfoFooter';
+import styled from '@emotion/styled';
+import infoBackground from '@resources/image/infoBackground.png';
+
+const SubContainer = styled.div`
+  width: 100%;
+  background-image: url(${infoBackground});
+  background-repeat: repeat-y;
+  background-size: 100% 100%;
+  background-position: center;
+`;
 
 function Info() {
   return (
-    <AppContainer useFlex={colFlex()} customWidth={'100%'} useScroll={true} useNavBackground={true}>
-      <>
+    <AppContainer useFlex={colFlex()} customWidth={'100%'} useScroll={true}>
+      <SubContainer>
         <InfoMain />
         <InfoBenefit />
         <InfoStatisticAndReview />
         <InfoOurService />
         <InfoCreatorsWords />
         <InfoFooter />
-      </>
+      </SubContainer>
     </AppContainer>
   );
 }
