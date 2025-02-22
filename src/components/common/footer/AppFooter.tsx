@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import { colFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 const FixedContainer = styled.div`
   z-index: 1001;
@@ -24,19 +25,24 @@ const NonFixedContainer = styled.div`
 
 interface AppFooterProps {
   fixed?: boolean;
+  color?: Color;
 }
 
-function AppFooter({ fixed = true }: AppFooterProps) {
+function AppFooter({ fixed = true, color }: AppFooterProps) {
   if (!fixed)
     return (
       <NonFixedContainer className={'app-footer'}>
-        <AppLabel size={16}>©KioSchool All rights reserved.</AppLabel>
+        <AppLabel size={16} color={color}>
+          ©KioSchool All rights reserved.
+        </AppLabel>
       </NonFixedContainer>
     );
 
   return (
     <FixedContainer className={'app-footer'}>
-      <AppLabel size={16}>©KioSchool All rights reserved.</AppLabel>
+      <AppLabel size={16} color={color}>
+        ©KioSchool All rights reserved.
+      </AppLabel>
     </FixedContainer>
   );
 }
