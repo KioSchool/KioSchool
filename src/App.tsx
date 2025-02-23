@@ -24,7 +24,7 @@ import AdminMyInfo from '@pages/admin/AdminMyInfo';
 import AdminProductCategories from '@pages/admin/AdminProductCategoires';
 import AdminTableCount from '@pages/admin/order/AdminTableCount';
 import ResetPassword from '@pages/user/ResetPassword';
-import Info from '@pages/user/Info';
+import Info from '@pages/user/info/Info';
 import SuperAdminHome from '@pages/super-admin/SuperAdminHome';
 import SuperAdminWorkspace from '@pages/super-admin/SuperAdminWorkspace';
 import SuperAdminManage from '@pages/super-admin/SuperAdminManage';
