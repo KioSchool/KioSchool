@@ -2,6 +2,7 @@ import React from 'react';
 import { colFlex } from '@styles/flexStyles';
 import styled from '@emotion/styled';
 import { lineSeedKrFont } from '@styles/fonts';
+import { tabletMediaQuery } from '@styles/globalStyles';
 
 interface InfoTitleProps {
   text: string;
@@ -21,6 +22,9 @@ const TextContainer = styled.div`
   font-weight: 700;
   text-align: center;
   ${lineSeedKrFont};
+  ${tabletMediaQuery} {
+    font-size: 18px;
+  }
 `;
 
 const HorizontalLine = styled.hr`
