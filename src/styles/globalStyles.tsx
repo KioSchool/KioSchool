@@ -10,5 +10,5 @@ export const globalStyles = css`
 `;
 
 const breakPoints = [576, 768, 992, 1200];
-export const mediaQueries = breakPoints.map((bp) => `@media (min-width: ${bp}px)`);
+export const mediaQueries = breakPoints.map((bp) => `@media (max-width: ${bp}px)`);
 export const tabletMediaQuery = mediaQueries[3];
