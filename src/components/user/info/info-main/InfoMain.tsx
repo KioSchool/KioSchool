@@ -22,7 +22,7 @@ const BackgroundContainer = styled.div`
 
 const BackgroundText = styled.div`
   font-size: 400px;
-  font-weight: 700;
+  font-weight: 900;
   width: max-content;
   box-sizing: border-box;
   white-space: nowrap;
@@ -72,10 +72,16 @@ const Image = styled.img`
   height: auto;
 `;
 
-const MainTitle = styled.div<{ color?: string }>`
+const MainDescription = styled.div`
   font-size: 60px;
   font-weight: 700;
-  color: ${(props) => props.color || Color.BLACK};
+  color: ${Color.BLACK};
+`;
+
+const MainTitle = styled.div`
+  font-size: 60px;
+  font-weight: 800;
+  color: ${Color.KIO_ORANGE};
 `;
 
 function InfoMain() {
@@ -83,8 +89,8 @@ function InfoMain() {
     <Container>
       <SubContainer>
         <TitleContainer>
-          <MainTitle>스마트한 주점 운영의 시작,</MainTitle>
-          <MainTitle color={Color.KIO_ORANGE}>키오스쿨</MainTitle>
+          <MainDescription>스마트한 주점 운영의 시작,</MainDescription>
+          <MainTitle>키오스쿨</MainTitle>
         </TitleContainer>
         <ContentContainer>
           <DescriptionContainer>
