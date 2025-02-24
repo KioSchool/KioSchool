@@ -6,6 +6,7 @@ import InfoBenefit from '@components/user/info/info-benefit/InfoBenefit';
 import InfoStatisticAndReview from '@components/user/info/info-statistic-and-review/InfoStatisticAndReview';
 import InfoOurService from '@components/user/info/info-our-service/InfoOurService';
 import InfoCreatorsWordsMobile from '@components/user/info/info-creators-word/InfoCreatorsWordsMobile';
+import InfoFooter from '@components/user/info/info-footer/InfoFooter';
 
 const Container = styled.div`
   width: 100%;
@@ -21,6 +22,7 @@ function InfoMobile() {
       <InfoStatisticAndReview />
       <InfoOurService />
       <InfoCreatorsWordsMobile />
+      <InfoFooter />
     </Container>
   );
 }
