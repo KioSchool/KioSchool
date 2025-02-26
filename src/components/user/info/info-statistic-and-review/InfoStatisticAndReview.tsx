@@ -4,6 +4,7 @@ import { colFlex } from '@styles/flexStyles';
 import InfoTitle from '@components/user/info/InfoTitle';
 import { lineSeedKrFont } from '@styles/fonts';
 import AnimatedInfoLineGraphSvg from '@resources/svg/AnimatedInfoLineGraphSvg';
+import { tabletMediaQuery } from '@styles/globalStyles';
 
 const Container = styled.div`
   position: relative;
@@ -17,6 +18,9 @@ const SubContainer = styled.div`
   padding-bottom: 120px;
   z-index: 1;
   ${colFlex({ align: 'center' })};
+  ${tabletMediaQuery} {
+    width: 320px;
+  }
 `;
 
 const ContentContainer = styled.div`
@@ -24,12 +28,18 @@ const ContentContainer = styled.div`
   margin-top: 120px;
   gap: 100px;
   ${colFlex()};
+  ${tabletMediaQuery} {
+    margin-top: 20px;
+  }
 `;
 
 const StatisticContainer = styled.div`
   width: 100%;
   gap: 20px;
   ${colFlex()};
+  ${tabletMediaQuery} {
+    gap: 0;
+  }
 `;
 
 const StatisticTitle = styled.div`
@@ -39,6 +49,9 @@ const StatisticTitle = styled.div`
   font-weight: 700;
   font-family: 'LINESeedKR-Bd', 'sans-serif';
   ${lineSeedKrFont}
+  ${tabletMediaQuery} {
+    font-size: 15px;
+  }
 `;
 
 const StatisticContent = styled.div`
@@ -48,6 +61,10 @@ const StatisticContent = styled.div`
   font-family: 'LINESeedKR-Rg', 'sans-serif';
   white-space: pre-wrap;
   ${lineSeedKrFont}
+  ${tabletMediaQuery} {
+    width: 320px;
+    font-size: 12px;
+  }
 `;
 
 const BackgroundContainer = styled.div`
