@@ -20,10 +20,10 @@ const Container = styled.div<{ isShow: boolean }>`
 
 const LeftContainer = styled.div`
   padding-left: 10px;
-  width: 100px;
+  width: 300px;
   height: 100%;
   gap: 5px;
-  ${rowFlex({ justify: 'space-evenly', align: 'center' })}
+  ${rowFlex({ justify: 'start', align: 'center' })}
 `;
 
 const RightContainer = styled.div`
