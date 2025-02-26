@@ -38,12 +38,23 @@ function CategoryBadgesContainer({ productCategories, productsByCategory, catego
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const isManualScrollRef = useRef(false);
+
   const handleCategoryClick = (categoryId: string) => {
-    scrollToCategory(categoryId, categoryRefs);
+    isManualScrollRef.current = true;
+
+    setActiveCategory(categoryId);
     scrollToCategoryBadge(categoryId, containerRef);
+    scrollToCategory(categoryId, categoryRefs);
+
+    setTimeout(() => {
+      isManualScrollRef.current = false;
+    }, 500);
   };
 
   const updateActiveCategory = () => {
+    if (isManualScrollRef.current) return;
+
     const headerHeight = 110;
     const scrollPosition = window.scrollY + headerHeight;
 
