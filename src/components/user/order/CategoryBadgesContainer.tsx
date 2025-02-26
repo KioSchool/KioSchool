@@ -24,7 +24,7 @@ const Container = styled.div`
 
 const CategoryLabel = styled.div<{ isSelected?: boolean }>`
   width: auto;
-  padding: 0 10px;
+  padding: 5px 10px;
   border-bottom: 3px solid ${({ isSelected }) => (isSelected ? 'black' : 'transparent')};
 `;
 
