@@ -1,5 +1,6 @@
-import { colFlex } from '@styles/flexStyles';
+import React from 'react';
 import AppContainer from '@components/common/container/AppContainer';
+import { colFlex } from '@styles/flexStyles';
 import InfoMain from '@components/user/info/info-main/InfoMain';
 import InfoBenefit from '@components/user/info/info-benefit/InfoBenefit';
 import InfoStatisticAndReview from '@components/user/info/info-statistic-and-review/InfoStatisticAndReview';
@@ -17,7 +18,7 @@ const SubContainer = styled.div`
   background-position: center;
 `;
 
-function Info() {
+function InfoPc() {
   return (
     <AppContainer useFlex={colFlex()} customWidth={'100%'} useScroll={true}>
       <SubContainer>
@@ -32,4 +33,4 @@ function Info() {
   );
 }
 
-export default Info;
+export default InfoPc;
