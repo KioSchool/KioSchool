@@ -4,6 +4,8 @@ import { colFlex } from '@styles/flexStyles';
 import { useNavigate } from 'react-router-dom';
 import RoundedAppButton from '@components/common/button/RoundedAppButton';
 import { lineSeedKrFont } from '@styles/fonts';
+import { tabletMediaQuery } from '@styles/globalStyles';
+import { isMobile } from 'react-device-detect';
 
 const Container = styled.div`
   width: 100%;
@@ -23,6 +25,9 @@ const TextContainer = styled.div`
   font-family: 'LINESeedKR-Rg', 'sans-serif';
   font-weight: 400;
   ${lineSeedKrFont};
+  ${tabletMediaQuery} {
+    font-size: 13px;
+  }
 `;
 
 const HighlightText = styled.mark`
@@ -31,6 +36,9 @@ const HighlightText = styled.mark`
   background: linear-gradient(to top, rgba(235, 109, 9, 0.2) 50%, transparent 50%);
   border-radius: 10px;
   ${lineSeedKrFont};
+  ${tabletMediaQuery} {
+    font-size: 13px;
+  }
 `;
 
 const descriptionTexts = [
@@ -57,9 +65,11 @@ function InfoMainDescription() {
 
   return (
     <Container>
-      <ButtonContainer>
-        <RoundedAppButton onClick={onClickSignIn}>SIGN IN</RoundedAppButton>
-      </ButtonContainer>
+      {!isMobile && (
+        <ButtonContainer>
+          <RoundedAppButton onClick={onClickSignIn}>SIGN IN</RoundedAppButton>
+        </ButtonContainer>
+      )}
       <TextContainer>
         {descriptionTexts.map((descriptionText) =>
           descriptionText.useHighlight ? <HighlightText>{descriptionText.text}</HighlightText> : descriptionText.text,
