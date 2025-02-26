@@ -6,6 +6,8 @@ import AppLabel from '@components/common/label/AppLabel';
 import InstagramSvg from '@resources/svg/InstagramSvg';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import AppFooter from '@components/common/footer/AppFooter';
+import { tabletMediaQuery } from '@styles/globalStyles';
+import { isMobile } from 'react-device-detect';
 
 const Container = styled.div`
   width: 100%;
@@ -13,12 +15,19 @@ const Container = styled.div`
   gap: 60px;
   background: ${Color.KIO_ORANGE};
   ${colFlex({ align: 'center' })};
+  ${tabletMediaQuery} {
+    height: 230px;
+  }
 `;
 
 const SubContainer = styled.div`
   width: 1120px;
   gap: 30px;
   ${colFlex()};
+  ${tabletMediaQuery} {
+    width: 320px;
+    ${rowFlex({ align: 'end', justify: 'space-between' })};
+  }
 `;
 
 const ContentContainer = styled.div`
@@ -34,6 +43,10 @@ const BadgeContainer = styled.div`
 
 const InstagramBadge = styled(InstagramSvg)`
   ${expandButtonStyle};
+  ${tabletMediaQuery} {
+    width: 44px;
+    height: 44px;
+  }
 `;
 
 const FooterContent = styled.div`
@@ -48,14 +61,24 @@ function InfoFooter() {
     window.open(instagramUrl, '_blank');
   };
 
+  const pcContentSizes = {
+    logoSize: 40,
+    descriptionSize: 20,
+  };
+  const mobileContentSizes = {
+    logoSize: 20,
+    descriptionSize: 15,
+  };
+  const contentSizes = isMobile ? mobileContentSizes : pcContentSizes;
+
   return (
     <Container>
       <SubContainer>
         <ContentContainer>
-          <AppLabel color={Color.WHITE} size={40} style={{ fontWeight: 700 }}>
+          <AppLabel color={Color.WHITE} size={contentSizes.logoSize} style={{ fontWeight: 700 }}>
             KIOSCHOOL
           </AppLabel>
-          <AppLabel color={Color.WHITE} size={20} style={{ fontWeight: 700 }}>
+          <AppLabel color={Color.WHITE} size={contentSizes.descriptionSize} style={{ fontWeight: 700 }}>
             스마트한 주점 운영의 시작
           </AppLabel>
         </ContentContainer>
