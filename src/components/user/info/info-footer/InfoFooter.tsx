@@ -61,32 +61,24 @@ function InfoFooter() {
     window.open(instagramUrl, '_blank');
   };
 
-  const pcContentSizes = [
-    {
-      size: 40,
-    },
-    {
-      size: 20,
-    },
-  ];
-  const mobileContentSizes = [
-    {
-      size: 20,
-    },
-    {
-      size: 15,
-    },
-  ];
+  const pcContentSizes = {
+    logoSize: 40,
+    descriptionSize: 20,
+  };
+  const mobileContentSizes = {
+    logoSize: 20,
+    descriptionSize: 15,
+  };
   const contentSizes = isMobile ? mobileContentSizes : pcContentSizes;
 
   return (
     <Container>
       <SubContainer>
         <ContentContainer>
-          <AppLabel color={Color.WHITE} size={contentSizes[0].size} style={{ fontWeight: 700 }}>
+          <AppLabel color={Color.WHITE} size={contentSizes.logoSize} style={{ fontWeight: 700 }}>
             KIOSCHOOL
           </AppLabel>
-          <AppLabel color={Color.WHITE} size={contentSizes[1].size} style={{ fontWeight: 700 }}>
+          <AppLabel color={Color.WHITE} size={contentSizes.descriptionSize} style={{ fontWeight: 700 }}>
             스마트한 주점 운영의 시작
           </AppLabel>
         </ContentContainer>
