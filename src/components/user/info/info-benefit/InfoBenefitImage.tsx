@@ -5,6 +5,8 @@ import infoBenefitOrderCard1 from '@resources/image/infoBenefitOrderCard1.png';
 import infoBenefitOrderCard2 from '@resources/image/infoBenefitOrderCard2.png';
 import infoBenefitOrderCard3 from '@resources/image/infoBenefitOrderCard3.png';
 import { rowFlex } from '@styles/flexStyles';
+import { tabletMediaQuery } from '@styles/globalStyles';
+import { isMobile } from 'react-device-detect';
 
 const Container = styled.div`
   position: relative;
@@ -16,6 +18,11 @@ const Container = styled.div`
 const DesktopImage = styled.img`
   width: 400px;
   height: 350px;
+
+  ${tabletMediaQuery} {
+    width: 80%;
+    height: auto;
+  }
 `;
 
 const OrderCardImage = styled.img<{ top: string; left: string; time: string }>`
@@ -25,6 +32,11 @@ const OrderCardImage = styled.img<{ top: string; left: string; time: string }>`
   top: ${(props) => props.top};
   left: ${(props) => props.left};
   animation: floating ${(props) => props.time} infinite ease-in-out;
+
+  ${tabletMediaQuery} {
+    width: 50px;
+    height: auto;
+  }
 
   @keyframes floating {
     0% {
@@ -49,12 +61,42 @@ const OrderCardImage = styled.img<{ top: string; left: string; time: string }>`
 `;
 
 function InfoBenefitImage() {
+  const pcLocations = [
+    {
+      top: '80px',
+      left: '-50px',
+    },
+    {
+      top: '-30px',
+      left: '250px',
+    },
+    {
+      top: '170px',
+      left: '400px',
+    },
+  ];
+  const tabletLocations = [
+    {
+      top: '80px',
+      left: '0px',
+    },
+    {
+      top: '-30px',
+      left: '200px',
+    },
+    {
+      top: '170px',
+      left: '250px',
+    },
+  ];
+  const locations = isMobile ? tabletLocations : pcLocations;
+
   return (
     <Container>
       <DesktopImage src={infoBenefitDesktop} />
-      <OrderCardImage src={infoBenefitOrderCard1} top={'80px'} left={'-50px'} time={'8s'} />
-      <OrderCardImage src={infoBenefitOrderCard2} top={'-30px'} left={'250px'} time={'10s'} />
-      <OrderCardImage src={infoBenefitOrderCard3} top={'170px'} left={'400px'} time={'12s'} />
+      <OrderCardImage src={infoBenefitOrderCard1} top={locations[0].top} left={locations[0].left} time={'8s'} />
+      <OrderCardImage src={infoBenefitOrderCard2} top={locations[1].top} left={locations[1].left} time={'10s'} />
+      <OrderCardImage src={infoBenefitOrderCard3} top={locations[2].top} left={locations[2].left} time={'12s'} />
     </Container>
   );
 }

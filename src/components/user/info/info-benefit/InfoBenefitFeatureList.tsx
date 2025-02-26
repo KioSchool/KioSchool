@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import CheckSvg from '@resources/svg/CheckSvg';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { lineSeedKrFont } from '@styles/fonts';
+import { tabletMediaQuery } from '@styles/globalStyles';
 
 const features = [
   'QR 코드로 간편한 주문 및 결제 관리',
@@ -16,12 +17,19 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   ${colFlex({ justify: 'center' })};
+  ${tabletMediaQuery} {
+    ${colFlex({ align: 'center', justify: 'center' })};
+  }
 `;
 
 const ListContainer = styled.div`
   width: 100%;
   gap: 28px;
   ${colFlex()};
+  ${tabletMediaQuery} {
+    width: 80%;
+    gap: 10px;
+  }
 `;
 
 const List = styled.div`
@@ -31,6 +39,9 @@ const List = styled.div`
   font-family: 'LINESeedKR-Rg', 'sans-serif';
   ${lineSeedKrFont};
   ${rowFlex({ align: 'center' })};
+  ${tabletMediaQuery} {
+    font-size: 13px;
+  }
 `;
 
 function InfoBenefitFeatureList() {
