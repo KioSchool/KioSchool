@@ -4,6 +4,7 @@ import { colFlex } from '@styles/flexStyles';
 import { jsx } from '@emotion/react';
 import { lineSeedKrFont } from '@styles/fonts';
 import { expandButtonStyle } from '@styles/buttonStyles';
+import { Color } from '@resources/colors';
 import JSX = jsx.JSX;
 
 const Container = styled.div`
@@ -13,6 +14,7 @@ const Container = styled.div`
   box-shadow: 10px 10px 30px 0 rgba(10, 10, 10, 0.04);
   padding: 70px 40px;
   box-sizing: border-box;
+  background: ${Color.WHITE};
   ${colFlex({ justify: 'center' })};
   ${expandButtonStyle({ scaleSize: '1.05' })};
   cursor: default;
