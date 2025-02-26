@@ -61,9 +61,7 @@ function CategoryBadgesContainer({ productCategories, productsByCategory, catego
     let newActiveCategory: string | null = null;
 
     Object.entries(categoryRefs.current).forEach(([key, element]) => {
-      if (!element) {
-        return;
-      }
+      if (!element) return;
 
       const elementTop = element.offsetTop;
       const elementHeight = element.offsetHeight;

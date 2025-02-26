@@ -1,9 +1,7 @@
 export const scrollToCategory = (categoryId: string, categoryRefs: React.MutableRefObject<Record<string, HTMLDivElement | null>>) => {
   const categoryElement = categoryRefs.current[categoryId];
 
-  if (!categoryElement) {
-    return;
-  }
+  if (!categoryElement) return;
 
   const elementPosition = categoryElement.getBoundingClientRect().top;
   const headerHeight = 110;
@@ -16,9 +14,7 @@ export const scrollToCategory = (categoryId: string, categoryRefs: React.Mutable
 };
 
 export const scrollToCategoryBadge = (categoryId: string, containerRef: React.RefObject<HTMLDivElement>) => {
-  if (!containerRef.current) {
-    return;
-  }
+  if (!containerRef.current) return;
 
   const badgeElement = containerRef.current.querySelector(`#categoryBadge_${categoryId}`) as HTMLElement | null;
   if (badgeElement) {
