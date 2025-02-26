@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from '@emotion/styled';
 import { Product, ProductCategory } from '@@types/index';
 import _ from 'lodash';
-import { colFlex, rowFlex } from '@styles/flexStyles';
+import { rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import { scrollToCategory } from '@utils/CategoryTracking';
+import { scrollToCategory, scrollToCategoryBadge } from '@utils/CategoryTracking';
 
 interface CategoryBadgesContainerProps {
   productCategories: ProductCategory[];
@@ -18,7 +18,8 @@ const Container = styled.div`
   padding: 0 10px;
   box-sizing: border-box;
   gap: 8px;
-  overflow: scroll;
+  overflow-x: auto;
+  white-space: nowrap;
   ${rowFlex({ align: 'center' })}
   border-top: 10px solid ${Color.LIGHT_GREY};
 
@@ -30,12 +31,17 @@ const Container = styled.div`
 const CategoryLabel = styled.div<{ isSelected?: boolean }>`
   width: auto;
   padding: 0 10px;
-  border-bottom: ${({ isSelected }) => (isSelected ? '3px solid black' : 'none')};
-  ${colFlex({ justify: 'center' })}
+  border-bottom: 3px solid ${({ isSelected }) => (isSelected ? 'black' : 'transparent')};
 `;
 
 function CategoryBadgesContainer({ productCategories, productsByCategory, categoryRefs }: CategoryBadgesContainerProps) {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleCategoryClick = (categoryId: string) => {
+    scrollToCategory(categoryId, categoryRefs);
+    scrollToCategoryBadge(categoryId, containerRef);
+  };
 
   const updateActiveCategory = () => {
     const headerHeight = 110;
@@ -69,13 +75,20 @@ function CategoryBadgesContainer({ productCategories, productsByCategory, catego
     };
   }, []);
 
+  useEffect(() => {
+    if (activeCategory) {
+      scrollToCategoryBadge(activeCategory, containerRef);
+    }
+  }, [activeCategory]);
+
   return (
-    <Container className="category-badges-container">
+    <Container className="category-badges-container" ref={containerRef}>
       {productCategories.map(
         (category) =>
           productsByCategory[category.id] && (
             <CategoryLabel
-              onClick={() => scrollToCategory(String(category.id), categoryRefs)}
+              id={`categoryBadge_${category.id}`}
+              onClick={() => handleCategoryClick(String(category.id))}
               key={`category_${category.id}`}
               isSelected={activeCategory === String(category.id)}
             >
@@ -84,7 +97,7 @@ function CategoryBadgesContainer({ productCategories, productsByCategory, catego
           ),
       )}
       {productsByCategory.undefined && (
-        <CategoryLabel onClick={() => scrollToCategory('.', categoryRefs)} key={`category_null`} isSelected={activeCategory === '.'}>
+        <CategoryLabel id={`categoryBadge_.`} onClick={() => handleCategoryClick('.')} key={`category_null`} isSelected={activeCategory === '.'}>
           기본 메뉴
         </CategoryLabel>
       )}

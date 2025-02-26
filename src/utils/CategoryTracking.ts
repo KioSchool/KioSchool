@@ -14,3 +14,18 @@ export const scrollToCategory = (categoryId: string, categoryRefs: React.Mutable
     behavior: 'smooth',
   });
 };
+
+export const scrollToCategoryBadge = (categoryId: string, containerRef: React.RefObject<HTMLDivElement>) => {
+  if (!containerRef.current) {
+    return;
+  }
+
+  const badgeElement = containerRef.current.querySelector(`#categoryBadge_${categoryId}`) as HTMLElement | null;
+  if (badgeElement) {
+    badgeElement.scrollIntoView({
+      behavior: 'smooth',
+      inline: 'center',
+      block: 'nearest',
+    });
+  }
+};
