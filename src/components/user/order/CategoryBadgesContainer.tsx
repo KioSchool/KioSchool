@@ -4,6 +4,7 @@ import { Product, ProductCategory } from '@@types/index';
 import _ from 'lodash';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
+import { scrollToCategory } from '@utils/CategoryTracking';
 
 interface CategoryBadgesContainerProps {
   productCategories: ProductCategory[];
@@ -35,23 +36,6 @@ const CategoryLabel = styled.div<{ isSelected?: boolean }>`
 
 function CategoryBadgesContainer({ productCategories, productsByCategory, categoryRefs }: CategoryBadgesContainerProps) {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-
-  const scrollToCategory = (categoryId: string) => {
-    const categoryElement = categoryRefs.current[categoryId];
-
-    if (!categoryElement) {
-      return;
-    }
-
-    const elementPosition = categoryElement.getBoundingClientRect().top;
-    const headerHeight = 110;
-    const offsetPosition = elementPosition + window.scrollY - headerHeight;
-
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: 'smooth',
-    });
-  };
 
   const updateActiveCategory = () => {
     const headerHeight = 110;
@@ -91,7 +75,7 @@ function CategoryBadgesContainer({ productCategories, productsByCategory, catego
         (category) =>
           productsByCategory[category.id] && (
             <CategoryLabel
-              onClick={() => scrollToCategory(String(category.id))}
+              onClick={() => scrollToCategory(String(category.id), categoryRefs)}
               key={`category_${category.id}`}
               isSelected={activeCategory === String(category.id)}
             >
@@ -100,7 +84,7 @@ function CategoryBadgesContainer({ productCategories, productsByCategory, catego
           ),
       )}
       {productsByCategory.undefined && (
-        <CategoryLabel onClick={() => scrollToCategory('.')} key={`category_null`} isSelected={activeCategory === '.'}>
+        <CategoryLabel onClick={() => scrollToCategory('.', categoryRefs)} key={`category_null`} isSelected={activeCategory === '.'}>
           기본 메뉴
         </CategoryLabel>
       )}
