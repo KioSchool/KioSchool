@@ -5,7 +5,7 @@ export const globalStyles = css`
   ${pretendardFont}
 
   * {
-    font-family: 'Pretendard-Regular', sans-serif;
+    font-family: 'Pretendard', sans-serif;
   }
 `;
 
