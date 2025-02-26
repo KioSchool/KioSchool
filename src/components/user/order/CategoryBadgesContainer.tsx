@@ -6,12 +6,6 @@ import { rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { scrollToCategory, scrollToCategoryBadge } from '@utils/CategoryTracking';
 
-interface CategoryBadgesContainerProps {
-  productCategories: ProductCategory[];
-  productsByCategory: _.Dictionary<Product[]>;
-  categoryRefs: React.MutableRefObject<Record<string, HTMLDivElement | null>>;
-}
-
 const Container = styled.div`
   width: 100%;
   height: 50px;
@@ -33,6 +27,12 @@ const CategoryLabel = styled.div<{ isSelected?: boolean }>`
   padding: 0 10px;
   border-bottom: 3px solid ${({ isSelected }) => (isSelected ? 'black' : 'transparent')};
 `;
+
+interface CategoryBadgesContainerProps {
+  productCategories: ProductCategory[];
+  productsByCategory: _.Dictionary<Product[]>;
+  categoryRefs: React.MutableRefObject<Record<string, HTMLDivElement | null>>;
+}
 
 function CategoryBadgesContainer({ productCategories, productsByCategory, categoryRefs }: CategoryBadgesContainerProps) {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
