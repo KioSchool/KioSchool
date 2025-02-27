@@ -58,22 +58,18 @@ function CategoryBadgesContainer({ productCategories, productsByCategory, catego
     const headerHeight = 110;
     const scrollPosition = window.scrollY + headerHeight;
 
-    let newActiveCategory: string | null = null;
-
-    Object.entries(categoryRefs.current).forEach(([key, element]) => {
-      if (!element) return;
+    for (const [categoryId, element] of Object.entries(categoryRefs.current)) {
+      if (!element) continue;
 
       const elementTop = element.offsetTop;
       const elementHeight = element.offsetHeight;
       const isInSectionBounds = scrollPosition >= elementTop && scrollPosition < elementTop + elementHeight;
 
       if (isInSectionBounds) {
-        newActiveCategory = key;
-        return;
+        setActiveCategory(categoryId);
+        break;
       }
-    });
-
-    setActiveCategory(newActiveCategory);
+    }
   };
 
   useEffect(() => {
