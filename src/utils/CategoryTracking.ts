@@ -16,7 +16,8 @@ export const scrollToCategory = (categoryId: string, categoryRefs: React.Mutable
 export const scrollToCategoryBadge = (categoryId: string, containerRef: React.RefObject<HTMLDivElement>) => {
   if (!containerRef.current) return;
 
-  const badgeElement = containerRef.current.querySelector(`#categoryBadge_${categoryId}`) as HTMLElement | null;
+  const escapedId = CSS.escape(`categoryBadge_${categoryId}`);
+  const badgeElement = containerRef.current.querySelector(`#${escapedId}`) as HTMLElement | null;
   if (badgeElement) {
     badgeElement.scrollIntoView({
       behavior: 'smooth',
