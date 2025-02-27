@@ -1,14 +1,22 @@
-export const scrollToCategory = (categoryId: string, categoryRefs: React.MutableRefObject<Record<string, HTMLDivElement | null>>) => {
+export const scrollToCategory = (categoryId: string, categoryRefs: React.MutableRefObject<Record<string, HTMLDivElement | null>>, callback: () => void) => {
   const categoryElement = categoryRefs.current[categoryId];
-
   if (!categoryElement) return;
 
   const elementPosition = categoryElement.getBoundingClientRect().top;
   const headerHeight = 110;
-  const offsetPosition = elementPosition + window.scrollY - headerHeight;
+  const offset = elementPosition + window.scrollY - headerHeight;
+
+  const onScroll = () => {
+    if (Math.abs(window.scrollY - offset) < 2) {
+      window.removeEventListener('scroll', onScroll);
+      callback();
+    }
+  };
+
+  window.addEventListener('scroll', onScroll);
 
   window.scrollTo({
-    top: offsetPosition,
+    top: offset,
     behavior: 'smooth',
   });
 };
