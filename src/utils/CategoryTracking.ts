@@ -5,9 +5,10 @@ export const scrollToCategory = (categoryId: string, categoryRefs: React.Mutable
   const elementPosition = categoryElement.getBoundingClientRect().top;
   const headerHeight = 110;
   const offset = elementPosition + window.scrollY - headerHeight;
+  const marginPixel = 2;
 
   const onScroll = () => {
-    if (Math.abs(window.scrollY - offset) < 2) {
+    if (Math.abs(window.scrollY - offset) < marginPixel) {
       window.removeEventListener('scroll', onScroll);
       callback();
     }
