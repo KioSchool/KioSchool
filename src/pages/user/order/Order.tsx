@@ -12,11 +12,11 @@ import { Product } from '@@types/index';
 import _ from 'lodash';
 import OrderButton from '@components/user/order/OrderButton';
 import useProduct from '@hooks/user/useProduct';
-import AppFooter from '@components/common/footer/AppFooter';
 import { colFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import OrderImageSlider from '@components/admin/order/OrderImageSlider';
 import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
+import OrderFooter from '@components/user/order/OrderFooter';
 
 const Container = styled.div`
   width: 100%;
@@ -157,7 +157,7 @@ function Order() {
           </NormalCategoryProductsContainer>
         )}
 
-        <AppFooter fixed={false} />
+        <OrderFooter />
       </ContentContainer>
       <OrderButton
         showButton={orderBasket.length > 0}
