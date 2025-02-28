@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styled from '@emotion/styled';
 import { Product, ProductCategory } from '@@types/index';
 import { debounce } from 'lodash';
@@ -38,22 +38,24 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleCategoryClick = (categoryId: number) => {
+  const categoryClick = (categoryId: number) => {
     scrollToCategoryBadge(categoryId, containerRef);
     setActiveCategory(categoryId);
   };
 
-  const debouncedHandleCategoryClick = useRef(
+  const debouncedCategoryClick = useCallback(
     debounce((categoryId: number) => {
-      handleCategoryClick(categoryId);
-    }, 50),
-  ).current;
+      scrollToCategoryBadge(categoryId, containerRef);
+      setActiveCategory(categoryId);
+    }, 300),
+    [],
+  );
 
   useEffect(() => {
     return () => {
-      debouncedHandleCategoryClick.cancel();
+      debouncedCategoryClick.cancel();
     };
-  }, [debouncedHandleCategoryClick]);
+  }, [debouncedCategoryClick]);
 
   return (
     <Container className="category-badges-container" ref={containerRef}>
@@ -69,10 +71,10 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
               offset={-350}
               duration={400}
               onSetActive={() => {
-                debouncedHandleCategoryClick(category.id);
+                debouncedCategoryClick(category.id);
               }}
             >
-              <CategoryLabel id={`categoryBadge_${category.id}`} onClick={() => handleCategoryClick(category.id)} isSelected={activeCategory === category.id}>
+              <CategoryLabel id={`categoryBadge_${category.id}`} onClick={() => categoryClick(category.id)} isSelected={activeCategory === category.id}>
                 {category.name}
               </CategoryLabel>
             </Link>
@@ -88,10 +90,10 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
           offset={-350}
           duration={400}
           onSetActive={() => {
-            debouncedHandleCategoryClick(-1);
+            debouncedCategoryClick(-1);
           }}
         >
-          <CategoryLabel id="categoryBadge_-1" onClick={() => handleCategoryClick(-1)} isSelected={activeCategory === -1}>
+          <CategoryLabel id="categoryBadge_-1" onClick={() => categoryClick(-1)} isSelected={activeCategory === -1}>
             기본 메뉴
           </CategoryLabel>
         </Link>
