@@ -38,17 +38,9 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const isManualScrollingRef = useRef(false);
-
   const handleCategoryClick = (categoryId: number) => {
-    isManualScrollingRef.current = true;
-
     scrollToCategoryBadge(categoryId, containerRef);
     setActiveCategory(categoryId);
-
-    setTimeout(() => {
-      isManualScrollingRef.current = false;
-    }, 500);
   };
 
   return (
@@ -65,9 +57,7 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
               offset={-350}
               duration={400}
               onSetActive={() => {
-                if (!isManualScrollingRef.current) {
-                  handleCategoryClick(category.id);
-                }
+                handleCategoryClick(category.id);
               }}
             >
               <CategoryLabel id={`categoryBadge_${category.id}`} onClick={() => handleCategoryClick(category.id)} isSelected={activeCategory === category.id}>
@@ -86,9 +76,7 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
           offset={-350}
           duration={400}
           onSetActive={() => {
-            if (!isManualScrollingRef.current) {
-              handleCategoryClick(-1);
-            }
+            handleCategoryClick(-1);
           }}
         >
           <CategoryLabel id="categoryBadge_-1" onClick={() => handleCategoryClick(-1)} isSelected={activeCategory === -1}>

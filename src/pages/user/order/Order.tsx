@@ -78,11 +78,12 @@ function Order() {
 
   const headerRef = useRef<HTMLDivElement>(null);
   const [showNavBar, setShowNavBar] = useState(false);
+
   useEffect(() => {
     fetchWorkspace(workspaceId);
     fetchCategories();
 
-    const handleScroll = () => {
+    const handleCategoryScroll = () => {
       if (!headerRef.current) return;
 
       const bufferedHeight = 65;
@@ -92,8 +93,9 @@ function Order() {
       setShowNavBar(isShow);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleCategoryScroll);
+
+    return () => window.removeEventListener('scroll', handleCategoryScroll);
   }, []);
 
   return (
