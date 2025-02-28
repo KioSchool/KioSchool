@@ -18,6 +18,7 @@ import { Color } from '@resources/colors';
 import OrderImageSlider from '@components/admin/order/OrderImageSlider';
 import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
 import OrderFooter from '@components/user/order/OrderFooter';
+import WorkspaceNotice from '@components/user/order/WorkspaceNotice';
 
 const Container = styled.div`
   width: 100%;
@@ -44,12 +45,11 @@ const ContentContainer = styled.div`
   width: 100%;
 `;
 
-const ProductContainer = styled.div`
-  padding: 10px;
-`;
+const ProductContainer = styled.div``;
 
 function Order() {
   const workspace = useRecoilValue(userWorkspaceAtom);
+  const isShowNotice = workspace.notice.length;
   const rawProductCategories = useRecoilValue(categoriesAtom);
   const sellableProducts = workspace.products.filter((it) => it.isSellable);
 
@@ -116,7 +116,7 @@ function Order() {
       <StickyHeader>
         <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategoryId} />
       </StickyHeader>
-
+      {isShowNotice && <WorkspaceNotice />}
       <ContentContainer className={'order-content'}>
         {productsWithCategory.map(({ category, products }) => {
           if (!products.length) return null;
