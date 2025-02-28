@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from '@emotion/styled';
 import { Product, ProductCategory } from '@@types/index';
 import _ from 'lodash';
 import { rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import { scrollToCategory, scrollToCategoryBadge } from '@utils/CategoryTracking';
+import { scrollToCategoryBadge } from '@utils/CategoryTracking';
+import { Link } from 'react-scroll';
 
 const Container = styled.div`
   width: 100%;
@@ -31,78 +32,57 @@ const CategoryLabel = styled.div<{ isSelected?: boolean }>`
 interface CategoryBadgesContainerProps {
   productCategories: ProductCategory[];
   productsByCategory: _.Dictionary<Product[]>;
-  categoryRefs: React.MutableRefObject<Record<string, HTMLDivElement | null>>;
 }
 
-function CategoryBadgesContainer({ productCategories, productsByCategory, categoryRefs }: CategoryBadgesContainerProps) {
+function CategoryBadgesContainer({ productCategories, productsByCategory }: CategoryBadgesContainerProps) {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const isManualScrollRef = useRef(false);
-
   const handleCategoryClick = (categoryId: string) => {
-    isManualScrollRef.current = true;
-
     scrollToCategoryBadge(categoryId, containerRef);
-    scrollToCategory(categoryId, categoryRefs, () => {
-      setActiveCategory(categoryId);
-      isManualScrollRef.current = false;
-    });
+    setActiveCategory(categoryId);
   };
-
-  const updateActiveCategory = () => {
-    if (isManualScrollRef.current) return;
-
-    const headerHeight = 110;
-    const scrollPosition = window.scrollY + headerHeight;
-
-    for (const [categoryId, element] of Object.entries(categoryRefs.current)) {
-      if (!element) continue;
-
-      const elementTop = element.offsetTop;
-      const elementHeight = element.offsetHeight;
-      const isInSectionBounds = scrollPosition >= elementTop && scrollPosition < elementTop + elementHeight;
-
-      if (isInSectionBounds) {
-        setActiveCategory(categoryId);
-        break;
-      }
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', updateActiveCategory);
-
-    return () => {
-      window.removeEventListener('scroll', updateActiveCategory);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (activeCategory) {
-      scrollToCategoryBadge(activeCategory, containerRef);
-    }
-  }, [activeCategory]);
 
   return (
     <Container className="category-badges-container" ref={containerRef}>
       {productCategories.map(
         (category) =>
           productsByCategory[category.id] && (
-            <CategoryLabel
-              id={`categoryBadge_${category.id}`}
-              onClick={() => handleCategoryClick(String(category.id))}
+            <Link
               key={`category_${category.id}`}
-              isSelected={activeCategory === String(category.id)}
+              activeClass="active"
+              to={`category_${category.id}`}
+              spy={true}
+              smooth={true}
+              offset={-110}
+              duration={500}
+              onSetActive={() => handleCategoryClick(String(category.id))}
             >
-              {category.name}
-            </CategoryLabel>
+              <CategoryLabel
+                id={`categoryBadge_${category.id}`}
+                onClick={() => handleCategoryClick(String(category.id))}
+                isSelected={activeCategory === String(category.id)}
+              >
+                {category.name}
+              </CategoryLabel>
+            </Link>
           ),
       )}
       {productsByCategory.undefined && (
-        <CategoryLabel id={`categoryBadge_.`} onClick={() => handleCategoryClick('.')} key={`category_null`} isSelected={activeCategory === '.'}>
-          기본 메뉴
-        </CategoryLabel>
+        <Link
+          key="category_default"
+          activeClass="active"
+          to="category_default"
+          spy={true}
+          smooth={true}
+          offset={-110}
+          duration={500}
+          onSetActive={() => handleCategoryClick('.')}
+        >
+          <CategoryLabel id={`categoryBadge_.`} onClick={() => handleCategoryClick('.')} isSelected={activeCategory === '.'}>
+            기본 메뉴
+          </CategoryLabel>
+        </Link>
       )}
     </Container>
   );

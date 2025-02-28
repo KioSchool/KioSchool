@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
+import { Element } from 'react-scroll';
 import AppLabel from '@components/common/label/AppLabel';
 import CategoryBadgesContainer from '@components/user/order/CategoryBadgesContainer';
 import ProductCard from '@components/user/product/ProductCard';
@@ -39,10 +40,6 @@ const Header = styled.div`
   gap: 7px;
 `;
 
-const CategorizedProductsContainer = styled.div``;
-
-const NormalCategoryProductsContainer = styled.div``;
-
 const ContentContainer = styled.div`
   width: 100%;
 `;
@@ -63,6 +60,7 @@ function Order() {
     products: productsByCategoryId[category.id] || [],
   }));
 
+  const defaultProducts = productsByCategoryId.undefined;
   const productsMap = _.keyBy(workspace.products, 'id');
 
   const [searchParams] = useSearchParams();
@@ -78,11 +76,8 @@ function Order() {
     return acc + productsMap[cur.productId].price * cur.quantity;
   }, 0);
 
-  const categoryRefs = useRef<Record<string, HTMLDivElement | null>>({});
-
   const headerRef = useRef<HTMLDivElement>(null);
-  const [showNavBar, setIsShowNavBar] = useState(false);
-
+  const [showNavBar, setShowNavBar] = useState(false);
   useEffect(() => {
     fetchWorkspace(workspaceId);
     fetchCategories();
@@ -94,7 +89,7 @@ function Order() {
       const headerBottom = headerRef.current.getBoundingClientRect().bottom;
       const isShow = headerBottom - bufferedHeight <= 0;
 
-      setIsShowNavBar(isShow);
+      setShowNavBar(isShow);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -117,7 +112,7 @@ function Order() {
       <OrderStickyNavBar showNavBar={showNavBar} workspaceName={workspace.name} />
 
       <StickyHeader>
-        <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategoryId} categoryRefs={categoryRefs} />
+        <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategoryId} />
       </StickyHeader>
 
       <ContentContainer className={'order-content'}>
@@ -125,11 +120,12 @@ function Order() {
           if (!products.length) return null;
 
           return (
-            <CategorizedProductsContainer ref={(el) => (categoryRefs.current[category.id] = el)} key={`product_category_${category.id}`}>
+            <Element name={`category_${category.id}`} key={`product_category_${category.id}`}>
               <AppLabel size={22}>{category.name}</AppLabel>
               {products.map((product) => {
                 const productInBasket = orderBasket.find((item) => item.productId === product.id);
                 const quantity = productInBasket?.quantity || 0;
+
                 return (
                   <ProductContainer key={`product${product.id}`} className="product-container">
                     <ProductCard product={product} quantity={quantity} />
@@ -137,24 +133,25 @@ function Order() {
                   </ProductContainer>
                 );
               })}
-            </CategorizedProductsContainer>
+            </Element>
           );
         })}
 
-        {productsByCategoryId.undefined && (
-          <NormalCategoryProductsContainer ref={(el) => (categoryRefs.current['.'] = el)} key={`product_category_undefined`}>
+        {defaultProducts && (
+          <Element name="category_default" key="product_category_default">
             <AppLabel size={22}>기본메뉴</AppLabel>
-            {productsByCategoryId.undefined.map((product) => {
+            {defaultProducts.map((product) => {
               const productInBasket = orderBasket.find((item) => item.productId === product.id);
               const quantity = productInBasket?.quantity || 0;
+
               return (
-                <ProductContainer key={`product${product.id}`} className={'product-container'}>
+                <ProductContainer key={`product${product.id}`} className="product-container">
                   <ProductCard product={product} quantity={quantity} />
                   <HorizontalDivider />
                 </ProductContainer>
               );
             })}
-          </NormalCategoryProductsContainer>
+          </Element>
         )}
 
         <OrderFooter />
