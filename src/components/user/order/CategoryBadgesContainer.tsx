@@ -45,8 +45,7 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
 
   const debouncedCategoryClick = useCallback(
     debounce((categoryId: number) => {
-      scrollToCategoryBadge(categoryId, containerRef);
-      setActiveCategory(categoryId);
+      categoryClick(categoryId);
     }, 300),
     [],
   );
