@@ -46,9 +46,8 @@ function CategoryBadgesContainer({ productCategories, productsByCategory, catego
     scrollToCategoryBadge(categoryId, containerRef);
     scrollToCategory(categoryId, categoryRefs, () => {
       setActiveCategory(categoryId);
+      isManualScrollRef.current = false;
     });
-
-    isManualScrollRef.current = false;
   };
 
   const updateActiveCategory = () => {
