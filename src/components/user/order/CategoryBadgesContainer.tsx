@@ -1,7 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { Product, ProductCategory } from '@@types/index';
-import _ from 'lodash';
+import { debounce } from 'lodash';
 import { rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { scrollToCategoryBadge } from '@utils/CategoryTracking';
@@ -43,6 +43,18 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
     setActiveCategory(categoryId);
   };
 
+  const debouncedHandleCategoryClick = useRef(
+    debounce((categoryId: number) => {
+      handleCategoryClick(categoryId);
+    }, 50),
+  ).current;
+
+  useEffect(() => {
+    return () => {
+      debouncedHandleCategoryClick.cancel();
+    };
+  }, [debouncedHandleCategoryClick]);
+
   return (
     <Container className="category-badges-container" ref={containerRef}>
       {productCategories.map(
@@ -57,7 +69,7 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
               offset={-350}
               duration={400}
               onSetActive={() => {
-                handleCategoryClick(category.id);
+                debouncedHandleCategoryClick(category.id);
               }}
             >
               <CategoryLabel id={`categoryBadge_${category.id}`} onClick={() => handleCategoryClick(category.id)} isSelected={activeCategory === category.id}>
@@ -76,7 +88,7 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
           offset={-350}
           duration={400}
           onSetActive={() => {
-            handleCategoryClick(-1);
+            debouncedHandleCategoryClick(-1);
           }}
         >
           <CategoryLabel id="categoryBadge_-1" onClick={() => handleCategoryClick(-1)} isSelected={activeCategory === -1}>
