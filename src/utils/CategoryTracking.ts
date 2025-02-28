@@ -3,7 +3,7 @@ export const scrollToCategory = (categoryId: string, categoryRefs: React.Mutable
   if (!categoryElement) return;
 
   const elementPosition = categoryElement.getBoundingClientRect().top;
-  const headerHeight = 110;
+  const headerHeight = 100;
   const offset = elementPosition + window.scrollY - headerHeight;
   const marginPixel = 2;
 
