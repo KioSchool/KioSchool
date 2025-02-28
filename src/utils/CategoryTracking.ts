@@ -22,7 +22,7 @@ export const scrollToCategory = (categoryId: string, categoryRefs: React.Mutable
   });
 };
 
-export const scrollToCategoryBadge = (categoryId: string, containerRef: React.RefObject<HTMLDivElement>) => {
+export const scrollToCategoryBadge = (categoryId: number, containerRef: React.RefObject<HTMLDivElement>) => {
   if (!containerRef.current) return;
 
   const escapedId = CSS.escape(`categoryBadge_${categoryId}`);

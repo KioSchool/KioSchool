@@ -35,12 +35,20 @@ interface CategoryBadgesContainerProps {
 }
 
 function CategoryBadgesContainer({ productCategories, productsByCategory }: CategoryBadgesContainerProps) {
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleCategoryClick = (categoryId: string) => {
+  const isManualScrollingRef = useRef(false);
+
+  const handleCategoryClick = (categoryId: number) => {
+    isManualScrollingRef.current = true;
+
     scrollToCategoryBadge(categoryId, containerRef);
     setActiveCategory(categoryId);
+
+    setTimeout(() => {
+      isManualScrollingRef.current = false;
+    }, 500);
   };
 
   return (
@@ -54,15 +62,15 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
               to={`category_${category.id}`}
               spy={true}
               smooth={true}
-              offset={-110}
-              duration={500}
-              onSetActive={() => handleCategoryClick(String(category.id))}
+              offset={-350}
+              duration={400}
+              onSetActive={() => {
+                if (!isManualScrollingRef.current) {
+                  handleCategoryClick(category.id);
+                }
+              }}
             >
-              <CategoryLabel
-                id={`categoryBadge_${category.id}`}
-                onClick={() => handleCategoryClick(String(category.id))}
-                isSelected={activeCategory === String(category.id)}
-              >
+              <CategoryLabel id={`categoryBadge_${category.id}`} onClick={() => handleCategoryClick(category.id)} isSelected={activeCategory === category.id}>
                 {category.name}
               </CategoryLabel>
             </Link>
@@ -75,11 +83,15 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
           to="category_default"
           spy={true}
           smooth={true}
-          offset={-110}
-          duration={500}
-          onSetActive={() => handleCategoryClick('.')}
+          offset={-350}
+          duration={400}
+          onSetActive={() => {
+            if (!isManualScrollingRef.current) {
+              handleCategoryClick(-1);
+            }
+          }}
         >
-          <CategoryLabel id={`categoryBadge_.`} onClick={() => handleCategoryClick('.')} isSelected={activeCategory === '.'}>
+          <CategoryLabel id="categoryBadge_-1" onClick={() => handleCategoryClick(-1)} isSelected={activeCategory === -1}>
             기본 메뉴
           </CategoryLabel>
         </Link>
