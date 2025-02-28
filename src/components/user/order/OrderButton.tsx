@@ -4,13 +4,7 @@ import AppButton from '@components/common/button/AppButton';
 import { rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 
-interface OrderButtonProps {
-  showButton: boolean;
-  buttonLabel: string;
-  onClick?: () => void;
-}
-
-const OrderButtonContainer = styled.div`
+const Container = styled.div`
   position: fixed;
   bottom: 50px;
   width: 100vw;
@@ -19,23 +13,29 @@ const OrderButtonContainer = styled.div`
 `;
 
 const OrderButtonSubContainer = styled.div`
-  padding: 8px;
+  padding: 10px;
   border-radius: 20px;
   background: ${Color.WHITE};
   box-shadow: 0 16px 32px 0 rgba(194, 191, 172, 0.6);
 `;
 
+interface OrderButtonProps {
+  showButton: boolean;
+  buttonLabel: string;
+  onClick?: () => void;
+}
+
 function OrderButton({ showButton, buttonLabel, onClick }: OrderButtonProps) {
   if (!showButton) return null;
 
   return (
-    <OrderButtonContainer className={'order-button-container'}>
+    <Container className={'order-button-container'}>
       <OrderButtonSubContainer className={'order-button-sub-container'}>
-        <AppButton size={270} onClick={onClick}>
+        <AppButton size={290} onClick={onClick}>
           {buttonLabel}
         </AppButton>
       </OrderButtonSubContainer>
-    </OrderButtonContainer>
+    </Container>
   );
 }
 
