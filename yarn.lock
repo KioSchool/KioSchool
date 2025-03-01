@@ -1805,14 +1805,6 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@kioschool/react-scroll@^1":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@kioschool/react-scroll/-/react-scroll-1.0.2.tgz#6f51ae0be7de339c101d5ce60e7a7dc2f377927a"
-  integrity sha512-+igNmuhrMogPTHrgdbElPpfELkCcKPXnPgiGMv7EQWdjCU/iWAMyo+t79Z2c6ZyYEDY7PKWxWM217E4MbmTMyQ==
-  dependencies:
-    lodash.throttle "^4.1.1"
-    prop-types "^15.7.2"
-
 "@leichtgewicht/ip-codec@^2.0.1":
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
@@ -8197,6 +8189,14 @@ react-scripts@5.0.1:
     workbox-webpack-plugin "^6.4.1"
   optionalDependencies:
     fsevents "^2.3.2"
+
+"react-scroll@npm:@kioschool/react-scroll":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@kioschool/react-scroll/-/react-scroll-1.0.3.tgz#f7904796e8631e687bc565b4c146f714bbcc1d5b"
+  integrity sha512-wJCfgf7C2w97K6wMdXW/jq+tUiaH1aqQoydevVWcOoDlZvI+VmaGmrW/Xt5poN1dIfyp0L+CIqKBeqXH9op+Pg==
+  dependencies:
+    lodash.throttle "^4.1.1"
+    prop-types "^15.7.2"
 
 react-transition-group@^4.4.5:
   version "4.4.5"

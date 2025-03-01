@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { Product, ProductCategory } from '@@types/index';
-import { debounce } from 'lodash';
 import { rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { scrollToCategoryBadge } from '@utils/CategoryTracking';
-import { Link } from '@kioschool/react-scroll';
+import { Link } from 'react-scroll';
 
 const Container = styled.div`
   width: 100%;
@@ -43,19 +42,6 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
     setActiveCategory(categoryId);
   };
 
-  const debouncedCategoryClick = useCallback(
-    debounce((categoryId: number) => {
-      categoryClick(categoryId);
-    }, 300),
-    [],
-  );
-
-  useEffect(() => {
-    return () => {
-      debouncedCategoryClick.cancel();
-    };
-  }, [debouncedCategoryClick]);
-
   return (
     <Container className="category-badges-container" ref={containerRef}>
       {productCategories.map(
@@ -70,7 +56,7 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
               offset={-350}
               duration={400}
               onSetActive={() => {
-                debouncedCategoryClick(category.id);
+                categoryClick(category.id);
               }}
             >
               <CategoryLabel id={`categoryBadge_${category.id}`} onClick={() => categoryClick(category.id)} isSelected={activeCategory === category.id}>
@@ -89,7 +75,7 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
           offset={-350}
           duration={400}
           onSetActive={() => {
-            debouncedCategoryClick(-1);
+            categoryClick(-1);
           }}
         >
           <CategoryLabel id="categoryBadge_-1" onClick={() => categoryClick(-1)} isSelected={activeCategory === -1}>
