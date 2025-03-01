@@ -8,7 +8,7 @@ import { Link } from 'react-scroll';
 
 const Container = styled.div`
   width: 100%;
-  height: 50px;
+  height: auto;
   padding: 0 10px;
   box-sizing: border-box;
   gap: 8px;
@@ -16,6 +16,7 @@ const Container = styled.div`
   white-space: nowrap;
   ${rowFlex({ align: 'center' })}
   border-top: 10px solid ${Color.LIGHT_GREY};
+  border-bottom: 1px solid ${Color.LIGHT_GREY};
 
   &::-webkit-scrollbar {
     display: none;
@@ -24,11 +25,12 @@ const Container = styled.div`
 
 const CategoryLink = styled(Link)`
   width: auto;
-  padding: 5px 10px;
+  padding: 10px 10px;
   border-bottom: 3px solid transparent;
 
   &.active {
     border-bottom: 3px solid black;
+    font-weight: 600;
   }
 `;
 
