@@ -40,6 +40,7 @@ interface CategoryBadgesContainerProps {
 }
 
 function CategoryBadgesContainer({ productCategories, productsByCategory }: CategoryBadgesContainerProps) {
+  const duration = 400;
   const isScrolling = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -49,12 +50,12 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
     scrollToCategoryBadge(categoryId, containerRef);
   };
 
-  const blockScroll = (categoryId: number) => {
+  const blockSpy = (categoryId: number) => {
     isScrolling.current = true;
     scrollToCategoryBadge(categoryId, containerRef);
     setTimeout(() => {
       isScrolling.current = false;
-    }, 400);
+    }, duration);
   };
 
   return (
@@ -70,11 +71,11 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
               spy={true}
               smooth={true}
               offset={-350}
-              duration={400}
+              duration={duration}
               onSetActive={() => {
                 categoryClick(category.id);
               }}
-              onClick={() => blockScroll(category.id)}
+              onClick={() => blockSpy(category.id)}
             >
               {category.name}
             </CategoryLink>
@@ -89,11 +90,11 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
           spy={true}
           smooth={true}
           offset={-350}
-          duration={400}
+          duration={duration}
           onSetActive={() => {
             categoryClick(-1);
           }}
-          onClick={() => blockScroll(-1)}
+          onClick={() => blockSpy(-1)}
         >
           기본 메뉴
         </CategoryLink>
