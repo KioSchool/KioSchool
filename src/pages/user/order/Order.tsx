@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { Element } from 'react-scroll';
+import { Element } from '@kioschool/react-scroll';
 import AppLabel from '@components/common/label/AppLabel';
 import CategoryBadgesContainer from '@components/user/order/CategoryBadgesContainer';
 import ProductCard from '@components/user/product/ProductCard';

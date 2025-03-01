@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { Product, ProductCategory } from '@@types/index';
 import { debounce } from 'lodash';
 import { rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { scrollToCategoryBadge } from '@utils/CategoryTracking';
-import { Link } from 'react-scroll';
+import { Link } from '@kioschool/react-scroll';
 
 const Container = styled.div`
   width: 100%;
