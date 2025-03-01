@@ -116,7 +116,7 @@ function Order() {
       <StickyHeader>
         <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategoryId} />
       </StickyHeader>
-      {isShowNotice && <WorkspaceNotice />}
+      {isShowNotice && <WorkspaceNotice notice={workspace.notice} />}
       <ContentContainer className={'order-content'}>
         {productsWithCategory.map(({ category, products }) => {
           if (!products.length) return null;
