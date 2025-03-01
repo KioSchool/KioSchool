@@ -36,8 +36,10 @@ const RightContainer = styled.div`
   ${rowFlex({ align: 'center' })}
 `;
 
-const ArrowLeftButton = styled(ArrowLeftSvg)<{ useLeftArrow?: boolean }>`
-  visibility: ${({ useLeftArrow }) => (useLeftArrow ? 'visible' : 'hidden')};
+const ArrowLeftButton = styled(ArrowLeftSvg, {
+  shouldForwardProp: (prop) => prop !== 'useLeftArrow',
+})<{ useLeftArrow?: boolean }>`
+  display: ${({ useLeftArrow }) => (useLeftArrow ? 'block' : 'none')};
   cursor: pointer;
   fill: ${Color.BLACK};
   transition: transform 0.1s ease;
