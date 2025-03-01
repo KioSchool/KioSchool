@@ -1,38 +1,68 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import ChevronDownSvg from '@resources/svg/ChevronDownSvg';
-import { expandButtonStyle } from '@styles/buttonStyles';
 
-const Container = styled.div`
+const Container = styled.div<{ expanded: boolean }>`
   width: 100%;
-  height: 60px;
   margin: 15px 0;
+  height: ${({ expanded }) => (expanded ? 'auto' : '60px')};
   ${colFlex({ align: 'center' })}
 `;
 
-const NoticeContent = styled.div`
-  border-radius: 8px;
+const NoticeContent = styled.div<{ expanded: boolean }>`
   width: calc(100% - 40px);
-  height: 100%;
+  height: ${({ expanded }) => (expanded ? 'auto' : '100%')};
   background: ${Color.LIGHT_GREY};
+  padding: 10px;
+  border-radius: 8px;
+  overflow: hidden;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
-const OpenIcon = styled(ChevronDownSvg)`
-  ${expandButtonStyle}
+const expandedStyle = `
+  white-space: pre-wrap;
+`;
+
+const unExpandedStyle = `
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+`;
+
+const Notice = styled.p<{ expanded: boolean }>`
+  padding-left: 5px;
+  width: 80%;
+  font-size: 13px;
+  ${({ expanded }) => (expanded ? expandedStyle : unExpandedStyle)}
+`;
+
+const ToggleIcon = styled(ChevronDownSvg)<{ expanded: boolean }>`
   padding-right: 5px;
   width: 25px;
   height: 25px;
+  transition: transform 0.3s;
+  transform: rotate(${({ expanded }) => (expanded ? '180deg' : '0deg')});
 `;
 
-function WorkspaceNotice() {
+interface WorkspaceNoticeProps {
+  notice: string;
+}
+
+function WorkspaceNotice({ notice }: WorkspaceNoticeProps) {
+  const [expanded, setExpanded] = useState(false);
+
+  const toggleExpand = () => {
+    setExpanded((prev) => !prev);
+  };
+
   return (
-    <Container>
-      <NoticeContent>
-        WorkspaceNotice
-        <OpenIcon />
+    <Container expanded={expanded}>
+      <NoticeContent expanded={expanded}>
+        <Notice expanded={expanded}>{notice}</Notice>
+        <ToggleIcon expanded={expanded} onClick={toggleExpand} />
       </NoticeContent>
     </Container>
   );
