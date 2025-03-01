@@ -53,7 +53,7 @@ interface WorkspaceNoticeProps {
 }
 
 function WorkspaceNotice({ notice }: WorkspaceNoticeProps) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState<boolean>(false);
 
   const toggleExpand = () => {
     setExpanded((prev) => !prev);
