@@ -83,7 +83,7 @@ function Order() {
     fetchWorkspace(workspaceId);
     fetchCategories();
 
-    const handleCategoryScroll = () => {
+    const updateStickyNavBarVisibility = () => {
       if (!headerRef.current) return;
 
       const bufferedHeight = 65;
@@ -93,9 +93,9 @@ function Order() {
       setShowNavBar(isShow);
     };
 
-    window.addEventListener('scroll', handleCategoryScroll);
+    window.addEventListener('scroll', updateStickyNavBarVisibility);
 
-    return () => window.removeEventListener('scroll', handleCategoryScroll);
+    return () => window.removeEventListener('scroll', updateStickyNavBarVisibility);
   }, []);
 
   return (
