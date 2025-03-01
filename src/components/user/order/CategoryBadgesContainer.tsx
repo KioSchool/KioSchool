@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import styled from '@emotion/styled';
 import { Product, ProductCategory } from '@@types/index';
 import { rowFlex } from '@styles/flexStyles';
@@ -22,10 +22,13 @@ const Container = styled.div`
   }
 `;
 
-const CategoryLabel = styled.div<{ isSelected?: boolean }>`
+const CategoryLink = styled(Link)`
   width: auto;
   padding: 5px 10px;
-  border-bottom: 3px solid ${({ isSelected }) => (isSelected ? 'black' : 'transparent')};
+
+  &.active {
+    border-bottom: 3px solid black;
+  }
 `;
 
 interface CategoryBadgesContainerProps {
@@ -34,12 +37,22 @@ interface CategoryBadgesContainerProps {
 }
 
 function CategoryBadgesContainer({ productCategories, productsByCategory }: CategoryBadgesContainerProps) {
-  const [activeCategory, setActiveCategory] = useState<number | null>(null);
+  const isScrolling = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const categoryClick = (categoryId: number) => {
+    if (isScrolling.current) {
+      return;
+    }
     scrollToCategoryBadge(categoryId, containerRef);
-    setActiveCategory(categoryId);
+  };
+
+  const blockScroll = (categoryId: number) => {
+    isScrolling.current = true;
+    scrollToCategoryBadge(categoryId, containerRef);
+    setTimeout(() => {
+      isScrolling.current = false;
+    }, 400);
   };
 
   return (
@@ -47,7 +60,8 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
       {productCategories.map(
         (category) =>
           productsByCategory[category.id] && (
-            <Link
+            <CategoryLink
+              id={`categoryBadge_${category.id}`}
               key={`category_${category.id}`}
               activeClass="active"
               to={`category_${category.id}`}
@@ -58,15 +72,15 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
               onSetActive={() => {
                 categoryClick(category.id);
               }}
+              onClick={() => blockScroll(category.id)}
             >
-              <CategoryLabel id={`categoryBadge_${category.id}`} onClick={() => categoryClick(category.id)} isSelected={activeCategory === category.id}>
-                {category.name}
-              </CategoryLabel>
-            </Link>
+              {category.name}
+            </CategoryLink>
           ),
       )}
       {productsByCategory.undefined && (
-        <Link
+        <CategoryLink
+          id={`categoryBadge_-1`}
           key="category_default"
           activeClass="active"
           to="category_default"
@@ -77,11 +91,10 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
           onSetActive={() => {
             categoryClick(-1);
           }}
+          onClick={() => blockScroll(-1)}
         >
-          <CategoryLabel id="categoryBadge_-1" onClick={() => categoryClick(-1)} isSelected={activeCategory === -1}>
-            기본 메뉴
-          </CategoryLabel>
-        </Link>
+          기본 메뉴
+        </CategoryLink>
       )}
     </Container>
   );
