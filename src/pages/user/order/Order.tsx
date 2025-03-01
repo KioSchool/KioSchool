@@ -53,7 +53,7 @@ const SubContent = styled.div`
 const CategoryProduct = styled(Element, {
   shouldForwardProp: (prop) => prop !== 'isLastElement',
 })<{ isLastElement: boolean }>`
-  padding: 10px 0;
+  padding: 17px 0 10px 0;
   border-bottom: 7px solid ${({ isLastElement }) => (isLastElement ? 'transparent' : Color.LIGHT_GREY)};
 `;
 
@@ -159,15 +159,18 @@ function Order() {
 
           {defaultProducts && (
             <CategoryProduct isLastElement={true} name="category_default" key="product_category_default">
-              <AppLabel size={22}>기본메뉴</AppLabel>
-              {defaultProducts.map((product) => {
+              <AppLabel color={Color.BLACK} size={22} style={{ padding: '10px 0' }}>
+                기본메뉴
+              </AppLabel>
+              {defaultProducts.map((product, productIndex) => {
                 const productInBasket = orderBasket.find((item) => item.productId === product.id);
                 const quantity = productInBasket?.quantity || 0;
+                const isShowDivider = productIndex !== defaultProducts.length - 1;
 
                 return (
                   <ProductContainer key={`product${product.id}`} className="product-container">
                     <ProductCard product={product} quantity={quantity} />
-                    <HorizontalDivider />
+                    {isShowDivider && <HorizontalDivider />}
                   </ProductContainer>
                 );
               })}
