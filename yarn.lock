@@ -8190,10 +8190,10 @@ react-scripts@5.0.1:
   optionalDependencies:
     fsevents "^2.3.2"
 
-react-scroll@^1.9.3:
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/react-scroll/-/react-scroll-1.9.3.tgz#8312831244a7a8f86036e72c71de155a454a78c0"
-  integrity sha512-xv7FXqF3k63aSLNu4/NjFvRNI0ge7DmmmsbeGarP7LZVAlJMSjUuW3dTtLxp1Afijyv0lS2qwC0GiFHvx1KBHQ==
+"react-scroll@npm:@kioschool/react-scroll":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@kioschool/react-scroll/-/react-scroll-1.0.3.tgz#f7904796e8631e687bc565b4c146f714bbcc1d5b"
+  integrity sha512-wJCfgf7C2w97K6wMdXW/jq+tUiaH1aqQoydevVWcOoDlZvI+VmaGmrW/Xt5poN1dIfyp0L+CIqKBeqXH9op+Pg==
   dependencies:
     lodash.throttle "^4.1.1"
     prop-types "^15.7.2"

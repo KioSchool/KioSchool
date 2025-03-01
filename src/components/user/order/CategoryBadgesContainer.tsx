@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useRef } from 'react';
 import styled from '@emotion/styled';
 import { Product, ProductCategory } from '@@types/index';
-import { debounce } from 'lodash';
 import { rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { scrollToCategoryBadge } from '@utils/CategoryTracking';
@@ -23,10 +22,14 @@ const Container = styled.div`
   }
 `;
 
-const CategoryLabel = styled.div<{ isSelected?: boolean }>`
+const CategoryLink = styled(Link)`
   width: auto;
   padding: 5px 10px;
-  border-bottom: 3px solid ${({ isSelected }) => (isSelected ? 'black' : 'transparent')};
+  border-bottom: 3px solid transparent;
+
+  &.active {
+    border-bottom: 3px solid black;
+  }
 `;
 
 interface CategoryBadgesContainerProps {
@@ -35,33 +38,30 @@ interface CategoryBadgesContainerProps {
 }
 
 function CategoryBadgesContainer({ productCategories, productsByCategory }: CategoryBadgesContainerProps) {
-  const [activeCategory, setActiveCategory] = useState<number | null>(null);
+  const isScrolling = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const categoryClick = (categoryId: number) => {
+    if (isScrolling.current) return;
+
     scrollToCategoryBadge(categoryId, containerRef);
-    setActiveCategory(categoryId);
   };
 
-  const debouncedCategoryClick = useCallback(
-    debounce((categoryId: number) => {
-      categoryClick(categoryId);
-    }, 300),
-    [],
-  );
-
-  useEffect(() => {
-    return () => {
-      debouncedCategoryClick.cancel();
-    };
-  }, [debouncedCategoryClick]);
+  const blockScroll = (categoryId: number) => {
+    isScrolling.current = true;
+    scrollToCategoryBadge(categoryId, containerRef);
+    setTimeout(() => {
+      isScrolling.current = false;
+    }, 400);
+  };
 
   return (
     <Container className="category-badges-container" ref={containerRef}>
       {productCategories.map(
         (category) =>
           productsByCategory[category.id] && (
-            <Link
+            <CategoryLink
+              id={`categoryBadge_${category.id}`}
               key={`category_${category.id}`}
               activeClass="active"
               to={`category_${category.id}`}
@@ -70,17 +70,17 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
               offset={-350}
               duration={400}
               onSetActive={() => {
-                debouncedCategoryClick(category.id);
+                categoryClick(category.id);
               }}
+              onClick={() => blockScroll(category.id)}
             >
-              <CategoryLabel id={`categoryBadge_${category.id}`} onClick={() => categoryClick(category.id)} isSelected={activeCategory === category.id}>
-                {category.name}
-              </CategoryLabel>
-            </Link>
+              {category.name}
+            </CategoryLink>
           ),
       )}
       {productsByCategory.undefined && (
-        <Link
+        <CategoryLink
+          id={`categoryBadge_-1`}
           key="category_default"
           activeClass="active"
           to="category_default"
@@ -89,13 +89,12 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
           offset={-350}
           duration={400}
           onSetActive={() => {
-            debouncedCategoryClick(-1);
+            categoryClick(-1);
           }}
+          onClick={() => blockScroll(-1)}
         >
-          <CategoryLabel id="categoryBadge_-1" onClick={() => categoryClick(-1)} isSelected={activeCategory === -1}>
-            기본 메뉴
-          </CategoryLabel>
-        </Link>
+          기본 메뉴
+        </CategoryLink>
       )}
     </Container>
   );
