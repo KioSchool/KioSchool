@@ -6,6 +6,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import PlusButtonSvg from '@resources/svg/PlusButtonSvg';
 import MinusButtonSvg from '@resources/svg/MinusButtonSvg';
+import { Color } from '@resources/colors';
 
 const Container = styled.div`
   max-width: 100vw;
@@ -17,7 +18,7 @@ const Container = styled.div`
 const LabelContainer = styled.div`
   flex-basis: 0;
   gap: 3px;
-  ${colFlex()}
+  ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
 const ImageContainer = styled.div`
@@ -82,9 +83,13 @@ function ProductCard({ product, quantity }: ProductCardProps) {
   return (
     <Container className="product-card-container">
       <LabelContainer className="label-container">
-        <AppLabel size={20}>{product.name}</AppLabel>
-        <AppLabel size={13}>{product.description}</AppLabel>
-        <AppLabel size={22} style={{ marginTop: 'auto' }}>
+        <AppLabel color={Color.BLACK} size={20}>
+          {product.name}
+        </AppLabel>
+        <AppLabel color={Color.BLACK} size={13}>
+          {product.description}
+        </AppLabel>
+        <AppLabel color={Color.BLACK} size={22}>
           {product.price.toLocaleString()}원
         </AppLabel>
       </LabelContainer>
