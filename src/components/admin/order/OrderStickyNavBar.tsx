@@ -22,8 +22,13 @@ const LeftContainer = styled.div`
   padding-left: 10px;
   width: 300px;
   height: 100%;
-  gap: 5px;
+  gap: 20px;
   ${rowFlex({ justify: 'start', align: 'center' })}
+`;
+
+const TextContainer = styled.div`
+  gap: 10px;
+  ${rowFlex({ align: 'end' })}
 `;
 
 const RightContainer = styled.div`
@@ -31,7 +36,8 @@ const RightContainer = styled.div`
   ${rowFlex({ align: 'center' })}
 `;
 
-const ArrowLeftButton = styled(ArrowLeftSvg)`
+const ArrowLeftButton = styled(ArrowLeftSvg)<{ useLeftArrow?: boolean }>`
+  visibility: ${({ useLeftArrow }) => (useLeftArrow ? 'visible' : 'hidden')};
   cursor: pointer;
   fill: ${Color.BLACK};
   transition: transform 0.1s ease;
@@ -49,11 +55,14 @@ const ShareButton = styled(ShareSvg)`
 `;
 
 interface OrderStickyNavBarProps {
+  useLeftArrow?: boolean;
   showNavBar: boolean;
   workspaceName: string;
+  tableNo?: string | null;
+  useShareButton?: boolean;
 }
 
-function OrderStickyNavBar({ showNavBar, workspaceName }: OrderStickyNavBarProps) {
+function OrderStickyNavBar({ useLeftArrow = true, showNavBar, workspaceName, tableNo, useShareButton = true }: OrderStickyNavBarProps) {
   const onClickShare = async () => {
     if (!navigator.share) {
       alert('이 브라우저는 Web Share API를 지원하지 않습니다. 다른 브라우저를 사용해주세요.');
@@ -74,14 +83,19 @@ function OrderStickyNavBar({ showNavBar, workspaceName }: OrderStickyNavBarProps
   return (
     <Container isShow={showNavBar}>
       <LeftContainer>
-        <ArrowLeftButton />
-        <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: '600' }}>
-          {workspaceName}
-        </AppLabel>
+        <ArrowLeftButton useLeftArrow={useLeftArrow} />
+        <TextContainer>
+          <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: '600' }}>
+            {workspaceName}
+          </AppLabel>
+          {tableNo && (
+            <AppLabel color={Color.BLACK} size={15} style={{ fontWeight: '600' }}>
+              테이블 {tableNo}
+            </AppLabel>
+          )}
+        </TextContainer>
       </LeftContainer>
-      <RightContainer>
-        <ShareButton onClick={onClickShare} />
-      </RightContainer>
+      <RightContainer>{useShareButton && <ShareButton onClick={onClickShare} />}</RightContainer>
     </Container>
   );
 }
