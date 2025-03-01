@@ -3,18 +3,16 @@ import { useRecoilValue } from 'recoil';
 import { orderBasketAtom, userWorkspaceAtom } from '@recoils/atoms';
 import _ from 'lodash';
 import styled from '@emotion/styled';
-import AppLabel from '@components/common/label/AppLabel';
-import AppBadge from '@components/common/badge/AppBadge';
 import OrderButton from '@components/user/order/OrderButton';
-import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { colFlex, rowFlex } from '@styles/flexStyles';
+import { colFlex } from '@styles/flexStyles';
 import useOrder from '@hooks/user/useOrder';
+import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
 import { Color } from '@resources/colors';
 
 const Container = styled.div`
-  width: 100vw;
-  min-height: 100vh;
+  width: 100%;
+  height: 100%;
   animation: moveInFromRight 0.3s;
 
   @keyframes moveInFromRight {
@@ -29,21 +27,62 @@ const Container = styled.div`
   }
 `;
 
-const Header = styled.div`
-  background: ${Color.WHITE};
-  position: sticky;
-  top: 0;
-  width: 100vw;
-  padding: 25px;
-  box-sizing: border-box;
-  z-index: 100;
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
+const SubContainer = styled.div`
+  margin-top: 45px;
+  gap: 20px;
+  border-top: 10px solid ${Color.LIGHT_GREY};
+  padding-top: 12px;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
-const SubContainer = styled.div`
-  height: 70vh;
-  gap: 20px;
+const SubTitleContainer = styled.div`
+  width: 100%;
+  padding: 0 40px;
+  box-sizing: border-box;
+  gap: 10px;
+  ${colFlex()};
+`;
+
+const SubTitle = styled.div`
+  font-size: 16px;
+  font-weight: 600;
+`;
+
+const Amount = styled.div`
+  font-size: 16px;
+  font-weight: 400;
+`;
+
+const InputContainer = styled.div`
+  padding-top: 20px;
+  padding-bottom: 20px;
+  ${colFlex({ align: 'center' })}
+`;
+
+const Input = styled.input`
+  width: 300px;
+  height: 40px;
+  padding: 0 10px;
+  border: none;
+  border-bottom: 1px solid #898989;
+  font-size: 14px;
+`;
+
+const DescriptionContainer = styled.div`
+  width: 100%;
+  height: 100px;
+  background: ${Color.LIGHT_GREY};
   ${colFlex({ justify: 'center', align: 'center' })}
+`;
+
+const Description = styled.div`
+  width: 100%;
+  font-size: 13px;
+  font-weight: 500;
+  color: #898989;
+  padding: 0 40px;
+  text-align: center;
+  box-sizing: border-box;
 `;
 
 function OrderPay() {
@@ -96,15 +135,21 @@ function OrderPay() {
 
   return (
     <Container className={'order-pay-container'}>
-      <Header className={'order-pay-header'}>
-        <AppLabel>주문 결제</AppLabel>
-        <AppBadge>{totalAmount.toLocaleString()}원</AppBadge>
-      </Header>
+      <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
       <SubContainer className={'order-pay-sub-container'}>
-        <AppInputWithLabel titleLabel={'입금자명'} placeholder={'입금자명을 입력해주세요.'} style={{ width: '300px' }} ref={customerNameRef} />
-        <AppLabel size={12}>입력한 입금자명과 실제로 입금한 입금자명이 다를 경우 결제 확인이 불가능합니다.</AppLabel>
-        <AppLabel size={12}>아래 버튼을 누르면 주문이 완료되며, 토스 송금 창으로 이동합니다.</AppLabel>
-        <AppLabel size={12}>송금 완료 후 다시 이 페이지로 돌아오면 주문 내역을 확인하실 수 있습니다.</AppLabel>
+        <SubTitleContainer>
+          <SubTitle>결제 진행</SubTitle>
+          <Amount>{totalAmount.toLocaleString()}원</Amount>
+        </SubTitleContainer>
+        <InputContainer>
+          <Input type="text" placeholder={'입금자명을 입력해주세요.'} ref={customerNameRef} />
+        </InputContainer>
+        <DescriptionContainer>
+          <Description>
+            입력하신 입금자명과 실제 입금자명이 일치하지 않을 경우 결제 확인이 어려울 수 있습니다. 아래 버튼을 클릭하시면 주문이 완료되며, 토스 송금 페이지로
+            이동합니다.
+          </Description>
+        </DescriptionContainer>
       </SubContainer>
       <OrderButton showButton={orderBasket.length > 0} buttonLabel={totalAmount == 0 ? '주문하기' : `Toss로 결제하기`} onClick={payOrder} />
     </Container>
