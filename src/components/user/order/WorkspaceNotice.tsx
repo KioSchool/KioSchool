@@ -15,7 +15,7 @@ const NoticeContent = styled.div<{ expanded: boolean }>`
   width: calc(100% - 40px);
   height: ${({ expanded }) => (expanded ? 'auto' : '100%')};
   background: ${Color.LIGHT_GREY};
-  padding: 10px;
+  padding: 10px 0;
   border-radius: 8px;
   overflow: hidden;
   ${({ expanded }) => rowFlex({ justify: 'space-between', align: expanded ? 'end' : 'center' })}
@@ -33,7 +33,6 @@ const unExpandedStyle = `
 `;
 
 const Notice = styled.p<{ expanded: boolean }>`
-  padding-left: 5px;
   width: 80%;
   font-size: 13px;
   ${({ expanded }) => (expanded ? expandedStyle : unExpandedStyle)}
