@@ -50,6 +50,13 @@ const SubContent = styled.div`
   width: calc(100% - 40px);
 `;
 
+const CategoryProduct = styled(Element, {
+  shouldForwardProp: (prop) => prop !== 'isLastElement',
+})<{ isLastElement: boolean }>`
+  padding: 10px 0;
+  border-bottom: 7px solid ${({ isLastElement }) => (isLastElement ? 'transparent' : Color.LIGHT_GREY)};
+`;
+
 const ProductContainer = styled.div``;
 
 function Order() {
@@ -130,27 +137,28 @@ function Order() {
             if (!products.length) return null;
 
             return (
-              <Element name={`category_${category.id}`} key={`product_category_${category.id}`}>
-                <AppLabel color={Color.BLACK} size={22}>
+              <CategoryProduct isLastElement={false} name={`category_${category.id}`} key={`product_category_${category.id}`}>
+                <AppLabel color={Color.BLACK} size={22} style={{ padding: '10px 0' }}>
                   {category.name}
                 </AppLabel>
-                {products.map((product) => {
+                {products.map((product, productIndex) => {
                   const productInBasket = orderBasket.find((item) => item.productId === product.id);
                   const quantity = productInBasket?.quantity || 0;
+                  const isShowDivider = productIndex !== products.length - 1;
 
                   return (
                     <ProductContainer key={`product${product.id}`} className="product-container">
                       <ProductCard product={product} quantity={quantity} />
-                      <HorizontalDivider />
+                      {isShowDivider && <HorizontalDivider />}
                     </ProductContainer>
                   );
                 })}
-              </Element>
+              </CategoryProduct>
             );
           })}
 
           {defaultProducts && (
-            <Element name="category_default" key="product_category_default">
+            <CategoryProduct isLastElement={true} name="category_default" key="product_category_default">
               <AppLabel size={22}>기본메뉴</AppLabel>
               {defaultProducts.map((product) => {
                 const productInBasket = orderBasket.find((item) => item.productId === product.id);
@@ -163,7 +171,7 @@ function Order() {
                   </ProductContainer>
                 );
               })}
-            </Element>
+            </CategoryProduct>
           )}
         </SubContent>
         <OrderFooter />
