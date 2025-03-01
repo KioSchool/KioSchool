@@ -41,8 +41,13 @@ const Header = styled.div`
   gap: 7px;
 `;
 
-const ContentContainer = styled.div`
+const MainContent = styled.div`
   width: 100%;
+  ${colFlex({ align: 'center' })}
+`;
+
+const SubContent = styled.div`
+  width: calc(100% - 40px);
 `;
 
 const ProductContainer = styled.div``;
@@ -116,15 +121,38 @@ function Order() {
       <StickyHeader>
         <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategoryId} />
       </StickyHeader>
-      {isShowNotice && <WorkspaceNotice notice={workspace.notice} />}
-      <ContentContainer className={'order-content'}>
-        {productsWithCategory.map(({ category, products }) => {
-          if (!products.length) return null;
 
-          return (
-            <Element name={`category_${category.id}`} key={`product_category_${category.id}`}>
-              <AppLabel size={22}>{category.name}</AppLabel>
-              {products.map((product) => {
+      {isShowNotice && <WorkspaceNotice notice={workspace.notice} />}
+
+      <MainContent className={'order-content'}>
+        <SubContent>
+          {productsWithCategory.map(({ category, products }) => {
+            if (!products.length) return null;
+
+            return (
+              <Element name={`category_${category.id}`} key={`product_category_${category.id}`}>
+                <AppLabel color={Color.BLACK} size={22}>
+                  {category.name}
+                </AppLabel>
+                {products.map((product) => {
+                  const productInBasket = orderBasket.find((item) => item.productId === product.id);
+                  const quantity = productInBasket?.quantity || 0;
+
+                  return (
+                    <ProductContainer key={`product${product.id}`} className="product-container">
+                      <ProductCard product={product} quantity={quantity} />
+                      <HorizontalDivider />
+                    </ProductContainer>
+                  );
+                })}
+              </Element>
+            );
+          })}
+
+          {defaultProducts && (
+            <Element name="category_default" key="product_category_default">
+              <AppLabel size={22}>기본메뉴</AppLabel>
+              {defaultProducts.map((product) => {
                 const productInBasket = orderBasket.find((item) => item.productId === product.id);
                 const quantity = productInBasket?.quantity || 0;
 
@@ -136,28 +164,10 @@ function Order() {
                 );
               })}
             </Element>
-          );
-        })}
-
-        {defaultProducts && (
-          <Element name="category_default" key="product_category_default">
-            <AppLabel size={22}>기본메뉴</AppLabel>
-            {defaultProducts.map((product) => {
-              const productInBasket = orderBasket.find((item) => item.productId === product.id);
-              const quantity = productInBasket?.quantity || 0;
-
-              return (
-                <ProductContainer key={`product${product.id}`} className="product-container">
-                  <ProductCard product={product} quantity={quantity} />
-                  <HorizontalDivider />
-                </ProductContainer>
-              );
-            })}
-          </Element>
-        )}
-
+          )}
+        </SubContent>
         <OrderFooter />
-      </ContentContainer>
+      </MainContent>
       <OrderButton
         showButton={orderBasket.length > 0}
         buttonLabel={`${totalAmount.toLocaleString()}원 장바구니`}
