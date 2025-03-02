@@ -13,18 +13,6 @@ import { Color } from '@resources/colors';
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  animation: moveInFromRight 0.3s;
-
-  @keyframes moveInFromRight {
-    from {
-      opacity: 0;
-      transform: translateX(100%);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
 `;
 
 const SubContainer = styled.div`
