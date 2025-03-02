@@ -61,7 +61,7 @@ const ProductContainer = styled.div``;
 
 function Order() {
   const workspace = useRecoilValue(userWorkspaceAtom);
-  const isShowNotice = workspace.notice.length;
+  const isShowNotice = workspace.notice.length > 0;
   const rawProductCategories = useRecoilValue(categoriesAtom);
   const sellableProducts = workspace.products.filter((it) => it.isSellable);
 
