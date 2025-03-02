@@ -10,15 +10,13 @@ import MinusIconSvg from '@resources/svg/MinusIconSvg';
 import { css } from '@emotion/react';
 
 const Container = styled.div`
-  width: 100%;
-  max-width: 100vw;
+  width: auto;
   padding: 10px;
-  display: grid;
-  grid-template-columns: 2fr 1fr;
+  ${rowFlex({ justify: 'space-between' })}
 `;
 
 const LabelContainer = styled.div`
-  flex-basis: 0;
+  width: 60%;
   gap: 3px;
   ${colFlex({ justify: 'center', align: 'start' })}
 `;
@@ -61,7 +59,7 @@ const AddButton = styled(PlusIconSvg)<{ isOpened: boolean }>`
   }
 `;
 
-const ButtonAnimation = (props: { isOpened: boolean }) => css`
+const ToggleAnimation = (props: { isOpened: boolean }) => css`
   opacity: ${props.isOpened ? 1 : 0};
   transform: ${props.isOpened ? 'translateX(0)' : 'translateX(100%)'};
   transition: transform 0.3s ease, opacity 0.3s ease;
@@ -73,13 +71,13 @@ const RemoveButton = styled(MinusIconSvg)<{ isOpened: boolean }>`
   padding: 5px;
   background: ${Color.WHITE};
   border-radius: 25px;
-  ${({ isOpened }) => ButtonAnimation({ isOpened })}
+  ${({ isOpened }) => ToggleAnimation({ isOpened })}
 `;
 
 const QuantityLabel = styled.span<{ isOpened: boolean }>`
   margin: 0 10px;
   font-size: 18px;
-  ${({ isOpened }) => ButtonAnimation({ isOpened })}
+  ${({ isOpened }) => ToggleAnimation({ isOpened })}
 `;
 
 interface ProductCardProps {

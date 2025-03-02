@@ -47,7 +47,9 @@ const MainContent = styled.div`
 `;
 
 const SubContent = styled.div`
-  width: calc(100% - 40px);
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 20px;
 `;
 
 const CategoryProduct = styled(Element, {
@@ -57,7 +59,9 @@ const CategoryProduct = styled(Element, {
   border-bottom: 7px solid ${({ isLastElement }) => (isLastElement ? 'transparent' : Color.LIGHT_GREY)};
 `;
 
-const ProductContainer = styled.div``;
+const ProductContainer = styled.div`
+  width: 100%;
+`;
 
 function Order() {
   const workspace = useRecoilValue(userWorkspaceAtom);
