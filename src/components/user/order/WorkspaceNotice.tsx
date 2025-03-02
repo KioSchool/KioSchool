@@ -18,7 +18,9 @@ const NoticeContent = styled.div<{ expanded: boolean }>`
   padding: 10px;
   border-radius: 8px;
   overflow: hidden;
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
+  ${({ expanded }) => {
+    return expanded ? rowFlex({ justify: 'space-between', align: 'end' }) : rowFlex({ justify: 'space-between', align: 'center' });
+  }}
 `;
 
 const expandedStyle = `
@@ -46,6 +48,7 @@ const ToggleIcon = styled(ChevronDownSvg, {
   height: 25px;
   transition: transform 0.3s;
   transform: rotate(${({ expanded }) => (expanded ? '180deg' : '0deg')});
+  padding-top: ${({ expanded }) => (expanded ? '8px' : '')};
 `;
 
 interface WorkspaceNoticeProps {
