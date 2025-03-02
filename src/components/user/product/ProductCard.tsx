@@ -7,6 +7,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import PlusIconSvg from '@resources/svg/PlusIconSvg';
 import MinusIconSvg from '@resources/svg/MinusIconSvg';
+import { css } from '@emotion/react';
 
 const Container = styled.div`
   width: 100%;
@@ -60,23 +61,25 @@ const AddButton = styled(PlusIconSvg)<{ isOpened: boolean }>`
   }
 `;
 
+const ButtonAnimation = (props: { isOpened: boolean }) => css`
+  opacity: ${props.isOpened ? 1 : 0};
+  transform: ${props.isOpened ? 'translateX(0)' : 'translateX(100%)'};
+  transition: transform 0.3s ease, opacity 0.3s ease;
+`;
+
 const RemoveButton = styled(MinusIconSvg)<{ isOpened: boolean }>`
   width: 15px;
   height: 15px;
   padding: 5px;
   background: ${Color.WHITE};
   border-radius: 25px;
-  opacity: ${({ isOpened }) => (isOpened ? 1 : 0)};
-  transform: ${({ isOpened }) => (isOpened ? 'translateX(0)' : 'translateX(100%)')};
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  ${({ isOpened }) => ButtonAnimation({ isOpened })}
 `;
 
 const QuantityLabel = styled.span<{ isOpened: boolean }>`
   margin: 0 10px;
   font-size: 18px;
-  opacity: ${({ isOpened }) => (isOpened ? 1 : 0)};
-  transform: ${({ isOpened }) => (isOpened ? 'translateX(0)' : 'translateX(100%)')};
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  ${({ isOpened }) => ButtonAnimation({ isOpened })}
 `;
 
 interface ProductCardProps {
