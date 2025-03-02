@@ -9,6 +9,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
 import OrderStatusBar from '@components/user/order/OrderStatusBar';
+import useRefresh from '@hooks/useRefresh';
 
 const Container = styled.div`
   width: 100%;
@@ -113,6 +114,7 @@ function OrderComplete() {
 
   const { fetchWorkspaceAccount, fetchWorkspace } = useWorkspace();
   const { fetchOrder } = useOrder();
+  const { allowPullToRefresh } = useRefresh();
   const setOrderBasket = useSetRecoilState(orderBasketAtom);
   const order = useRecoilValue(userOrderAtom);
   const workspace = useRecoilValue(userWorkspaceAtom);
@@ -144,6 +146,7 @@ function OrderComplete() {
     resetRecoilState();
     fetchOrder(orderId);
     fetchWorkspace(workspaceId);
+    allowPullToRefresh();
     getAccountInfo();
   }, []);
 
