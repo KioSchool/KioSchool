@@ -83,13 +83,13 @@ function ProductCard({ product, quantity }: ProductCardProps) {
   return (
     <Container className="product-card-container">
       <LabelContainer className="label-container">
-        <AppLabel color={Color.BLACK} size={20}>
+        <AppLabel color={Color.BLACK} size={18}>
           {product.name}
         </AppLabel>
         <AppLabel color={Color.BLACK} size={13}>
           {product.description}
         </AppLabel>
-        <AppLabel color={Color.BLACK} size={22}>
+        <AppLabel color={Color.BLACK} size={18}>
           {product.price.toLocaleString()}원
         </AppLabel>
       </LabelContainer>
