@@ -4,9 +4,9 @@ import { Product } from '@@types/index';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import PlusButtonSvg from '@resources/svg/PlusButtonSvg';
-import MinusButtonSvg from '@resources/svg/MinusButtonSvg';
 import { Color } from '@resources/colors';
+import PlusIconSvg from '@resources/svg/PlusIconSvg';
+import MinusIconSvg from '@resources/svg/MinusIconSvg';
 
 const Container = styled.div`
   width: 100%;
@@ -37,18 +37,35 @@ const StyledImage = styled.img`
 `;
 
 const ButtonContainer = styled.div<{ isOpened: boolean }>`
-  width: 100%;
+  width: 110px;
   position: absolute;
   top: 67px;
+  right: -10px;
   background: ${({ isOpened }) => (isOpened ? Color.WHITE : '')};
-  border-radius: ${({ isOpened }) => (isOpened ? '30px' : '')};
+  border-radius: ${({ isOpened }) => (isOpened ? '100px' : '')};
   box-shadow: ${({ isOpened }) => (isOpened ? '0.3px 2px 4px 0px rgba(0, 0, 0, 0.15)' : '')};
-  ${({ isOpened }) => rowFlex({ justify: isOpened ? 'space-between' : 'end' })}
+  ${({ isOpened }) => rowFlex({ justify: isOpened ? 'space-between' : 'end', align: 'center' })}
 `;
 
-const AddButton = styled(PlusButtonSvg)``;
+const AddButton = styled(PlusIconSvg)<{ isOpened: boolean }>`
+  width: 25px;
+  height: 25px;
+  background: ${Color.WHITE};
+  border-radius: 25px;
+  color: ${Color.KIO_ORANGE};
+  filter: ${({ isOpened }) => (isOpened ? '' : 'drop-shadow(0.3px 2px 4px rgba(0, 0, 0, 0.15))')};
 
-const RemoveButton = styled(MinusButtonSvg)<{ isOpened: boolean }>`
+  & path {
+    stroke-width: 3.5;
+  }
+`;
+
+const RemoveButton = styled(MinusIconSvg)<{ isOpened: boolean }>`
+  width: 15px;
+  height: 15px;
+  padding: 5px;
+  background: ${Color.WHITE};
+  border-radius: 25px;
   opacity: ${({ isOpened }) => (isOpened ? 1 : 0)};
   transform: ${({ isOpened }) => (isOpened ? 'translateX(0)' : 'translateX(100%)')};
   transition: transform 0.3s ease, opacity 0.3s ease;
@@ -115,7 +132,7 @@ function ProductCard({ product, quantity }: ProductCardProps) {
         <ButtonContainer isOpened={isOpened}>
           <RemoveButton onClick={handleRemoveProduct} isOpened={isOpened} />
           <QuantityLabel isOpened={isOpened}>{quantity}</QuantityLabel>
-          <AddButton onClick={handleAddProduct} />
+          <AddButton onClick={handleAddProduct} isOpened={isOpened} />
         </ButtonContainer>
       </Contents>
     </Container>
