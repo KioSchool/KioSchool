@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useOrder from '@hooks/user/useOrder';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { orderBasketAtom, userOrderAtom, userWorkspaceAtom } from '@recoils/atoms';
 import { useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
@@ -115,7 +115,7 @@ function OrderComplete() {
   const { fetchWorkspaceAccount, fetchWorkspace } = useWorkspace();
   const { fetchOrder } = useOrder();
   const { allowPullToRefresh } = useRefresh();
-  const setOrderBasket = useSetRecoilState(orderBasketAtom);
+  const resetOrderBasket = useResetRecoilState(orderBasketAtom);
   const order = useRecoilValue(userOrderAtom);
   const workspace = useRecoilValue(userWorkspaceAtom);
 
@@ -125,10 +125,6 @@ function OrderComplete() {
     const hour = isAm ? date.getHours() : date.getHours() - 12;
 
     return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 ${ampm} ${hour}시 ${date.getMinutes()}분`;
-  };
-
-  const resetRecoilState = () => {
-    setOrderBasket([]);
   };
 
   const getAccountInfo = async () => {
@@ -143,7 +139,7 @@ function OrderComplete() {
   };
 
   useEffect(() => {
-    resetRecoilState();
+    resetOrderBasket();
     fetchOrder(orderId);
     fetchWorkspace(workspaceId);
     allowPullToRefresh();
