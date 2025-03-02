@@ -15,7 +15,7 @@ const NoticeContent = styled.div<{ expanded: boolean }>`
   width: calc(100% - 40px);
   height: ${({ expanded }) => (expanded ? 'auto' : '100%')};
   background: ${Color.LIGHT_GREY};
-  padding: 10px 0;
+  padding: 10px;
   border-radius: 8px;
   overflow: hidden;
   ${({ expanded }) => rowFlex({ justify: 'space-between', align: expanded ? 'end' : 'center' })}
@@ -33,6 +33,7 @@ const unExpandedStyle = `
 `;
 
 const Notice = styled.p<{ expanded: boolean }>`
+  padding-left: 5px;
   width: 80%;
   font-size: 13px;
   ${({ expanded }) => (expanded ? expandedStyle : unExpandedStyle)}
@@ -53,7 +54,7 @@ interface WorkspaceNoticeProps {
 }
 
 function WorkspaceNotice({ notice }: WorkspaceNoticeProps) {
-  const [expanded, setExpanded] = useState<boolean>(false);
+  const [expanded, setExpanded] = useState(false);
 
   const toggleExpand = () => {
     setExpanded((prev) => !prev);
