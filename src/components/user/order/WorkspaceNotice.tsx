@@ -39,8 +39,9 @@ const Notice = styled.p<{ expanded: boolean }>`
   ${({ expanded }) => (expanded ? expandedStyle : unExpandedStyle)}
 `;
 
-const ToggleIcon = styled(ChevronDownSvg)<{ expanded: boolean }>`
-  padding-right: 5px;
+const ToggleIcon = styled(ChevronDownSvg, {
+  shouldForwardProp: (prop) => prop !== 'expanded',
+})<{ expanded: boolean }>`
   width: 25px;
   height: 25px;
   transition: transform 0.3s;
