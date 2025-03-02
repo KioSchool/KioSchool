@@ -1,63 +1,51 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import AppLabel from '@components/common/label/AppLabel';
-import { colFlex, rowFlex } from '@styles/flexStyles';
+import { rowFlex } from '@styles/flexStyles';
 import { OrderStatus } from '@@types/index';
+import { Color } from '@resources/colors';
 
 interface OrderStatusBarProps {
   status: OrderStatus;
 }
 
 const Container = styled.div`
-  margin-top: 20px;
-  padding: 0 20px;
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
+  width: 100%;
+  ${rowFlex({ justify: 'space-between' })}
+`;
+
+const OrderStatusText = styled.div<{ active: boolean }>`
+  font-size: 13px;
+  font-weight: 500;
+  color: ${({ active }) => (active ? Color.BLACK : '#898989')};
 `;
 
 const CancelContainer = styled.div`
-  gap: 5px;
-  ${colFlex({ align: 'center' })}
+  width: 100%;
+  ${rowFlex({ justify: 'center' })};
 `;
 
-const CurrentStatusLabel = styled(AppLabel)`
-  font-weight: 600;
-  font-size: 15px;
-`;
-
-const OtherStatusLabel = styled(AppLabel)`
-  font-weight: 400;
+const CancelText = styled.div`
   font-size: 13px;
-  color: #6f6f6f;
+  font-weight: 500;
+  color: ${Color.KIO_ORANGE};
 `;
 
 function OrderStatusBar({ status }: OrderStatusBarProps) {
   if (status === OrderStatus.CANCELLED) {
     return (
-      <CancelContainer className={'cancel-container'}>
-        <CurrentStatusLabel className={'cancel-status-label'}>주문 취소</CurrentStatusLabel>
+      <CancelContainer>
+        <CancelText>취소된 주문입니다.</CancelText>
       </CancelContainer>
     );
   }
 
   return (
     <Container>
-      {status === OrderStatus.NOT_PAID ? (
-        <CurrentStatusLabel className={'current-status-label'}>결제 확인 중</CurrentStatusLabel>
-      ) : (
-        <OtherStatusLabel className={'other-status-label'}>결제 확인 중</OtherStatusLabel>
-      )}
-      {'· · ·'}
-      {status === OrderStatus.PAID ? (
-        <CurrentStatusLabel className={'current-status-label'}>조리중</CurrentStatusLabel>
-      ) : (
-        <OtherStatusLabel className={'other-status-label'}>조리중</OtherStatusLabel>
-      )}
-      {'· · ·'}
-      {status === OrderStatus.SERVED ? (
-        <CurrentStatusLabel className={'current-status-label'}>서빙 완료</CurrentStatusLabel>
-      ) : (
-        <OtherStatusLabel className={'other-status-label'}>서빙 완료</OtherStatusLabel>
-      )}
+      <OrderStatusText active={status === OrderStatus.NOT_PAID}>결제대기</OrderStatusText>
+      <OrderStatusText active={false}> {'· · ·'}</OrderStatusText>
+      <OrderStatusText active={status === OrderStatus.PAID}>조리중</OrderStatusText>
+      <OrderStatusText active={false}> {'· · ·'}</OrderStatusText>
+      <OrderStatusText active={status === OrderStatus.SERVED}>서빙완료</OrderStatusText>
     </Container>
   );
 }

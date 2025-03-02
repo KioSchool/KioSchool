@@ -60,7 +60,7 @@ interface OrderStickyNavBarProps {
   useLeftArrow?: boolean;
   showNavBar: boolean;
   workspaceName: string;
-  tableNo?: string | null;
+  tableNo?: string | number | null;
   useShareButton?: boolean;
 }
 
