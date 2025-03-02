@@ -41,15 +41,31 @@ const Header = styled.div`
   gap: 7px;
 `;
 
-const ContentContainer = styled.div`
+const MainContent = styled.div`
+  width: 100%;
+  ${colFlex({ align: 'center' })}
+`;
+
+const SubContent = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 20px;
+`;
+
+const CategoryProduct = styled(Element, {
+  shouldForwardProp: (prop) => prop !== 'isLastElement',
+})<{ isLastElement: boolean }>`
+  padding: 17px 0 10px 0;
+  border-bottom: 7px solid ${({ isLastElement }) => (isLastElement ? 'transparent' : Color.LIGHT_GREY)};
+`;
+
+const ProductContainer = styled.div`
   width: 100%;
 `;
 
-const ProductContainer = styled.div``;
-
 function Order() {
   const workspace = useRecoilValue(userWorkspaceAtom);
-  const isShowNotice = workspace.notice.length;
+  const isShowNotice = workspace.notice.length > 0;
   const rawProductCategories = useRecoilValue(categoriesAtom);
   const sellableProducts = workspace.products.filter((it) => it.isSellable);
 
@@ -116,48 +132,57 @@ function Order() {
       <StickyHeader>
         <CategoryBadgesContainer productCategories={rawProductCategories} productsByCategory={productsByCategoryId} />
       </StickyHeader>
-      {isShowNotice && <WorkspaceNotice notice={workspace.notice} />}
-      <ContentContainer className={'order-content'}>
-        {productsWithCategory.map(({ category, products }) => {
-          if (!products.length) return null;
 
-          return (
-            <Element name={`category_${category.id}`} key={`product_category_${category.id}`}>
-              <AppLabel size={22}>{category.name}</AppLabel>
-              {products.map((product) => {
+      {isShowNotice && <WorkspaceNotice notice={workspace.notice} />}
+
+      <MainContent className={'order-content'}>
+        <SubContent>
+          {productsWithCategory.map(({ category, products }) => {
+            if (!products.length) return null;
+
+            return (
+              <CategoryProduct isLastElement={false} name={`category_${category.id}`} key={`product_category_${category.id}`}>
+                <AppLabel color={Color.BLACK} size={22} style={{ padding: '10px 0' }}>
+                  {category.name}
+                </AppLabel>
+                {products.map((product, productIndex) => {
+                  const productInBasket = orderBasket.find((item) => item.productId === product.id);
+                  const quantity = productInBasket?.quantity || 0;
+                  const isShowDivider = productIndex !== products.length - 1;
+
+                  return (
+                    <ProductContainer key={`product${product.id}`} className="product-container">
+                      <ProductCard product={product} quantity={quantity} />
+                      {isShowDivider && <HorizontalDivider />}
+                    </ProductContainer>
+                  );
+                })}
+              </CategoryProduct>
+            );
+          })}
+
+          {defaultProducts && (
+            <CategoryProduct isLastElement={true} name="category_default" key="product_category_default">
+              <AppLabel color={Color.BLACK} size={22} style={{ padding: '10px 0' }}>
+                기본메뉴
+              </AppLabel>
+              {defaultProducts.map((product, productIndex) => {
                 const productInBasket = orderBasket.find((item) => item.productId === product.id);
                 const quantity = productInBasket?.quantity || 0;
+                const isShowDivider = productIndex !== defaultProducts.length - 1;
 
                 return (
                   <ProductContainer key={`product${product.id}`} className="product-container">
                     <ProductCard product={product} quantity={quantity} />
-                    <HorizontalDivider />
+                    {isShowDivider && <HorizontalDivider />}
                   </ProductContainer>
                 );
               })}
-            </Element>
-          );
-        })}
-
-        {defaultProducts && (
-          <Element name="category_default" key="product_category_default">
-            <AppLabel size={22}>기본메뉴</AppLabel>
-            {defaultProducts.map((product) => {
-              const productInBasket = orderBasket.find((item) => item.productId === product.id);
-              const quantity = productInBasket?.quantity || 0;
-
-              return (
-                <ProductContainer key={`product${product.id}`} className="product-container">
-                  <ProductCard product={product} quantity={quantity} />
-                  <HorizontalDivider />
-                </ProductContainer>
-              );
-            })}
-          </Element>
-        )}
-
+            </CategoryProduct>
+          )}
+        </SubContent>
         <OrderFooter />
-      </ContentContainer>
+      </MainContent>
       <OrderButton
         showButton={orderBasket.length > 0}
         buttonLabel={`${totalAmount.toLocaleString()}원 장바구니`}

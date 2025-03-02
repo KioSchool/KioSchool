@@ -5,17 +5,18 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import ChevronDownSvg from '@resources/svg/ChevronDownSvg';
 
 const Container = styled.div<{ expanded: boolean }>`
+  box-sizing: border-box;
   width: 100%;
+  padding: 0 20px;
   margin: 15px 0;
   height: ${({ expanded }) => (expanded ? 'auto' : '60px')};
   ${colFlex({ align: 'center' })}
 `;
 
 const NoticeContent = styled.div<{ expanded: boolean }>`
-  width: calc(100% - 40px);
+  width: 100%;
   height: ${({ expanded }) => (expanded ? 'auto' : '100%')};
   background: ${Color.LIGHT_GREY};
-  padding: 10px;
   border-radius: 8px;
   overflow: hidden;
   ${({ expanded }) => rowFlex({ justify: 'space-between', align: expanded ? 'end' : 'center' })}

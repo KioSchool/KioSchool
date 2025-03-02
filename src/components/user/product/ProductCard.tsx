@@ -4,23 +4,26 @@ import { Product } from '@@types/index';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import PlusButtonSvg from '@resources/svg/PlusButtonSvg';
-import MinusButtonSvg from '@resources/svg/MinusButtonSvg';
+import { Color } from '@resources/colors';
+import PlusIconSvg from '@resources/svg/PlusIconSvg';
+import MinusIconSvg from '@resources/svg/MinusIconSvg';
+import { css } from '@emotion/react';
 
 const Container = styled.div`
-  max-width: 100vw;
+  width: auto;
   padding: 10px;
-  display: grid;
-  grid-template-columns: 2fr 1fr;
+  ${rowFlex({ justify: 'space-between' })}
 `;
 
 const LabelContainer = styled.div`
-  flex-basis: 0;
+  width: 60%;
   gap: 3px;
-  ${colFlex()}
+  ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
-const ImageContainer = styled.div`
+const Contents = styled.div`
+  position: relative;
+  width: 90px;
   ${rowFlex({ justify: 'flex-end' })}
 `;
 
@@ -32,17 +35,49 @@ const StyledImage = styled.img`
   border-radius: 10px;
 `;
 
-const AddButton = styled(PlusButtonSvg)`
-  cursor: pointer;
+const ButtonContainer = styled.div<{ isOpened: boolean }>`
+  width: 110px;
+  position: absolute;
+  top: 67px;
+  right: -10px;
+  background: ${({ isOpened }) => (isOpened ? Color.WHITE : '')};
+  border-radius: ${({ isOpened }) => (isOpened ? '100px' : '')};
+  box-shadow: ${({ isOpened }) => (isOpened ? '0.3px 2px 4px 0px rgba(0, 0, 0, 0.15)' : '')};
+  ${({ isOpened }) => rowFlex({ justify: isOpened ? 'space-between' : 'end', align: 'center' })}
 `;
 
-const RemoveButton = styled(MinusButtonSvg)`
-  cursor: pointer;
+const AddButton = styled(PlusIconSvg)<{ isOpened: boolean }>`
+  width: 25px;
+  height: 25px;
+  background: ${Color.WHITE};
+  border-radius: 25px;
+  color: ${Color.KIO_ORANGE};
+  filter: ${({ isOpened }) => (isOpened ? '' : 'drop-shadow(0.3px 2px 4px rgba(0, 0, 0, 0.15))')};
+
+  & path {
+    stroke-width: 3.5;
+  }
 `;
 
-const QuantityLabel = styled.span`
+const ToggleAnimation = (props: { isOpened: boolean }) => css`
+  opacity: ${props.isOpened ? 1 : 0};
+  transform: ${props.isOpened ? 'translateX(0)' : 'translateX(100%)'};
+  transition: transform 0.3s ease, opacity 0.3s ease;
+`;
+
+const RemoveButton = styled(MinusIconSvg)<{ isOpened: boolean }>`
+  width: 15px;
+  height: 15px;
+  padding: 5px;
+  background: ${Color.WHITE};
+  border-radius: 25px;
+  ${({ isOpened }) => ToggleAnimation({ isOpened })}
+`;
+
+const QuantityLabel = styled.span<{ isOpened: boolean }>`
   margin: 0 10px;
   font-size: 18px;
+  ${({ isOpened }) => ToggleAnimation({ isOpened })}
 `;
 
 interface ProductCardProps {
@@ -51,6 +86,7 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product, quantity }: ProductCardProps) {
+  const isOpened = quantity > 0;
   const setOrderBasket = useSetRecoilState(orderBasketAtom);
 
   const handleAddProduct = () => {
@@ -82,18 +118,24 @@ function ProductCard({ product, quantity }: ProductCardProps) {
   return (
     <Container className="product-card-container">
       <LabelContainer className="label-container">
-        <AppLabel size={20}>{product.name}</AppLabel>
-        <AppLabel size={13}>{product.description}</AppLabel>
-        <AppLabel size={22} style={{ marginTop: 'auto' }}>
+        <AppLabel color={Color.BLACK} size={18}>
+          {product.name}
+        </AppLabel>
+        <AppLabel color={Color.BLACK} size={13}>
+          {product.description}
+        </AppLabel>
+        <AppLabel color={Color.BLACK} size={18}>
           {product.price.toLocaleString()}원
         </AppLabel>
       </LabelContainer>
-      <ImageContainer className="image-container">
-        <RemoveButton onClick={handleRemoveProduct} />
-        <QuantityLabel>{quantity}</QuantityLabel>
-        <AddButton onClick={handleAddProduct} />
+      <Contents className="image-container">
         <StyledImage src={product.imageUrl} alt={product.name} />
-      </ImageContainer>
+        <ButtonContainer isOpened={isOpened}>
+          <RemoveButton onClick={handleRemoveProduct} isOpened={isOpened} />
+          <QuantityLabel isOpened={isOpened}>{quantity}</QuantityLabel>
+          <AddButton onClick={handleAddProduct} isOpened={isOpened} />
+        </ButtonContainer>
+      </Contents>
     </Container>
   );
 }
