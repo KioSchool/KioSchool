@@ -18,9 +18,7 @@ const NoticeContent = styled.div<{ expanded: boolean }>`
   padding: 10px;
   border-radius: 8px;
   overflow: hidden;
-  ${({ expanded }) => {
-    return expanded ? rowFlex({ justify: 'space-between', align: 'end' }) : rowFlex({ justify: 'space-between', align: 'center' });
-  }}
+  ${({ expanded }) => rowFlex({ justify: 'space-between', align: expanded ? 'end' : 'center' })}
 `;
 
 const expandedStyle = `
