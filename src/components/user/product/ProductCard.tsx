@@ -9,6 +9,7 @@ import MinusButtonSvg from '@resources/svg/MinusButtonSvg';
 import { Color } from '@resources/colors';
 
 const Container = styled.div`
+  width: 100%;
   max-width: 100vw;
   padding: 10px;
   display: grid;
@@ -21,7 +22,9 @@ const LabelContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
-const ImageContainer = styled.div`
+const Contents = styled.div`
+  position: relative;
+  width: 90px;
   ${rowFlex({ justify: 'flex-end' })}
 `;
 
@@ -33,17 +36,30 @@ const StyledImage = styled.img`
   border-radius: 10px;
 `;
 
-const AddButton = styled(PlusButtonSvg)`
-  cursor: pointer;
+const ButtonContainer = styled.div<{ isOpened: boolean }>`
+  width: 100%;
+  position: absolute;
+  top: 67px;
+  background: ${({ isOpened }) => (isOpened ? Color.WHITE : '')};
+  border-radius: ${({ isOpened }) => (isOpened ? '30px' : '')};
+  box-shadow: ${({ isOpened }) => (isOpened ? '0.3px 2px 4px 0px rgba(0, 0, 0, 0.15)' : '')};
+  ${({ isOpened }) => rowFlex({ justify: isOpened ? 'space-between' : 'end' })}
 `;
 
-const RemoveButton = styled(MinusButtonSvg)`
-  cursor: pointer;
+const AddButton = styled(PlusButtonSvg)``;
+
+const RemoveButton = styled(MinusButtonSvg)<{ isOpened: boolean }>`
+  opacity: ${({ isOpened }) => (isOpened ? 1 : 0)};
+  transform: ${({ isOpened }) => (isOpened ? 'translateX(0)' : 'translateX(100%)')};
+  transition: transform 0.3s ease, opacity 0.3s ease;
 `;
 
-const QuantityLabel = styled.span`
+const QuantityLabel = styled.span<{ isOpened: boolean }>`
   margin: 0 10px;
   font-size: 18px;
+  opacity: ${({ isOpened }) => (isOpened ? 1 : 0)};
+  transform: ${({ isOpened }) => (isOpened ? 'translateX(0)' : 'translateX(100%)')};
+  transition: transform 0.3s ease, opacity 0.3s ease;
 `;
 
 interface ProductCardProps {
@@ -52,6 +68,7 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product, quantity }: ProductCardProps) {
+  const isOpened = quantity > 0;
   const setOrderBasket = useSetRecoilState(orderBasketAtom);
 
   const handleAddProduct = () => {
@@ -93,12 +110,14 @@ function ProductCard({ product, quantity }: ProductCardProps) {
           {product.price.toLocaleString()}원
         </AppLabel>
       </LabelContainer>
-      <ImageContainer className="image-container">
-        <RemoveButton onClick={handleRemoveProduct} />
-        <QuantityLabel>{quantity}</QuantityLabel>
-        <AddButton onClick={handleAddProduct} />
+      <Contents className="image-container">
         <StyledImage src={product.imageUrl} alt={product.name} />
-      </ImageContainer>
+        <ButtonContainer isOpened={isOpened}>
+          <RemoveButton onClick={handleRemoveProduct} isOpened={isOpened} />
+          <QuantityLabel isOpened={isOpened}>{quantity}</QuantityLabel>
+          <AddButton onClick={handleAddProduct} />
+        </ButtonContainer>
+      </Contents>
     </Container>
   );
 }
