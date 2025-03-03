@@ -20,7 +20,7 @@ const Container = styled.div`
 const SubContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
-  padding: 0 20px;
+  padding: 0 20px 120px 20px;
   gap: 20px;
   border-top: 10px solid ${Color.LIGHT_GREY};
   padding-top: 12px;
@@ -30,7 +30,7 @@ const SubContainer = styled.div`
 const OrderBasketContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
-  padding: 10px 10px 120px 10px;
+  padding: 10px;
   gap: 14px;
   border-radius: 15px;
   border: 1px solid ${Color.GREY};
