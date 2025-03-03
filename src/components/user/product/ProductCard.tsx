@@ -58,6 +58,7 @@ const AddButton = styled(PlusIconSvg, {
 
   & path {
     stroke-width: 3.5;
+    filter: none;
   }
 `;
 
