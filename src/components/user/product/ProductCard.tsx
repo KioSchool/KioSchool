@@ -46,7 +46,9 @@ const ButtonContainer = styled.div<{ isOpened: boolean }>`
   ${({ isOpened }) => rowFlex({ justify: isOpened ? 'space-between' : 'end', align: 'center' })}
 `;
 
-const AddButton = styled(PlusIconSvg)<{ isOpened: boolean }>`
+const AddButton = styled(PlusIconSvg, {
+  shouldForwardProp: (prop) => prop !== 'isOpened',
+})<{ isOpened: boolean }>`
   width: 25px;
   height: 25px;
   background: ${Color.WHITE};
@@ -56,6 +58,7 @@ const AddButton = styled(PlusIconSvg)<{ isOpened: boolean }>`
 
   & path {
     stroke-width: 3.5;
+    filter: none;
   }
 `;
 
@@ -65,7 +68,9 @@ const ToggleAnimation = (props: { isOpened: boolean }) => css`
   transition: transform 0.3s ease, opacity 0.3s ease;
 `;
 
-const RemoveButton = styled(MinusIconSvg)<{ isOpened: boolean }>`
+const RemoveButton = styled(MinusIconSvg, {
+  shouldForwardProp: (prop) => prop !== 'isOpened',
+})<{ isOpened: boolean }>`
   width: 15px;
   height: 15px;
   padding: 5px;
