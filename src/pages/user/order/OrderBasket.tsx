@@ -54,6 +54,8 @@ const Button = styled.button`
   border-radius: 20px;
 `;
 
+const ProductCounterBadgeContainer = styled.div``;
+
 function OrderBasket() {
   const workspace = useRecoilValue(userWorkspaceAtom);
   const [orderBasket, setOrderBasket] = useRecoilState(orderBasketAtom);
@@ -93,10 +95,10 @@ function OrderBasket() {
             const isShowDivider = index !== orderBasket.length - 1;
 
             return (
-              <>
-                <ProductCounterBadge product={product} key={product.id} />
+              <ProductCounterBadgeContainer key={index}>
+                <ProductCounterBadge product={product} />
                 {isShowDivider && <HorizontalDivider />}
-              </>
+              </ProductCounterBadgeContainer>
             );
           })}
         </OrderBasketContainer>
