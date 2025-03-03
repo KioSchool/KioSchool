@@ -30,7 +30,7 @@ const SubContainer = styled.div`
 const OrderBasketContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
-  padding: 10px;
+  padding: 10px 10px 120px 10px;
   gap: 14px;
   border-radius: 15px;
   border: 1px solid ${Color.GREY};
@@ -54,7 +54,11 @@ const Button = styled.button`
   border-radius: 20px;
 `;
 
-const ProductCounterBadgeContainer = styled.div``;
+const ProductCounterBadgeContainer = styled.div`
+  width: 100%;
+  gap: 14px;
+  ${colFlex()}
+`;
 
 function OrderBasket() {
   const workspace = useRecoilValue(userWorkspaceAtom);
