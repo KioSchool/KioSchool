@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { orderBasketAtom, userWorkspaceAtom } from '@recoils/atoms';
 import ProductCounterBadge from '@components/user/product/ProductCounterBadge';
 import _ from 'lodash';
@@ -55,7 +55,7 @@ const Button = styled.button`
 
 function OrderBasket() {
   const workspace = useRecoilValue(userWorkspaceAtom);
-  const orderBasket = useRecoilValue(orderBasketAtom);
+  const [orderBasket, setOrderBasket] = useRecoilState(orderBasketAtom);
   const productsMap = _.keyBy(workspace.products, 'id');
   const totalAmount = orderBasket.reduce((acc, cur) => {
     return acc + productsMap[cur.productId].price * cur.quantity;
@@ -76,6 +76,10 @@ function OrderBasket() {
     basketRef.current?.scroll({ top: 0, behavior: 'smooth' });
   }, []);
 
+  const flushOrderBasket = () => {
+    setOrderBasket([]);
+  };
+
   return (
     <Container className={'order-basket-container'}>
       <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
@@ -84,7 +88,7 @@ function OrderBasket() {
           <AppLabel color={Color.BLACK} size={15}>
             장바구니
           </AppLabel>
-          <Button>전체 삭제 </Button>
+          <Button onClick={flushOrderBasket}>전체 삭제 </Button>
         </Header>
         <OrderBasketContainer ref={basketRef} className={'order-basket-content'}>
           {orderBasket.map((basket) => {
