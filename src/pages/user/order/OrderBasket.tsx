@@ -71,8 +71,10 @@ function OrderBasket() {
     navigate(-1);
   }
 
-  const flushOrderBasket = () => {
-    setOrderBasket([]);
+  const clearOrderBasket = () => {
+    if (confirm('정말로 모두 삭제하시겠습니까?')) {
+      setOrderBasket([]);
+    }
   };
 
   return (
@@ -83,7 +85,7 @@ function OrderBasket() {
           <AppLabel color={Color.BLACK} size={15}>
             장바구니
           </AppLabel>
-          <Button onClick={flushOrderBasket}>전체 삭제 </Button>
+          <Button onClick={clearOrderBasket}>전체 삭제 </Button>
         </Header>
         <OrderBasketContainer className={'order-basket-content'}>
           {orderBasket.map((basket, index) => {
