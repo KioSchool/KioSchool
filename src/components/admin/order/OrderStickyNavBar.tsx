@@ -5,6 +5,7 @@ import { Color } from '@resources/colors';
 import ArrowLeftSvg from '@resources/svg/ArrowLeftSvg';
 import ShareSvg from '@resources/svg/ShareSvg';
 import { rowFlex } from '@styles/flexStyles';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div<{ isShow: boolean }>`
   position: fixed;
@@ -65,6 +66,7 @@ interface OrderStickyNavBarProps {
 }
 
 function OrderStickyNavBar({ useLeftArrow = true, showNavBar, workspaceName, tableNo, useShareButton = true }: OrderStickyNavBarProps) {
+  const navigate = useNavigate();
   const onClickShare = async () => {
     if (!navigator.share) {
       alert('이 브라우저는 Web Share API를 지원하지 않습니다. 다른 브라우저를 사용해주세요.');
@@ -85,7 +87,7 @@ function OrderStickyNavBar({ useLeftArrow = true, showNavBar, workspaceName, tab
   return (
     <Container isShow={showNavBar}>
       <LeftContainer>
-        <ArrowLeftButton useLeftArrow={useLeftArrow} />
+        <ArrowLeftButton useLeftArrow={useLeftArrow} onClick={() => navigate(-1)} />
         <TextContainer>
           <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: '600' }}>
             {workspaceName}
