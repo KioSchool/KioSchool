@@ -123,6 +123,12 @@ function ProductCounterBadge({ product }: ProductCounterBadgeProps) {
     else minusQuantity();
   };
 
+  const handleDeleteProduct = () => {
+    if (confirm('정말로 삭제하시겠습니까?')) {
+      setOrderBasket((prev) => prev.filter((basket) => basket.productId !== product.id));
+    }
+  };
+
   return (
     <Container className="product-counter-badge-container">
       <ProductDetailsWrapper>
@@ -146,7 +152,7 @@ function ProductCounterBadge({ product }: ProductCounterBadgeProps) {
         </ProductInfoContainer>
       </ProductDetailsWrapper>
       <ProductActions className="counter-container">
-        <DeleteProductButton />
+        <DeleteProductButton onClick={handleDeleteProduct} />
         <AppLabel color={Color.BLACK} size={15}>
           {(product.price * quantity).toLocaleString()}원
         </AppLabel>
