@@ -16,7 +16,6 @@ const Container = styled.div`
   width: 330px;
   height: 60px;
   padding: 12px 24px;
-  border: 1px solid black;
   box-sizing: border-box;
   border-radius: 28px;
   ${rowFlex({ justify: 'space-between' })}
