@@ -2,33 +2,67 @@ import React from 'react';
 import { Product } from '@@types/index';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
-import PlusButtonSvg from '@resources/svg/PlusButtonSvg';
 import { orderBasketAtom } from '@recoils/atoms';
 import { useRecoilState } from 'recoil';
-import MinusButtonSvg from '@resources/svg/MinusButtonSvg';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import CloseSvg from '@resources/svg/CloseSvg';
+import MinusIconSvg from '@resources/svg/MinusIconSvg';
+import { Color } from '@resources/colors';
+import PlusIconSvg from '@resources/svg/PlusIconSvg';
+
+const Container = styled.div`
+  width: 330px;
+  height: auto;
+  padding: 12px 24px;
+  box-sizing: border-box;
+  border-radius: 28px;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
+`;
+
+const RightContainer = styled.div`
+  height: 100%;
+  ${colFlex({ justify: 'space-between', align: 'end' })}
+`;
+
+const CenterContainer = styled.div`
+  ${colFlex({ justify: 'space-between', align: 'start' })}
+`;
+
+const StyledImage = styled.img`
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border: none;
+  border-radius: 10px;
+`;
+
+const RemoveButton = styled(MinusIconSvg)`
+  width: 15px;
+  height: 15px;
+  padding: 5px;
+  & path {
+    stroke: ${Color.BLACK};
+  }
+  border-radius: 25px;
+`;
+
+const AddButton = styled(PlusIconSvg)`
+  width: 25px;
+  height: 25px;
+  background: ${Color.WHITE};
+  border-radius: 25px;
+
+  & path {
+    stroke-width: 3.5;
+    filter: none;
+  }
+`;
+
+const RemoveProductButton = styled(CloseSvg)``;
 
 interface ProductCounterBadgeProps {
   product: Product;
 }
-
-const Container = styled.div`
-  width: 330px;
-  height: 60px;
-  padding: 12px 24px;
-  box-sizing: border-box;
-  border-radius: 28px;
-  ${rowFlex({ justify: 'space-between' })}
-`;
-
-const LabelContainer = styled.div`
-  ${colFlex()}
-`;
-
-const CounterContainer = styled.div`
-  width: 100px;
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
-`;
 
 function ProductCounterBadge({ product }: ProductCounterBadgeProps) {
   const [orderBasket, setOrderBasket] = useRecoilState(orderBasketAtom);
@@ -69,15 +103,18 @@ function ProductCounterBadge({ product }: ProductCounterBadgeProps) {
 
   return (
     <Container className={'product-counter-badge-container'}>
-      <LabelContainer className={'label-container'}>
+      <StyledImage src={product.imageUrl} alt={product.name} />
+      <CenterContainer>
         <AppLabel size={13}>{product.name}</AppLabel>
         <AppLabel size={13}>{product.price.toLocaleString()}원</AppLabel>
-      </LabelContainer>
-      <CounterContainer className={'counter-container'}>
-        <MinusButtonSvg onClick={() => handleCounterButtonClick('minus')} />
+        <RemoveButton onClick={() => handleCounterButtonClick('minus')} />
         <AppLabel size={20}>{quantity}</AppLabel>
-        <PlusButtonSvg onClick={() => handleCounterButtonClick('plus')} />
-      </CounterContainer>
+        <AddButton onClick={() => handleCounterButtonClick('plus')} />
+      </CenterContainer>
+      <RightContainer className={'counter-container'}>
+        <RemoveProductButton />
+        <AppLabel size={13}>{(product.price * quantity).toLocaleString()}원</AppLabel>
+      </RightContainer>
     </Container>
   );
 }
