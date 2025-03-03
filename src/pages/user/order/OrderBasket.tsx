@@ -9,6 +9,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
 import { Color } from '@resources/colors';
 import AppLabel from '@components/common/label/AppLabel';
+import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 
 const Container = styled.div`
   width: 100vw;
@@ -83,9 +84,16 @@ function OrderBasket() {
           <Button onClick={flushOrderBasket}>전체 삭제 </Button>
         </Header>
         <OrderBasketContainer className={'order-basket-content'}>
-          {orderBasket.map((basket) => {
+          {orderBasket.map((basket, index) => {
             const product = productsMap[basket.productId];
-            return <ProductCounterBadge product={product} key={product.id} />;
+            const isShowDivider = index !== orderBasket.length - 1;
+
+            return (
+              <>
+                <ProductCounterBadge product={product} key={product.id} />
+                {isShowDivider && <HorizontalDivider />}
+              </>
+            );
           })}
         </OrderBasketContainer>
         <OrderButton
