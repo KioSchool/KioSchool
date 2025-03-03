@@ -12,7 +12,6 @@ import AppLabel from '@components/common/label/AppLabel';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 
 const Container = styled.div`
-  width: 100vw;
   min-height: 100vh;
   padding-top: 45px;
   box-sizing: border-box;
@@ -29,6 +28,9 @@ const SubContainer = styled.div`
 `;
 
 const OrderBasketContainer = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
   gap: 14px;
   border-radius: 15px;
   border: 1px solid ${Color.GREY};

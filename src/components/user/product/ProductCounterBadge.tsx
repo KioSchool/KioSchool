@@ -11,24 +11,20 @@ import { Color } from '@resources/colors';
 import PlusIconSvg from '@resources/svg/PlusIconSvg';
 
 const Container = styled.div`
-  width: 330px;
+  width: 100%;
   height: auto;
-  padding: 12px 24px;
   box-sizing: border-box;
   border-radius: 28px;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
-const RightContainer = styled.div`
-  height: 100%;
-  ${colFlex({ justify: 'space-between', align: 'end' })}
+const ProductDetailsWrapper = styled.div`
+  width: auto;
+  gap: 10px;
+  ${rowFlex()}
 `;
 
-const CenterContainer = styled.div`
-  ${colFlex({ justify: 'space-between', align: 'start' })}
-`;
-
-const StyledImage = styled.img`
+const ProductImage = styled.img`
   width: 90px;
   height: 90px;
   object-fit: cover;
@@ -36,19 +32,45 @@ const StyledImage = styled.img`
   border-radius: 10px;
 `;
 
-const RemoveButton = styled(MinusIconSvg)`
-  width: 15px;
-  height: 15px;
+const ProductInfoContainer = styled.div`
+  width: 130px;
+  height: 90px;
+  gap: 5px;
+  ${colFlex({ justify: 'space-between', align: 'start' })}
+`;
+
+const ProductLabels = styled.div`
+  gap: 5px;
+  ${colFlex()}
+`;
+
+const QuantityControl = styled.div`
+  width: 50%;
+  border: 1px solid ${Color.GREY};
+  border-radius: 7px;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
+`;
+
+const ProductActions = styled.div`
+  width: auto;
+  height: 90px;
+  ${colFlex({ justify: 'space-between', align: 'end' })}
+`;
+
+const DecreaseButton = styled(MinusIconSvg)`
+  width: 12px;
+  height: 12px;
   padding: 5px;
+  border-radius: 25px;
+
   & path {
     stroke: ${Color.BLACK};
   }
-  border-radius: 25px;
 `;
 
-const AddButton = styled(PlusIconSvg)`
-  width: 25px;
-  height: 25px;
+const IncreaseButton = styled(PlusIconSvg)`
+  width: 19px;
+  height: 19px;
   background: ${Color.WHITE};
   border-radius: 25px;
 
@@ -58,7 +80,7 @@ const AddButton = styled(PlusIconSvg)`
   }
 `;
 
-const RemoveProductButton = styled(CloseSvg)``;
+const DeleteProductButton = styled(CloseSvg)``;
 
 interface ProductCounterBadgeProps {
   product: Product;
@@ -102,19 +124,33 @@ function ProductCounterBadge({ product }: ProductCounterBadgeProps) {
   };
 
   return (
-    <Container className={'product-counter-badge-container'}>
-      <StyledImage src={product.imageUrl} alt={product.name} />
-      <CenterContainer>
-        <AppLabel size={13}>{product.name}</AppLabel>
-        <AppLabel size={13}>{product.price.toLocaleString()}원</AppLabel>
-        <RemoveButton onClick={() => handleCounterButtonClick('minus')} />
-        <AppLabel size={20}>{quantity}</AppLabel>
-        <AddButton onClick={() => handleCounterButtonClick('plus')} />
-      </CenterContainer>
-      <RightContainer className={'counter-container'}>
-        <RemoveProductButton />
-        <AppLabel size={13}>{(product.price * quantity).toLocaleString()}원</AppLabel>
-      </RightContainer>
+    <Container className="product-counter-badge-container">
+      <ProductDetailsWrapper>
+        <ProductImage src={product.imageUrl} alt={product.name} />
+        <ProductInfoContainer>
+          <ProductLabels>
+            <AppLabel color={Color.BLACK} size={13}>
+              {product.name}
+            </AppLabel>
+            <AppLabel color={Color.BLACK} size={13}>
+              {product.price.toLocaleString()}원
+            </AppLabel>
+          </ProductLabels>
+          <QuantityControl>
+            <DecreaseButton onClick={() => handleCounterButtonClick('minus')} />
+            <AppLabel color={Color.BLACK} size={15}>
+              {quantity}
+            </AppLabel>
+            <IncreaseButton onClick={() => handleCounterButtonClick('plus')} />
+          </QuantityControl>
+        </ProductInfoContainer>
+      </ProductDetailsWrapper>
+      <ProductActions className="counter-container">
+        <DeleteProductButton />
+        <AppLabel color={Color.BLACK} size={15}>
+          {(product.price * quantity).toLocaleString()}원
+        </AppLabel>
+      </ProductActions>
     </Container>
   );
 }
