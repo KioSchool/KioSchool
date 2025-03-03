@@ -118,11 +118,6 @@ function ProductCounterBadge({ product }: ProductCounterBadgeProps) {
     });
   };
 
-  const handleCounterButtonClick = (type: 'plus' | 'minus') => {
-    if (type === 'plus') plusQuantity();
-    else minusQuantity();
-  };
-
   const handleDeleteProduct = () => {
     if (confirm('정말로 삭제하시겠습니까?')) {
       setOrderBasket((prev) => prev.filter((basket) => basket.productId !== product.id));
@@ -143,11 +138,11 @@ function ProductCounterBadge({ product }: ProductCounterBadgeProps) {
             </AppLabel>
           </ProductLabels>
           <QuantityControl>
-            <DecreaseButton onClick={() => handleCounterButtonClick('minus')} />
+            <DecreaseButton onClick={() => minusQuantity()} />
             <AppLabel color={Color.BLACK} size={15}>
               {quantity}
             </AppLabel>
-            <IncreaseButton onClick={() => handleCounterButtonClick('plus')} />
+            <IncreaseButton onClick={() => plusQuantity()} />
           </QuantityControl>
         </ProductInfoContainer>
       </ProductDetailsWrapper>
