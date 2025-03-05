@@ -1,6 +1,6 @@
-import jin from '@resources/image/jin.jpeg';
+import jin from '@resources/image/jin.jpg';
 import sungjong from '@resources/image/sungjong.jpg';
-import ahyoung from '@resources/image/ahyoung.jpeg';
+import ahyoung from '@resources/image/ahyoung.jpg';
 
 export const infoCreatorData = [
   {
