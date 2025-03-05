@@ -6,6 +6,7 @@ import { rowFlex } from '@styles/flexStyles';
 import { WorkspaceImage } from '@@types/index';
 import SelectedSnapDisplay from '@components/common/slider/SliderSelectedSnapDisplay';
 import useSelectedSnapDisplay from '@hooks/useSelectedSnapDisplay';
+import kioLogo from '@resources/image/kioLogo.png';
 
 const Container = styled.div`
   max-width: 48rem;
@@ -35,6 +36,15 @@ const ImageContent = styled.img`
   height: 200px;
 `;
 
+const DefaultImageContent = styled.img`
+  object-fit: contain;
+  transform: translate3d(0, 0, 0);
+  flex: 0 0 var(--slide-size);
+  padding-left: var(--slide-spacing);
+  width: 100%;
+  height: 200px;
+`;
+
 interface OrderImageSliderProps {
   images: WorkspaceImage[];
 }
@@ -42,6 +52,19 @@ interface OrderImageSliderProps {
 function OrderImageSlider({ images }: OrderImageSliderProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay({ playOnInit: true, delay: 3000, stopOnInteraction: false })]);
   const { selectedSnap, snapCount } = useSelectedSnapDisplay(emblaApi);
+
+  if (!images.length) {
+    return (
+      <Container>
+        <EmblaViewport ref={emblaRef}>
+          <ImageContainer>
+            <DefaultImageContent src={kioLogo} alt={'kioLogo'} />
+          </ImageContainer>
+          <SelectedSnapDisplay selectedSnap={selectedSnap} snapCount={snapCount} />
+        </EmblaViewport>
+      </Container>
+    );
+  }
 
   return (
     <Container>
