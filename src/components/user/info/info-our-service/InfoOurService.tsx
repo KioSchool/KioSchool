@@ -53,8 +53,7 @@ const ServiceContainer = styled.div`
   width: 100%;
   gap: 20px;
   grid-template-columns: repeat(3, 1fr);
-  grid-column-gap: 34px;
-  grid-row-gap: 37px;
+  grid-gap: 37px 34px;
   ${tabletMediaQuery} {
     grid-template-columns: repeat(1, 1fr);
   }
