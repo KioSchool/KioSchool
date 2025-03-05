@@ -1,59 +1,109 @@
 import React, { useEffect, useState } from 'react';
 import useOrder from '@hooks/user/useOrder';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { orderBasketAtom, userOrderAtom } from '@recoils/atoms';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
+import { orderBasketAtom, userOrderAtom, userWorkspaceAtom } from '@recoils/atoms';
 import { useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
-import AppLabel from '@components/common/label/AppLabel';
-import OrderStatusBar from '@components/user/order/OrderStatusBar';
-import ReloadSvg from '@resources/svg/ReloadSvg';
 import useWorkspace from '@hooks/user/useWorkspace';
-import AppButton from '@components/common/button/AppButton';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { OrderStatus } from '@@types/index';
-import OrderButton from '@components/user/order/OrderButton';
 import { Color } from '@resources/colors';
+import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
+import OrderStatusBar from '@components/user/order/OrderStatusBar';
+import useRefresh from '@hooks/useRefresh';
 
 const Container = styled.div`
-  width: 100vw;
-  min-height: 100vh;
-  padding: 60px 0 80px;
-`;
-
-const Header = styled.div`
-  background: ${Color.WHITE};
-  position: sticky;
-  top: 0;
-  width: 100vw;
-  padding: 25px;
-  box-sizing: border-box;
-  z-index: 100;
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
+  width: 100%;
+  height: 100%;
 `;
 
 const SubContainer = styled.div`
-  gap: 10px;
+  margin-top: 45px;
+  gap: 20px;
+  border-top: 10px solid ${Color.LIGHT_GREY};
+  padding-top: 12px;
   ${colFlex({ justify: 'center', align: 'center' })}
+`;
+
+const SubTitleContainer = styled.div`
+  width: 100%;
+  padding: 0 40px;
+  box-sizing: border-box;
+  gap: 10px;
+  ${colFlex()};
+`;
+
+const SubTitle = styled.div`
+  font-size: 16px;
+  font-weight: 600;
+`;
+
+const ContentContainer = styled.div`
+  width: 100%;
+  gap: 6px;
+  ${colFlex({ align: 'center' })}
+`;
+
+const ContentTitleContainer = styled.div`
+  width: 300px;
+  ${rowFlex({ justify: 'space-between' })}
+`;
+
+const ContentTitle = styled.div`
+  font-size: 13px;
+  font-weight: 500;
 `;
 
 const ContentBox = styled.div`
   width: 100%;
-  padding: 20px;
-  background: #${Color.HEAVY_GREY};
+  padding: 20px 40px;
   box-sizing: border-box;
-  gap: 4px;
+  background: ${Color.LIGHT_GREY};
   ${colFlex()}
 `;
 
-const ContentTitleLabel = styled(AppLabel)`
-  font-weight: bold;
-  margin-bottom: 3px;
+const ContentText = styled.div`
+  font-size: 13px;
+  font-weight: 500;
+  color: #898989;
 `;
 
-const ProductContainer = styled.div`
-  gap: 4px;
-  padding: 10px 0;
+const OrderProductContainer = styled.div`
+  width: 100%;
+  gap: 10px;
   ${colFlex()}
+`;
+
+const OrderProductRow = styled.div`
+  width: 100%;
+  ${rowFlex({ justify: 'space-between' })}
+`;
+
+const OrderProductText = styled.div`
+  font-size: 13px;
+  font-weight: 500;
+`;
+
+const AccountCopyButton = styled.button`
+  background: transparent;
+  border: 1px solid ${Color.GREY};
+  border-radius: 40px;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 0 10px;
+`;
+
+const DescriptionContainer = styled.div`
+  padding: 20px 0;
+  width: 320px;
+  ${colFlex({ justify: 'center', align: 'center' })};
+`;
+
+const Description = styled.div`
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  color: #898989;
+  white-space: pre-wrap;
 `;
 
 function OrderComplete() {
@@ -62,10 +112,12 @@ function OrderComplete() {
   const orderId = searchParams.get('orderId');
   const workspaceId = searchParams.get('workspaceId');
 
-  const { fetchWorkspaceAccount } = useWorkspace();
+  const { fetchWorkspaceAccount, fetchWorkspace } = useWorkspace();
   const { fetchOrder } = useOrder();
-  const setOrderBasket = useSetRecoilState(orderBasketAtom);
+  const { allowPullToRefresh } = useRefresh();
+  const resetOrderBasket = useResetRecoilState(orderBasketAtom);
   const order = useRecoilValue(userOrderAtom);
+  const workspace = useRecoilValue(userWorkspaceAtom);
 
   const dateConverter = (date: Date) => {
     const isAm = date.getHours() < 12;
@@ -73,10 +125,6 @@ function OrderComplete() {
     const hour = isAm ? date.getHours() : date.getHours() - 12;
 
     return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 ${ampm} ${hour}시 ${date.getMinutes()}분`;
-  };
-
-  const resetRecoilState = () => {
-    setOrderBasket([]);
   };
 
   const getAccountInfo = async () => {
@@ -91,71 +139,74 @@ function OrderComplete() {
   };
 
   useEffect(() => {
-    resetRecoilState();
+    resetOrderBasket();
     fetchOrder(orderId);
+    fetchWorkspace(workspaceId);
+    allowPullToRefresh();
     getAccountInfo();
   }, []);
 
   return (
     <Container className={'order-complete-container'}>
-      <Header className={'order-complete-header'}>
-        <AppLabel>주문 내역</AppLabel>
-        <ReloadSvg onClick={() => window.location.reload()}>새로고침</ReloadSvg>
-      </Header>
+      <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={order.tableNumber} useShareButton={false} />
       <SubContainer className={'order-complete-sub-container'}>
-        <ContentBox className={'order-complete-content-box'}>
-          <ContentTitleLabel size={17} className={'order-complete-content-title-label'}>
-            주문 번호: {orderId}번
-          </ContentTitleLabel>
-          <AppLabel size={13}>주문 일시: {dateConverter(new Date(order.createdAt))}</AppLabel>
-          <AppLabel size={13}>입금자명: {order?.customerName}</AppLabel>
-        </ContentBox>
-        <ContentBox className={'order-complete-content-box'}>
-          <ContentTitleLabel size={17} className={'order-complete-content-title-label'}>
-            주문 상태
-          </ContentTitleLabel>
-          <OrderStatusBar status={order.status} />
-        </ContentBox>
-        <ContentBox className={'order-complete-content-box'}>
-          <ContentTitleLabel size={17} className={'order-complete-content-title-label'}>
-            주문 상품
-          </ContentTitleLabel>
-          {order?.orderProducts.map((orderProduct) => (
-            <ProductContainer key={orderProduct.id} className={'order-complete-product-container'}>
-              <AppLabel size={13} style={{ fontWeight: 'bold' }}>
-                {orderProduct.productName} · {orderProduct.quantity}개
-              </AppLabel>
-              <AppLabel size={13}>{orderProduct.totalPrice.toLocaleString()}원</AppLabel>
-            </ProductContainer>
-          ))}
-        </ContentBox>
-        <ContentBox className={'order-complete-content-box'}>
-          <ContentTitleLabel size={17} className={'order-complete-content-title-label'}>
-            총 결제 금액
-          </ContentTitleLabel>
-          <AppLabel size={13}>{order.totalPrice.toLocaleString()}원</AppLabel>
-        </ContentBox>
-        {order.status === OrderStatus.NOT_PAID && (
-          <ContentBox className={'order-complete-content-box'}>
-            <ContentTitleLabel size={17} className={'order-complete-content-title-label'}>
-              결제 계좌 정보
-            </ContentTitleLabel>
-            <AppLabel size={13}>{accountInfo}</AppLabel>
-            <AppButton onClick={copyAccountInfo}>복사하기</AppButton>
+        <SubTitleContainer className={'order-complete-sub-title-container'}>
+          <SubTitle>주문내역</SubTitle>
+        </SubTitleContainer>
+        <ContentContainer>
+          <ContentTitleContainer>
+            <ContentTitle>주문 정보</ContentTitle>
+          </ContentTitleContainer>
+          <ContentBox>
+            <ContentText>주문일시 | {dateConverter(new Date(order.createdAt))}</ContentText>
+            <ContentText>주문번호 | {order.id}</ContentText>
+            <ContentText>입금자명 | {order.customerName}</ContentText>
           </ContentBox>
-        )}
+
+          <ContentTitleContainer>
+            <ContentTitle>주문 상태</ContentTitle>
+          </ContentTitleContainer>
+          <ContentBox>
+            <OrderStatusBar status={order.status} />
+          </ContentBox>
+
+          <ContentTitleContainer>
+            <ContentTitle>상품 정보</ContentTitle>
+          </ContentTitleContainer>
+          <ContentBox>
+            <OrderProductContainer>
+              {order.orderProducts.map((orderProduct) => (
+                <OrderProductRow key={orderProduct.id}>
+                  <OrderProductText>
+                    {orderProduct.productName} · {orderProduct.quantity}개
+                  </OrderProductText>
+                  <OrderProductText>{orderProduct.totalPrice.toLocaleString()}원</OrderProductText>
+                </OrderProductRow>
+              ))}
+            </OrderProductContainer>
+          </ContentBox>
+          <ContentBox>
+            <OrderProductContainer>
+              <OrderProductRow key={order.id}>
+                <OrderProductText>상품 합계</OrderProductText>
+                <OrderProductText>{order.totalPrice.toLocaleString()}원</OrderProductText>
+              </OrderProductRow>
+            </OrderProductContainer>
+          </ContentBox>
+
+          <ContentTitleContainer>
+            <ContentTitle>결제 계좌 정보</ContentTitle>
+            <AccountCopyButton onClick={copyAccountInfo}>계좌 복사하기</AccountCopyButton>
+          </ContentTitleContainer>
+          <ContentBox>
+            <ContentText>{accountInfo}</ContentText>
+          </ContentBox>
+
+          <DescriptionContainer>
+            <Description>{'결제가 원활하게 진행되지 않았을 경우,\n상단의 계좌 정보를 통해 직접 계좌이체를 부탁드립니다.'}</Description>
+          </DescriptionContainer>
+        </ContentContainer>
       </SubContainer>
-      {order.status !== OrderStatus.CANCELLED && (
-        <OrderButton
-          showButton={true}
-          buttonLabel={'주문내역 링크 복사'}
-          onClick={() => {
-            navigator.clipboard.writeText(window.location.href).then(() => {
-              alert('주문내역 링크가 복사되었습니다.\n인터넷 브라우저에 붙여넣기하여 주문내역 확인이 가능합니다.');
-            });
-          }}
-        />
-      )}
     </Container>
   );
 }

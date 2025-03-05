@@ -1,10 +1,14 @@
 import { css } from '@emotion/react';
-import { fonts } from './fonts';
+import { pretendardFont } from '@styles/fonts';
 
 export const globalStyles = css`
-  * {
-    font-family: 'Pretendard-Regular', sans-serif;
-  }
+  ${pretendardFont}
 
-  ${fonts}
+  * {
+    font-family: 'Pretendard', sans-serif;
+  }
 `;
+
+const breakPoints = [576, 768, 992, 1200];
+export const mediaQueries = breakPoints.map((bp) => `@media (max-width: ${bp}px)`);
+export const tabletMediaQuery = mediaQueries[3];

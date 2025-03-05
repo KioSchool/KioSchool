@@ -1,0 +1,39 @@
+.page-forward-enter {
+  opacity: 0;
+  transform: translateX(100%);
+}
+.page-forward-enter.page-forward-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 300ms ease;
+}
+
+.page-forward-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+.page-forward-exit.page-forward-exit-active {
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: all 300ms ease;
+}
+
+.page-backward-enter {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+.page-backward-enter.page-backward-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 300ms ease;
+}
+
+.page-backward-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+.page-backward-exit.page-backward-exit-active {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 300ms ease;
+}

@@ -113,7 +113,7 @@ function OrderModalMainContents({ order }: OrderModalMainContentsProps) {
           <ProductContainer key={orderProduct.id}>
             <ProductRightContainer>
               <AppLabel color={Color.BLACK} size={20}>
-                {`${orderProduct.productName}`}
+                {isPaidStatus ? `${orderProduct.productName}` : `${orderProduct.productName} - ${orderProduct.quantity}개`}
               </AppLabel>
               {orderProduct.isServed && <CheckSvg />}
             </ProductRightContainer>
