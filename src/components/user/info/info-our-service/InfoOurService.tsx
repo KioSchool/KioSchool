@@ -55,7 +55,7 @@ const ServiceContainer = styled.div`
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 37px 34px;
   ${tabletMediaQuery} {
-    grid-template-columns: repeat(1, 1fr);
+    ${colFlex({ align: 'center' })};
   }
 `;
 
