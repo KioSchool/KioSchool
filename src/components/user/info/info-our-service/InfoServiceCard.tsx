@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { colFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { jsx } from '@emotion/react';
 import { lineSeedKrFont } from '@styles/fonts';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { Color } from '@resources/colors';
+import { tabletMediaQuery } from '@styles/globalStyles';
 import JSX = jsx.JSX;
 
 const Container = styled.div`
@@ -18,6 +19,31 @@ const Container = styled.div`
   ${colFlex({ justify: 'center' })};
   ${expandButtonStyle({ scaleSize: '1.05' })};
   cursor: default;
+  ${tabletMediaQuery} {
+    width: 300px;
+    height: 120px;
+    padding: 10px 25px;
+    ${rowFlex({ justify: 'space-between', align: 'center' })};
+  }
+`;
+
+const SvgContainer = styled.div`
+  width: 80px;
+  height: 80px;
+  ${colFlex({ align: 'center' })};
+  ${tabletMediaQuery} {
+    width: 40px;
+    height: 40px;
+  }
+`;
+
+const ContentContainer = styled.div`
+  width: 100%;
+  ${colFlex()};
+  ${tabletMediaQuery} {
+    width: 165px;
+    ${colFlex({ align: 'flex-end', justify: 'start' })};
+  }
 `;
 
 const Title = styled.div`
@@ -27,6 +53,12 @@ const Title = styled.div`
   margin-top: 18px;
   font-family: 'LINESeedKR-Rg', 'sans-serif';
   ${lineSeedKrFont}
+  ${tabletMediaQuery} {
+    margin: 0;
+    font-size: 15px;
+    line-height: 35px;
+    text-align: right;
+  }
 `;
 
 const Description = styled.div`
@@ -35,6 +67,11 @@ const Description = styled.div`
   font-family: 'LINESeedKR-Rg', 'sans-serif';
   color: #5b5b5b;
   ${lineSeedKrFont}
+  ${tabletMediaQuery} {
+    font-size: 12px;
+    text-align: right;
+    word-break: keep-all;
+  }
 `;
 
 interface InfoServiceCardProps {
@@ -46,9 +83,11 @@ interface InfoServiceCardProps {
 function InfoServiceCard({ svg, title, description }: InfoServiceCardProps) {
   return (
     <Container>
-      {svg}
-      <Title>{title}</Title>
-      <Description>{description}</Description>
+      <SvgContainer>{svg}</SvgContainer>
+      <ContentContainer>
+        <Title>{title}</Title>
+        <Description>{description}</Description>
+      </ContentContainer>
     </Container>
   );
 }
