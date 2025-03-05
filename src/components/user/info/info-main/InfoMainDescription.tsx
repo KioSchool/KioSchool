@@ -72,7 +72,7 @@ function InfoMainDescription() {
       )}
       <TextContainer>
         {descriptionTexts.map((descriptionText) =>
-          descriptionText.useHighlight ? <HighlightText>{descriptionText.text}</HighlightText> : descriptionText.text,
+          descriptionText.useHighlight ? <HighlightText key={descriptionText.text}>{descriptionText.text}</HighlightText> : descriptionText.text,
         )}
       </TextContainer>
     </Container>
