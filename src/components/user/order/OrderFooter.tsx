@@ -5,7 +5,8 @@ import React from 'react';
 
 const Container = styled.div`
   width: 100%;
-  height: 150px;
+  min-height: 150px;
+  height: auto;
   background: ${Color.LIGHT_GREY};
   padding-bottom: 120px;
   color: ${Color.GREY};
@@ -18,6 +19,7 @@ const Content = styled.div`
   font-size: 12px;
   line-height: 1.8;
   ${colFlex({ justify: 'center' })}
+  flex-wrap: wrap;
 `;
 
 function OrderFooter() {
