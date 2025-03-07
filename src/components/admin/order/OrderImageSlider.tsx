@@ -6,7 +6,7 @@ import { rowFlex } from '@styles/flexStyles';
 import { WorkspaceImage } from '@@types/index';
 import SelectedSnapDisplay from '@components/common/slider/SliderSelectedSnapDisplay';
 import useSelectedSnapDisplay from '@hooks/useSelectedSnapDisplay';
-import kioLogo from '@resources/image/kioLogo.png';
+import defaultWorkspaceImage from '@resources/image/defaultWorkspaceImage.png';
 
 const Container = styled.div`
   max-width: 48rem;
@@ -31,16 +31,6 @@ const ImageContent = styled.img`
   object-fit: cover;
   transform: translate3d(0, 0, 0);
   flex: 0 0 var(--slide-size);
-  padding-left: var(--slide-spacing);
-  width: 100%;
-  height: 200px;
-`;
-
-const DefaultImageContent = styled.img`
-  object-fit: contain;
-  transform: translate3d(0, 0, 0);
-  flex: 0 0 var(--slide-size);
-  padding-left: var(--slide-spacing);
   width: 100%;
   height: 200px;
 `;
@@ -58,7 +48,7 @@ function OrderImageSlider({ images }: OrderImageSliderProps) {
       <Container>
         <EmblaViewport ref={emblaRef}>
           <ImageContainer>
-            <DefaultImageContent src={kioLogo} alt={'kioLogo'} />
+            <ImageContent src={defaultWorkspaceImage} alt={'kioLogo'} />
           </ImageContainer>
           <SelectedSnapDisplay selectedSnap={selectedSnap} snapCount={snapCount} />
         </EmblaViewport>
