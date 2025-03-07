@@ -9,7 +9,7 @@ const Container = styled.div<{ expanded: boolean }>`
   width: 100%;
   padding: 0 20px;
   margin: 15px 0;
-  height: ${({ expanded }) => (expanded ? 'auto' : '60px')};
+  height: auto;
   ${colFlex({ align: 'center' })}
 `;
 

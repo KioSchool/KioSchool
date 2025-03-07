@@ -148,7 +148,7 @@ function OrderComplete() {
 
   return (
     <Container className={'order-complete-container'}>
-      <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={order.tableNumber} useShareButton={false} />
+      <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={order.tableNumber} useShareButton={true} />
       <SubContainer className={'order-complete-sub-container'}>
         <SubTitleContainer className={'order-complete-sub-title-container'}>
           <SubTitle>주문내역</SubTitle>
