@@ -6,13 +6,11 @@ import { rowFlex } from '@styles/flexStyles';
 import { WorkspaceImage } from '@@types/index';
 import SelectedSnapDisplay from '@components/common/slider/SliderSelectedSnapDisplay';
 import useSelectedSnapDisplay from '@hooks/useSelectedSnapDisplay';
+import defaultWorkspaceImage from '@resources/image/defaultWorkspaceImage.png';
 
 const Container = styled.div`
   max-width: 48rem;
   width: 100%;
-  --slide-height: 19rem;
-  --slide-spacing: 1rem;
-  --slide-size: 100%;
 `;
 
 const EmblaViewport = styled.div`
@@ -23,14 +21,12 @@ const EmblaViewport = styled.div`
 const ImageContainer = styled.div`
   ${rowFlex({ align: 'center' })}
   touch-action: pan-y pinch-zoom;
-  margin-left: calc(var(--slide-spacing) * -1);
 `;
 
 const ImageContent = styled.img`
   object-fit: cover;
   transform: translate3d(0, 0, 0);
-  flex: 0 0 var(--slide-size);
-  padding-left: var(--slide-spacing);
+  flex: 0 0 100%;
   width: 100%;
   height: 200px;
 `;
@@ -42,6 +38,19 @@ interface OrderImageSliderProps {
 function OrderImageSlider({ images }: OrderImageSliderProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay({ playOnInit: true, delay: 3000, stopOnInteraction: false })]);
   const { selectedSnap, snapCount } = useSelectedSnapDisplay(emblaApi);
+
+  if (!images.length) {
+    return (
+      <Container>
+        <EmblaViewport ref={emblaRef}>
+          <ImageContainer>
+            <ImageContent src={defaultWorkspaceImage} alt={'kioLogo'} />
+          </ImageContainer>
+          <SelectedSnapDisplay selectedSnap={selectedSnap} snapCount={snapCount} />
+        </EmblaViewport>
+      </Container>
+    );
+  }
 
   return (
     <Container>
