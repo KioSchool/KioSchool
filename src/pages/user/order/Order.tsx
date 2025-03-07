@@ -1,11 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { Element } from 'react-scroll';
 import AppLabel from '@components/common/label/AppLabel';
 import CategoryBadgesContainer from '@components/user/order/CategoryBadgesContainer';
-import ProductCard from '@components/user/product/ProductCard';
-import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import useWorkspace from '@hooks/user/useWorkspace';
 import { categoriesAtom, orderBasketAtom, userWorkspaceAtom } from '@recoils/atoms';
 import { useRecoilValue } from 'recoil';
@@ -17,8 +14,8 @@ import { colFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import OrderImageSlider from '@components/admin/order/OrderImageSlider';
 import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
-import OrderFooter from '@components/user/order/OrderFooter';
 import WorkspaceNotice from '@components/user/order/WorkspaceNotice';
+import OrderProductContent from './OrderProductContent';
 
 const Container = styled.div`
   width: 100%;
@@ -41,28 +38,6 @@ const Header = styled.div`
   gap: 7px;
 `;
 
-const MainContent = styled.div`
-  width: 100%;
-  ${colFlex({ align: 'center' })}
-`;
-
-const SubContent = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  padding: 0 20px;
-`;
-
-const CategoryProduct = styled(Element, {
-  shouldForwardProp: (prop) => prop !== 'isLastElement',
-})<{ isLastElement: boolean }>`
-  padding: 17px 0 10px 0;
-  border-bottom: 7px solid ${({ isLastElement }) => (isLastElement ? 'transparent' : Color.LIGHT_GREY)};
-`;
-
-const ProductContainer = styled.div`
-  width: 100%;
-`;
-
 function Order() {
   const workspace = useRecoilValue(userWorkspaceAtom);
   const isShowNotice = workspace.notice.length > 0;
@@ -71,12 +46,6 @@ function Order() {
 
   const productsByCategoryId = _.groupBy<Product>(sellableProducts, (product) => product.productCategory?.id);
 
-  const productsWithCategory = rawProductCategories.map((category) => ({
-    category,
-    products: productsByCategoryId[category.id] || [],
-  }));
-
-  const defaultProducts = productsByCategoryId.undefined;
   const productsMap = _.keyBy(workspace.products, 'id');
 
   const [searchParams] = useSearchParams();
@@ -135,54 +104,8 @@ function Order() {
 
       {isShowNotice && <WorkspaceNotice notice={workspace.notice} />}
 
-      <MainContent className={'order-content'}>
-        <SubContent>
-          {productsWithCategory.map(({ category, products }) => {
-            if (!products.length) return null;
+      <OrderProductContent />
 
-            return (
-              <CategoryProduct isLastElement={false} name={`category_${category.id}`} key={`product_category_${category.id}`}>
-                <AppLabel color={Color.BLACK} size={22} style={{ padding: '10px 0' }}>
-                  {category.name}
-                </AppLabel>
-                {products.map((product, productIndex) => {
-                  const productInBasket = orderBasket.find((item) => item.productId === product.id);
-                  const quantity = productInBasket?.quantity || 0;
-                  const isShowDivider = productIndex !== products.length - 1;
-
-                  return (
-                    <ProductContainer key={`product${product.id}`} className="product-container">
-                      <ProductCard product={product} quantity={quantity} />
-                      {isShowDivider && <HorizontalDivider />}
-                    </ProductContainer>
-                  );
-                })}
-              </CategoryProduct>
-            );
-          })}
-
-          {defaultProducts && (
-            <CategoryProduct isLastElement={true} name="category_default" key="product_category_default">
-              <AppLabel color={Color.BLACK} size={22} style={{ padding: '10px 0' }}>
-                기본메뉴
-              </AppLabel>
-              {defaultProducts.map((product, productIndex) => {
-                const productInBasket = orderBasket.find((item) => item.productId === product.id);
-                const quantity = productInBasket?.quantity || 0;
-                const isShowDivider = productIndex !== defaultProducts.length - 1;
-
-                return (
-                  <ProductContainer key={`product${product.id}`} className="product-container">
-                    <ProductCard product={product} quantity={quantity} />
-                    {isShowDivider && <HorizontalDivider />}
-                  </ProductContainer>
-                );
-              })}
-            </CategoryProduct>
-          )}
-        </SubContent>
-        <OrderFooter />
-      </MainContent>
       <OrderButton
         showButton={orderBasket.length > 0}
         buttonLabel={`${totalAmount.toLocaleString()}원 장바구니`}
