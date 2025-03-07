@@ -11,9 +11,6 @@ import defaultWorkspaceImage from '@resources/image/defaultWorkspaceImage.png';
 const Container = styled.div`
   max-width: 48rem;
   width: 100%;
-  --slide-height: 19rem;
-  --slide-spacing: 1rem;
-  --slide-size: 100%;
 `;
 
 const EmblaViewport = styled.div`
@@ -24,13 +21,12 @@ const EmblaViewport = styled.div`
 const ImageContainer = styled.div`
   ${rowFlex({ align: 'center' })}
   touch-action: pan-y pinch-zoom;
-  margin-left: calc(var(--slide-spacing) * -1);
 `;
 
 const ImageContent = styled.img`
   object-fit: cover;
   transform: translate3d(0, 0, 0);
-  flex: 0 0 var(--slide-size);
+  flex: 0 0 100%;
   width: 100%;
   height: 200px;
 `;
