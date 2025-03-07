@@ -34,7 +34,7 @@ const ProductContainer = styled.div`
 `;
 
 const PlaceHolder = styled.div`
-  height: 50px;
+  height: 130px;
   width: 100%;
   color: ${Color.GREY};
   padding-bottom: 15px;
@@ -61,7 +61,7 @@ function OrderProductContent() {
   if (isAllProductsEmpty) {
     return (
       <MainContent>
-        <PlaceHolder>상품이 비어있습니다.</PlaceHolder>
+        <PlaceHolder>현재 판매 중인 상품이 없습니다.</PlaceHolder>
         <OrderFooter />
       </MainContent>
     );
