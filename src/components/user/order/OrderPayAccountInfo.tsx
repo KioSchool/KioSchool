@@ -6,24 +6,21 @@ import React from 'react';
 
 const Container = styled.div`
   width: 100%;
-  height: 140px;
-  gap: 5px;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const TitleContainer = styled.div`
   width: 87%;
-  height: 30px;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const AccountInfo = styled.div`
   width: 100%;
-  height: 100px;
+  margin-top: 5px;
   font-size: 13px;
   font-weight: 500;
   color: #898989;
-  padding: 0 40px;
+  padding: 10px 40px;
   box-sizing: border-box;
   background: ${Color.LIGHT_GREY};
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -57,24 +54,23 @@ const Value = styled.div`
 
 const Divider = styled.span``;
 
+const Description = styled.div`
+  width: 100%;
+  font-size: 13px;
+  font-weight: 500;
+  color: #898989;
+  text-align: center;
+  box-sizing: border-box;
+  background: ${Color.LIGHT_GREY};
+  padding: 10px 40px;
+  ${colFlex({ justify: 'center', align: 'center' })}
+`;
+
 const dummyAccountInfo = {
   bankName: '국민은행',
   accountNumber: '620002-04-112345',
   depositor: '김지인',
 };
-
-const Description = styled.div`
-  width: 100%;
-  height: 100%;
-  font-size: 13px;
-  font-weight: 500;
-  color: #898989;
-  padding: 0 40px;
-  text-align: center;
-  box-sizing: border-box;
-  background: ${Color.LIGHT_GREY};
-  ${colFlex({ justify: 'center', align: 'center' })}
-`;
 
 interface OrderPayAccountInfoProps {
   isTossPay: boolean;
@@ -113,6 +109,10 @@ function OrderPayAccountInfo({ isTossPay }: OrderPayAccountInfoProps) {
           <Value>{dummyAccountInfo.depositor}</Value>
         </InfoRow>
       </AccountInfo>
+      <Description>
+        입력하신 입금자명과 실제 입금자명이 일치하지 않을 경우 결제 확인이 어려울 수 있습니다. <br />
+        아래 버튼을 클릭하시면 주문이 완료되며, 주문하신 금액에 맞게 송금해주시면 됩니다.
+      </Description>
     </Container>
   );
 }
