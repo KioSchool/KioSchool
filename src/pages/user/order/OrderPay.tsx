@@ -98,7 +98,9 @@ function OrderPay() {
       return;
     }
 
-    // 그냥 일반 결제일 때 로직~
+    /**
+     * TODO: 일반 결제 시 로직.
+     */
   };
 
   return (
