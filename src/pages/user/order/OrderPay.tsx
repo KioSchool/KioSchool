@@ -9,6 +9,7 @@ import { colFlex } from '@styles/flexStyles';
 import useOrder from '@hooks/user/useOrder';
 import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
 import { Color } from '@resources/colors';
+import OrderPayNavBar from '@components/admin/order/OrderPayNavBar';
 
 const Container = styled.div`
   width: 100%;
@@ -18,27 +19,7 @@ const Container = styled.div`
 const SubContainer = styled.div`
   margin-top: 45px;
   gap: 20px;
-  border-top: 10px solid ${Color.LIGHT_GREY};
-  padding-top: 12px;
   ${colFlex({ justify: 'center', align: 'center' })}
-`;
-
-const SubTitleContainer = styled.div`
-  width: 100%;
-  padding: 0 40px;
-  box-sizing: border-box;
-  gap: 10px;
-  ${colFlex()};
-`;
-
-const SubTitle = styled.div`
-  font-size: 16px;
-  font-weight: 600;
-`;
-
-const Amount = styled.div`
-  font-size: 16px;
-  font-weight: 400;
 `;
 
 const InputContainer = styled.div`
@@ -126,10 +107,7 @@ function OrderPay() {
     <Container className={'order-pay-container'}>
       <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
       <SubContainer className={'order-pay-sub-container'}>
-        <SubTitleContainer>
-          <SubTitle>결제 진행</SubTitle>
-          <Amount>{totalAmount.toLocaleString()}원</Amount>
-        </SubTitleContainer>
+        <OrderPayNavBar />
         <InputContainer>
           <Input type="text" placeholder={'입금자명을 입력해주세요.'} ref={customerNameRef} />
         </InputContainer>
