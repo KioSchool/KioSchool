@@ -69,14 +69,7 @@ function OrderPay() {
     customerNameRef.current?.focus();
   }, [isTossPay]);
 
-  const payOrder = () => {
-    const customerName = customerNameRef.current?.value;
-
-    if (!customerName) {
-      alert('입금자명을 입력해주세요.');
-      return;
-    }
-
+  const createOrderAndNavigateToToss = (customerName: string) => {
     createOrder(workspaceId, tableNo, orderBasket, customerName).then((res) => {
       navigate({
         pathname: '/order-complete',
@@ -92,6 +85,22 @@ function OrderPay() {
     });
   };
 
+  const payOrder = () => {
+    const customerName = customerNameRef.current?.value;
+
+    if (!customerName) {
+      alert('입금자명을 입력해주세요.');
+      return;
+    }
+
+    if (isTossPay) {
+      createOrderAndNavigateToToss(customerName);
+      return;
+    }
+
+    // 그냥 일반 결제일 때 로직~
+  };
+
   return (
     <Container className={'order-pay-container'}>
       <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
@@ -104,7 +113,7 @@ function OrderPay() {
           <OrderPayAccountInfo isTossPay={isTossPay} />
         </DescriptionContainer>
       </SubContainer>
-      <OrderButton showButton={orderBasket.length > 0} buttonLabel={totalAmount == 0 ? '주문하기' : `Toss로 결제하기`} onClick={payOrder} />
+      <OrderButton showButton={orderBasket.length > 0} buttonLabel={isTossPay ? 'Toss로 주문하기' : `주문하기`} onClick={payOrder} />
     </Container>
   );
 }
