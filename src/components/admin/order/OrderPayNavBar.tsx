@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
-import React, { useState } from 'react';
 
 const Container = styled.div`
   width: 100%;
@@ -10,14 +9,9 @@ const Container = styled.div`
   box-sizing: border-box;
   gap: 8px;
   overflow-x: auto;
-  white-space: nowrap;
   ${rowFlex({ justify: 'center', align: 'center' })}
   border-top: 10px solid ${Color.LIGHT_GREY};
   border-bottom: 1px solid ${Color.LIGHT_GREY};
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 const CategoryLink = styled.div<{ isSelected: boolean }>`
@@ -29,9 +23,12 @@ const CategoryLink = styled.div<{ isSelected: boolean }>`
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
-function OrderPayNavBar() {
-  const [isTossPay, setIsTossPay] = useState<boolean>(false);
+interface OrderPayNavBarProps {
+  isTossPay: boolean;
+  setIsTossPay: (value: boolean) => void;
+}
 
+function OrderPayNavBar({ isTossPay, setIsTossPay }: OrderPayNavBarProps) {
   return (
     <Container>
       <CategoryLink isSelected={isTossPay} onClick={() => setIsTossPay(true)}>
@@ -40,6 +37,7 @@ function OrderPayNavBar() {
       <CategoryLink isSelected={!isTossPay} onClick={() => setIsTossPay(false)}>
         계좌결제
       </CategoryLink>
+      {}
     </Container>
   );
 }

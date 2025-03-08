@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { orderBasketAtom, userWorkspaceAtom } from '@recoils/atoms';
 import _ from 'lodash';
@@ -55,6 +55,7 @@ const Description = styled.div`
 `;
 
 function OrderPay() {
+  const [isTossPay, setIsTossPay] = useState<boolean>(false);
   const customerNameRef = useRef<HTMLInputElement>(null);
 
   const workspace = useRecoilValue(userWorkspaceAtom);
@@ -78,7 +79,7 @@ function OrderPay() {
       navigate(1);
     }
     customerNameRef.current?.focus();
-  }, []);
+  }, [isTossPay]);
 
   const payOrder = () => {
     const customerName = customerNameRef.current?.value;
@@ -107,7 +108,7 @@ function OrderPay() {
     <Container className={'order-pay-container'}>
       <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
       <SubContainer className={'order-pay-sub-container'}>
-        <OrderPayNavBar />
+        <OrderPayNavBar isTossPay={isTossPay} setIsTossPay={setIsTossPay} />
         <InputContainer>
           <Input type="text" placeholder={'입금자명을 입력해주세요.'} ref={customerNameRef} />
         </InputContainer>
