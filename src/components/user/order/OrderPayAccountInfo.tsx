@@ -6,6 +6,7 @@ import React from 'react';
 
 const Container = styled.div`
   width: 100%;
+  gap: 5px;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
@@ -16,7 +17,6 @@ const TitleContainer = styled.div`
 
 const AccountInfo = styled.div`
   width: 100%;
-  margin-top: 5px;
   font-size: 13px;
   font-weight: 500;
   color: #898989;
@@ -63,6 +63,7 @@ const Description = styled.div`
   box-sizing: border-box;
   background: ${Color.LIGHT_GREY};
   padding: 10px 40px;
+  word-break: keep-all;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
@@ -88,6 +89,10 @@ function OrderPayAccountInfo({ isTossPay }: OrderPayAccountInfoProps) {
 
   return (
     <Container>
+      <Description>
+        입력하신 입금자명과 실제 입금자명이 일치하지 않을 경우 결제 확인이 어려울 수 있습니다. 아래 버튼을 클릭하시면 주문이 완료되며, 주문하신 금액에 맞게
+        송금해주시면 됩니다.
+      </Description>
       <TitleContainer>
         <AppLabel size={15}>계좌 정보</AppLabel>
         <CopyButton>계좌 복사하기</CopyButton>
@@ -109,10 +114,6 @@ function OrderPayAccountInfo({ isTossPay }: OrderPayAccountInfoProps) {
           <Value>{dummyAccountInfo.depositor}</Value>
         </InfoRow>
       </AccountInfo>
-      <Description>
-        입력하신 입금자명과 실제 입금자명이 일치하지 않을 경우 결제 확인이 어려울 수 있습니다. <br />
-        아래 버튼을 클릭하시면 주문이 완료되며, 주문하신 금액에 맞게 송금해주시면 됩니다.
-      </Description>
     </Container>
   );
 }
