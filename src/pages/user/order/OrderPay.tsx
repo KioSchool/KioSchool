@@ -10,7 +10,7 @@ import useOrder from '@hooks/user/useOrder';
 import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
 import { Color } from '@resources/colors';
 import OrderPayNavBar from '@components/admin/order/OrderPayNavBar';
-import OrderPayAccountInfo from '@components/admin/order/OrderPayAccountInfo';
+import OrderPayAccountInfo from '@components/user/order/OrderPayAccountInfo';
 
 const Container = styled.div`
   width: 100%;
