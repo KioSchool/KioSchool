@@ -37,7 +37,6 @@ function OrderPayNavBar({ isTossPay, setIsTossPay }: OrderPayNavBarProps) {
       <CategoryLink isSelected={!isTossPay} onClick={() => setIsTossPay(false)}>
         계좌결제
       </CategoryLink>
-      {}
     </Container>
   );
 }
