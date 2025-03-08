@@ -57,7 +57,7 @@ const Value = styled.div`
 
 const Divider = styled.span``;
 
-const DummyAccountInfo = {
+const dummyAccountInfo = {
   bankName: '국민은행',
   accountNumber: '620002-04-112345',
   depositor: '김지인',
@@ -74,17 +74,17 @@ function OrderPayAccountInfo() {
         <InfoRow>
           <Key>은행명</Key>
           <Divider>|</Divider>
-          <Value>{DummyAccountInfo.bankName}</Value>
+          <Value>{dummyAccountInfo.bankName}</Value>
         </InfoRow>
         <InfoRow>
           <Key>계좌번호</Key>
           <Divider>|</Divider>
-          <Value>{DummyAccountInfo.accountNumber}</Value>
+          <Value>{dummyAccountInfo.accountNumber}</Value>
         </InfoRow>
         <InfoRow>
           <Key>예금주</Key>
           <Divider>|</Divider>
-          <Value>{DummyAccountInfo.depositor}</Value>
+          <Value>{dummyAccountInfo.depositor}</Value>
         </InfoRow>
       </AccountInfo>
     </Container>
