@@ -41,6 +41,7 @@ const Description = styled.div`
   font-weight: 400;
   font-family: 'LINESeedKR-Rg', 'sans-serif';
   text-align: center;
+  word-break: keep-all;
   ${lineSeedKrFont}
   ${tabletMediaQuery} {
     width: 300px;
