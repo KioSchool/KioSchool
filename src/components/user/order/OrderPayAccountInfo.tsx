@@ -20,10 +20,10 @@ const AccountInfo = styled.div`
   font-size: 13px;
   font-weight: 500;
   color: #898989;
-  padding: 10px 40px;
+  padding: 10px 20px;
   box-sizing: border-box;
   background: ${Color.LIGHT_GREY};
-  ${colFlex({ justify: 'center', align: 'center' })}
+  ${colFlex({ justify: 'center' })}
 `;
 
 const CopyButton = styled.button`
@@ -43,7 +43,6 @@ const InfoRow = styled.div`
 `;
 
 const Key = styled.div`
-  width: 90px;
   ${rowFlex({ justify: 'end', align: 'center' })}
 `;
 
@@ -69,7 +68,7 @@ function OrderPayAccountInfo() {
       </TitleContainer>
       <AccountInfo>
         <InfoRow>
-          <Key>은행명</Key>
+          <Key>금융기관</Key>
           <Divider>|</Divider>
           <Value>{dummyAccountInfo.bankName}</Value>
         </InfoRow>
@@ -79,7 +78,7 @@ function OrderPayAccountInfo() {
           <Value>{dummyAccountInfo.accountNumber}</Value>
         </InfoRow>
         <InfoRow>
-          <Key>예금주</Key>
+          <Key>예금주명</Key>
           <Divider>|</Divider>
           <Value>{dummyAccountInfo.depositor}</Value>
         </InfoRow>

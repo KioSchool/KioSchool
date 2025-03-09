@@ -18,7 +18,7 @@ const Description = styled.div`
   text-align: center;
   box-sizing: border-box;
   background: ${Color.LIGHT_GREY};
-  padding: 10px 40px;
+  padding: 10px 30px;
   word-break: keep-all;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
