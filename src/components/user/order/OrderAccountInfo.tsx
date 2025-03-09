@@ -2,7 +2,11 @@ import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import React from 'react';
+import React, { useEffect } from 'react';
+import useWorkspace from '@hooks/user/useWorkspace';
+import { useSearchParams } from 'react-router-dom';
+import { Account } from '@@types/index';
+import { defaultAccountValue } from '@@types/defaultValues';
 
 const Container = styled.div`
   width: 100%;
@@ -53,12 +57,23 @@ const Value = styled.div`
 
 const Divider = styled.span``;
 
-function OrderPayAccountInfo() {
-  const dummyAccountInfo = {
-    bankName: '국민은행',
-    accountNumber: '123-456-789',
-    depositor: '홍길동',
+function OrderAccountInfo() {
+  const [searchParams] = useSearchParams();
+  const workspaceId = searchParams.get('workspaceId');
+  const [accountInfo, setAccountInfo] = React.useState<Account>(defaultAccountValue);
+
+  const { fetchWorkspaceAccount } = useWorkspace();
+
+  const getAccountInfo = async () => {
+    const account = await fetchWorkspaceAccount(workspaceId);
+    if (!account) return;
+
+    setAccountInfo(account);
   };
+
+  useEffect(() => {
+    getAccountInfo();
+  }, []);
 
   return (
     <Container>
@@ -70,21 +85,21 @@ function OrderPayAccountInfo() {
         <InfoRow>
           <Key>금융기관</Key>
           <Divider>|</Divider>
-          <Value>{dummyAccountInfo.bankName}</Value>
+          <Value>{accountInfo.bank.name}</Value>
         </InfoRow>
         <InfoRow>
           <Key>계좌번호</Key>
           <Divider>|</Divider>
-          <Value>{dummyAccountInfo.accountNumber}</Value>
+          <Value>{accountInfo?.accountNumber}</Value>
         </InfoRow>
         <InfoRow>
           <Key>예금주명</Key>
           <Divider>|</Divider>
-          <Value>{dummyAccountInfo.depositor}</Value>
+          <Value>{accountInfo?.accountHolder}</Value>
         </InfoRow>
       </AccountInfo>
     </Container>
   );
 }
 
-export default OrderPayAccountInfo;
+export default OrderAccountInfo;

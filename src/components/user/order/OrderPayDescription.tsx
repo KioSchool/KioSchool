@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import OrderPayAccountInfo from '@components/user/order/OrderPayAccountInfo';
+import OrderAccountInfo from '@components/user/order/OrderAccountInfo';
 
 const Container = styled.div`
   width: 100%;
@@ -43,7 +43,7 @@ function OrderPayDescription({ isTossPay }: OrderPayDescriptionProps) {
         입력하신 입금자명과 실제 입금자명이 일치하지 않을 경우 결제 확인이 어려울 수 있습니다. 아래 버튼을 클릭하시면 주문이 완료되며, 주문하신 금액에 맞게
         송금해주시면 됩니다.
       </Description>
-      <OrderPayAccountInfo />
+      <OrderAccountInfo />
     </Container>
   );
 }

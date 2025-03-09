@@ -132,7 +132,25 @@ export interface User {
   name: string;
   email: string;
   role: UserRole;
+  account: Account;
   accountUrl: string;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Account {
+  bank: Bank;
+  accountNumber: string;
+  accountHolder: string;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Bank {
+  name: string;
+  code: string;
   id: number;
   createdAt: string;
   updatedAt: string;
