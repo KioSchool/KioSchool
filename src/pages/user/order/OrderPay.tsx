@@ -59,7 +59,9 @@ function OrderPay() {
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
 
-  const tossAccountUrl = workspace.owner.accountUrl;
+  const account = workspace.owner.account;
+  const tossAccountUrl = account?.tossAccountUrl;
+  const isTossAvailable = !!tossAccountUrl;
 
   useEffect(() => {
     if (orderBasket.length === 0) {
@@ -107,7 +109,7 @@ function OrderPay() {
     <Container className={'order-pay-container'}>
       <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
       <SubContainer className={'order-pay-sub-container'}>
-        <OrderPayNavBar isTossPay={isTossPay} setIsTossPay={setIsTossPay} />
+        <OrderPayNavBar isTossAvailable={isTossAvailable} isTossPay={isTossPay} setIsTossPay={setIsTossPay} />
         <InputContainer>
           <Input type="text" placeholder={'입금자명을 입력해주세요.'} ref={customerNameRef} />
         </InputContainer>
