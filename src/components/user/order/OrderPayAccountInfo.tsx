@@ -54,45 +54,15 @@ const Value = styled.div`
 
 const Divider = styled.span``;
 
-const Description = styled.div`
-  width: 100%;
-  font-size: 13px;
-  font-weight: 500;
-  color: #898989;
-  text-align: center;
-  box-sizing: border-box;
-  background: ${Color.LIGHT_GREY};
-  padding: 10px 40px;
-  word-break: keep-all;
-  ${colFlex({ justify: 'center', align: 'center' })}
-`;
-
-const dummyAccountInfo = {
-  bankName: '국민은행',
-  accountNumber: '620002-04-112345',
-  depositor: '김지인',
-};
-
-interface OrderPayAccountInfoProps {
-  isTossPay: boolean;
-}
-
-function OrderPayAccountInfo({ isTossPay }: OrderPayAccountInfoProps) {
-  if (isTossPay) {
-    return (
-      <Description>
-        입력하신 입금자명과 실제 입금자명이 일치하지 않을 경우 결제 확인이 어려울 수 있습니다. 아래 버튼을 클릭하시면 주문이 완료되며, 토스 송금 페이지로
-        이동합니다.
-      </Description>
-    );
-  }
+function OrderPayAccountInfo() {
+  const dummyAccountInfo = {
+    bankName: '국민은행',
+    accountNumber: '123-456-789',
+    depositor: '홍길동',
+  };
 
   return (
     <Container>
-      <Description>
-        입력하신 입금자명과 실제 입금자명이 일치하지 않을 경우 결제 확인이 어려울 수 있습니다. 아래 버튼을 클릭하시면 주문이 완료되며, 주문하신 금액에 맞게
-        송금해주시면 됩니다.
-      </Description>
       <TitleContainer>
         <AppLabel size={15}>계좌 정보</AppLabel>
         <CopyButton>계좌 복사하기</CopyButton>

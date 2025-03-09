@@ -9,7 +9,7 @@ import { colFlex } from '@styles/flexStyles';
 import useOrder from '@hooks/user/useOrder';
 import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
 import OrderPayNavBar from '@components/admin/order/OrderPayNavBar';
-import OrderPayAccountInfo from '@components/user/order/OrderPayAccountInfo';
+import OrderPayDescription from '@components/user/order/OrderPayDescription';
 
 const Container = styled.div`
   width: 100%;
@@ -112,7 +112,7 @@ function OrderPay() {
           <Input type="text" placeholder={'입금자명을 입력해주세요.'} ref={customerNameRef} />
         </InputContainer>
         <DescriptionContainer>
-          <OrderPayAccountInfo isTossPay={isTossPay} />
+          <OrderPayDescription isTossPay={isTossPay} />
         </DescriptionContainer>
       </SubContainer>
       <OrderButton showButton={orderBasket.length > 0} buttonLabel={isTossPay ? 'Toss로 주문하기' : `주문하기`} onClick={payOrder} />
