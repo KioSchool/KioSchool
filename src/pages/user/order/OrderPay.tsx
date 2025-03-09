@@ -87,6 +87,18 @@ function OrderPay() {
     });
   };
 
+  const createOrderAndNavigateToComplete = (customerName: string) => {
+    createOrder(workspaceId, tableNo, orderBasket, customerName).then((res) => {
+      navigate({
+        pathname: '/order-complete',
+        search: createSearchParams({
+          orderId: res.data.id.toString(),
+          workspaceId: workspaceId || '',
+        }).toString(),
+      });
+    });
+  };
+
   const payOrder = () => {
     const customerName = customerNameRef.current?.value;
 
@@ -100,9 +112,7 @@ function OrderPay() {
       return;
     }
 
-    /**
-     * TODO: 일반 결제 시 로직.
-     */
+    createOrderAndNavigateToComplete(customerName);
   };
 
   return (
