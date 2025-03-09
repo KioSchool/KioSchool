@@ -143,6 +143,7 @@ export interface Account {
   bank: Bank;
   accountNumber: string;
   accountHolder: string;
+  tossAccountUrl: string;
   id: number;
   createdAt: string;
   updatedAt: string;

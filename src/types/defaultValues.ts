@@ -132,6 +132,7 @@ export const defaultAccountValue: Account = {
   bank: defaultBankValue,
   accountNumber: '',
   accountHolder: '',
+  tossAccountUrl: '',
   id: 0,
   createdAt: '',
   updatedAt: '',
