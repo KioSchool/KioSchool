@@ -36,6 +36,7 @@ const ContentContainer = styled.div`
 const StatisticContainer = styled.div`
   width: 100%;
   gap: 20px;
+  word-break: keep-all;
   ${colFlex()};
   ${tabletMediaQuery} {
     gap: 0;

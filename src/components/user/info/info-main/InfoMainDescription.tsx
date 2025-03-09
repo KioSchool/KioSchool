@@ -22,6 +22,7 @@ const TextContainer = styled.div`
   width: 100%;
   font-size: 18px;
   white-space: pre-line;
+  word-break: keep-all;
   font-family: 'LINESeedKR-Rg', 'sans-serif';
   font-weight: 400;
   ${lineSeedKrFont};
