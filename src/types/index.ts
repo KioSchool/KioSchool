@@ -132,7 +132,7 @@ export interface User {
   name: string;
   email: string;
   role: UserRole;
-  account: Account;
+  account: Account | null;
   accountUrl: string;
   id: number;
   createdAt: string;
