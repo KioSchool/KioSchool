@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { orderBasketAtom, userWorkspaceAtom } from '@recoils/atoms';
 import _ from 'lodash';
@@ -8,7 +8,8 @@ import { createSearchParams, useNavigate, useSearchParams } from 'react-router-d
 import { colFlex } from '@styles/flexStyles';
 import useOrder from '@hooks/user/useOrder';
 import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
-import { Color } from '@resources/colors';
+import OrderPayNavBar from '@components/admin/order/OrderPayNavBar';
+import OrderPayAccountInfo from '@components/user/order/OrderPayAccountInfo';
 
 const Container = styled.div`
   width: 100%;
@@ -18,27 +19,7 @@ const Container = styled.div`
 const SubContainer = styled.div`
   margin-top: 45px;
   gap: 20px;
-  border-top: 10px solid ${Color.LIGHT_GREY};
-  padding-top: 12px;
   ${colFlex({ justify: 'center', align: 'center' })}
-`;
-
-const SubTitleContainer = styled.div`
-  width: 100%;
-  padding: 0 40px;
-  box-sizing: border-box;
-  gap: 10px;
-  ${colFlex()};
-`;
-
-const SubTitle = styled.div`
-  font-size: 16px;
-  font-weight: 600;
-`;
-
-const Amount = styled.div`
-  font-size: 16px;
-  font-weight: 400;
 `;
 
 const InputContainer = styled.div`
@@ -58,22 +39,11 @@ const Input = styled.input`
 
 const DescriptionContainer = styled.div`
   width: 100%;
-  height: 100px;
-  background: ${Color.LIGHT_GREY};
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
-const Description = styled.div`
-  width: 100%;
-  font-size: 13px;
-  font-weight: 500;
-  color: #898989;
-  padding: 0 40px;
-  text-align: center;
-  box-sizing: border-box;
-`;
-
 function OrderPay() {
+  const [isTossPay, setIsTossPay] = useState<boolean>(false);
   const customerNameRef = useRef<HTMLInputElement>(null);
 
   const workspace = useRecoilValue(userWorkspaceAtom);
@@ -97,16 +67,9 @@ function OrderPay() {
       navigate(1);
     }
     customerNameRef.current?.focus();
-  }, []);
+  }, [isTossPay]);
 
-  const payOrder = () => {
-    const customerName = customerNameRef.current?.value;
-
-    if (!customerName) {
-      alert('입금자명을 입력해주세요.');
-      return;
-    }
-
+  const createOrderAndNavigateToToss = (customerName: string) => {
     createOrder(workspaceId, tableNo, orderBasket, customerName).then((res) => {
       navigate({
         pathname: '/order-complete',
@@ -122,25 +85,37 @@ function OrderPay() {
     });
   };
 
+  const payOrder = () => {
+    const customerName = customerNameRef.current?.value;
+
+    if (!customerName) {
+      alert('입금자명을 입력해주세요.');
+      return;
+    }
+
+    if (isTossPay) {
+      createOrderAndNavigateToToss(customerName);
+      return;
+    }
+
+    /**
+     * TODO: 일반 결제 시 로직.
+     */
+  };
+
   return (
     <Container className={'order-pay-container'}>
       <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
       <SubContainer className={'order-pay-sub-container'}>
-        <SubTitleContainer>
-          <SubTitle>결제 진행</SubTitle>
-          <Amount>{totalAmount.toLocaleString()}원</Amount>
-        </SubTitleContainer>
+        <OrderPayNavBar isTossPay={isTossPay} setIsTossPay={setIsTossPay} />
         <InputContainer>
           <Input type="text" placeholder={'입금자명을 입력해주세요.'} ref={customerNameRef} />
         </InputContainer>
         <DescriptionContainer>
-          <Description>
-            입력하신 입금자명과 실제 입금자명이 일치하지 않을 경우 결제 확인이 어려울 수 있습니다. 아래 버튼을 클릭하시면 주문이 완료되며, 토스 송금 페이지로
-            이동합니다.
-          </Description>
+          <OrderPayAccountInfo isTossPay={isTossPay} />
         </DescriptionContainer>
       </SubContainer>
-      <OrderButton showButton={orderBasket.length > 0} buttonLabel={totalAmount == 0 ? '주문하기' : `Toss로 결제하기`} onClick={payOrder} />
+      <OrderButton showButton={orderBasket.length > 0} buttonLabel={isTossPay ? 'Toss로 주문하기' : `주문하기`} onClick={payOrder} />
     </Container>
   );
 }
