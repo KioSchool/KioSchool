@@ -71,6 +71,13 @@ function OrderAccountInfo() {
     setAccountInfo(account);
   };
 
+  const copyAccountInfo = () => {
+    const bankName = accountInfo.bank.name;
+    const accountNumber = accountInfo.accountNumber;
+
+    navigator.clipboard.writeText(`${bankName} ${accountNumber}`);
+  };
+
   useEffect(() => {
     getAccountInfo();
   }, []);
@@ -79,7 +86,7 @@ function OrderAccountInfo() {
     <Container>
       <TitleContainer>
         <AppLabel size={15}>계좌 정보</AppLabel>
-        <CopyButton>계좌 복사하기</CopyButton>
+        <CopyButton onClick={copyAccountInfo}>계좌 복사하기</CopyButton>
       </TitleContainer>
       <AccountInfo>
         <InfoRow>
