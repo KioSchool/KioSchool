@@ -94,7 +94,7 @@ function OrderAccountInfo() {
         <InfoRow>
           <Key>금융기관</Key>
           <Divider>|</Divider>
-          <Value>{accountInfo.bank.name}</Value>
+          <Value>{accountInfo?.bank?.name}</Value>
         </InfoRow>
         <InfoRow>
           <Key>계좌번호</Key>
