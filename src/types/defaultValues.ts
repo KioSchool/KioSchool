@@ -1,4 +1,6 @@
 import {
+  Account,
+  Bank,
   Order,
   OrderProduct,
   OrderProductBase,
@@ -118,10 +120,29 @@ export const defaultProductEditValue: ProductEdit = {
   },
 };
 
+export const defaultBankValue: Bank = {
+  name: '',
+  code: '',
+  id: 0,
+  createdAt: '',
+  updatedAt: '',
+};
+
+export const defaultAccountValue: Account = {
+  bank: defaultBankValue,
+  accountNumber: '',
+  accountHolder: '',
+  tossAccountUrl: '',
+  id: 0,
+  createdAt: '',
+  updatedAt: '',
+};
+
 export const defaultUserValue: User = {
   name: '',
   email: '',
   role: UserRole.ADMIN,
+  account: defaultAccountValue,
   accountUrl: '',
   id: 0,
   createdAt: '',

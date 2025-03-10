@@ -15,7 +15,7 @@ const Container = styled.div`
 `;
 
 const CategoryLink = styled.div<{ isSelected: boolean }>`
-  width: 50%;
+  width: 100%;
   padding: 10px 10px;
   border-bottom: ${({ isSelected }) => (isSelected ? '3px solid black' : '3px solid transparent')};
   font-weight: ${({ isSelected }) => (isSelected ? '600' : '')};
@@ -24,16 +24,19 @@ const CategoryLink = styled.div<{ isSelected: boolean }>`
 `;
 
 interface OrderPayNavBarProps {
+  isTossAvailable: boolean;
   isTossPay: boolean;
   setIsTossPay: (value: boolean) => void;
 }
 
-function OrderPayNavBar({ isTossPay, setIsTossPay }: OrderPayNavBarProps) {
+function OrderPayNavBar({ isTossAvailable, isTossPay, setIsTossPay }: OrderPayNavBarProps) {
   return (
     <Container>
-      <CategoryLink isSelected={isTossPay} onClick={() => setIsTossPay(true)}>
-        토스결제
-      </CategoryLink>
+      {isTossAvailable && (
+        <CategoryLink isSelected={isTossPay} onClick={() => setIsTossPay(true)}>
+          토스결제
+        </CategoryLink>
+      )}
       <CategoryLink isSelected={!isTossPay} onClick={() => setIsTossPay(false)}>
         계좌결제
       </CategoryLink>

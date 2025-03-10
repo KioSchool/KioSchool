@@ -31,7 +31,7 @@ function OrderButton({ showButton, buttonLabel, onClick }: OrderButtonProps) {
   return (
     <Container className={'order-button-container'}>
       <OrderButtonSubContainer className={'order-button-sub-container'}>
-        <AppButton size={290} onClick={onClick}>
+        <AppButton size={290} onClick={onClick} style={{ fontWeight: 'bold' }}>
           {buttonLabel}
         </AppButton>
       </OrderButtonSubContainer>
