@@ -73,15 +73,10 @@ function OrderStickyNavBar({ useLeftArrow = true, showNavBar, workspaceName, tab
       return;
     }
 
-    try {
-      await navigator.share({
-        title: workspaceName,
-        text: `키오스쿨에서 같이 주문해요!!`,
-        url: window.location.href,
-      });
-    } catch (error) {
-      alert(`공유 실패: ${error}`);
-    }
+    await navigator.share({
+      title: workspaceName,
+      url: window.location.href,
+    });
   };
 
   return (
