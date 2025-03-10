@@ -127,7 +127,11 @@ function OrderPay() {
           <OrderPayDescription isTossPay={isTossPay} />
         </DescriptionContainer>
       </SubContainer>
-      <OrderButton showButton={orderBasket.length > 0} buttonLabel={isTossPay ? 'Toss로 주문하기' : `주문하기`} onClick={payOrder} />
+      <OrderButton
+        showButton={orderBasket.length > 0}
+        buttonLabel={`${totalAmount.toLocaleString()}원 · ${isTossPay ? 'Toss로' : '계좌로'} 결제하기`}
+        onClick={payOrder}
+      />
     </Container>
   );
 }
