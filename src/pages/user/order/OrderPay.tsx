@@ -9,7 +9,7 @@ import { colFlex } from '@styles/flexStyles';
 import useOrder from '@hooks/user/useOrder';
 import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
 import OrderPayNavBar from '@components/admin/order/OrderPayNavBar';
-import OrderPayAccountInfo from '@components/user/order/OrderPayAccountInfo';
+import OrderPayDescription from '@components/user/order/OrderPayDescription';
 
 const Container = styled.div`
   width: 100%;
@@ -59,7 +59,9 @@ function OrderPay() {
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
 
-  const tossAccountUrl = workspace.owner.accountUrl;
+  const account = workspace.owner.account;
+  const tossAccountUrl = account?.tossAccountUrl;
+  const isTossAvailable = !!tossAccountUrl;
 
   useEffect(() => {
     if (orderBasket.length === 0) {
@@ -85,6 +87,18 @@ function OrderPay() {
     });
   };
 
+  const createOrderAndNavigateToComplete = (customerName: string) => {
+    createOrder(workspaceId, tableNo, orderBasket, customerName).then((res) => {
+      navigate({
+        pathname: '/order-complete',
+        search: createSearchParams({
+          orderId: res.data.id.toString(),
+          workspaceId: workspaceId || '',
+        }).toString(),
+      });
+    });
+  };
+
   const payOrder = () => {
     const customerName = customerNameRef.current?.value;
 
@@ -98,24 +112,26 @@ function OrderPay() {
       return;
     }
 
-    /**
-     * TODO: 일반 결제 시 로직.
-     */
+    createOrderAndNavigateToComplete(customerName);
   };
 
   return (
     <Container className={'order-pay-container'}>
       <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
       <SubContainer className={'order-pay-sub-container'}>
-        <OrderPayNavBar isTossPay={isTossPay} setIsTossPay={setIsTossPay} />
+        <OrderPayNavBar isTossAvailable={isTossAvailable} isTossPay={isTossPay} setIsTossPay={setIsTossPay} />
         <InputContainer>
           <Input type="text" placeholder={'입금자명을 입력해주세요.'} ref={customerNameRef} />
         </InputContainer>
         <DescriptionContainer>
-          <OrderPayAccountInfo isTossPay={isTossPay} />
+          <OrderPayDescription isTossPay={isTossPay} />
         </DescriptionContainer>
       </SubContainer>
-      <OrderButton showButton={orderBasket.length > 0} buttonLabel={isTossPay ? 'Toss로 주문하기' : `주문하기`} onClick={payOrder} />
+      <OrderButton
+        showButton={orderBasket.length > 0}
+        buttonLabel={`${totalAmount.toLocaleString()}원 · ${isTossPay ? 'Toss로' : '계좌로'} 결제하기`}
+        onClick={payOrder}
+      />
     </Container>
   );
 }

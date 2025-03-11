@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import useOrder from '@hooks/user/useOrder';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { orderBasketAtom, userOrderAtom, userWorkspaceAtom } from '@recoils/atoms';
@@ -10,6 +10,7 @@ import { Color } from '@resources/colors';
 import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
 import OrderStatusBar from '@components/user/order/OrderStatusBar';
 import useRefresh from '@hooks/useRefresh';
+import OrderAccountInfo from '@components/user/order/OrderAccountInfo';
 
 const Container = styled.div`
   width: 100%;
@@ -83,15 +84,6 @@ const OrderProductText = styled.div`
   font-weight: 500;
 `;
 
-const AccountCopyButton = styled.button`
-  background: transparent;
-  border: 1px solid ${Color.GREY};
-  border-radius: 40px;
-  font-size: 13px;
-  font-weight: 500;
-  padding: 0 10px;
-`;
-
 const DescriptionContainer = styled.div`
   padding: 20px 0;
   width: 320px;
@@ -107,12 +99,11 @@ const Description = styled.div`
 `;
 
 function OrderComplete() {
-  const [accountInfo, setAccountInfo] = useState<string>();
   const [searchParams] = useSearchParams();
   const orderId = searchParams.get('orderId');
   const workspaceId = searchParams.get('workspaceId');
 
-  const { fetchWorkspaceAccount, fetchWorkspace } = useWorkspace();
+  const { fetchWorkspace } = useWorkspace();
   const { fetchOrder } = useOrder();
   const { allowPullToRefresh } = useRefresh();
   const resetOrderBasket = useResetRecoilState(orderBasketAtom);
@@ -127,28 +118,16 @@ function OrderComplete() {
     return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 ${ampm} ${hour}시 ${date.getMinutes()}분`;
   };
 
-  const getAccountInfo = async () => {
-    const rawAccountInfo = await fetchWorkspaceAccount(workspaceId);
-    setAccountInfo(rawAccountInfo);
-  };
-
-  const copyAccountInfo = () => {
-    navigator.clipboard.writeText(accountInfo!).then(() => {
-      alert('계좌 정보가 복사되었습니다.');
-    });
-  };
-
   useEffect(() => {
     resetOrderBasket();
     fetchOrder(orderId);
     fetchWorkspace(workspaceId);
     allowPullToRefresh();
-    getAccountInfo();
   }, []);
 
   return (
     <Container className={'order-complete-container'}>
-      <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={order.tableNumber} useShareButton={true} />
+      <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={order.tableNumber} useShareButton={true} useLeftArrow={false} />
       <SubContainer className={'order-complete-sub-container'}>
         <SubTitleContainer className={'order-complete-sub-title-container'}>
           <SubTitle>주문내역</SubTitle>
@@ -193,15 +172,7 @@ function OrderComplete() {
               </OrderProductRow>
             </OrderProductContainer>
           </ContentBox>
-
-          <ContentTitleContainer>
-            <ContentTitle>결제 계좌 정보</ContentTitle>
-            <AccountCopyButton onClick={copyAccountInfo}>계좌 복사하기</AccountCopyButton>
-          </ContentTitleContainer>
-          <ContentBox>
-            <ContentText>{accountInfo}</ContentText>
-          </ContentBox>
-
+          <OrderAccountInfo />
           <DescriptionContainer>
             <Description>{'결제가 원활하게 진행되지 않았을 경우,\n상단의 계좌 정보를 통해 직접 계좌이체를 부탁드립니다.'}</Description>
           </DescriptionContainer>
