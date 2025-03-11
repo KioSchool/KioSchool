@@ -72,8 +72,8 @@ function OrderAccountInfo() {
   };
 
   const copyAccountInfo = () => {
-    const bankName = accountInfo.bank.name;
-    const accountNumber = accountInfo.accountNumber;
+    const bankName = accountInfo?.bank?.name;
+    const accountNumber = accountInfo?.accountNumber;
 
     navigator.clipboard.writeText(`${bankName} ${accountNumber}`).then(() => {
       alert('계좌 정보가 복사되었습니다.');
