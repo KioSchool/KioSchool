@@ -56,7 +56,7 @@ const FooterContent = styled.div`
 
 function InfoFooter() {
   const handleInstagramClick = () => {
-    const instagramUrl = 'https://www.instagram.com/kioschool_official/';
+    const instagramUrl = 'https://www.instagram.com/kioschool/';
 
     window.open(instagramUrl, '_blank');
   };
