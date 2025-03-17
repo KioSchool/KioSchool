@@ -4,7 +4,7 @@ import useAdminProducts from '@hooks/admin/useAdminProducts';
 import useConfirm from '@hooks/useConfirm';
 import { Color } from '@resources/colors';
 import DeleteButtonGraySvg from '@resources/svg/DeleteButtonGraySvg';
-import DragIconSvg from '@resources/svg/DragIconSvg';
+import { RiMenuLine } from '@remixicon/react';
 import { rowFlex } from '@styles/flexStyles';
 import { Draggable } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
@@ -69,7 +69,7 @@ function CategoryDraggableContents({ category, index }: DraggableProps) {
             <DeleteIcon onClick={deleteCategoryHandler} />
             <CategoryContentsContainer>
               <CategoryName>{category.name}</CategoryName>
-              <DragIconSvg style={{ paddingRight: '20px' }} />
+              <RiMenuLine style={{ paddingRight: '20px' }} />
             </CategoryContentsContainer>
           </CategoryItemContainer>
         )}
