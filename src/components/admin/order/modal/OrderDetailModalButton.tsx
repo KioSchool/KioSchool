@@ -6,7 +6,7 @@ import OrderModalFooterContents from '@components/admin/order/modal/OrderModalFo
 import OrderModalMainContents from '@components/admin/order/modal/OrderModalMainContents';
 import OrderModalHeaderContents from '@components/admin/order/modal/OrderModalHeaderContents';
 import useModal from '@hooks/useModal';
-import ChevronRightSvg from '@resources/svg/ChevronRightSvg';
+import { RiArrowRightSLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { createPortal } from 'react-dom';
 
@@ -34,10 +34,9 @@ const ModalContainer = styled.div`
   gap: 15px;
 `;
 
-const RightIcon = styled(ChevronRightSvg)`
-  margin-top: 6px;
-  width: 20px;
-  height: 15px;
+const RightIcon = styled(RiArrowRightSLine)`
+  width: 25px;
+  height: 25px;
   ${expandButtonStyle}
 `;
 
