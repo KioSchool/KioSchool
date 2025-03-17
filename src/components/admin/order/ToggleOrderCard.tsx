@@ -30,6 +30,11 @@ const RightContainer = styled.div`
   ${rowFlex({ align: 'center' })}
 `;
 
+const ToggleIcon = styled(RiArrowUpSLine)<{ isClosed: boolean }>`
+  cursor: pointer;
+  transform: ${({ isClosed }) => (isClosed ? 'rotate(180deg)' : 'none')};
+`;
+
 const OrderInfoContainer = styled.div`
   gap: 30px;
   ${colFlex({ justify: 'space-between' })}
@@ -77,7 +82,7 @@ function ToggleOrderCard({ order }: ToggleOrderCardProps) {
           </AppLabel>
           {!isClosed && <AppLabel size={16}>{dateConverter(order.createdAt)}</AppLabel>}
         </OrderInfoContainer>
-        <RiArrowUpSLine onClick={handleToggle} style={isClosed ? { transform: 'rotate(180deg)', cursor: 'pointer' } : { cursor: 'pointer' }} />
+        <ToggleIcon onClick={handleToggle} isClosed={isClosed} />
       </RightContainer>
     </Container>
   );
