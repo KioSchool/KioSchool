@@ -2,10 +2,9 @@ import React from 'react';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import { RiArrowLeftLine } from '@remixicon/react';
 import { rowFlex } from '@styles/flexStyles';
 import { useNavigate } from 'react-router-dom';
-import { RiShareForward2Fill } from '@remixicon/react';
+import { RiShareForward2Fill, RiArrowLeftLine } from '@remixicon/react';
 
 const Container = styled.div<{ isShow: boolean }>`
   position: fixed;

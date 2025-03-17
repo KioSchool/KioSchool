@@ -3,9 +3,7 @@ import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import CellularConnectionSvg from '@resources/svg/preview/CellularConnectionSvg';
-import WifiSvg from '@resources/svg/preview/WifiSvg';
-import BatterySvg from '@resources/svg/preview/BatterySvg';
-import PreviewUpperTriangleSvg from '@resources/svg/preview/PreviewUpperTriangleSvg';
+import { RiWifiFill, RiBatteryFill, RiTriangleFill } from '@remixicon/react';
 import AppLabel from '@components/common/label/AppLabel';
 
 interface PreviewContainerProps {
@@ -48,6 +46,22 @@ const RightIndicatorContainer = styled.div`
   gap: 3px;
 `;
 
+const BatteryIcon = styled(RiBatteryFill)`
+  width: 16px;
+  height: 15px;
+`;
+
+const WifiIcon = styled(RiWifiFill)`
+  width: 15px;
+  height: 15px;
+`;
+
+const TriangleIcon = styled(RiTriangleFill)`
+  width: 10px;
+  height: 10px;
+  color: ${Color.GREY};
+`;
+
 const FooterContainer = styled.div`
   ${rowFlex({ justify: 'center', align: 'center' })}
   width: 100%;
@@ -69,14 +83,14 @@ function PreviewContainer({ children, width = 360, height = 700 }: PreviewContai
           </LeftIndicatorContainer>
           <RightIndicatorContainer>
             <CellularConnectionSvg />
-            <WifiSvg />
-            <BatterySvg />
+            <WifiIcon />
+            <BatteryIcon />
           </RightIndicatorContainer>
         </IndicatorContainer>
         {children}
       </DeviceContainer>
       <FooterContainer>
-        <PreviewUpperTriangleSvg />
+        <TriangleIcon />
         주문화면 미리보기
       </FooterContainer>
     </Container>
