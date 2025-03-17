@@ -3,9 +3,9 @@ import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import ArrowLeftSvg from '@resources/svg/ArrowLeftSvg';
-import ShareSvg from '@resources/svg/ShareSvg';
 import { rowFlex } from '@styles/flexStyles';
 import { useNavigate } from 'react-router-dom';
+import { RiShareForward2Fill } from '@remixicon/react';
 
 const Container = styled.div<{ isShow: boolean }>`
   position: fixed;
@@ -49,7 +49,7 @@ const ArrowLeftButton = styled(ArrowLeftSvg, {
   }
 `;
 
-const ShareButton = styled(ShareSvg)`
+const ShareButton = styled(RiShareForward2Fill)`
   cursor: pointer;
   transition: transform 0.1s ease;
   &:hover {
