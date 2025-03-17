@@ -3,11 +3,12 @@ import styled from '@emotion/styled';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import useConfirm from '@hooks/useConfirm';
 import { Color } from '@resources/colors';
-import DeleteButtonGraySvg from '@resources/svg/DeleteButtonGraySvg';
+import { RiDeleteBinLine } from '@remixicon/react';
 import { RiMenuLine } from '@remixicon/react';
 import { rowFlex } from '@styles/flexStyles';
 import { Draggable } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
+import { expandButtonStyle } from '@styles/buttonStyles';
 
 const CategoryItemContainer = styled.div`
   position: relative;
@@ -31,12 +32,12 @@ const CategoryName = styled.label`
   padding-left: 20px;
 `;
 
-const DeleteIcon = styled(DeleteButtonGraySvg)`
+const DeleteIcon = styled(RiDeleteBinLine)`
   position: absolute;
   left: 13px;
-  &:hover {
-    transform: scale(1.2);
-  }
+  color: ${Color.GREY};
+  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.25));
+  ${expandButtonStyle}
 `;
 
 interface DraggableProps {
