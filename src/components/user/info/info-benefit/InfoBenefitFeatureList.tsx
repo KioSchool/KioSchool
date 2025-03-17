@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import CheckSvg from '@resources/svg/CheckSvg';
+import { RiCheckLine } from '@remixicon/react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { lineSeedKrFont } from '@styles/fonts';
 import { tabletMediaQuery } from '@styles/globalStyles';
@@ -50,7 +50,7 @@ function InfoBenefitFeatureList() {
       <ListContainer>
         {features.map((feature) => (
           <List key={feature}>
-            <CheckSvg />
+            <RiCheckLine />
             {feature}
           </List>
         ))}

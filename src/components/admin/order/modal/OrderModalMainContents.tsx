@@ -2,10 +2,9 @@ import { Order, OrderProduct, OrderStatus } from '@@types/index';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import { RiAddCircleFill, RiIndeterminateCircleLine } from '@remixicon/react';
+import { RiAddCircleFill, RiIndeterminateCircleLine, RiCheckLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import CheckSvg from '@resources/svg/CheckSvg';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 
@@ -114,7 +113,7 @@ function OrderModalMainContents({ order }: OrderModalMainContentsProps) {
               <AppLabel color={Color.BLACK} size={20}>
                 {isPaidStatus ? `${orderProduct.productName}` : `${orderProduct.productName} - ${orderProduct.quantity}개`}
               </AppLabel>
-              {orderProduct.isServed && <CheckSvg />}
+              {orderProduct.isServed && <RiCheckLine />}
             </ProductRightContainer>
             <ProductLeftContainer>
               <AppLabel color={Color.BLACK} size={20}>

@@ -3,8 +3,7 @@ import { Order } from '@@types/index';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import CheckSvg from '@resources/svg/CheckSvg';
-import { RiCloseLargeLine } from '@remixicon/react';
+import { RiCloseLargeLine, RiCheckLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import OrderSummaryContents from './OrderSummaryContents';
@@ -53,7 +52,7 @@ const CheckButtonContainer = styled.div`
   width: 55%;
 `;
 
-const CheckIcon = styled(CheckSvg)`
+const CheckIcon = styled(RiCheckLine)`
   width: 25px;
   height: 25px;
   ${expandButtonStyle}
