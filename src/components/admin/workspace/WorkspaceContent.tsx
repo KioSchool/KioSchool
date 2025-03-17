@@ -3,10 +3,11 @@ import styled from '@emotion/styled';
 import useAdminUser from '@hooks/admin/useAdminUser';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import useConfirm from '@hooks/useConfirm';
-import DeleteButtonSvg from '@resources/svg/DeleteButtonSvg';
+import { RiDeleteBinLine } from '@remixicon/react';
 import React from 'react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
+import { expandButtonStyle } from '@styles/buttonStyles';
 
 const WorkspaceContainer = styled.div`
   cursor: pointer;
@@ -44,14 +45,14 @@ const DeleteContainer = styled.div`
   padding: 12px 15px 0 0;
 `;
 
-const DeleteButton = styled(DeleteButtonSvg)`
+const DeleteButton = styled(RiDeleteBinLine)`
   position: absolute;
+  color: ${Color.WHITE};
   right: 15px;
   top: 12px;
-  transition: transform 0.1s ease;
-  &:hover {
-    transform: scale(1.2);
-  }
+  width: 30px;
+  height: 30px;
+  ${expandButtonStyle}
 `;
 
 const TitleContainer = styled.div`
