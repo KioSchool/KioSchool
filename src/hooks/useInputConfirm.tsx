@@ -5,7 +5,7 @@ import AppButton from '@components/common/button/AppButton';
 import { Color } from '@resources/colors';
 import AppInput from '@components/common/input/AppInput';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import CloseSvg from '@resources/svg/CloseSvg';
+import { RiCloseLargeLine } from '@remixicon/react';
 
 const Container = styled.div`
   z-index: 1002;
@@ -50,7 +50,7 @@ const ButtonContainer = styled.div`
   width: 100%;
 `;
 
-const CloseButton = styled(CloseSvg)`
+const CloseButton = styled(RiCloseLargeLine)`
   position: absolute;
   top: 10px;
   right: 10px;

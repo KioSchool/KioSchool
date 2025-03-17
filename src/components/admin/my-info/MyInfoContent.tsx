@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import MyInfoItemContent from './MyInfoItemContent';
 import { useNavigate } from 'react-router-dom';
-import AccountIconSvg from '@resources/svg/AccountIconSvg';
 import DeleteUserSvg from '@resources/svg/DeleteUserSvg';
 import useConfirm from '@hooks/useConfirm';
 import React from 'react';
@@ -10,8 +9,9 @@ import AppFooter from '@components/common/footer/AppFooter';
 import { rowFlex } from '@styles/flexStyles';
 import { adminUserAtom } from '@recoils/atoms';
 import { useRecoilValue } from 'recoil';
-import SuperAdminSvg from '@resources/svg/SuperAdminSvg';
 import { UserRole } from '@@types/index';
+import { RiSettings3Fill, RiBankCardFill } from '@remixicon/react';
+import { Color } from '@resources/colors';
 
 const MyInfoContainer = styled.div`
   width: 1100px;
@@ -50,11 +50,13 @@ const CommonButtonStyle = `
   }
 `;
 
-const SuperAdminButton = styled(SuperAdminSvg)`
+const SuperAdminButton = styled(RiSettings3Fill)`
+  color: ${Color.KIO_ORANGE};
   ${CommonButtonStyle};
 `;
 
-const AccountButton = styled(AccountIconSvg)`
+const AccountButton = styled(RiBankCardFill)`
+  color: ${Color.KIO_ORANGE};
   ${CommonButtonStyle};
 `;
 

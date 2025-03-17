@@ -2,10 +2,9 @@ import React from 'react';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import ArrowLeftSvg from '@resources/svg/ArrowLeftSvg';
-import ShareSvg from '@resources/svg/ShareSvg';
 import { rowFlex } from '@styles/flexStyles';
 import { useNavigate } from 'react-router-dom';
+import { RiShareForward2Fill, RiArrowLeftLine } from '@remixicon/react';
 
 const Container = styled.div<{ isShow: boolean }>`
   position: fixed;
@@ -37,7 +36,7 @@ const RightContainer = styled.div`
   ${rowFlex({ align: 'center' })}
 `;
 
-const ArrowLeftButton = styled(ArrowLeftSvg, {
+const ArrowLeftButton = styled(RiArrowLeftLine, {
   shouldForwardProp: (prop) => prop !== 'useLeftArrow',
 })<{ useLeftArrow?: boolean }>`
   display: ${({ useLeftArrow }) => (useLeftArrow ? 'block' : 'none')};
@@ -49,7 +48,7 @@ const ArrowLeftButton = styled(ArrowLeftSvg, {
   }
 `;
 
-const ShareButton = styled(ShareSvg)`
+const ShareButton = styled(RiShareForward2Fill)`
   cursor: pointer;
   transition: transform 0.1s ease;
   &:hover {

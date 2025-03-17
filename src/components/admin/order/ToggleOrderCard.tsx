@@ -2,7 +2,7 @@ import React from 'react';
 import { Order } from '@@types/index';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
-import ArrowUpSvg from '@resources/svg/ArrowUpSvg';
+import { RiArrowUpSLine } from '@remixicon/react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { orderStatusConverter } from '@utils/OrderStatusConverter';
@@ -27,7 +27,12 @@ const ProductContainer = styled.div`
 
 const RightContainer = styled.div`
   gap: 15px;
-  ${rowFlex()}
+  ${rowFlex({ align: 'center' })}
+`;
+
+const ToggleIcon = styled(RiArrowUpSLine)<{ isClosed: boolean }>`
+  cursor: pointer;
+  transform: ${({ isClosed }) => (isClosed ? 'rotate(180deg)' : 'none')};
 `;
 
 const OrderInfoContainer = styled.div`
@@ -77,7 +82,7 @@ function ToggleOrderCard({ order }: ToggleOrderCardProps) {
           </AppLabel>
           {!isClosed && <AppLabel size={16}>{dateConverter(order.createdAt)}</AppLabel>}
         </OrderInfoContainer>
-        <ArrowUpSvg onClick={handleToggle} style={isClosed ? { transform: 'rotate(180deg)', cursor: 'pointer' } : { cursor: 'pointer' }} />
+        <ToggleIcon onClick={handleToggle} isClosed={isClosed} />
       </RightContainer>
     </Container>
   );

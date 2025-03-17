@@ -2,7 +2,7 @@ import { WorkspaceImage } from '@@types/index';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import PlusIconSvg from '@resources/svg/PlusIconSvg';
+import { RiAddLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { rowFlex } from '@styles/flexStyles';
 import React, { useEffect, useState, useMemo, forwardRef } from 'react';
@@ -28,7 +28,7 @@ const DummyContent = styled.div`
   cursor: pointer;
 `;
 
-const PlusIcon = styled(PlusIconSvg)`
+const PlusIcon = styled(RiAddLine)`
   width: 30px;
   height: 30px;
   color: ${Color.GREY};

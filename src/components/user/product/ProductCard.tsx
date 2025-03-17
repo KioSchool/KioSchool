@@ -5,8 +5,7 @@ import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import PlusIconSvg from '@resources/svg/PlusIconSvg';
-import MinusIconSvg from '@resources/svg/MinusIconSvg';
+import { RiAddLine, RiSubtractLine } from '@remixicon/react';
 import { css } from '@emotion/react';
 
 const Container = styled.div`
@@ -46,7 +45,7 @@ const ButtonContainer = styled.div<{ isOpened: boolean }>`
   ${({ isOpened }) => rowFlex({ justify: isOpened ? 'space-between' : 'end', align: 'center' })}
 `;
 
-const AddButton = styled(PlusIconSvg, {
+const AddButton = styled(RiAddLine, {
   shouldForwardProp: (prop) => prop !== 'isOpened',
 })<{ isOpened: boolean }>`
   width: 25px;
@@ -68,14 +67,13 @@ const ToggleAnimation = (props: { isOpened: boolean }) => css`
   transition: transform 0.3s ease, opacity 0.3s ease;
 `;
 
-const RemoveButton = styled(MinusIconSvg, {
+const RemoveButton = styled(RiSubtractLine, {
   shouldForwardProp: (prop) => prop !== 'isOpened',
 })<{ isOpened: boolean }>`
-  width: 15px;
-  height: 15px;
-  padding: 5px;
-  background: ${Color.WHITE};
+  width: 25px;
+  height: 25px;
   border-radius: 25px;
+  color: ${Color.KIO_ORANGE};
   ${({ isOpened }) => ToggleAnimation({ isOpened })}
 `;
 
