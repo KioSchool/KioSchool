@@ -1,10 +1,15 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import ActivatedSearchSvg from '@resources/svg/ActivatedSearchSvg';
-import DeactivatedSearchSvg from '@resources/svg/DeactivatedSearchSvg';
 import { rowFlex } from '@styles/flexStyles';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { RiSearchLine } from '@remixicon/react';
+
+const SearchIcon = styled(RiSearchLine)<{
+  isFocused: boolean;
+}>`
+  color: ${({ isFocused }) => (isFocused ? Color.BLACK : Color.HEAVY_GREY)};
+`;
 
 const Input = styled.input`
   width: 100%;
@@ -63,7 +68,7 @@ function SuperAdminSearchBar() {
 
   return (
     <SearchBarContainer className={'search-bar-container'}>
-      {isFocused ? <ActivatedSearchSvg /> : <DeactivatedSearchSvg />}
+      <SearchIcon isFocused={isFocused} />
       <Input
         ref={inputRef}
         type="text"
