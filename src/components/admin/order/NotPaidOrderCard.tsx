@@ -4,7 +4,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import CheckSvg from '@resources/svg/CheckSvg';
-import CloseSvg from '@resources/svg/CloseSvg';
+import { RiCloseLargeLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import OrderSummaryContents from './OrderSummaryContents';
@@ -59,7 +59,9 @@ const CheckIcon = styled(CheckSvg)`
   ${expandButtonStyle}
 `;
 
-const CloseIcon = styled(CloseSvg)`
+const CloseIcon = styled(RiCloseLargeLine)`
+  width: 20px;
+  height: 20px;
   ${expandButtonStyle}
 `;
 

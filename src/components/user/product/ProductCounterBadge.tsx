@@ -5,8 +5,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import { orderBasketAtom } from '@recoils/atoms';
 import { useRecoilState } from 'recoil';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import CloseSvg from '@resources/svg/CloseSvg';
-import { RiAddLine, RiSubtractLine } from '@remixicon/react';
+import { RiAddLine, RiSubtractLine, RiCloseLargeLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 
 const Container = styled.div`
@@ -78,7 +77,7 @@ const IncreaseButton = styled(RiAddLine)`
   }
 `;
 
-const DeleteProductButton = styled(CloseSvg)``;
+const DeleteProductButton = styled(RiCloseLargeLine)``;
 
 interface ProductCounterBadgeProps {
   product: Product;
