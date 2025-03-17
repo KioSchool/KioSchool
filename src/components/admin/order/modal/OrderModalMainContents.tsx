@@ -3,7 +3,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import MinusButtonSvg from '@resources/svg/MinusButtonSvg';
-import PlusButtonSvg from '@resources/svg/PlusButtonSvg';
+import { RiAddCircleFill } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import CheckSvg from '@resources/svg/CheckSvg';
@@ -68,7 +68,7 @@ const ButtonContainer = styled.div`
   padding-right: 2px;
 `;
 
-const PlusIcon = styled(PlusButtonSvg)`
+const PlusIcon = styled(RiAddCircleFill)`
   ${expandButtonStyle};
 `;
 
