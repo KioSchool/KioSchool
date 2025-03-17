@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import ArrowLeftSvg from '@resources/svg/ArrowLeftSvg';
+import { RiArrowLeftLine } from '@remixicon/react';
 import AppLabel from '@components/common/label/AppLabel';
 import { useNavigate } from 'react-router-dom';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 export interface TitleNavBarProps {
   title: string;
@@ -41,7 +42,8 @@ const LeftContainer = styled.div`
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
-const ArrowLeftButton = styled(ArrowLeftSvg)<{ useBackIcon?: boolean }>`
+const ArrowLeftButton = styled(RiArrowLeftLine)<{ useBackIcon?: boolean }>`
+  color: ${Color.GREY};
   display: ${(props) => (props.useBackIcon ? 'block' : 'none')};
   cursor: pointer;
   position: absolute;
