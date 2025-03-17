@@ -7,8 +7,8 @@ import { useRecoilState } from 'recoil';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import CloseSvg from '@resources/svg/CloseSvg';
 import MinusIconSvg from '@resources/svg/MinusIconSvg';
+import { RiAddLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
-import PlusIconSvg from '@resources/svg/PlusIconSvg';
 
 const Container = styled.div`
   width: 100%;
@@ -68,7 +68,7 @@ const DecreaseButton = styled(MinusIconSvg)`
   }
 `;
 
-const IncreaseButton = styled(PlusIconSvg)`
+const IncreaseButton = styled(RiAddLine)`
   width: 19px;
   height: 19px;
   background: ${Color.WHITE};

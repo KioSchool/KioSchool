@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import PlusIconSvg from '@resources/svg/PlusIconSvg';
+import { RiAddLine } from '@remixicon/react';
 import MinusIconSvg from '@resources/svg/MinusIconSvg';
 import { css } from '@emotion/react';
 
@@ -46,7 +46,7 @@ const ButtonContainer = styled.div<{ isOpened: boolean }>`
   ${({ isOpened }) => rowFlex({ justify: isOpened ? 'space-between' : 'end', align: 'center' })}
 `;
 
-const AddButton = styled(PlusIconSvg, {
+const AddButton = styled(RiAddLine, {
   shouldForwardProp: (prop) => prop !== 'isOpened',
 })<{ isOpened: boolean }>`
   width: 25px;
