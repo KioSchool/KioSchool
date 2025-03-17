@@ -10,8 +10,9 @@ import AppFooter from '@components/common/footer/AppFooter';
 import { rowFlex } from '@styles/flexStyles';
 import { adminUserAtom } from '@recoils/atoms';
 import { useRecoilValue } from 'recoil';
-import SuperAdminSvg from '@resources/svg/SuperAdminSvg';
 import { UserRole } from '@@types/index';
+import { RiSettings3Fill } from '@remixicon/react';
+import { Color } from '@resources/colors';
 
 const MyInfoContainer = styled.div`
   width: 1100px;
@@ -50,7 +51,8 @@ const CommonButtonStyle = `
   }
 `;
 
-const SuperAdminButton = styled(SuperAdminSvg)`
+const SuperAdminButton = styled(RiSettings3Fill)`
+  color: ${Color.KIO_ORANGE};
   ${CommonButtonStyle};
 `;
 
