@@ -2,8 +2,7 @@ import { Order, OrderProduct, OrderStatus } from '@@types/index';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import MinusButtonSvg from '@resources/svg/MinusButtonSvg';
-import { RiAddCircleFill } from '@remixicon/react';
+import { RiAddCircleFill, RiIndeterminateCircleLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import CheckSvg from '@resources/svg/CheckSvg';
@@ -72,7 +71,7 @@ const PlusIcon = styled(RiAddCircleFill)`
   ${expandButtonStyle};
 `;
 
-const MinusIcon = styled(MinusButtonSvg)`
+const MinusIcon = styled(RiIndeterminateCircleLine)`
   ${expandButtonStyle};
 `;
 
