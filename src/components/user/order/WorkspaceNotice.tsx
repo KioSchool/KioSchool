@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import ChevronDownSvg from '@resources/svg/ChevronDownSvg';
+import { RiArrowDownSLine } from '@remixicon/react';
 
 const Container = styled.div<{ expanded: boolean }>`
   box-sizing: border-box;
@@ -40,7 +40,7 @@ const Notice = styled.p<{ expanded: boolean }>`
   ${({ expanded }) => (expanded ? expandedStyle : unExpandedStyle)}
 `;
 
-const ToggleIcon = styled(ChevronDownSvg, {
+const ToggleIcon = styled(RiArrowDownSLine, {
   shouldForwardProp: (prop) => prop !== 'expanded',
 })<{ expanded: boolean }>`
   width: 25px;
