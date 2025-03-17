@@ -6,8 +6,7 @@ import { orderBasketAtom } from '@recoils/atoms';
 import { useRecoilState } from 'recoil';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import CloseSvg from '@resources/svg/CloseSvg';
-import MinusIconSvg from '@resources/svg/MinusIconSvg';
-import { RiAddLine } from '@remixicon/react';
+import { RiAddLine, RiSubtractLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 
 const Container = styled.div`
@@ -57,10 +56,9 @@ const ProductActions = styled.div`
   ${colFlex({ justify: 'space-between', align: 'end' })}
 `;
 
-const DecreaseButton = styled(MinusIconSvg)`
-  width: 12px;
-  height: 12px;
-  padding: 5px;
+const DecreaseButton = styled(RiSubtractLine)`
+  width: 16px;
+  height: 16px;
   border-radius: 25px;
 
   & path {
