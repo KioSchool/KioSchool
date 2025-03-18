@@ -138,7 +138,7 @@ function OrderComplete() {
           </ContentTitleContainer>
           <ContentBox>
             <ContentText>주문일시 | {dateConverter(new Date(order.createdAt))}</ContentText>
-            <ContentText>주문번호 | {order.id}</ContentText>
+            <ContentText>주문번호 | {order.orderNumber}</ContentText>
             <ContentText>입금자명 | {order.customerName}</ContentText>
           </ContentBox>
 

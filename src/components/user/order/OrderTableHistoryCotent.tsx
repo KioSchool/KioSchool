@@ -59,7 +59,7 @@ function OrderTableHistoryContent(props: OrderTableHistoryProps) {
   return (
     <Container useFlex={colFlex({ justify: 'center', align: 'start' })}>
       <TableOrderLabel onClick={onClickTableOrderLabel} className={'table-order-label'}>
-        {`주문번호 ${props.id}번`}
+        {`주문번호 ${props.orderNumber}번`}
       </TableOrderLabel>
       <SubLabelContainer className={'sub-label-container'}>{createdDateAndOwnerText}</SubLabelContainer>
       {props.isShowDetail && <TableOrderCard {...props} />}

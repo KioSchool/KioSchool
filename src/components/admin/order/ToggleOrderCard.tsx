@@ -62,7 +62,7 @@ function ToggleOrderCard({ order }: ToggleOrderCardProps) {
   return (
     <Container className={'toggle-order-card-container'}>
       <AppLabel size={18} style={{ fontWeight: 700 }}>
-        주문번호 {order.id}번
+        주문번호 {order.orderNumber}번
       </AppLabel>
       <ProductContainer className={'product-container'}>
         {isClosed ? (
