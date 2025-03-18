@@ -6,6 +6,7 @@ export interface Order {
   totalPrice: number;
   status: OrderStatus;
   cancelReason: string;
+  orderNumber: number;
   id: number;
   createdAt: string;
   updatedAt: string;
