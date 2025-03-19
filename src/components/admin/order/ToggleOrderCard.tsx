@@ -30,7 +30,9 @@ const RightContainer = styled.div`
   ${rowFlex({ align: 'center' })}
 `;
 
-const ToggleIcon = styled(RiArrowUpSLine)<{ isClosed: boolean }>`
+const ToggleIcon = styled(RiArrowUpSLine, {
+  shouldForwardProp: (prop) => prop !== 'isClosed',
+})<{ isClosed: boolean }>`
   cursor: pointer;
   transform: ${({ isClosed }) => (isClosed ? 'rotate(180deg)' : 'none')};
 `;
