@@ -27,7 +27,7 @@ const OrderProductsContainer = styled.div`
   ${colFlex()}
 `;
 
-function TableOrderCard({ id, customerName, createdAt, orderProducts, totalPrice }: Order) {
+function TableOrderCard({ orderNumber, customerName, createdAt, orderProducts, totalPrice }: Order) {
   const dateConverter = (dateStr: string) => {
     const date = new Date(dateStr);
 
@@ -39,7 +39,7 @@ function TableOrderCard({ id, customerName, createdAt, orderProducts, totalPrice
 
   return (
     <Container className={'table-order-card-container'}>
-      <AppLabel size={16}>주문번호 {id}번</AppLabel>
+      <AppLabel size={16}>주문번호 {orderNumber}번</AppLabel>
       <Row className={'table-order-card-row'}>
         <AppLabel size={14}>입금자명: {customerName}</AppLabel>
         <AppLabel size={14}>{dateConverter(createdAt)}</AppLabel>

@@ -48,7 +48,7 @@ function OrderModalHeaderContents({ onClose, order }: OrderModalHeaderContentsPr
       </ModalHeaderTitle>
       <HeaderDetailContainer>
         <HeaderDetail>
-          <AppLabel color={Color.BLACK} size={17}>{`주문 번호  ${order.id}`}</AppLabel>
+          <AppLabel color={Color.BLACK} size={17}>{`주문 번호  ${order.orderNumber}`}</AppLabel>
           <AppLabel color={Color.BLACK} size={17}>{`${order.customerName} | ${formatDate(order.createdAt)}`}</AppLabel>
         </HeaderDetail>
         <AppLabel color={Color.KIO_ORANGE} size={20} style={{ fontWeight: 600 }}>

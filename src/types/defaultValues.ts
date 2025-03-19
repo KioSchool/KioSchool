@@ -55,6 +55,7 @@ export const defaultUserOrderValue: Order = {
   totalPrice: 0,
   status: OrderStatus.NOT_PAID,
   cancelReason: '',
+  orderNumber: 0,
   id: 0,
   createdAt: '',
   updatedAt: '',
