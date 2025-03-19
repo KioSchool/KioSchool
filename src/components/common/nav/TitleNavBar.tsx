@@ -42,7 +42,9 @@ const LeftContainer = styled.div`
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
-const ArrowLeftButton = styled(RiArrowLeftLine)<{ useBackIcon?: boolean }>`
+const ArrowLeftButton = styled(RiArrowLeftLine, {
+  shouldForwardProp: (prop) => prop !== 'useBackIcon',
+})<{ useBackIcon?: boolean }>`
   color: ${Color.GREY};
   display: ${(props) => (props.useBackIcon ? 'block' : 'none')};
   cursor: pointer;
