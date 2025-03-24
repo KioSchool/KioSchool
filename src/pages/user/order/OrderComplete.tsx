@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import useOrder from '@hooks/user/useOrder';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { orderBasketAtom, userOrderAtom, userWorkspaceAtom } from '@recoils/atoms';
-import { useSearchParams } from 'react-router-dom';
+import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import useWorkspace from '@hooks/user/useWorkspace';
 import { colFlex, rowFlex } from '@styles/flexStyles';
@@ -11,6 +11,7 @@ import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
 import OrderStatusBar from '@components/user/order/OrderStatusBar';
 import useRefresh from '@hooks/useRefresh';
 import OrderAccountInfo from '@components/user/order/OrderAccountInfo';
+import OrderButton from '@components/user/order/OrderButton';
 
 const Container = styled.div`
   width: 100%;
@@ -99,9 +100,12 @@ const Description = styled.div`
 `;
 
 function OrderComplete() {
+  const navigate = useNavigate();
+
   const [searchParams] = useSearchParams();
   const orderId = searchParams.get('orderId');
   const workspaceId = searchParams.get('workspaceId');
+  const tableNo = searchParams.get('tableNo');
 
   const { fetchWorkspace } = useWorkspace();
   const { fetchOrder } = useOrder();
@@ -177,6 +181,19 @@ function OrderComplete() {
             <Description>{'결제가 원활하게 진행되지 않았을 경우,\n상단의 계좌 정보를 통해 직접 계좌이체를 부탁드립니다.'}</Description>
           </DescriptionContainer>
         </ContentContainer>
+        <OrderButton
+          showButton={true}
+          buttonLabel={`더 주문하기`}
+          onClick={() =>
+            navigate({
+              pathname: '/order',
+              search: createSearchParams({
+                workspaceId: workspaceId || '',
+                tableNo: tableNo || '',
+              }).toString(),
+            })
+          }
+        />
       </SubContainer>
     </Container>
   );
