@@ -78,6 +78,7 @@ function OrderPay() {
         search: createSearchParams({
           orderId: res.data.id.toString(),
           workspaceId: workspaceId || '',
+          tableNo: tableNo || '',
         }).toString(),
       });
 
@@ -94,6 +95,7 @@ function OrderPay() {
         search: createSearchParams({
           orderId: res.data.id.toString(),
           workspaceId: workspaceId || '',
+          tableNo: tableNo || '',
         }).toString(),
       });
     });
