@@ -183,7 +183,7 @@ function OrderComplete() {
         </ContentContainer>
         <OrderButton
           showButton={true}
-          buttonLabel={`다시 주문하기`}
+          buttonLabel={`더 주문하기`}
           onClick={() =>
             navigate({
               pathname: '/order',
