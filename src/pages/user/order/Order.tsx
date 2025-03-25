@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
-import AppLabel from '@components/common/label/AppLabel';
 import CategoryBadgesContainer from '@components/user/order/CategoryBadgesContainer';
 import useWorkspace from '@hooks/user/useWorkspace';
 import { categoriesAtom, orderBasketAtom, userWorkspaceAtom } from '@recoils/atoms';
@@ -34,8 +33,20 @@ const StickyHeader = styled.div`
 const Header = styled.div`
   width: 100%;
   height: 120px;
+  word-break: keep-all;
   ${colFlex({ justify: 'center', align: 'center' })}
   gap: 7px;
+`;
+
+const Title = styled.div`
+  font-size: 25px;
+  font-weight: 600;
+`;
+
+const Description = styled.div`
+  font-size: 18px;
+  color: ${Color.GREY};
+  text-align: center;
 `;
 
 function Order() {
@@ -88,12 +99,8 @@ function Order() {
       <OrderImageSlider images={workspace.images} />
 
       <Header ref={headerRef}>
-        <AppLabel color={Color.BLACK} size={25} style={{ fontWeight: '600' }}>
-          {workspace.name}
-        </AppLabel>
-        <AppLabel size={'small'} color={Color.GREY}>
-          {workspace.description}
-        </AppLabel>
+        <Title>{workspace.name}</Title>
+        <Description>{workspace.description}</Description>
       </Header>
 
       <OrderStickyNavBar showNavBar={showNavBar} workspaceName={workspace.name} />

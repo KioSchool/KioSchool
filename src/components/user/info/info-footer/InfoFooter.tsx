@@ -3,7 +3,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import AppLabel from '@components/common/label/AppLabel';
-import InstagramSvg from '@resources/svg/InstagramSvg';
+import { RiInstagramLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import AppFooter from '@components/common/footer/AppFooter';
 import { tabletMediaQuery } from '@styles/globalStyles';
@@ -41,7 +41,13 @@ const BadgeContainer = styled.div`
   ${rowFlex()};
 `;
 
-const InstagramBadge = styled(InstagramSvg)`
+const InstagramBadge = styled(RiInstagramLine)`
+  width: 40px;
+  height: 40px;
+  color: ${Color.WHITE};
+  padding: 8px;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.2);
   ${expandButtonStyle};
   ${tabletMediaQuery} {
     width: 44px;
@@ -56,7 +62,7 @@ const FooterContent = styled.div`
 
 function InfoFooter() {
   const handleInstagramClick = () => {
-    const instagramUrl = 'https://www.instagram.com/kioschool_official/';
+    const instagramUrl = 'https://www.instagram.com/kioschool/';
 
     window.open(instagramUrl, '_blank');
   };

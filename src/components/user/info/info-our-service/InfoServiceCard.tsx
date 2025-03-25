@@ -66,11 +66,11 @@ const Description = styled.div`
   font-weight: 400;
   font-family: 'LINESeedKR-Rg', 'sans-serif';
   color: #5b5b5b;
+  word-break: keep-all;
   ${lineSeedKrFont}
   ${tabletMediaQuery} {
     font-size: 12px;
     text-align: right;
-    word-break: keep-all;
   }
 `;
 

@@ -1,5 +1,5 @@
 import useApi from '@hooks/useApi';
-import { Workspace } from '@@types/index';
+import { Account, Workspace } from '@@types/index';
 import { userWorkspaceAtom } from '@recoils/atoms';
 import { useSetRecoilState } from 'recoil';
 
@@ -18,7 +18,7 @@ function useWorkspace() {
   const fetchWorkspaceAccount = async (workspaceId: string | undefined | null) => {
     if (!workspaceId) return;
 
-    return userApi.get<string>('/workspace/account', { params: { workspaceId } }).then((res) => {
+    return userApi.get<Account>('/workspace/account', { params: { workspaceId } }).then((res) => {
       return res.data;
     });
   };

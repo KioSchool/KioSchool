@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
-import ArrowRight from '@resources/svg/ArrowRightSvg';
+import { RiArrowRightLine } from '@remixicon/react';
 import { css } from '@emotion/react';
 import AppFooter from '@components/common/footer/AppFooter';
 import { colFlex, rowFlex } from '@styles/flexStyles';
@@ -37,7 +37,13 @@ const LinkText = styled.div`
   color: #fff;
   font-size: 32px;
   font-weight: 600;
+  gap: 10px;
   ${rowFlex({ align: 'center', justify: 'center' })}
+`;
+
+const RightArrow = styled(RiArrowRightLine)`
+  width: 30px;
+  height: 30px;
 `;
 
 const HoverOverlay = styled.div<{ isHover: boolean }>`
@@ -74,7 +80,7 @@ function Home() {
         <LinkAdminHome to={'/admin'} onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
           <LinkText>
             내 주점 바로가기
-            <ArrowRight />
+            <RightArrow />
           </LinkText>
         </LinkAdminHome>
         <AppFooter />

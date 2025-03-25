@@ -4,13 +4,13 @@ import { colFlex } from '@styles/flexStyles';
 import InfoTitle from '@components/user/info/InfoTitle';
 import { lineSeedKrFont } from '@styles/fonts';
 import InfoServiceCard from '@components/user/info/info-our-service/InfoServiceCard';
-import InfoRealTimeOrderSvg from '@resources/svg/InfoRealTimeOrderSvg';
-import InfoAllOrderSvg from '@resources/svg/InfoAllOrderSvg';
-import InfoTableOrderSvg from '@resources/svg/InfoTableOrderSvg';
-import InfoProductSvg from '@resources/svg/InfoProductSvg';
-import InfoProductCategorySvg from '@resources/svg/InfoProductCategorySvg';
-import InfoWorkspaceInfoSvg from '@resources/svg/InfoWorkspaceInfoSvg';
-import InfoWorkspaceTableSvg from '@resources/svg/InfoWorkspaceTableSvg';
+import InfoRealTimeOrderSvg from '@resources/svg/info/InfoRealTimeOrderSvg';
+import InfoAllOrderSvg from '@resources/svg/info/InfoAllOrderSvg';
+import InfoTableOrderSvg from '@resources/svg/info/InfoTableOrderSvg';
+import InfoProductSvg from '@resources/svg/info/InfoProductSvg';
+import InfoProductCategorySvg from '@resources/svg/info/InfoProductCategorySvg';
+import InfoWorkspaceInfoSvg from '@resources/svg/info/InfoWorkspaceInfoSvg';
+import InfoWorkspaceTableSvg from '@resources/svg/info/InfoWorkspaceTableSvg';
 import { tabletMediaQuery } from '@styles/globalStyles';
 
 const Container = styled.div`
@@ -41,6 +41,7 @@ const Description = styled.div`
   font-weight: 400;
   font-family: 'LINESeedKR-Rg', 'sans-serif';
   text-align: center;
+  word-break: keep-all;
   ${lineSeedKrFont}
   ${tabletMediaQuery} {
     width: 300px;

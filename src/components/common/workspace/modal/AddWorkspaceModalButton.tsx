@@ -1,10 +1,12 @@
 import AddWorkspaceModalContent from '@components/admin/workspace/AddworkspaceModalContent';
 import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
-import PlusIconSvg from '@resources/svg/PlusIconSvg';
 import { createPortal } from 'react-dom';
+import { RiAddLine } from '@remixicon/react';
 
-const PlusIcon = styled(PlusIconSvg)`
+const PlusIcon = styled(RiAddLine)`
+  width: 50px;
+  height: 50px;
   transition: transform 0.1s ease;
   &:hover {
     transform: scale(1.2);
@@ -26,7 +28,7 @@ function AddWorkspaceModalButton() {
   const { isModalOpen, openModal, closeModal, modalKey } = useModal();
 
   if (!isModalOpen) {
-    return <PlusIcon onClick={() => openModal()} width={50} height={50} />;
+    return <PlusIcon onClick={() => openModal()} />;
   }
 
   return createPortal(

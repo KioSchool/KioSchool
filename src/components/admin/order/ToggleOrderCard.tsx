@@ -2,7 +2,7 @@ import React from 'react';
 import { Order } from '@@types/index';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
-import ArrowUpSvg from '@resources/svg/ArrowUpSvg';
+import { RiArrowUpSLine } from '@remixicon/react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { orderStatusConverter } from '@utils/OrderStatusConverter';
@@ -27,7 +27,14 @@ const ProductContainer = styled.div`
 
 const RightContainer = styled.div`
   gap: 15px;
-  ${rowFlex()}
+  ${rowFlex({ align: 'center' })}
+`;
+
+const ToggleIcon = styled(RiArrowUpSLine, {
+  shouldForwardProp: (prop) => prop !== 'isClosed',
+})<{ isClosed: boolean }>`
+  cursor: pointer;
+  transform: ${({ isClosed }) => (isClosed ? 'rotate(180deg)' : 'none')};
 `;
 
 const OrderInfoContainer = styled.div`
@@ -57,7 +64,7 @@ function ToggleOrderCard({ order }: ToggleOrderCardProps) {
   return (
     <Container className={'toggle-order-card-container'}>
       <AppLabel size={18} style={{ fontWeight: 700 }}>
-        주문번호 {order.id}번
+        주문번호 {order.orderNumber}번
       </AppLabel>
       <ProductContainer className={'product-container'}>
         {isClosed ? (
@@ -77,7 +84,7 @@ function ToggleOrderCard({ order }: ToggleOrderCardProps) {
           </AppLabel>
           {!isClosed && <AppLabel size={16}>{dateConverter(order.createdAt)}</AppLabel>}
         </OrderInfoContainer>
-        <ArrowUpSvg onClick={handleToggle} style={isClosed ? { transform: 'rotate(180deg)', cursor: 'pointer' } : { cursor: 'pointer' }} />
+        <ToggleIcon onClick={handleToggle} isClosed={isClosed} />
       </RightContainer>
     </Container>
   );

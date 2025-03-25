@@ -2,7 +2,7 @@ import { Order } from '@@types/index';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import CloseSvg from '@resources/svg/CloseSvg';
+import { RiCloseLargeLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { formatDate } from '@utils/FormatDate';
@@ -30,7 +30,7 @@ const HeaderDetail = styled.div`
   gap: 5px;
 `;
 
-const CloseIcon = styled(CloseSvg)`
+const CloseIcon = styled(RiCloseLargeLine)`
   ${expandButtonStyle}
 `;
 
@@ -48,7 +48,7 @@ function OrderModalHeaderContents({ onClose, order }: OrderModalHeaderContentsPr
       </ModalHeaderTitle>
       <HeaderDetailContainer>
         <HeaderDetail>
-          <AppLabel color={Color.BLACK} size={17}>{`주문 번호  ${order.id}`}</AppLabel>
+          <AppLabel color={Color.BLACK} size={17}>{`주문 번호  ${order.orderNumber}`}</AppLabel>
           <AppLabel color={Color.BLACK} size={17}>{`${order.customerName} | ${formatDate(order.createdAt)}`}</AppLabel>
         </HeaderDetail>
         <AppLabel color={Color.KIO_ORANGE} size={20} style={{ fontWeight: 600 }}>

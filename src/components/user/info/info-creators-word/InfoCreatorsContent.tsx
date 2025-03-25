@@ -34,6 +34,7 @@ const Description = styled.div`
   font-size: 18px;
   font-weight: 400;
   font-family: 'LINESeedKR-Rg', 'sans-serif';
+  word-break: keep-all;
 `;
 
 const CreatorContainer = styled.div`

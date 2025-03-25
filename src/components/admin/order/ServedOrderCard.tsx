@@ -83,7 +83,7 @@ function ServedOrderCard({ order }: OrderCardProps) {
                 {`테이블 ${order.tableNumber}`}
               </AppLabel>
               <AppLabel color={Color.BLACK} size={13}>
-                {`주문 번호 ${order.id}`}
+                {`주문 번호 ${order.orderNumber}`}
               </AppLabel>
             </TitleContainer>
             <OrderDetailModalButton order={order} />
