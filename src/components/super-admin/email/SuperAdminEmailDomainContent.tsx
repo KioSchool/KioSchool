@@ -49,7 +49,7 @@ function SuperAdminEmailDomainContent({ name, domain, id }: EmailDomain) {
         <SubLabelContainer className={'sub-label-container'}>{domain}</SubLabelContainer>
       </LabelContainer>
       <ButtonContainer>
-        <RoundedAppButton style={{ background: ' #AEAEAE' }} onClick={onDeleteHandler}>
+        <RoundedAppButton style={{ background: '#AEAEAE' }} onClick={onDeleteHandler}>
           삭제하기
         </RoundedAppButton>
       </ButtonContainer>

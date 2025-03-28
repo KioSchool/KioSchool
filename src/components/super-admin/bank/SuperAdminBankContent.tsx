@@ -49,7 +49,7 @@ function SuperAdminBankContent({ name, code, id }: Bank) {
         <SubLabelContainer className={'sub-label-container'}>은행 코드: {code}</SubLabelContainer>
       </LabelContainer>
       <ButtonContainer>
-        <RoundedAppButton style={{ background: ' #AEAEAE' }} onClick={onDeleteHandler}>
+        <RoundedAppButton style={{ background: '#AEAEAE' }} onClick={onDeleteHandler}>
           삭제하기
         </RoundedAppButton>
       </ButtonContainer>
