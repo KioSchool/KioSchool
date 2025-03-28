@@ -24,7 +24,7 @@ function SuperAdminBankTitleNavBarChildren() {
     ],
   });
 
-  const handleAddDomain = async () => {
+  const handleAddBank = async () => {
     try {
       const result = await confirm();
 
@@ -37,7 +37,7 @@ function SuperAdminBankTitleNavBarChildren() {
   return (
     <>
       <ButtonContainer className={'button-container'}>
-        <RoundedAppButton onClick={handleAddDomain}>은행 추가하기</RoundedAppButton>
+        <RoundedAppButton onClick={handleAddBank}>은행 추가하기</RoundedAppButton>
       </ButtonContainer>
       <InputConfirmModal />
     </>
