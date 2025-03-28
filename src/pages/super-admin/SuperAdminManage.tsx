@@ -26,6 +26,7 @@ function SuperAdminManage() {
           <ImageRouteButton src={workspaceImage} onClick={() => navigateWithPage('/super-admin/workspace')} buttonText={'워크스페이스 조회'} />
           <ImageRouteButton src={userImage} onClick={() => navigateWithPage('/super-admin/user')} buttonText={'사용자 조회'} />
           <ImageRouteButton src={emailImage} onClick={() => navigateWithPage('/super-admin/email')} buttonText={'이메일 조회'} />
+          <ImageRouteButton src={emailImage} onClick={() => navigateWithPage('/super-admin/bank')} buttonText={'은행 조회'} />
         </ButtonContainer>
       </Container>
     </AppContainer>

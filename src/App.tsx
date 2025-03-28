@@ -36,6 +36,7 @@ import AdminOrderRealtime from '@pages/admin/order/AdminOrderRealtime';
 import SuperAdminEmailDomainList from '@pages/super-admin/SuperAdminEmailDomainList';
 import UserEmailDomain from '@pages/user/UserEmailDomain';
 import AdminWorkspaceEdit from '@pages/admin/AdminWorkspaceEdit';
+import SuperAdminBank from '@pages/super-admin/SuperAdminBank';
 
 ReactGA.initialize('G-XGYLSPGK2G');
 
@@ -73,6 +74,7 @@ function App() {
         <Route path="/super-admin/manage" element={<SuperAdminManage />} />
         <Route path="/super-admin/user" element={<SuperAdminUser />} />
         <Route path="/super-admin/email" element={<SuperAdminEmailDomainList />} />
+        <Route path="/super-admin/bank" element={<SuperAdminBank />} />
 
         <Route path="/order" element={<Order />} />
         <Route path="/order-basket" element={<OrderBasket />} />
