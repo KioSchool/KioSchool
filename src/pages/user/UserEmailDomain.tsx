@@ -1,10 +1,10 @@
-import SuperAdminSearchBar from '@components/super-admin/workspace/SuperAdminSearchBar';
+import PaginationSearchBar from '@components/common/pagination/PaginationSearchBar';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import { useEffect, useState } from 'react';
 import Pagination from '@components/common/pagination/Pagination';
 import AppContainer from '@components/common/container/AppContainer';
-import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
+import PaginationSearchContents from '@components/common/pagination/PaginationSearchContents';
 import { EmailDomain, PaginationResponse } from '@@types/index';
 import { defaultPaginationValue } from '@@types/defaultValues';
 import useEmail from '@hooks/user/useEmail';
@@ -49,9 +49,9 @@ function UserEmailDomain() {
       titleNavBarProps={{ title: '이메일 도메인 조회', useBackIcon: false }}
     >
       <>
-        <SuperAdminSearchBar />
+        <PaginationSearchBar />
         <ContentContainer justifyCenter={isEmptyEmailDomain} className={'content-container'}>
-          <SuperAdminSearchContents contents={emailDomain} target={'유저'} ContentComponent={EmailDomainContent} />
+          <PaginationSearchContents contents={emailDomain} target={'이메일 도메인'} ContentComponent={EmailDomainContent} />
         </ContentContainer>
         <Pagination
           totalPageCount={emailDomain.totalPages}

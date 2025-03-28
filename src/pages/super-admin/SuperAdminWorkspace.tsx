@@ -1,12 +1,12 @@
 import AppContainer from '@components/common/container/AppContainer';
 import Pagination from '@components/common/pagination/Pagination';
-import SuperAdminSearchBar from '@components/super-admin/workspace/SuperAdminSearchBar';
+import PaginationSearchBar from '@components/common/pagination/PaginationSearchBar';
 import styled from '@emotion/styled';
 import useSuperAdminWorkspace from '@hooks/super-admin/useSuperAdminWorkspace';
 import { colFlex } from '@styles/flexStyles';
 import SuperAdminWorkspaceContent from '@components/super-admin/workspace/SuperAdminWorkspaceContent';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
+import PaginationSearchContents from '@components/common/pagination/PaginationSearchContents';
 import { PaginationResponse, Workspace } from '@@types/index';
 import { useEffect, useState } from 'react';
 import { defaultPaginationValue } from '@@types/defaultValues';
@@ -49,9 +49,9 @@ function SuperAdminWorkspace() {
       titleNavBarProps={{ title: '전체 워크스페이스 관리', onLeftArrowClick: () => navigate('/super-admin/manage') }}
     >
       <>
-        <SuperAdminSearchBar />
+        <PaginationSearchBar />
         <ContentContainer justifyCenter={isEmptyWorkspaces} className={'content-container'}>
-          <SuperAdminSearchContents contents={workspaces} target={'워크스페이스'} ContentComponent={SuperAdminWorkspaceContent} />
+          <PaginationSearchContents contents={workspaces} target={'워크스페이스'} ContentComponent={SuperAdminWorkspaceContent} />
         </ContentContainer>
         <Pagination
           totalPageCount={workspaces.totalPages}

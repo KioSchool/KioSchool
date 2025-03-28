@@ -41,7 +41,7 @@ const SearchBarContainer = styled.div`
   }
 `;
 
-function SuperAdminSearchBar() {
+function PaginationSearchBar() {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -81,4 +81,4 @@ function SuperAdminSearchBar() {
   );
 }
 
-export default SuperAdminSearchBar;
+export default PaginationSearchBar;
