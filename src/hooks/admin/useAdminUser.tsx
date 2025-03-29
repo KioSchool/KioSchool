@@ -47,11 +47,10 @@ function useAdminUser() {
 
   const registerTossAccount = (accountUrl: string) => {
     adminApi
-      .post('/user/toss-account', { accountUrl })
+      .post('/toss-account', { accountUrl })
       .then((res) => {
         setAdminUser(res.data);
         alert('계좌 정보가 성공적으로 저장되었습니다.');
-        navigate('/admin');
       })
       .catch((error) => {
         alert(error.response.data.message);
@@ -86,7 +85,6 @@ function useAdminUser() {
       .then((res) => {
         setAdminUser(res.data);
         alert('계좌 정보가 성공적으로 저장되었습니다.');
-        navigate('/admin');
       })
       .catch((error) => {
         alert(error.response.data.message);
