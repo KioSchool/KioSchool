@@ -58,6 +58,29 @@ export const adminUserAccountAtomSelector = selector({
   },
 });
 
+export const adminUserTossAccountAtomSelector = selector({
+  key: 'adminUserTossAccountAtomSelector',
+  get: ({ get }) => {
+    const userInfo = get(adminUserAtom);
+    const userTossAccountUrl = userInfo.account?.tossAccountUrl;
+
+    console.log(userTossAccountUrl);
+    if (!userTossAccountUrl) return null;
+    const bankRegex = /bank=([^&]+)/;
+    const accountNoRegex = /accountNo=([^&]+)/;
+    const bankMatch = userTossAccountUrl.match(bankRegex);
+    const accountNoMatch = userTossAccountUrl.match(accountNoRegex);
+
+    if (!bankMatch || !accountNoMatch) return null;
+
+    const [, bank] = bankMatch;
+    const [, tossAccountNumber] = accountNoMatch;
+    const tossBankName = decodeURIComponent(bank);
+
+    return { tossBankName, tossAccountNumber };
+  },
+});
+
 export const banksAtom = atom<Bank[]>({
   key: 'banksAtom',
   default: defaultBanksValue,
