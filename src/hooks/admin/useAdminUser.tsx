@@ -45,7 +45,7 @@ function useAdminUser() {
       .catch((error) => console.error('Failed to leave workspace: ', error));
   };
 
-  const registerAccount = (accountUrl: string) => {
+  const registerTossAccount = (accountUrl: string) => {
     adminApi
       .post('/user/toss-account', { accountUrl })
       .then((res) => {
@@ -78,7 +78,22 @@ function useAdminUser() {
       });
   };
 
-  return { fetchWorkspaces, createWorkspaces, leaveWorkspace, registerAccount, fetchAdminUser, deleteUser, fetchBanks };
+  const registerAccount = (bankId: number, accountNumber: string, accountHolder: string) => {
+    const body = { bankId, accountNumber, accountHolder };
+
+    adminApi
+      .post('/account', body)
+      .then((res) => {
+        setAdminUser(res.data);
+        alert('계좌 정보가 성공적으로 저장되었습니다.');
+        navigate('/admin');
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
+  };
+
+  return { fetchWorkspaces, createWorkspaces, leaveWorkspace, registerTossAccount, fetchAdminUser, deleteUser, fetchBanks, registerAccount };
 }
 
 export default useAdminUser;
