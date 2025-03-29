@@ -1,7 +1,13 @@
 import AccountInfo from '@components/admin/account/AccountInfo';
+import RegisterAccount from '@components/admin/account/RegisterAccount';
 
 function AdminAccount() {
-  return <AccountInfo />;
+  return (
+    <div>
+      <AccountInfo />
+      <RegisterAccount />
+    </div>
+  );
 }
 
 export default AdminAccount;
