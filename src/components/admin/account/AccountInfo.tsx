@@ -7,15 +7,15 @@ function AccountInfo() {
   const { fetchAdminUser } = useAdminUser();
   const accountInfo = useRecoilValue(adminUserAccountAtomSelector);
 
+  useEffect(() => {
+    fetchAdminUser();
+  }, []);
+
   if (!accountInfo) {
     return <div>계좌 정보가 비어있습니다.</div>;
   }
 
   const { bankName, accountNumber, accountHolder } = accountInfo;
-
-  useEffect(() => {
-    fetchAdminUser();
-  }, []);
 
   return (
     <div>
