@@ -1,4 +1,4 @@
-import { atom } from 'recoil';
+import { atom, selector } from 'recoil';
 import { Bank, EmailDomain, Order, OrderProductBase, PaginationResponse, Product, ProductCategory, User, Workspace } from '@@types/index';
 import { defaultPaginationValue, defaultUserOrderValue, defaultUserValue, defaultWorkspaceValue } from '@@types/defaultValues';
 import { recoilPersist } from 'recoil-persist';
@@ -42,6 +42,20 @@ export const userWorkspaceAtom = atom<Workspace>({
 export const adminUserAtom = atom<User>({
   key: 'adminUserAtom',
   default: defaultUserValue,
+});
+
+export const adminUserAccountAtomSelector = selector({
+  key: 'adminUserAccountAtomSelector',
+  get: ({ get }) => {
+    const userInfo = get(adminUserAtom);
+    const userAccount = userInfo.account;
+
+    if (!userAccount) return null;
+
+    const { bank, accountNumber, accountHolder } = userAccount;
+    const { name: bankName } = bank;
+    return { bankName, accountNumber, accountHolder };
+  },
 });
 
 export const userOrderAtom = atom<Order>({
