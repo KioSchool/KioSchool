@@ -1,4 +1,4 @@
-import SuperAdminSearchBar from '@components/super-admin/workspace/SuperAdminSearchBar';
+import PaginationSearchBar from '@components/common/pagination/PaginationSearchBar';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import { useEffect, useState } from 'react';
@@ -7,7 +7,7 @@ import AppContainer from '@components/common/container/AppContainer';
 import useSuperAdminUser from '@hooks/super-admin/useSuperAdminUser';
 import SuperAdminUserContent from '@components/super-admin/user/SuperAdminUserContent';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
+import PaginationSearchContents from '@components/common/pagination/PaginationSearchContents';
 import { PaginationResponse, User } from '@@types/index';
 import { defaultPaginationValue } from '@@types/defaultValues';
 
@@ -50,9 +50,9 @@ function SuperAdminUser() {
       titleNavBarProps={{ title: '전체 유저 관리', onLeftArrowClick: () => navigate('/super-admin/manage') }}
     >
       <>
-        <SuperAdminSearchBar />
+        <PaginationSearchBar />
         <ContentContainer justifyCenter={isEmptyUsers} className={'content-container'}>
-          <SuperAdminSearchContents contents={users} target={'유저'} ContentComponent={SuperAdminUserContent} />
+          <PaginationSearchContents contents={users} target={'유저'} ContentComponent={SuperAdminUserContent} />
         </ContentContainer>
         <Pagination
           totalPageCount={users.totalPages}

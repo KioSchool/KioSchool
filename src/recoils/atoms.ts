@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
-import { EmailDomain, Order, OrderProductBase, PaginationResponse, Product, ProductCategory, User, Workspace } from '@@types/index';
-import { defaultPaginationValue, defaultWorkspaceValue, defaultUserValue, defaultUserOrderValue } from '@@types/defaultValues';
+import { Bank, EmailDomain, Order, OrderProductBase, PaginationResponse, Product, ProductCategory, User, Workspace } from '@@types/index';
+import { defaultPaginationValue, defaultUserOrderValue, defaultUserValue, defaultWorkspaceValue } from '@@types/defaultValues';
 import { recoilPersist } from 'recoil-persist';
 
 export const ordersAtom = atom<Order[]>({
@@ -66,5 +66,10 @@ export const emailDomainPaginationResponseAtom = atom<PaginationResponse<EmailDo
 
 export const tableOrderPaginationResponseAtom = atom<PaginationResponse<Order>>({
   key: 'tableOrderPaginationResponseAtom',
+  default: defaultPaginationValue,
+});
+
+export const bankPaginationResponseAtom = atom<PaginationResponse<Bank>>({
+  key: 'bankPaginationResponseAtom',
   default: defaultPaginationValue,
 });

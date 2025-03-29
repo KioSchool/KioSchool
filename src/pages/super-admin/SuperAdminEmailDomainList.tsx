@@ -1,11 +1,11 @@
-import SuperAdminSearchBar from '@components/super-admin/workspace/SuperAdminSearchBar';
+import PaginationSearchBar from '@components/common/pagination/PaginationSearchBar';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import { useEffect } from 'react';
 import Pagination from '@components/common/pagination/Pagination';
 import AppContainer from '@components/common/container/AppContainer';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import SuperAdminSearchContents from '@components/super-admin/SuperAdminSearchContents';
+import PaginationSearchContents from '@components/common/pagination/PaginationSearchContents';
 import useSuperAdminEmail from '@hooks/super-admin/useSuperAdminEmail';
 import SuperAdminEmailDomainContent from '@components/super-admin/email/SuperAdminEmailDomainContent';
 import SuperAdminEmailDomainTitleNavBarChildren from '@components/super-admin/email/SuperAdminEmailDomainTitleNavBarChildren';
@@ -50,9 +50,9 @@ function SuperAdminEmailDomainList() {
       }}
     >
       <>
-        <SuperAdminSearchBar />
+        <PaginationSearchBar />
         <ContentContainer justifyCenter={isEmptyEmailDomain} className={'content-container'}>
-          <SuperAdminSearchContents contents={emailDomain} target={'이메일'} ContentComponent={SuperAdminEmailDomainContent} />
+          <PaginationSearchContents contents={emailDomain} target={'이메일'} ContentComponent={SuperAdminEmailDomainContent} />
         </ContentContainer>
         <Pagination
           totalPageCount={emailDomain.totalPages}
