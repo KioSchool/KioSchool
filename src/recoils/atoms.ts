@@ -1,6 +1,6 @@
 import { atom, selector } from 'recoil';
 import { Bank, EmailDomain, Order, OrderProductBase, PaginationResponse, Product, ProductCategory, User, Workspace } from '@@types/index';
-import { defaultPaginationValue, defaultUserOrderValue, defaultUserValue, defaultWorkspaceValue } from '@@types/defaultValues';
+import { defaultBanksValue, defaultPaginationValue, defaultUserOrderValue, defaultUserValue, defaultWorkspaceValue } from '@@types/defaultValues';
 import { recoilPersist } from 'recoil-persist';
 
 export const ordersAtom = atom<Order[]>({
@@ -56,6 +56,11 @@ export const adminUserAccountAtomSelector = selector({
     const { name: bankName } = bank;
     return { bankName, accountNumber, accountHolder };
   },
+});
+
+export const banksAtom = atom<Bank[]>({
+  key: 'banksAtom',
+  default: defaultBanksValue,
 });
 
 export const userOrderAtom = atom<Order>({
