@@ -8,6 +8,7 @@ interface Option {
 
 export interface SelectWithOptionsProps extends SelectHTMLAttributes<HTMLSelectElement> {
   options: Option[];
+  isUseDefaultOption?: boolean;
 }
 
 const Container = styled.select`
@@ -21,12 +22,12 @@ const Container = styled.select`
   appearance: none;
 `;
 
-const SelectWithOptions = (props: SelectWithOptionsProps) => {
+const SelectWithOptions = ({ options, isUseDefaultOption = true, ...otherProps }: SelectWithOptionsProps) => {
   const defaultOption = { name: '기본메뉴', id: 'null' };
-  const allOptions = [defaultOption, ...props.options];
+  const allOptions = isUseDefaultOption ? [defaultOption, ...options] : [...options];
 
   return (
-    <Container {...props}>
+    <Container {...otherProps}>
       {allOptions.map((item) => (
         <option key={item.id} value={item.id}>
           {item.name}
