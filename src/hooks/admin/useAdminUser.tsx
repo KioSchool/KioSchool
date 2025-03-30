@@ -1,5 +1,5 @@
 import useApi from '@hooks/useApi';
-import { Workspace } from '@@types/index';
+import { User, Workspace } from '@@types/index';
 import { useSetRecoilState } from 'recoil';
 import { adminUserAtom, banksAtom, workspacesAtom } from '@recoils/atoms';
 import { useNavigate } from 'react-router-dom';
@@ -77,14 +77,14 @@ function useAdminUser() {
       });
   };
 
-  const registerAccount = (bankId: number, accountNumber: string, accountHolder: string) => {
+  const registerAccount = async (bankId: number, accountNumber: string, accountHolder: string) => {
     const body = { bankId, accountNumber, accountHolder };
 
-    adminApi
-      .post('/account', body)
+    return adminApi
+      .post<User>('/account', body)
       .then((res) => {
         setAdminUser(res.data);
-        alert('계좌 정보가 성공적으로 저장되었습니다.');
+        return res.data;
       })
       .catch((error) => {
         alert(error.response.data.message);

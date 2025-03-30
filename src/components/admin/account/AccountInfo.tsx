@@ -14,7 +14,7 @@ const Container = styled.div`
 
 const AccountInfoContainer = styled.div`
   width: 350px;
-  gap: 10px;
+  gap: 25px;
   ${colFlex({ justify: 'start', align: 'start' })};
 `;
 

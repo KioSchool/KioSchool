@@ -26,6 +26,7 @@ function AdminAccount() {
   const { fetchAdminUser } = useAdminUser();
   const navigate = useNavigate();
   const user = useRecoilValue(adminUserAtom);
+
   useEffect(() => {
     fetchAdminUser();
   }, []);
