@@ -70,8 +70,8 @@ export const adminUserTossAccountAtomSelector = selector({
     const userInfo = get(adminUserAtom);
     const userTossAccountUrl = userInfo.account?.tossAccountUrl;
 
-    console.log(userTossAccountUrl);
     if (!userTossAccountUrl) return null;
+
     const bankRegex = /bank=([^&]+)/;
     const accountNoRegex = /accountNo=([^&]+)/;
     const bankMatch = userTossAccountUrl.match(bankRegex);
