@@ -1,6 +1,5 @@
-import useAdminUser from '@hooks/admin/useAdminUser';
 import { adminUserAccountAtomSelector } from '@recoils/atoms';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
@@ -8,7 +7,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import { Color } from '@resources/colors';
 
 const Container = styled.div`
-  width: 100%;
+  width: 70%;
   ${rowFlex({ justify: 'start', align: 'center' })};
 `;
 
@@ -30,21 +29,13 @@ const AccountInfoRow = styled.div`
 `;
 
 function AccountInfo() {
-  const { fetchAdminUser } = useAdminUser();
   const accountInfo = useRecoilValue(adminUserAccountAtomSelector);
-
-  useEffect(() => {
-    fetchAdminUser();
-  }, []);
 
   const { bankName, accountNumber, accountHolder } = accountInfo;
 
   return (
     <Container>
       <AccountInfoContainer>
-        <AppLabel size={15} color={Color.BLACK} style={{ fontWeight: 500 }}>
-          등록된 계좌
-        </AppLabel>
         <TextContainer>
           <AccountInfoRow>
             <AppLabel size={13} color={Color.BLACK} style={{ fontWeight: 500 }}>

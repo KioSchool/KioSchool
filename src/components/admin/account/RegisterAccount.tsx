@@ -15,11 +15,6 @@ const Container = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
-const HeaderContainer = styled.div`
-  width: 100%;
-  ${rowFlex({ justify: 'space-between' })};
-`;
-
 const ContentsContainer = styled.div`
   width: 100%;
   height: 100%;
@@ -90,7 +85,7 @@ function RegisterAccount() {
     name: bank.name,
   }));
 
-  const allBanks = [{ id: 0, name: '은행을 선택해주세요.' }, ...filteredBanks];
+  const allBanks = [{ id: -1, name: '은행을 선택해주세요.' }, ...filteredBanks];
 
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedBankId(Number(event.target.value));
@@ -131,11 +126,6 @@ function RegisterAccount() {
 
   return (
     <Container>
-      <HeaderContainer>
-        <AppLabel size={15} color={Color.BLACK} style={{ fontWeight: 500 }}>
-          계좌 등록하기
-        </AppLabel>
-      </HeaderContainer>
       <ContentsContainer>
         <InputContainer>
           <AppLabel size={15} color={Color.BLACK} style={{ fontWeight: 500 }}>
