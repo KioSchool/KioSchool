@@ -5,7 +5,7 @@ import { useRecoilValue } from 'recoil';
 import { adminUserAccountAtomSelector } from '@recoils/atoms';
 import { RiInformationFill } from '@remixicon/react';
 import { Color } from '@resources/colors';
-import { afterAccountInfoRegisteredDescription, beforeAccountInfoRegisteredDescription } from '@resources/data/tossAcountInfoData';
+import { afterAccountInfoRegisteredDescription, beforeAccountInfoRegisteredDescription } from '@resources/data/tossAccountInfoData';
 
 const Container = styled.div`
   width: 100%;
