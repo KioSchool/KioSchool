@@ -95,7 +95,7 @@ function RegisterAccount() {
     const accountHolder = accountHolderRef.current?.value;
     const accountNumber = accountNumberRef.current?.value;
 
-    if (!selectedBankId) {
+    if (selectedBankId === null || selectedBankId === -1) {
       alert('은행을 선택해주세요.');
       return;
     }
