@@ -7,7 +7,7 @@ import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { adminUserAccountAtomSelector } from '@recoils/atoms';
 import { useRecoilValue } from 'recoil';
-import TossAccountInfoPopup from '@components/admin/account/TossAccountInfoPopup';
+import TossAccountInfoTooltip from '@components/admin/account/TossAccountInfoTooltip';
 
 const Container = styled.div`
   width: 30%;
@@ -131,7 +131,7 @@ function RegisterTossAccount() {
   return (
     <Container>
       <InfoIconContainer>
-        <TossAccountInfoPopup />
+        <TossAccountInfoTooltip />
       </InfoIconContainer>
       <TitleContainer>
         <Title valid={isAccountRegistered}>토스 QR 등록</Title>

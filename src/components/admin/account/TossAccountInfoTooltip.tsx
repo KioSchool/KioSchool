@@ -32,7 +32,7 @@ const HighlightText = styled.mark`
   border-radius: 10px;
 `;
 
-function TossAccountInfoPopup() {
+function TossAccountInfoTooltip() {
   const [isHover, setIsHover] = React.useState(false);
 
   const accountInfo = useRecoilValue(adminUserAccountAtomSelector);
@@ -54,4 +54,4 @@ function TossAccountInfoPopup() {
   );
 }
 
-export default TossAccountInfoPopup;
+export default TossAccountInfoTooltip;
