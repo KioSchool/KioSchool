@@ -50,7 +50,13 @@ export const adminUserAccountAtomSelector = selector({
     const userInfo = get(adminUserAtom);
     const userAccount = userInfo.account;
 
-    if (!userAccount) return null;
+    if (!userAccount) {
+      return {
+        bankName: '등록된 계좌가 없습니다.',
+        accountNumber: '',
+        accountHolder: '',
+      };
+    }
 
     const { bank, accountNumber, accountHolder } = userAccount;
     const { name: bankName } = bank;
