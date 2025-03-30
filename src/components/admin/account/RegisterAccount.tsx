@@ -135,7 +135,7 @@ function RegisterAccount() {
             <AppLabel size={13} color={Color.BLACK} style={{ fontWeight: 500 }}>
               은행명
             </AppLabel>
-            <SelectWithOptions options={allBanks} isUseDefaultOption={false} onInput={handleSelect} width={'300px'} />
+            <SelectWithOptions options={allBanks} isUseDefaultOption={false} onChange={handleSelect} width={'300px'} />
           </InputRowContainer>
           <InputRowContainer>
             <AppLabel size={13} color={Color.BLACK} style={{ fontWeight: 500 }}>
