@@ -129,6 +129,16 @@ export const defaultBankValue: Bank = {
   updatedAt: '',
 };
 
+export const defaultBanksValue: Bank[] = [
+  {
+    name: '',
+    code: '',
+    id: 0,
+    createdAt: '',
+    updatedAt: '',
+  },
+];
+
 export const defaultAccountValue: Account = {
   bank: defaultBankValue,
   accountNumber: '',

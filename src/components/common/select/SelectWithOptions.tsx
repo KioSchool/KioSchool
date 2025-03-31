@@ -8,25 +8,27 @@ interface Option {
 
 export interface SelectWithOptionsProps extends SelectHTMLAttributes<HTMLSelectElement> {
   options: Option[];
+  isUseDefaultOption?: boolean;
+  width?: string;
 }
 
-const Container = styled.select`
+const Container = styled.select<{ width?: string }>`
   border: none;
-  border-radius: 15px;
+  border-radius: 40px;
   box-sizing: border-box;
   box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.25) inset;
-  width: 500px;
+  width: ${(props) => props.width || '500px'};
   height: 50px;
   padding: 0 18px;
   appearance: none;
 `;
 
-const SelectWithOptions = (props: SelectWithOptionsProps) => {
+const SelectWithOptions = ({ options, isUseDefaultOption = true, width, ...otherProps }: SelectWithOptionsProps) => {
   const defaultOption = { name: '기본메뉴', id: 'null' };
-  const allOptions = [defaultOption, ...props.options];
+  const allOptions = isUseDefaultOption ? [defaultOption, ...options] : [...options];
 
   return (
-    <Container {...props}>
+    <Container {...otherProps} width={width}>
       {allOptions.map((item) => (
         <option key={item.id} value={item.id}>
           {item.name}
