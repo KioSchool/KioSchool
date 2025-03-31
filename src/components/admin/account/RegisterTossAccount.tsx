@@ -64,6 +64,7 @@ const SubmitButton = styled.button<{ valid: boolean }>`
   background: ${Color.WHITE};
   border: 1px solid ${(props) => (props.valid ? Color.BLACK : Color.GREY)};
   border-radius: 20px;
+  cursor: pointer;
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 

@@ -66,6 +66,7 @@ const SubmitButton = styled.button`
   background: ${Color.WHITE};
   border: 1px solid ${Color.GREY};
   border-radius: 20px;
+  cursor: pointer;
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
