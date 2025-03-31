@@ -19,7 +19,7 @@ interface ContentsProps {
   ContentComponent: React.ElementType;
 }
 
-function SuperAdminSearchContents({ contents, target, ContentComponent }: ContentsProps) {
+function PaginationSearchContents({ contents, target, ContentComponent }: ContentsProps) {
   if (contents.empty) {
     return <EmptyLabel className={'empty-label'}>{`찾고자 하는 ${target} 이/가 존재하지 않습니다.`}</EmptyLabel>;
   }
@@ -36,4 +36,4 @@ function SuperAdminSearchContents({ contents, target, ContentComponent }: Conten
   );
 }
 
-export default SuperAdminSearchContents;
+export default PaginationSearchContents;

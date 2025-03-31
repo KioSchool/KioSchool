@@ -1,7 +1,7 @@
 import useApi from '@hooks/useApi';
-import { Workspace } from '@@types/index';
+import { User, Workspace } from '@@types/index';
 import { useSetRecoilState } from 'recoil';
-import { adminUserAtom, workspacesAtom } from '@recoils/atoms';
+import { adminUserAtom, banksAtom, workspacesAtom } from '@recoils/atoms';
 import { useNavigate } from 'react-router-dom';
 import useAuthentication from '@hooks/useAuthentication';
 
@@ -10,6 +10,7 @@ function useAdminUser() {
   const { logout } = useAuthentication();
   const setWorkspaces = useSetRecoilState(workspacesAtom);
   const setAdminUser = useSetRecoilState(adminUserAtom);
+  const setBanks = useSetRecoilState(banksAtom);
   const navigate = useNavigate();
 
   const fetchAdminUser = () => {
@@ -44,13 +45,12 @@ function useAdminUser() {
       .catch((error) => console.error('Failed to leave workspace: ', error));
   };
 
-  const registerAccount = (accountUrl: string) => {
+  const registerTossAccount = (accountUrl: string) => {
     adminApi
-      .post('/user/toss-account', { accountUrl })
+      .post('/toss-account', { accountUrl })
       .then((res) => {
         setAdminUser(res.data);
         alert('계좌 정보가 성공적으로 저장되었습니다.');
-        navigate('/admin');
       })
       .catch((error) => {
         alert(error.response.data.message);
@@ -68,7 +68,30 @@ function useAdminUser() {
       .catch((error) => console.error('Failed to delete user: ', error));
   };
 
-  return { fetchWorkspaces, createWorkspaces, leaveWorkspace, registerAccount, fetchAdminUser, deleteUser };
+  const fetchBanks = () => {
+    adminApi
+      .get('/banks')
+      .then((res) => setBanks(res.data))
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
+  };
+
+  const registerAccount = async (bankId: number, accountNumber: string, accountHolder: string) => {
+    const body = { bankId, accountNumber, accountHolder };
+
+    return adminApi
+      .post<User>('/account', body)
+      .then((res) => {
+        setAdminUser(res.data);
+        return res.data;
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
+  };
+
+  return { fetchWorkspaces, createWorkspaces, leaveWorkspace, registerTossAccount, fetchAdminUser, deleteUser, fetchBanks, registerAccount };
 }
 
 export default useAdminUser;
