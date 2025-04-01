@@ -3,11 +3,12 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import AppLabel from '@components/common/label/AppLabel';
-import { RiInstagramLine } from '@remixicon/react';
-import { expandButtonStyle } from '@styles/buttonStyles';
+import { RiInstagramLine, RiNotionLine } from '@remixicon/react';
 import AppFooter from '@components/common/footer/AppFooter';
 import { tabletMediaQuery } from '@styles/globalStyles';
 import { isMobile } from 'react-device-detect';
+import { css } from '@emotion/react';
+import { expandButtonStyle } from '@styles/buttonStyles';
 
 const Container = styled.div`
   width: 100%;
@@ -41,18 +42,27 @@ const BadgeContainer = styled.div`
   ${rowFlex()};
 `;
 
-const InstagramBadge = styled(RiInstagramLine)`
+const BadgeStyle = css`
   width: 40px;
   height: 40px;
   color: ${Color.WHITE};
   padding: 8px;
   border-radius: 50px;
   background: rgba(255, 255, 255, 0.2);
-  ${expandButtonStyle};
   ${tabletMediaQuery} {
-    width: 44px;
-    height: 44px;
+    width: 25px;
+    height: 25px;
   }
+`;
+
+const InstagramBadge = styled(RiInstagramLine)`
+  ${expandButtonStyle};
+  ${BadgeStyle};
+`;
+
+const NotionBadge = styled(RiNotionLine)`
+  ${expandButtonStyle};
+  ${BadgeStyle};
 `;
 
 const FooterContent = styled.div`
@@ -65,6 +75,12 @@ function InfoFooter() {
     const instagramUrl = 'https://www.instagram.com/kioschool/';
 
     window.open(instagramUrl, '_blank');
+  };
+
+  const handleNotionClick = () => {
+    const notionUrl = 'https://ji-in.notion.site/FAQ-09eb07eac4a34ab4aa883727994e0b08?pvs=4';
+
+    window.open(notionUrl, '_blank');
   };
 
   const pcContentSizes = {
@@ -90,6 +106,7 @@ function InfoFooter() {
         </ContentContainer>
         <BadgeContainer>
           <InstagramBadge onClick={handleInstagramClick} />
+          <NotionBadge onClick={handleNotionClick} />
         </BadgeContainer>
       </SubContainer>
       <FooterContent>
