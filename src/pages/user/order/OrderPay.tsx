@@ -43,9 +43,6 @@ const DescriptionContainer = styled.div`
 `;
 
 function OrderPay() {
-  const [isTossPay, setIsTossPay] = useState<boolean>(false);
-  const customerNameRef = useRef<HTMLInputElement>(null);
-
   const workspace = useRecoilValue(userWorkspaceAtom);
   const orderBasket = useRecoilValue(orderBasketAtom);
   const productsMap = _.keyBy(workspace.products, 'id');
@@ -62,6 +59,9 @@ function OrderPay() {
   const account = workspace.owner.account;
   const tossAccountUrl = account?.tossAccountUrl;
   const isTossAvailable = !!tossAccountUrl;
+
+  const [isTossPay, setIsTossPay] = useState<boolean>(isTossAvailable);
+  const customerNameRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (orderBasket.length === 0) {
