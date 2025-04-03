@@ -163,6 +163,10 @@ function Register() {
     setIsCodeSent(true);
   };
 
+  const navigateToEmailDomain = () => {
+    navigate('/email-domains');
+  };
+
   const checkCode = async () => {
     const userEmail = userEmailInputRef.current?.value;
     const inputCode = userCodeInputRef.current?.value;
@@ -235,6 +239,8 @@ function Register() {
             <AppInputWithLabel
               style={{ width: '330px' }}
               titleLabel={'이메일'}
+              messageLabel={'회원가입 가능한 이메일 확인하기'}
+              onMessageLabelClick={navigateToEmailDomain}
               type={'email'}
               id={'userEmail'}
               ref={userEmailInputRef}
