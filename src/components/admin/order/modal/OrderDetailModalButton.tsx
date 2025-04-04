@@ -9,6 +9,7 @@ import useModal from '@hooks/useModal';
 import { RiArrowRightSLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { createPortal } from 'react-dom';
+import { useEffect } from 'react';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -46,6 +47,14 @@ interface Props {
 
 function OrderDetailModalButton({ order }: Props) {
   const { isModalOpen, openModal, closeModal, modalKey } = useModal();
+
+  useEffect(() => {
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    });
+  }, []);
 
   if (!isModalOpen) {
     return <RightIcon onClick={openModal} />;
