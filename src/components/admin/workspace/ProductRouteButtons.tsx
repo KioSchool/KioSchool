@@ -2,7 +2,8 @@ import RouterButton from '@components/common/button/RouterButton';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import productImage from '@resources/image/productImage.png';
+import productImage from '@resources/image/admin/workspace/productImage.png';
+import productCategoryImage from '@resources/image/admin/workspace/productCategoryImage.png';
 import { Color } from '@resources/colors';
 
 const Container = styled.div`
@@ -26,7 +27,7 @@ const ButtonContainer = styled.div`
 function ProductManageContent() {
   const buttonContents = [
     { name: '상품 관리', path: '/products', imageSrc: productImage },
-    { name: '카테고리 관리', path: '/products/categories', imageSrc: productImage },
+    { name: '카테고리 관리', path: '/products/categories', imageSrc: productCategoryImage },
   ];
 
   return (
