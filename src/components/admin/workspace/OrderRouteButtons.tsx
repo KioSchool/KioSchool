@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import productImage from '@resources/image/productImage.png';
 import orderImage from '@resources/image/orderImage.png';
-import workspaceImage from '@resources/image/workspaceImage.png';
+import workspaceImage from '@resources/image/super-admin/workspaceImage.png';
 import { Color } from '@resources/colors';
 
 const Container = styled.div`

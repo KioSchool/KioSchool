@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import infoBenefitDesktop from '@resources/image/infoBenefitDesktop.png';
-import infoBenefitOrderCard1 from '@resources/image/infoBenefitOrderCard1.png';
-import infoBenefitOrderCard2 from '@resources/image/infoBenefitOrderCard2.png';
-import infoBenefitOrderCard3 from '@resources/image/infoBenefitOrderCard3.png';
+import infoBenefitDesktop from '@resources/image/info/infoBenefitDesktop.png';
+import infoBenefitOrderCard1 from '@resources/image/info/infoBenefitOrderCard1.png';
+import infoBenefitOrderCard2 from '@resources/image/info/infoBenefitOrderCard2.png';
+import infoBenefitOrderCard3 from '@resources/image/info/infoBenefitOrderCard3.png';
 import { rowFlex } from '@styles/flexStyles';
 import { tabletMediaQuery } from '@styles/globalStyles';
 import { isMobile } from 'react-device-detect';
