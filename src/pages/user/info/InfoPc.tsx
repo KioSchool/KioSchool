@@ -8,7 +8,7 @@ import InfoOurService from '@components/user/info/info-our-service/InfoOurServic
 import InfoCreatorsWords from '@components/user/info/info-creators-word/InfoCreatorsWords';
 import InfoFooter from '@components/user/info/info-footer/InfoFooter';
 import styled from '@emotion/styled';
-import infoBackground from '@resources/image/infoBackground.png';
+import infoBackground from '@resources/image/info/infoBackground.png';
 
 const SubContainer = styled.div`
   width: 100%;
