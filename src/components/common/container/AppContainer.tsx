@@ -20,10 +20,8 @@ export const SubContainer = styled.div<{
   customGap?: string;
   isTitleNavBar?: boolean;
 }>`
-  flex-basis: 0;
-  flex-wrap: wrap;
   width: ${(props) => props.customWidth || '65vw'};
-  height: ${(props) => props.customHeight || '100%'};
+  height: ${(props) => props.customHeight || 'auto'};
   min-width: 1000px;
   padding-top: ${(props) => props.isTitleNavBar && '120px'};
 
