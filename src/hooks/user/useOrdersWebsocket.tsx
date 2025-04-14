@@ -4,7 +4,6 @@ import kioSchoolOrderAlarm from '@resources/audio/kioSchoolOrderAlarm.mp3';
 
 function playOrderCreateAudio() {
   const audio = new Audio(kioSchoolOrderAlarm);
-  audio.volume = 1;
   audio.play();
 }
 
@@ -26,7 +25,6 @@ function useOrdersWebsocket(workspaceId: string | undefined) {
     client.onConnect = function () {
       client.subscribe(`/sub/order/${workspaceId}`, (response) => {
         const data = JSON.parse(response.body);
-        console.log(data);
         if (data.type == 'CREATED') {
           playOrderCreateAudio();
         }
