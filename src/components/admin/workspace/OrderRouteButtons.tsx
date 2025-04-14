@@ -2,9 +2,9 @@ import RouterButton from '@components/common/button/RouterButton';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import productImage from '@resources/image/productImage.png';
-import orderImage from '@resources/image/orderImage.png';
-import workspaceImage from '@resources/image/workspaceImage.png';
+import realtimeOrderImage from '@resources/image/admin/workspace/realtimeOrderImage.png';
+import orderHistoryImage from '@resources/image/admin/workspace/orderHistoryImage.png';
+import orderTableImage from '@resources/image/admin/workspace/orderTableImage.png';
 import { Color } from '@resources/colors';
 
 const Container = styled.div`
@@ -27,9 +27,9 @@ const ButtonContainer = styled.div`
 
 function OrderManageContent() {
   const buttonContents = [
-    { name: '실시간 주문 조회', path: '/order/realtime', imageSrc: productImage },
-    { name: '전체 주문 조회', path: '/order/history', imageSrc: orderImage },
-    { name: '테이블 주문 조회', path: '/order/table', imageSrc: workspaceImage },
+    { name: '실시간 주문 조회', path: '/order/realtime', imageSrc: realtimeOrderImage },
+    { name: '전체 주문 조회', path: '/order/history', imageSrc: orderHistoryImage },
+    { name: '테이블 주문 조회', path: '/order/table', imageSrc: orderTableImage },
   ];
 
   return (

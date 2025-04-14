@@ -3,7 +3,6 @@ import RegisterAccount from '@components/admin/account/RegisterAccount';
 import RegisterTossAccount from '@components/admin/account/RegisterTossAccount';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { adminUserAtom } from '@recoils/atoms';
 import React, { useEffect } from 'react';
@@ -39,7 +38,6 @@ const RegisterContainer = styled.div`
 
 function AdminAccount() {
   const { fetchAdminUser } = useAdminUser();
-  const navigate = useNavigate();
   const user = useRecoilValue(adminUserAtom);
 
   useEffect(() => {
@@ -50,7 +48,7 @@ function AdminAccount() {
     <AppContainer
       useFlex={colFlex({ justify: 'center' })}
       customWidth={'1000px'}
-      titleNavBarProps={{ title: `${user.name}님의 마이페이지`, subTitle: '계좌관리', onLeftArrowClick: () => navigate('/admin/my-info') }}
+      titleNavBarProps={{ title: `${user.name}님의 마이페이지`, subTitle: '계좌관리' }}
     >
       <AccountContainer>
         <HeaderContainer>

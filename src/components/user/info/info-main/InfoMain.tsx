@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import infoMainPhoneImage from '@resources/image/infoMainPhoneImage.png';
+import infoMainPhoneImage from '@resources/image/info/infoMainPhoneImage.png';
 import InfoMainDescription from '@components/user/info/info-main/InfoMainDescription';
 import { tabletMediaQuery } from '@styles/globalStyles';
 

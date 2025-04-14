@@ -7,7 +7,7 @@ import InfoStatisticAndReview from '@components/user/info/info-statistic-and-rev
 import InfoOurService from '@components/user/info/info-our-service/InfoOurService';
 import InfoCreatorsWordsMobile from '@components/user/info/info-creators-word/InfoCreatorsWordsMobile';
 import InfoFooter from '@components/user/info/info-footer/InfoFooter';
-import infoBackground from '@resources/image/infoBackground.png';
+import infoBackground from '@resources/image/info/infoBackground.png';
 
 const Container = styled.div`
   width: 100%;

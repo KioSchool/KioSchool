@@ -1,5 +1,12 @@
 import * as StompJs from '@stomp/stompjs';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
+import kioSchoolOrderAlarm from '@resources/audio/kioSchoolOrderAlarm.mp3';
+
+function playOrderCreateAudio() {
+  const audio = new Audio(kioSchoolOrderAlarm);
+  audio.volume = 1;
+  audio.play();
+}
 
 function useOrdersWebsocket(workspaceId: string | undefined) {
   const { fetchTodayOrders } = useAdminOrder(workspaceId);
@@ -17,7 +24,13 @@ function useOrdersWebsocket(workspaceId: string | undefined) {
     });
 
     client.onConnect = function () {
-      client.subscribe(`/sub/order/${workspaceId}`, () => {
+      client.subscribe(`/sub/order/${workspaceId}`, (response) => {
+        const data = JSON.parse(response.body);
+        console.log(data);
+        if (data.type == 'CREATED') {
+          playOrderCreateAudio();
+        }
+
         fetchTodayOrders();
       });
     };
