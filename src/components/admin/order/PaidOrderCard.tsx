@@ -17,7 +17,7 @@ import useModal from '@hooks/useModal';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
-  background-color: ${Color.LIGHT_GREY};
+  background-color: #f4f4f4;
   width: 200px;
   height: 170px;
   border-radius: 10px;
@@ -34,11 +34,14 @@ const CardContainer = styled.div`
 
 const CardContents = styled.div`
   ${colFlex({ justify: 'space-between', align: 'center' })}
-  width: 80%;
+  width: 100%;
   height: 85%;
 `;
 
 const OrderInfoContainer = styled.div`
+  background-color: ${Color.LIGHT_GREY};
+  box-sizing: border-box;
+  padding: 15px;
   width: 100%;
   cursor: pointer;
 `;
