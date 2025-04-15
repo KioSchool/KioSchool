@@ -66,7 +66,7 @@ function OrderDetailModalButton({ order }: Props) {
       <ModalContainer>
         <OrderModalHeaderContents onClose={closeModal} order={order} />
         <OrderModalMainContents order={order} />
-        <OrderModalFooterContents orderStatus={order.status} id={order.id} />
+        <OrderModalFooterContents orderStatus={order.status} id={order.id} closeModal={closeModal} />
       </ModalContainer>
     </>,
     document.getElementById(modalKey) as HTMLElement,
