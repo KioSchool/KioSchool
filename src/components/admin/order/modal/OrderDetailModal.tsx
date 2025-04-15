@@ -40,6 +40,7 @@ interface Props {
 }
 function OrderDetailModal({ order, isModalOpen, closeModal }: Props) {
   const { modalKey } = useModal();
+
   useEffect(() => {
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
