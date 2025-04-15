@@ -39,13 +39,14 @@ const CardContents = styled.div`
 `;
 
 const OrderInfoContainer = styled.div`
+  ${colFlex()}
+  gap: 15px;
   background-color: ${Color.LIGHT_GREY};
   box-sizing: border-box;
-  padding: 15px;
+  padding: 5px 15px;
   width: 100%;
   cursor: pointer;
 `;
-
 const HeaderContainer = styled.div`
   ${rowFlex({ justify: 'space-between', align: 'start' })}
   width: 100%;
