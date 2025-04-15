@@ -26,6 +26,7 @@ const CardContainer = styled.div`
     background-color: ${Color.KIO_ORANGE};
 
     & * {
+      background-color: ${Color.KIO_ORANGE};
       color: ${Color.WHITE};
       stroke: ${Color.WHITE};
     }
