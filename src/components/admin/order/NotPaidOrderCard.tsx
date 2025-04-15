@@ -3,15 +3,16 @@ import { Order } from '@@types/index';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import { RiCloseLargeLine, RiCheckLine } from '@remixicon/react';
+import { RiCloseLargeLine, RiCheckLine, RiArrowRightSLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import OrderSummaryContents from './OrderSummaryContents';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
-import OrderDetailModalButton from '@components/admin/order/modal/OrderDetailModalButton';
+import OrderDetailModal from '@components/admin/order/modal/OrderDetailModal';
 import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
 import useDelayTime from '@hooks/useDelayTime';
+import useModal from '@hooks/useModal';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -36,6 +37,11 @@ const CardContents = styled.div`
   height: 85%;
 `;
 
+const OrderInfoContainer = styled.div`
+  width: 100%;
+  cursor: pointer;
+`;
+
 const HeaderContainer = styled.div`
   ${rowFlex({ justify: 'space-between', align: 'start' })}
   width: 100%;
@@ -50,6 +56,12 @@ const CheckButtonContainer = styled.div`
   ${rowFlex({ justify: 'center', align: 'center' })}
   gap: 35px;
   width: 55%;
+`;
+
+const RightIcon = styled(RiArrowRightSLine)`
+  width: 25px;
+  height: 25px;
+  ${expandButtonStyle}
 `;
 
 const CheckIcon = styled(RiCheckLine)`
@@ -76,6 +88,7 @@ function NotPaidOrderCard({ order }: OrderCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { payOrder, cancelOrder } = useAdminOrder(workspaceId);
   const { delayMinutes } = useDelayTime({ date: order.createdAt });
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   const checkClickHandler = () => {
     payOrder(order.id);
@@ -85,20 +98,27 @@ function NotPaidOrderCard({ order }: OrderCardProps) {
     cancelOrder(order.id);
   };
 
+  const orderInfoClickHandler = () => {
+    if (!isModalOpen) openModal();
+  };
+
   return (
     <>
       <CardContainer>
         <CardContents>
-          <HeaderContainer>
-            <TitleContainer>
-              <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>
-                {order.customerName}
-              </AppLabel>
-              <AppLabel color={Color.BLACK} size={13}>{`${delayMinutes}분 전 주문`}</AppLabel>
-            </TitleContainer>
-            <OrderDetailModalButton order={order} />
-          </HeaderContainer>
-          <OrderSummaryContents contents={order} />
+          <OrderInfoContainer onClick={orderInfoClickHandler}>
+            <HeaderContainer>
+              <TitleContainer>
+                <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>
+                  {order.customerName}
+                </AppLabel>
+                <AppLabel color={Color.BLACK} size={13}>{`${delayMinutes}분 전 주문`}</AppLabel>
+              </TitleContainer>
+              <RightIcon onClick={openModal} />
+              <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
+            </HeaderContainer>
+            <OrderSummaryContents contents={order} />
+          </OrderInfoContainer>
           <CheckButtonContainer>
             <CheckIcon onClick={checkClickHandler} />
             <CloseIcon onClick={closeClickHandler} />
