@@ -13,6 +13,7 @@ const ModalFooter = styled.div`
 interface OrderModalFooterContentsProps {
   orderStatus: OrderStatus;
   id: number;
+  closeModal: () => void;
 }
 
 const getActions = (orderStatus: OrderStatus, actionHandlers: Record<string, () => void>) => {
@@ -34,15 +35,27 @@ const getActions = (orderStatus: OrderStatus, actionHandlers: Record<string, () 
   }
 };
 
-function OrderModalFooterContents({ orderStatus, id }: OrderModalFooterContentsProps) {
+function OrderModalFooterContents({ orderStatus, id, closeModal }: OrderModalFooterContentsProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { payOrder, cancelOrder, serveOrder, refundOrder } = useAdminOrder(workspaceId);
 
   const actionHandlers = {
-    payOrder: () => payOrder(id),
-    cancelOrder: () => cancelOrder(id),
-    serveOrder: () => serveOrder(id),
-    refundOrder: () => refundOrder(id),
+    payOrder: () => {
+      closeModal();
+      payOrder(id);
+    },
+    cancelOrder: () => {
+      closeModal();
+      cancelOrder(id);
+    },
+    serveOrder: () => {
+      closeModal();
+      serveOrder(id);
+    },
+    refundOrder: () => {
+      closeModal();
+      refundOrder(id);
+    },
   };
 
   const actions = getActions(orderStatus, actionHandlers);

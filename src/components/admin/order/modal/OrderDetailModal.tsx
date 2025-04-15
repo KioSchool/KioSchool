@@ -5,11 +5,9 @@ import { colFlex } from '@styles/flexStyles';
 import OrderModalFooterContents from '@components/admin/order/modal/OrderModalFooterContents';
 import OrderModalMainContents from '@components/admin/order/modal/OrderModalMainContents';
 import OrderModalHeaderContents from '@components/admin/order/modal/OrderModalHeaderContents';
-import useModal from '@hooks/useModal';
-import { RiArrowRightSLine } from '@remixicon/react';
-import { expandButtonStyle } from '@styles/buttonStyles';
 import { createPortal } from 'react-dom';
 import { useEffect } from 'react';
+import useModal from '@hooks/useModal';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -35,18 +33,13 @@ const ModalContainer = styled.div`
   gap: 15px;
 `;
 
-const RightIcon = styled(RiArrowRightSLine)`
-  width: 25px;
-  height: 25px;
-  ${expandButtonStyle}
-`;
-
 interface Props {
   order: Order;
+  isModalOpen: boolean;
+  closeModal: () => void;
 }
-
-function OrderDetailModalButton({ order }: Props) {
-  const { isModalOpen, openModal, closeModal, modalKey } = useModal();
+function OrderDetailModal({ order, isModalOpen, closeModal }: Props) {
+  const { modalKey } = useModal();
 
   useEffect(() => {
     window.addEventListener('keydown', (e) => {
@@ -57,7 +50,7 @@ function OrderDetailModalButton({ order }: Props) {
   }, []);
 
   if (!isModalOpen) {
-    return <RightIcon onClick={openModal} />;
+    return null;
   }
 
   return createPortal(
@@ -66,11 +59,11 @@ function OrderDetailModalButton({ order }: Props) {
       <ModalContainer>
         <OrderModalHeaderContents onClose={closeModal} order={order} />
         <OrderModalMainContents order={order} />
-        <OrderModalFooterContents orderStatus={order.status} id={order.id} />
+        <OrderModalFooterContents orderStatus={order.status} id={order.id} closeModal={closeModal} />
       </ModalContainer>
     </>,
     document.getElementById(modalKey) as HTMLElement,
   );
 }
 
-export default OrderDetailModalButton;
+export default OrderDetailModal;

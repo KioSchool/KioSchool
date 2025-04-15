@@ -3,20 +3,21 @@ import { Order } from '@@types/index';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import { RiCheckLine } from '@remixicon/react';
+import { RiArrowRightSLine, RiCheckLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 import RollBackSvg from '@resources/svg/RollBackSvg';
-import OrderDetailModalButton from '@components/admin/order/modal/OrderDetailModalButton';
+import OrderDetailModal from '@components/admin/order/modal/OrderDetailModal';
 import OrderItemList from '@components/admin/order/OrderItemList';
 import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
 import useDelayTime from '@hooks/useDelayTime';
+import useModal from '@hooks/useModal';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
-  background-color: ${Color.LIGHT_GREY};
+  background-color: #f4f4f4;
   width: 200px;
   height: 170px;
   border-radius: 10px;
@@ -25,6 +26,7 @@ const CardContainer = styled.div`
     background-color: ${Color.KIO_ORANGE};
 
     & * {
+      background-color: ${Color.KIO_ORANGE};
       color: ${Color.WHITE};
       stroke: ${Color.WHITE};
     }
@@ -33,8 +35,18 @@ const CardContainer = styled.div`
 
 const CardContents = styled.div`
   ${colFlex({ justify: 'space-between', align: 'center' })}
-  width: 80%;
-  height: 85%;
+  width: 100%;
+  height: 90%;
+`;
+
+const OrderInfoContainer = styled.div`
+  ${colFlex()}
+  gap: 15px;
+  background-color: ${Color.LIGHT_GREY};
+  box-sizing: border-box;
+  padding: 5px 15px;
+  width: 100%;
+  cursor: pointer;
 `;
 
 const HeaderContainer = styled.div`
@@ -65,6 +77,12 @@ const RollBackIcon = styled(RollBackSvg)`
   ${expandButtonStyle}
 `;
 
+const RightIcon = styled(RiArrowRightSLine)`
+  width: 25px;
+  height: 25px;
+  ${expandButtonStyle}
+`;
+
 interface OrderCardProps {
   order: Order;
 }
@@ -77,6 +95,7 @@ function PaidOrderCard({ order }: OrderCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { serveOrder, refundOrder } = useAdminOrder(workspaceId);
   const { delayMinutes } = useDelayTime({ date: order.createdAt });
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   const checkClickHandler = () => {
     serveOrder(order.id);
@@ -86,20 +105,27 @@ function PaidOrderCard({ order }: OrderCardProps) {
     refundOrder(order.id);
   };
 
+  const orderInfoClickHandler = () => {
+    if (!isModalOpen) openModal();
+  };
+
   return (
     <>
       <CardContainer>
         <CardContents>
-          <HeaderContainer>
-            <TitleContainer>
-              <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>
-                {`테이블 ${order.tableNumber}`}
-              </AppLabel>
-              <AppLabel color={Color.BLACK} size={13}>{`${delayMinutes}분 전 주문`}</AppLabel>
-            </TitleContainer>
-            <OrderDetailModalButton order={order} />
-          </HeaderContainer>
-          <OrderItemList order={order} />
+          <OrderInfoContainer onClick={orderInfoClickHandler}>
+            <HeaderContainer>
+              <TitleContainer>
+                <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>
+                  {`테이블 ${order.tableNumber}`}
+                </AppLabel>
+                <AppLabel color={Color.BLACK} size={13}>{`${delayMinutes}분 전 주문`}</AppLabel>
+              </TitleContainer>
+              <RightIcon onClick={openModal} />
+              <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
+            </HeaderContainer>
+            <OrderItemList order={order} />
+          </OrderInfoContainer>
           <CheckButtonContainer>
             <CheckIcon onClick={checkClickHandler} />
             <RollBackIcon onClick={rollBackClickHandler} />
