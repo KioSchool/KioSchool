@@ -36,7 +36,7 @@ const CardContainer = styled.div`
 const CardContents = styled.div`
   ${colFlex({ justify: 'space-between', align: 'center' })}
   width: 100%;
-  height: 85%;
+  height: 90%;
 `;
 
 const OrderInfoContainer = styled.div`
