@@ -34,7 +34,13 @@ function AdminOrderRealtime() {
   }, []);
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })} customGap={'15px'} useScroll={true} titleNavBarProps={{ title: '실시간 주문 조회' }}>
+    <AppContainer
+      useFlex={colFlex({ justify: 'center' })}
+      customGap={'15px'}
+      useScroll={true}
+      titleNavBarProps={{ title: '실시간 주문 조회' }}
+      useNavBackground={true}
+    >
       <>
         <TitledOrderStatusList orders={notPaidOrders} title={'주문 완료'} />
         <HorizontalLine />
