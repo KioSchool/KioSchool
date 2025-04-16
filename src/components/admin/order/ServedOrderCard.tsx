@@ -93,7 +93,7 @@ function ServedOrderCard({ order }: OrderCardProps) {
   };
 
   const orderInfoClickHandler = () => {
-    if (!isModalOpen) openModal();
+    openModal();
   };
 
   return (
@@ -111,10 +111,10 @@ function ServedOrderCard({ order }: OrderCardProps) {
                 </AppLabel>
               </TitleContainer>
               <RightIcon onClick={openModal} />
-              <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
             </HeaderContainer>
             <OrderSummaryContents contents={order} />
           </OrderInfoContainer>
+          <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
           <CheckButtonContainer>
             <RollBackIcon onClick={rollBackClickHandler} />
           </CheckButtonContainer>

@@ -106,7 +106,7 @@ function PaidOrderCard({ order }: OrderCardProps) {
   };
 
   const orderInfoClickHandler = () => {
-    if (!isModalOpen) openModal();
+    openModal();
   };
 
   return (
@@ -122,10 +122,10 @@ function PaidOrderCard({ order }: OrderCardProps) {
                 <AppLabel color={Color.BLACK} size={13}>{`${delayMinutes}분 전 주문`}</AppLabel>
               </TitleContainer>
               <RightIcon onClick={openModal} />
-              <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
             </HeaderContainer>
             <OrderItemList order={order} />
           </OrderInfoContainer>
+          <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
           <CheckButtonContainer>
             <CheckIcon onClick={checkClickHandler} />
             <RollBackIcon onClick={rollBackClickHandler} />
