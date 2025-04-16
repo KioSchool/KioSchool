@@ -10,6 +10,7 @@ import useOrder from '@hooks/user/useOrder';
 import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
 import OrderPayNavBar from '@components/admin/order/OrderPayNavBar';
 import OrderPayDescription from '@components/user/order/OrderPayDescription';
+import { HttpStatusCode } from 'axios';
 
 const Container = styled.div`
   width: 100%;
@@ -64,7 +65,7 @@ function OrderPay() {
   const customerNameRef = useRef<HTMLInputElement>(null);
 
   const errorHandler = (error: any) => {
-    if (error.response.status === 406) {
+    if (error.response.status === HttpStatusCode.NotAcceptable) {
       alert('품절된 상품이 있습니다. 주문 화면으로 돌아갑니다.');
       setOrderBasket([]);
       navigate(-2);

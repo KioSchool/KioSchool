@@ -1,4 +1,4 @@
-import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosResponse, HttpStatusCode, InternalAxiosRequestConfig } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { isLoadingAtom } from '@recoils/atoms';
@@ -50,7 +50,7 @@ function useApi() {
   adminApi.interceptors.response.use(commonResponseInterceptor, (error) => {
     stopLoading(error.config);
 
-    if (error.response.status === 403) {
+    if (error.response.status === HttpStatusCode.Forbidden) {
       controller.abort();
       alert('로그인이 필요합니다.');
       localStorage.setItem('isLoggedIn', 'false');
@@ -77,7 +77,7 @@ function useApi() {
   superAdminApi.interceptors.response.use(commonResponseInterceptor, (error) => {
     stopLoading(error.config);
 
-    if (error.response.status === 403) {
+    if (error.response.status === HttpStatusCode.Forbidden) {
       controller.abort();
       alert('권한이 없습니다.');
       navigate('/');
