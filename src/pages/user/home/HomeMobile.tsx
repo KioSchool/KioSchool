@@ -99,16 +99,16 @@ const RightIcon = styled(RiArrowRightLine)`
   height: 15px;
 `;
 
-export default function HomeMobile() {
-  const grassClusters = [
-    { left: '10%', color: '#4F784D', size: '50px', zIndex: 0 },
-    { left: '25%', color: '#67AE63', size: '40px', zIndex: 2 },
-    { left: '32%', color: '#4F784D', size: '60px', zIndex: 0 },
-    { left: '68%', color: '#4F784D', size: '45px', zIndex: 2 },
-    { left: '75%', color: '#67AE63', size: '50px', zIndex: 2 },
-    { left: '90%', color: '#4F784D', size: '60px', zIndex: 0 },
-  ];
+const grassClusters = [
+  { left: '10%', color: '#4F784D', size: '50px', zIndex: 0 },
+  { left: '25%', color: '#67AE63', size: '40px', zIndex: 2 },
+  { left: '32%', color: '#4F784D', size: '60px', zIndex: 0 },
+  { left: '68%', color: '#4F784D', size: '45px', zIndex: 2 },
+  { left: '75%', color: '#67AE63', size: '50px', zIndex: 2 },
+  { left: '90%', color: '#4F784D', size: '60px', zIndex: 0 },
+];
 
+export default function HomeMobile() {
   return (
     <Container>
       <Cloud src={cloud1} top="10%" right="0" scale={0.5} />
