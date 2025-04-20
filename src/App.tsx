@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Home from '@pages/user/Home';
+import Home from '@pages/user/home/Home';
 import AdminHome from '@pages/admin/AdminHome';
 import Login from '@pages/user/Login';
 import AdminWorkspace from '@pages/admin/AdminWorkspace';
