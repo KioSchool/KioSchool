@@ -107,7 +107,7 @@ const cloudClusters = [
 ];
 
 const grassClusters = [
-  { id: 1, left: '10%', color: '#4F784D', size: '50px', zIndex: 0 },
+  { id: 1, left: '10%', color: '#67AE63', size: '50px', zIndex: 0 },
   { id: 2, left: '25%', color: '#67AE63', size: '40px', zIndex: 2 },
   { id: 3, left: '32%', color: '#4F784D', size: '60px', zIndex: 0 },
   { id: 4, left: '68%', color: '#4F784D', size: '45px', zIndex: 2 },
