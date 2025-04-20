@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { orderBasketAtom, userWorkspaceAtom } from '@recoils/atoms';
 import _ from 'lodash';
 import styled from '@emotion/styled';
@@ -10,6 +10,7 @@ import useOrder from '@hooks/user/useOrder';
 import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
 import OrderPayNavBar from '@components/admin/order/OrderPayNavBar';
 import OrderPayDescription from '@components/user/order/OrderPayDescription';
+import { HttpStatusCode } from 'axios';
 
 const Container = styled.div`
   width: 100%;
@@ -44,7 +45,7 @@ const DescriptionContainer = styled.div`
 
 function OrderPay() {
   const workspace = useRecoilValue(userWorkspaceAtom);
-  const orderBasket = useRecoilValue(orderBasketAtom);
+  const [orderBasket, setOrderBasket] = useRecoilState(orderBasketAtom);
   const productsMap = _.keyBy(workspace.products, 'id');
   const totalAmount = orderBasket.reduce((acc, cur) => {
     return acc + productsMap[cur.productId].price * cur.quantity;
@@ -63,6 +64,15 @@ function OrderPay() {
   const [isTossPay, setIsTossPay] = useState<boolean>(isTossAvailable);
   const customerNameRef = useRef<HTMLInputElement>(null);
 
+  const errorHandler = (error: any) => {
+    if (error.response.status === HttpStatusCode.NotAcceptable) {
+      alert('품절된 상품이 있습니다. 주문 화면으로 돌아갑니다.');
+      setOrderBasket([]);
+      navigate(-2);
+      return;
+    }
+  };
+
   useEffect(() => {
     if (orderBasket.length === 0) {
       alert('잘못된 접근입니다.');
@@ -72,33 +82,37 @@ function OrderPay() {
   }, [isTossPay]);
 
   const createOrderAndNavigateToToss = (customerName: string) => {
-    createOrder(workspaceId, tableNo, orderBasket, customerName).then((res) => {
-      navigate({
-        pathname: '/order-complete',
-        search: createSearchParams({
-          orderId: res.data.id.toString(),
-          workspaceId: workspaceId || '',
-          tableNo: tableNo || '',
-        }).toString(),
-      });
+    createOrder(workspaceId, tableNo, orderBasket, customerName)
+      .then((res) => {
+        navigate({
+          pathname: '/order-complete',
+          search: createSearchParams({
+            orderId: res.data.id.toString(),
+            workspaceId: workspaceId || '',
+            tableNo: tableNo || '',
+          }).toString(),
+        });
 
-      if (totalAmount == 0) return;
+        if (totalAmount == 0) return;
 
-      window.open(`${tossAccountUrl}&amount=${totalAmount}`);
-    });
+        window.open(`${tossAccountUrl}&amount=${totalAmount}`);
+      })
+      .catch(errorHandler);
   };
 
   const createOrderAndNavigateToComplete = (customerName: string) => {
-    createOrder(workspaceId, tableNo, orderBasket, customerName).then((res) => {
-      navigate({
-        pathname: '/order-complete',
-        search: createSearchParams({
-          orderId: res.data.id.toString(),
-          workspaceId: workspaceId || '',
-          tableNo: tableNo || '',
-        }).toString(),
-      });
-    });
+    createOrder(workspaceId, tableNo, orderBasket, customerName)
+      .then((res) => {
+        navigate({
+          pathname: '/order-complete',
+          search: createSearchParams({
+            orderId: res.data.id.toString(),
+            workspaceId: workspaceId || '',
+            tableNo: tableNo || '',
+          }).toString(),
+        });
+      })
+      .catch(errorHandler);
   };
 
   const payOrder = () => {

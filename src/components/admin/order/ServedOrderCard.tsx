@@ -9,12 +9,14 @@ import OrderSummaryContents from './OrderSummaryContents';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 import RollBackSvg from '@resources/svg/RollBackSvg';
-import OrderDetailModalButton from '@components/admin/order/modal/OrderDetailModalButton';
+import OrderDetailModal from '@components/admin/order/modal/OrderDetailModal';
 import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
+import useModal from '@hooks/useModal';
+import { RiArrowRightSLine } from '@remixicon/react';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
-  background-color: ${Color.LIGHT_GREY};
+  background-color: #f4f4f4;
   width: 200px;
   height: 170px;
   border-radius: 10px;
@@ -23,6 +25,7 @@ const CardContainer = styled.div`
     background-color: ${Color.KIO_ORANGE};
 
     & * {
+      background-color: ${Color.KIO_ORANGE};
       color: ${Color.WHITE};
       stroke: ${Color.WHITE};
     }
@@ -31,10 +34,19 @@ const CardContainer = styled.div`
 
 const CardContents = styled.div`
   ${colFlex({ justify: 'space-between', align: 'center' })}
-  width: 80%;
+  width: 100%;
   height: 85%;
 `;
 
+const OrderInfoContainer = styled.div`
+  ${colFlex()}
+  gap: 15px;
+  background-color: ${Color.LIGHT_GREY};
+  box-sizing: border-box;
+  padding: 5px 15px;
+  width: 100%;
+  cursor: pointer;
+`;
 const HeaderContainer = styled.div`
   ${rowFlex({ justify: 'space-between', align: 'start' })}
   width: 100%;
@@ -49,6 +61,12 @@ const CheckButtonContainer = styled.div`
   ${rowFlex({ justify: 'center', align: 'center' })}
   gap: 35px;
   width: 55%;
+`;
+
+const RightIcon = styled(RiArrowRightSLine)`
+  width: 25px;
+  height: 25px;
+  ${expandButtonStyle}
 `;
 
 const RollBackIcon = styled(RollBackSvg)`
@@ -68,27 +86,35 @@ const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => 
 function ServedOrderCard({ order }: OrderCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { payOrder } = useAdminOrder(workspaceId);
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   const rollBackClickHandler = () => {
     payOrder(order.id);
+  };
+
+  const orderInfoClickHandler = () => {
+    openModal();
   };
 
   return (
     <>
       <CardContainer>
         <CardContents>
-          <HeaderContainer>
-            <TitleContainer>
-              <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>
-                {`테이블 ${order.tableNumber}`}
-              </AppLabel>
-              <AppLabel color={Color.BLACK} size={13}>
-                {`주문 번호 ${order.orderNumber}`}
-              </AppLabel>
-            </TitleContainer>
-            <OrderDetailModalButton order={order} />
-          </HeaderContainer>
-          <OrderSummaryContents contents={order} />
+          <OrderInfoContainer onClick={orderInfoClickHandler}>
+            <HeaderContainer>
+              <TitleContainer>
+                <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>
+                  {`테이블 ${order.tableNumber}`}
+                </AppLabel>
+                <AppLabel color={Color.BLACK} size={13}>
+                  {`주문 번호 ${order.orderNumber}`}
+                </AppLabel>
+              </TitleContainer>
+              <RightIcon onClick={openModal} />
+            </HeaderContainer>
+            <OrderSummaryContents contents={order} />
+          </OrderInfoContainer>
+          <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
           <CheckButtonContainer>
             <RollBackIcon onClick={rollBackClickHandler} />
           </CheckButtonContainer>
