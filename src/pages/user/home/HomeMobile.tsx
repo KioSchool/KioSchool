@@ -1,8 +1,5 @@
 import React from 'react';
 import signBoard from '@resources/image/home/signBoard.png';
-// import cloud1 from '@resources/image/home/cloud1.png';
-// import cloud2 from '@resources/image/home/cloud2.png';
-// import cloud3 from '@resources/image/home/cloud3.png';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { RiArrowRightLine } from '@remixicon/react';
@@ -48,7 +45,24 @@ const Cloud = styled.div<{ top: string; left?: string; right?: string; scale?: n
   }
 `;
 
-const Grass = styled.div`
+const Grass = styled.div<{
+  left: string;
+  color: string;
+  size?: string;
+  zIndex: number;
+}>`
+  position: absolute;
+  bottom: 35%;
+  left: ${({ left }) => left};
+  transform: translateX(-50%);
+  width: ${({ size = '60px' }) => size};
+  height: ${({ size = '60px' }) => `calc(${size} / 2)`};
+  background-color: ${({ color }) => color};
+  border-radius: ${({ size = '60px' }) => `${size} ${size} 0 0`};
+  z-index: ${({ zIndex }) => zIndex};
+`;
+
+const Ground = styled.div`
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -101,17 +115,30 @@ const RightIcon = styled(RiArrowRightLine)`
   height: 15px;
 `;
 
-function HomeMobile() {
+export default function HomeMobile() {
+  const grassClusters = [
+    { left: '10%', color: '#4F784D', size: '50px', zIndex: 0 },
+    { left: '25%', color: '#67AE63', size: '40px', zIndex: 2 },
+    { left: '32%', color: '#4F784D', size: '60px', zIndex: 0 },
+    { left: '68%', color: '#4F784D', size: '45px', zIndex: 2 },
+    { left: '75%', color: '#67AE63', size: '50px', zIndex: 2 },
+    { left: '90%', color: '#4F784D', size: '60px', zIndex: 0 },
+  ];
+
   return (
     <Container>
       <Cloud top="10%" left="5%" scale={0.8} />
       <Cloud top="5%" right="10%" scale={1.1} />
       <Cloud top="20%" left="50%" scale={0.9} />
 
+      {grassClusters.map((g, i) => (
+        <Grass key={i} left={g.left} color={g.color} size={g.size} zIndex={g.zIndex} />
+      ))}
+
       <SignBoard>
         <BoardContents>
           <BoardText>
-            주점 관리자 운영화면은{'\n'}
+            주점 관리자 운영화면은{`\n`}
             PC 또는 태블릿으로 이용이 가능합니다.
           </BoardText>
           <BoardButton>
@@ -121,9 +148,7 @@ function HomeMobile() {
         </BoardContents>
       </SignBoard>
 
-      <Grass />
+      <Ground />
     </Container>
   );
 }
-
-export default HomeMobile;
