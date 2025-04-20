@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { RiArrowRightLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   position: relative;
@@ -109,6 +110,7 @@ const grassClusters = [
 ];
 
 export default function HomeMobile() {
+  const navigate = useNavigate();
   return (
     <Container>
       <Cloud src={cloud1} top="10%" right="0" scale={0.5} />
@@ -125,7 +127,7 @@ export default function HomeMobile() {
             주점 관리자 운영화면은{`\n`}
             PC 또는 태블릿으로 이용이 가능합니다.
           </BoardText>
-          <BoardButton>
+          <BoardButton onClick={() => navigate('/info')}>
             키오스쿨 소개 페이지로 이동
             <RightIcon />
           </BoardButton>
