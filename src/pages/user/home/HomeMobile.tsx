@@ -1,5 +1,6 @@
-import React from 'react';
 import signBoard from '@resources/image/home/signBoard.png';
+import cloud1 from '@resources/image/home/cloud1.png';
+import cloud3 from '@resources/image/home/cloud3.png';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { RiArrowRightLine } from '@remixicon/react';
@@ -9,40 +10,23 @@ const Container = styled.div`
   position: relative;
   width: 100%;
   height: 100vh;
-  background-color: #eaf6ff;
   overflow: hidden;
 `;
 
-const Cloud = styled.div<{ top: string; left?: string; right?: string; scale?: number }>`
+const Cloud = styled.img<{
+  src: string;
+  top: string;
+  left?: string;
+  right?: string;
+  scale?: number;
+}>`
   position: absolute;
   top: ${({ top }) => top};
   left: ${({ left }) => left ?? 'auto'};
   right: ${({ right }) => right ?? 'auto'};
+  transform-origin: ${({ right }) => (right ? 'top right' : 'top left')};
   transform: scale(${({ scale = 1 }) => scale});
   width: 160px;
-  height: 50px;
-  background: #d3f0fd;
-  border-radius: 50px;
-  &::before {
-    content: '';
-    position: absolute;
-    top: -20px;
-    left: 30px;
-    width: 80px;
-    height: 60px;
-    background: #d3f0fd;
-    border-radius: 50%;
-  }
-  &::after {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: 70px;
-    width: 100px;
-    height: 40px;
-    background: #d3f0fd;
-    border-radius: 50px;
-  }
 `;
 
 const Grass = styled.div<{
@@ -127,9 +111,9 @@ export default function HomeMobile() {
 
   return (
     <Container>
-      <Cloud top="10%" left="5%" scale={0.8} />
-      <Cloud top="5%" right="10%" scale={1.1} />
-      <Cloud top="20%" left="50%" scale={0.9} />
+      <Cloud src={cloud1} top="10%" right="0" scale={0.5} />
+      <Cloud src={cloud3} top="15%" left="-80px" scale={1.1} />
+      <Cloud src={cloud3} top="5%" left="15%" scale={0.8} />
 
       {grassClusters.map((g, i) => (
         <Grass key={i} left={g.left} color={g.color} size={g.size} zIndex={g.zIndex} />
