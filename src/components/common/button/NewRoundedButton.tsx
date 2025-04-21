@@ -9,8 +9,8 @@ export type ButtonSize = 'xs' | 'sm' | 'md';
 const sizeStyles = (size: ButtonSize, width?: number, height?: number) => {
   if (width || height) {
     return css`
-      ${width != null && `width: ${width}px;`}
-      ${height != null && `height: ${height}px;`}
+      ${width && `width: ${width}px;`}
+      ${height && `height: ${height}px;`}
     `;
   }
 
