@@ -34,7 +34,6 @@ const sizeStyles = (size: ButtonSize, width?: number, height?: number) => {
         height: 7px;
       `;
     case 'md':
-    default:
       return css`
         font-size: 20px;
         width: 150px;
@@ -44,14 +43,15 @@ const sizeStyles = (size: ButtonSize, width?: number, height?: number) => {
 };
 
 const StyledButton = styled.button<NewRoundedButtonProps>`
+  box-sizing: content-box;
   ${rowFlex({ justify: 'center', align: 'center' })}
   background: ${Color.KIO_ORANGE};
   color: ${Color.WHITE};
   border: none;
   border-radius: 40px;
   cursor: pointer;
-  padding: 5px 20px;
-  font-family: 'LINESeedKR-Rg';
+  padding: 5px 25px;
+  font-family: 'LINE Seed Sans KR', sans-serif;
   font-weight: 700;
 
   ${({ size = 'md', width, height }) => sizeStyles(size, width, height)}
