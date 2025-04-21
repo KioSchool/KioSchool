@@ -4,13 +4,19 @@ import { css } from '@emotion/react';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 
-export type ButtonSize = 'xs' | 'sm' | 'md';
+type ButtonSize = 'xs' | 'sm' | 'md';
 
-const sizeStyles = (size: ButtonSize, width?: number, height?: number) => {
-  if (width || height) {
+interface CustomButtonSize {
+  width?: number;
+  height?: number;
+}
+
+const sizeStyles = (size: ButtonSize, customSize: CustomButtonSize | undefined) => {
+  if (customSize) {
     return css`
-      ${width && `width: ${width}px;`}
-      ${height && `height: ${height}px;`}
+      width: ${customSize.width ?? 150}px;
+      height: ${customSize.height ?? 35}px;
+      font-size: ${customSize.height ? `${customSize.height * 0.5}px` : '20px'};
     `;
   }
 
@@ -24,26 +30,24 @@ const sizeStyles = (size: ButtonSize, width?: number, height?: number) => {
     case 'sm':
       return css`
         font-size: 16px;
-        width: 45px;
-        height: 7px;
+        width: 172px;
+        height: 37px;
       `;
     case 'md':
       return css`
         font-size: 20px;
-        width: 150px;
-        height: 35px;
+        width: 210px;
+        height: 45px;
       `;
   }
 };
 
 interface NewRoundedButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize;
-  width?: number;
-  height?: number;
+  customSize?: CustomButtonSize;
 }
 
 const StyledButton = styled.button<NewRoundedButtonProps>`
-  box-sizing: content-box;
   ${rowFlex({ justify: 'center', align: 'center' })}
   background: ${Color.KIO_ORANGE};
   color: ${Color.WHITE};
@@ -54,7 +58,7 @@ const StyledButton = styled.button<NewRoundedButtonProps>`
   font-family: 'LINE Seed Sans KR', sans-serif;
   font-weight: 700;
 
-  ${({ size = 'md', width, height }) => sizeStyles(size, width, height)}
+  ${({ size = 'md', customSize }) => sizeStyles(size, customSize)}
 
   &:hover:not(:disabled) {
     background: #ff9d50;
