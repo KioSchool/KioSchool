@@ -6,12 +6,6 @@ import { rowFlex } from '@styles/flexStyles';
 
 export type ButtonSize = 'xs' | 'sm' | 'md';
 
-interface NewRoundedButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  size?: ButtonSize;
-  width?: number;
-  height?: number;
-}
-
 const sizeStyles = (size: ButtonSize, width?: number, height?: number) => {
   if (width || height) {
     return css`
@@ -41,6 +35,12 @@ const sizeStyles = (size: ButtonSize, width?: number, height?: number) => {
       `;
   }
 };
+
+interface NewRoundedButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  size?: ButtonSize;
+  width?: number;
+  height?: number;
+}
 
 const StyledButton = styled.button<NewRoundedButtonProps>`
   box-sizing: content-box;
