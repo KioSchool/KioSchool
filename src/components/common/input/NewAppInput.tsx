@@ -21,6 +21,7 @@ const StyledInput = styled.input<NewAppInputProps>`
     color: #c9c9c9;
   }
 `;
+
 interface NewAppInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   enterHandler?: () => void;
   width?: number;
