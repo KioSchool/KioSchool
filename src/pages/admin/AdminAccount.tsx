@@ -33,7 +33,7 @@ const InfoContainer = styled.div`
 const RegisterContainer = styled.div`
   width: 100%;
   gap: 15px;
-  ${rowFlex({ align: 'space-between' })};
+  ${rowFlex({})};
 `;
 
 function AdminAccount() {
