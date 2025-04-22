@@ -37,7 +37,7 @@ const Grass = styled.div<{
   zIndex: number;
 }>`
   position: absolute;
-  bottom: 35%;
+  bottom: 30%;
   left: ${({ left }) => left};
   transform: translateX(-50%);
   width: ${({ size = '60px' }) => size};
@@ -51,13 +51,13 @@ const Ground = styled.div`
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 35%;
+  height: 30%;
   background-color: #7fc47f;
 `;
 
 const SignBoard = styled.div`
   position: absolute;
-  bottom: 300px;
+  bottom: 30%;
   left: 50%;
   transform: translateX(-50%);
   width: 85%;
