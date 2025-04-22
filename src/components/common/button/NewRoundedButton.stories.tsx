@@ -1,7 +1,7 @@
 import NewRoundedButton from '@components/common/button/NewRoundedButton';
 
 const meta = {
-  title: 'Components/Button/NewRoundedButton',
+  title: 'Components/Common/Button/NewRoundedButton',
   component: NewRoundedButton,
   argTypes: {
     size: { control: 'select', options: ['xs', 'sm', 'md'] },

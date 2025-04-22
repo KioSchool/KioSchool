@@ -1,7 +1,7 @@
 import NewAppInput from '@components/common/input/NewAppInput';
 
 const meta = {
-  title: 'Components/Input/NewAppInput',
+  title: 'Components/Common/Input/NewAppInput',
   component: NewAppInput,
   argTypes: {
     enterHandler: { control: 'function' },
