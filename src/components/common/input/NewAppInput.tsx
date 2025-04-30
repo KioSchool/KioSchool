@@ -1,12 +1,30 @@
 import React, { ForwardedRef, forwardRef } from 'react';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+
+const Container = styled.div<NewAppInputProps>`
+  width: ${({ width }) => (width ? `${width}px` : '500px')};
+  ${colFlex({ justify: 'center', align: 'center' })};
+`;
+
+const HeaderContainer = styled.div`
+  width: 100%;
+  ${rowFlex({ align: 'center' })};
+`;
+
+const InputLabel = styled.span`
+  color: ${Color.GREY};
+  font-size: 20px;
+  font-weight: 500;
+  padding-left: 10px;
+`;
 
 const StyledInput = styled.input<NewAppInputProps>`
   border: none;
   border-radius: 45px;
   box-sizing: border-box;
-  width: ${({ width }) => (width ? `${width}px` : '500px')};
+  width: 100%;
   height: ${({ height }) => (height ? `${height}px` : '50px')};
   padding: 0 40px;
 
@@ -26,6 +44,7 @@ interface NewAppInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   enterHandler?: () => void;
   width?: number;
   height?: number;
+  label?: string;
 }
 
 const NewAppInput = forwardRef<HTMLInputElement, NewAppInputProps>((props: NewAppInputProps, ref: ForwardedRef<HTMLInputElement>) => {
@@ -35,7 +54,12 @@ const NewAppInput = forwardRef<HTMLInputElement, NewAppInputProps>((props: NewAp
     }
   };
 
-  return <StyledInput {...props} ref={ref} onKeyDown={onKeyDown} className={'app-input'} />;
+  return (
+    <Container {...props}>
+      <HeaderContainer>{props.label && <InputLabel>{props.label}</InputLabel>}</HeaderContainer>
+      <StyledInput {...props} ref={ref} onKeyDown={onKeyDown} className={'app-input'} />
+    </Container>
+  );
 });
 
 export default NewAppInput;
