@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import NewRoundedButton, { CustomButtonSize } from '../button/NewRoundedButton';
+import { RiShareBoxLine } from '@remixicon/react';
 
 const Container = styled.div<NewAppInputProps>`
   width: ${({ width }) => (width ? `${width}px` : '500px')};
@@ -12,6 +13,7 @@ const Container = styled.div<NewAppInputProps>`
 
 const HeaderContainer = styled.div`
   width: 100%;
+  gap: 5px;
   ${rowFlex({ align: 'center' })};
 `;
 
@@ -20,6 +22,26 @@ const InputLabel = styled.span`
   font-size: 20px;
   font-weight: 500;
   padding-left: 10px;
+`;
+
+const LinkContainer = styled.div`
+  gap: 3px;
+  max-width: 250px;
+  ${rowFlex({ justify: 'center', align: 'center' })};
+  cursor: pointer;
+  &:hover > * {
+    color: ${Color.KIO_ORANGE};
+  }
+`;
+
+const LinkIcon = styled(RiShareBoxLine)`
+  color: #939393;
+`;
+
+const LinkText = styled.span`
+  color: #939393;
+  font-size: 13px;
+  font-weight: 500;
 `;
 
 const StyledInput = styled.input<NewAppInputProps>`
@@ -51,6 +73,9 @@ interface NewAppInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     size?: CustomButtonSize;
     buttonText: string;
   };
+  linkProps?: {
+    linkText: string;
+  };
 }
 
 const NewAppInput = forwardRef<HTMLInputElement, NewAppInputProps>((props: NewAppInputProps, ref: ForwardedRef<HTMLInputElement>) => {
@@ -64,6 +89,12 @@ const NewAppInput = forwardRef<HTMLInputElement, NewAppInputProps>((props: NewAp
     <Container {...props}>
       <HeaderContainer>
         {props.label && <InputLabel>{props.label}</InputLabel>}
+        {props.linkProps && (
+          <LinkContainer>
+            <LinkIcon size={16} />
+            <LinkText>{props.linkProps.linkText}</LinkText>
+          </LinkContainer>
+        )}
         {props.buttonProps && (
           <NewRoundedButton size={'xs'} customSize={props.buttonProps.size} onClick={props.enterHandler} style={{ marginLeft: 'auto', marginRight: '10px' }}>
             {props.buttonProps.buttonText}
