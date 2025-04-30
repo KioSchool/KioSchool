@@ -13,7 +13,6 @@ const Container = styled.div<NewAppInputProps>`
 
 const HeaderContainer = styled.div`
   width: 100%;
-  gap: 5px;
   ${rowFlex({ align: 'center' })};
 `;
 
@@ -24,9 +23,10 @@ const InputLabel = styled.span`
   padding-left: 10px;
 `;
 
-const LinkContainer = styled.div`
+const LinkContainer = styled.a`
   gap: 3px;
   max-width: 250px;
+  margin-left: 10px;
   ${rowFlex({ justify: 'center', align: 'center' })};
   cursor: pointer;
   &:hover > * {
@@ -75,6 +75,7 @@ interface NewAppInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   };
   linkProps?: {
     linkText: string;
+    linkUrl: string;
   };
 }
 
@@ -90,7 +91,7 @@ const NewAppInput = forwardRef<HTMLInputElement, NewAppInputProps>((props: NewAp
       <HeaderContainer>
         {props.label && <InputLabel>{props.label}</InputLabel>}
         {props.linkProps && (
-          <LinkContainer>
+          <LinkContainer href={props.linkProps.linkUrl} target="_blank" rel="noopener noreferrer">
             <LinkIcon size={16} />
             <LinkText>{props.linkProps.linkText}</LinkText>
           </LinkContainer>
@@ -101,7 +102,7 @@ const NewAppInput = forwardRef<HTMLInputElement, NewAppInputProps>((props: NewAp
           </NewRoundedButton>
         )}
       </HeaderContainer>
-      <StyledInput {...props} ref={ref} onKeyDown={onKeyDown} className={'app-input'} />
+      <StyledInput {...props} ref={ref} onKeyDown={onKeyDown} />
     </Container>
   );
 });
