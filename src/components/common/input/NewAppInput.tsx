@@ -27,6 +27,7 @@ const LinkContainer = styled.a`
   gap: 3px;
   max-width: 250px;
   margin-left: 10px;
+  text-decoration: none;
   ${rowFlex({ justify: 'center', align: 'center' })};
   cursor: pointer;
   &:hover > * {
