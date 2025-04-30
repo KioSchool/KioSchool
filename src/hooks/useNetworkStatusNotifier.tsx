@@ -10,6 +10,7 @@ function useNetworkStatusNotifier() {
     const previousStatus = previousOnlineStatusRef.current;
 
     if (previousStatus && !isOnline) {
+      toast.dismiss('network-online');
       toast.error('네트워크 연결이 끊어졌습니다.', {
         toastId: 'network-offline',
         autoClose: false,
