@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 const verifyConnectivity = async (timeout = 5000): Promise<boolean> => {
   const fetchUrl = `https://www.google.com/favicon.ico?t=${Date.now()}`;
@@ -23,20 +23,12 @@ const verifyConnectivity = async (timeout = 5000): Promise<boolean> => {
   }
 };
 
-function useNetwork(checkInterval = 5000): boolean {
+function useNetwork(): boolean {
   const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
-  const isChecking = useRef(false);
-  const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
 
   const performCheck = useCallback(async () => {
-    if (isChecking.current) return;
-    isChecking.current = true;
-
     const currentStatus = await verifyConnectivity();
-
     setIsOnline(currentStatus);
-
-    isChecking.current = false;
   }, []);
 
   useEffect(() => {
@@ -51,18 +43,9 @@ function useNetwork(checkInterval = 5000): boolean {
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
 
-    intervalIdRef.current = setInterval(() => {
-      if (navigator.onLine) {
-        performCheck();
-      }
-    }, checkInterval);
-
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
-      if (intervalIdRef.current) {
-        clearInterval(intervalIdRef.current);
-      }
     };
   }, []);
 
