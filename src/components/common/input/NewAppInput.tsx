@@ -2,9 +2,11 @@ import React, { ForwardedRef, forwardRef } from 'react';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import NewRoundedButton, { CustomButtonSize } from '../button/NewRoundedButton';
 
 const Container = styled.div<NewAppInputProps>`
   width: ${({ width }) => (width ? `${width}px` : '500px')};
+  gap: 6px;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
@@ -45,6 +47,10 @@ interface NewAppInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   width?: number;
   height?: number;
   label?: string;
+  buttonProps?: {
+    size?: CustomButtonSize;
+    buttonText: string;
+  };
 }
 
 const NewAppInput = forwardRef<HTMLInputElement, NewAppInputProps>((props: NewAppInputProps, ref: ForwardedRef<HTMLInputElement>) => {
@@ -56,7 +62,14 @@ const NewAppInput = forwardRef<HTMLInputElement, NewAppInputProps>((props: NewAp
 
   return (
     <Container {...props}>
-      <HeaderContainer>{props.label && <InputLabel>{props.label}</InputLabel>}</HeaderContainer>
+      <HeaderContainer>
+        {props.label && <InputLabel>{props.label}</InputLabel>}
+        {props.buttonProps && (
+          <NewRoundedButton size={'xs'} customSize={props.buttonProps.size} onClick={props.enterHandler} style={{ marginLeft: 'auto', marginRight: '10px' }}>
+            {props.buttonProps.buttonText}
+          </NewRoundedButton>
+        )}
+      </HeaderContainer>
       <StyledInput {...props} ref={ref} onKeyDown={onKeyDown} className={'app-input'} />
     </Container>
   );
