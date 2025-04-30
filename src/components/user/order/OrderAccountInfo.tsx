@@ -31,12 +31,13 @@ const AccountInfo = styled.div`
 `;
 
 const CopyButton = styled.button`
-  width: 90px;
   height: 23px;
   font-size: 12px;
   background: ${Color.WHITE};
   border: 1px solid ${Color.GREY};
   border-radius: 20px;
+  padding: 0 10px;
+  color: ${Color.BLACK};
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
