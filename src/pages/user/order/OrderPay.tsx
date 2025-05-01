@@ -82,12 +82,6 @@ function OrderPay() {
   }, [isTossPay]);
 
   const createOrderAndNavigateToToss = (customerName: string) => {
-    const tossUrl = `${tossAccountUrl}&amount=${totalAmount}`;
-    let popup;
-    if (totalAmount !== 0) {
-      popup = window.open(undefined);
-    }
-
     createOrder(workspaceId, tableNo, orderBasket, customerName)
       .then((res) => {
         navigate({
@@ -98,12 +92,12 @@ function OrderPay() {
             tableNo: tableNo || '',
           }).toString(),
         });
+
+        if (totalAmount == 0) return;
+
+        window.open(`${tossAccountUrl}&amount=${totalAmount}`);
       })
       .catch(errorHandler);
-
-    if (totalAmount !== 0) {
-      popup?.location.replace(tossUrl);
-    }
   };
 
   const createOrderAndNavigateToComplete = (customerName: string) => {
