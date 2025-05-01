@@ -72,11 +72,11 @@ interface NewAppInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   buttonProps?: {
     size?: CustomButtonSize;
-    buttonText: string;
+    text: string;
   };
   linkProps?: {
-    linkText: string;
-    linkUrl: string;
+    text: string;
+    url: string;
   };
 }
 
@@ -92,14 +92,14 @@ const NewAppInput = forwardRef<HTMLInputElement, NewAppInputProps>((props: NewAp
       <HeaderContainer>
         {props.label && <InputLabel>{props.label}</InputLabel>}
         {props.linkProps && (
-          <LinkContainer href={props.linkProps.linkUrl} target="_blank" rel="noopener noreferrer">
+          <LinkContainer href={props.linkProps.url} target="_blank" rel="noopener noreferrer">
             <LinkIcon size={16} />
-            <LinkText>{props.linkProps.linkText}</LinkText>
+            <LinkText>{props.linkProps.text}</LinkText>
           </LinkContainer>
         )}
         {props.buttonProps && (
           <NewRoundedButton size={'xs'} customSize={props.buttonProps.size} onClick={props.enterHandler} style={{ marginLeft: 'auto', marginRight: '10px' }}>
-            {props.buttonProps.buttonText}
+            {props.buttonProps.text}
           </NewRoundedButton>
         )}
       </HeaderContainer>
