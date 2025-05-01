@@ -10,11 +10,11 @@ const meta = {
     label: { control: 'text' },
     buttonProps: {
       control: 'object',
-      description: '버튼 속성 (buttonText는 필수)',
+      description: '버튼 속성 (text는 필수)',
     },
     linkProps: {
       control: 'object',
-      description: '링크 속성 (linkText, linkUrl 필수)',
+      description: '링크 속성 (text, url 필수)',
     },
   },
 };
@@ -41,7 +41,7 @@ export const WithButton = {
     width: 500,
     enterHandler: () => alert('검색 버튼 클릭!'),
     buttonProps: {
-      buttonText: '검색',
+      text: '검색',
     },
   },
 };
@@ -51,8 +51,8 @@ export const WithLink = {
     placeholder: '웹사이트 주소를 입력하세요',
     width: 500,
     linkProps: {
-      linkText: '예시 링크 보기',
-      linkUrl: 'https://kio-school.com/',
+      text: '예시 링크 보기',
+      url: 'https://kio-school.com/',
     },
   },
 };
@@ -64,7 +64,7 @@ export const WithLabelAndButton = {
     width: 600,
     enterHandler: () => alert('확인 버튼 클릭!'),
     buttonProps: {
-      buttonText: '확인',
+      text: '확인',
     },
   },
 };
@@ -75,8 +75,8 @@ export const WithLabelAndLink = {
     label: '소스 코드 URL',
     width: 600,
     linkProps: {
-      linkText: 'GitHub 가이드',
-      linkUrl: 'https://github.com/KioSchool/KioSchool',
+      text: 'GitHub 가이드',
+      url: 'https://github.com/KioSchool/KioSchool',
     },
   },
 };
@@ -87,11 +87,11 @@ export const WithButtonAndLink = {
     width: 600,
     enterHandler: () => alert('동영상 추가'),
     buttonProps: {
-      buttonText: '추가',
+      text: '추가',
     },
     linkProps: {
-      linkText: '유효한 URL 형식',
-      linkUrl: 'https://kio-school.com/',
+      text: '유효한 URL 형식',
+      url: 'https://kio-school.com/',
     },
   },
 };
@@ -103,11 +103,11 @@ export const WithAll = {
     width: 700,
     enterHandler: () => alert('API 키 저장'),
     buttonProps: {
-      buttonText: '저장',
+      text: '저장',
     },
     linkProps: {
-      linkText: 'API 키 발급 방법',
-      linkUrl: 'https://kio-school.com/',
+      text: 'API 키 발급 방법',
+      url: 'https://kio-school.com/',
     },
   },
 };
@@ -118,7 +118,7 @@ export const WithCustomButtonSize = {
     width: 600,
     enterHandler: () => alert('커스텀 사이즈 버튼 클릭!'),
     buttonProps: {
-      buttonText: '커스텀 버튼',
+      text: '커스텀 버튼',
       size: { width: 150, height: 35 },
     },
   },
@@ -131,7 +131,7 @@ export const SmallInput = {
     height: 40,
     enterHandler: () => alert('코드 확인'),
     buttonProps: {
-      buttonText: '확인',
+      text: '확인',
     },
   },
 };
@@ -153,7 +153,7 @@ export const PasswordInput = {
     width: 500,
     enterHandler: () => alert('비밀번호 제출'),
     buttonProps: {
-      buttonText: '제출',
+      text: '제출',
     },
   },
 };
@@ -183,8 +183,8 @@ export const ErrorInput = {
     label: '이메일 주소',
     className: 'error',
     linkProps: {
-      linkText: '올바른 이메일 형식이 아닙니다',
-      linkUrl: 'https://kio-school.com/',
+      text: '올바른 이메일 형식이 아닙니다',
+      url: 'https://kio-school.com/',
     },
   },
 };
