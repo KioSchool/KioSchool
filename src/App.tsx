@@ -8,7 +8,6 @@ import Register from '@pages/user/Register';
 import AdminProduct from '@pages/admin/AdminProduct';
 import Order from '@pages/user/order/Order';
 import AdminAccount from '@pages/admin/AdminAccount';
-import { RecoilRoot } from 'recoil';
 import LoadingModal from '@components/common/modal/LoadingModal';
 import { Global } from '@emotion/react';
 import { globalStyles } from '@styles/globalStyles';
@@ -36,14 +35,30 @@ import SuperAdminEmailDomainList from '@pages/super-admin/SuperAdminEmailDomainL
 import UserEmailDomain from '@pages/user/UserEmailDomain';
 import AdminWorkspaceEdit from '@pages/admin/AdminWorkspaceEdit';
 import SuperAdminBank from '@pages/super-admin/SuperAdminBank';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { RecoilRoot } from 'recoil';
+import useNetworkStatusNotifier from '@hooks/useNetworkStatusNotifier';
 
 ReactGA.initialize('G-XGYLSPGK2G');
 
 function App() {
   RouterChangeTracker();
+  useNetworkStatusNotifier();
 
   return (
     <RecoilRoot>
+      <ToastContainer
+        position="top-right"
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
