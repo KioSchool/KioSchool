@@ -65,6 +65,7 @@ function OrderPay() {
   const customerNameRef = useRef<HTMLInputElement>(null);
 
   const errorHandler = (error: any) => {
+    alert(error);
     if (error.response.status === HttpStatusCode.NotAcceptable) {
       alert('품절된 상품이 있습니다. 주문 화면으로 돌아갑니다.');
       setOrderBasket([]);
@@ -82,6 +83,15 @@ function OrderPay() {
   }, [isTossPay]);
 
   const createOrderAndNavigateToToss = (customerName: string) => {
+    const tossUrl = `${tossAccountUrl}&amount=${totalAmount}`;
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isSafari = userAgent.includes('safari') && !userAgent.includes('chrome');
+
+    let popup: Window | null = null;
+    if (isSafari && totalAmount !== 0) {
+      popup = window.open(undefined);
+    }
+
     createOrder(workspaceId, tableNo, orderBasket, customerName)
       .then((res) => {
         navigate({
@@ -93,11 +103,16 @@ function OrderPay() {
           }).toString(),
         });
 
-        if (totalAmount == 0) return;
-
-        window.open(`${tossAccountUrl}&amount=${totalAmount}`);
+        if (!isSafari && totalAmount !== 0) {
+          window.open(tossUrl);
+        }
       })
-      .catch(errorHandler);
+      .catch(errorHandler)
+      .then(() => {
+        if (isSafari && totalAmount !== 0) {
+          popup?.location.replace(tossUrl);
+        }
+      });
   };
 
   const createOrderAndNavigateToComplete = (customerName: string) => {
