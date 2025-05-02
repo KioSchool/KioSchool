@@ -65,7 +65,6 @@ function OrderPay() {
   const customerNameRef = useRef<HTMLInputElement>(null);
 
   const errorHandler = (error: any) => {
-    alert(error);
     if (error.response.status === HttpStatusCode.NotAcceptable) {
       alert('품절된 상품이 있습니다. 주문 화면으로 돌아갑니다.');
       setOrderBasket([]);
