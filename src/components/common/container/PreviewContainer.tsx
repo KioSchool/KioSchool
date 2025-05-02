@@ -3,11 +3,11 @@ import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import CellularConnectionSvg from '@resources/svg/preview/CellularConnectionSvg';
-import { RiWifiFill, RiBatteryFill, RiTriangleFill } from '@remixicon/react';
+import { RiBatteryFill, RiTriangleFill, RiWifiFill } from '@remixicon/react';
 import AppLabel from '@components/common/label/AppLabel';
+import { useParams } from 'react-router-dom';
 
 interface PreviewContainerProps {
-  children: JSX.Element;
   width?: number;
   height?: number;
 }
@@ -71,7 +71,17 @@ const FooterContainer = styled.div`
   gap: 10px;
 `;
 
-function PreviewContainer({ children, width = 360, height = 700 }: PreviewContainerProps) {
+const PreviewContent = styled.iframe`
+  width: 100%;
+  height: 100%;
+  border: none;
+`;
+
+function PreviewContainer({ width = 360, height = 700 }: PreviewContainerProps) {
+  const baseUrl = `${location.protocol}//${location.host}`;
+  const { workspaceId } = useParams<{ workspaceId: string }>();
+  const previewUrl = `${baseUrl}/order?workspaceId=${workspaceId}&tableNo=1&preview=true`;
+
   return (
     <Container width={width} height={height}>
       <DeviceContainer width={width} height={height}>
@@ -87,7 +97,7 @@ function PreviewContainer({ children, width = 360, height = 700 }: PreviewContai
             <BatteryIcon />
           </RightIndicatorContainer>
         </IndicatorContainer>
-        {children}
+        <PreviewContent src={previewUrl} />
       </DeviceContainer>
       <FooterContainer>
         <TriangleIcon />

@@ -25,12 +25,6 @@ const ContentContainer = styled.div`
   ${rowFlex({ justify: 'space-around' })}
 `;
 
-const PreviewContent = styled.iframe`
-  width: 100%;
-  height: 100%;
-  border: none;
-`;
-
 const QRCodeContainer = styled.div`
   display: grid;
   width: 700px;
@@ -147,9 +141,7 @@ function AdminTableCount() {
       <Container className={'admin-order-manage-container'}>
         <AppLabel>테이블 개수는 {workspace.tableCount}개 입니다.</AppLabel>
         <ContentContainer className={'content-container'}>
-          <PreviewContainer>
-            <PreviewContent src={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=1&preview=true`} />
-          </PreviewContainer>
+          <PreviewContainer />
           <QRCodeContainer className={'qrcode-container'} ref={QRCodeContainerRef}>
             {Array.from({ length: workspace.tableCount }, (_, index) => (
               <QRCodeCard key={index} className={'qrcode-card'} ref={(el) => (QRCodeRefs.current[index + 1] = el)}>
