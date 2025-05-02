@@ -81,6 +81,16 @@ function OrderPay() {
     customerNameRef.current?.focus();
   }, [isTossPay]);
 
+  /**
+   * Safari 브라우저 호환성 이슈 대응
+   *
+   * 문제점: Safari는 비동기 API 호출 후 window.open() 실행 시 팝업 차단이 발생함
+   *
+   * 해결책:
+   * - Safari 브라우저 감지
+   * - 비동기 API 호출 전에 빈 팝업창 미리 생성
+   * - API 호출 성공 후 생성된 팝업창의 URL을 이용해 Toss 결제 창으로 이동
+   */
   const createOrderAndNavigateToToss = (customerName: string) => {
     const tossUrl = `${tossAccountUrl}&amount=${totalAmount}`;
     const userAgent = navigator.userAgent.toLowerCase();
