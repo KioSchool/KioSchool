@@ -9,19 +9,18 @@ function playOrderCreateAudio() {
 
 function useOrdersWebsocket(workspaceId: string | undefined) {
   const { fetchTodayOrders } = useAdminOrder(workspaceId);
+  const url = process.env.REACT_APP_ENVIRONMENT === 'development' ? 'ws://localhost:8080/ws' : 'wss://api.kio-school.com/ws';
+  const client = new StompJs.Client({
+    brokerURL: url,
+    debug: (str) => {
+      console.log(str);
+    },
+    reconnectDelay: 5000,
+    heartbeatIncoming: 4000,
+    heartbeatOutgoing: 4000,
+  });
 
   const subscribeOrders = () => {
-    const url = process.env.REACT_APP_ENVIRONMENT === 'development' ? 'ws://localhost:8080/ws' : 'wss://api.kio-school.com/ws';
-    const client = new StompJs.Client({
-      brokerURL: url,
-      debug: (str) => {
-        console.log(str);
-      },
-      reconnectDelay: 5000,
-      heartbeatIncoming: 4000,
-      heartbeatOutgoing: 4000,
-    });
-
     client.onConnect = function () {
       client.subscribe(`/sub/order/${workspaceId}`, (response) => {
         const data = JSON.parse(response.body);
@@ -36,7 +35,12 @@ function useOrdersWebsocket(workspaceId: string | undefined) {
     client.activate();
   };
 
-  return { subscribeOrders };
+  const unsubscribeOrders = () => {
+    client.unsubscribe(`/sub/order/${workspaceId}`);
+    client.deactivate();
+  };
+
+  return { subscribeOrders, unsubscribeOrders };
 }
 
 export default useOrdersWebsocket;
