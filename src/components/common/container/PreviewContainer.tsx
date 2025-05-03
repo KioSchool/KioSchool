@@ -3,14 +3,9 @@ import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import CellularConnectionSvg from '@resources/svg/preview/CellularConnectionSvg';
-import { RiWifiFill, RiBatteryFill, RiTriangleFill } from '@remixicon/react';
+import { RiBatteryFill, RiExternalLinkLine, RiWifiFill } from '@remixicon/react';
 import AppLabel from '@components/common/label/AppLabel';
-
-interface PreviewContainerProps {
-  children: JSX.Element;
-  width?: number;
-  height?: number;
-}
+import { useParams } from 'react-router-dom';
 
 const Container = styled.div<{ width: number; height: number }>`
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -56,10 +51,9 @@ const WifiIcon = styled(RiWifiFill)`
   height: 15px;
 `;
 
-const TriangleIcon = styled(RiTriangleFill)`
-  width: 10px;
-  height: 10px;
-  color: ${Color.GREY};
+const LinkIcon = styled(RiExternalLinkLine)`
+  width: 12px;
+  height: 12px;
 `;
 
 const FooterContainer = styled.div`
@@ -69,9 +63,32 @@ const FooterContainer = styled.div`
   font-size: 15px;
   color: ${Color.GREY};
   gap: 10px;
+  cursor: pointer;
+  &:hover {
+    color: ${Color.KIO_ORANGE};
+  }
 `;
 
-function PreviewContainer({ children, width = 360, height = 700 }: PreviewContainerProps) {
+const PreviewContent = styled.iframe`
+  width: 100%;
+  height: 100%;
+  border: none;
+`;
+
+interface PreviewContainerProps {
+  width?: number;
+  height?: number;
+}
+
+function PreviewContainer({ width = 360, height = 700 }: PreviewContainerProps) {
+  const { workspaceId } = useParams<{ workspaceId: string }>();
+  const baseUrl = location.origin;
+  const previewUrl = `${baseUrl}/order?workspaceId=${workspaceId}&tableNo=1&preview=true`;
+
+  const onClickPreviewLink = () => {
+    window.open(previewUrl, '_blank');
+  };
+
   return (
     <Container width={width} height={height}>
       <DeviceContainer width={width} height={height}>
@@ -87,10 +104,10 @@ function PreviewContainer({ children, width = 360, height = 700 }: PreviewContai
             <BatteryIcon />
           </RightIndicatorContainer>
         </IndicatorContainer>
-        {children}
+        <PreviewContent src={previewUrl} />
       </DeviceContainer>
-      <FooterContainer>
-        <TriangleIcon />
+      <FooterContainer onClick={onClickPreviewLink}>
+        <LinkIcon />
         주문화면 미리보기
       </FooterContainer>
     </Container>

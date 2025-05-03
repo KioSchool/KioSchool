@@ -117,7 +117,10 @@ function Order() {
         showButton={orderBasket.length > 0}
         buttonLabel={`${totalAmount.toLocaleString()}원 장바구니`}
         onClick={() => {
-          if (isPreview) return;
+          if (isPreview) {
+            alert('미리보기 모드에서는 주문이 불가능합니다.');
+            return;
+          }
           navigate({
             pathname: '/order-basket',
             search: createSearchParams({

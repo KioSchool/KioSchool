@@ -24,12 +24,6 @@ export const ButtonContainer = styled.div`
   ${rowFlex()}
 `;
 
-const PreviewContent = styled.iframe`
-  width: 100%;
-  height: 100%;
-  border: none;
-`;
-
 const RouteContainer = styled.div`
   width: 800px;
   height: 80%;
@@ -43,7 +37,6 @@ function AdminWorkspace() {
   const { fetchWorkspace } = useAdminWorkspace();
   const navigate = useNavigate();
   const workspace = useRecoilValue(adminWorkspaceAtom);
-  const baseUrl = `${location.protocol}//${location.host}`;
 
   useEffect(() => {
     fetchWorkspace(workspaceId);
@@ -57,9 +50,7 @@ function AdminWorkspace() {
     >
       <>
         <ContentContainer>
-          <PreviewContainer width={300} height={600}>
-            <PreviewContent src={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=1&preview=true`} />
-          </PreviewContainer>
+          <PreviewContainer width={300} height={600} />
           <RouteContainer>
             <OrderRouteButtons />
             <ProductRouteButtons />
