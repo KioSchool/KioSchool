@@ -7,11 +7,6 @@ import { RiBatteryFill, RiExternalLinkLine, RiWifiFill } from '@remixicon/react'
 import AppLabel from '@components/common/label/AppLabel';
 import { useParams } from 'react-router-dom';
 
-interface PreviewContainerProps {
-  width?: number;
-  height?: number;
-}
-
 const Container = styled.div<{ width: number; height: number }>`
   ${colFlex({ justify: 'center', align: 'center' })}
   width: ${(props) => props.width}px;
@@ -80,9 +75,14 @@ const PreviewContent = styled.iframe`
   border: none;
 `;
 
+interface PreviewContainerProps {
+  width?: number;
+  height?: number;
+}
+
 function PreviewContainer({ width = 360, height = 700 }: PreviewContainerProps) {
-  const baseUrl = `${location.protocol}//${location.host}`;
   const { workspaceId } = useParams<{ workspaceId: string }>();
+  const baseUrl = location.origin;
   const previewUrl = `${baseUrl}/order?workspaceId=${workspaceId}&tableNo=1&preview=true`;
 
   const onClickPreviewLink = () => {
