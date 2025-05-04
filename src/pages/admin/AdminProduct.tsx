@@ -44,6 +44,12 @@ const ProductCardsContainer = styled.div`
   width: 70%;
 `;
 
+const EmptyContainer = styled.div`
+  width: 100%;
+  height: 320px;
+  box-sizing: border-box;
+`;
+
 function AdminProduct() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchProducts, fetchCategories } = useAdminProducts(workspaceId);
@@ -85,6 +91,9 @@ function AdminProduct() {
                       }}
                     />
                   ))}
+                {products.filter((product) => (product.productCategory?.id || null) === category.id).length === 0 && (
+                  <EmptyContainer className={'product-empty-container'} />
+                )}
               </ProductCardsContainer>
             </ProductContainer>
           </ContainerPerCategory>
