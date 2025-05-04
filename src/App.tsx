@@ -40,7 +40,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import { RecoilRoot } from 'recoil';
 import useNetworkStatusNotifier from '@hooks/useNetworkStatusNotifier';
 
-ReactGA.initialize('G-XGYLSPGK2G');
+const isDevelopment = process.env.REACT_APP_ENVIRONMENT === 'development';
+
+if (!isDevelopment) {
+  ReactGA.initialize('G-XGYLSPGK2G');
+}
 
 function App() {
   RouterChangeTracker();
