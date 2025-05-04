@@ -134,13 +134,10 @@ function PreviewContainer({ width = 360, height = 700 }: PreviewContainerProps) 
       link.download = '미리보기_QR코드.png';
       link.href = dataUrl;
       link.click();
-
-      root.unmount();
-      document.body.removeChild(imageDiv);
     } catch (error) {
       console.error('QR 코드 처리 중 오류가 발생했습니다:', error);
       alert('QR 코드 다운로드 중 오류가 발생했습니다!');
-
+    } finally {
       if (root) {
         root.unmount();
       }
