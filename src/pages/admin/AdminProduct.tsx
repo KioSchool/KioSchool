@@ -4,26 +4,44 @@ import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useRecoilValue } from 'recoil';
 import { categoriesAtom, productsAtom } from '@recoils/atoms';
 import styled from '@emotion/styled';
-import AppLabel from '@components/common/label/AppLabel';
 import ProductCard from '@components/admin/product/ProductCard';
 import { colFlex } from '@styles/flexStyles';
 import AppContainer from '@components/common/container/AppContainer';
 import AdminProductTitleNavBarChildren from './AdminProductTitleNavBarChildren';
 import useCustomNavigate from '@hooks/useCustomNavigate';
+import { Color } from '@resources/colors';
 
 const ContainerPerCategory = styled.div`
   gap: 30px;
   padding: 50px 0;
   min-width: 1000px;
-  width: 70%;
-  ${colFlex()}
+  width: 100%;
+  ${colFlex({ align: 'center' })}
 `;
 
-const ProductsContainer = styled.div`
+const CategoryTitle = styled.div`
+  font-size: 30px;
+  font-weight: 800;
+  min-width: 1000px;
+  width: 70%;
+  color: ${Color.GREY};
+`;
+
+const ProductContainer = styled.div`
+  width: 100%;
+  min-width: 1000px;
+  padding: 50px 0;
+  background: ${Color.LIGHT_GREY};
+  ${colFlex({ justify: 'center', align: 'center' })};
+`;
+
+const ProductCardsContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   row-gap: 40px;
   column-gap: 40px;
+  min-width: 1000px;
+  width: 70%;
 `;
 
 function AdminProduct() {
@@ -51,27 +69,24 @@ function AdminProduct() {
       useScroll={true}
     >
       <>
-        <AppLabel size={'small'} style={{ textAlign: 'center' }}>
-          HIDE 상태인 메뉴는 주문 화면에서 숨김처리 되며, ON 상태로 변경 시 다시 나타나게 됩니다.
-        </AppLabel>
         {categories.map((category) => (
           <ContainerPerCategory key={`product_category_${category.id}`} className={'container-per-category'}>
-            <AppLabel size={36} style={{ fontWeight: 800 }}>
-              {category.name}
-            </AppLabel>
-            <ProductsContainer className={'products-container'}>
-              {products
-                .filter((product) => (product.productCategory?.id || null) === category.id)
-                .map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    onClick={() => {
-                      appendPath(`/edit-product?productId=${product.id}`);
-                    }}
-                  />
-                ))}
-            </ProductsContainer>
+            <CategoryTitle>{category.name}</CategoryTitle>
+            <ProductContainer className={'products-container'}>
+              <ProductCardsContainer className={'product-cards-container'}>
+                {products
+                  .filter((product) => (product.productCategory?.id || null) === category.id)
+                  .map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      onClick={() => {
+                        appendPath(`/edit-product?productId=${product.id}`);
+                      }}
+                    />
+                  ))}
+              </ProductCardsContainer>
+            </ProductContainer>
           </ContainerPerCategory>
         ))}
       </>
