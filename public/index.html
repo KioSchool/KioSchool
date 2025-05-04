@@ -4,11 +4,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@kfonts/line-seed-sans-kr@0.1.0/index.min.css">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XGYLSPGK2G"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-XGYLSPGK2G');
+      if(window.location.hostname !== 'localhost') {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XGYLSPGK2G');
+      }
     </script>
     <meta charset="utf-8" />
     <meta property="og:url" content="https://kio-school.com" />

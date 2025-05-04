@@ -18,7 +18,7 @@ const HorizontalLine = styled.hr`
 
 function AdminOrderRealtime() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { subscribeOrders } = useOrdersWebsocket(workspaceId);
+  const { subscribeOrders, unsubscribeOrders } = useOrdersWebsocket(workspaceId);
   const { fetchTodayOrders } = useAdminOrder(workspaceId);
   const { fetchProducts } = useAdminProducts(workspaceId);
 
@@ -31,6 +31,10 @@ function AdminOrderRealtime() {
     subscribeOrders();
     fetchTodayOrders();
     fetchProducts();
+
+    return () => {
+      unsubscribeOrders();
+    };
   }, []);
 
   return (
