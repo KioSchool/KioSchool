@@ -12,6 +12,9 @@ import AppLabel from '@components/common/label/AppLabel';
 import AppCheckBox from '@components/common/input/AppCheckBox';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { OrderStatus } from '@@types/index';
+import { ko } from 'date-fns/locale/ko';
+import { format } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
 
 const Container = styled.div`
   gap: 24px;
@@ -57,11 +60,9 @@ function AdminOrderHistory() {
   const totalOrderPrice = orders.reduce((acc, cur) => acc + cur.totalPrice, 0).toLocaleString();
 
   const dateConverter = (date: Date) => {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
+    const zonedDate = toZonedTime(date, 'Asia/Seoul');
 
-    return `${year}-${month}-${day}`;
+    return format(zonedDate, "yyyy-MM-dd'T'HH:mm:ss.SSS");
   };
 
   useEffect(() => {
@@ -73,9 +74,23 @@ function AdminOrderHistory() {
       <Container className={'admin-order-history-container'}>
         <ConditionContainer className={'condition-container'}>
           <DatePickerContainer className={'date-picker-container'}>
-            <ReactDatePicker selected={startDate} shouldCloseOnSelect dateFormat={'yyyy.MM.dd'} onChange={(date: Date) => setStartDate(date)} />
+            <ReactDatePicker
+              selected={startDate}
+              shouldCloseOnSelect
+              showTimeSelect={true}
+              locale={ko}
+              dateFormat={'yyyy.MM.dd - aa hh:mm'}
+              onChange={(date: Date) => setStartDate(date)}
+            />
             {'~'}
-            <ReactDatePicker selected={endDate} shouldCloseOnSelect dateFormat={'yyyy.MM.dd'} onChange={(date: Date) => setEndDate(date)} />
+            <ReactDatePicker
+              selected={endDate}
+              shouldCloseOnSelect
+              showTimeSelect={true}
+              locale={ko}
+              dateFormat={'yyyy.MM.dd - aa hh:mm'}
+              onChange={(date: Date) => setEndDate(date)}
+            />
           </DatePickerContainer>
           <OrderStatusConditionContainer className={'order-status-condition-container'}>
             <AppCheckBox
