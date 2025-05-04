@@ -16,7 +16,8 @@ const Container = styled.div`
   background: ${Color.LIGHT_GREY};
   padding: 20px 50px;
   box-sizing: border-box;
-  ${rowFlex({ justify: 'space-between' })}
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
 `;
 
 const ProductContainer = styled.div`
@@ -27,7 +28,7 @@ const ProductContainer = styled.div`
 
 const RightContainer = styled.div`
   gap: 15px;
-  ${rowFlex({ align: 'center' })}
+  ${rowFlex({ justify: 'end', align: 'center' })}
 `;
 
 const ToggleIcon = styled(RiArrowUpSLine, {
