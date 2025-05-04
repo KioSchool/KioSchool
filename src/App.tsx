@@ -17,8 +17,6 @@ import AdminProductAdd from '@pages/admin/AdminProductAdd';
 import OrderComplete from '@pages/user/order/OrderComplete';
 import AdminOrderHistory from '@pages/admin/order/AdminOrderHistory';
 import AdminProductEdit from '@pages/admin/AdminProductEdit';
-import ReactGA from 'react-ga4';
-import RouterChangeTracker from './RouterChangeTracker';
 import AdminMyInfo from '@pages/admin/AdminMyInfo';
 import AdminProductCategories from '@pages/admin/AdminProductCategoires';
 import AdminTableCount from '@pages/admin/order/AdminTableCount';
@@ -40,14 +38,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { RecoilRoot } from 'recoil';
 import useNetworkStatusNotifier from '@hooks/useNetworkStatusNotifier';
 
-const isDevelopment = process.env.REACT_APP_ENVIRONMENT === 'development';
-
-if (!isDevelopment) {
-  ReactGA.initialize('G-XGYLSPGK2G');
-}
-
 function App() {
-  RouterChangeTracker();
   useNetworkStatusNotifier();
 
   return (
