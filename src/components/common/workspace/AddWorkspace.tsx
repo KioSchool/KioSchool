@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import { Workspace } from '@@types/index';
 import React from 'react';
 import { rowFlex } from '@styles/flexStyles';
-import { Color } from '@resources/colors';
 import AddWorkspaceModalButton from './modal/AddWorkspaceModalButton';
 
 const AddWorkspaceContainer = styled.form`
@@ -10,7 +9,7 @@ const AddWorkspaceContainer = styled.form`
   width: 321px;
   height: 332px;
   border-radius: 25px;
-  background: ${Color.LIGHT_GREY};
+  background: #eeecec;
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
