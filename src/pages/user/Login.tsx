@@ -9,11 +9,6 @@ import LinkLabel from '@components/common/label/LinkLabel';
 import NewRoundedButton from '@components/common/button/NewRoundedButton';
 import { Color } from '@resources/colors';
 
-const InputContainer = styled.div`
-  display: grid;
-  row-gap: 30px;
-`;
-
 const ErrorContainer = styled.div`
   height: 30px;
   ${colFlex({ justify: 'center', align: 'center' })};
@@ -55,10 +50,15 @@ function Login() {
   return (
     <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} customGap={'20px'} titleNavBarProps={{ title: '로그인', useBackIcon: false }}>
       <>
-        <InputContainer className={'input-container'}>
-          <NewAppInput id={'userId'} ref={userIdInputRef} label={'아이디'} />
-          <NewAppInput id={'password'} ref={userPasswordInputRef} label={'비밀번호'} type={'password'} enterHandler={handleSubmit} />
-        </InputContainer>
+        <NewAppInput id={'userId'} ref={userIdInputRef} label={'아이디'} placeholder={'아이디를 입력해주세요.'} />
+        <NewAppInput
+          id={'password'}
+          ref={userPasswordInputRef}
+          label={'비밀번호'}
+          type={'password'}
+          enterHandler={handleSubmit}
+          placeholder={'비밀번호를 입력해주세요.'}
+        />
         <ErrorContainer>{errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}</ErrorContainer>
         <NewRoundedButton onClick={handleSubmit}>로그인</NewRoundedButton>
         <LinkContainer className={'button-container'}>
