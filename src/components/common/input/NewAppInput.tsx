@@ -65,15 +65,17 @@ const StyledInput = styled.input<NewAppInputProps>`
   }
 `;
 
+interface InputButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  size?: CustomButtonSize;
+  text: string;
+}
+
 interface NewAppInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   enterHandler?: () => void;
   width?: number;
   height?: number;
   label?: string;
-  buttonProps?: {
-    size?: CustomButtonSize;
-    text: string;
-  };
+  buttonProps?: InputButtonProps;
   linkProps?: {
     text: string;
     url: string;
@@ -98,7 +100,13 @@ const NewAppInput = forwardRef<HTMLInputElement, NewAppInputProps>((props: NewAp
           </LinkContainer>
         )}
         {props.buttonProps && (
-          <NewRoundedButton size={'xs'} customSize={props.buttonProps.size} onClick={props.enterHandler} style={{ marginLeft: 'auto', marginRight: '10px' }}>
+          <NewRoundedButton
+            {...props.buttonProps}
+            size={'xs'}
+            customSize={props.buttonProps.size}
+            onClick={props.enterHandler}
+            style={{ marginLeft: 'auto', marginRight: '10px' }}
+          >
             {props.buttonProps.text}
           </NewRoundedButton>
         )}
