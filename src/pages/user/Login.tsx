@@ -1,29 +1,33 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useAuthentication from '@hooks/useAuthentication';
-import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
-import AppButton from '@components/common/button/AppButton';
-import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import AppContainer from '@components/common/container/AppContainer';
-import AppFooter from '@components/common/footer/AppFooter';
-import { colFlex } from '@styles/flexStyles';
-
-const LoginContainer = styled.div`
-  display: grid;
-  row-gap: 46px;
-`;
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import NewAppInput from '@components/common/input/NewAppInput';
+import LinkLabel from '@components/common/label/LinkLabel';
+import NewRoundedButton from '@components/common/button/NewRoundedButton';
+import { Color } from '@resources/colors';
 
 const InputContainer = styled.div`
   display: grid;
-  row-gap: 20px;
+  row-gap: 30px;
 `;
 
-const ButtonContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  row-gap: 13px;
-  text-align: center;
+const ErrorContainer = styled.div`
+  height: 30px;
+  ${colFlex({ justify: 'center', align: 'center' })};
+`;
+
+const ErrorMessage = styled.div`
+  font-size: 13px;
+  font-weight: 500;
+  color: ${Color.KIO_ORANGE};
+`;
+
+const LinkContainer = styled.div`
+  gap: 10px;
+  ${rowFlex({ justify: 'center', align: 'center' })};
 `;
 
 function Login() {
@@ -49,24 +53,19 @@ function Login() {
   };
 
   return (
-    <AppContainer useFlex={colFlex({ align: 'center' })}>
-      <LoginContainer className={'login-container'}>
-        <AppLabel size={'large'}>로그인</AppLabel>
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} customGap={'20px'} titleNavBarProps={{ title: '로그인', useBackIcon: false }}>
+      <>
         <InputContainer className={'input-container'}>
-          <AppInputWithLabel titleLabel={'아이디'} type={'text'} id={'userId'} ref={userIdInputRef} />
-          <AppInputWithLabel titleLabel={'비밀번호'} type={'password'} id={'password'} ref={userPasswordInputRef} enterHandler={handleSubmit} />
-          {errorMessage && <div className="error-message">{errorMessage}</div>}
+          <NewAppInput id={'userId'} ref={userIdInputRef} label={'아이디'} />
+          <NewAppInput id={'password'} ref={userPasswordInputRef} label={'비밀번호'} type={'password'} enterHandler={handleSubmit} />
         </InputContainer>
-        <ButtonContainer className={'button-container'}>
-          <AppButton size={'large'} style={{ gridColumn: '1/3' }} type={'button'} onClick={handleSubmit}>
-            로그인
-          </AppButton>
-          <AppLabel size={'small'}>
-            <Link to={'/reset-password'}>비밀번호를 잊어버렸나요?</Link> <Link to={'/register'}>회원가입하기</Link>
-          </AppLabel>
-        </ButtonContainer>
-        <AppFooter />
-      </LoginContainer>
+        <ErrorContainer>{errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}</ErrorContainer>
+        <NewRoundedButton onClick={handleSubmit}>로그인</NewRoundedButton>
+        <LinkContainer className={'button-container'}>
+          <LinkLabel text={'비밀번호 찾기'} href={'/reset-password'} />
+          <LinkLabel text={'회원가입 하기'} href={'/register'} />
+        </LinkContainer>
+      </>
     </AppContainer>
   );
 }
