@@ -127,12 +127,12 @@ function Register() {
     const userEmail = userEmailInputRef.current?.value;
 
     if (!isAbleId || !userName || !userId || !password || !userEmail) {
-      setErrorMessage('모두 올바르게 입력했는지 확인해주세요!');
+      setErrorMessage('모두 올바르게 입력했는지 확인해주세요.');
       return;
     }
 
     if (!isVerified) {
-      setErrorMessage('이메일 인증을 해주세요!');
+      setErrorMessage('이메일 인증을 해주세요.');
       return;
     }
 
@@ -154,22 +154,22 @@ function Register() {
     const userEmail = userEmailInputRef.current?.value;
 
     if (!userEmail) {
-      setErrorMessage('이메일을 입력해주세요');
+      setErrorMessage('이메일을 입력해주세요.');
       return;
     }
 
     if (userNameInputRef.current?.value === '') {
-      setErrorMessage('이름을 입력해주세요');
+      setErrorMessage('이름을 입력해주세요.');
       return;
     }
 
     if (!isAbleId) {
-      setErrorMessage('아이디 중복체크를 해주세요');
+      setErrorMessage('아이디 중복체크를 해주세요.');
       return;
     }
 
     if (!isAblePassword) {
-      setErrorMessage('비밀번호를 확인해주세요');
+      setErrorMessage('비밀번호를 확인해주세요.');
       return;
     }
 
@@ -188,7 +188,7 @@ function Register() {
     const inputCode = userCodeInputRef.current?.value;
 
     if (!userEmail || !inputCode) {
-      setErrorMessage('이메일 또는 입력코드가 올바른지 확인해주세요');
+      setErrorMessage('이메일 또는 입력코드가 올바른지 확인해주세요.');
       return;
     }
 
@@ -251,7 +251,7 @@ function Register() {
               id={'userEmail'}
               ref={userEmailInputRef}
               label={'이메일 주소'}
-              placeholder={'인증코드를 받을 이메일을 입력해주세요'}
+              placeholder={'인증코드를 받을 이메일을 입력해주세요.'}
               linkProps={{ text: '회원가입 가능한 이메일 확인하기', url: '/email-domains' }}
               buttonProps={{ text: isCodeSent ? '인증코드 재전송' : '인증코드 발송', type: 'button' }}
               enterHandler={sendCode}
@@ -273,7 +273,7 @@ function Register() {
           <ErrorMessageContainer>{errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}</ErrorMessageContainer>
           <NewRoundedButton size={'sm'}>회원가입</NewRoundedButton>
         </FormContainer>
-        <LinkLabel text={'로그인하기'} href={'/login'} style={{ fontSize: '13px', marginTop: '20px' }} />
+        <LinkLabel text={'로그인하기'} href={'/login'} style={{ marginTop: '20px' }} />
       </>
     </AppContainer>
   );
