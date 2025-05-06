@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
@@ -40,8 +40,10 @@ function Register() {
   const { checkDuplicateId, registerUser, sendVerifyMail, verifyUser } = useRegister();
   const userNameInputRef = useRef<HTMLInputElement>(null);
   const userIdInputRef = useRef<HTMLInputElement>(null);
-  const userPasswordInputRef = useRef<HTMLInputElement>(null);
+
+  const [userPasswordInput, setUserPasswordInput] = useState<string>('');
   const [checkUserPasswordInput, setCheckUserPasswordInput] = useState('');
+
   const userEmailInputRef = useRef<HTMLInputElement>(null);
   const userCodeInputRef = useRef<HTMLInputElement>(null);
 
@@ -55,21 +57,21 @@ function Register() {
 
   const navigate = useNavigate();
 
-  const validatePassword = (checkInput: string) => {
-    const password = userPasswordInputRef.current?.value;
+  const validatePassword = () => {
+    setIsAblePassword(false);
 
-    if (password?.includes(' ')) {
+    if (userPasswordInput?.includes(' ')) {
       setErrorMessage('비밀번호에 공백이 포함되어 있습니다.');
       return;
     }
 
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[a-zA-Z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,20}$/;
-    if (password && !passwordRegex.test(password)) {
+    if (userPasswordInput && !passwordRegex.test(userPasswordInput)) {
       setErrorMessage('비밀번호는 영문, 숫자, 특수문자 조합 8~20자로 입력해주세요.');
       return;
     }
 
-    const isSamePassword = password === checkInput;
+    const isSamePassword = userPasswordInput === checkUserPasswordInput;
     if (!isSamePassword) {
       setErrorMessage('비밀번호가 서로 다릅니다.');
       return;
@@ -78,6 +80,14 @@ function Register() {
     setErrorMessage('');
     setIsAblePassword(true);
   };
+
+  useEffect(() => {
+    if (userPasswordInput || checkUserPasswordInput) {
+      validatePassword();
+    } else {
+      setErrorMessage('');
+    }
+  }, [userPasswordInput, checkUserPasswordInput]);
 
   const validateId = async () => {
     const userId = userIdInputRef.current?.value;
@@ -113,7 +123,7 @@ function Register() {
     e.preventDefault();
     const userName = userNameInputRef.current?.value;
     const userId = userIdInputRef.current?.value;
-    const password = userPasswordInputRef.current?.value;
+    const password = userPasswordInput;
     const userEmail = userEmailInputRef.current?.value;
 
     if (!isAbleId || !userName || !userId || !password || !userEmail) {
@@ -214,24 +224,23 @@ function Register() {
           <PasswordContainer>
             <NewAppInput
               id={'userPassword'}
-              ref={userPasswordInputRef}
               label={'비밀번호'}
               placeholder={'영문, 숫자, 특수문자 조합 8~20자'}
               type={'password'}
-              onChange={() => {
-                setCheckUserPasswordInput('');
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setUserPasswordInput(event.target.value);
               }}
+              value={userPasswordInput}
               required
             />
             <NewAppInput
               id={'userPassword'}
               placeholder={'입력한 비밀번호를 똑같이 입력해주세요.'}
               type={'password'}
+              value={checkUserPasswordInput}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 setCheckUserPasswordInput(event.target.value);
-                validatePassword(event.target.value);
               }}
-              value={checkUserPasswordInput}
               required
             />
           </PasswordContainer>
