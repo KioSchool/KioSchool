@@ -42,7 +42,7 @@ function Register() {
   const userIdInputRef = useRef<HTMLInputElement>(null);
 
   const [userPasswordInput, setUserPasswordInput] = useState<string>('');
-  const [checkUserPasswordInput, setCheckUserPasswordInput] = useState('');
+  const [checkUserPasswordInput, setCheckUserPasswordInput] = useState<string>('');
 
   const userEmailInputRef = useRef<HTMLInputElement>(null);
   const userCodeInputRef = useRef<HTMLInputElement>(null);
