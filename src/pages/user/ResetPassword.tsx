@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
@@ -64,27 +64,26 @@ function ResetPassword() {
     );
   }
 
-  const userPasswordInputRef = useRef<HTMLInputElement>(null);
-  const [checkUserPasswordInput, setCheckUserPasswordInput] = useState('');
+  const [userPasswordInput, setUserPasswordInput] = useState<string>('');
+  const [checkUserPasswordInput, setCheckUserPasswordInput] = useState<string>('');
   const [isAblePassword, setIsAblePassword] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  const validatePassword = (checkInput: string) => {
+  const validatePassword = () => {
     setIsAblePassword(false);
-    const password = userPasswordInputRef.current?.value;
 
-    if (password?.includes(' ')) {
+    if (userPasswordInput?.includes(' ')) {
       setErrorMessage('비밀번호에 공백이 포함되어 있습니다.');
       return;
     }
 
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[a-zA-Z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,20}$/;
-    if (password && !passwordRegex.test(password)) {
+    if (userPasswordInput && !passwordRegex.test(userPasswordInput)) {
       setErrorMessage('비밀번호는 영문, 숫자, 특수문자 조합 8~20자로 입력해주세요.');
       return;
     }
 
-    const isSamePassword = password === checkInput;
+    const isSamePassword = userPasswordInput === checkUserPasswordInput;
     if (!isSamePassword) {
       setErrorMessage('비밀번호가 서로 다릅니다.');
       return;
@@ -94,14 +93,21 @@ function ResetPassword() {
     setIsAblePassword(true);
   };
 
+  useEffect(() => {
+    if (userPasswordInput || checkUserPasswordInput) {
+      validatePassword();
+    } else {
+      setErrorMessage('');
+    }
+  }, [userPasswordInput, checkUserPasswordInput]);
+
   const resetPasswordHandler = () => {
-    const password = userPasswordInputRef.current?.value;
-    if (!password || !isAblePassword) {
+    if (!userPasswordInput || !isAblePassword) {
       setErrorMessage('비밀번호를 확인해주세요');
       return;
     }
 
-    resetPassword(password, code)
+    resetPassword(userPasswordInput, code)
       .then(() => {
         alert('비밀번호가 재설정되었습니다.');
         navigate('/login');
@@ -122,10 +128,10 @@ function ResetPassword() {
           label={'비밀번호'}
           placeholder={'비밀번호를 입력해주세요'}
           type={'password'}
-          onChange={() => {
-            setCheckUserPasswordInput('');
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setUserPasswordInput(event.target.value);
           }}
-          ref={userPasswordInputRef}
+          value={userPasswordInput}
           required
         />
         <NewAppInput
@@ -135,7 +141,6 @@ function ResetPassword() {
           value={checkUserPasswordInput}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setCheckUserPasswordInput(event.target.value);
-            validatePassword(event.target.value);
           }}
           required
         />
