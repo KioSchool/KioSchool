@@ -34,7 +34,7 @@ export interface SelectWithOptionsProps extends SelectHTMLAttributes<HTMLSelectE
   width?: string;
 }
 
-const SelectWithOptions = ({ options, isUseDefaultOption = true, width, ...otherProps }: SelectWithOptionsProps) => {
+function SelectWithOptions({ options, isUseDefaultOption = true, width, ...otherProps }: SelectWithOptionsProps) {
   const defaultOption = { name: '기본메뉴', id: 'null' };
   const allOptions = isUseDefaultOption ? [defaultOption, ...options] : [...options];
 
@@ -47,6 +47,6 @@ const SelectWithOptions = ({ options, isUseDefaultOption = true, width, ...other
       ))}
     </Container>
   );
-};
+}
 
 export default SelectWithOptions;
