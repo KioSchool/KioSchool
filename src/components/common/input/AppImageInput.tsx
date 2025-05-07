@@ -82,7 +82,7 @@ function AppImageInput({ file, title, url, onImageChange, width, height }: Produ
         </NewRoundedButton>
         <ImageInput type="file" id="img" accept="image/*" onChange={onImageChange} className={'image-input'} />
       </ImageLabelContainer>
-      {file ? (
+      {file || url ? (
         <Image src={getImageUrl()} alt="" width={width} height={height} className={'image'} />
       ) : (
         <UploadImageWrapper className={'upload-image-wrapper'}>

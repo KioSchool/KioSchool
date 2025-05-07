@@ -1,5 +1,3 @@
-import AppButton from '@components/common/button/AppButton';
-import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import styled from '@emotion/styled';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { categoriesAtom } from '@recoils/atoms';
@@ -14,6 +12,8 @@ import RoundedAppButton from '@components/common/button/RoundedAppButton';
 import AppContainer from '@components/common/container/AppContainer';
 import { defaultProductEditValue } from '@@types/defaultValues';
 import { ProductActionType, ProductEdit, ProductStateType } from '@@types/index';
+import NewAppInput from '@components/common/input/NewAppInput';
+import NewRoundedButton from '@components/common/button/NewRoundedButton';
 
 function reducer(state: ProductEdit, action: ProductActionType) {
   switch (action.type) {
@@ -160,32 +160,34 @@ function AdminProductEdit() {
             dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
           }}
         />
-        <AppInputWithLabel
-          titleLabel={'상품명'}
-          messageLabel={'최대 12자'}
+        <NewAppInput
+          label={'상품명'}
+          placeholder={'최대 12자까지 입력 가능합니다.'}
           value={productState.name}
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
             dispatch({ type: 'PRODUCT_NAME_INPUT', payload: event.target?.value });
           }}
         />
+
         <AppImageInput title={'상품 사진'} url={productState.image.url} file={productState.image.files} onImageChange={onImageChange} />
-        <AppInputWithLabel
-          titleLabel={'상품 설명'}
-          messageLabel={'최대 30자'}
+        <NewAppInput
+          label={'상품 설명'}
+          placeholder={'최대 30자까지 입력 가능합니다.'}
           value={productState.description}
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
             dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: event.target?.value });
           }}
         />
-        <AppInputWithLabel
-          type={'number'}
-          titleLabel={'상품 가격'}
+        <NewAppInput
+          label={'상품 가격'}
           value={productState.price}
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
             dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: event.target?.value });
           }}
         />
-        <AppButton onClick={submitEditProduct}>변경하기</AppButton>
+        <NewRoundedButton onClick={submitEditProduct} size={'md'} style={{ margin: '38px 0' }}>
+          변경하기
+        </NewRoundedButton>
         <ConfirmModal />
       </Container>
     </AppContainer>
