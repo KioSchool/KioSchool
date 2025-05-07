@@ -1,5 +1,6 @@
 import { SelectHTMLAttributes } from 'react';
 import styled from '@emotion/styled';
+import { Color } from '@resources/colors';
 
 interface Option {
   name: string;
@@ -14,13 +15,23 @@ export interface SelectWithOptionsProps extends SelectHTMLAttributes<HTMLSelectE
 
 const Container = styled.select<{ width?: string }>`
   border: none;
-  border-radius: 40px;
+  border-radius: 45px;
   box-sizing: border-box;
-  box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.25) inset;
-  width: ${(props) => props.width || '500px'};
+  width: ${({ width }) => (width ? width : '100%')};
   height: 50px;
-  padding: 0 18px;
-  appearance: none;
+  padding: 0 40px;
+
+  border: 1px solid rgba(201, 201, 201, 0.5);
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    caret-color: ${Color.KIO_ORANGE};
+  }
+
+  &::placeholder {
+    color: #c9c9c9;
+  }
 `;
 
 const SelectWithOptions = ({ options, isUseDefaultOption = true, width, ...otherProps }: SelectWithOptionsProps) => {
