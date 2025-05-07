@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import useConfirm from '@hooks/useConfirm';
 import { Color } from '@resources/colors';
-import { RiMenuLine, RiDeleteBinLine } from '@remixicon/react';
+import { RiMenuLine, RiDeleteBinFill } from '@remixicon/react';
 import { rowFlex } from '@styles/flexStyles';
 import { Draggable } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
@@ -11,32 +11,36 @@ import { expandButtonStyle } from '@styles/buttonStyles';
 
 const CategoryItemContainer = styled.div`
   position: relative;
-  width: 600px;
+  width: 650px;
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const CategoryContentsContainer = styled.div`
-  width: 500px;
-  height: 60px;
+  box-sizing: border-box;
+  padding: 15px 30px;
+  width: 600px;
+  height: 55px;
   background-color: ${Color.WHITE};
-  border-radius: 12px;
-  box-shadow: 0 4px 17px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 51px;
+  border: 1px solid rgba(201, 201, 201, 0.5);
   margin: 10px 0;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const CategoryName = styled.label`
-  font-size: 20px;
+  font-size: 18px;
   width: 50%;
-  padding-left: 20px;
 `;
 
-const DeleteIcon = styled(RiDeleteBinLine)`
+const DeleteIcon = styled(RiDeleteBinFill)`
   position: absolute;
-  left: 13px;
-  color: ${Color.GREY};
-  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.25));
+  left: -10px;
+  color: #b9b9b9;
   ${expandButtonStyle}
+`;
+
+const GripIcon = styled(RiMenuLine)`
+  color: #b9b9b9;
 `;
 
 interface DraggableProps {
@@ -69,7 +73,7 @@ function CategoryDraggableContents({ category, index }: DraggableProps) {
             <DeleteIcon onClick={deleteCategoryHandler} />
             <CategoryContentsContainer>
               <CategoryName>{category.name}</CategoryName>
-              <RiMenuLine style={{ paddingRight: '20px' }} />
+              <GripIcon />
             </CategoryContentsContainer>
           </CategoryItemContainer>
         )}
