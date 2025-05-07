@@ -4,10 +4,6 @@ import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 
-interface SelectWithLabelProps extends SelectWithOptionsProps {
-  titleLabel: string;
-}
-
 const Container = styled.div`
   width: 500px;
   outline: none;
@@ -21,6 +17,10 @@ const TitleLabel = styled.label`
   font-weight: 500;
   padding-left: 10px;
 `;
+
+interface SelectWithLabelProps extends SelectWithOptionsProps {
+  titleLabel: string;
+}
 
 function SelectWithLabel(props: SelectWithLabelProps) {
   return (

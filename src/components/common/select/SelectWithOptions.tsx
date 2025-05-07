@@ -7,12 +7,6 @@ interface Option {
   id: number | string;
 }
 
-export interface SelectWithOptionsProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  options: Option[];
-  isUseDefaultOption?: boolean;
-  width?: string;
-}
-
 const Container = styled.select<{ width?: string }>`
   border: none;
   border-radius: 45px;
@@ -33,6 +27,12 @@ const Container = styled.select<{ width?: string }>`
     color: #c9c9c9;
   }
 `;
+
+export interface SelectWithOptionsProps extends SelectHTMLAttributes<HTMLSelectElement> {
+  options: Option[];
+  isUseDefaultOption?: boolean;
+  width?: string;
+}
 
 const SelectWithOptions = ({ options, isUseDefaultOption = true, width, ...otherProps }: SelectWithOptionsProps) => {
   const defaultOption = { name: '기본메뉴', id: 'null' };
