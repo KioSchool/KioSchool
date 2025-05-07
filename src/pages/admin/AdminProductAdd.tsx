@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useRecoilValue } from 'recoil';
 import { categoriesAtom } from '@recoils/atoms';
-import SelectWithLabel from '@components/common/select/SelectWithLabelProps';
+import SelectWithLabel from '@components/common/select/SelectWithLabel';
 import AppImageInput from '@components/common/input/AppImageInput';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex } from '@styles/flexStyles';
