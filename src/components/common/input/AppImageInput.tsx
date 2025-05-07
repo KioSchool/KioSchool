@@ -77,6 +77,8 @@ function AppImageInput({ file, title, url, onImageChange, width, height }: Produ
     <ImageInputContainer className={'app-image-input'}>
       <ImageLabelContainer className={'image-label-container'}>
         <StyledLabel>{title}</StyledLabel>
+        {/* “사진 업로드” 버튼을 렌더링합니다. 버튼 클릭 시 숨겨진 파일 입력(<ImageInput />)을 프로그래밍적으로 클릭하여
+        이미지 선택 다이얼로그를 열고, 이미지 파일만 선택 가능하며 선택 시 onImageChange가 호출됩니다.*/}
         <NewRoundedButton className={'image-input-button'} size={'xs'} onClick={() => document.getElementById('img')?.click()}>
           사진 업로드
         </NewRoundedButton>
