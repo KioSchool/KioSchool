@@ -4,7 +4,7 @@ import { categoriesAtom } from '@recoils/atoms';
 import React, { ChangeEvent, useEffect, useReducer } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import SelectWithLabel from '@components/common/select/SelectWithLabelProps';
+import SelectWithLabel from '@components/common/select/SelectWithLabel';
 import AppImageInput from '@components/common/input/AppImageInput';
 import useConfirm from '@hooks/useConfirm';
 import { colFlex } from '@styles/flexStyles';
