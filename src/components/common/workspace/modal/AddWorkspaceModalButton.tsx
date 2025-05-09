@@ -2,12 +2,14 @@ import AddWorkspaceModalContent from '@components/admin/workspace/AddworkspaceMo
 import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
 import { createPortal } from 'react-dom';
-import { RiAddLine } from '@remixicon/react';
+import { RiAddCircleFill } from '@remixicon/react';
+import { Color } from '@resources/colors';
 
-const PlusIcon = styled(RiAddLine)`
-  width: 50px;
-  height: 50px;
+const PlusIcon = styled(RiAddCircleFill)`
+  width: 30px;
+  height: 30px;
   transition: transform 0.1s ease;
+  color: ${Color.WHITE};
   &:hover {
     transform: scale(1.2);
   }

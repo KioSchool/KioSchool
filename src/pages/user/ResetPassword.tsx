@@ -1,17 +1,23 @@
-import React, { useRef, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import AppContainer from '@components/common/container/AppContainer';
-import AppInput from '@components/common/input/AppInput';
-import AppButton from '@components/common/button/AppButton';
 import styled from '@emotion/styled';
-import AppLabel from '@components/common/label/AppLabel';
 import useAuthentication from '@hooks/useAuthentication';
-import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
 import { colFlex } from '@styles/flexStyles';
+import NewAppInput from '@components/common/input/NewAppInput';
+import NewRoundedButton from '@components/common/button/NewRoundedButton';
+import LinkLabel from '@components/common/label/LinkLabel';
+import { Color } from '@resources/colors';
 
-const Container = styled.div`
-  ${colFlex({ align: 'center' })}
-  gap: 24px;
+const ErrorContainer = styled.div`
+  height: 30px;
+  ${colFlex({ justify: 'center', align: 'center' })};
+`;
+
+const ErrorMessage = styled.div`
+  font-size: 13px;
+  font-weight: 500;
+  color: ${Color.KIO_ORANGE};
 `;
 
 function ResetPassword() {
@@ -33,44 +39,75 @@ function ResetPassword() {
 
     sendResetPasswordLink(id, email)
       .then(() => {
-        alert('비밀번호 재설정 링크를 전송했습니다.');
+        alert('비밀번호 재설정 링크를 전송했습니다. 회원가입 하신 이메일을 확인해주세요.');
       })
       .catch((error) => alert(error.response.data.message));
   };
 
   if (!code) {
     return (
-      <AppContainer useFlex={colFlex({ justify: 'center' })}>
-        <Container className={'reset-password-container'}>
-          <AppInput placeholder={'아이디를 입력해주세요'} ref={idInputRef} />
-          <AppInput placeholder={'이메일을 입력해주세요'} ref={emailInputRef} />
-          <AppButton size={'large'} onClick={sendResetPasswordLinkHandler}>
+      <AppContainer
+        useFlex={colFlex({ justify: 'center', align: 'center' })}
+        customGap={'20px'}
+        titleNavBarProps={{ title: '비밀번호 찾기', useBackIcon: false }}
+      >
+        <>
+          <NewAppInput placeholder={'아이디를 입력해주세요'} ref={idInputRef} label={'아이디'} />
+          <NewAppInput placeholder={'이메일을 입력해주세요'} ref={emailInputRef} label={'이메일'} />
+          <NewRoundedButton customSize={{ height: 45, width: 350 }} onClick={sendResetPasswordLinkHandler} style={{ marginTop: '50px' }}>
             비밀번호 재설정 링크 전송하기
-          </AppButton>
-          <AppLabel size={'small'}>
-            <Link to={'/login'}>로그인하기</Link>
-          </AppLabel>
-        </Container>
+          </NewRoundedButton>
+
+          <LinkLabel text={'로그인하기'} href={'/login'} />
+        </>
       </AppContainer>
     );
   }
 
-  const userPasswordInputRef = useRef<HTMLInputElement>(null);
-  const [checkUserPasswordInput, setCheckUserPasswordInput] = useState('');
-  const isSamePassword = userPasswordInputRef.current?.value === checkUserPasswordInput;
-  const showCheckPasswordLabel = () => {
-    if (!checkUserPasswordInput) return undefined;
-    return isSamePassword ? '비밀번호가 동일합니다!' : '비밀번호가 서로 다릅니다.';
-  };
+  const [userPasswordInput, setUserPasswordInput] = useState<string>('');
+  const [checkUserPasswordInput, setCheckUserPasswordInput] = useState<string>('');
+  const [isAblePassword, setIsAblePassword] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
-  const resetPasswordHandler = () => {
-    const password = userPasswordInputRef.current?.value;
-    if (!password || !isSamePassword) {
-      alert('비밀번호를 확인해주세요');
+  const validatePassword = () => {
+    setIsAblePassword(false);
+
+    if (userPasswordInput?.includes(' ')) {
+      setErrorMessage('비밀번호에 공백이 포함되어 있습니다.');
       return;
     }
 
-    resetPassword(password, code)
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[a-zA-Z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,20}$/;
+    if (userPasswordInput && !passwordRegex.test(userPasswordInput)) {
+      setErrorMessage('비밀번호는 영문, 숫자, 특수문자 조합 8~20자로 입력해주세요.');
+      return;
+    }
+
+    const isSamePassword = userPasswordInput === checkUserPasswordInput;
+    if (!isSamePassword) {
+      setErrorMessage('비밀번호가 서로 다릅니다.');
+      return;
+    }
+
+    setErrorMessage('');
+    setIsAblePassword(true);
+  };
+
+  useEffect(() => {
+    if (userPasswordInput || checkUserPasswordInput) {
+      validatePassword();
+    } else {
+      setErrorMessage('');
+    }
+  }, [userPasswordInput, checkUserPasswordInput]);
+
+  const resetPasswordHandler = () => {
+    if (!userPasswordInput || !isAblePassword) {
+      setErrorMessage('비밀번호를 확인해주세요');
+      return;
+    }
+
+    resetPassword(userPasswordInput, code)
       .then(() => {
         alert('비밀번호가 재설정되었습니다.');
         navigate('/login');
@@ -81,31 +118,35 @@ function ResetPassword() {
   };
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })}>
-      <Container>
-        <AppInputWithLabel
-          titleLabel={'비밀번호'}
-          messageLabel={showCheckPasswordLabel()}
+    <AppContainer
+      useFlex={colFlex({ justify: 'center', align: 'center' })}
+      customGap={'20px'}
+      titleNavBarProps={{ title: '비밀번호 재설정', useBackIcon: false }}
+    >
+      <>
+        <NewAppInput
+          label={'비밀번호'}
+          placeholder={'비밀번호를 입력해주세요'}
           type={'password'}
-          id={'userPassword'}
-          onChange={() => {
-            setCheckUserPasswordInput('');
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setUserPasswordInput(event.target.value);
           }}
-          ref={userPasswordInputRef}
-          placeholder="비밀번호를 입력해주세요"
+          value={userPasswordInput}
           required
         />
-        <AppInput
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => setCheckUserPasswordInput(event.target.value)}
+        <NewAppInput
+          label={'비밀번호 확인'}
+          placeholder={'입력한 비밀번호를 똑같이 입력해주세요'}
           type={'password'}
           value={checkUserPasswordInput}
-          placeholder="입력한 비밀번호를 똑같이 입력해주세요"
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setCheckUserPasswordInput(event.target.value);
+          }}
           required
-        ></AppInput>
-        <AppButton size={'large'} type={'submit'} onClick={resetPasswordHandler}>
-          비밀번호 재설정
-        </AppButton>
-      </Container>
+        />
+        <ErrorContainer>{errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}</ErrorContainer>
+        <NewRoundedButton onClick={resetPasswordHandler}>비밀번호 재설정</NewRoundedButton>
+      </>
     </AppContainer>
   );
 }

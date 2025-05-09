@@ -10,6 +10,9 @@
   "plugins": ["import", "prettier"],
   "rules": {
     "react/jsx-filename-extension": "off",
-    "prettier/prettier": ["error", { "endOfLine": "auto" }]
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    "import/no-extraneous-dependencies": ["error", {
+      "devDependencies": ["**/*.stories.tsx", "**/*.test.{ts,tsx}", "**/setupTests.ts", ".storybook/**"]
+    }]
   }
 }

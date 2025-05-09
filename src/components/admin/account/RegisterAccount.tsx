@@ -7,6 +7,7 @@ import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import AppLabel from '@components/common/label/AppLabel';
 import { Color } from '@resources/colors';
+import NewAppInput from '@components/common/input/NewAppInput';
 
 const Container = styled.div`
   width: 70%;
@@ -37,21 +38,6 @@ const InputRowContainer = styled.div`
   column-gap: 10px;
   grid-template-columns: 60px 1fr;
   align-items: center;
-`;
-
-const Input = styled.input`
-  border: none;
-  height: 50px;
-  width: 300px;
-  border-radius: 40px;
-  padding: 0 20px;
-  box-sizing: border-box;
-  background: ${Color.WHITE};
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
 `;
 
 const SubmitContainer = styled.div`
@@ -142,13 +128,13 @@ function RegisterAccount() {
             <AppLabel size={13} color={Color.BLACK} style={{ fontWeight: 500 }}>
               예금주
             </AppLabel>
-            <Input placeholder={'예금주명을 입력해주세요.'} ref={accountHolderRef} />
+            <NewAppInput placeholder={'예금주명을 입력해주세요.'} type={'text'} ref={accountHolderRef} width={300} height={50} />
           </InputRowContainer>
           <InputRowContainer>
             <AppLabel size={13} color={Color.BLACK} style={{ fontWeight: 500 }}>
               계좌번호
             </AppLabel>
-            <Input placeholder={'(-)를 제외한 계좌번호를 입력해주세요.'} type={'number'} ref={accountNumberRef} />
+            <NewAppInput placeholder={'(-)를 제외한 계좌번호를 입력해주세요.'} type={'number'} ref={accountNumberRef} width={300} height={50} />
           </InputRowContainer>
         </InputContainer>
         <SubmitContainer>

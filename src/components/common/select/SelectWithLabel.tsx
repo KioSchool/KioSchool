@@ -2,21 +2,25 @@ import React from 'react';
 import SelectWithOptions, { SelectWithOptionsProps } from '@components/common/select/SelectWithOptions';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
-
-interface SelectWithLabelProps extends SelectWithOptionsProps {
-  titleLabel: string;
-}
+import { Color } from '@resources/colors';
 
 const Container = styled.div`
+  width: 500px;
+  outline: none;
   gap: 12px;
   ${colFlex()}
 `;
 
 const TitleLabel = styled.label`
-  display: inline-block;
-  font-size: 14px;
+  color: ${Color.GREY};
+  font-size: 20px;
   font-weight: 500;
+  padding-left: 10px;
 `;
+
+interface SelectWithLabelProps extends SelectWithOptionsProps {
+  titleLabel: string;
+}
 
 function SelectWithLabel(props: SelectWithLabelProps) {
   return (
