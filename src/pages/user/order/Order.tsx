@@ -41,6 +41,7 @@ const Header = styled.div`
 const Title = styled.div`
   font-size: 25px;
   font-weight: 600;
+  text-align: center;
 `;
 
 const Description = styled.div`

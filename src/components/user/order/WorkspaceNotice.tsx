@@ -22,10 +22,6 @@ const NoticeContent = styled.div<{ expanded: boolean }>`
   ${({ expanded }) => rowFlex({ justify: 'space-between', align: expanded ? 'end' : 'center' })}
 `;
 
-const expandedStyle = `
-  white-space: pre-wrap;
-`;
-
 const unExpandedStyle = `
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -37,7 +33,8 @@ const Notice = styled.p<{ expanded: boolean }>`
   padding-left: 5px;
   width: 80%;
   font-size: 13px;
-  ${({ expanded }) => (expanded ? expandedStyle : unExpandedStyle)}
+  white-space: pre-wrap;
+  ${({ expanded }) => !expanded && unExpandedStyle}
 `;
 
 const ToggleIcon = styled(RiArrowDownSLine, {
