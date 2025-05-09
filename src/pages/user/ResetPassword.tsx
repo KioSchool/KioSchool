@@ -39,7 +39,7 @@ function ResetPassword() {
 
     sendResetPasswordLink(id, email)
       .then(() => {
-        alert('비밀번호 재설정 링크를 전송했습니다.');
+        alert('비밀번호 재설정 링크를 전송했습니다. 회원가입 하신 이메일을 확인해주세요.');
       })
       .catch((error) => alert(error.response.data.message));
   };

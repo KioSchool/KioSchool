@@ -18,6 +18,8 @@ const Container = styled.select<{ width?: string }>`
   border: 1px solid rgba(201, 201, 201, 0.5);
   cursor: pointer;
 
+  appearance: none;
+
   &:focus {
     outline: none;
     caret-color: ${Color.KIO_ORANGE};
