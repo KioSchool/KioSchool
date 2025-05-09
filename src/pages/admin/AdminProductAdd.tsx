@@ -1,16 +1,15 @@
 import React, { ChangeEvent, useEffect, useReducer, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import AppButton from '@components/common/button/AppButton';
-import AppInputWithLabel from '@components/common/input/AppInputWithLabel';
-import styled from '@emotion/styled';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useRecoilValue } from 'recoil';
 import { categoriesAtom } from '@recoils/atoms';
-import SelectWithLabel from '@components/common/select/SelectWithLabelProps';
+import SelectWithLabel from '@components/common/select/SelectWithLabel';
 import AppImageInput from '@components/common/input/AppImageInput';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex } from '@styles/flexStyles';
 import { ProductActionType, ProductStateType } from '@@types/index';
+import NewAppInput from '@components/common/input/NewAppInput';
+import NewRoundedButton from '@components/common/button/NewRoundedButton';
 
 function reducer(state: ProductStateType, action: ProductActionType) {
   switch (action.type) {
@@ -26,14 +25,6 @@ function reducer(state: ProductStateType, action: ProductActionType) {
       throw new Error('Unhandled action');
   }
 }
-
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  padding-bottom: 20px;
-  gap: 15px;
-  ${colFlex({ align: 'center' })}
-`;
 
 function AdminProductAdd() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
@@ -96,12 +87,24 @@ function AdminProductAdd() {
       return;
     }
 
+    if (newFile.type !== 'image/png' && newFile.type !== 'image/jpeg') {
+      alert('상품 이미지는 png 또는 jpeg 형식만 지원합니다.');
+      setFile(null);
+      return;
+    }
+
     setFile(newFile);
   };
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })} useNavBackground={true} titleNavBarProps={{ title: '상품 등록' }} useScroll={true}>
-      <Container>
+    <AppContainer
+      useFlex={colFlex({ justify: 'center', align: 'center' })}
+      useNavBackground={true}
+      titleNavBarProps={{ title: '상품 등록' }}
+      useScroll={true}
+      customGap={'12px'}
+    >
+      <>
         <SelectWithLabel
           titleLabel={'카테고리'}
           options={productCategories}
@@ -109,30 +112,33 @@ function AdminProductAdd() {
             dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
           }}
         />
-        <AppInputWithLabel
-          titleLabel={'상품명'}
-          messageLabel={'최대 12자'}
+        <NewAppInput
+          label={'상품명'}
+          placeholder={'최대 12자까지 입력 가능합니다.'}
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
             dispatch({ type: 'PRODUCT_NAME_INPUT', payload: event.target?.value });
           }}
         />
         <AppImageInput title={'상품 사진'} file={file} onImageChange={onImageChange} />
-        <AppInputWithLabel
-          titleLabel={'상품 설명'}
-          messageLabel={'최대 30자'}
+        <NewAppInput
+          label={'상품 설명'}
+          placeholder={'최대 30자까지 입력 가능합니다.'}
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
             dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: event.target?.value });
           }}
         />
-        <AppInputWithLabel
+        <NewAppInput
+          label={'상품 가격'}
           type={'number'}
-          titleLabel={'상품 가격'}
+          placeholder={'가격을 입력해주세요'}
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
             dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: event.target?.value });
           }}
         />
-        <AppButton onClick={AddProduct}>추가하기</AppButton>
-      </Container>
+        <NewRoundedButton size={'md'} onClick={AddProduct} style={{ margin: '38px 0' }}>
+          추가하기
+        </NewRoundedButton>
+      </>
     </AppContainer>
   );
 }

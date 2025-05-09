@@ -6,7 +6,7 @@ import { rowFlex } from '@styles/flexStyles';
 
 type ButtonSize = 'xs' | 'sm' | 'md';
 
-interface CustomButtonSize {
+export interface CustomButtonSize {
   width?: number;
   height?: number;
 }
