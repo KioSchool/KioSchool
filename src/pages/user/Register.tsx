@@ -153,9 +153,9 @@ function Register() {
       return;
     }
 
-    const isEmailSent = await sendVerifyMail(userEmail);
-    if (!isEmailSent) {
-      setErrorMessage('이메일 발송이 실패했습니다.');
+    const emailSentResult = await sendVerifyMail(userEmail);
+    if (typeof emailSentResult === 'string') {
+      setErrorMessage(emailSentResult);
       setIsCodeSent(false);
       return;
     }

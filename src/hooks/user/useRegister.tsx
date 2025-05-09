@@ -26,13 +26,13 @@ function useRegister() {
       .catch(() => false);
   };
 
-  const sendVerifyMail = async (email: string) => {
+  const sendVerifyMail = async (email: string): Promise<boolean | string> => {
     return userApi
       .post('/user/email', {
         email,
       })
       .then(() => true)
-      .catch(() => false);
+      .catch((error) => error.response.data.message);
   };
 
   interface VerifyUserResponse {
