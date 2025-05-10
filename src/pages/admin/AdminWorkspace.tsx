@@ -13,6 +13,7 @@ import ProductRouteButtons from '@components/admin/workspace/ProductRouteButtons
 import WorkspaceRouteButtons from '@components/admin/workspace/WorkspaceRouteButtons';
 import AppFooter from '@components/common/footer/AppFooter';
 import AppFaqButton from '@components/common/button/AppFaqButton';
+import AppPopup from '@components/common/popup/AppPopup';
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -58,6 +59,7 @@ function AdminWorkspace() {
             <WorkspaceRouteButtons />
           </RouteContainer>
         </ContentContainer>
+        <AppPopup />
         <AppFooter />
         <AppFaqButton />
       </>
