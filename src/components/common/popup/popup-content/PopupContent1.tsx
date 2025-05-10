@@ -41,7 +41,7 @@ const Description = styled.div`
 `;
 
 function PopupContent1() {
-  const { sendPopupResult } = usePopup();
+  const { sendPopupResult, closePopupForever } = usePopup();
 
   const title = '키오스쿨 사용 인터뷰에 참여해주세요!';
   const description =
@@ -61,6 +61,8 @@ function PopupContent1() {
     `;
 
     sendPopupResult(result);
+
+    closePopupForever(1);
   };
 
   return (

@@ -8,7 +8,7 @@ function usePopup() {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const sendPopupResult = (result: string) => {
-    adminApi.post('popup/result', { result });
+    adminApi.post('/discord/popup', { result });
   };
 
   const isValidPopup = (popupId: number, expireDate: Date) => {
@@ -42,12 +42,19 @@ function usePopup() {
     closePopup();
   };
 
+  const closePopupForever = (popupId: number) => {
+    const cookies = new Cookies();
+    cookies.set(`close_popup_${popupId}`, 'true', { path: '/' });
+    closePopup();
+  };
+
   return {
     isOpen,
     sendPopupResult,
     openPopup,
     closePopup,
     closePopupForDay,
+    closePopupForever,
     isValidPopup,
   };
 }
