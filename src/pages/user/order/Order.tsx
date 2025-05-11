@@ -48,6 +48,7 @@ const Description = styled.div`
   font-size: 18px;
   color: ${Color.GREY};
   text-align: center;
+  white-space: pre-wrap;
 `;
 
 function Order() {
