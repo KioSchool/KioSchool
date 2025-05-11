@@ -15,7 +15,7 @@ function useAdminOrder(workspaceId: string | undefined) {
     });
   };
 
-  const fetchOrders = (props: { startDate: string; endDate: string }) => {
+  const fetchOrders = (props: { startDate: string; endDate: string; status?: OrderStatus }) => {
     adminApi.get<Order[]>('/orders', { params: { ...props, workspaceId } }).then((response) => {
       setOrders(response.data);
     });
