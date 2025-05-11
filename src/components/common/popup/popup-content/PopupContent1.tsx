@@ -54,6 +54,11 @@ function PopupContent1() {
 
   const submitHandler = () => {
     const inputValue = inputRef.current?.value;
+    const phoneRegex = /^0\d{1,2}-?\d{3,4}-?\d{4}$/;
+    if (!inputValue || !phoneRegex.test(inputValue)) {
+      alert('전화번호를 정확히 입력해주세요.');
+      return;
+    }
 
     const result = `
     ### 1번 팝업에 대한 피드백이 제출되었습니다.
