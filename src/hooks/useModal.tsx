@@ -12,7 +12,7 @@ function useModal() {
 
   const closeModal = () => {
     setModalOpen(false);
-    // 모달창 open 시 배경 스크롤 금지 해제 코드
+    // 모달창 close 시 배경 스크롤 금지 해제 코드
     document.body.style.overflow = 'auto';
   };
 
