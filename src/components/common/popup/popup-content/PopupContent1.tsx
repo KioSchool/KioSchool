@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { useRef } from 'react';
 import { colFlex } from '@styles/flexStyles';
 import { lineSeedKrFont } from '@styles/fonts';
 import NewAppInput from '@components/common/input/NewAppInput';
@@ -50,7 +50,7 @@ function PopupContent1() {
     '키오스쿨의 발전을 위한 소중한 의견을 꼭 남겨주세요.\n' +
     '감사합니다.';
 
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const submitHandler = () => {
     const inputValue = inputRef.current?.value;

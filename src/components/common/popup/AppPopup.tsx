@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import usePopup from '@hooks/usePopup';
 import styled from '@emotion/styled';
 import { RiCloseCircleFill } from '@remixicon/react';
@@ -52,7 +52,7 @@ const CloseButton = styled(RiCloseCircleFill)`
 
 function AppPopup() {
   const { isValidPopup, closePopupForDay } = usePopup();
-  const [validPopupData, setValidPopupData] = React.useState<PopupData | null>(popupDatas[0]);
+  const [validPopupData, setValidPopupData] = useState<PopupData | null>(popupDatas[0]);
   const [cookies] = useCookies();
 
   useEffect(() => {
