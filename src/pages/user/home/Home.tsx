@@ -1,10 +1,10 @@
 import React from 'react';
-import { isMobile } from 'react-device-detect';
+import { isMobile, isTablet } from 'react-device-detect';
 import HomeMobile from './HomeMobile';
 import HomePC from './HomePC';
 
 function Home() {
-  return isMobile ? <HomeMobile /> : <HomePC />;
+  return isMobile && !isTablet ? <HomeMobile /> : <HomePC />;
 }
 
 export default Home;
