@@ -24,6 +24,7 @@ const Container = styled.div`
 `;
 
 const ConditionContainer = styled.div`
+  width: 100%;
   ${rowFlex({ justify: 'space-between' })}
 
   ${tabletMediaQuery} {
