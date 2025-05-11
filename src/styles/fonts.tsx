@@ -18,4 +18,14 @@ export const lineSeedKrFont = css`
     src: url('https://cdn.jsdelivr.net/gh/wizfile/font/LINESeedKR-Rg.woff') format('woff');
     font-style: normal;
   }
+
+  @font-face {
+    font-family: 'LINE Seed Sans KR';
+    src: url('https://db.onlinewebfonts.com/t/b54160268ce2bd762604d89f650daaff.eot');
+    src: url('https://db.onlinewebfonts.com/t/b54160268ce2bd762604d89f650daaff.eot?#iefix') format('embedded-opentype'),
+      url('https://db.onlinewebfonts.com/t/b54160268ce2bd762604d89f650daaff.woff2') format('woff2'),
+      url('https://db.onlinewebfonts.com/t/b54160268ce2bd762604d89f650daaff.woff') format('woff'),
+      url('https://db.onlinewebfonts.com/t/b54160268ce2bd762604d89f650daaff.ttf') format('truetype'),
+      url('https://db.onlinewebfonts.com/t/b54160268ce2bd762604d89f650daaff.svg#LINE Seed Sans KR') format('svg');
+  }
 `;

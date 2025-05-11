@@ -2958,6 +2958,14 @@
     "@types/react" "*"
     hoist-non-react-statics "^3.3.0"
 
+"@types/hoist-non-react-statics@^3.3.6":
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.6.tgz#6bba74383cdab98e8db4e20ce5b4a6b98caed010"
+  integrity sha512-lPByRJUer/iN/xa4qpyL0qmL11DqNW81iU/IG1S3uvRUq4oKagz8VCxZjiWkumgt66YT3vOdDgZ0o32sGKtCEw==
+  dependencies:
+    "@types/react" "*"
+    hoist-non-react-statics "^3.3.0"
+
 "@types/html-minifier-terser@^6.0.0":
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/@types/html-minifier-terser/-/html-minifier-terser-6.1.0.tgz#4fc33a00c1d0c16987b1a20cf92d20614c55ac35"
@@ -4791,6 +4799,11 @@ cookie@0.5.0:
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.5.0.tgz#d1f5d71adec6558c58f389987c366aa47e994f8b"
   integrity sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==
 
+cookie@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/cookie/-/cookie-1.0.2.tgz#27360701532116bd3f1f9416929d176afe1e4610"
+  integrity sha512-9Kr/j4O16ISv8zBBhJoi4bXOYNTkFLOqSL3UDB0njXxCXNezjeyVrJyGOWtgfs/q2km1gwBcfH8q1yEGoMYunA==
+
 core-js-compat@^3.25.1:
   version "3.25.5"
   resolved "https://registry.yarnpkg.com/core-js-compat/-/core-js-compat-3.25.5.tgz#0016e8158c904f7b059486639e6e82116eafa7d9"
@@ -5106,6 +5119,11 @@ date-fns@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-4.1.0.tgz#64b3d83fff5aa80438f5b1a633c2e83b8a1c2d14"
   integrity sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==
+
+dayjs@^1.11.13:
+  version "1.11.13"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.13.tgz#92430b0139055c3ebb60150aa13e860a4b5a366c"
+  integrity sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==
 
 debug@2.6.9, debug@^2.6.0, debug@^2.6.9:
   version "2.6.9"
@@ -9647,6 +9665,15 @@ react-beautiful-dnd@^13.1.1:
     redux "^4.0.4"
     use-memo-one "^1.1.1"
 
+react-cookie@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/react-cookie/-/react-cookie-8.0.1.tgz#0d7f5112c9003b61c70d3d53f1f0a5b741e9f2e9"
+  integrity sha512-QNdAd0MLuAiDiLcDU/2s/eyKmmfMHtjPUKJ2dZ/5CcQ9QKUium4B3o61/haq6PQl/YWFqC5PO8GvxeHKhy3GFA==
+  dependencies:
+    "@types/hoist-non-react-statics" "^3.3.6"
+    hoist-non-react-statics "^3.3.2"
+    universal-cookie "^8.0.0"
+
 react-datepicker@^6.1.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-6.1.0.tgz#c227de6afce232b5737214eb4b71044e8e6b308a"
@@ -11255,6 +11282,13 @@ unique-string@^2.0.0:
   integrity sha512-uNaeirEPvpZWSgzwsPGtU2zVSTrn/8L5q/IexZmH0eH6SA73CmAA5U4GwORTxQAZs95TAXLNqeLoPPNO5gZfWg==
   dependencies:
     crypto-random-string "^2.0.0"
+
+universal-cookie@^8.0.0:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/universal-cookie/-/universal-cookie-8.0.1.tgz#19263fcda6889978a081c610a90fc395eeaeec64"
+  integrity sha512-B6ks9FLLnP1UbPPcveOidfvB9pHjP+wekP2uRYB9YDfKVpvcjKgy1W5Zj+cEXJ9KTPnqOKGfVDQBmn8/YCQfRg==
+  dependencies:
+    cookie "^1.0.2"
 
 universalify@^0.2.0:
   version "0.2.0"

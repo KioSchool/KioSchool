@@ -65,12 +65,12 @@ const StyledInput = styled.input<NewAppInputProps>`
   }
 `;
 
-interface InputButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface InputButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: CustomButtonSize;
   text: string;
 }
 
-interface NewAppInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface NewAppInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   enterHandler?: () => void;
   width?: number;
   height?: number;
