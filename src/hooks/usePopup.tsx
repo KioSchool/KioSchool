@@ -1,11 +1,11 @@
-import React from 'react';
+import { useState } from 'react';
 import { Cookies } from 'react-cookie';
 import dayjs from 'dayjs';
 import useApi from '@hooks/useApi';
 
 function usePopup() {
   const { adminApi } = useApi();
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const sendPopupResult = (result: string) => {
     adminApi.post('/discord/popup', { result });

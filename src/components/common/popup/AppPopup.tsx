@@ -56,11 +56,7 @@ function AppPopup() {
   const [cookies] = useCookies();
 
   useEffect(() => {
-    const index = popupDatas.findIndex((popupData) => {
-      const { popupId, expireDate } = popupData;
-
-      return isValidPopup(popupId, expireDate);
-    });
+    const index = popupDatas.findIndex(({ popupId, expireDate }) => isValidPopup(popupId, expireDate));
 
     if (index === -1) {
       setValidPopupData(null);
@@ -71,7 +67,6 @@ function AppPopup() {
   }, [cookies]);
 
   if (!validPopupData) {
-    console.log('validPopupData is null');
     return null;
   }
 
