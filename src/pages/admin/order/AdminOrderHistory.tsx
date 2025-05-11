@@ -11,18 +11,24 @@ import ToggleOrderCard from '@components/admin/order/ToggleOrderCard';
 import AppLabel from '@components/common/label/AppLabel';
 import AppCheckBox from '@components/common/input/AppCheckBox';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { OrderStatus } from '@@types/index';
 import { ko } from 'date-fns/locale/ko';
 import { format } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
-import { OrderStatus } from '@@types/index';
+import { tabletMediaQuery } from '@styles/globalStyles';
 
 const Container = styled.div`
   gap: 24px;
   width: 100%;
+  ${colFlex({ align: 'center' })}
 `;
 
 const ConditionContainer = styled.div`
   ${rowFlex({ justify: 'space-between' })}
+
+  ${tabletMediaQuery} {
+    width: 80%;
+  }
 `;
 
 const DatePickerContainer = styled.div`
@@ -47,6 +53,10 @@ const TotalPriceContainer = styled.div`
   width: 100%;
   padding: 10px;
   ${rowFlex({ justify: 'flex-end' })}
+
+  ${tabletMediaQuery} {
+    width: 80%;
+  }
 `;
 
 function AdminOrderHistory() {
@@ -55,7 +65,7 @@ function AdminOrderHistory() {
   const [endDate, setEndDate] = useState(new Date());
   const [showServedOrder, setShowServedOrder] = useState(false);
   const { fetchOrders } = useAdminOrder(workspaceId);
-  const orders = useRecoilValue(ordersAtom);
+  const orders = showServedOrder ? useRecoilValue(ordersAtom).filter((order) => order.status === OrderStatus.SERVED) : useRecoilValue(ordersAtom);
 
   const totalOrderPrice = orders.reduce((acc, cur) => acc + cur.totalPrice, 0).toLocaleString();
 
@@ -66,14 +76,8 @@ function AdminOrderHistory() {
   };
 
   useEffect(() => {
-    const params = {
-      startDate: dateConverter(startDate),
-      endDate: dateConverter(endDate),
-      status: showServedOrder ? OrderStatus.SERVED : undefined,
-    };
-
-    fetchOrders(params);
-  }, [startDate, endDate, showServedOrder]);
+    fetchOrders({ startDate: dateConverter(startDate), endDate: dateConverter(endDate) });
+  }, [startDate, endDate]);
 
   return (
     <AppContainer useFlex={colFlex({ justify: 'center' })} useNavBackground={true} titleNavBarProps={{ title: '전체 주문 조회' }}>
