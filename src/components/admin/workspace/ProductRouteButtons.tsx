@@ -5,6 +5,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import productImage from '@resources/image/admin/workspace/productImage.png';
 import productCategoryImage from '@resources/image/admin/workspace/productCategoryImage.png';
 import { Color } from '@resources/colors';
+import { tabletMediaQuery } from '@styles/globalStyles';
 
 const Container = styled.div`
   width: 90%;
@@ -22,6 +23,10 @@ const ButtonContainer = styled.div`
   height: 130px;
   gap: 15px;
   ${rowFlex({ justify: 'start', align: 'center' })}
+
+  ${tabletMediaQuery} {
+    height: 110px;
+  }
 `;
 
 function ProductManageContent() {

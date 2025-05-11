@@ -6,6 +6,7 @@ import realtimeOrderImage from '@resources/image/admin/workspace/realtimeOrderIm
 import orderHistoryImage from '@resources/image/admin/workspace/orderHistoryImage.png';
 import orderTableImage from '@resources/image/admin/workspace/orderTableImage.png';
 import { Color } from '@resources/colors';
+import { tabletMediaQuery } from '@styles/globalStyles';
 
 const Container = styled.div`
   width: 90%;
@@ -23,6 +24,10 @@ const ButtonContainer = styled.div`
   height: 130px;
   gap: 15px;
   ${rowFlex({ justify: 'start', align: 'center' })}
+
+  ${tabletMediaQuery} {
+    height: 110px;
+  }
 `;
 
 function OrderManageContent() {
