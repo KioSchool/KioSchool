@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
@@ -9,38 +8,17 @@ import { ordersAtom } from '@recoils/atoms';
 import AppContainer from '@components/common/container/AppContainer';
 import ToggleOrderCard from '@components/admin/order/ToggleOrderCard';
 import AppLabel from '@components/common/label/AppLabel';
-import AppCheckBox from '@components/common/input/AppCheckBox';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { OrderStatus } from '@@types/index';
-import { ko } from 'date-fns/locale/ko';
 import { format } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
 import { tabletMediaQuery } from '@styles/globalStyles';
+import OrderHistoryNavBarChildren from '@components/admin/order/OrderHistoryNavBarChildren';
 
 const Container = styled.div`
   gap: 24px;
   width: 100%;
   ${colFlex({ align: 'center' })}
-`;
-
-const ConditionContainer = styled.div`
-  width: 100%;
-  ${rowFlex({ justify: 'space-between' })}
-
-  ${tabletMediaQuery} {
-    width: 80%;
-  }
-`;
-
-const DatePickerContainer = styled.div`
-  gap: 24px;
-  margin-bottom: 24px;
-  ${rowFlex({ justify: 'center' })}
-`;
-
-const OrderStatusConditionContainer = styled.div`
-  gap: 24px;
-  ${rowFlex({ justify: 'center' })}
 `;
 
 const OrderCardContainer = styled.div`
@@ -81,40 +59,25 @@ function AdminOrderHistory() {
   }, [startDate, endDate]);
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })} useNavBackground={true} titleNavBarProps={{ title: '전체 주문 조회' }}>
+    <AppContainer
+      useFlex={colFlex({ justify: 'center' })}
+      useNavBackground={true}
+      titleNavBarProps={{
+        title: '주문 통계',
+        children: (
+          <OrderHistoryNavBarChildren
+            showServedOrder={showServedOrder}
+            setShowServedOrder={setShowServedOrder}
+            startDate={startDate}
+            setStartDate={setStartDate}
+            endDate={endDate}
+            setEndDate={setEndDate}
+          />
+        ),
+      }}
+      useScroll={true}
+    >
       <Container className={'admin-order-history-container'}>
-        <ConditionContainer className={'condition-container'}>
-          <DatePickerContainer className={'date-picker-container'}>
-            <ReactDatePicker
-              selected={startDate}
-              shouldCloseOnSelect
-              showTimeSelect={true}
-              locale={ko}
-              dateFormat={'yyyy.MM.dd - aa hh:mm'}
-              onChange={(date: Date) => setStartDate(date)}
-            />
-            {'~'}
-            <ReactDatePicker
-              selected={endDate}
-              shouldCloseOnSelect
-              showTimeSelect={true}
-              locale={ko}
-              dateFormat={'yyyy.MM.dd - aa hh:mm'}
-              onChange={(date: Date) => setEndDate(date)}
-            />
-          </DatePickerContainer>
-          <OrderStatusConditionContainer className={'order-status-condition-container'}>
-            <AppCheckBox
-              checked={showServedOrder}
-              onChange={() => {
-                setShowServedOrder((prev) => {
-                  return !prev;
-                });
-              }}
-              label={'서빙 완료 주문만 보기'}
-            />
-          </OrderStatusConditionContainer>
-        </ConditionContainer>
         <OrderCardContainer className={'order-card-container'}>
           {orders.map((order) => (
             <ToggleOrderCard key={order.id} order={order} />
