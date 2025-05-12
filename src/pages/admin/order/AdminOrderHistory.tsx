@@ -51,8 +51,33 @@ const HeaderLabel = styled.p`
   letter-spacing: -0.4px;
 `;
 
+const CategoryContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+
+  width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
+
+  border-top: 10px solid ${Color.LIGHT_GREY};
+  border-bottom: 1px solid ${Color.LIGHT_GREY};
+`;
+
+const CategoryLink = styled.div<{ isSelected: boolean }>`
+  width: auto;
+  padding: 10px 10px;
+  border-bottom: 3px solid transparent;
+
+  cursor: pointer;
+  border-bottom: ${({ isSelected }) => (isSelected ? '3px solid black' : '3px solid transparent')};
+  font-weight: ${({ isSelected }) => (isSelected ? '600' : '400')};
+  ${rowFlex({ justify: 'center', align: 'center' })}
+`;
+
 function AdminOrderHistory() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
+  const [selectedCategory, setSelectedCategory] = useState('전체 주문 조회');
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [showServedOrder, setShowServedOrder] = useState(false);
@@ -95,6 +120,19 @@ function AdminOrderHistory() {
           <HeaderLabel className={'total-price-label'}>{'총 매출액'}</HeaderLabel>
           <HeaderLabel className={'total-price-value'}>{totalOrderPrice} 원</HeaderLabel>
         </HeaderContainer>
+
+        <CategoryContainer className={'category-container'}>
+          <CategoryLink isSelected={selectedCategory === '전체 주문 조회'} onClick={() => setSelectedCategory('전체 주문 조회')}>
+            {'전체 주문 조회'}
+          </CategoryLink>
+          <CategoryLink isSelected={selectedCategory === '상품별 판매량'} onClick={() => setSelectedCategory('상품별 판매량')}>
+            {'상품별 판매량'}
+          </CategoryLink>
+          <CategoryLink isSelected={selectedCategory === '매출 증가 추이'} onClick={() => setSelectedCategory('매출 증가 추이')}>
+            {'매출 증가 추이'}
+          </CategoryLink>
+        </CategoryContainer>
+
         <OrderCardContainer className={'order-card-container'}>
           {orders.map((order) => (
             <ToggleOrderCard key={order.id} order={order} />
