@@ -35,7 +35,6 @@ interface TotalOrderProps {
 }
 
 function TotalOrder({ orders, fetchOrders, params }: TotalOrderProps) {
-  console.log(params);
   if (!orders || orders.length === 0) {
     return <FallbackContainer>주문 내역이 없습니다.</FallbackContainer>;
   }
