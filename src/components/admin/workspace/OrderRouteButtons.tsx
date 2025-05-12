@@ -33,7 +33,7 @@ const ButtonContainer = styled.div`
 function OrderManageContent() {
   const buttonContents = [
     { name: '실시간 주문 조회', path: '/order/realtime', imageSrc: realtimeOrderImage },
-    { name: '전체 주문 조회', path: '/order/history', imageSrc: orderHistoryImage },
+    { name: '주문 통계', path: '/order/history', imageSrc: orderHistoryImage },
     { name: '테이블 주문 조회', path: '/order/table', imageSrc: orderTableImage },
   ];
 
