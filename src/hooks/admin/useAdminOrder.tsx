@@ -3,6 +3,7 @@ import { Order, OrderStatus, PaginationResponse } from '@@types/index';
 import { useSetRecoilState } from 'recoil';
 import { ordersAtom, tableOrderPaginationResponseAtom } from '@recoils/atoms';
 import { defaultPaginationValue } from '@@types/defaultValues';
+import { ApiPoint } from '@components/admin/order/OrderPriceStatistics';
 
 function useAdminOrder(workspaceId: string | undefined) {
   const { adminApi } = useApi();
@@ -83,6 +84,13 @@ function useAdminOrder(workspaceId: string | undefined) {
     });
   };
 
+  const fetchPreFixSumOrders = (startDate: string, endDate: string, status?: OrderStatus) => {
+    const response = adminApi.get<ApiPoint[]>('/orders/prefix-sum/price', { params: { workspaceId, startDate, endDate, status } }).catch((error) => {
+      console.log(error);
+    });
+    return response;
+  };
+
   return {
     fetchAllOrders,
     payOrder,
@@ -94,6 +102,7 @@ function useAdminOrder(workspaceId: string | undefined) {
     refundOrder,
     fetchWorkspaceTable,
     updateOrderProductCount,
+    fetchPreFixSumOrders,
   };
 }
 
