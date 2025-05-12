@@ -56,7 +56,7 @@ function OrderPriceStatistics({ startDate, endDate }: OrderPriceStatisticsProps)
         setData(response.data ?? []);
       })
       .catch(console.error);
-  }, [workspaceId, startDate, endDate]);
+  }, [startDate, endDate]);
 
   if (data.length === 0) {
     return <FallbackContainer>해당 기간에 매출 데이터가 없습니다.</FallbackContainer>;
