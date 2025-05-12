@@ -44,6 +44,7 @@ const OrderStatusConditionContainer = styled.div`
 `;
 
 const OrderCardContainer = styled.div`
+  width: 100%;
   height: 500px;
   gap: 10px;
   overflow: auto;
