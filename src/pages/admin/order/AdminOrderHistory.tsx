@@ -67,7 +67,7 @@ function AdminOrderHistory() {
   const [endDate, setEndDate] = useState(new Date());
   const [showServedOrder, setShowServedOrder] = useState(false);
   const { fetchOrders } = useAdminOrder(workspaceId);
-  const orders = showServedOrder ? useRecoilValue(ordersAtom).filter((order) => order.status === OrderStatus.SERVED) : useRecoilValue(ordersAtom);
+  const orders = useRecoilValue(ordersAtom);
 
   const totalOrderPrice = orders.reduce((acc, cur) => acc + cur.totalPrice, 0).toLocaleString();
 
@@ -78,8 +78,14 @@ function AdminOrderHistory() {
   };
 
   useEffect(() => {
-    fetchOrders({ startDate: dateConverter(startDate), endDate: dateConverter(endDate) });
-  }, [startDate, endDate]);
+    const params = {
+      startDate: dateConverter(startDate),
+      endDate: dateConverter(endDate),
+      status: showServedOrder ? OrderStatus.SERVED : undefined,
+    };
+
+    fetchOrders(params);
+  }, [startDate, endDate, showServedOrder]);
 
   return (
     <AppContainer useFlex={colFlex({ justify: 'center' })} useNavBackground={true} titleNavBarProps={{ title: '전체 주문 조회' }}>
