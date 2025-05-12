@@ -15,14 +15,21 @@ import { OrderStatus } from '@@types/index';
 import { ko } from 'date-fns/locale/ko';
 import { format } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
+import { tabletMediaQuery } from '@styles/globalStyles';
 
 const Container = styled.div`
   gap: 24px;
   width: 100%;
+  ${colFlex({ align: 'center' })}
 `;
 
 const ConditionContainer = styled.div`
+  width: 100%;
   ${rowFlex({ justify: 'space-between' })}
+
+  ${tabletMediaQuery} {
+    width: 80%;
+  }
 `;
 
 const DatePickerContainer = styled.div`
@@ -47,6 +54,10 @@ const TotalPriceContainer = styled.div`
   width: 100%;
   padding: 10px;
   ${rowFlex({ justify: 'flex-end' })}
+
+  ${tabletMediaQuery} {
+    width: 80%;
+  }
 `;
 
 function AdminOrderHistory() {

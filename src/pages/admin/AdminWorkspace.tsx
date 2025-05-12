@@ -14,16 +14,12 @@ import WorkspaceRouteButtons from '@components/admin/workspace/WorkspaceRouteBut
 import AppFooter from '@components/common/footer/AppFooter';
 import AppFaqButton from '@components/common/button/AppFaqButton';
 import AppPopup from '@components/common/popup/AppPopup';
+import { tabletMediaQuery } from '@styles/globalStyles';
 
 const ContentContainer = styled.div`
   width: 100%;
   ${rowFlex({ justify: 'center', align: 'start' })}
   gap: 80px;
-`;
-
-export const ButtonContainer = styled.div`
-  gap: 30px;
-  ${rowFlex()}
 `;
 
 const RouteContainer = styled.div`
@@ -32,6 +28,10 @@ const RouteContainer = styled.div`
   border-radius: 10px;
   background-color: ${Color.LIGHT_GREY};
   ${colFlex({ justify: 'space-evenly', align: 'center' })}
+
+  ${tabletMediaQuery} {
+    width: 600px;
+  }
 `;
 
 function AdminWorkspace() {

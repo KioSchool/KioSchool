@@ -4,6 +4,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import { Color } from '@resources/colors';
 import { expandButtonStyle } from '@styles/buttonStyles';
+import { tabletMediaQuery } from '@styles/globalStyles';
 
 const Container = styled.div<{ src?: string }>`
   width: 230px;
@@ -17,6 +18,10 @@ const Container = styled.div<{ src?: string }>`
   
   & * {
     cursor: pointer;
+  }
+
+  ${tabletMediaQuery} {
+    width: 170px;
   }
 `;
 

@@ -32,7 +32,7 @@ const StickyHeader = styled.div`
 
 const Header = styled.div`
   width: 100%;
-  height: 120px;
+  min-height: 120px;
   word-break: keep-all;
   ${colFlex({ justify: 'center', align: 'center' })}
   gap: 7px;

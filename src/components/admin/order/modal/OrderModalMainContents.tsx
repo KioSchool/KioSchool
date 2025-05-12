@@ -2,7 +2,7 @@ import { Order, OrderProduct, OrderStatus } from '@@types/index';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import { RiAddCircleFill, RiIndeterminateCircleLine, RiCheckLine } from '@remixicon/react';
+import { RiAddCircleFill, RiCheckLine, RiIndeterminateCircleLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
@@ -45,7 +45,7 @@ const ProductContainer = styled.div`
   }
 `;
 
-const ProductRightContainer = styled.div`
+const ProductLeftContainer = styled.div`
   ${rowFlex({ align: 'center' })}
   gap: 10px;
 `;
@@ -55,7 +55,7 @@ const TotalLabelContainer = styled.div`
   width: 100%;
 `;
 
-const ProductLeftContainer = styled.div`
+const ProductRightContainer = styled.div`
   ${rowFlex()};
   gap: 10px;
 `;
@@ -109,13 +109,13 @@ function OrderModalMainContents({ order }: OrderModalMainContentsProps) {
       <OrderProductContainer>
         {order.orderProducts.map((orderProduct) => (
           <ProductContainer key={orderProduct.id}>
-            <ProductRightContainer>
+            <ProductLeftContainer>
               <AppLabel color={Color.BLACK} size={20}>
                 {isPaidStatus ? `${orderProduct.productName}` : `${orderProduct.productName} - ${orderProduct.quantity}개`}
               </AppLabel>
               {orderProduct.isServed && <RiCheckLine />}
-            </ProductRightContainer>
-            <ProductLeftContainer>
+            </ProductLeftContainer>
+            <ProductRightContainer>
               <AppLabel color={Color.BLACK} size={20}>
                 {`${orderProduct.totalPrice.toLocaleString()}원`}
               </AppLabel>
@@ -136,7 +136,7 @@ function OrderModalMainContents({ order }: OrderModalMainContentsProps) {
                   />
                 </ButtonContainer>
               )}
-            </ProductLeftContainer>
+            </ProductRightContainer>
           </ProductContainer>
         ))}
       </OrderProductContainer>
