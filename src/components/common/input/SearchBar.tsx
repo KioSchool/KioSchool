@@ -42,17 +42,22 @@ const SearchBarContainer = styled.div`
 
 interface SearchBarProps {
   placeholder?: string;
-  fetchContents: () => void;
+  fetchContents: (keyword?: string) => void;
 }
 
 function SearchBar({ placeholder, fetchContents }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [isFocused, setIsFocused] = useState<boolean>(false);
+  const [keyword, setKeyword] = useState<string>('');
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setKeyword(e.target.value);
+  };
 
   const fetchContentsByKeyword = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!(e.key === 'Enter' && inputRef && typeof inputRef !== 'function')) return;
 
-    fetchContents();
+    fetchContents(keyword);
   };
 
   return (
@@ -63,6 +68,7 @@ function SearchBar({ placeholder, fetchContents }: SearchBarProps) {
         type="text"
         placeholder={placeholder || `이름을 입력해주세요`}
         onKeyDown={fetchContentsByKeyword}
+        onChange={handleInputChange}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
       />

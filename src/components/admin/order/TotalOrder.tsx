@@ -1,5 +1,4 @@
 import { Order, OrderStatus } from '@@types/index';
-import React from 'react';
 import ToggleOrderCard from './ToggleOrderCard';
 import { colFlex } from '@styles/flexStyles';
 import styled from '@emotion/styled';
@@ -31,18 +30,25 @@ const OrderCardContainer = styled.div`
 
 interface TotalOrderProps {
   orders: Order[];
-  fetchOrders: (props: { startDate: string; endDate: string; status?: OrderStatus }) => void;
-  params: { startDate: string; endDate: string; status?: OrderStatus };
+  fetchOrders: (props: { startDate: string; endDate: string; status?: OrderStatus; keyword?: string }) => void;
+  params: { startDate: string; endDate: string; status?: OrderStatus; keyword?: string };
 }
 
 function TotalOrder({ orders, fetchOrders, params }: TotalOrderProps) {
+  const handleSearch = (searchKeyword?: string) => {
+    fetchOrders({
+      ...params,
+      keyword: searchKeyword,
+    });
+  };
+
   if (!orders || orders.length === 0) {
     return <FallbackContainer>주문 내역이 없습니다.</FallbackContainer>;
   }
 
   return (
     <Container>
-      <SearchBar placeholder={'주문자명이나 주문번호를 입력해주세요.'} fetchContents={() => fetchOrders(params)} />
+      <SearchBar placeholder={'주문자명이나 주문번호를 입력해주세요.'} fetchContents={handleSearch} />
       <OrderCardContainer>
         {orders.map((order) => (
           <ToggleOrderCard key={order.id} order={order} />
