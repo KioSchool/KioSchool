@@ -5,9 +5,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { RiSearchLine } from '@remixicon/react';
 
-const SearchIcon = styled(RiSearchLine)<{
-  isFocused: boolean;
-}>`
+const SearchIcon = styled(RiSearchLine, {
+  shouldForwardProp: (prop) => prop !== 'isFocused',
+})<{ isFocused: boolean }>`
   color: ${({ isFocused }) => (isFocused ? Color.BLACK : Color.HEAVY_GREY)};
 `;
 
