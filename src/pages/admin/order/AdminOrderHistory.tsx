@@ -79,7 +79,11 @@ function AdminOrderHistory() {
   const { fetchOrders } = useAdminOrder(workspaceId);
   const allOrders = useRecoilValue(ordersAtom);
   const [showServedOrder, setShowServedOrder] = useState(false);
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState<Date>(() => {
+    const date = new Date();
+    date.setDate(date.getDate() - 5);
+    return date;
+  });
   const [endDate, setEndDate] = useState(new Date());
   const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('all');
 
