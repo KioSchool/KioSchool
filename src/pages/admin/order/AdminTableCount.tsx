@@ -12,6 +12,8 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { adminWorkspaceAtom } from '@recoils/atoms';
 import PreviewContainer from '@components/common/container/PreviewContainer';
 import { toPng } from 'html-to-image';
+import { isDesktop } from 'react-device-detect';
+import { tabletMediaQuery } from '@styles/globalStyles';
 
 const Container = styled.div`
   width: 100vw;
@@ -33,6 +35,12 @@ const QRCodeContainer = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   padding: 10px 20px;
+
+  ${tabletMediaQuery} {
+    width: 100%;
+    height: 500px;
+    grid-template-columns: repeat(4, 1fr);
+  }
 `;
 
 const QRCodeCard = styled.div`
@@ -141,7 +149,7 @@ function AdminTableCount() {
       <Container className={'admin-order-manage-container'}>
         <AppLabel>테이블 개수는 {workspace.tableCount}개 입니다.</AppLabel>
         <ContentContainer className={'content-container'}>
-          <PreviewContainer />
+          {isDesktop && <PreviewContainer />}
           <QRCodeContainer className={'qrcode-container'} ref={QRCodeContainerRef}>
             {Array.from({ length: workspace.tableCount }, (_, index) => (
               <QRCodeCard key={index} className={'qrcode-card'} ref={(el) => (QRCodeRefs.current[index + 1] = el)}>
