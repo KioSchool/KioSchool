@@ -17,6 +17,7 @@ import TotalOrder from '@components/admin/order/TotalOrder';
 import ProductStatistics from '@components/admin/order/ProductStatistics';
 import OrderPriceStatistics from '@components/admin/order/OrderPriceStatistics';
 import { lineSeedKrFont } from '@styles/fonts';
+import dayjs from 'dayjs';
 
 type CategoryKey = 'all' | 'byProduct' | 'byTrend';
 
@@ -81,11 +82,7 @@ function AdminOrderStatistics() {
   const { fetchOrders } = useAdminOrder(workspaceId);
   const orders = useRecoilValue(ordersAtom);
   const [showServedOrder, setShowServedOrder] = useState(false);
-  const [startDate, setStartDate] = useState<Date>(() => {
-    const date = new Date();
-    date.setDate(date.getDate() - 5);
-    return date;
-  });
+  const [startDate, setStartDate] = useState<Date>(() => dayjs().subtract(1, 'day').toDate());
   const [endDate, setEndDate] = useState(new Date());
   const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('all');
 
