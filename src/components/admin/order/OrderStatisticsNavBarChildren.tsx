@@ -36,7 +36,7 @@ const StyledDatePicker = styled(ReactDatePicker)`
   }
 `;
 
-interface OrderHistoryNavBarChildrenProps {
+interface OrderStatisticsNavBarChildrenProps {
   showServedOrder: boolean;
   setShowServedOrder: React.Dispatch<React.SetStateAction<boolean>>;
   startDate: Date;
@@ -45,7 +45,14 @@ interface OrderHistoryNavBarChildrenProps {
   setEndDate: React.Dispatch<React.SetStateAction<Date>>;
 }
 
-function OrderHistoryNavBarChildren({ showServedOrder, setShowServedOrder, startDate, setStartDate, endDate, setEndDate }: OrderHistoryNavBarChildrenProps) {
+function OrderStatisticsNavBarChildren({
+  showServedOrder,
+  setShowServedOrder,
+  startDate,
+  setStartDate,
+  endDate,
+  setEndDate,
+}: OrderStatisticsNavBarChildrenProps) {
   return (
     <Container>
       <DatePickerContainer>
@@ -72,4 +79,4 @@ function OrderHistoryNavBarChildren({ showServedOrder, setShowServedOrder, start
   );
 }
 
-export default OrderHistoryNavBarChildren;
+export default OrderStatisticsNavBarChildren;

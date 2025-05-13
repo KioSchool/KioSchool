@@ -9,7 +9,7 @@ import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { OrderStatus } from '@@types/index';
 import { tabletMediaQuery } from '@styles/globalStyles';
-import OrderHistoryNavBarChildren from '@components/admin/order/OrderHistoryNavBarChildren';
+import OrderStatisticsNavBarChildren from '@components/admin/order/OrderStatisticsNavBarChildren';
 import { Color } from '@resources/colors';
 import TotalOrder from '@components/admin/order/TotalOrder';
 import ProductStatistics from '@components/admin/order/ProductStatistics';
@@ -121,7 +121,7 @@ function AdminOrderStatistics() {
       titleNavBarProps={{
         title: '주문 통계',
         children: (
-          <OrderHistoryNavBarChildren
+          <OrderStatisticsNavBarChildren
             showServedOrder={showServedOrder}
             setShowServedOrder={setShowServedOrder}
             startDate={startDate}
