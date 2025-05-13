@@ -74,7 +74,7 @@ const CategoryLink = styled.div<{ isSelected: boolean }>`
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
-function AdminOrderHistory() {
+function AdminOrderStatistics() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchOrders } = useAdminOrder(workspaceId);
   const allOrders = useRecoilValue(ordersAtom);
@@ -167,4 +167,4 @@ function AdminOrderHistory() {
   );
 }
 
-export default AdminOrderHistory;
+export default AdminOrderStatistics;
