@@ -16,6 +16,7 @@ import { Color } from '@resources/colors';
 import TotalOrder from '@components/admin/order/TotalOrder';
 import ProductStatistics from '@components/admin/order/ProductStatistics';
 import OrderPriceStatistics from '@components/admin/order/OrderPriceStatistics';
+import { lineSeedKrFont } from '@styles/fonts';
 
 type CategoryKey = 'all' | 'byProduct' | 'byTrend';
 
@@ -49,7 +50,8 @@ const HeaderContainer = styled.div`
 const HeaderLabel = styled.p`
   color: ${Color.WHITE};
   text-align: center;
-  font-family: 'LINE Seed Sans KR';
+  ${lineSeedKrFont}
+  font-family: 'LINE Seed Sans KR', 'sans-serif';
   font-size: 20px;
   font-weight: 700;
   line-height: 140%;
@@ -77,7 +79,7 @@ const CategoryLink = styled.div<{ isSelected: boolean }>`
 function AdminOrderStatistics() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchOrders } = useAdminOrder(workspaceId);
-  const allOrders = useRecoilValue(ordersAtom);
+  const orders = useRecoilValue(ordersAtom);
   const [showServedOrder, setShowServedOrder] = useState(false);
   const [startDate, setStartDate] = useState<Date>(() => {
     const date = new Date();
@@ -99,8 +101,6 @@ function AdminOrderStatistics() {
       status: showServedOrder ? OrderStatus.SERVED : undefined,
     });
   }, [startDate, endDate, showServedOrder]);
-
-  const orders = showServedOrder ? allOrders.filter((order) => order.status === OrderStatus.SERVED) : allOrders;
 
   const totalOrderPrice = orders.reduce((sum, order) => sum + order.totalPrice, 0).toLocaleString();
 
