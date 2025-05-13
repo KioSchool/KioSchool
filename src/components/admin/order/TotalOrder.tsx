@@ -1,9 +1,8 @@
-import { Order, OrderStatus } from '@@types/index';
+import { Order } from '@@types/index';
 import ToggleOrderCard from './ToggleOrderCard';
 import { colFlex } from '@styles/flexStyles';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import SearchBar from '@components/common/input/SearchBar';
 
 const FallbackContainer = styled.div`
   width: 100%;
@@ -30,25 +29,15 @@ const OrderCardContainer = styled.div`
 
 interface TotalOrderProps {
   orders: Order[];
-  fetchOrders: (props: { startDate: string; endDate: string; status?: OrderStatus; keyword?: string }) => void;
-  params: { startDate: string; endDate: string; status?: OrderStatus; keyword?: string };
 }
 
-function TotalOrder({ orders, fetchOrders, params }: TotalOrderProps) {
-  const handleSearch = (searchKeyword?: string) => {
-    fetchOrders({
-      ...params,
-      keyword: searchKeyword,
-    });
-  };
-
+function TotalOrder({ orders }: TotalOrderProps) {
   if (!orders || orders.length === 0) {
     return <FallbackContainer>주문 내역이 없습니다.</FallbackContainer>;
   }
 
   return (
     <Container>
-      <SearchBar placeholder={'주문자명이나 주문번호를 입력해주세요.'} fetchContents={handleSearch} />
       <OrderCardContainer>
         {orders.map((order) => (
           <ToggleOrderCard key={order.id} order={order} />

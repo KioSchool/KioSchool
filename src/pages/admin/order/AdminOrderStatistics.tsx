@@ -104,17 +104,11 @@ function AdminOrderStatistics() {
 
   const totalOrderPrice = orders.reduce((sum, order) => sum + order.totalPrice, 0).toLocaleString();
 
-  const orderParams = {
-    startDate: dateConverter(startDate),
-    endDate: dateConverter(endDate),
-    status: showServedOrder ? OrderStatus.SERVED : undefined,
-  };
-
   const categories: Category[] = [
     {
       key: 'all',
       label: '전체 주문 조회',
-      render: <TotalOrder orders={orders} fetchOrders={fetchOrders} params={orderParams} />,
+      render: <TotalOrder orders={orders} />,
     },
     {
       key: 'byProduct',
