@@ -51,16 +51,20 @@ function ProductStatistics({ orders }: ProductStatisticsProps) {
     }
   });
 
-  const data = Array.from(productSalesMap.entries()).map(([name, 판매량]) => ({ name, 판매량 }));
+  const data = Array.from(productSalesMap.entries())
+    .map(([name, 판매량]) => ({ name, 판매량 }))
+    .sort((a, b) => b.판매량 - a.판매량);
 
   const BAR_SIZE = 30;
+
+  const YAxisFormatter = (value: number) => `${value}개`;
 
   return (
     <Container>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} barCategoryGap={20} barGap={10}>
           <XAxis dataKey="name" interval={0} tick={(props) => <CustomizedAxisTick {...props} barSize={BAR_SIZE} />} />
-          <YAxis />
+          <YAxis tickFormatter={YAxisFormatter} />
           <Tooltip />
           <Bar dataKey="판매량" fill={Color.KIO_ORANGE} barSize={BAR_SIZE} />
         </BarChart>

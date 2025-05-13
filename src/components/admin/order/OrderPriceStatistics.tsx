@@ -58,23 +58,36 @@ function OrderPriceStatistics({ startDate, endDate }: OrderPriceStatisticsProps)
     return <FallbackContainer>해당 기간에 매출 데이터가 없습니다.</FallbackContainer>;
   }
 
-  const XAxisFormatter = (iso: any) => formatDateLabel(iso, 'yyyy-MM-dd HH:mm');
-  const YAxisFormatter = (value: number) => (value >= 10000 ? `${(value / 10000).toFixed(0)}만원` : value.toLocaleString());
+  const CustomizedAxisTick = (props: any) => {
+    const { x, y, payload } = props;
+    const date = toZonedTime(new Date(payload.value), 'Asia/Seoul');
+
+    return (
+      <text x={x} y={y + 10} textAnchor="middle" fontSize={12}>
+        <tspan x={x} dy={0}>
+          {format(date, 'yyyy-MM-dd')}
+        </tspan>
+        <tspan x={x} dy={15}>
+          {format(date, 'HH:mm')}
+        </tspan>
+      </text>
+    );
+  };
+
+  const YAxisFormatter = (value: number) => (value >= 10000 ? `${(value / 10000).toFixed(0)}만원` : `${value.toLocaleString()}원`);
 
   return (
     <Container>
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data} margin={{ top: 5, right: 30, left: 60, bottom: 20 }}>
+        <LineChart data={data} margin={{ top: 5, right: 30, left: 60, bottom: 40 }}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="timeBucket" tickFormatter={XAxisFormatter} tickMargin={10} fontSize={12} />
+          <XAxis dataKey="timeBucket" tick={CustomizedAxisTick} tickMargin={10} height={60} />
           <YAxis tickFormatter={YAxisFormatter} />
-          <Tooltip labelFormatter={(iso) => formatDateLabel(iso, 'yyyy-MM-dd HH:mm')} formatter={(value: number) => [`${value.toLocaleString()}원`, '매출']} />
-          <Legend
-            formatter={() => '누적 매출'}
-            wrapperStyle={{
-              paddingTop: '15px',
-            }}
+          <Tooltip
+            labelFormatter={(iso) => formatDateLabel(iso, 'yyyy-MM-dd HH:mm')}
+            formatter={(value: number) => [`${value.toLocaleString()}원`, '누적 매출']}
           />
+          <Legend formatter={() => '누적 매출'} />
           <Line type="monotone" dataKey="prefixSumPrice" name="누적 매출" stroke={Color.KIO_ORANGE} strokeWidth={2} activeDot={{ r: 8 }} />
         </LineChart>
       </ResponsiveContainer>

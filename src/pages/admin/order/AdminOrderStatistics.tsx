@@ -30,6 +30,7 @@ const Container = styled.div`
   width: 100%;
   flex: 1;
   gap: 10px;
+  padding-top: 25px;
   ${colFlex({ align: 'center' })}
 
   ${tabletMediaQuery} {
