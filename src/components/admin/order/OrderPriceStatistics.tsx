@@ -58,13 +58,16 @@ function OrderPriceStatistics({ startDate, endDate }: OrderPriceStatisticsProps)
     return <FallbackContainer>해당 기간에 매출 데이터가 없습니다.</FallbackContainer>;
   }
 
+  const XAxisFormatter = (iso: any) => formatDateLabel(iso, 'yyyy-MM-dd HH:mm');
+  const YAxisFormatter = (value: number) => (value >= 10000 ? `${(value / 10000).toFixed(0)}만원` : value.toLocaleString());
+
   return (
     <Container>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 5, right: 30, left: 60, bottom: 20 }}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="timeBucket" tickFormatter={(iso) => formatDateLabel(iso, 'yyyy-MM-dd HH:mm')} tickMargin={10} fontSize={12} />
-          <YAxis tickFormatter={(value) => (value >= 10000 ? `${(value / 10000).toFixed(0)}만원` : value.toLocaleString())} />
+          <XAxis dataKey="timeBucket" tickFormatter={XAxisFormatter} tickMargin={10} fontSize={12} />
+          <YAxis tickFormatter={YAxisFormatter} />
           <Tooltip labelFormatter={(iso) => formatDateLabel(iso, 'yyyy-MM-dd HH:mm')} formatter={(value: number) => [`${value.toLocaleString()}원`, '매출']} />
           <Legend
             formatter={() => '누적 매출'}
