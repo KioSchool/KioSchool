@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Order } from '@@types/index';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
@@ -28,7 +28,7 @@ const ProductContainer = styled.div`
 
 const RightContainer = styled.div`
   gap: 15px;
-  ${rowFlex({ justify: 'end', align: 'center' })}
+  ${rowFlex({ justify: 'end', align: 'flex-end' })}
 `;
 
 const ToggleIcon = styled(RiArrowUpSLine, {
@@ -40,11 +40,11 @@ const ToggleIcon = styled(RiArrowUpSLine, {
 
 const OrderInfoContainer = styled.div`
   gap: 30px;
-  ${colFlex({ justify: 'space-between' })}
+  ${colFlex({ justify: 'space-between', align: 'flex-end' })}
 `;
 
 function ToggleOrderCard({ order }: ToggleOrderCardProps) {
-  const [isClosed, setIsClosed] = React.useState<boolean>(true);
+  const [isClosed, setIsClosed] = useState<boolean>(true);
 
   const closedProductLabelText =
     order.orderProducts.length > 1 ? `${order.orderProducts[0].productName} 외 ${order.orderProducts.length - 1}개` : order.orderProducts[0].productName;
