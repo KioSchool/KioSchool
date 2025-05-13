@@ -1,4 +1,4 @@
-import OrderToggleButton from '@components/common/button/OrderToggleButton';
+import OrderToggleButton from '@components/admin/order/OrderToggleButton';
 import styled from '@emotion/styled';
 import { rowFlex } from '@styles/flexStyles';
 import React from 'react';
