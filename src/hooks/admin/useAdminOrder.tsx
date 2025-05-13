@@ -84,7 +84,7 @@ function useAdminOrder(workspaceId: string | undefined) {
     });
   };
 
-  const fetchPreFixSumOrders = (startDate: string, endDate: string, status?: OrderStatus) => {
+  const fetchPrefixSumOrders = (startDate: string, endDate: string, status?: OrderStatus) => {
     const response = adminApi.get<ApiPoint[]>('/orders/prefix-sum/price', { params: { workspaceId, startDate, endDate, status } }).catch((error) => {
       console.log(error);
     });
@@ -102,7 +102,7 @@ function useAdminOrder(workspaceId: string | undefined) {
     refundOrder,
     fetchWorkspaceTable,
     updateOrderProductCount,
-    fetchPreFixSumOrders,
+    fetchPrefixSumOrders,
   };
 }
 

@@ -36,7 +36,7 @@ interface OrderPriceStatisticsProps {
 
 function OrderPriceStatistics({ startDate, endDate }: OrderPriceStatisticsProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchPreFixSumOrders } = useAdminOrder(workspaceId);
+  const { fetchPrefixSumOrders } = useAdminOrder(workspaceId);
   const [data, setData] = useState<ApiPoint[]>([]);
 
   const dateConverter = (date: Date) => {
@@ -50,7 +50,7 @@ function OrderPriceStatistics({ startDate, endDate }: OrderPriceStatisticsProps)
   };
 
   useEffect(() => {
-    fetchPreFixSumOrders(dateConverter(startDate), dateConverter(endDate))
+    fetchPrefixSumOrders(dateConverter(startDate), dateConverter(endDate))
       .then((res) => {
         const response = res as AxiosResponse<ApiPoint[]>;
         setData(response.data ?? []);
