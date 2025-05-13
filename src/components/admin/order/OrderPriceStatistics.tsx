@@ -8,6 +8,7 @@ import { toZonedTime } from 'date-fns-tz';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { AxiosResponse } from 'axios';
+import { dateConverter } from '@utils/FormatDate';
 
 const Container = styled.div`
   width: 100%;
@@ -38,11 +39,6 @@ function OrderPriceStatistics({ startDate, endDate }: OrderPriceStatisticsProps)
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchPrefixSumOrders } = useAdminOrder(workspaceId);
   const [data, setData] = useState<ApiPoint[]>([]);
-
-  const dateConverter = (date: Date) => {
-    const zonedDate = toZonedTime(date, 'Asia/Seoul');
-    return format(zonedDate, "yyyy-MM-dd'T'HH:mm:ss.SSS");
-  };
 
   const formatDateLabel = (iso: string, pattern: string) => {
     const date = toZonedTime(new Date(iso), 'Asia/Seoul');

@@ -8,8 +8,6 @@ import { ordersAtom } from '@recoils/atoms';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { OrderStatus } from '@@types/index';
-import { format } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
 import { tabletMediaQuery } from '@styles/globalStyles';
 import OrderHistoryNavBarChildren from '@components/admin/order/OrderHistoryNavBarChildren';
 import { Color } from '@resources/colors';
@@ -18,6 +16,7 @@ import ProductStatistics from '@components/admin/order/ProductStatistics';
 import OrderPriceStatistics from '@components/admin/order/OrderPriceStatistics';
 import { lineSeedKrFont } from '@styles/fonts';
 import dayjs from 'dayjs';
+import { dateConverter } from '@utils/FormatDate';
 
 type CategoryKey = 'all' | 'byProduct' | 'byTrend';
 
@@ -85,11 +84,6 @@ function AdminOrderStatistics() {
   const [startDate, setStartDate] = useState<Date>(() => dayjs().subtract(1, 'day').toDate());
   const [endDate, setEndDate] = useState(new Date());
   const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('all');
-
-  const dateConverter = (date: Date) => {
-    const zonedDate = toZonedTime(date, 'Asia/Seoul');
-    return format(zonedDate, "yyyy-MM-dd'T'HH:mm:ss.SSS");
-  };
 
   useEffect(() => {
     fetchOrders({
