@@ -7,7 +7,6 @@ import { format } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import { dateConverter } from '@utils/FormatDate';
 import { OrderStatus } from '@@types/index';
 
 const Container = styled.div`
@@ -31,8 +30,8 @@ export interface ApiPoint {
 }
 
 interface OrderPriceStatisticsProps {
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   status: OrderStatus | undefined;
 }
 
@@ -49,8 +48,8 @@ function OrderPriceStatistics({ startDate, endDate, status }: OrderPriceStatisti
   const fetchOrderPriceStatistics = async () => {
     try {
       const response = await fetchPrefixSumOrders({
-        startDate: dateConverter(startDate),
-        endDate: dateConverter(endDate),
+        startDate: startDate,
+        endDate: endDate,
         status,
       });
       setData(response?.data);
@@ -64,7 +63,7 @@ function OrderPriceStatistics({ startDate, endDate, status }: OrderPriceStatisti
   }, [startDate, endDate, status]);
 
   if (data.length === 0) {
-    return <FallbackContainer>해당 기간에 매출 데이터가 없습니다.</FallbackContainer>;
+    return <FallbackContainer>주문 내역이 없습니다.</FallbackContainer>;
   }
 
   const CustomizedAxisTick = (props: any) => {
