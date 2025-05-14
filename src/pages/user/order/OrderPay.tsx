@@ -18,7 +18,7 @@ const Container = styled.div`
 `;
 
 const SubContainer = styled.div`
-  margin-top: 45px;
+  margin-top: 50px;
   gap: 20px;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;

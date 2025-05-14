@@ -5,12 +5,12 @@ import AppLabel from '@components/common/label/AppLabel';
 import { orderBasketAtom } from '@recoils/atoms';
 import { useRecoilState } from 'recoil';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { RiAddLine, RiSubtractLine, RiCloseLargeLine } from '@remixicon/react';
+import { RiAddLine, RiSubtractLine, RiCloseCircleFill } from '@remixicon/react';
 import { Color } from '@resources/colors';
 
 const Container = styled.div`
   width: 100%;
-  height: auto;
+  height: 90px;
   box-sizing: border-box;
   border-radius: 28px;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
@@ -19,45 +19,55 @@ const Container = styled.div`
 const ProductDetailsWrapper = styled.div`
   width: auto;
   gap: 10px;
-  ${rowFlex()}
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const ProductImage = styled.img`
-  width: 90px;
-  height: 90px;
+  width: 70px;
+  height: 70px;
   object-fit: cover;
   border: none;
-  border-radius: 10px;
+  border-radius: 4px;
 `;
 
 const ProductInfoContainer = styled.div`
   width: 130px;
-  height: 90px;
-  gap: 5px;
-  ${colFlex({ justify: 'space-between', align: 'start' })}
+  gap: 8px;
+  ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
 const ProductLabels = styled.div`
-  gap: 5px;
+  gap: 2px;
   ${colFlex()}
 `;
 
+const StyledLabel = styled.div<{ size?: number }>`
+  font-size: ${({ size }) => size || 13}px;
+  font-weight: 600;
+`;
+
 const QuantityControl = styled.div`
-  width: 50%;
-  border: 1px solid ${Color.GREY};
-  border-radius: 7px;
+  box-sizing: border-box;
+  padding: 0 3px;
+  width: 88px;
+  height: 25px;
+  border-radius: 4px;
+  border: 0.3px solid #939393;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
+const QuantityLabel = styled.div`
+  font-size: 15px;
+  font-weight: 400;
+`;
+
 const ProductActions = styled.div`
-  width: auto;
-  height: 90px;
+  height: 100%;
   ${colFlex({ justify: 'space-between', align: 'end' })}
 `;
 
 const DecreaseButton = styled(RiSubtractLine)`
   width: 16px;
-  height: 16px;
   border-radius: 25px;
 
   & path {
@@ -67,7 +77,6 @@ const DecreaseButton = styled(RiSubtractLine)`
 
 const IncreaseButton = styled(RiAddLine)`
   width: 19px;
-  height: 19px;
   background: ${Color.WHITE};
   border-radius: 25px;
 
@@ -77,7 +86,9 @@ const IncreaseButton = styled(RiAddLine)`
   }
 `;
 
-const DeleteProductButton = styled(RiCloseLargeLine)``;
+const DeleteProductButton = styled(RiCloseCircleFill)`
+  color: #c2c2c2;
+`;
 
 interface ProductCounterBadgeProps {
   product: Product;
@@ -127,25 +138,19 @@ function ProductCounterBadge({ product }: ProductCounterBadgeProps) {
         <ProductImage src={product.imageUrl} alt={product.name} />
         <ProductInfoContainer>
           <ProductLabels>
-            <AppLabel color={Color.BLACK} size={13}>
-              {product.name}
-            </AppLabel>
-            <AppLabel color={Color.BLACK} size={13}>
-              {product.price.toLocaleString()}원
-            </AppLabel>
+            <StyledLabel size={15}>{product.name}</StyledLabel>
+            <StyledLabel>{product.price.toLocaleString()}원</StyledLabel>
           </ProductLabels>
           <QuantityControl>
             <DecreaseButton onClick={() => minusQuantity()} />
-            <AppLabel color={Color.BLACK} size={15}>
-              {quantity}
-            </AppLabel>
+            <QuantityLabel>{quantity}</QuantityLabel>
             <IncreaseButton onClick={() => plusQuantity()} />
           </QuantityControl>
         </ProductInfoContainer>
       </ProductDetailsWrapper>
       <ProductActions className="counter-container">
         <DeleteProductButton onClick={handleDeleteProduct} />
-        <AppLabel color={Color.BLACK} size={15}>
+        <AppLabel color={Color.BLACK} size={15} style={{ paddingBottom: '15px' }}>
           {(product.price * quantity).toLocaleString()}원
         </AppLabel>
       </ProductActions>
