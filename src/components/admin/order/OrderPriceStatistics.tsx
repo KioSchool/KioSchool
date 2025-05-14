@@ -48,8 +48,8 @@ function OrderPriceStatistics({ startDate, endDate, status }: OrderPriceStatisti
   const fetchOrderPriceStatistics = async () => {
     try {
       const response = await fetchPrefixSumOrders({
-        startDate: startDate,
-        endDate: endDate,
+        startDate,
+        endDate,
         status,
       });
       setData(response?.data);
