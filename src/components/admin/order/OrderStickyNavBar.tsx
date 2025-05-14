@@ -10,7 +10,7 @@ const Container = styled.div<{ isShow: boolean }>`
   position: fixed;
   top: 0;
   width: 100%;
-  height: 45px;
+  height: 50px;
   background: ${Color.WHITE};
   transition: transform 0.1s ease-in-out;
   transform: translateY(${({ isShow }) => (isShow ? '0' : '-100%')});
