@@ -47,6 +47,10 @@ function OrderDetailModal({ order, isModalOpen, closeModal }: Props) {
         closeModal();
       }
     });
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
   }, []);
 
   if (!isModalOpen) {
