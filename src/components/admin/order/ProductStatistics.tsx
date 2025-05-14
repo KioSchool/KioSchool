@@ -43,10 +43,11 @@ function ProductStatistics({ orders }: ProductStatisticsProps) {
   const productSalesMap = new Map<string, number>();
   orders.forEach((order) => {
     if (Array.isArray(order.orderProducts)) {
-      order.orderProducts.forEach((p) => {
-        const name = p.productName;
-        const quantity = p.quantity || 0;
-        productSalesMap.set(name, (productSalesMap.get(name) || 0) + quantity);
+      order.orderProducts.forEach((product) => {
+        const name = product.productName;
+        const quantity = product.quantity || 0;
+        const productQuantity = productSalesMap.get(name) || 0;
+        productSalesMap.set(name, productQuantity + quantity);
       });
     }
   });
