@@ -7,7 +7,6 @@ import { format } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import { AxiosResponse } from 'axios';
 import { dateConverter } from '@utils/FormatDate';
 import { OrderStatus } from '@@types/index';
 
@@ -47,17 +46,21 @@ function OrderPriceStatistics({ startDate, endDate, status }: OrderPriceStatisti
     return format(date, pattern);
   };
 
+  const fetchOrderPriceStatistics = async () => {
+    try {
+      const response = await fetchPrefixSumOrders({
+        startDate: dateConverter(startDate),
+        endDate: dateConverter(endDate),
+        status,
+      });
+      setData(response?.data);
+    } catch (error) {
+      console.error('누적 매출 데이터 에러: ', error);
+    }
+  };
+
   useEffect(() => {
-    fetchPrefixSumOrders({
-      startDate: dateConverter(startDate),
-      endDate: dateConverter(endDate),
-      status,
-    })
-      .then((res) => {
-        const response = res as AxiosResponse<ApiPoint[]>;
-        setData(response.data ?? []);
-      })
-      .catch(console.error);
+    fetchOrderPriceStatistics();
   }, [startDate, endDate, status]);
 
   if (data.length === 0) {
