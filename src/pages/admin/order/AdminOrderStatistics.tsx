@@ -18,7 +18,7 @@ import { lineSeedKrFont } from '@styles/fonts';
 import dayjs from 'dayjs';
 import { dateConverter } from '@utils/FormatDate';
 
-type CategoryKey = 'all' | 'byProduct' | 'byTrend';
+type CategoryKey = 'all' | 'byProduct' | 'byPrice';
 
 interface Category {
   key: CategoryKey;
@@ -108,7 +108,7 @@ function AdminOrderStatistics() {
       render: <ProductStatistics orders={orders} />,
     },
     {
-      key: 'byTrend',
+      key: 'byPrice',
       label: '매출 증가 추이',
       render: <OrderPriceStatistics startDate={startDate} endDate={endDate} />,
     },
