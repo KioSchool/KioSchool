@@ -9,6 +9,7 @@ import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { AxiosResponse } from 'axios';
 import { dateConverter } from '@utils/FormatDate';
+import { OrderStatus } from '@@types/index';
 
 const Container = styled.div`
   width: 100%;
@@ -27,15 +28,16 @@ const FallbackContainer = styled.div`
 
 export interface ApiPoint {
   timeBucket: string;
-  prefixSumPrice: number;
+  OrderPrefixSumPrice: number;
 }
 
 interface OrderPriceStatisticsProps {
   startDate: Date;
   endDate: Date;
+  status: OrderStatus | undefined;
 }
 
-function OrderPriceStatistics({ startDate, endDate }: OrderPriceStatisticsProps) {
+function OrderPriceStatistics({ startDate, endDate, status }: OrderPriceStatisticsProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchPrefixSumOrders } = useAdminOrder(workspaceId);
   const [data, setData] = useState<ApiPoint[]>([]);
@@ -46,13 +48,17 @@ function OrderPriceStatistics({ startDate, endDate }: OrderPriceStatisticsProps)
   };
 
   useEffect(() => {
-    fetchPrefixSumOrders(dateConverter(startDate), dateConverter(endDate))
+    fetchPrefixSumOrders({
+      startDate: dateConverter(startDate),
+      endDate: dateConverter(endDate),
+      status,
+    })
       .then((res) => {
         const response = res as AxiosResponse<ApiPoint[]>;
         setData(response.data ?? []);
       })
       .catch(console.error);
-  }, [startDate, endDate]);
+  }, [startDate, endDate, status]);
 
   if (data.length === 0) {
     return <FallbackContainer>해당 기간에 매출 데이터가 없습니다.</FallbackContainer>;

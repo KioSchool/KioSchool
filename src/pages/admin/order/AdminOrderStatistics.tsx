@@ -86,11 +86,13 @@ function AdminOrderStatistics() {
   const [endDate, setEndDate] = useState(new Date());
   const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('all');
 
+  const status = showServedOrder ? OrderStatus.SERVED : undefined;
+
   useEffect(() => {
     fetchOrders({
       startDate: dateConverter(startDate),
       endDate: dateConverter(endDate),
-      status: showServedOrder ? OrderStatus.SERVED : undefined,
+      status,
     });
   }, [startDate, endDate, showServedOrder]);
 
@@ -110,7 +112,7 @@ function AdminOrderStatistics() {
     {
       key: 'byPrice',
       label: '매출 증가 추이',
-      render: <OrderPriceStatistics startDate={startDate} endDate={endDate} />,
+      render: <OrderPriceStatistics startDate={startDate} endDate={endDate} status={status} />,
     },
   ];
 
