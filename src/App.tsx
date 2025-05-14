@@ -15,7 +15,7 @@ import OrderBasket from '@pages/user/order/OrderBasket';
 import OrderPay from '@pages/user/order/OrderPay';
 import AdminProductAdd from '@pages/admin/AdminProductAdd';
 import OrderComplete from '@pages/user/order/OrderComplete';
-import AdminOrderHistory from '@pages/admin/order/AdminOrderHistory';
+import AdminOrderStatistics from '@pages/admin/order/AdminOrderStatistics';
 import AdminProductEdit from '@pages/admin/AdminProductEdit';
 import AdminMyInfo from '@pages/admin/AdminMyInfo';
 import AdminProductCategories from '@pages/admin/AdminProductCategoires';
@@ -68,7 +68,7 @@ function App() {
         <Route path="/admin/workspace/:workspaceId" element={<AdminWorkspace />} />
         <Route path="/admin/workspace/:workspaceId/edit" element={<AdminWorkspaceEdit />} />
         <Route path="/admin/workspace/:workspaceId/order/realtime" element={<AdminOrderRealtime />} />
-        <Route path="/admin/workspace/:workspaceId/order/history" element={<AdminOrderHistory />} />
+        <Route path="/admin/workspace/:workspaceId/order/statistics" element={<AdminOrderStatistics />} />
         <Route path="/admin/workspace/:workspaceId/order/table" element={<AdminOrderTable />} />
         <Route path="/admin/workspace/:workspaceId/order/table/:tableNumber" element={<AdminOrderTableHistory />} />
         <Route path="/admin/workspace/:workspaceId/table-count" element={<AdminTableCount />} />

@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
-import React, { useEffect, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React, { useRef, useState } from 'react';
 import { RiSearchLine } from '@remixicon/react';
 
 const SearchIcon = styled(RiSearchLine, {
@@ -41,29 +40,24 @@ const SearchBarContainer = styled.div`
   }
 `;
 
-function PaginationSearchBar() {
+interface SearchBarProps {
+  placeholder?: string;
+  fetchContents: (keyword?: string) => void;
+}
+
+function SearchBar({ placeholder, fetchContents }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [isFocused, setIsFocused] = useState<boolean>(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [keyword, setKeyword] = useState<string>('');
 
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.value = searchParams.get('name') || '';
-    }
-  }, [searchParams.toString()]);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setKeyword(e.target.value);
+  };
 
-  const fetchContentsByName = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const fetchContentsByKeyword = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!(e.key === 'Enter' && inputRef && typeof inputRef !== 'function')) return;
 
-    searchParams.set('page', '0');
-
-    if (inputRef.current?.value === '') {
-      searchParams.delete('name');
-    } else {
-      searchParams.set('name', String(inputRef.current?.value));
-    }
-
-    setSearchParams(searchParams);
+    fetchContents(keyword);
   };
 
   return (
@@ -72,8 +66,9 @@ function PaginationSearchBar() {
       <Input
         ref={inputRef}
         type="text"
-        placeholder={`이름을 입력해주세요`}
-        onKeyDown={fetchContentsByName}
+        placeholder={placeholder || `이름을 입력해주세요`}
+        onKeyDown={fetchContentsByKeyword}
+        onChange={handleInputChange}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
       />
@@ -81,4 +76,4 @@ function PaginationSearchBar() {
   );
 }
 
-export default PaginationSearchBar;
+export default SearchBar;
