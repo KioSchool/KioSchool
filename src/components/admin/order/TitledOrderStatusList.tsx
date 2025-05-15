@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 import { Order, OrderStatus } from '@@types/index';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import AppLabel from '@components/common/label/AppLabel';
-import { Color } from '@resources/colors';
 import NotPaidOrderCard from './NotPaidOrderCard';
 import PaidOrderCard from './PaidOrderCard';
 import ServedOrderCard from './ServedOrderCard';
@@ -43,7 +42,7 @@ const arePropsEqual = (prevProps: OrderStatusListProps, nextProps: OrderStatusLi
 function TitledOrderStatusList({ orders, title }: OrderStatusListProps) {
   return (
     <>
-      <AppLabel color={Color.BLACK} size={22} style={{ fontWeight: 700 }}>
+      <AppLabel size={22} style={{ fontWeight: 700 }}>
         {title}
       </AppLabel>
       <OrderCardListContainer>
