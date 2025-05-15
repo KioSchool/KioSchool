@@ -26,8 +26,8 @@ const ProductImage = styled.img`
   width: 70px;
   height: 70px;
   object-fit: cover;
-  border: none;
   border-radius: 4px;
+  border: 1px solid #939393;
 `;
 
 const ProductInfoContainer = styled.div`
