@@ -22,7 +22,7 @@ const StyledLabel = styled.label`
 const StyledDatePicker = styled(ReactDatePicker)`
   border-radius: 45px;
   box-sizing: border-box;
-  width: 250px;
+  width: 260px;
   height: 37px;
   padding: 0 40px;
   font-size: 16px;
