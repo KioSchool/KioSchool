@@ -5,7 +5,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import { orderBasketAtom } from '@recoils/atoms';
 import { useRecoilState } from 'recoil';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { RiAddLine, RiSubtractLine, RiCloseCircleFill } from '@remixicon/react';
+import { RiAddLine, RiCloseCircleFill, RiSubtractLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 
 const Container = styled.div`
@@ -52,7 +52,7 @@ const QuantityControl = styled.div`
   width: 88px;
   height: 25px;
   border-radius: 4px;
-  border: 0.3px solid #939393;
+  box-shadow: 0 0 0 0.3px #939393;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
@@ -77,6 +77,7 @@ const DecreaseButton = styled(RiSubtractLine)`
 
 const IncreaseButton = styled(RiAddLine)`
   width: 19px;
+  height: 19px;
   background: ${Color.WHITE};
   border-radius: 25px;
 
