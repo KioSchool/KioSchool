@@ -5,11 +5,11 @@ import { colFlex } from '@styles/flexStyles';
 import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import useCustomNavigate from '@hooks/useCustomNavigate';
-import OrderTableHistoryContent from '@components/user/order/OrderTableHistoryCotent';
 import { Color } from '@resources/colors';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { Order, PaginationResponse } from '@@types/index';
 import { defaultPaginationValue } from '@@types/defaultValues';
+import ToggleOrderCard from '@components/admin/order/ToggleOrderCard';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   margin-top: 20px;
@@ -21,9 +21,10 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
     })};
 `;
 
-const HorizontalLine = styled.hr`
+const OrderCardContainer = styled.div`
   width: 100%;
-  border: 0.3px solid #eeecec;
+  height: 100%;
+  padding: 5px 0;
 `;
 
 const EmptyLabel = styled.div`
@@ -37,7 +38,6 @@ function AdminOrderTableHistory() {
   const [tableOrders, setTableOrders] = useState<PaginationResponse<Order>>(defaultPaginationValue);
   const { replaceLastPath } = useCustomNavigate();
   const { fetchWorkspaceTable } = useAdminOrder(workspaceId);
-  const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
 
   const isEmptyWorkspaces = tableOrders.empty;
   const emptyMessage = '찾고자 하는 주문이 존재하지 않습니다.';
@@ -65,11 +65,10 @@ function AdminOrderTableHistory() {
     >
       <>
         <ContentContainer justifyCenter={isEmptyWorkspaces} className={'content-container'}>
-          {tableOrders.content.map((item, index) => (
-            <div key={item.id}>
-              <OrderTableHistoryContent {...item} isShowDetail={item.id === selectedOrderId} setSelectedOrderId={setSelectedOrderId} />
-              {index < tableOrders.content.length - 1 && <HorizontalLine />}
-            </div>
+          {tableOrders.content.map((item) => (
+            <OrderCardContainer key={item.id}>
+              <ToggleOrderCard order={item} />
+            </OrderCardContainer>
           ))}
 
           {isEmptyWorkspaces && <EmptyLabel className={'empty-label'}>{emptyMessage}</EmptyLabel>}
