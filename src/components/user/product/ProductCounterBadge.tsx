@@ -52,7 +52,7 @@ const QuantityControl = styled.div`
   width: 88px;
   height: 25px;
   border-radius: 4px;
-  box-shadow: 0 0 0 0.3px #939393;
+  background: ${Color.LIGHT_GREY};
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
@@ -78,7 +78,6 @@ const DecreaseButton = styled(RiSubtractLine)`
 const IncreaseButton = styled(RiAddLine)`
   width: 19px;
   height: 19px;
-  background: ${Color.WHITE};
   border-radius: 25px;
 
   & path {
