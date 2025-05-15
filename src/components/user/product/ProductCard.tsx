@@ -31,7 +31,7 @@ const StyledImage = styled.img`
   height: 90px;
   object-fit: cover;
   border-radius: 10px;
-  border: 1px solid #939393;
+  border: 0.3px solid #939393;
 `;
 
 const ButtonContainer = styled.div<{ isOpened: boolean }>`
