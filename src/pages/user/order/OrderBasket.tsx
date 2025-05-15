@@ -8,12 +8,11 @@ import OrderButton from '@components/user/order/OrderButton';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
 import { Color } from '@resources/colors';
-import AppLabel from '@components/common/label/AppLabel';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 
 const Container = styled.div`
   min-height: 100vh;
-  padding-top: 45px;
+  padding-top: 50px;
   box-sizing: border-box;
 `;
 
@@ -30,10 +29,10 @@ const SubContainer = styled.div`
 const OrderBasketContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
-  padding: 10px;
-  gap: 14px;
-  border-radius: 15px;
-  border: 1px solid ${Color.GREY};
+  padding: 15px 20px;
+  gap: 10px;
+  border-radius: 9px;
+  border: 0.5px solid #939393;
   ${colFlex({ align: 'center' })}
 `;
 
@@ -51,12 +50,18 @@ const Button = styled.button`
   color: ${Color.WHITE};
   font-size: 12px;
   border: none;
+  font-weight: 600;
   border-radius: 20px;
+`;
+
+const StyledLabel = styled.div`
+  font-size: 16px;
+  font-weight: 600;
 `;
 
 const ProductCounterBadgeContainer = styled.div`
   width: 100%;
-  gap: 14px;
+  gap: 10px;
   ${colFlex()}
 `;
 
@@ -88,9 +93,7 @@ function OrderBasket() {
       <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
       <SubContainer>
         <Header>
-          <AppLabel color={Color.BLACK} size={15}>
-            장바구니
-          </AppLabel>
+          <StyledLabel>장바구니</StyledLabel>
           <Button onClick={clearOrderBasket}>전체 삭제 </Button>
         </Header>
         <OrderBasketContainer className={'order-basket-content'}>

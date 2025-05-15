@@ -59,7 +59,7 @@ function ToggleOrderCard({ order }: ToggleOrderCardProps) {
     const isAm = date.getHours() < 12;
     const hour = isAm ? date.getHours() : date.getHours() - 12;
 
-    return `${date.getMonth() + 1}월 ${date.getDate()}일 ${isAm ? '오전' : '오후'} ${hour}시 ${date.getMinutes()}분`;
+    return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 ${isAm ? '오전' : '오후'} ${hour}시 ${date.getMinutes()}분`;
   };
 
   return (
