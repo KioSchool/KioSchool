@@ -6,9 +6,7 @@ import CellularConnectionSvg from '@resources/svg/preview/CellularConnectionSvg'
 import { RiBatteryFill, RiExternalLinkLine, RiWifiFill, RiQrCodeLine } from '@remixicon/react';
 import AppLabel from '@components/common/label/AppLabel';
 import { useParams } from 'react-router-dom';
-import { QRCodeCanvas } from 'qrcode.react';
-import * as ReactDOM from 'react-dom/client';
-import { flushSync } from 'react-dom';
+import QRCode from 'qrcode';
 
 const Container = styled.div<{ width: number; height: number }>`
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -103,48 +101,20 @@ function PreviewContainer({ width = 360, height = 700 }: PreviewContainerProps) 
     window.open(previewUrl, '_blank');
   };
 
-  const onClickDownloadQRCode = () => {
-    const imageDiv = document.createElement('div');
-    Object.assign(imageDiv.style, {
-      position: 'absolute',
-      left: '-9999px',
-      background: 'white',
-      padding: '10px',
-      borderRadius: '10px',
-    });
-
-    document.body.appendChild(imageDiv);
-
-    const root = ReactDOM.createRoot(imageDiv);
-
-    flushSync(() => {
-      root.render(<QRCodeCanvas value={previewUrl} size={200} level="H" bgColor="#FFFFFF" fgColor="#000000" />);
-    });
-
+  const onClickDownloadQRCode = async () => {
     try {
-      const canvasElement = imageDiv.querySelector('canvas');
-
-      if (!canvasElement) {
-        throw new Error('QR 코드 캔버스 요소를 찾을 수 없습니다.');
-      }
-
-      const dataUrl = canvasElement.toDataURL();
-
+      const dataUrl = await QRCode.toDataURL(previewUrl, {
+        width: 200,
+        errorCorrectionLevel: 'H',
+        margin: 5,
+      });
       const link = document.createElement('a');
-      link.download = '미리보기_QR코드.png';
       link.href = dataUrl;
+      link.download = '미리보기_QR코드.png';
       link.click();
-    } catch (error) {
-      console.error('QR 코드 처리 중 오류가 발생했습니다:', error);
-      alert('QR 코드 다운로드 중 오류가 발생했습니다!');
-    } finally {
-      if (root) {
-        root.unmount();
-      }
-
-      if (document.body.contains(imageDiv)) {
-        document.body.removeChild(imageDiv);
-      }
+    } catch (err) {
+      console.error(err);
+      alert('QR 코드 생성에 실패했습니다.');
     }
   };
 
