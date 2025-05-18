@@ -152,7 +152,20 @@ function AdminWorkspaceEdit() {
   };
 
   const handleAddNewImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    if (!e.target.files?.length) {
+      return;
+    }
+
+    const file = e.target.files[0];
+    if (file.size > 1024 * 1024 * 2) {
+      alert('주점 대표 이미지는 각각 2MB 이하로 업로드 가능합니다.');
+      return;
+    }
+
+    if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
+      alert('주점 대표 이미지는 png 또는 jpeg 형식만 지원합니다.');
+      return;
+    }
 
     if (file && selectedImageIndex !== null) {
       setDisplayImages((prevImages) => {
