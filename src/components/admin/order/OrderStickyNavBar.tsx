@@ -1,5 +1,4 @@
 import React from 'react';
-import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
@@ -15,26 +14,15 @@ const Container = styled.div<{ isShow: boolean }>`
   transition: transform 0.1s ease-in-out;
   transform: translateY(${({ isShow }) => (isShow ? '0' : '-100%')});
   z-index: 1000;
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
-const LeftContainer = styled.div`
-  padding-left: 10px;
-  width: 85%;
+const ContentsContainer = styled.div`
+  box-sizing: border-box;
+  padding: 0 10px;
+  width: 100%;
   height: 100%;
-  gap: 18px;
   ${rowFlex({ justify: 'start', align: 'center' })}
-`;
-
-const TextContainer = styled.div`
-  width: 80%;
-  gap: 10px;
-  ${rowFlex({ align: 'end' })}
-`;
-
-const RightContainer = styled.div`
-  padding-right: 10px;
-  ${rowFlex({ align: 'center' })}
 `;
 
 const ArrowLeftButton = styled(RiArrowLeftLine, {
@@ -44,6 +32,9 @@ const ArrowLeftButton = styled(RiArrowLeftLine, {
   cursor: pointer;
   fill: ${Color.BLACK};
   transition: transform 0.1s ease;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
   &:hover {
     transform: scale(1.1);
   }
@@ -52,18 +43,31 @@ const ArrowLeftButton = styled(RiArrowLeftLine, {
 const ShareButton = styled(RiShareForward2Fill)`
   cursor: pointer;
   transition: transform 0.1s ease;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  margin-left: auto;
   &:hover {
     transform: scale(1.1);
   }
 `;
 
-const StyledLabel = styled.label`
-  width: 100%;
+const WorkspaceNameLabel = styled.label`
+  box-sizing: border-box;
+  max-width: 260px;
   font-size: 20px;
+  padding-left: 10px;
   font-weight: 600;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+`;
+
+const TableLabel = styled.label`
+  margin-left: auto;
+  width: 60px;
+  font-size: 15px;
+  font-weight: 600;
 `;
 
 interface OrderStickyNavBarProps {
@@ -90,18 +94,12 @@ function OrderStickyNavBar({ useLeftArrow = true, showNavBar, workspaceName, tab
 
   return (
     <Container isShow={showNavBar}>
-      <LeftContainer>
+      <ContentsContainer>
         <ArrowLeftButton useLeftArrow={useLeftArrow} onClick={() => navigate(-1)} />
-        <TextContainer>
-          <StyledLabel>{workspaceName}</StyledLabel>
-          {tableNo && (
-            <AppLabel color={Color.BLACK} size={15} style={{ fontWeight: '600' }}>
-              테이블 {tableNo}
-            </AppLabel>
-          )}
-        </TextContainer>
-      </LeftContainer>
-      <RightContainer>{useShareButton && <ShareButton onClick={onClickShare} />}</RightContainer>
+        <WorkspaceNameLabel>{workspaceName}</WorkspaceNameLabel>
+        {tableNo && <TableLabel>테이블 {tableNo}</TableLabel>}
+        {useShareButton && <ShareButton onClick={onClickShare} />}
+      </ContentsContainer>
     </Container>
   );
 }
