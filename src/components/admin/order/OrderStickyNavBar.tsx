@@ -20,13 +20,14 @@ const Container = styled.div<{ isShow: boolean }>`
 
 const LeftContainer = styled.div`
   padding-left: 10px;
-  width: 300px;
+  width: 85%;
   height: 100%;
-  gap: 20px;
+  gap: 18px;
   ${rowFlex({ justify: 'start', align: 'center' })}
 `;
 
 const TextContainer = styled.div`
+  width: 80%;
   gap: 10px;
   ${rowFlex({ align: 'end' })}
 `;
@@ -56,6 +57,15 @@ const ShareButton = styled(RiShareForward2Fill)`
   }
 `;
 
+const StyledLabel = styled.label`
+  width: 100%;
+  font-size: 20px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+`;
+
 interface OrderStickyNavBarProps {
   useLeftArrow?: boolean;
   showNavBar: boolean;
@@ -83,9 +93,7 @@ function OrderStickyNavBar({ useLeftArrow = true, showNavBar, workspaceName, tab
       <LeftContainer>
         <ArrowLeftButton useLeftArrow={useLeftArrow} onClick={() => navigate(-1)} />
         <TextContainer>
-          <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: '600' }}>
-            {workspaceName}
-          </AppLabel>
+          <StyledLabel>{workspaceName}</StyledLabel>
           {tableNo && (
             <AppLabel color={Color.BLACK} size={15} style={{ fontWeight: '600' }}>
               테이블 {tableNo}
