@@ -68,8 +68,8 @@ function AdminOrderTable() {
         onLeftArrowClick: () => navigate(`/admin/workspace/${workspaceId}`),
       }}
     >
-      <Container className={'admin-order-table-container'}>
-        <TableListContainer tableCount={workspace.tableCount} className={'table-list-container'}>
+      <Container className={'admin-order-table-count-container'}>
+        <TableListContainer tableCount={workspace.tableCount} className={'table-count-list-container'}>
           {Array.from({ length: workspace.tableCount }, (_, index) => (
             <TableCell key={index} onClick={() => appendPathWithPage(`/${index + 1}`)}>
               {index + 1}번

@@ -11,8 +11,8 @@ import OrderButton from '@components/user/order/OrderButton';
 import useProduct from '@hooks/user/useProduct';
 import { colFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import OrderImageSlider from '@components/admin/order/OrderImageSlider';
-import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
+import OrderImageSlider from '@components/user/order/OrderImageSlider';
+import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import WorkspaceNotice from '@components/user/order/WorkspaceNotice';
 import OrderProductContent from './OrderProductContent';
 

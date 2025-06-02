@@ -1,5 +1,5 @@
 import { Order } from '@@types/index';
-import ToggleOrderCard from './ToggleOrderCard';
+import ToggleOrderCard from '../ToggleOrderCard';
 import { colFlex } from '@styles/flexStyles';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';

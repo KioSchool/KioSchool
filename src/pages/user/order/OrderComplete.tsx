@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 import useWorkspace from '@hooks/user/useWorkspace';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
+import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import OrderStatusBar from '@components/user/order/OrderStatusBar';
 import useRefresh from '@hooks/useRefresh';
 import OrderAccountInfo from '@components/user/order/OrderAccountInfo';

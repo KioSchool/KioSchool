@@ -3,16 +3,17 @@ import { Order } from '@@types/index';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
+import { RiArrowRightSLine, RiCheckLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import OrderSummaryContents from './OrderSummaryContents';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 import RollBackSvg from '@resources/svg/RollBackSvg';
-import OrderDetailModal from '@components/admin/order/modal/OrderDetailModal';
+import OrderDetailModal from '@components/admin/order/realtime/modal/OrderDetailModal';
+import OrderItemList from '@components/admin/order/realtime/OrderItemList';
 import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
+import useDelayTime from '@hooks/useDelayTime';
 import useModal from '@hooks/useModal';
-import { RiArrowRightSLine } from '@remixicon/react';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -35,7 +36,7 @@ const CardContainer = styled.div`
 const CardContents = styled.div`
   ${colFlex({ justify: 'space-between', align: 'center' })}
   width: 100%;
-  height: 85%;
+  height: 90%;
 `;
 
 const OrderInfoContainer = styled.div`
@@ -47,6 +48,7 @@ const OrderInfoContainer = styled.div`
   width: 100%;
   cursor: pointer;
 `;
+
 const HeaderContainer = styled.div`
   ${rowFlex({ justify: 'space-between', align: 'start' })}
   width: 100%;
@@ -63,7 +65,7 @@ const CheckButtonContainer = styled.div`
   width: 55%;
 `;
 
-const RightIcon = styled(RiArrowRightSLine)`
+const CheckIcon = styled(RiCheckLine)`
   width: 25px;
   height: 25px;
   ${expandButtonStyle}
@@ -75,6 +77,12 @@ const RollBackIcon = styled(RollBackSvg)`
   ${expandButtonStyle}
 `;
 
+const RightIcon = styled(RiArrowRightSLine)`
+  width: 25px;
+  height: 25px;
+  ${expandButtonStyle}
+`;
+
 interface OrderCardProps {
   order: Order;
 }
@@ -83,13 +91,18 @@ const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => 
   return areOrdersEquivalent(prevProps.order, nextProps.order);
 };
 
-function ServedOrderCard({ order }: OrderCardProps) {
+function PaidOrderCard({ order }: OrderCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { payOrder } = useAdminOrder(workspaceId);
+  const { serveOrder, refundOrder } = useAdminOrder(workspaceId);
+  const { delayMinutes } = useDelayTime({ date: order.createdAt });
   const { isModalOpen, openModal, closeModal } = useModal();
 
+  const checkClickHandler = () => {
+    serveOrder(order.id);
+  };
+
   const rollBackClickHandler = () => {
-    payOrder(order.id);
+    refundOrder(order.id);
   };
 
   const orderInfoClickHandler = () => {
@@ -106,16 +119,15 @@ function ServedOrderCard({ order }: OrderCardProps) {
                 <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>
                   {`테이블 ${order.tableNumber}`}
                 </AppLabel>
-                <AppLabel color={Color.BLACK} size={13}>
-                  {`주문 번호 ${order.orderNumber}`}
-                </AppLabel>
+                <AppLabel color={Color.BLACK} size={13}>{`${delayMinutes}분 전 주문`}</AppLabel>
               </TitleContainer>
               <RightIcon onClick={openModal} />
             </HeaderContainer>
-            <OrderSummaryContents contents={order} />
+            <OrderItemList order={order} />
           </OrderInfoContainer>
           <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
           <CheckButtonContainer>
+            <CheckIcon onClick={checkClickHandler} />
             <RollBackIcon onClick={rollBackClickHandler} />
           </CheckButtonContainer>
         </CardContents>
@@ -124,4 +136,4 @@ function ServedOrderCard({ order }: OrderCardProps) {
   );
 }
 
-export default memo(ServedOrderCard, arePropsEqual);
+export default memo(PaidOrderCard, arePropsEqual);

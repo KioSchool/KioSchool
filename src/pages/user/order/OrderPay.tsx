@@ -7,8 +7,8 @@ import OrderButton from '@components/user/order/OrderButton';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { colFlex } from '@styles/flexStyles';
 import useOrder from '@hooks/user/useOrder';
-import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
-import OrderPayNavBar from '@components/admin/order/OrderPayNavBar';
+import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
+import OrderPayNavBar from '@components/user/order/OrderPayNavBar';
 import OrderPayDescription from '@components/user/order/OrderPayDescription';
 import { HttpStatusCode } from 'axios';
 
