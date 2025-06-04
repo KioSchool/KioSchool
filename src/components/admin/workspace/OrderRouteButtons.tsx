@@ -34,7 +34,7 @@ function OrderManageContent() {
   const buttonContents = [
     { name: '실시간 주문 조회', path: '/order/realtime', imageSrc: realtimeOrderImage },
     { name: '주문 통계', path: '/order/statistics', imageSrc: orderHistoryImage },
-    { name: '테이블 주문 조회', path: '/order/table-count', imageSrc: orderTableImage },
+    { name: '테이블 주문 조회', path: '/order/table', imageSrc: orderTableImage },
   ];
 
   return (
