@@ -1,35 +1,19 @@
-import type { StorybookConfig } from '@storybook/react-webpack5';
-import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
-import * as path from 'node:path';
+import type { StorybookConfig } from '@storybook/react-vite';
 
 const config: StorybookConfig = {
-  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
-  addons: ['@storybook/addon-essentials', '@storybook/preset-create-react-app', '@storybook/addon-onboarding', '@storybook/addon-interactions'],
+  stories: ['../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'], // MDX 제거
+  addons: ['@storybook/addon-essentials', '@storybook/addon-interactions'],
   framework: {
-    name: '@storybook/react-webpack5',
+    name: '@storybook/react-vite',
     options: {},
   },
-  staticDirs: ['../public'],
-  webpackFinal: async (config) => {
-    config.resolve?.plugins?.push(
-      new TsconfigPathsPlugin({
-        configFile: path.resolve(__dirname, '../tsconfig.json'),
-      }),
-    );
-
-    config.module?.rules?.push({
-      test: /\.svg$/,
-      use: [
-        {
-          loader: '@svgr/webpack',
-          options: {
-            icon: true,
-          },
-        },
-      ],
-    });
-
+  typescript: {
+    check: false,
+    reactDocgen: 'react-docgen-typescript',
+  },
+  viteFinal: async (config) => {
     return config;
   },
 };
+
 export default config;
