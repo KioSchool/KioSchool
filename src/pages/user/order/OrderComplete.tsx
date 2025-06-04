@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import useOrder from '@hooks/user/useOrder';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { orderBasketAtom, userOrderAtom, userWorkspaceAtom } from '@recoils/atoms';

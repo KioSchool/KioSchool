@@ -1,5 +1,4 @@
 import { adminUserTossAccountAtomSelector } from '@recoils/atoms';
-import React from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Order } from '@@types/index';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';

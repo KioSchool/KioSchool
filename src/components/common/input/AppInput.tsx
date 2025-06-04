@@ -1,4 +1,4 @@
-import React, { ForwardedRef, forwardRef } from 'react';
+import { ForwardedRef, forwardRef } from 'react';
 import styled from '@emotion/styled';
 
 export interface AppInputProps extends React.InputHTMLAttributes<HTMLInputElement> {

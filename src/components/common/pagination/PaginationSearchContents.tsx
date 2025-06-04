@@ -1,7 +1,6 @@
 import { PaginationResponse } from '@@types/index';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import React from 'react';
 
 const HorizontalLine = styled.hr`
   width: 100%;

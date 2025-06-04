@@ -1,4 +1,3 @@
-import React from 'react';
 import { colFlex } from '@styles/flexStyles';
 import styled from '@emotion/styled';
 import { RiQuestionFill } from '@remixicon/react';

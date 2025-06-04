@@ -1,4 +1,3 @@
-import React from 'react';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex } from '@styles/flexStyles';
 import InfoMain from '@components/user/info/info-main/InfoMain';

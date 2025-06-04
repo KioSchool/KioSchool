@@ -5,7 +5,7 @@ import { Color } from '@resources/colors';
 import { RiAddLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { rowFlex } from '@styles/flexStyles';
-import React, { useEffect, useState, useMemo, forwardRef } from 'react';
+import { useEffect, useState, useMemo, forwardRef } from 'react';
 
 const BaseImageStyle = css`
   width: 260px;

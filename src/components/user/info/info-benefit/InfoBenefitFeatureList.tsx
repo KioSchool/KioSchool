@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import { RiCheckLine } from '@remixicon/react';
 import { colFlex, rowFlex } from '@styles/flexStyles';

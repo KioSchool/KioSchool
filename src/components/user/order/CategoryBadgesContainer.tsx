@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import styled from '@emotion/styled';
 import { Product, ProductCategory } from '@@types/index';
 import { rowFlex } from '@styles/flexStyles';

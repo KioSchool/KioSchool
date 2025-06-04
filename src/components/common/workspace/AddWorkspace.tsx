@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { Workspace } from '@@types/index';
-import React from 'react';
 import { rowFlex } from '@styles/flexStyles';
 import AddWorkspaceModalButton from './modal/AddWorkspaceModalButton';
 

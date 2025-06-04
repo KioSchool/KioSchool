@@ -1,7 +1,6 @@
 import OrderStatisticsToggleButton from '@components/admin/order/statistic/OrderStatisticsToggleButton';
 import styled from '@emotion/styled';
 import { rowFlex } from '@styles/flexStyles';
-import React from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { ko } from 'date-fns/locale/ko';
 import { Color } from '@resources/colors';

@@ -1,7 +1,7 @@
 import SelectWithOptions from '@components/common/select/SelectWithOptions';
 import useAdminUser from '@hooks/admin/useAdminUser';
 import { banksAtom } from '@recoils/atoms';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';

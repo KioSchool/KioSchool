@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import InfoTitle from '@components/user/info/InfoTitle';
 import { colFlex, rowFlex } from '@styles/flexStyles';
