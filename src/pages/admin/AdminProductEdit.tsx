@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { categoriesAtom } from '@recoils/atoms';
-import React, { ChangeEvent, useEffect, useReducer } from 'react';
+import { ChangeEvent, useEffect, useReducer } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import SelectWithLabel from '@components/common/select/SelectWithLabel';

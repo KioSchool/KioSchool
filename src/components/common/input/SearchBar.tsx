@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { RiSearchLine } from '@remixicon/react';
 
 const SearchIcon = styled(RiSearchLine, {

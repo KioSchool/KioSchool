@@ -1,4 +1,3 @@
-import React from 'react';
 import SelectWithOptions, { SelectWithOptionsProps } from '@components/common/select/SelectWithOptions';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';

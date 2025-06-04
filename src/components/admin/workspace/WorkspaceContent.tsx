@@ -4,7 +4,6 @@ import useAdminUser from '@hooks/admin/useAdminUser';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import useConfirm from '@hooks/useConfirm';
 import { RiDeleteBinFill } from '@remixicon/react';
-import React from 'react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { expandButtonStyle } from '@styles/buttonStyles';

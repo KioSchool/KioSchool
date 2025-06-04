@@ -1,4 +1,3 @@
-import React from 'react';
 import { isMobile, isTablet } from 'react-device-detect';
 import HomeMobile from './HomeMobile';
 import HomePC from './HomePC';

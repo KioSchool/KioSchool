@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import PopupContent1 from '@components/common/popup/popup-content/PopupContent1';
-import React from 'react';
 
 export interface PopupData {
   popupId: number;

@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import { ChangeEvent } from 'react';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import NewRoundedButton from '../button/NewRoundedButton';

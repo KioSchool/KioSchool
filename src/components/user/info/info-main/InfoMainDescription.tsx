@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import { useNavigate } from 'react-router-dom';

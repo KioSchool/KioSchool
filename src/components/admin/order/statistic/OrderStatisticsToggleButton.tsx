@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
-import React from 'react';
 
 const StyledButton = styled.button`
   ${rowFlex({ justify: 'center', align: 'center' })}

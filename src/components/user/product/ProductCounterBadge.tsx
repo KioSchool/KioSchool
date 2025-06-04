@@ -1,4 +1,3 @@
-import React from 'react';
 import { Product } from '@@types/index';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';

@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import AppButton from '@components/common/button/AppButton';
 import { rowFlex } from '@styles/flexStyles';

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useReducer, useState } from 'react';
+import { ChangeEvent, useEffect, useReducer, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useRecoilValue } from 'recoil';

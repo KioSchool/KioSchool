@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { colFlex } from '@styles/flexStyles';
 import { lineSeedKrFont } from '@styles/fonts';
 import NewAppInput from '@components/common/input/NewAppInput';

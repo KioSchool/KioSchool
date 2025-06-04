@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import infoBenefitDesktop from '@resources/image/info/infoBenefitDesktop.png';
 import infoBenefitOrderCard1 from '@resources/image/info/infoBenefitOrderCard1.png';

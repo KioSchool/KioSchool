@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import styled from '@emotion/styled';
 import { Order, OrderStatus } from '@@types/index';
 import { colFlex, rowFlex } from '@styles/flexStyles';

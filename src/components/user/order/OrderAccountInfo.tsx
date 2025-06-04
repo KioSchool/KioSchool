@@ -2,7 +2,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useWorkspace from '@hooks/user/useWorkspace';
 import { useSearchParams } from 'react-router-dom';
 import { Account } from '@@types/index';

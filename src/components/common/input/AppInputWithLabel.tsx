@@ -1,4 +1,4 @@
-import React, { ForwardedRef, forwardRef } from 'react';
+import { ForwardedRef, forwardRef } from 'react';
 import AppInput, { AppInputProps } from '@components/common/input/AppInput';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';

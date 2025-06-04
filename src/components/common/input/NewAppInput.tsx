@@ -1,4 +1,4 @@
-import React, { ForwardedRef, forwardRef } from 'react';
+import { ForwardedRef, forwardRef } from 'react';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';

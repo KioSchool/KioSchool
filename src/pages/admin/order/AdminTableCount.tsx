@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
