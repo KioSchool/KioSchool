@@ -2,6 +2,8 @@ import * as StompJs from '@stomp/stompjs';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import kioSchoolOrderAlarm from '@resources/audio/kioSchoolOrderAlarm.mp3';
 
+const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT;
+
 function playOrderCreateAudio() {
   const audio = new Audio(kioSchoolOrderAlarm);
   audio.play();
@@ -9,7 +11,7 @@ function playOrderCreateAudio() {
 
 function useOrdersWebsocket(workspaceId: string | undefined) {
   const { fetchTodayOrders } = useAdminOrder(workspaceId);
-  const url = process.env.REACT_APP_ENVIRONMENT === 'development' ? 'ws://localhost:8080/ws' : 'wss://api.kio-school.com/ws';
+  const url = ENVIRONMENT === 'development' ? 'ws://localhost:8080/ws' : 'wss://api.kio-school.com/ws';
   const client = new StompJs.Client({
     brokerURL: url,
     debug: (str) => {

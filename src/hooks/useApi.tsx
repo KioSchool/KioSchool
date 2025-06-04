@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { isLoadingAtom } from '@recoils/atoms';
 
+const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT;
+
 function useApi() {
   const navigate = useNavigate();
   const setIsLoading = useSetRecoilState(isLoadingAtom);
@@ -26,7 +28,7 @@ function useApi() {
   };
 
   const adminApi = axios.create({
-    baseURL: process.env.REACT_APP_ENVIRONMENT == 'development' ? 'http://localhost:8080/admin' : 'https://api.kio-school.com/admin',
+    baseURL: ENVIRONMENT == 'development' ? 'http://localhost:8080/admin' : 'https://api.kio-school.com/admin',
     withCredentials: true,
     signal: controller.signal,
   });
@@ -61,14 +63,14 @@ function useApi() {
   });
 
   const userApi = axios.create({
-    baseURL: process.env.REACT_APP_ENVIRONMENT == 'development' ? 'http://localhost:8080' : 'https://api.kio-school.com',
+    baseURL: ENVIRONMENT == 'development' ? 'http://localhost:8080' : 'https://api.kio-school.com',
     withCredentials: true,
   });
   userApi.interceptors.request.use(commonRequestInterceptor, commonErrorInterceptor);
   userApi.interceptors.response.use(commonResponseInterceptor, commonErrorInterceptor);
 
   const superAdminApi = axios.create({
-    baseURL: process.env.REACT_APP_ENVIRONMENT == 'development' ? 'http://localhost:8080/super-admin' : 'https://api.kio-school.com/super-admin',
+    baseURL: ENVIRONMENT == 'development' ? 'http://localhost:8080/super-admin' : 'https://api.kio-school.com/super-admin',
     withCredentials: true,
     signal: controller.signal,
   });
