@@ -6,7 +6,7 @@ import ProductCounterBadge from '@components/user/product/ProductCounterBadge';
 import _ from 'lodash';
 import OrderButton from '@components/user/order/OrderButton';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
+import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import { Color } from '@resources/colors';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 

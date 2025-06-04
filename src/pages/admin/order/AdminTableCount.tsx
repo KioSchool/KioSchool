@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import AppLabel from '@components/common/label/AppLabel';
 import { QRCodeCanvas } from 'qrcode.react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import AdminTableCountTitleNavBarChildren from '@components/admin/order/AdminOrderManageTitleNavBarChildren';
+import AdminTableCountTitleNavBarChildren from '@components/admin/table-count/AdminTableCountTitleNavBarChildren';
 import { Color } from '@resources/colors';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { useRecoilValue, useSetRecoilState } from 'recoil';

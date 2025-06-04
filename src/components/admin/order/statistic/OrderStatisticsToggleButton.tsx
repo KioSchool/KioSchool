@@ -28,7 +28,7 @@ interface OrderToggleButtonProps {
   label: string;
 }
 
-function OrderToggleButton({ toggleShowServedOrders, label }: OrderToggleButtonProps) {
+function OrderStatisticsToggleButton({ toggleShowServedOrders, label }: OrderToggleButtonProps) {
   return (
     <StyledButton
       onClick={() => {
@@ -40,4 +40,4 @@ function OrderToggleButton({ toggleShowServedOrders, label }: OrderToggleButtonP
   );
 }
 
-export default OrderToggleButton;
+export default OrderStatisticsToggleButton;

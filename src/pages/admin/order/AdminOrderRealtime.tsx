@@ -6,7 +6,7 @@ import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { colFlex } from '@styles/flexStyles';
 import AppContainer from '@components/common/container/AppContainer';
 import { OrderStatus } from '@@types/index';
-import TitledOrderStatusList from '@components/admin/order/TitledOrderStatusList';
+import TitledOrderStatusList from '@components/admin/order/realtime/TitledOrderStatusList';
 import styled from '@emotion/styled';
 import { ordersAtom } from '@recoils/atoms';
 import { useRecoilValue } from 'recoil';

@@ -11,6 +11,10 @@ function Pagination({ totalPageCount, paginateFunction }: PaginationProps) {
   const [searchParams] = useSearchParams();
   const currentPage = Number(searchParams.get('page'));
 
+  if (totalPageCount <= 1) {
+    return null;
+  }
+
   const pageClickHandler = (e: { selected: number }) => {
     paginateFunction(e.selected);
   };

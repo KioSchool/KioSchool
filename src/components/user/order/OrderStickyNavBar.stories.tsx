@@ -1,4 +1,4 @@
-import OrderStickyNavBar from '@components/admin/order/OrderStickyNavBar';
+import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import { BrowserRouter } from 'react-router-dom';
 import { Meta, StoryObj } from '@storybook/react';
 

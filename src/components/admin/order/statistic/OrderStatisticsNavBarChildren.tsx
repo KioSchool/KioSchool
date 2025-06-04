@@ -1,4 +1,4 @@
-import OrderToggleButton from '@components/admin/order/OrderToggleButton';
+import OrderStatisticsToggleButton from '@components/admin/order/statistic/OrderStatisticsToggleButton';
 import styled from '@emotion/styled';
 import { rowFlex } from '@styles/flexStyles';
 import React from 'react';
@@ -73,7 +73,7 @@ function OrderStatisticsNavBarChildren({
           onChange={(date: Date) => setEndDate(date)}
         />
       </DatePickerContainer>
-      <OrderToggleButton toggleShowServedOrders={setShowServedOrder} label={showServedOrder ? '모든 주문 보기' : '서빙 완료만 보기'} />
+      <OrderStatisticsToggleButton toggleShowServedOrders={setShowServedOrder} label={showServedOrder ? '모든 주문 보기' : '서빙 완료만 보기'} />
     </Container>
   );
 }
