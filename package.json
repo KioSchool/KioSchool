@@ -1,6 +1,6 @@
 {
   "name": "kio-school",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.4",
@@ -55,13 +55,6 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest",
-      "plugin:storybook/recommended"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -79,9 +72,8 @@
     "@storybook/addon-interactions": "^8.6.12",
     "@storybook/addon-onboarding": "^8.6.12",
     "@storybook/blocks": "^8.6.12",
-    "@storybook/preset-create-react-app": "^8.6.12",
     "@storybook/react": "^8.6.12",
-    "@storybook/react-webpack5": "^8.6.12",
+    "@storybook/react-vite": "8.6.12",
     "@storybook/test": "^8.6.12",
     "@types/react-beautiful-dnd": "^13.1.8",
     "@typescript-eslint/eslint-plugin": "^6.15.0",
@@ -95,12 +87,9 @@
     "eslint-plugin-storybook": "^0.12.0",
     "prettier": "^2.7.1",
     "prop-types": "^15.8.1",
-    "react-app-alias": "^2.2.2",
     "storybook": "^8.6.12",
-    "tsconfig-paths-webpack-plugin": "^4.2.0",
     "typescript": "^4.8.3",
     "vite": "^6.3.5",
-    "vite-tsconfig-paths": "^5.1.4",
-    "webpack": "^5.99.6"
+    "vite-tsconfig-paths": "^5.1.4"
   }
 }
