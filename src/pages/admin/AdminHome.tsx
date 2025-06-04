@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import useAdminUser from '@hooks/admin/useAdminUser';
 import { useRecoilValue } from 'recoil';
 import { adminUserAtom, workspacesAtom } from '@recoils/atoms';

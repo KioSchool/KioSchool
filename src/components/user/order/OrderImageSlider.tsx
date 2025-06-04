@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import Autoplay from 'embla-carousel-autoplay';
 import useEmblaCarousel from 'embla-carousel-react';

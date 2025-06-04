@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import { RiArrowLeftLine } from '@remixicon/react';
 import AppLabel from '@components/common/label/AppLabel';

@@ -1,4 +1,3 @@
-import React from 'react';
 import useAuthentication from '@hooks/useAuthentication';
 import { NavLinkItem } from '@components/common/nav/NavBar';
 import styled from '@emotion/styled';

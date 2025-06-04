@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import usePopup from '@hooks/usePopup';
 import styled from '@emotion/styled';
 import { RiCloseCircleFill } from '@remixicon/react';

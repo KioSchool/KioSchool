@@ -1,4 +1,3 @@
-import React from 'react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';

@@ -1,4 +1,3 @@
-import React from 'react';
 
 interface InfoAllOrderSvgProps extends React.SVGProps<SVGSVGElement> {}
 

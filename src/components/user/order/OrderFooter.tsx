@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import React from 'react';
 
 const Container = styled.div`
   width: 100%;

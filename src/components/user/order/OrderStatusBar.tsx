@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import { rowFlex } from '@styles/flexStyles';
 import { OrderStatus } from '@@types/index';

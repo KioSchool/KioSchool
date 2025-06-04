@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import AppButton from '@components/common/button/AppButton';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';

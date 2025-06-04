@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import 'react-datepicker/dist/react-datepicker.css';
 import useAdminOrder from '@hooks/admin/useAdminOrder';

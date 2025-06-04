@@ -5,7 +5,7 @@ import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useRecoilValue } from 'recoil';
 import { adminUserAtom } from '@recoils/atoms';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import styled from '@emotion/styled';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import useAdminUser from '@hooks/admin/useAdminUser';

@@ -3,7 +3,6 @@ import MyInfoItemContent from './MyInfoItemContent';
 import { useNavigate } from 'react-router-dom';
 import DeleteUserSvg from '@resources/svg/DeleteUserSvg';
 import useConfirm from '@hooks/useConfirm';
-import React from 'react';
 import useAdminUser from '@hooks/admin/useAdminUser';
 import AppFooter from '@components/common/footer/AppFooter';
 import { rowFlex } from '@styles/flexStyles';

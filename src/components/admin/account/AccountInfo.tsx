@@ -1,5 +1,4 @@
 import { adminUserAccountAtomSelector } from '@recoils/atoms';
-import React from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';

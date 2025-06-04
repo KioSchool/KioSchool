@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import jsQR from 'jsqr';
 import useAdminUser from '@hooks/admin/useAdminUser';
 import { RiAddLine } from '@remixicon/react';
