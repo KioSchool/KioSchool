@@ -49,58 +49,54 @@ function App() {
 
   return (
     <RecoilRoot>
-      return (
-      <RecoilRoot>
-        <ToastContainer
-          position="top-right"
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/info" element={<Info />} />
-          <Route path="/email-domains" element={<UserEmailDomain />} />
+      <ToastContainer
+        position="top-right"
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/info" element={<Info />} />
+        <Route path="/email-domains" element={<UserEmailDomain />} />
 
-          <Route path="/admin" element={<AdminHome />} />
-          <Route path="/admin/my-info" element={<AdminMyInfo />} />
-          <Route path="/admin/register-account" element={<AdminAccount />} />
-          <Route path="/admin/workspace/:workspaceId" element={<AdminWorkspace />} />
-          <Route path="/admin/workspace/:workspaceId/edit" element={<AdminWorkspaceEdit />} />
-          <Route path="/admin/workspace/:workspaceId/order/realtime" element={<AdminOrderRealtime />} />
-          <Route path="/admin/workspace/:workspaceId/order/statistics" element={<AdminOrderStatistics />} />
-          <Route path="/admin/workspace/:workspaceId/order/table" element={<AdminOrderTable />} />
-          <Route path="/admin/workspace/:workspaceId/order/table/:tableNumber" element={<AdminOrderTableHistory />} />
-          <Route path="/admin/workspace/:workspaceId/table-count" element={<AdminTableCount />} />
-          <Route path="/admin/workspace/:workspaceId/products" element={<AdminProduct />} />
-          <Route path="/admin/workspace/:workspaceId/products/add-product" element={<AdminProductAdd />} />
-          <Route path="/admin/workspace/:workspaceId/products/edit-product" element={<AdminProductEdit />} />
-          <Route path="/admin/workspace/:workspaceId/products/categories" element={<AdminProductCategories />} />
+        <Route path="/admin" element={<AdminHome />} />
+        <Route path="/admin/my-info" element={<AdminMyInfo />} />
+        <Route path="/admin/register-account" element={<AdminAccount />} />
+        <Route path="/admin/workspace/:workspaceId" element={<AdminWorkspace />} />
+        <Route path="/admin/workspace/:workspaceId/edit" element={<AdminWorkspaceEdit />} />
+        <Route path="/admin/workspace/:workspaceId/order/realtime" element={<AdminOrderRealtime />} />
+        <Route path="/admin/workspace/:workspaceId/order/statistics" element={<AdminOrderStatistics />} />
+        <Route path="/admin/workspace/:workspaceId/order/table" element={<AdminOrderTable />} />
+        <Route path="/admin/workspace/:workspaceId/order/table/:tableNumber" element={<AdminOrderTableHistory />} />
+        <Route path="/admin/workspace/:workspaceId/table-count" element={<AdminTableCount />} />
+        <Route path="/admin/workspace/:workspaceId/products" element={<AdminProduct />} />
+        <Route path="/admin/workspace/:workspaceId/products/add-product" element={<AdminProductAdd />} />
+        <Route path="/admin/workspace/:workspaceId/products/edit-product" element={<AdminProductEdit />} />
+        <Route path="/admin/workspace/:workspaceId/products/categories" element={<AdminProductCategories />} />
 
-          <Route path="/super-admin" element={<SuperAdminHome />} />
-          <Route path="/super-admin/workspace" element={<SuperAdminWorkspace />} />
-          <Route path="/super-admin/manage" element={<SuperAdminManage />} />
-          <Route path="/super-admin/user" element={<SuperAdminUser />} />
-          <Route path="/super-admin/email" element={<SuperAdminEmailDomainList />} />
-          <Route path="/super-admin/bank" element={<SuperAdminBank />} />
+        <Route path="/super-admin" element={<SuperAdminHome />} />
+        <Route path="/super-admin/workspace" element={<SuperAdminWorkspace />} />
+        <Route path="/super-admin/manage" element={<SuperAdminManage />} />
+        <Route path="/super-admin/user" element={<SuperAdminUser />} />
+        <Route path="/super-admin/email" element={<SuperAdminEmailDomainList />} />
+        <Route path="/super-admin/bank" element={<SuperAdminBank />} />
 
-          <Route path="/order" element={<Order />} />
-          <Route path="/order-basket" element={<OrderBasket />} />
-          <Route path="/order-pay" element={<OrderPay />} />
-          <Route path="/order-complete" element={<OrderComplete />} />
-        </Routes>
-        <Global styles={globalStyles} />
-        <LoadingModal />
-      </RecoilRoot>
-      );
+        <Route path="/order" element={<Order />} />
+        <Route path="/order-basket" element={<OrderBasket />} />
+        <Route path="/order-pay" element={<OrderPay />} />
+        <Route path="/order-complete" element={<OrderComplete />} />
+      </Routes>
+      <Global styles={globalStyles} />
+      <LoadingModal />
     </RecoilRoot>
   );
 }
