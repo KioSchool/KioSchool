@@ -36,9 +36,16 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { RecoilRoot } from 'recoil';
 import useNetworkStatusNotifier from '@hooks/useNetworkStatusNotifier';
+import useServerHealth from '@hooks/useServerHealth';
+import ServerErrorFallback from '@components/common/fallback/ServerErrorFallback';
 
 function App() {
   useNetworkStatusNotifier();
+  const { isServerHealthy, isChecking, error, manualRetry } = useServerHealth();
+
+  if (!isServerHealthy && !isChecking) {
+    return <ServerErrorFallback error={error} onRetry={manualRetry} isRetrying={isChecking} />;
+  }
 
   return (
     <RecoilRoot>
