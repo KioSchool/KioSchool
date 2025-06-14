@@ -83,8 +83,8 @@ function useAdminOrder(workspaceId: string | undefined) {
     });
   };
 
-  const fetchPrefixSumOrders = (props: { startDate: string; endDate: string; status?: OrderStatus }) => {
-    const response = adminApi.get('/orders/prefix-sum/price', { params: { ...props, workspaceId } }).catch((error) => {
+  const fetchOrderHourlyPrices = (props: { startDate: string; endDate: string; status?: OrderStatus }) => {
+    const response = adminApi.get('/orders/hourly/price', { params: { ...props, workspaceId } }).catch((error) => {
       console.log(error);
     });
     return response;
@@ -101,7 +101,7 @@ function useAdminOrder(workspaceId: string | undefined) {
     refundOrder,
     fetchWorkspaceTable,
     updateOrderProductCount,
-    fetchPrefixSumOrders,
+    fetchOrderHourlyPrices,
   };
 }
 
