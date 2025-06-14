@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 import { format } from 'date-fns';
@@ -24,9 +24,9 @@ const FallbackContainer = styled.div`
   font-weight: 600;
 `;
 
-export interface ApiPoint {
+export interface OrderHourlyPrice {
   timeBucket: string;
-  OrderPrefixSumPrice: number;
+  price: number;
 }
 
 interface OrderPriceStatisticsProps {
@@ -37,8 +37,8 @@ interface OrderPriceStatisticsProps {
 
 function OrderPriceStatistics({ startDate, endDate, status }: OrderPriceStatisticsProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchPrefixSumOrders } = useAdminOrder(workspaceId);
-  const [data, setData] = useState<ApiPoint[]>([]);
+  const { fetchOrderHourlyPrices } = useAdminOrder(workspaceId);
+  const [data, setData] = useState<OrderHourlyPrice[]>([]);
 
   const formatDateLabel = (iso: string, pattern: string) => {
     const date = toZonedTime(new Date(iso), 'Asia/Seoul');
@@ -47,7 +47,7 @@ function OrderPriceStatistics({ startDate, endDate, status }: OrderPriceStatisti
 
   const fetchOrderPriceStatistics = async () => {
     try {
-      const response = await fetchPrefixSumOrders({
+      const response = await fetchOrderHourlyPrices({
         startDate,
         endDate,
         status,
@@ -93,10 +93,10 @@ function OrderPriceStatistics({ startDate, endDate, status }: OrderPriceStatisti
           <YAxis tickFormatter={YAxisFormatter} />
           <Tooltip
             labelFormatter={(iso) => formatDateLabel(iso, 'yyyy-MM-dd HH:mm')}
-            formatter={(value: number) => [`${value.toLocaleString()}원`, '누적 매출']}
+            formatter={(value: number) => [`${value.toLocaleString()}원`, '시간대별 매출']}
           />
-          <Legend formatter={() => '누적 매출'} />
-          <Line type="monotone" dataKey="prefixSumPrice" name="누적 매출" stroke={Color.KIO_ORANGE} strokeWidth={2} activeDot={{ r: 8 }} />
+          <Legend formatter={() => '시간대별 매출'} />
+          <Line type="monotone" dataKey="price" name="시간대별 매출" stroke={Color.KIO_ORANGE} strokeWidth={2} activeDot={{ r: 8 }} />
         </LineChart>
       </ResponsiveContainer>
     </Container>

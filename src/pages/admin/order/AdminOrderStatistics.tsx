@@ -113,7 +113,7 @@ function AdminOrderStatistics() {
     },
     {
       key: 'byPrice',
-      label: '매출 증가 추이',
+      label: '시간대별 매출',
       render: <OrderPriceStatistics startDate={parsedStartDate} endDate={parsedEndDate} status={status} />,
     },
   ];
