@@ -6,7 +6,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 const ListContainer = styled.div`
   ${colFlex()}
   width: 100%;
-  height: 180px;
+  height: 160px;
   gap: 5px;
   overflow-y: auto;
 `;
