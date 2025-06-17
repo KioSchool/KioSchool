@@ -46,11 +46,11 @@ const arePropsEqual = (prevProps: OrderStatusListProps, nextProps: OrderStatusLi
 const getOrderContainerHeight = (status: OrderStatus) => {
   switch (status) {
     case OrderStatus.NOT_PAID:
-      return 120;
+      return 110;
     case OrderStatus.PAID:
-      return 280;
+      return 270;
     case OrderStatus.SERVED:
-      return 120;
+      return 110;
     default:
       return 200;
   }

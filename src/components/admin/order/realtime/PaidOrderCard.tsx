@@ -58,7 +58,7 @@ const TitleContainer = styled.div`
 
 const HorizontalLine = styled.hr`
   width: 100%;
-  border: 0.3px solid #eeecec;
+  border: 0.3px solid #d9d9d9;
 `;
 
 const RightIcon = styled(RiArrowRightSLine)`
@@ -67,13 +67,13 @@ const RightIcon = styled(RiArrowRightSLine)`
   ${expandButtonStyle}
 `;
 
-interface OrderCardProps {
-  order: Order;
-}
-
 const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => {
   return areOrdersEquivalent(prevProps.order, nextProps.order);
 };
+
+interface OrderCardProps {
+  order: Order;
+}
 
 function PaidOrderCard({ order }: OrderCardProps) {
   const { delayMinutes } = useDelayTime({ date: order.createdAt });
