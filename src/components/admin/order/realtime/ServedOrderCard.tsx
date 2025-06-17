@@ -5,10 +5,6 @@ import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import OrderSummaryContents from './OrderSummaryContents';
-import useAdminOrder from '@hooks/admin/useAdminOrder';
-import { useParams } from 'react-router-dom';
-import RollBackSvg from '@resources/svg/RollBackSvg';
 import OrderDetailModal from '@components/admin/order/realtime/modal/OrderDetailModal';
 import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
 import useModal from '@hooks/useModal';
@@ -18,7 +14,7 @@ const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
   background-color: #f4f4f4;
   width: 200px;
-  height: 170px;
+  height: 70px;
   border-radius: 10px;
 
   &:hover {
@@ -33,34 +29,37 @@ const CardContainer = styled.div`
 `;
 
 const CardContents = styled.div`
-  ${colFlex({ justify: 'space-between', align: 'center' })}
   width: 100%;
   height: 85%;
+  border-radius: 10px;
+  ${colFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const OrderInfoContainer = styled.div`
   ${colFlex()}
   gap: 15px;
-  background-color: ${Color.LIGHT_GREY};
   box-sizing: border-box;
+  border-radius: 10px;
   padding: 5px 15px;
   width: 100%;
   cursor: pointer;
 `;
+
 const HeaderContainer = styled.div`
-  ${rowFlex({ justify: 'space-between', align: 'start' })}
+  ${colFlex({ align: 'start' })}
   width: 100%;
+  gap: 5px;
 `;
 
 const TitleContainer = styled.div`
-  ${colFlex({ align: 'start' })}
+  width: 100%;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
   padding-top: 3px;
 `;
 
-const CheckButtonContainer = styled.div`
-  ${rowFlex({ justify: 'center', align: 'center' })}
-  gap: 35px;
-  width: 55%;
+const DescriptionContainer = styled.div`
+  width: 100%;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const RightIcon = styled(RiArrowRightSLine)`
@@ -69,28 +68,16 @@ const RightIcon = styled(RiArrowRightSLine)`
   ${expandButtonStyle}
 `;
 
-const RollBackIcon = styled(RollBackSvg)`
-  width: 15px;
-  height: 15px;
-  ${expandButtonStyle}
-`;
+const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => {
+  return areOrdersEquivalent(prevProps.order, nextProps.order);
+};
 
 interface OrderCardProps {
   order: Order;
 }
 
-const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => {
-  return areOrdersEquivalent(prevProps.order, nextProps.order);
-};
-
 function ServedOrderCard({ order }: OrderCardProps) {
-  const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { payOrder } = useAdminOrder(workspaceId);
   const { isModalOpen, openModal, closeModal } = useModal();
-
-  const rollBackClickHandler = () => {
-    payOrder(order.id);
-  };
 
   const orderInfoClickHandler = () => {
     openModal();
@@ -103,21 +90,18 @@ function ServedOrderCard({ order }: OrderCardProps) {
           <OrderInfoContainer onClick={orderInfoClickHandler}>
             <HeaderContainer>
               <TitleContainer>
-                <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>
-                  {`테이블 ${order.tableNumber}`}
+                <AppLabel size={17} style={{ fontWeight: 800 }}>
+                  테이블 {order.tableNumber}
                 </AppLabel>
-                <AppLabel color={Color.BLACK} size={13}>
-                  {`주문 번호 ${order.orderNumber}`}
-                </AppLabel>
+                <RightIcon onClick={openModal} />
               </TitleContainer>
-              <RightIcon onClick={openModal} />
+              <DescriptionContainer>
+                <AppLabel size={12}>{`주문번호 ${order.orderNumber}`}</AppLabel>
+                <AppLabel size={12}>{`총 ${order.totalPrice.toLocaleString()}원`}</AppLabel>
+              </DescriptionContainer>
             </HeaderContainer>
-            <OrderSummaryContents contents={order} />
           </OrderInfoContainer>
           <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
-          <CheckButtonContainer>
-            <RollBackIcon onClick={rollBackClickHandler} />
-          </CheckButtonContainer>
         </CardContents>
       </CardContainer>
     </>

@@ -7,14 +7,8 @@ import { colFlex } from '@styles/flexStyles';
 import AppContainer from '@components/common/container/AppContainer';
 import { OrderStatus } from '@@types/index';
 import TitledOrderStatusList from '@components/admin/order/realtime/TitledOrderStatusList';
-import styled from '@emotion/styled';
 import { ordersAtom } from '@recoils/atoms';
 import { useRecoilValue } from 'recoil';
-
-const HorizontalLine = styled.hr`
-  width: 100%;
-  border: 0.3px solid #eeecec;
-`;
 
 function AdminOrderRealtime() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
@@ -46,11 +40,19 @@ function AdminOrderRealtime() {
       useNavBackground={true}
     >
       <>
-        <TitledOrderStatusList orders={notPaidOrders} title={'주문 완료'} />
-        <HorizontalLine />
-        <TitledOrderStatusList orders={paidOrders} title={'결제 완료'} />
-        <HorizontalLine />
-        <TitledOrderStatusList orders={servedOrders} title={'서빙 완료'} />
+        <TitledOrderStatusList
+          orders={notPaidOrders}
+          orderStatus={OrderStatus.NOT_PAID}
+          title={'주문 완료'}
+          description={'주문이 완료되었으나, 결제가 아직 확인되지 않은 상태입니다.'}
+        />
+        <TitledOrderStatusList
+          orders={paidOrders}
+          orderStatus={OrderStatus.PAID}
+          title={'결제 완료'}
+          description={'결제가 확인되어 현재 조리 중인 주문입니다. 왼쪽부터 오래된 주문 순으로 표시됩니다.'}
+        />
+        <TitledOrderStatusList orders={servedOrders} orderStatus={OrderStatus.SERVED} title={'서빙 완료'} description={'서빙이 완료된 주문입니다.'} />
       </>
     </AppContainer>
   );
