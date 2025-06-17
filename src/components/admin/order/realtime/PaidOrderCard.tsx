@@ -3,12 +3,9 @@ import { Order } from '@@types/index';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import { RiArrowRightSLine, RiCheckLine } from '@remixicon/react';
+import { RiArrowRightSLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import useAdminOrder from '@hooks/admin/useAdminOrder';
-import { useParams } from 'react-router-dom';
-import RollBackSvg from '@resources/svg/RollBackSvg';
 import OrderDetailModal from '@components/admin/order/realtime/modal/OrderDetailModal';
 import OrderItemList from '@components/admin/order/realtime/OrderItemList';
 import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
@@ -19,7 +16,7 @@ const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
   background-color: #f4f4f4;
   width: 200px;
-  height: 170px;
+  height: 260px;
   border-radius: 10px;
 
   &:hover {
@@ -41,11 +38,10 @@ const CardContents = styled.div`
 
 const OrderInfoContainer = styled.div`
   ${colFlex()}
-  gap: 15px;
-  background-color: ${Color.LIGHT_GREY};
   box-sizing: border-box;
   padding: 5px 15px;
   width: 100%;
+  border-radius: 10px;
   cursor: pointer;
 `;
 
@@ -57,24 +53,12 @@ const HeaderContainer = styled.div`
 const TitleContainer = styled.div`
   ${colFlex({ align: 'start' })}
   padding-top: 3px;
+  gap: 5px;
 `;
 
-const CheckButtonContainer = styled.div`
-  ${rowFlex({ justify: 'center', align: 'center' })}
-  gap: 35px;
-  width: 55%;
-`;
-
-const CheckIcon = styled(RiCheckLine)`
-  width: 25px;
-  height: 25px;
-  ${expandButtonStyle}
-`;
-
-const RollBackIcon = styled(RollBackSvg)`
-  width: 15px;
-  height: 15px;
-  ${expandButtonStyle}
+const HorizontalLine = styled.hr`
+  width: 100%;
+  border: 0.3px solid #d9d9d9;
 `;
 
 const RightIcon = styled(RiArrowRightSLine)`
@@ -83,27 +67,17 @@ const RightIcon = styled(RiArrowRightSLine)`
   ${expandButtonStyle}
 `;
 
-interface OrderCardProps {
-  order: Order;
-}
-
 const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => {
   return areOrdersEquivalent(prevProps.order, nextProps.order);
 };
 
+interface OrderCardProps {
+  order: Order;
+}
+
 function PaidOrderCard({ order }: OrderCardProps) {
-  const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { serveOrder, refundOrder } = useAdminOrder(workspaceId);
   const { delayMinutes } = useDelayTime({ date: order.createdAt });
   const { isModalOpen, openModal, closeModal } = useModal();
-
-  const checkClickHandler = () => {
-    serveOrder(order.id);
-  };
-
-  const rollBackClickHandler = () => {
-    refundOrder(order.id);
-  };
 
   const orderInfoClickHandler = () => {
     openModal();
@@ -116,20 +90,17 @@ function PaidOrderCard({ order }: OrderCardProps) {
           <OrderInfoContainer onClick={orderInfoClickHandler}>
             <HeaderContainer>
               <TitleContainer>
-                <AppLabel color={Color.BLACK} size={17} style={{ fontWeight: 800 }}>
+                <AppLabel size={17} style={{ fontWeight: 800 }}>
                   {`테이블 ${order.tableNumber}`}
                 </AppLabel>
-                <AppLabel color={Color.BLACK} size={13}>{`${delayMinutes}분 전 주문`}</AppLabel>
+                <AppLabel size={13}>{`${delayMinutes}분 전`}</AppLabel>
               </TitleContainer>
               <RightIcon onClick={openModal} />
             </HeaderContainer>
+            <HorizontalLine />
             <OrderItemList order={order} />
           </OrderInfoContainer>
           <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
-          <CheckButtonContainer>
-            <CheckIcon onClick={checkClickHandler} />
-            <RollBackIcon onClick={rollBackClickHandler} />
-          </CheckButtonContainer>
         </CardContents>
       </CardContainer>
     </>

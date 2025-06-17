@@ -8,6 +8,16 @@ import PaidOrderCard from './PaidOrderCard';
 import ServedOrderCard from './ServedOrderCard';
 import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
 
+const TitleContainer = styled.div`
+  width: 100%;
+  height: 40px;
+  border-radius: 10px;
+  background: #ececec;
+  padding: 0 20px;
+  box-sizing: border-box;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
+`;
+
 const OrderCardListContainer = styled.div`
   ${colFlex({ align: 'start' })}
   gap: 10px;
@@ -15,16 +25,11 @@ const OrderCardListContainer = styled.div`
   overflow-x: auto;
 `;
 
-const CardListContainer = styled.div`
-  ${rowFlex()}
+const CardListContainer = styled.div<{ height?: number }>`
   gap: 10px;
-  height: 180px;
+  height: ${(props) => props.height || 200}px;
+  ${rowFlex({ align: 'start' })}
 `;
-
-interface OrderStatusListProps {
-  orders: Order[];
-  title: string;
-}
 
 function areOrdersEqual(prevOrders: Order[], nextOrders: Order[]) {
   if (prevOrders.length !== nextOrders.length) return false;
@@ -39,14 +44,37 @@ const arePropsEqual = (prevProps: OrderStatusListProps, nextProps: OrderStatusLi
   return areOrdersEqual(prevProps.orders, nextProps.orders);
 };
 
-function TitledOrderStatusList({ orders, title }: OrderStatusListProps) {
+const getOrderContainerHeight = (status: OrderStatus) => {
+  switch (status) {
+    case OrderStatus.NOT_PAID:
+      return 110;
+    case OrderStatus.PAID:
+      return 270;
+    case OrderStatus.SERVED:
+      return 110;
+    default:
+      return 200;
+  }
+};
+
+interface OrderStatusListProps {
+  orders: Order[];
+  orderStatus: OrderStatus;
+  title: string;
+  description: string;
+}
+
+function TitledOrderStatusList({ orders, orderStatus, title, description }: OrderStatusListProps) {
   return (
     <>
-      <AppLabel size={22} style={{ fontWeight: 700 }}>
-        {title}
-      </AppLabel>
+      <TitleContainer>
+        <AppLabel size={20} style={{ fontWeight: 700 }}>
+          {title}
+        </AppLabel>
+        <AppLabel size={14}>{description}</AppLabel>
+      </TitleContainer>
       <OrderCardListContainer>
-        <CardListContainer>
+        <CardListContainer height={getOrderContainerHeight(orderStatus)}>
           {orders.map((order) => {
             if (order.status === OrderStatus.NOT_PAID) {
               return <NotPaidOrderCard key={order.id} order={order} />;
