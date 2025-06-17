@@ -14,6 +14,7 @@ const TitleContainer = styled.div`
   border-radius: 10px;
   background: #ececec;
   padding: 0 20px;
+  box-sizing: border-box;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
@@ -25,9 +26,9 @@ const OrderCardListContainer = styled.div`
 `;
 
 const CardListContainer = styled.div<{ height?: number }>`
-  ${rowFlex()}
   gap: 10px;
   height: ${(props) => props.height || 200}px;
+  ${rowFlex({ align: 'start' })}
 `;
 
 function areOrdersEqual(prevOrders: Order[], nextOrders: Order[]) {
