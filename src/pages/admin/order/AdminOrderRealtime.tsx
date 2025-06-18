@@ -9,8 +9,13 @@ import { OrderStatus } from '@@types/index';
 import TitledOrderStatusList from '@components/admin/order/realtime/TitledOrderStatusList';
 import { ordersAtom } from '@recoils/atoms';
 import { useRecoilValue } from 'recoil';
+import useModal from '@hooks/useModal';
+import OrderByProductModal from '@components/admin/order/realtime/modal/order-by-product/OrderByProductModal';
+import OrderByProductModalButton from '@components/admin/order/realtime/modal/order-by-product/OrderByProductModalButton';
 
 function AdminOrderRealtime() {
+  const { isModalOpen, openModal, closeModal } = useModal();
+
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { subscribeOrders, unsubscribeOrders } = useOrdersWebsocket(workspaceId);
   const { fetchTodayOrders } = useAdminOrder(workspaceId);
@@ -53,6 +58,8 @@ function AdminOrderRealtime() {
           description={'결제가 확인되어 현재 조리 중인 주문입니다. 왼쪽부터 오래된 주문 순으로 표시됩니다.'}
         />
         <TitledOrderStatusList orders={servedOrders} orderStatus={OrderStatus.SERVED} title={'서빙 완료'} description={'서빙이 완료된 주문입니다.'} />
+        <OrderByProductModal orders={paidOrders} isModalOpen={isModalOpen} />
+        <OrderByProductModalButton isModalOpen={isModalOpen} openModal={openModal} closeModal={closeModal} />
       </>
     </AppContainer>
   );
