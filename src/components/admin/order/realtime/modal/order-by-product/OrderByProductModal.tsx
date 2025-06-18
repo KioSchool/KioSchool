@@ -58,10 +58,13 @@ const ProductImage = styled.img`
 
 const ProductInfoContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'flex-start' })};
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  word-break: break-all;
+  min-width: 0;
+  & > * {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
 `;
 
 interface OrderByProductModalProps {
@@ -76,23 +79,20 @@ function OrderByProductModal({ orders, isModalOpen }: OrderByProductModalProps) 
     return null;
   }
 
-  const productCountMap = new Map(
-    [
-      ...orders
-        .reduce((acc, order) => {
-          order.orderProducts.forEach((orderProduct) => {
-            const productId = orderProduct.productId;
-            const quantity = orderProduct.quantity - orderProduct.servedCount;
-
-            acc.set(productId, (acc.get(productId) || 0) + quantity);
-          });
-          return acc;
-        }, new Map<number, number>())
-        .entries(),
-    ].sort((a, b) => b[1] - a[1]),
-  );
-
-  const productMap = _.keyBy(products, (product) => product.id);
+  const productMap = _.keyBy(products, 'id');
+  const productCounts: Record<number, number> = {};
+  orders.forEach((order) => {
+    order.orderProducts.forEach((orderProduct) => {
+      const quantity = orderProduct.quantity - orderProduct.servedCount;
+      if (quantity > 0) {
+        const productId = orderProduct.productId;
+        productCounts[productId] = (productCounts[productId] || 0) + quantity;
+      }
+    });
+  });
+  const sortedProducts = Object.entries(productCounts)
+    .map(([productId, count]) => ({ productId, count }))
+    .sort((a, b) => b.count - a.count);
 
   return (
     <ModalContainer>
@@ -103,9 +103,8 @@ function OrderByProductModal({ orders, isModalOpen }: OrderByProductModalProps) 
         <AppLabel size={14}>*결제 완료 주문만 표시됩니다.</AppLabel>
       </HeaderContainer>
       <ProductContainer>
-        {[...productCountMap.keys()].map((productId) => {
+        {sortedProducts.map(({ productId, count }) => {
           const product = productMap[productId];
-          const count = productCountMap.get(Number(productId)) || 0;
 
           if (!product || count <= 0) return null;
 
