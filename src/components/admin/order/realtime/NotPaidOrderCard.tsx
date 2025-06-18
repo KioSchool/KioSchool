@@ -8,7 +8,7 @@ import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
-import OrderDetailModal from '@components/admin/order/realtime/modal/OrderDetailModal';
+import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
 import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
 import useDelayTime from '@hooks/useDelayTime';
 import useModal from '@hooks/useModal';

@@ -6,7 +6,7 @@ import { Color } from '@resources/colors';
 import { RiArrowRightSLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import OrderDetailModal from '@components/admin/order/realtime/modal/OrderDetailModal';
+import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
 import OrderItemList from '@components/admin/order/realtime/OrderItemList';
 import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
 import useDelayTime from '@hooks/useDelayTime';
