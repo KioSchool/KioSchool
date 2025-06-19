@@ -1,11 +1,6 @@
 import { atom, selector } from 'recoil';
-import { Bank, EmailDomain, Order, OrderProductBase, PaginationResponse, User, Workspace } from '@@types/index';
-import { defaultBanksValue, defaultPaginationValue, defaultUserOrderValue, defaultUserValue, defaultWorkspaceValue } from '@@types/defaultValues';
-
-export const userWorkspaceAtom = atom<Workspace>({
-  key: 'userWorkspaceAtom',
-  default: defaultWorkspaceValue,
-});
+import { Bank, EmailDomain, Order, OrderProductBase, PaginationResponse, User } from '@@types/index';
+import { defaultBanksValue, defaultPaginationValue, defaultUserOrderValue, defaultUserValue } from '@@types/defaultValues';
 
 export const adminUserAtom = atom<User>({
   key: 'adminUserAtom',

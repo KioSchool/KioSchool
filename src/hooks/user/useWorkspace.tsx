@@ -1,11 +1,11 @@
 import useApi from '@hooks/useApi';
 import { Account, Workspace } from '@@types/index';
-import { userWorkspaceAtom } from '@recoils/atoms';
-import { useSetRecoilState } from 'recoil';
+import { userWorkspaceAtom } from 'src/jotai/user/atoms';
+import { useSetAtom } from 'jotai';
 
 function useWorkspace() {
   const { userApi } = useApi();
-  const setUserWorkspace = useSetRecoilState(userWorkspaceAtom);
+  const setUserWorkspace = useSetAtom(userWorkspaceAtom);
 
   const fetchWorkspace = (workspaceId: string | undefined | null) => {
     if (!workspaceId) return;

@@ -3,7 +3,7 @@ import { createSearchParams, useNavigate, useSearchParams } from 'react-router-d
 import styled from '@emotion/styled';
 import CategoryBadgesContainer from '@components/user/order/CategoryBadgesContainer';
 import useWorkspace from '@hooks/user/useWorkspace';
-import { orderBasketAtom, userWorkspaceAtom } from '@recoils/atoms';
+import { orderBasketAtom } from '@recoils/atoms';
 import { useRecoilValue } from 'recoil';
 import { Product } from '@@types/index';
 import _ from 'lodash';
@@ -17,6 +17,7 @@ import WorkspaceNotice from '@components/user/order/WorkspaceNotice';
 import OrderProductContent from './OrderProductContent';
 import { categoriesAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
+import { userWorkspaceAtom } from 'src/jotai/user/atoms';
 
 const Container = styled.div`
   width: 100%;
@@ -54,7 +55,7 @@ const Description = styled.div`
 `;
 
 function Order() {
-  const workspace = useRecoilValue(userWorkspaceAtom);
+  const workspace = useAtomValue(userWorkspaceAtom);
   const isShowNotice = workspace.notice.length > 0;
   const rawProductCategories = useAtomValue(categoriesAtom);
   const sellableProducts = workspace.products.filter((it) => it.isSellable);

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import useOrder from '@hooks/user/useOrder';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
-import { orderBasketAtom, userOrderAtom, userWorkspaceAtom } from '@recoils/atoms';
+import { orderBasketAtom, userOrderAtom } from '@recoils/atoms';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import useWorkspace from '@hooks/user/useWorkspace';
@@ -12,6 +12,8 @@ import OrderStatusBar from '@components/user/order/OrderStatusBar';
 import useRefresh from '@hooks/useRefresh';
 import OrderAccountInfo from '@components/user/order/OrderAccountInfo';
 import OrderButton from '@components/user/order/OrderButton';
+import { userWorkspaceAtom } from 'src/jotai/user/atoms';
+import { useAtomValue } from 'jotai';
 
 const Container = styled.div`
   width: 100%;
@@ -112,7 +114,7 @@ function OrderComplete() {
   const { allowPullToRefresh } = useRefresh();
   const resetOrderBasket = useResetRecoilState(orderBasketAtom);
   const order = useRecoilValue(userOrderAtom);
-  const workspace = useRecoilValue(userWorkspaceAtom);
+  const workspace = useAtomValue(userWorkspaceAtom);
 
   const dateConverter = (date: Date) => {
     const isAm = date.getHours() < 12;
