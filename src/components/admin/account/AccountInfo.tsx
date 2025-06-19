@@ -1,9 +1,9 @@
-import { adminUserAccountAtomSelector } from '@recoils/atoms';
-import { useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import AppLabel from '@components/common/label/AppLabel';
 import { Color } from '@resources/colors';
+import { adminUserAccountAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue } from 'jotai';
 
 const Container = styled.div`
   width: 70%;
@@ -28,7 +28,7 @@ const AccountInfoRow = styled.div`
 `;
 
 function AccountInfo() {
-  const accountInfo = useRecoilValue(adminUserAccountAtomSelector);
+  const accountInfo = useAtomValue(adminUserAccountAtom);
 
   const { bankName, accountNumber, accountHolder } = accountInfo;
 

@@ -3,8 +3,6 @@ import RegisterAccount from '@components/admin/account/RegisterAccount';
 import RegisterTossAccount from '@components/admin/account/RegisterTossAccount';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { useRecoilValue } from 'recoil';
-import { adminUserAtom } from '@recoils/atoms';
 import { useEffect } from 'react';
 import styled from '@emotion/styled';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
@@ -12,6 +10,8 @@ import useAdminUser from '@hooks/admin/useAdminUser';
 import AppLabel from '@components/common/label/AppLabel';
 import { Color } from '@resources/colors';
 import TossAccountInfo from '@components/admin/account/TossAccountInfo';
+import { adminUserAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue } from 'jotai';
 
 const AccountContainer = styled.div`
   width: 100%;
@@ -38,7 +38,7 @@ const RegisterContainer = styled.div`
 
 function AdminAccount() {
   const { fetchAdminUser } = useAdminUser();
-  const user = useRecoilValue(adminUserAtom);
+  const user = useAtomValue(adminUserAtom);
 
   useEffect(() => {
     fetchAdminUser();

@@ -6,11 +6,11 @@ import useConfirm from '@hooks/useConfirm';
 import useAdminUser from '@hooks/admin/useAdminUser';
 import AppFooter from '@components/common/footer/AppFooter';
 import { rowFlex } from '@styles/flexStyles';
-import { adminUserAtom } from '@recoils/atoms';
-import { useRecoilValue } from 'recoil';
 import { UserRole } from '@@types/index';
 import { RiSettings3Fill, RiBankCardFill } from '@remixicon/react';
 import { Color } from '@resources/colors';
+import { adminUserAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue } from 'jotai';
 
 const MyInfoContainer = styled.div`
   width: 1100px;
@@ -66,7 +66,7 @@ const DeleteUserButton = styled(DeleteUserSvg)`
 function MyInfoContent() {
   const navigate = useNavigate();
   const { deleteUser } = useAdminUser();
-  const user = useRecoilValue(adminUserAtom);
+  const user = useAtomValue(adminUserAtom);
 
   const { ConfirmModal: DeleteUserConfirmModal, confirm: deleteUserConfirm } = useConfirm({
     title: '계정을 탈퇴하시겠습니까?',

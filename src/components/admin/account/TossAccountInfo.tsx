@@ -1,9 +1,9 @@
-import { adminUserTossAccountAtomSelector } from '@recoils/atoms';
-import { useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import AppLabel from '@components/common/label/AppLabel';
+import { adminUserTossAccountAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue } from 'jotai';
 
 const Container = styled.div`
   width: 30%;
@@ -18,7 +18,7 @@ const Title = styled.div`
 `;
 
 function TossAccountInfo() {
-  const tossAccountInfo = useRecoilValue(adminUserTossAccountAtomSelector);
+  const tossAccountInfo = useAtomValue(adminUserTossAccountAtom);
   const text = tossAccountInfo ? '등록됨 ✅' : '미등록 ❌';
 
   return (
