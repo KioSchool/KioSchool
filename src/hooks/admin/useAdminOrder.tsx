@@ -1,7 +1,5 @@
 import useApi from '@hooks/useApi';
 import { Order, OrderStatus, PaginationResponse } from '@@types/index';
-import { useSetRecoilState } from 'recoil';
-import { tableOrderPaginationResponseAtom } from '@recoils/atoms';
 import { defaultPaginationValue } from '@@types/defaultValues';
 import { useSetAtom } from 'jotai';
 import { ordersAtom } from 'src/jotai/admin/atoms';
@@ -9,7 +7,6 @@ import { ordersAtom } from 'src/jotai/admin/atoms';
 function useAdminOrder(workspaceId: string | undefined) {
   const { adminApi } = useApi();
   const setOrders = useSetAtom(ordersAtom);
-  const setTablePaginationResponse = useSetRecoilState(tableOrderPaginationResponseAtom);
 
   const fetchAllOrders = () => {
     adminApi.get<Order[]>('/orders', { params: { workspaceId } }).then((response) => {
@@ -67,10 +64,7 @@ function useAdminOrder(workspaceId: string | undefined) {
 
     const response = adminApi
       .get<PaginationResponse<Order>>('/orders/table', { params })
-      .then((res) => {
-        setTablePaginationResponse(res.data);
-        return res.data;
-      })
+      .then((res) => res.data)
       .catch((error) => {
         console.log(error);
         return defaultPaginationValue;
