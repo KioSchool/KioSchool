@@ -41,9 +41,7 @@
     "react-router-dom": "^6.20.1",
     "react-scroll": "npm:@kioschool/react-scroll",
     "react-toastify": "^11.0.5",
-    "recharts": "2.15.3",
-    "recoil": "^0.7.5",
-    "recoil-persist": "^5.1.0"
+    "recharts": "2.15.3"
   },
   "scripts": {
     "start": "vite",
