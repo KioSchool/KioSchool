@@ -1,16 +1,14 @@
 import useApi from '@hooks/useApi';
-import { useSetRecoilState } from 'recoil';
-import { categoriesAtom } from '@recoils/atoms';
 import { Product, ProductCategory } from '@@types/index';
 import { useNavigate } from 'react-router-dom';
-import { productsAtom } from 'src/jotai/admin/atoms';
+import { categoriesAtom, productsAtom } from 'src/jotai/admin/atoms';
 import { useSetAtom } from 'jotai';
 
 function useAdminProducts(workspaceId: string | undefined | null) {
   const { adminApi } = useApi();
   const navigate = useNavigate();
   const setProducts = useSetAtom(productsAtom);
-  const setProductCategories = useSetRecoilState(categoriesAtom);
+  const setProductCategories = useSetAtom(categoriesAtom);
 
   const fetchProducts = () => {
     adminApi

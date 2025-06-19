@@ -1,8 +1,6 @@
 import { ChangeEvent, useEffect, useReducer, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
-import { useRecoilValue } from 'recoil';
-import { categoriesAtom } from '@recoils/atoms';
 import SelectWithLabel from '@components/common/select/SelectWithLabel';
 import AppImageInput from '@components/common/input/AppImageInput';
 import AppContainer from '@components/common/container/AppContainer';
@@ -10,6 +8,8 @@ import { colFlex } from '@styles/flexStyles';
 import { ProductActionType, ProductStateType } from '@@types/index';
 import NewAppInput from '@components/common/input/NewAppInput';
 import NewRoundedButton from '@components/common/button/NewRoundedButton';
+import { categoriesAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue } from 'jotai';
 
 function reducer(state: ProductStateType, action: ProductActionType) {
   switch (action.type) {
@@ -39,7 +39,7 @@ function AdminProductAdd() {
   const { addProduct, fetchCategories } = useAdminProducts(workspaceId);
   const [file, setFile] = useState<File | null>(null);
   const [state, dispatch] = useReducer(reducer, body);
-  const productCategories = useRecoilValue(categoriesAtom);
+  const productCategories = useAtomValue(categoriesAtom);
 
   useEffect(() => {
     fetchCategories();

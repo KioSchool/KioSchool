@@ -3,12 +3,12 @@ import styled from '@emotion/styled';
 import { useRef } from 'react';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { categoriesAtom } from '@recoils/atoms';
 import CategoryDragAndDropContent from '@components/admin/product-category/CategoryDragAndDropContent';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import NewRoundedButton from '@components/common/button/NewRoundedButton';
 import { Color } from '@resources/colors';
+import { categoriesAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue } from 'jotai';
 
 const Container = styled.div`
   gap: 15px;
@@ -52,7 +52,7 @@ function AdminProductCategories() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { addCategory, reorderCategories } = useAdminProducts(workspaceId);
   const categoryInputRef = useRef<HTMLInputElement>(null);
-  const rawCategories = useRecoilValue(categoriesAtom);
+  const rawCategories = useAtomValue(categoriesAtom);
 
   const addCategoryHandler = () => {
     const userInput = categoryInputRef.current?.value;

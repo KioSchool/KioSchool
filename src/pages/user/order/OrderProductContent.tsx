@@ -4,12 +4,14 @@ import AppLabel from '@components/common/label/AppLabel';
 import OrderFooter from '@components/user/order/OrderFooter';
 import ProductCard from '@components/user/product/ProductCard';
 import styled from '@emotion/styled';
-import { categoriesAtom, orderBasketAtom, userWorkspaceAtom } from '@recoils/atoms';
+import { orderBasketAtom, userWorkspaceAtom } from '@recoils/atoms';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { useAtomValue } from 'jotai';
 import _ from 'lodash';
 import { Element } from 'react-scroll';
 import { useRecoilValue } from 'recoil';
+import { categoriesAtom } from 'src/jotai/admin/atoms';
 
 const MainContent = styled.div`
   width: 100%;
@@ -43,7 +45,7 @@ const PlaceHolder = styled.div`
 
 function OrderProductContent() {
   const workspace = useRecoilValue(userWorkspaceAtom);
-  const rawProductCategories = useRecoilValue(categoriesAtom);
+  const rawProductCategories = useAtomValue(categoriesAtom);
   const sellableProducts = workspace.products.filter((it) => it.isSellable);
   const productsByCategoryId = _.groupBy<Product>(sellableProducts, (product) => product.productCategory?.id);
 

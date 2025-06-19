@@ -1,16 +1,16 @@
 import useAdminProducts from '@hooks/admin/useAdminProducts';
-import { categoriesAtom } from '@recoils/atoms';
 import { useEffect } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
 import CategoryDroppableContents from './CategoryDroppableContents';
 import { ProductCategory } from '@@types/index';
+import { categoriesAtom } from 'src/jotai/admin/atoms';
+import { useAtom } from 'jotai';
 
 function CategoryDragAndDropContent() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchCategories } = useAdminProducts(workspaceId);
-  const [rawCategories, setRawCategories] = useRecoilState(categoriesAtom);
+  const [rawCategories, setRawCategories] = useAtom(categoriesAtom);
   const categories: ProductCategory[] = rawCategories.map((category) => ({
     ...category,
     id: category.id,
