@@ -50,11 +50,6 @@ export const adminUserTossAccountAtomSelector = selector({
   },
 });
 
-export const isLoadingAtom = atom<boolean>({
-  key: 'isLoadingAtom',
-  default: false,
-});
-
 export const emailDomainPaginationResponseAtom = atom<PaginationResponse<EmailDomain>>({
   key: 'emailDomainPaginationResponseAtom',
   default: defaultPaginationValue,

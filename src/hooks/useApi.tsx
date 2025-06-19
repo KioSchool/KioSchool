@@ -1,13 +1,13 @@
 import axios, { AxiosResponse, HttpStatusCode, InternalAxiosRequestConfig } from 'axios';
+import { useSetAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { isLoadingAtom } from '@recoils/atoms';
+import { isLoadingAtom } from 'src/jotai/atoms';
 
 const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT;
 
 function useApi() {
   const navigate = useNavigate();
-  const setIsLoading = useSetRecoilState(isLoadingAtom);
+  const setIsLoading = useSetAtom(isLoadingAtom);
   const controller = new AbortController();
   const map = new Map();
 
