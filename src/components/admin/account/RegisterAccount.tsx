@@ -1,13 +1,13 @@
 import SelectWithOptions from '@components/common/select/SelectWithOptions';
 import useAdminUser from '@hooks/admin/useAdminUser';
-import { banksAtom } from '@recoils/atoms';
 import { useEffect, useRef, useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import AppLabel from '@components/common/label/AppLabel';
 import { Color } from '@resources/colors';
 import NewAppInput from '@components/common/input/NewAppInput';
+import { banksAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue } from 'jotai';
 
 const Container = styled.div`
   width: 70%;
@@ -58,7 +58,7 @@ const SubmitButton = styled.button`
 
 function RegisterAccount() {
   const { fetchBanks, registerAccount } = useAdminUser();
-  const banks = useRecoilValue(banksAtom);
+  const banks = useAtomValue(banksAtom);
   const accountHolderRef = useRef<HTMLInputElement>(null);
   const accountNumberRef = useRef<HTMLInputElement>(null);
   const [selectedBankId, setSelectedBankId] = useState<number | null>(null);

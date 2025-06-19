@@ -1,6 +1,6 @@
 import { atom, selector } from 'recoil';
 import { Bank, EmailDomain, Order, OrderProductBase, PaginationResponse, User } from '@@types/index';
-import { defaultBanksValue, defaultPaginationValue, defaultUserOrderValue, defaultUserValue } from '@@types/defaultValues';
+import { defaultPaginationValue, defaultUserOrderValue, defaultUserValue } from '@@types/defaultValues';
 
 export const adminUserAtom = atom<User>({
   key: 'adminUserAtom',
@@ -48,11 +48,6 @@ export const adminUserTossAccountAtomSelector = selector({
 
     return { tossBankName, tossAccountNumber };
   },
-});
-
-export const banksAtom = atom<Bank[]>({
-  key: 'banksAtom',
-  default: defaultBanksValue,
 });
 
 export const userOrderAtom = atom<Order>({
