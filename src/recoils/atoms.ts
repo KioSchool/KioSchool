@@ -1,12 +1,7 @@
 import { atom, selector } from 'recoil';
-import { Bank, EmailDomain, Order, OrderProductBase, PaginationResponse, Product, ProductCategory, User, Workspace } from '@@types/index';
+import { Bank, EmailDomain, Order, OrderProductBase, PaginationResponse, ProductCategory, User, Workspace } from '@@types/index';
 import { defaultBanksValue, defaultPaginationValue, defaultUserOrderValue, defaultUserValue, defaultWorkspaceValue } from '@@types/defaultValues';
 import { recoilPersist } from 'recoil-persist';
-
-export const productsAtom = atom<Product[]>({
-  key: 'productsAtom',
-  default: [],
-});
 
 export const categoriesAtom = atom<ProductCategory[]>({
   key: 'categoriesAtom',
