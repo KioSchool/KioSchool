@@ -3,11 +3,6 @@ import { Bank, EmailDomain, Order, OrderProductBase, PaginationResponse, Product
 import { defaultBanksValue, defaultPaginationValue, defaultUserOrderValue, defaultUserValue, defaultWorkspaceValue } from '@@types/defaultValues';
 import { recoilPersist } from 'recoil-persist';
 
-export const workspacesAtom = atom<Workspace[]>({
-  key: 'workspacesAtom',
-  default: [],
-});
-
 export const productsAtom = atom<Product[]>({
   key: 'productsAtom',
   default: [],
