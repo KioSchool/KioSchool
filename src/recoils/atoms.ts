@@ -50,11 +50,6 @@ export const adminUserTossAccountAtomSelector = selector({
   },
 });
 
-export const emailDomainPaginationResponseAtom = atom<PaginationResponse<EmailDomain>>({
-  key: 'emailDomainPaginationResponseAtom',
-  default: defaultPaginationValue,
-});
-
 export const tableOrderPaginationResponseAtom = atom<PaginationResponse<Order>>({
   key: 'tableOrderPaginationResponseAtom',
   default: defaultPaginationValue,
