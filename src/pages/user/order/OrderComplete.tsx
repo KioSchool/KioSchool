@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import useOrder from '@hooks/user/useOrder';
-import { useRecoilValue, useResetRecoilState } from 'recoil';
-import { orderBasketAtom, userOrderAtom } from '@recoils/atoms';
+import { useResetRecoilState } from 'recoil';
+import { orderBasketAtom } from '@recoils/atoms';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import useWorkspace from '@hooks/user/useWorkspace';
@@ -12,7 +12,7 @@ import OrderStatusBar from '@components/user/order/OrderStatusBar';
 import useRefresh from '@hooks/useRefresh';
 import OrderAccountInfo from '@components/user/order/OrderAccountInfo';
 import OrderButton from '@components/user/order/OrderButton';
-import { userWorkspaceAtom } from 'src/jotai/user/atoms';
+import { userOrderAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
 import { useAtomValue } from 'jotai';
 
 const Container = styled.div`
@@ -113,7 +113,7 @@ function OrderComplete() {
   const { fetchOrder } = useOrder();
   const { allowPullToRefresh } = useRefresh();
   const resetOrderBasket = useResetRecoilState(orderBasketAtom);
-  const order = useRecoilValue(userOrderAtom);
+  const order = useAtomValue(userOrderAtom);
   const workspace = useAtomValue(userWorkspaceAtom);
 
   const dateConverter = (date: Date) => {
