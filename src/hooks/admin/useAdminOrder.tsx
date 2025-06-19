@@ -1,12 +1,14 @@
 import useApi from '@hooks/useApi';
 import { Order, OrderStatus, PaginationResponse } from '@@types/index';
 import { useSetRecoilState } from 'recoil';
-import { ordersAtom, tableOrderPaginationResponseAtom } from '@recoils/atoms';
+import { tableOrderPaginationResponseAtom } from '@recoils/atoms';
 import { defaultPaginationValue } from '@@types/defaultValues';
+import { useSetAtom } from 'jotai';
+import { ordersAtom } from 'src/jotai/admin/atoms';
 
 function useAdminOrder(workspaceId: string | undefined) {
   const { adminApi } = useApi();
-  const setOrders = useSetRecoilState(ordersAtom);
+  const setOrders = useSetAtom(ordersAtom);
   const setTablePaginationResponse = useSetRecoilState(tableOrderPaginationResponseAtom);
 
   const fetchAllOrders = () => {

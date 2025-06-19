@@ -3,8 +3,6 @@ import styled from '@emotion/styled';
 import 'react-datepicker/dist/react-datepicker.css';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { ordersAtom } from '@recoils/atoms';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { OrderStatus } from '@@types/index';
@@ -17,6 +15,8 @@ import OrderPriceStatistics from '@components/admin/order/statistic/OrderPriceSt
 import { lineSeedKrFont } from '@styles/fonts';
 import dayjs from 'dayjs';
 import { dateConverter } from '@utils/FormatDate';
+import { ordersAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue } from 'jotai';
 
 type CategoryKey = 'all' | 'byProduct' | 'byPrice';
 
@@ -80,7 +80,7 @@ const CategoryLink = styled.div<{ isSelected: boolean }>`
 function AdminOrderStatistics() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchOrders } = useAdminOrder(workspaceId);
-  const orders = useRecoilValue(ordersAtom);
+  const orders = useAtomValue(ordersAtom);
   const [showServedOrder, setShowServedOrder] = useState(false);
   const [startDate, setStartDate] = useState<Date>(() => dayjs().subtract(1, 'day').toDate());
   const [endDate, setEndDate] = useState(new Date());
