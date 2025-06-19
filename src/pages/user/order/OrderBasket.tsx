@@ -1,7 +1,5 @@
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { useRecoilState } from 'recoil';
-import { orderBasketAtom } from '@recoils/atoms';
 import ProductCounterBadge from '@components/user/product/ProductCounterBadge';
 import _ from 'lodash';
 import OrderButton from '@components/user/order/OrderButton';
@@ -9,8 +7,8 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import { Color } from '@resources/colors';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
-import { userWorkspaceAtom } from 'src/jotai/user/atoms';
-import { useAtomValue } from 'jotai';
+import { userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
+import { useAtom, useAtomValue } from 'jotai';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -69,7 +67,7 @@ const ProductCounterBadgeContainer = styled.div`
 
 function OrderBasket() {
   const workspace = useAtomValue(userWorkspaceAtom);
-  const [orderBasket, setOrderBasket] = useRecoilState(orderBasketAtom);
+  const [orderBasket, setOrderBasket] = useAtom(userOrderBasketAtom);
   const productsMap = _.keyBy(workspace.products, 'id');
   const totalAmount = orderBasket.reduce((acc, cur) => {
     return acc + productsMap[cur.productId].price * cur.quantity;

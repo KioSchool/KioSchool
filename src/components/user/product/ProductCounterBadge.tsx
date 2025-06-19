@@ -1,11 +1,11 @@
 import { Product } from '@@types/index';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
-import { orderBasketAtom } from '@recoils/atoms';
-import { useRecoilState } from 'recoil';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { RiAddLine, RiCloseCircleFill, RiSubtractLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
+import { userOrderBasketAtom } from 'src/jotai/user/atoms';
+import { useAtom } from 'jotai';
 
 const Container = styled.div`
   width: 100%;
@@ -94,7 +94,7 @@ interface ProductCounterBadgeProps {
 }
 
 function ProductCounterBadge({ product }: ProductCounterBadgeProps) {
-  const [orderBasket, setOrderBasket] = useRecoilState(orderBasketAtom);
+  const [orderBasket, setOrderBasket] = useAtom(userOrderBasketAtom);
   const quantity = orderBasket.find((basket) => basket.productId === product.id)?.quantity || 0;
 
   const plusQuantity = () => {

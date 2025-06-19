@@ -1,6 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { orderBasketAtom } from '@recoils/atoms';
 import _ from 'lodash';
 import styled from '@emotion/styled';
 import OrderButton from '@components/user/order/OrderButton';
@@ -11,8 +9,8 @@ import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import OrderPayNavBar from '@components/user/order/OrderPayNavBar';
 import OrderPayDescription from '@components/user/order/OrderPayDescription';
 import { HttpStatusCode } from 'axios';
-import { userWorkspaceAtom } from 'src/jotai/user/atoms';
-import { useAtomValue } from 'jotai';
+import { userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
+import { useAtom, useAtomValue } from 'jotai';
 
 const Container = styled.div`
   width: 100%;
@@ -47,7 +45,7 @@ const DescriptionContainer = styled.div`
 
 function OrderPay() {
   const workspace = useAtomValue(userWorkspaceAtom);
-  const [orderBasket, setOrderBasket] = useRecoilState(orderBasketAtom);
+  const [orderBasket, setOrderBasket] = useAtom(userOrderBasketAtom);
   const productsMap = _.keyBy(workspace.products, 'id');
   const totalAmount = orderBasket.reduce((acc, cur) => {
     return acc + productsMap[cur.productId].price * cur.quantity;

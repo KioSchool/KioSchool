@@ -1,5 +1,5 @@
 import { atom, selector } from 'recoil';
-import { Bank, EmailDomain, Order, OrderProductBase, PaginationResponse, User } from '@@types/index';
+import { Bank, EmailDomain, Order, PaginationResponse, User } from '@@types/index';
 import { defaultPaginationValue, defaultUserValue } from '@@types/defaultValues';
 
 export const adminUserAtom = atom<User>({
@@ -48,11 +48,6 @@ export const adminUserTossAccountAtomSelector = selector({
 
     return { tossBankName, tossAccountNumber };
   },
-});
-
-export const orderBasketAtom = atom<OrderProductBase[]>({
-  key: 'orderBasketAtom',
-  default: [],
 });
 
 export const isLoadingAtom = atom<boolean>({

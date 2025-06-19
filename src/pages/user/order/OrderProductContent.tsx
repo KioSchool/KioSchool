@@ -4,15 +4,13 @@ import AppLabel from '@components/common/label/AppLabel';
 import OrderFooter from '@components/user/order/OrderFooter';
 import ProductCard from '@components/user/product/ProductCard';
 import styled from '@emotion/styled';
-import { orderBasketAtom } from '@recoils/atoms';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
 import _ from 'lodash';
 import { Element } from 'react-scroll';
-import { useRecoilValue } from 'recoil';
 import { categoriesAtom } from 'src/jotai/admin/atoms';
-import { userWorkspaceAtom } from 'src/jotai/user/atoms';
+import { userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
 
 const MainContent = styled.div`
   width: 100%;
@@ -57,7 +55,7 @@ function OrderProductContent() {
   const isProductEmpty = productsWithCategory.every(({ products }) => products.length === 0);
 
   const defaultProducts = productsByCategoryId.undefined;
-  const orderBasket = useRecoilValue(orderBasketAtom);
+  const orderBasket = useAtomValue(userOrderBasketAtom);
 
   const isAllProductsEmpty = isProductEmpty && !defaultProducts;
 
