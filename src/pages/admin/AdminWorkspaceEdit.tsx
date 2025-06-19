@@ -1,17 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
 import RoundedAppButton from '@components/common/button/RoundedAppButton';
 import AppContainer from '@components/common/container/AppContainer';
 import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
-import { adminWorkspaceAtom } from '@recoils/atoms';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { WorkspaceImage } from '@@types/index';
 import { extractImageIdsAndFiles, initWorkspaceImages, removeAndPushNull } from '@utils/workspaceEdit';
 import WorkspaceImageInput from '@components/admin/workspace/WorkspaceImageInput';
+import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue } from 'jotai';
 
 const textAreaStyle = `
   border-radius: 10px;
@@ -122,8 +122,8 @@ const SubmitButtonContainer = styled.div`
 function AdminWorkspaceEdit() {
   const navigate = useNavigate();
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchWorkspace, updateWorkspaceInfoAndImage } = useAdminWorkspace();
-  const workspace = useRecoilValue(adminWorkspaceAtom);
+  const { updateWorkspaceInfoAndImage } = useAdminWorkspace();
+  const workspace = useAtomValue(adminWorkspaceAtom);
 
   const titleRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
@@ -133,10 +133,6 @@ function AdminWorkspaceEdit() {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
   const [displayImages, setDisplayImages] = useState<(WorkspaceImage | File | null)[]>(() => initWorkspaceImages(workspace.images));
-
-  useEffect(() => {
-    fetchWorkspace(workspaceId);
-  }, []);
 
   const handleImageClick = (index: number) => {
     if (displayImages[index]) {

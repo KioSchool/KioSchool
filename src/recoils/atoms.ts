@@ -1,18 +1,6 @@
 import { atom, selector } from 'recoil';
 import { Bank, EmailDomain, Order, OrderProductBase, PaginationResponse, User, Workspace } from '@@types/index';
 import { defaultBanksValue, defaultPaginationValue, defaultUserOrderValue, defaultUserValue, defaultWorkspaceValue } from '@@types/defaultValues';
-import { recoilPersist } from 'recoil-persist';
-
-const { persistAtom } = recoilPersist({
-  key: 'workspace-atom',
-  storage: localStorage,
-});
-
-export const adminWorkspaceAtom = atom<Workspace>({
-  key: 'adminWorkspaceAtom',
-  default: defaultWorkspaceValue,
-  effects_UNSTABLE: [persistAtom],
-});
 
 export const userWorkspaceAtom = atom<Workspace>({
   key: 'userWorkspaceAtom',
