@@ -1,6 +1,6 @@
 import { atom, selector } from 'recoil';
-import { Bank, EmailDomain, Order, PaginationResponse, User } from '@@types/index';
-import { defaultPaginationValue, defaultUserValue } from '@@types/defaultValues';
+import { User } from '@@types/index';
+import { defaultUserValue } from '@@types/defaultValues';
 
 export const adminUserAtom = atom<User>({
   key: 'adminUserAtom',
@@ -48,14 +48,4 @@ export const adminUserTossAccountAtomSelector = selector({
 
     return { tossBankName, tossAccountNumber };
   },
-});
-
-export const tableOrderPaginationResponseAtom = atom<PaginationResponse<Order>>({
-  key: 'tableOrderPaginationResponseAtom',
-  default: defaultPaginationValue,
-});
-
-export const bankPaginationResponseAtom = atom<PaginationResponse<Bank>>({
-  key: 'bankPaginationResponseAtom',
-  default: defaultPaginationValue,
 });

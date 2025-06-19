@@ -6,11 +6,11 @@ import Pagination from '@components/common/pagination/Pagination';
 import AppContainer from '@components/common/container/AppContainer';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import PaginationSearchContents from '@components/common/pagination/PaginationSearchContents';
-import { useRecoilValue } from 'recoil';
-import { bankPaginationResponseAtom } from '@recoils/atoms';
 import useSuperAdminBank from '@hooks/super-admin/useSuperAdminBank';
 import SuperAdminBankTitleNavBarChildren from '@components/super-admin/bank/SuperAdminBankTitleNavBarChildren';
 import SuperAdminBankContent from '@components/super-admin/bank/SuperAdminBankContent';
+import { bankPaginationResponseAtom } from 'src/jotai/super-admin/atoms';
+import { useAtomValue } from 'jotai';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   height: 550px;
@@ -25,7 +25,7 @@ function SuperAdminBank() {
   const pageSize = 6;
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const bank = useRecoilValue(bankPaginationResponseAtom);
+  const bank = useAtomValue(bankPaginationResponseAtom);
   const { fetchAllBank } = useSuperAdminBank();
 
   const isEmptyBank = bank.empty;
