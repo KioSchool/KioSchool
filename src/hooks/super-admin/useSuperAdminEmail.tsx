@@ -1,7 +1,7 @@
 import { PaginationResponse, EmailDomain } from '@@types/index';
 import useApi from '@hooks/useApi';
 import { useSetAtom } from 'jotai';
-import { emailDomainPaginationResponseAtom } from 'src/jotai/super-admin/atoms';
+import { superAdminEmailDomainPaginationResponseAtom } from 'src/jotai/super-admin/atoms';
 
 interface FetchAllEmailDomainParamsType {
   page: number;
@@ -15,7 +15,7 @@ interface AddEmailDomainParamsType {
 }
 
 function useSuperAdminEmail() {
-  const setEmailPaginationResponse = useSetAtom(emailDomainPaginationResponseAtom);
+  const setEmailPaginationResponse = useSetAtom(superAdminEmailDomainPaginationResponseAtom);
   const { superAdminApi } = useApi();
 
   const fetchAllEmailDomain = (page: number, size: number, name?: string) => {

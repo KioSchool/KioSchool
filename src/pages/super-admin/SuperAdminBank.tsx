@@ -9,7 +9,7 @@ import PaginationSearchContents from '@components/common/pagination/PaginationSe
 import useSuperAdminBank from '@hooks/super-admin/useSuperAdminBank';
 import SuperAdminBankTitleNavBarChildren from '@components/super-admin/bank/SuperAdminBankTitleNavBarChildren';
 import SuperAdminBankContent from '@components/super-admin/bank/SuperAdminBankContent';
-import { bankPaginationResponseAtom } from 'src/jotai/super-admin/atoms';
+import { superAdminBankPaginationResponseAtom } from 'src/jotai/super-admin/atoms';
 import { useAtomValue } from 'jotai';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
@@ -25,7 +25,7 @@ function SuperAdminBank() {
   const pageSize = 6;
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const bank = useAtomValue(bankPaginationResponseAtom);
+  const bank = useAtomValue(superAdminBankPaginationResponseAtom);
   const { fetchAllBank } = useSuperAdminBank();
 
   const isEmptyBank = bank.empty;
