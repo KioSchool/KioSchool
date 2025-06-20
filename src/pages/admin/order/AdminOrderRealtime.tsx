@@ -5,7 +5,7 @@ import useAdminOrder from '@hooks/admin/useAdminOrder';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { colFlex } from '@styles/flexStyles';
 import AppContainer from '@components/common/container/AppContainer';
-import { Order, OrderStatus } from '@@types/index';
+import { OrderStatus } from '@@types/index';
 import TitledOrderStatusList from '@components/admin/order/realtime/TitledOrderStatusList';
 import useModal from '@hooks/useModal';
 import OrderByProductModal from '@components/admin/order/realtime/modal/order-by-product/OrderByProductModal';
@@ -22,9 +22,9 @@ function AdminOrderRealtime() {
   const { fetchProducts } = useAdminProducts(workspaceId);
 
   const orders = useAtomValue(ordersAtom);
-  const notPaidOrders = orders.filter((order: Order) => order.status === OrderStatus.NOT_PAID);
-  const paidOrders = orders.filter((order: Order) => order.status === OrderStatus.PAID);
-  const servedOrders = orders.filter((order: Order) => order.status === OrderStatus.SERVED);
+  const notPaidOrders = orders.filter((order) => order.status === OrderStatus.NOT_PAID);
+  const paidOrders = orders.filter((order) => order.status === OrderStatus.PAID);
+  const servedOrders = orders.filter((order) => order.status === OrderStatus.SERVED);
 
   useEffect(() => {
     subscribeOrders();
