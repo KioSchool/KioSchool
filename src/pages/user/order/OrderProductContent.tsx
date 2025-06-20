@@ -9,8 +9,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
 import _ from 'lodash';
 import { Element } from 'react-scroll';
-import { categoriesAtom } from 'src/jotai/admin/atoms';
-import { userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
+import { userCategoriesAtom, userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
 
 const MainContent = styled.div`
   width: 100%;
@@ -44,7 +43,7 @@ const PlaceHolder = styled.div`
 
 function OrderProductContent() {
   const workspace = useAtomValue(userWorkspaceAtom);
-  const rawProductCategories = useAtomValue(categoriesAtom);
+  const rawProductCategories = useAtomValue(userCategoriesAtom);
   const sellableProducts = workspace.products.filter((it) => it.isSellable);
   const productsByCategoryId = _.groupBy<Product>(sellableProducts, (product) => product.productCategory?.id);
 
