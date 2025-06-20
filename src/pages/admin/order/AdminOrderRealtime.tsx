@@ -7,11 +7,11 @@ import { colFlex } from '@styles/flexStyles';
 import AppContainer from '@components/common/container/AppContainer';
 import { OrderStatus } from '@@types/index';
 import TitledOrderStatusList from '@components/admin/order/realtime/TitledOrderStatusList';
-import { ordersAtom } from '@recoils/atoms';
-import { useRecoilValue } from 'recoil';
 import useModal from '@hooks/useModal';
 import OrderByProductModal from '@components/admin/order/realtime/modal/order-by-product/OrderByProductModal';
 import OrderByProductModalButton from '@components/admin/order/realtime/modal/order-by-product/OrderByProductModalButton';
+import { useAtomValue } from 'jotai';
+import { adminOrdersAtom } from 'src/jotai/admin/atoms';
 
 function AdminOrderRealtime() {
   const { isModalOpen, openModal, closeModal } = useModal();
@@ -21,7 +21,7 @@ function AdminOrderRealtime() {
   const { fetchTodayOrders } = useAdminOrder(workspaceId);
   const { fetchProducts } = useAdminProducts(workspaceId);
 
-  const orders = useRecoilValue(ordersAtom);
+  const orders = useAtomValue(adminOrdersAtom);
   const notPaidOrders = orders.filter((order) => order.status === OrderStatus.NOT_PAID);
   const paidOrders = orders.filter((order) => order.status === OrderStatus.PAID);
   const servedOrders = orders.filter((order) => order.status === OrderStatus.SERVED);

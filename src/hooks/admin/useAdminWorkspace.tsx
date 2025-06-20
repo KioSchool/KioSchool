@@ -1,12 +1,12 @@
 import useApi from '@hooks/useApi';
-import { useSetRecoilState } from 'recoil';
-import { adminWorkspaceAtom } from '@recoils/atoms';
 import { Workspace } from '@@types/index';
 import { useNavigate } from 'react-router-dom';
+import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
+import { useSetAtom } from 'jotai';
 
 function useAdminWorkspace() {
   const { adminApi } = useApi();
-  const setAdminWorkspace = useSetRecoilState(adminWorkspaceAtom);
+  const setAdminWorkspace = useSetAtom(adminWorkspaceAtom);
 
   const navigate = useNavigate();
 

@@ -1,8 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
-import { useRecoilValue } from 'recoil';
-import { adminWorkspaceAtom } from '@recoils/atoms';
 import styled from '@emotion/styled';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
@@ -15,6 +13,8 @@ import AppFooter from '@components/common/footer/AppFooter';
 import AppFaqButton from '@components/common/button/AppFaqButton';
 import AppPopup from '@components/common/popup/AppPopup';
 import { tabletMediaQuery } from '@styles/globalStyles';
+import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue } from 'jotai';
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -38,7 +38,7 @@ function AdminWorkspace() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchWorkspace } = useAdminWorkspace();
   const navigate = useNavigate();
-  const workspace = useRecoilValue(adminWorkspaceAtom);
+  const workspace = useAtomValue(adminWorkspaceAtom);
 
   useEffect(() => {
     fetchWorkspace(workspaceId);

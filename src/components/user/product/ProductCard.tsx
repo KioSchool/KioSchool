@@ -1,5 +1,3 @@
-import { useSetRecoilState } from 'recoil';
-import { orderBasketAtom } from '@recoils/atoms';
 import { Product } from '@@types/index';
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
@@ -7,6 +5,8 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { RiAddLine, RiSubtractLine } from '@remixicon/react';
 import { css } from '@emotion/react';
+import { userOrderBasketAtom } from 'src/jotai/user/atoms';
+import { useSetAtom } from 'jotai';
 
 const Container = styled.div`
   width: auto;
@@ -90,7 +90,7 @@ interface ProductCardProps {
 
 function ProductCard({ product, quantity }: ProductCardProps) {
   const isOpened = quantity > 0;
-  const setOrderBasket = useSetRecoilState(orderBasketAtom);
+  const setOrderBasket = useSetAtom(userOrderBasketAtom);
 
   const handleAddProduct = () => {
     setOrderBasket((prev) => {

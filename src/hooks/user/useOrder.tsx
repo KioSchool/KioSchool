@@ -1,11 +1,11 @@
 import useApi from '@hooks/useApi';
 import { Order, OrderProductBase } from '@@types/index';
-import { useSetRecoilState } from 'recoil';
-import { userOrderAtom } from '@recoils/atoms';
+import { userOrderAtom } from 'src/jotai/user/atoms';
+import { useSetAtom } from 'jotai';
 
 function useOrder() {
   const { userApi } = useApi();
-  const setOrder = useSetRecoilState(userOrderAtom);
+  const setOrder = useSetAtom(userOrderAtom);
 
   const fetchOrder = (orderId: string | null) => {
     userApi.get<Order>('/order', { params: { orderId } }).then((response) => {

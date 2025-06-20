@@ -2,12 +2,12 @@ import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import useCustomNavigate from '@hooks/useCustomNavigate';
-import { adminWorkspaceAtom } from '@recoils/atoms';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
+import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
 
 const Container = styled.div`
   width: 100%;
@@ -52,7 +52,7 @@ function AdminOrderTable() {
   const navigate = useNavigate();
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchWorkspace } = useAdminWorkspace();
-  const workspace = useRecoilValue(adminWorkspaceAtom);
+  const workspace = useAtomValue(adminWorkspaceAtom);
   const { appendPathWithPage } = useCustomNavigate();
 
   useEffect(() => {

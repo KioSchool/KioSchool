@@ -1,16 +1,16 @@
 import useApi from '@hooks/useApi';
 import { User, Workspace } from '@@types/index';
-import { useSetRecoilState } from 'recoil';
-import { adminUserAtom, banksAtom, workspacesAtom } from '@recoils/atoms';
 import { useNavigate } from 'react-router-dom';
 import useAuthentication from '@hooks/useAuthentication';
+import { useSetAtom } from 'jotai';
+import { adminUserAtom, adminBanksAtom, adminWorkspacesAtom } from 'src/jotai/admin/atoms';
 
 function useAdminUser() {
   const { adminApi } = useApi();
   const { logout } = useAuthentication();
-  const setWorkspaces = useSetRecoilState(workspacesAtom);
-  const setAdminUser = useSetRecoilState(adminUserAtom);
-  const setBanks = useSetRecoilState(banksAtom);
+  const setWorkspaces = useSetAtom(adminWorkspacesAtom);
+  const setAdminUser = useSetAtom(adminUserAtom);
+  const setBanks = useSetAtom(adminBanksAtom);
   const navigate = useNavigate();
 
   const fetchAdminUser = () => {

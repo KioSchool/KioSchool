@@ -8,12 +8,12 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import AdminTableCountTitleNavBarChildren from '@components/admin/table-count/AdminTableCountTitleNavBarChildren';
 import { Color } from '@resources/colors';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { adminWorkspaceAtom } from '@recoils/atoms';
 import PreviewContainer from '@components/common/container/PreviewContainer';
 import { isDesktop } from 'react-device-detect';
 import { tabletMediaQuery } from '@styles/globalStyles';
 import { toPng } from 'html-to-image';
+import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
+import { useAtom } from 'jotai';
 
 const Container = styled.div`
   width: 100vw;
@@ -147,8 +147,7 @@ function triggerDownload(canvas: HTMLCanvasElement, fileName: string) {
 function AdminTableCount() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchWorkspace, updateWorkspaceTableCount } = useAdminWorkspace();
-  const setAdminWorkspace = useSetRecoilState(adminWorkspaceAtom);
-  const workspace = useRecoilValue(adminWorkspaceAtom);
+  const [workspace, setAdminWorkspace] = useAtom(adminWorkspaceAtom);
   const QRCodeRefs = useRef<{ [key: number]: HTMLDivElement | null }>([]);
   const QRCodeContainerRef = useRef<HTMLDivElement | null>(null);
 

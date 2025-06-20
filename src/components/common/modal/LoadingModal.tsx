@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import LoadingSvg from '@resources/svg/LoadingSvg';
-import { useRecoilValue } from 'recoil';
-import { isLoadingAtom } from '@recoils/atoms';
 import { rowFlex } from '@styles/flexStyles';
+import { useAtomValue } from 'jotai';
+import { isLoadingAtom } from 'src/jotai/atoms';
 
 const Container = styled.div`
   z-index: 5002;
@@ -37,7 +37,7 @@ const Circle = styled.div`
 `;
 
 function LoadingModal() {
-  const isLoading = useRecoilValue(isLoadingAtom);
+  const isLoading = useAtomValue(isLoadingAtom);
   if (!isLoading) return null;
 
   return (
