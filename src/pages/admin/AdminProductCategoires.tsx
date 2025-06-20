@@ -7,7 +7,7 @@ import CategoryDragAndDropContent from '@components/admin/product-category/Categ
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import NewRoundedButton from '@components/common/button/NewRoundedButton';
 import { Color } from '@resources/colors';
-import { categoriesAtom } from 'src/jotai/admin/atoms';
+import { adminCategoriesAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
 
 const Container = styled.div`
@@ -52,7 +52,7 @@ function AdminProductCategories() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { addCategory, reorderCategories } = useAdminProducts(workspaceId);
   const categoryInputRef = useRef<HTMLInputElement>(null);
-  const rawCategories = useAtomValue(categoriesAtom);
+  const rawCategories = useAtomValue(adminCategoriesAtom);
 
   const addCategoryHandler = () => {
     const userInput = categoryInputRef.current?.value;

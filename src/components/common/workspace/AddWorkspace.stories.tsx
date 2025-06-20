@@ -4,7 +4,7 @@ import AddWorkspace from './AddWorkspace';
 import { Workspace, UserRole, Product } from '@@types/index';
 import { Provider } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
-import { workspacesAtom } from 'src/jotai/admin/atoms';
+import { adminWorkspacesAtom } from 'src/jotai/admin/atoms';
 
 const HydrateAtoms = ({ initialValues, children }: { initialValues: any; children: React.ReactNode }) => {
   useHydrateAtoms(initialValues);
@@ -13,7 +13,7 @@ const HydrateAtoms = ({ initialValues, children }: { initialValues: any; childre
 
 const JotaiWrapper = ({ children, workspaces }: { children: React.ReactNode; workspaces: Workspace[] }) => (
   <Provider>
-    <HydrateAtoms initialValues={[[workspacesAtom, workspaces]]}>{children}</HydrateAtoms>
+    <HydrateAtoms initialValues={[[adminWorkspacesAtom, workspaces]]}>{children}</HydrateAtoms>
   </Provider>
 );
 

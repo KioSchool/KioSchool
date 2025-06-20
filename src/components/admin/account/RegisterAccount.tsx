@@ -6,7 +6,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import AppLabel from '@components/common/label/AppLabel';
 import { Color } from '@resources/colors';
 import NewAppInput from '@components/common/input/NewAppInput';
-import { banksAtom } from 'src/jotai/admin/atoms';
+import { adminBanksAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
 
 const Container = styled.div`
@@ -58,7 +58,7 @@ const SubmitButton = styled.button`
 
 function RegisterAccount() {
   const { fetchBanks, registerAccount } = useAdminUser();
-  const banks = useAtomValue(banksAtom);
+  const banks = useAtomValue(adminBanksAtom);
   const accountHolderRef = useRef<HTMLInputElement>(null);
   const accountNumberRef = useRef<HTMLInputElement>(null);
   const [selectedBankId, setSelectedBankId] = useState<number | null>(null);

@@ -8,7 +8,7 @@ import AppContainer from '@components/common/container/AppContainer';
 import AdminProductTitleNavBarChildren from './AdminProductTitleNavBarChildren';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import { Color } from '@resources/colors';
-import { categoriesAtom, productsAtom } from 'src/jotai/admin/atoms';
+import { adminCategoriesAtom, adminProductsAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
 
 const ContainerPerCategory = styled.div`
@@ -53,8 +53,8 @@ const EmptyContainer = styled.div`
 function AdminProduct() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchProducts, fetchCategories } = useAdminProducts(workspaceId);
-  const products = useAtomValue(productsAtom);
-  const rawCategories = useAtomValue(categoriesAtom);
+  const products = useAtomValue(adminProductsAtom);
+  const rawCategories = useAtomValue(adminCategoriesAtom);
   const categories = [...rawCategories, { id: null, name: '기본메뉴' }];
   const { appendPath } = useCustomNavigate();
   const navigate = useNavigate();

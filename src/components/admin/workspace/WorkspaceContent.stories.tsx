@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { BrowserRouter } from 'react-router-dom';
 import WorkspaceContent from './WorkspaceContent';
 import { Workspace, UserRole, Product } from '@@types/index';
-import { workspacesAtom } from 'src/jotai/admin/atoms';
+import { adminWorkspacesAtom } from 'src/jotai/admin/atoms';
 import { Provider } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
 
@@ -13,7 +13,7 @@ const HydrateAtoms = ({ initialValues, children }: { initialValues: any; childre
 
 const JotaiWrapper = ({ children, workspaces }: { children: React.ReactNode; workspaces: Workspace[] }) => (
   <Provider>
-    <HydrateAtoms initialValues={[[workspacesAtom, workspaces]]}>{children}</HydrateAtoms>
+    <HydrateAtoms initialValues={[[adminWorkspacesAtom, workspaces]]}>{children}</HydrateAtoms>
   </Provider>
 );
 

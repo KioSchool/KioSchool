@@ -2,11 +2,11 @@ import useApi from '@hooks/useApi';
 import { Order, OrderStatus, PaginationResponse } from '@@types/index';
 import { defaultPaginationValue } from '@@types/defaultValues';
 import { useSetAtom } from 'jotai';
-import { ordersAtom } from 'src/jotai/admin/atoms';
+import { adminOrdersAtom } from 'src/jotai/admin/atoms';
 
 function useAdminOrder(workspaceId: string | undefined) {
   const { adminApi } = useApi();
-  const setOrders = useSetAtom(ordersAtom);
+  const setOrders = useSetAtom(adminOrdersAtom);
 
   const fetchAllOrders = () => {
     adminApi.get<Order[]>('/orders', { params: { workspaceId } }).then((response) => {

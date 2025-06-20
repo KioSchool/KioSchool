@@ -15,7 +15,7 @@ import OrderPriceStatistics from '@components/admin/order/statistic/OrderPriceSt
 import { lineSeedKrFont } from '@styles/fonts';
 import dayjs from 'dayjs';
 import { dateConverter } from '@utils/FormatDate';
-import { ordersAtom } from 'src/jotai/admin/atoms';
+import { adminOrdersAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
 
 type CategoryKey = 'all' | 'byProduct' | 'byPrice';
@@ -80,7 +80,7 @@ const CategoryLink = styled.div<{ isSelected: boolean }>`
 function AdminOrderStatistics() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchOrders } = useAdminOrder(workspaceId);
-  const orders = useAtomValue(ordersAtom);
+  const orders = useAtomValue(adminOrdersAtom);
   const [showServedOrder, setShowServedOrder] = useState(false);
   const [startDate, setStartDate] = useState<Date>(() => dayjs().subtract(1, 'day').toDate());
   const [endDate, setEndDate] = useState(new Date());

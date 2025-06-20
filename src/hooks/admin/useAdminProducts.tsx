@@ -1,14 +1,14 @@
 import useApi from '@hooks/useApi';
 import { Product, ProductCategory } from '@@types/index';
 import { useNavigate } from 'react-router-dom';
-import { categoriesAtom, productsAtom } from 'src/jotai/admin/atoms';
+import { adminCategoriesAtom, adminProductsAtom } from 'src/jotai/admin/atoms';
 import { useSetAtom } from 'jotai';
 
 function useAdminProducts(workspaceId: string | undefined | null) {
   const { adminApi } = useApi();
   const navigate = useNavigate();
-  const setProducts = useSetAtom(productsAtom);
-  const setProductCategories = useSetAtom(categoriesAtom);
+  const setProducts = useSetAtom(adminProductsAtom);
+  const setProductCategories = useSetAtom(adminCategoriesAtom);
 
   const fetchProducts = () => {
     adminApi

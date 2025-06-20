@@ -3,14 +3,14 @@ import { User, Workspace } from '@@types/index';
 import { useNavigate } from 'react-router-dom';
 import useAuthentication from '@hooks/useAuthentication';
 import { useSetAtom } from 'jotai';
-import { adminUserAtom, banksAtom, workspacesAtom } from 'src/jotai/admin/atoms';
+import { adminUserAtom, adminBanksAtom, adminWorkspacesAtom } from 'src/jotai/admin/atoms';
 
 function useAdminUser() {
   const { adminApi } = useApi();
   const { logout } = useAuthentication();
-  const setWorkspaces = useSetAtom(workspacesAtom);
+  const setWorkspaces = useSetAtom(adminWorkspacesAtom);
   const setAdminUser = useSetAtom(adminUserAtom);
-  const setBanks = useSetAtom(banksAtom);
+  const setBanks = useSetAtom(adminBanksAtom);
   const navigate = useNavigate();
 
   const fetchAdminUser = () => {

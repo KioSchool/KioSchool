@@ -11,7 +11,7 @@ import useModal from '@hooks/useModal';
 import OrderByProductModal from '@components/admin/order/realtime/modal/order-by-product/OrderByProductModal';
 import OrderByProductModalButton from '@components/admin/order/realtime/modal/order-by-product/OrderByProductModalButton';
 import { useAtomValue } from 'jotai';
-import { ordersAtom } from 'src/jotai/admin/atoms';
+import { adminOrdersAtom } from 'src/jotai/admin/atoms';
 
 function AdminOrderRealtime() {
   const { isModalOpen, openModal, closeModal } = useModal();
@@ -21,7 +21,7 @@ function AdminOrderRealtime() {
   const { fetchTodayOrders } = useAdminOrder(workspaceId);
   const { fetchProducts } = useAdminProducts(workspaceId);
 
-  const orders = useAtomValue(ordersAtom);
+  const orders = useAtomValue(adminOrdersAtom);
   const notPaidOrders = orders.filter((order) => order.status === OrderStatus.NOT_PAID);
   const paidOrders = orders.filter((order) => order.status === OrderStatus.PAID);
   const servedOrders = orders.filter((order) => order.status === OrderStatus.SERVED);

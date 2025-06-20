@@ -1,12 +1,12 @@
 import { ProductCategory } from '@@types/index';
 import useApi from '@hooks/useApi';
 import { useSetAtom } from 'jotai';
-import { categoriesAtom } from 'src/jotai/admin/atoms';
+import { adminCategoriesAtom } from 'src/jotai/admin/atoms';
 
 function useProduct(workspaceId: string | undefined | null) {
   const { userApi } = useApi();
 
-  const setProductCategories = useSetAtom(categoriesAtom);
+  const setProductCategories = useSetAtom(adminCategoriesAtom);
 
   const fetchCategories = () => {
     userApi

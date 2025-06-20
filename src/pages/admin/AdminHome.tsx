@@ -6,11 +6,11 @@ import WorkspaceContent from '@components/admin/workspace/WorkspaceContent';
 import AppFooter from '@components/common/footer/AppFooter';
 import { rowFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
-import { adminUserAtom, workspacesAtom } from 'src/jotai/admin/atoms';
+import { adminUserAtom, adminWorkspacesAtom } from 'src/jotai/admin/atoms';
 
 function AdminHome() {
   const { fetchWorkspaces, fetchAdminUser } = useAdminUser();
-  const workspaces = useAtomValue(workspacesAtom);
+  const workspaces = useAtomValue(adminWorkspacesAtom);
   const user = useAtomValue(adminUserAtom);
   const addWorkspaceNumber = 3 - workspaces.length;
 

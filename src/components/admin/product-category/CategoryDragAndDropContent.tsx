@@ -4,13 +4,13 @@ import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
 import CategoryDroppableContents from './CategoryDroppableContents';
 import { ProductCategory } from '@@types/index';
-import { categoriesAtom } from 'src/jotai/admin/atoms';
+import { adminCategoriesAtom } from 'src/jotai/admin/atoms';
 import { useAtom } from 'jotai';
 
 function CategoryDragAndDropContent() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchCategories } = useAdminProducts(workspaceId);
-  const [rawCategories, setRawCategories] = useAtom(categoriesAtom);
+  const [rawCategories, setRawCategories] = useAtom(adminCategoriesAtom);
   const categories: ProductCategory[] = rawCategories.map((category) => ({
     ...category,
     id: category.id,

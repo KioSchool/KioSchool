@@ -3,11 +3,11 @@ import { Bank, Order, Product, ProductCategory, User, Workspace } from '@@types/
 import { atom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 
-export const ordersAtom = atom<Order[]>([]);
-export const workspacesAtom = atom<Workspace[]>([]);
-export const productsAtom = atom<Product[]>([]);
-export const categoriesAtom = atom<ProductCategory[]>([]);
-export const banksAtom = atom<Bank[]>(defaultBanksValue);
+export const adminOrdersAtom = atom<Order[]>([]);
+export const adminWorkspacesAtom = atom<Workspace[]>([]);
+export const adminProductsAtom = atom<Product[]>([]);
+export const adminCategoriesAtom = atom<ProductCategory[]>([]);
+export const adminBanksAtom = atom<Bank[]>(defaultBanksValue);
 
 export const adminWorkspaceAtom = atomWithStorage<Workspace>('adminWorkspace', defaultWorkspaceValue, undefined, {
   getOnInit: true,

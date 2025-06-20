@@ -12,7 +12,7 @@ import { defaultProductEditValue } from '@@types/defaultValues';
 import { ProductActionType, ProductEdit, ProductStateType } from '@@types/index';
 import NewAppInput from '@components/common/input/NewAppInput';
 import NewRoundedButton from '@components/common/button/NewRoundedButton';
-import { categoriesAtom } from 'src/jotai/admin/atoms';
+import { adminCategoriesAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
 
 function reducer(state: ProductEdit, action: ProductActionType) {
@@ -48,7 +48,7 @@ const Container = styled.div`
 function AdminProductEdit() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchProduct, fetchCategories, editProduct, deleteProduct } = useAdminProducts(workspaceId);
-  const productCategories = useAtomValue(categoriesAtom);
+  const productCategories = useAtomValue(adminCategoriesAtom);
 
   const [searchParams] = useSearchParams();
   const productId = Number(searchParams.get('productId'));

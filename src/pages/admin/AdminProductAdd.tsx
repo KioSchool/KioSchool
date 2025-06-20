@@ -8,7 +8,7 @@ import { colFlex } from '@styles/flexStyles';
 import { ProductActionType, ProductStateType } from '@@types/index';
 import NewAppInput from '@components/common/input/NewAppInput';
 import NewRoundedButton from '@components/common/button/NewRoundedButton';
-import { categoriesAtom } from 'src/jotai/admin/atoms';
+import { adminCategoriesAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
 
 function reducer(state: ProductStateType, action: ProductActionType) {
@@ -39,7 +39,7 @@ function AdminProductAdd() {
   const { addProduct, fetchCategories } = useAdminProducts(workspaceId);
   const [file, setFile] = useState<File | null>(null);
   const [state, dispatch] = useReducer(reducer, body);
-  const productCategories = useAtomValue(categoriesAtom);
+  const productCategories = useAtomValue(adminCategoriesAtom);
 
   useEffect(() => {
     fetchCategories();
