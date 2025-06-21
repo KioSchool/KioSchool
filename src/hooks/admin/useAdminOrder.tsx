@@ -53,12 +53,6 @@ function useAdminOrder(workspaceId: string | undefined) {
     });
   };
 
-  const updateOrderProductServe = (orderProductId: number, isServed: boolean) => {
-    adminApi.post<Order>('/order/product', { workspaceId, orderProductId, isServed }).catch((error) => {
-      console.log(error);
-    });
-  };
-
   const fetchWorkspaceTable = (tableNumber: number, page: number, size: number) => {
     const params = { workspaceId, tableNumber, page, size };
 
@@ -93,7 +87,6 @@ function useAdminOrder(workspaceId: string | undefined) {
     cancelOrder,
     fetchTodayOrders: fetchRealTimeOrders,
     fetchOrders,
-    updateOrderProductServe,
     refundOrder,
     fetchWorkspaceTable,
     updateOrderProductCount,
