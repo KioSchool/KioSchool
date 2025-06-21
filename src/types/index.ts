@@ -17,6 +17,11 @@ export interface OrderProductBase {
   quantity: number;
 }
 
+export interface OrderWebsocket {
+  type: 'CREATED' | 'UPDATED';
+  data: Order;
+}
+
 export interface OrderProduct extends OrderProductBase {
   productName: string;
   productPrice: number;
