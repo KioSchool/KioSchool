@@ -64,7 +64,8 @@ const WorkspaceNameLabel = styled.label`
 `;
 
 const TableLabel = styled.label`
-  margin-left: auto;
+  margin-right: auto;
+  padding-left: 10px;
   width: 60px;
   font-size: 15px;
   font-weight: 600;
