@@ -86,8 +86,8 @@ function OrderWait() {
 
   useEffect(() => {
     if (workspaceId) {
-      fetchTodayOrders();
       subscribeOrders();
+      fetchTodayOrders();
     }
     return () => {
       if (workspaceId) {
