@@ -1,15 +1,31 @@
 import styled from '@emotion/styled';
-import { colFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import OrderAccountInfo from '@components/user/order/OrderAccountInfo';
+import { userOrderAtom } from 'src/jotai/user/atoms';
+import { useAtomValue } from 'jotai';
 
 const Container = styled.div`
   width: 100%;
-  gap: 5px;
+  gap: 8px;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
+const OrderInfoContainer = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 10px;
+  ${rowFlex({ justify: 'space-between', align: 'center' })};
+`;
+
+const StyledLabel = styled.div`
+  font-size: 13px;
+  font-weight: 600;
+`;
+
 const Description = styled.div`
+  box-sizing: border-box;
+  border-radius: 10px;
+  margin-top: 20px;
   width: 100%;
   font-size: 13px;
   font-weight: 500;
@@ -17,32 +33,27 @@ const Description = styled.div`
   text-align: center;
   box-sizing: border-box;
   background: ${Color.LIGHT_GREY};
-  padding: 10px 30px;
+  padding: 20px 30px;
   word-break: keep-all;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
-interface OrderPayDescriptionProps {
-  isTossPay: boolean;
-}
-
-function OrderPayDescription({ isTossPay }: OrderPayDescriptionProps) {
-  if (isTossPay) {
-    return (
-      <Description>
-        입력하신 입금자명과 실제 입금자명이 일치하지 않을 경우 결제 확인이 어려울 수 있습니다. 아래 버튼을 클릭하시면 주문이 완료되며, 토스 송금 페이지로
-        이동합니다.
-      </Description>
-    );
-  }
+function OrderPayDescription() {
+  const order = useAtomValue(userOrderAtom);
+  const totalPrice = order.totalPrice;
+  const totalQuantity = order.orderProducts.length;
 
   return (
     <Container>
-      <Description>
-        입력하신 입금자명과 실제 입금자명이 일치하지 않을 경우 결제 확인이 어려울 수 있습니다. 아래 버튼을 클릭하시면 주문이 완료되며, 주문하신 금액에 맞게
-        송금해주시면 됩니다.
-      </Description>
-      <OrderAccountInfo />
+      <OrderInfoContainer>
+        <StyledLabel>결제 금액</StyledLabel>
+        <StyledLabel>{totalPrice.toLocaleString()}원</StyledLabel>
+      </OrderInfoContainer>
+      <OrderInfoContainer>
+        <StyledLabel>상품 수량</StyledLabel>
+        <StyledLabel>{totalQuantity}개</StyledLabel>
+      </OrderInfoContainer>
+      <Description>결제하기 버튼을 누른 후 송금을 꼭 완료해주셔야 주문 내역 페이지로 이동합니다.</Description>
     </Container>
   );
 }
