@@ -12,6 +12,7 @@ import OrderButton from '@components/user/order/OrderButton';
 import { userOrderAtom, userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
 import { useAtomValue } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
+import useBlockPopState from '@hooks/useBlockPopState';
 
 const Container = styled.div`
   width: 100%;
@@ -107,6 +108,8 @@ function OrderComplete() {
 
     return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 ${ampm} ${hour}시 ${date.getMinutes()}분`;
   };
+
+  useBlockPopState();
 
   useEffect(() => {
     resetOrderBasket();

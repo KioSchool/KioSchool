@@ -12,6 +12,7 @@ import { Color } from '@resources/colors';
 import { useEffect } from 'react';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import useOrdersWebsocket from '@hooks/user/useOrdersWebsocket';
+import useBlockPopState from '@hooks/useBlockPopState';
 
 const Container = styled.div`
   width: 100%;
@@ -81,6 +82,8 @@ function OrderWait() {
   const { fetchTodayOrders } = useAdminOrder(workspaceId || undefined);
   const { subscribeOrders, unsubscribeOrders } = useOrdersWebsocket(workspaceId || undefined);
 
+  useBlockPopState();
+
   useEffect(() => {
     if (workspaceId) {
       fetchTodayOrders();
@@ -103,7 +106,6 @@ function OrderWait() {
 
   useEffect(() => {
     if (currentOrderStatus === 'PAID') {
-      unsubscribeOrders();
       navigateToComplete();
     }
   }, [currentOrderStatus]);
@@ -122,7 +124,7 @@ function OrderWait() {
 
   return (
     <Container className={'order-wait-container'}>
-      <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
+      <OrderStickyNavBar useLeftArrow={false} showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
       <SubContainer className={'order-wait-sub-container'}>
         <ContentsContainer>
           <OrderAccountInfo />
