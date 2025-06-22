@@ -1,4 +1,3 @@
-import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
@@ -9,30 +8,36 @@ import { Account } from '@@types/index';
 import { defaultAccountValue } from '@@types/defaultValues';
 
 const Container = styled.div`
+  box-sizing: border-box;
   width: 100%;
-  gap: 5px;
+  padding: 0 10px;
+  gap: 10px;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const TitleContainer = styled.div`
-  width: 87%;
+  width: 100%;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
+`;
+
+const TitleLabel = styled.div`
+  font-size: 14px;
+  font-weight: 600;
+  color: ${Color.BLACK};
 `;
 
 const AccountInfo = styled.div`
   width: 100%;
   font-size: 13px;
   font-weight: 500;
-  color: #898989;
-  padding: 10px 20px;
   box-sizing: border-box;
-  background: ${Color.LIGHT_GREY};
+  gap: 8px;
   ${colFlex({ justify: 'center' })}
 `;
 
 const CopyButton = styled.button`
-  height: 23px;
-  font-size: 12px;
+  height: 20px;
+  font-size: 11px;
   background: ${Color.WHITE};
   border: 1px solid ${Color.GREY};
   border-radius: 20px;
@@ -44,7 +49,9 @@ const CopyButton = styled.button`
 const InfoRow = styled.div`
   width: 100%;
   gap: 5px;
-  ${rowFlex({ justify: 'center', align: 'center' })}
+  font-size: 13px;
+  font-weight: 400;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const Key = styled.div`
@@ -52,11 +59,8 @@ const Key = styled.div`
 `;
 
 const Value = styled.div`
-  width: 250px;
   ${rowFlex({ justify: 'start', align: 'center' })}
 `;
-
-const Divider = styled.span``;
 
 function OrderAccountInfo() {
   const [searchParams] = useSearchParams();
@@ -88,23 +92,20 @@ function OrderAccountInfo() {
   return (
     <Container>
       <TitleContainer>
-        <AppLabel size={15}>계좌 정보</AppLabel>
+        <TitleLabel>계좌 정보</TitleLabel>
         <CopyButton onClick={copyAccountInfo}>계좌 복사하기</CopyButton>
       </TitleContainer>
       <AccountInfo>
         <InfoRow>
           <Key>금융기관</Key>
-          <Divider>|</Divider>
           <Value>{accountInfo?.bank?.name}</Value>
         </InfoRow>
         <InfoRow>
           <Key>계좌번호</Key>
-          <Divider>|</Divider>
           <Value>{accountInfo?.accountNumber}</Value>
         </InfoRow>
         <InfoRow>
           <Key>예금주명</Key>
-          <Divider>|</Divider>
           <Value>{accountInfo?.accountHolder}</Value>
         </InfoRow>
       </AccountInfo>
