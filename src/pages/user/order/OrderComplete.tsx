@@ -8,7 +8,6 @@ import { Color } from '@resources/colors';
 import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import OrderStatusBar from '@components/user/order/OrderStatusBar';
 import useRefresh from '@hooks/useRefresh';
-import OrderAccountInfo from '@components/user/order/OrderAccountInfo';
 import OrderButton from '@components/user/order/OrderButton';
 import { userOrderAtom, userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
 import { useAtomValue } from 'jotai';
@@ -84,20 +83,6 @@ const OrderProductRow = styled.div`
 const OrderProductText = styled.div`
   font-size: 13px;
   font-weight: 500;
-`;
-
-const DescriptionContainer = styled.div`
-  padding: 20px 0;
-  width: 320px;
-  ${colFlex({ justify: 'center', align: 'center' })};
-`;
-
-const Description = styled.div`
-  font-size: 13px;
-  font-weight: 500;
-  text-align: center;
-  color: #898989;
-  white-space: pre-wrap;
 `;
 
 function OrderComplete() {
@@ -177,10 +162,6 @@ function OrderComplete() {
               </OrderProductRow>
             </OrderProductContainer>
           </ContentBox>
-          <OrderAccountInfo />
-          <DescriptionContainer>
-            <Description>{'결제가 원활하게 진행되지 않았을 경우,\n상단의 계좌 정보를 통해 직접 계좌이체를 부탁드립니다.'}</Description>
-          </DescriptionContainer>
         </ContentContainer>
         <OrderButton
           showButton={true}
