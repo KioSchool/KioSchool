@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import { userOrderAtom } from 'src/jotai/user/atoms';
+import { userOrderBasketAtom } from 'src/jotai/user/atoms';
 import { useAtomValue } from 'jotai';
 
 const Container = styled.div`
@@ -39,9 +39,9 @@ const Description = styled.div`
 `;
 
 function OrderPayDescription() {
-  const order = useAtomValue(userOrderAtom);
-  const totalPrice = order.totalPrice;
-  const totalQuantity = order.orderProducts.length;
+  const orderBasket = useAtomValue(userOrderBasketAtom);
+  const totalPrice = orderBasket.reduce((acc, item) => acc + item.productPrice, 0);
+  const totalCount = orderBasket.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
     <Container>
@@ -51,7 +51,7 @@ function OrderPayDescription() {
       </OrderInfoContainer>
       <OrderInfoContainer>
         <StyledLabel>상품 수량</StyledLabel>
-        <StyledLabel>{totalQuantity}개</StyledLabel>
+        <StyledLabel>{totalCount}개</StyledLabel>
       </OrderInfoContainer>
       <Description>결제하기 버튼을 누른 후 송금을 꼭 완료해주셔야 주문 내역 페이지로 이동합니다.</Description>
     </Container>

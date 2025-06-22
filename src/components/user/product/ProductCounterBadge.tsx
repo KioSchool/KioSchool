@@ -95,39 +95,39 @@ interface ProductCounterBadgeProps {
 
 function ProductCounterBadge({ product }: ProductCounterBadgeProps) {
   const [orderBasket, setOrderBasket] = useAtom(userOrderBasketAtom);
-  const quantity = orderBasket.find((basket) => basket.productId === product.id)?.quantity || 0;
+  const quantity = orderBasket.find((basketProduct) => basketProduct.productId === product.id)?.quantity || 0;
 
   const plusQuantity = () => {
     setOrderBasket((prev) => {
-      const index = prev.findIndex((basket) => basket.productId === product.id);
-      return prev.map((basket, i) => {
+      const index = prev.findIndex((basketProduct) => basketProduct.productId === product.id);
+      return prev.map((basketProduct, i) => {
         if (i === index) {
-          return { ...basket, quantity: basket.quantity + 1 };
+          return { ...basketProduct, quantity: basketProduct.quantity + 1, productPrice: basketProduct.productPrice + product.price };
         }
-        return basket;
+        return basketProduct;
       });
     });
   };
 
   const minusQuantity = () => {
     setOrderBasket((prev) => {
-      const index = prev.findIndex((basket) => basket.productId === product.id);
+      const index = prev.findIndex((basketProduct) => basketProduct.productId === product.id);
       if (prev[index].quantity === 1) {
-        return confirm('정말로 삭제하시겠습니까?') ? prev.filter((basket) => basket.productId !== product.id) : prev;
+        return confirm('정말로 삭제하시겠습니까?') ? prev.filter((basketProduct) => basketProduct.productId !== product.id) : prev;
       }
 
-      return prev.map((basket, i) => {
+      return prev.map((basketProduct, i) => {
         if (i === index) {
-          return { ...basket, quantity: basket.quantity - 1 };
+          return { ...basketProduct, quantity: basketProduct.quantity - 1, productPrice: basketProduct.productPrice - product.price };
         }
-        return basket;
+        return basketProduct;
       });
     });
   };
 
   const handleDeleteProduct = () => {
     if (confirm('정말로 삭제하시겠습니까?')) {
-      setOrderBasket((prev) => prev.filter((basket) => basket.productId !== product.id));
+      setOrderBasket((prev) => prev.filter((basketProduct) => basketProduct.productId !== product.id));
     }
   };
 
