@@ -11,7 +11,6 @@ import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import { Color } from '@resources/colors';
 import { useEffect } from 'react';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
-import useOrdersWebsocket from '@hooks/user/useOrdersWebsocket';
 import useBlockPopState from '@hooks/useBlockPopState';
 
 const Container = styled.div`
@@ -80,20 +79,15 @@ function OrderWait() {
   const adminOrders = useAtomValue(adminOrdersAtom);
 
   const { fetchTodayOrders } = useAdminOrder(workspaceId || undefined);
-  const { subscribeOrders, unsubscribeOrders } = useOrdersWebsocket(workspaceId || undefined);
 
   useBlockPopState();
 
   useEffect(() => {
-    if (workspaceId) {
-      subscribeOrders();
+    const intervalId = setInterval(() => {
       fetchTodayOrders();
-    }
-    return () => {
-      if (workspaceId) {
-        unsubscribeOrders();
-      }
-    };
+    }, 1000);
+
+    return () => clearInterval(intervalId);
   }, [workspaceId]);
 
   const currentOrder = adminOrders.find((order) => order.id === Number(orderId));

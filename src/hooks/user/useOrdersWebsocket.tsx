@@ -3,7 +3,6 @@ import kioSchoolOrderAlarm from '@resources/audio/kioSchoolOrderAlarm.mp3';
 import { Order, OrderWebsocket } from '@@types/index';
 import { useSetAtom } from 'jotai';
 import { adminOrdersAtom } from '../../jotai/admin/atoms';
-import { useRef } from 'react';
 
 const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT;
 
@@ -14,7 +13,6 @@ function playOrderCreateAudio() {
 
 function useOrdersWebsocket(workspaceId: string | undefined) {
   const setOrders = useSetAtom(adminOrdersAtom);
-  const clientRef = useRef<StompJs.Client | null>(null);
 
   const addOrder = (order: Order) => {
     setOrders((prevOrders) => {
@@ -28,29 +26,18 @@ function useOrdersWebsocket(workspaceId: string | undefined) {
     });
   };
 
-  const getClient = () => {
-    if (!clientRef.current) {
-      const url = ENVIRONMENT === 'development' ? 'ws://localhost:8080/ws' : 'wss://api.kio-school.com/ws';
-      clientRef.current = new StompJs.Client({
-        brokerURL: url,
-        debug: (str) => {
-          console.log(str);
-        },
-        reconnectDelay: 5000,
-        heartbeatIncoming: 4000,
-        heartbeatOutgoing: 4000,
-      });
-    }
-    return clientRef.current;
-  };
+  const url = ENVIRONMENT === 'development' ? 'ws://localhost:8080/ws' : 'wss://api.kio-school.com/ws';
+  const client = new StompJs.Client({
+    brokerURL: url,
+    debug: (str) => {
+      console.log(str);
+    },
+    reconnectDelay: 5000,
+    heartbeatIncoming: 4000,
+    heartbeatOutgoing: 4000,
+  });
 
   const subscribeOrders = () => {
-    const client = getClient();
-
-    if (client.active) {
-      return;
-    }
-
     client.onConnect = function () {
       client.subscribe(`/sub/order/${workspaceId}`, (response) => {
         const orderWebsocket: OrderWebsocket = JSON.parse(response.body);
@@ -68,9 +55,8 @@ function useOrdersWebsocket(workspaceId: string | undefined) {
   };
 
   const unsubscribeOrders = () => {
-    if (clientRef.current?.active) {
-      clientRef.current.deactivate();
-    }
+    client.unsubscribe(`/sub/order/${workspaceId}`);
+    client.deactivate();
   };
 
   return { subscribeOrders, unsubscribeOrders };
