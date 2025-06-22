@@ -91,9 +91,9 @@ function OrderWait() {
         unsubscribeOrders();
       }
     };
-  }, [workspaceId, fetchTodayOrders, subscribeOrders, unsubscribeOrders]);
+  }, [workspaceId]);
 
-  const currentOrder = adminOrders.find((o) => o.id === Number(orderId));
+  const currentOrder = adminOrders.find((order) => order.id === Number(orderId));
   const currentOrderStatus = currentOrder?.status;
   const totalPrice = currentOrder?.totalPrice ?? 0;
 
