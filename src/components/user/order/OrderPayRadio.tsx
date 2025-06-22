@@ -39,13 +39,13 @@ const StyledRadio = styled.input`
 
 const GroupLabel = styled.div`
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   color: ${Color.BLACK};
 `;
 
-const OptionLabel = styled.span`
-  font-size: 14px;
-  font-weight: 500;
+const OptionLabel = styled.label`
+  font-size: 13px;
+  font-weight: 400;
   color: ${Color.GREY};
 `;
 
@@ -62,14 +62,14 @@ function OrderPayRadio({ isTossAvailable, isTossPay, setIsTossPay }: OrderPayRad
       <PaymentOptions name="paymentMethod">
         {isTossAvailable && (
           <OptionContainer>
-            <StyledRadio type={'radio'} name="paymentMethod" checked={isTossPay} onChange={() => setIsTossPay(true)} />
-            <OptionLabel>토스페이</OptionLabel>
+            <StyledRadio type={'radio'} id="tossPay" checked={isTossPay} onChange={() => setIsTossPay(true)} />
+            <OptionLabel htmlFor="tossPay">토스페이</OptionLabel>
           </OptionContainer>
         )}
 
         <OptionContainer>
-          <StyledRadio type={'radio'} name="paymentMethod" checked={!isTossPay} onChange={() => setIsTossPay(false)} />
-          <OptionLabel>계좌이체</OptionLabel>
+          <StyledRadio type={'radio'} id="bankTransfer" checked={!isTossPay} onChange={() => setIsTossPay(false)} />
+          <OptionLabel htmlFor="bankTransfer">계좌이체</OptionLabel>
         </OptionContainer>
       </PaymentOptions>
     </OrderPayRadioContainer>
