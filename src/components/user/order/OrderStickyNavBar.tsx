@@ -14,6 +14,7 @@ const Container = styled.div<{ isShow: boolean }>`
   transform: translateY(${({ isShow }) => (isShow ? '0' : '-100%')});
   z-index: 1000;
   ${rowFlex({ justify: 'center', align: 'center' })}
+  border-bottom: 6px solid ${Color.LIGHT_GREY};
 `;
 
 const ContentsContainer = styled.div`

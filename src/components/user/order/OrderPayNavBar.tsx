@@ -10,7 +10,6 @@ const Container = styled.div`
   gap: 8px;
   overflow-x: auto;
   ${rowFlex({ justify: 'center', align: 'center' })}
-  border-top: 10px solid ${Color.LIGHT_GREY};
   border-bottom: 1px solid ${Color.LIGHT_GREY};
 `;
 

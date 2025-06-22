@@ -15,10 +15,13 @@ import { useAtom, useAtomValue } from 'jotai';
 const Container = styled.div`
   width: 100%;
   height: 100%;
+  padding-top: 50px;
 `;
 
 const SubContainer = styled.div`
-  margin-top: 50px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 20px 20px 0 20px;
   gap: 20px;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;

@@ -21,7 +21,6 @@ const SubContainer = styled.div`
   width: 100%;
   padding: 0 20px 120px 20px;
   gap: 20px;
-  border-top: 10px solid ${Color.LIGHT_GREY};
   padding-top: 12px;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;

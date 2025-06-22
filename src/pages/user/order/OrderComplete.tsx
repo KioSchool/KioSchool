@@ -17,13 +17,13 @@ import { useResetAtom } from 'jotai/utils';
 const Container = styled.div`
   width: 100%;
   height: 100%;
+  padding-top: 50px;
 `;
 
 const SubContainer = styled.div`
-  margin-top: 45px;
   gap: 20px;
-  border-top: 10px solid ${Color.LIGHT_GREY};
-  padding-top: 12px;
+  padding-top: 20px;
+  padding-bottom: 120px;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
