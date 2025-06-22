@@ -14,6 +14,7 @@ import { useAtom, useAtomValue } from 'jotai';
 import NewAppInput from '@components/common/input/NewAppInput';
 import { Color } from '@resources/colors';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
+import usePreventRefresh from '@hooks/usePreventRefresh';
 
 const Container = styled.div`
   width: 100%;
@@ -81,14 +82,11 @@ function OrderPay() {
       return;
     }
   };
+  usePreventRefresh();
 
   useEffect(() => {
-    if (orderBasket.length === 0) {
-      alert('잘못된 접근입니다.');
-      navigate(1);
-    }
     customerNameRef.current?.focus();
-  }, [isTossPay]);
+  }, []);
 
   /**
    * Safari 브라우저 호환성 이슈 대응
