@@ -9,6 +9,7 @@ import { Color } from '@resources/colors';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import { userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
 import { useAtom, useAtomValue } from 'jotai';
+import { useEffect } from 'react';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -77,9 +78,17 @@ function OrderBasket() {
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
 
-  if (orderBasket.length == 0) {
-    navigate(-1);
-  }
+  useEffect(() => {
+    if (orderBasket.length == 0) {
+      navigate({
+        pathname: '/order',
+        search: createSearchParams({
+          workspaceId: workspaceId || '',
+          tableNo: tableNo || '',
+        }).toString(),
+      });
+    }
+  }, [orderBasket.length]);
 
   const clearOrderBasket = () => {
     if (confirm('정말로 모두 삭제하시겠습니까?')) {
