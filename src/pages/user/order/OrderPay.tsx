@@ -13,6 +13,7 @@ import { userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
 import { useAtom, useAtomValue } from 'jotai';
 import NewAppInput from '@components/common/input/NewAppInput';
 import { Color } from '@resources/colors';
+import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 
 const Container = styled.div`
   width: 100%;
@@ -24,8 +25,17 @@ const SubContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
   padding: 20px 20px 0 20px;
-  gap: 20px;
   ${colFlex({ justify: 'center', align: 'center' })}
+`;
+
+const ContentsContainer = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px 10px;
+  gap: 20px;
+  border-radius: 9px;
+  border: 0.5px solid #939393;
+  ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
 const InputContainer = styled.div`
@@ -163,14 +173,18 @@ function OrderPay() {
     <Container className={'order-pay-container'}>
       <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
       <SubContainer className={'order-pay-sub-container'}>
-        <InputContainer>
-          <InputLabel>입금자명</InputLabel>
-          <NewAppInput ref={customerNameRef} placeholder={'입금자명을 입력해주세요.'} width={'100%'} height={33} />
-        </InputContainer>
-        <OrderPayRadio isTossAvailable={isTossAvailable} isTossPay={isTossPay} setIsTossPay={setIsTossPay} />
-        <DescriptionContainer>
-          <OrderPayDescription isTossPay={isTossPay} />
-        </DescriptionContainer>
+        <ContentsContainer>
+          <InputContainer>
+            <InputLabel>입금자명</InputLabel>
+            <NewAppInput ref={customerNameRef} placeholder={'입금자명을 입력해주세요.'} width={'100%'} height={33} />
+          </InputContainer>
+          <HorizontalDivider />
+          <OrderPayRadio isTossAvailable={isTossAvailable} isTossPay={isTossPay} setIsTossPay={setIsTossPay} />
+          <HorizontalDivider />
+          <DescriptionContainer>
+            <OrderPayDescription />
+          </DescriptionContainer>
+        </ContentsContainer>
       </SubContainer>
       <OrderButton
         showButton={orderBasket.length > 0}
