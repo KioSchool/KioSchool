@@ -6,11 +6,13 @@ import { createSearchParams, useNavigate, useSearchParams } from 'react-router-d
 import { colFlex } from '@styles/flexStyles';
 import useOrder from '@hooks/user/useOrder';
 import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
-import OrderPayNavBar from '@components/user/order/OrderPayNavBar';
+import OrderPayRadio from '@components/user/order/OrderPayRadio';
 import OrderPayDescription from '@components/user/order/OrderPayDescription';
 import { HttpStatusCode } from 'axios';
 import { userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
 import { useAtom, useAtomValue } from 'jotai';
+import NewAppInput from '@components/common/input/NewAppInput';
+import { Color } from '@resources/colors';
 
 const Container = styled.div`
   width: 100%;
@@ -27,18 +29,17 @@ const SubContainer = styled.div`
 `;
 
 const InputContainer = styled.div`
-  padding-top: 20px;
-  padding-bottom: 20px;
-  ${colFlex({ align: 'center' })}
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 10px;
+  gap: 10px;
+  ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
-const Input = styled.input`
-  width: 300px;
-  height: 40px;
-  padding: 0 10px;
-  border: none;
-  border-bottom: 1px solid #898989;
+const InputLabel = styled.div`
   font-size: 14px;
+  font-weight: 500;
+  color: ${Color.BLACK};
 `;
 
 const DescriptionContainer = styled.div`
@@ -162,10 +163,11 @@ function OrderPay() {
     <Container className={'order-pay-container'}>
       <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
       <SubContainer className={'order-pay-sub-container'}>
-        <OrderPayNavBar isTossAvailable={isTossAvailable} isTossPay={isTossPay} setIsTossPay={setIsTossPay} />
         <InputContainer>
-          <Input type="text" placeholder={'입금자명을 입력해주세요.'} ref={customerNameRef} />
+          <InputLabel>입금자명</InputLabel>
+          <NewAppInput ref={customerNameRef} placeholder={'입금자명을 입력해주세요.'} width={'100%'} height={33} />
         </InputContainer>
+        <OrderPayRadio isTossAvailable={isTossAvailable} isTossPay={isTossPay} setIsTossPay={setIsTossPay} />
         <DescriptionContainer>
           <OrderPayDescription isTossPay={isTossPay} />
         </DescriptionContainer>
