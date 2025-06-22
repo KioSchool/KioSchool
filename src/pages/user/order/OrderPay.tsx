@@ -48,13 +48,8 @@ const InputContainer = styled.div`
 
 const InputLabel = styled.div`
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   color: ${Color.BLACK};
-`;
-
-const DescriptionContainer = styled.div`
-  width: 100%;
-  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 function OrderPay() {
@@ -118,11 +113,12 @@ function OrderPay() {
     createOrder(workspaceId, tableNo, orderBasket, customerName)
       .then((res) => {
         navigate({
-          pathname: '/order-complete',
+          pathname: '/order-wait',
           search: createSearchParams({
             orderId: res.data.id.toString(),
             workspaceId: workspaceId || '',
             tableNo: tableNo || '',
+            tossPay: 'true',
           }).toString(),
         });
 
@@ -142,7 +138,7 @@ function OrderPay() {
     createOrder(workspaceId, tableNo, orderBasket, customerName)
       .then((res) => {
         navigate({
-          pathname: '/order-complete',
+          pathname: '/order-wait',
           search: createSearchParams({
             orderId: res.data.id.toString(),
             workspaceId: workspaceId || '',
@@ -181,9 +177,7 @@ function OrderPay() {
           <HorizontalDivider />
           <OrderPayRadio isTossAvailable={isTossAvailable} isTossPay={isTossPay} setIsTossPay={setIsTossPay} />
           <HorizontalDivider />
-          <DescriptionContainer>
-            <OrderPayDescription />
-          </DescriptionContainer>
+          <OrderPayDescription />
         </ContentsContainer>
       </SubContainer>
       <OrderButton

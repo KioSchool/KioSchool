@@ -9,8 +9,9 @@ import { userWorkspaceAtom } from 'src/jotai/user/atoms';
 import OrderAccountInfo from '@components/user/order/OrderAccountInfo';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import { Color } from '@resources/colors';
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
+import useOrdersWebsocket from '@hooks/user/useOrdersWebsocket';
 
 const Container = styled.div`
   width: 100%;
@@ -68,35 +69,45 @@ const DescriptionText = styled.div`
 
 function OrderWait() {
   const navigate = useNavigate();
-  const workspace = useAtomValue(userWorkspaceAtom);
-  const adminOrders = useAtomValue(adminOrdersAtom);
-  console.log('OrderWait adminOrders:', adminOrders);
   const [searchParams] = useSearchParams();
-  const workspaceId = searchParams.get('workspaceId') || String(workspace.id);
+  const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
   const orderId = searchParams.get('orderId');
-  const { fetchTodayOrders } = useAdminOrder(workspaceId);
-  console.log('OrderWait workspaceId:', workspaceId, 'tableNo:', tableNo, 'orderId:', orderId);
+  const isTossAvailable = searchParams.get('isTossAvailable') === 'true';
+
+  const workspace = useAtomValue(userWorkspaceAtom);
+  const adminOrders = useAtomValue(adminOrdersAtom);
+
+  const { fetchTodayOrders } = useAdminOrder(workspaceId || undefined);
+  const { subscribeOrders, unsubscribeOrders } = useOrdersWebsocket(workspaceId || undefined);
 
   useEffect(() => {
-    fetchTodayOrders();
-  }, []);
+    if (workspaceId) {
+      fetchTodayOrders();
+      subscribeOrders();
+    }
+    return () => {
+      if (workspaceId) {
+        unsubscribeOrders();
+      }
+    };
+  }, [workspaceId, fetchTodayOrders, subscribeOrders, unsubscribeOrders]);
 
-  const currentOrderStatus = adminOrders.find((o) => o.id === Number(orderId))?.status;
+  const currentOrder = adminOrders.find((o) => o.id === Number(orderId));
+  const currentOrderStatus = currentOrder?.status;
+  const totalPrice = currentOrder?.totalPrice ?? 0;
 
-  const navigateToComplete = useCallback(() => {
-    navigate(`/order-complete?orderId=${orderId}&workspaceId=${workspace.id}&tableNo=${tableNo}`);
-  }, [navigate, orderId, workspace.id, tableNo]);
+  const navigateToComplete = () => {
+    navigate(`/order-complete?orderId=${orderId}&workspaceId=${workspaceId}&tableNo=${tableNo}`);
+  };
 
   useEffect(() => {
     if (currentOrderStatus === 'PAID') {
+      unsubscribeOrders();
       navigateToComplete();
     }
-  }, [currentOrderStatus, navigateToComplete]);
+  }, [currentOrderStatus]);
 
-  console.log('OrderWait currentOrderStatus:', currentOrderStatus, orderId, workspace.id, tableNo);
-
-  const isTossAvailable = searchParams.get('tossPay') === 'true';
   const waitingText = isTossAvailable
     ? '현재 결제 확인 중입니다. 토스 앱이 자동으로 열리지 않았다면, 위 계좌로 직접 송금해주세요. 결제가 확인되면 자동으로 주문 내역 페이지로 이동합니다.'
     : '위 계좌로 송금을 완료해주세요. 송금 후에는 잠시만 기다려주세요. 결제가 확인되면 자동으로 주문 내역 페이지로 이동합니다.';
@@ -104,8 +115,8 @@ function OrderWait() {
   const orderButtonText = currentOrderStatus === 'NOT_PAID' ? '결제 확인 중 . . .' : '주문 확인 페이지로 이동';
 
   const handleButtonClick = () => {
-    if (currentOrderStatus !== 'NOT_PAID') {
-      navigateToComplete();
+    if (currentOrderStatus === 'NOT_PAID') {
+      alert('결제 확인 중입니다. 대기가 길어질 경우 운영진에게 문의해주세요.');
     }
   };
 
@@ -118,7 +129,7 @@ function OrderWait() {
           <HorizontalDivider />
           <OrderInfoContainer>
             <StyledLabel>결제 금액</StyledLabel>
-            <StyledLabel>{1}원</StyledLabel>
+            <StyledLabel>{totalPrice.toLocaleString()}원</StyledLabel>
           </OrderInfoContainer>
           <DescriptionContainer>
             <DescriptionText>{waitingText}</DescriptionText>
