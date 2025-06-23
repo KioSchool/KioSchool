@@ -119,6 +119,8 @@ const TheActualAnimatedButton = styled.button`
   }
 `;
 
+const Dot = styled.span``;
+
 function OrderWait() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -209,7 +211,7 @@ function OrderWait() {
       <AnimatedButtonContainer>
         <AnimatedButtonSubContainer>
           <TheActualAnimatedButton onClick={handleButtonClick}>
-            결제 확인 중<span className="dots" />
+            결제 확인 중 <Dot className="dots" />
           </TheActualAnimatedButton>
         </AnimatedButtonSubContainer>
       </AnimatedButtonContainer>
