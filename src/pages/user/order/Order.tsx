@@ -3,8 +3,6 @@ import { createSearchParams, useNavigate, useSearchParams } from 'react-router-d
 import styled from '@emotion/styled';
 import CategoryBadgesContainer from '@components/user/order/CategoryBadgesContainer';
 import useWorkspace from '@hooks/user/useWorkspace';
-import { categoriesAtom, orderBasketAtom, userWorkspaceAtom } from '@recoils/atoms';
-import { useRecoilValue } from 'recoil';
 import { Product } from '@@types/index';
 import _ from 'lodash';
 import OrderButton from '@components/user/order/OrderButton';
@@ -15,6 +13,8 @@ import OrderImageSlider from '@components/user/order/OrderImageSlider';
 import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import WorkspaceNotice from '@components/user/order/WorkspaceNotice';
 import OrderProductContent from './OrderProductContent';
+import { useAtomValue } from 'jotai';
+import { userCategoriesAtom, userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
 
 const Container = styled.div`
   width: 100%;
@@ -52,9 +52,9 @@ const Description = styled.div`
 `;
 
 function Order() {
-  const workspace = useRecoilValue(userWorkspaceAtom);
+  const workspace = useAtomValue(userWorkspaceAtom);
   const isShowNotice = workspace.notice.length > 0;
-  const rawProductCategories = useRecoilValue(categoriesAtom);
+  const rawProductCategories = useAtomValue(userCategoriesAtom);
   const sellableProducts = workspace.products.filter((it) => it.isSellable);
 
   const productsByCategoryId = _.groupBy<Product>(sellableProducts, (product) => product.productCategory?.id);
@@ -69,7 +69,7 @@ function Order() {
   const { fetchWorkspace } = useWorkspace();
   const { fetchCategories } = useProduct(workspaceId);
   const navigate = useNavigate();
-  const orderBasket = useRecoilValue(orderBasketAtom);
+  const orderBasket = useAtomValue(userOrderBasketAtom);
   const totalAmount = orderBasket.reduce((acc, cur) => {
     return acc + productsMap[cur.productId].price * cur.quantity;
   }, 0);

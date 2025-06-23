@@ -9,8 +9,8 @@ import PaginationSearchContents from '@components/common/pagination/PaginationSe
 import useSuperAdminEmail from '@hooks/super-admin/useSuperAdminEmail';
 import SuperAdminEmailDomainContent from '@components/super-admin/email/SuperAdminEmailDomainContent';
 import SuperAdminEmailDomainTitleNavBarChildren from '@components/super-admin/email/SuperAdminEmailDomainTitleNavBarChildren';
-import { useRecoilValue } from 'recoil';
-import { emailDomainPaginationResponseAtom } from '@recoils/atoms';
+import { superAdminEmailDomainPaginationResponseAtom } from 'src/jotai/super-admin/atoms';
+import { useAtomValue } from 'jotai';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   height: 550px;
@@ -25,7 +25,7 @@ function SuperAdminEmailDomainList() {
   const pageSize = 6;
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const emailDomain = useRecoilValue(emailDomainPaginationResponseAtom);
+  const emailDomain = useAtomValue(superAdminEmailDomainPaginationResponseAtom);
   const { fetchAllEmailDomain } = useSuperAdminEmail();
 
   const isEmptyEmailDomain = emailDomain.empty;

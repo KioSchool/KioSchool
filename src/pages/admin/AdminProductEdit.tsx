@@ -1,9 +1,7 @@
 import styled from '@emotion/styled';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
-import { categoriesAtom } from '@recoils/atoms';
 import { ChangeEvent, useEffect, useReducer } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
 import SelectWithLabel from '@components/common/select/SelectWithLabel';
 import AppImageInput from '@components/common/input/AppImageInput';
 import useConfirm from '@hooks/useConfirm';
@@ -14,6 +12,8 @@ import { defaultProductEditValue } from '@@types/defaultValues';
 import { ProductActionType, ProductEdit, ProductStateType } from '@@types/index';
 import NewAppInput from '@components/common/input/NewAppInput';
 import NewRoundedButton from '@components/common/button/NewRoundedButton';
+import { adminCategoriesAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue } from 'jotai';
 
 function reducer(state: ProductEdit, action: ProductActionType) {
   switch (action.type) {
@@ -48,7 +48,7 @@ const Container = styled.div`
 function AdminProductEdit() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchProduct, fetchCategories, editProduct, deleteProduct } = useAdminProducts(workspaceId);
-  const productCategories = useRecoilValue(categoriesAtom);
+  const productCategories = useAtomValue(adminCategoriesAtom);
 
   const [searchParams] = useSearchParams();
   const productId = Number(searchParams.get('productId'));

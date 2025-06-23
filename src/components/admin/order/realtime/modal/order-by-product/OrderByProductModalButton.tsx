@@ -41,7 +41,9 @@ const Text = styled.div`
   text-align: center;
 `;
 
-const Icon = styled(RiArrowRightSLine)<{ isModalOpen: boolean }>`
+const Icon = styled(RiArrowRightSLine, {
+  shouldForwardProp: (prop) => prop !== 'isModalOpen',
+})<{ isModalOpen: boolean }>`
   transform: ${({ isModalOpen }) => (isModalOpen ? 'rotate(0deg)' : 'rotate(180deg)')};
 `;
 

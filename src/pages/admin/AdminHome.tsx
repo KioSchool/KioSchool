@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
 import useAdminUser from '@hooks/admin/useAdminUser';
-import { useRecoilValue } from 'recoil';
-import { adminUserAtom, workspacesAtom } from '@recoils/atoms';
 import AppContainer from '@components/common/container/AppContainer';
 import AddWorkspace from '@components/common/workspace/AddWorkspace';
 import WorkspaceContent from '@components/admin/workspace/WorkspaceContent';
 import AppFooter from '@components/common/footer/AppFooter';
 import { rowFlex } from '@styles/flexStyles';
+import { useAtomValue } from 'jotai';
+import { adminUserAtom, adminWorkspacesAtom } from 'src/jotai/admin/atoms';
 
 function AdminHome() {
   const { fetchWorkspaces, fetchAdminUser } = useAdminUser();
-  const workspaces = useRecoilValue(workspacesAtom);
-  const user = useRecoilValue(adminUserAtom);
+  const workspaces = useAtomValue(adminWorkspacesAtom);
+  const user = useAtomValue(adminUserAtom);
   const addWorkspaceNumber = 3 - workspaces.length;
 
   useEffect(() => {

@@ -2,10 +2,10 @@ import AppContainer from '@components/common/container/AppContainer';
 import MyInfoContent from '@components/admin/my-info/MyInfoContent';
 import styled from '@emotion/styled';
 import useAdminUser from '@hooks/admin/useAdminUser';
-import { adminUserAtom } from '@recoils/atoms';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
 import { colFlex } from '@styles/flexStyles';
+import { adminUserAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue } from 'jotai';
 
 const MyInfoContainer = styled.div`
   width: 100%;
@@ -14,7 +14,7 @@ const MyInfoContainer = styled.div`
 
 function AdminMyInfo() {
   const { fetchAdminUser } = useAdminUser();
-  const user = useRecoilValue(adminUserAtom);
+  const user = useAtomValue(adminUserAtom);
 
   useEffect(() => {
     fetchAdminUser();

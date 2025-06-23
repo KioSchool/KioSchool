@@ -1,21 +1,21 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { BrowserRouter } from 'react-router-dom';
 import WorkspaceContent from './WorkspaceContent';
-import { RecoilRoot } from 'recoil';
 import { Workspace, UserRole, Product } from '@@types/index';
-import { workspacesAtom } from '@recoils/atoms';
+import { adminWorkspacesAtom } from 'src/jotai/admin/atoms';
+import { Provider } from 'jotai';
+import { useHydrateAtoms } from 'jotai/utils';
 
-const RecoilWrapper = ({ children, workspaces }: { children: React.ReactNode; workspaces: Workspace[] }) => {
-  return (
-    <RecoilRoot
-      initializeState={(snap) => {
-        snap.set(workspacesAtom, workspaces);
-      }}
-    >
-      {children}
-    </RecoilRoot>
-  );
+const HydrateAtoms = ({ initialValues, children }: { initialValues: any; children: React.ReactNode }) => {
+  useHydrateAtoms(initialValues);
+  return <>{children}</>;
 };
+
+const JotaiWrapper = ({ children, workspaces }: { children: React.ReactNode; workspaces: Workspace[] }) => (
+  <Provider>
+    <HydrateAtoms initialValues={[[adminWorkspacesAtom, workspaces]]}>{children}</HydrateAtoms>
+  </Provider>
+);
 
 const meta: Meta<typeof WorkspaceContent> = {
   title: 'Admin/Workspace/WorkspaceContent',
@@ -26,11 +26,11 @@ const meta: Meta<typeof WorkspaceContent> = {
   decorators: [
     (Story, { args }) => (
       <BrowserRouter>
-        <RecoilWrapper workspaces={args.workspaces}>
+        <JotaiWrapper workspaces={args.workspaces}>
           <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', maxWidth: '1200px' }}>
             <Story />
           </div>
-        </RecoilWrapper>
+        </JotaiWrapper>
       </BrowserRouter>
     ),
   ],

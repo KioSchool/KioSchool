@@ -1,6 +1,8 @@
 import * as StompJs from '@stomp/stompjs';
-import useAdminOrder from '@hooks/admin/useAdminOrder';
 import kioSchoolOrderAlarm from '@resources/audio/kioSchoolOrderAlarm.mp3';
+import { Order, OrderWebsocket } from '@@types/index';
+import { useSetAtom } from 'jotai';
+import { adminOrdersAtom } from '../../jotai/admin/atoms';
 
 const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT;
 
@@ -10,7 +12,20 @@ function playOrderCreateAudio() {
 }
 
 function useOrdersWebsocket(workspaceId: string | undefined) {
-  const { fetchTodayOrders } = useAdminOrder(workspaceId);
+  const setOrders = useSetAtom(adminOrdersAtom);
+
+  const addOrder = (order: Order) => {
+    setOrders((prevOrders) => {
+      return [...prevOrders, order];
+    });
+  };
+
+  const updateOrder = (order: Order) => {
+    setOrders((prevOrders) => {
+      return prevOrders.map((prevOrder) => (prevOrder.id === order.id ? order : prevOrder));
+    });
+  };
+
   const url = ENVIRONMENT === 'development' ? 'ws://localhost:8080/ws' : 'wss://api.kio-school.com/ws';
   const client = new StompJs.Client({
     brokerURL: url,
@@ -25,12 +40,14 @@ function useOrdersWebsocket(workspaceId: string | undefined) {
   const subscribeOrders = () => {
     client.onConnect = function () {
       client.subscribe(`/sub/order/${workspaceId}`, (response) => {
-        const data = JSON.parse(response.body);
-        if (data.type == 'CREATED') {
+        const orderWebsocket: OrderWebsocket = JSON.parse(response.body);
+        const order = orderWebsocket.data;
+        if (orderWebsocket.type == 'CREATED') {
           playOrderCreateAudio();
+          addOrder(order);
+        } else if (orderWebsocket.type == 'UPDATED') {
+          updateOrder(order);
         }
-
-        fetchTodayOrders();
       });
     };
 

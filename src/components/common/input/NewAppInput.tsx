@@ -6,7 +6,12 @@ import NewRoundedButton, { CustomButtonSize } from '../button/NewRoundedButton';
 import { RiShareBoxLine } from '@remixicon/react';
 
 const Container = styled.div<NewAppInputProps>`
-  width: ${({ width }) => (width ? `${width}px` : '500px')};
+  width: ${({ width }) => {
+    if (typeof width === 'number') {
+      return `${width}px`;
+    }
+    return width || '500px';
+  }};
   gap: 6px;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
@@ -72,7 +77,7 @@ export interface InputButtonProps extends React.ButtonHTMLAttributes<HTMLButtonE
 
 export interface NewAppInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   enterHandler?: () => void;
-  width?: number;
+  width?: number | string;
   height?: number;
   label?: string;
   buttonProps?: InputButtonProps;
@@ -111,7 +116,7 @@ const NewAppInput = forwardRef<HTMLInputElement, NewAppInputProps>((props: NewAp
           </NewRoundedButton>
         )}
       </HeaderContainer>
-      <StyledInput {...props} ref={ref} onKeyDown={onKeyDown} />
+      <StyledInput id={'input-id'} {...props} ref={ref} onKeyDown={onKeyDown} />
     </Container>
   );
 });

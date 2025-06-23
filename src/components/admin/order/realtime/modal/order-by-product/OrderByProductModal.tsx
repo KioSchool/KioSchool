@@ -2,11 +2,11 @@ import { Order } from '@@types/index';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import styled from '@emotion/styled';
 import _ from 'lodash';
-import { useRecoilValue } from 'recoil';
-import { productsAtom } from '@recoils/atoms';
 import { tabletMediaQuery } from '@styles/globalStyles';
 import AppLabel from '@components/common/label/AppLabel';
 import { Color } from '@resources/colors';
+import { useAtomValue } from 'jotai';
+import { adminProductsAtom } from 'src/jotai/admin/atoms';
 
 const ModalContainer = styled.div`
   ${colFlex({ align: 'center' })};
@@ -73,7 +73,7 @@ interface OrderByProductModalProps {
 }
 
 function OrderByProductModal({ orders, isModalOpen }: OrderByProductModalProps) {
-  const products = useRecoilValue(productsAtom);
+  const products = useAtomValue(adminProductsAtom);
 
   if (!isModalOpen) {
     return null;

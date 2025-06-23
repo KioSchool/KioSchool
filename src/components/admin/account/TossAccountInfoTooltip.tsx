@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 import { rowFlex } from '@styles/flexStyles';
-import { useRecoilValue } from 'recoil';
-import { adminUserAccountAtomSelector } from '@recoils/atoms';
 import { RiInformationFill } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import { afterAccountInfoRegisteredDescription, beforeAccountInfoRegisteredDescription } from '@resources/data/tossAccountInfoData';
 import { useState } from 'react';
+import { adminUserAccountAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue } from 'jotai';
 
 const Container = styled.div`
   width: 100%;
@@ -35,7 +35,7 @@ const HighlightText = styled.mark`
 function TossAccountInfoTooltip() {
   const [isHover, setIsHover] = useState(false);
 
-  const accountInfo = useRecoilValue(adminUserAccountAtomSelector);
+  const accountInfo = useAtomValue(adminUserAccountAtom);
   const isAccountRegistered = !!accountInfo.accountNumber;
 
   const description = isAccountRegistered ? afterAccountInfoRegisteredDescription : beforeAccountInfoRegisteredDescription;

@@ -14,6 +14,7 @@ const Container = styled.div<{ isShow: boolean }>`
   transform: translateY(${({ isShow }) => (isShow ? '0' : '-100%')});
   z-index: 1000;
   ${rowFlex({ justify: 'center', align: 'center' })}
+  border-bottom: 6px solid ${Color.LIGHT_GREY};
 `;
 
 const ContentsContainer = styled.div`
@@ -63,7 +64,8 @@ const WorkspaceNameLabel = styled.label`
 `;
 
 const TableLabel = styled.label`
-  margin-left: auto;
+  margin-right: auto;
+  padding-left: 10px;
   width: 60px;
   font-size: 15px;
   font-weight: 600;

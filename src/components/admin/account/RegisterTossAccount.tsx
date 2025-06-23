@@ -5,9 +5,9 @@ import { RiAddLine } from '@remixicon/react';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { adminUserAccountAtomSelector } from '@recoils/atoms';
-import { useRecoilValue } from 'recoil';
 import TossAccountInfoTooltip from '@components/admin/account/TossAccountInfoTooltip';
+import { adminUserAccountAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue } from 'jotai';
 
 const Container = styled.div`
   width: 30%;
@@ -73,7 +73,7 @@ function RegisterTossAccount() {
   const [fileURL, setFileURL] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const accountInfo = useRecoilValue(adminUserAccountAtomSelector);
+  const accountInfo = useAtomValue(adminUserAccountAtom);
 
   const isAccountRegistered = !!accountInfo.accountNumber;
 

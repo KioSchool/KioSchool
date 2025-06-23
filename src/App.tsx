@@ -34,10 +34,10 @@ import AdminWorkspaceEdit from '@pages/admin/AdminWorkspaceEdit';
 import SuperAdminBank from '@pages/super-admin/SuperAdminBank';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { RecoilRoot } from 'recoil';
 import useNetworkStatusNotifier from '@hooks/useNetworkStatusNotifier';
 import useServerHealth from '@hooks/useServerHealth';
 import ServerErrorFallback from '@components/common/fallback/ServerErrorFallback';
+import OrderWait from '@pages/user/order/OrderWait';
 
 function App() {
   useNetworkStatusNotifier();
@@ -48,7 +48,7 @@ function App() {
   }
 
   return (
-    <RecoilRoot>
+    <>
       <ToastContainer
         position="top-right"
         hideProgressBar={false}
@@ -93,11 +93,12 @@ function App() {
         <Route path="/order" element={<Order />} />
         <Route path="/order-basket" element={<OrderBasket />} />
         <Route path="/order-pay" element={<OrderPay />} />
+        <Route path="/order-wait" element={<OrderWait />} />
         <Route path="/order-complete" element={<OrderComplete />} />
       </Routes>
       <Global styles={globalStyles} />
       <LoadingModal />
-    </RecoilRoot>
+    </>
   );
 }
 
