@@ -1,16 +1,15 @@
 import useApi from '@hooks/useApi';
 import { Order, OrderProductBase } from '@@types/index';
-import { userOrderAtom } from 'src/jotai/user/atoms';
-import { useSetAtom } from 'jotai';
+import { defaultUserOrderValue } from '@@types/defaultValues';
 
 function useOrder() {
   const { userApi } = useApi();
-  const setOrder = useSetAtom(userOrderAtom);
 
   const fetchOrder = (orderId: string | null) => {
-    userApi.get<Order>('/order', { params: { orderId } }).then((response) => {
-      setOrder(response.data);
-    });
+    return userApi
+      .get<Order>('/order', { params: { orderId } })
+      .then((response) => response.data)
+      .catch(() => defaultUserOrderValue);
   };
 
   const createOrder = (workspaceId: string | null, tableNumber: string | null, orderProducts: OrderProductBase[], customerName: string) => {

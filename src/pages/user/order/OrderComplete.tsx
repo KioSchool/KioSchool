@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useOrder from '@hooks/user/useOrder';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
@@ -9,10 +9,11 @@ import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import OrderStatusBar from '@components/user/order/OrderStatusBar';
 import useRefresh from '@hooks/useRefresh';
 import OrderButton from '@components/user/order/OrderButton';
-import { userOrderAtom, userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
+import { userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
 import { useAtomValue } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
 import useBlockPopState from '@hooks/useBlockPopState';
+import { defaultUserOrderValue } from '@@types/defaultValues';
 
 const Container = styled.div`
   width: 100%;
@@ -98,7 +99,7 @@ function OrderComplete() {
   const { fetchOrder } = useOrder();
   const { allowPullToRefresh } = useRefresh();
   const resetOrderBasket = useResetAtom(userOrderBasketAtom);
-  const order = useAtomValue(userOrderAtom);
+  const [order, setOrder] = useState(defaultUserOrderValue);
   const workspace = useAtomValue(userWorkspaceAtom);
 
   const dateConverter = (date: Date) => {
@@ -112,8 +113,18 @@ function OrderComplete() {
   useBlockPopState();
 
   useEffect(() => {
+    const fetchOrderData = async () => {
+      if (!orderId || !workspaceId) {
+        alert('주문 정보가 없습니다. 다시 주문해주세요.');
+        navigate(-1);
+        return;
+      }
+      const fetchedOrder = await fetchOrder(orderId);
+      setOrder(fetchedOrder);
+    };
+
     resetOrderBasket();
-    fetchOrder(orderId);
+    fetchOrderData();
     fetchWorkspace(workspaceId);
     allowPullToRefresh();
   }, []);

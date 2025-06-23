@@ -33,6 +33,7 @@ export const defaultImageValue: WorkspaceImage = {
 export const defaultOrderProductBaseValue: OrderProductBase = {
   productId: 0,
   quantity: 0,
+  productPrice: 0,
 };
 
 export const defaultOrderProductValue: OrderProduct = {
