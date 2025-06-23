@@ -11,7 +11,7 @@ import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import PreviewContainer from '@components/common/container/PreviewContainer';
 import { isDesktop } from 'react-device-detect';
 import { tabletMediaQuery } from '@styles/globalStyles';
-import { toPng } from 'html-to-image';
+import { toBlob } from 'html-to-image';
 import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
 import { useAtom } from 'jotai';
 
@@ -179,9 +179,12 @@ function AdminTableCount() {
       return alert('QR 코드가 없습니다!');
     }
 
+    const scale = 3;
     const metrics = calculateGridMetrics(qrCanvases.length);
-    const outputCanvas = createOutputCanvas(metrics.canvasWidth, metrics.canvasHeight);
+    const outputCanvas = createOutputCanvas(metrics.canvasWidth * scale, metrics.canvasHeight * scale);
     const ctx = outputCanvas.getContext('2d')!;
+
+    ctx.scale(scale, scale);
 
     initCanvasContext(ctx, metrics.canvasWidth, metrics.canvasHeight);
     drawQRTiles(ctx, qrCanvases, metrics);
@@ -189,20 +192,31 @@ function AdminTableCount() {
   };
 
   const downloadQrCode = (tableNo: number) => {
-    const qrCode = QRCodeRefs.current[tableNo];
-    if (!qrCode) {
+    const qrCodeElement = QRCodeRefs.current[tableNo];
+    if (!qrCodeElement) {
       alert('다운로드 오류가 발생했습니다!');
       return;
     }
 
-    toPng(qrCode, {
+    toBlob(qrCodeElement, {
       skipFonts: true,
     })
-      .then((dataUrl) => {
+      .then((blob) => {
+        if (!blob) {
+          alert('QR 코드 이미지 생성에 실패했습니다.');
+          return;
+        }
+
+        const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.download = `${tableNo}번 테이블 QR코드.png`;
-        link.href = dataUrl;
+        link.href = url;
+
+        document.body.appendChild(link);
         link.click();
+        document.body.removeChild(link);
+
+        URL.revokeObjectURL(url);
       })
       .catch((err) => {
         console.error(err);
