@@ -15,6 +15,7 @@ export interface Order {
 export interface OrderProductBase {
   productId: number;
   quantity: number;
+  productPrice: number;
 }
 
 export interface OrderWebsocket {
@@ -24,7 +25,6 @@ export interface OrderWebsocket {
 
 export interface OrderProduct extends OrderProductBase {
   productName: string;
-  productPrice: number;
   isServed: boolean;
   servedCount: number;
   totalPrice: number;

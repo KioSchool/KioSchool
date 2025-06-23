@@ -9,6 +9,9 @@ import { Color } from '@resources/colors';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import { userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
 import { useAtom, useAtomValue } from 'jotai';
+import { useEffect } from 'react';
+import useOrder from '@hooks/user/useOrder';
+import { HttpStatusCode } from 'axios';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -21,7 +24,6 @@ const SubContainer = styled.div`
   width: 100%;
   padding: 0 20px 120px 20px;
   gap: 20px;
-  border-top: 10px solid ${Color.LIGHT_GREY};
   padding-top: 12px;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
@@ -78,14 +80,54 @@ function OrderBasket() {
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
 
-  if (orderBasket.length == 0) {
-    navigate(-1);
-  }
+  const { createOrder } = useOrder();
+
+  useEffect(() => {
+    if (orderBasket.length == 0) {
+      navigate(-1);
+    }
+  }, [orderBasket.length]);
 
   const clearOrderBasket = () => {
     if (confirm('정말로 모두 삭제하시겠습니까?')) {
       setOrderBasket([]);
     }
+  };
+
+  const errorHandler = (error: any) => {
+    if (error.response.status === HttpStatusCode.NotAcceptable) {
+      alert('품절된 상품이 있습니다. 주문 화면으로 돌아갑니다.');
+      setOrderBasket([]);
+      navigate(-1);
+      return;
+    }
+  };
+
+  const navigateHandler = () => {
+    if (totalAmount === 0) {
+      createOrder(workspaceId, tableNo, orderBasket, '0원 주문')
+        .then((res) => {
+          navigate({
+            pathname: '/order-complete',
+            search: createSearchParams({
+              orderId: res.data.id.toString(),
+              workspaceId: workspaceId || '',
+              tableNo: tableNo || '',
+            }).toString(),
+          });
+        })
+        .catch(errorHandler);
+
+      return;
+    }
+
+    navigate({
+      pathname: '/order-pay',
+      search: createSearchParams({
+        workspaceId: workspaceId || '',
+        tableNo: tableNo || '',
+      }).toString(),
+    });
   };
 
   return (
@@ -109,19 +151,7 @@ function OrderBasket() {
             );
           })}
         </OrderBasketContainer>
-        <OrderButton
-          showButton={orderBasket.length > 0}
-          buttonLabel={`${totalAmount.toLocaleString()}원 주문하기`}
-          onClick={() =>
-            navigate({
-              pathname: '/order-pay',
-              search: createSearchParams({
-                workspaceId: workspaceId || '',
-                tableNo: tableNo || '',
-              }).toString(),
-            })
-          }
-        />
+        <OrderButton showButton={orderBasket.length > 0} buttonLabel={`${totalAmount.toLocaleString()}원 주문하기`} onClick={navigateHandler} />
       </SubContainer>
     </Container>
   );

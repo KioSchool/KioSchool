@@ -6,41 +6,51 @@ import { createSearchParams, useNavigate, useSearchParams } from 'react-router-d
 import { colFlex } from '@styles/flexStyles';
 import useOrder from '@hooks/user/useOrder';
 import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
-import OrderPayNavBar from '@components/user/order/OrderPayNavBar';
+import OrderPayRadio from '@components/user/order/OrderPayRadio';
 import OrderPayDescription from '@components/user/order/OrderPayDescription';
 import { HttpStatusCode } from 'axios';
 import { userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
 import { useAtom, useAtomValue } from 'jotai';
+import NewAppInput from '@components/common/input/NewAppInput';
+import { Color } from '@resources/colors';
+import HorizontalDivider from '@components/common/divider/HorizontalDivider';
+import usePreventRefresh from '@hooks/usePreventRefresh';
 
 const Container = styled.div`
   width: 100%;
   height: 100%;
+  padding-top: 50px;
 `;
 
 const SubContainer = styled.div`
-  margin-top: 50px;
-  gap: 20px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 20px 20px 0 20px;
   ${colFlex({ justify: 'center', align: 'center' })}
+`;
+
+const ContentsContainer = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px 10px;
+  gap: 20px;
+  border-radius: 9px;
+  border: 0.5px solid #939393;
+  ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
 const InputContainer = styled.div`
-  padding-top: 20px;
-  padding-bottom: 20px;
-  ${colFlex({ align: 'center' })}
-`;
-
-const Input = styled.input`
-  width: 300px;
-  height: 40px;
-  padding: 0 10px;
-  border: none;
-  border-bottom: 1px solid #898989;
-  font-size: 14px;
-`;
-
-const DescriptionContainer = styled.div`
+  box-sizing: border-box;
   width: 100%;
-  ${colFlex({ justify: 'center', align: 'center' })}
+  padding: 0 10px;
+  gap: 10px;
+  ${colFlex({ justify: 'center', align: 'start' })}
+`;
+
+const InputLabel = styled.div`
+  font-size: 14px;
+  font-weight: 600;
+  color: ${Color.BLACK};
 `;
 
 function OrderPay() {
@@ -72,14 +82,11 @@ function OrderPay() {
       return;
     }
   };
+  usePreventRefresh();
 
   useEffect(() => {
-    if (orderBasket.length === 0) {
-      alert('잘못된 접근입니다.');
-      navigate(1);
-    }
     customerNameRef.current?.focus();
-  }, [isTossPay]);
+  }, []);
 
   /**
    * Safari 브라우저 호환성 이슈 대응
@@ -97,28 +104,29 @@ function OrderPay() {
     const isSafari = userAgent.includes('safari') && !userAgent.includes('chrome');
 
     let popup: Window | null = null;
-    if (isSafari && totalAmount !== 0) {
+    if (isSafari) {
       popup = window.open(undefined);
     }
 
     createOrder(workspaceId, tableNo, orderBasket, customerName)
       .then((res) => {
         navigate({
-          pathname: '/order-complete',
+          pathname: '/order-wait',
           search: createSearchParams({
             orderId: res.data.id.toString(),
             workspaceId: workspaceId || '',
             tableNo: tableNo || '',
+            tossPay: 'true',
           }).toString(),
         });
 
-        if (!isSafari && totalAmount !== 0) {
+        if (!isSafari) {
           window.open(tossUrl);
         }
       })
       .catch(errorHandler)
       .then(() => {
-        if (isSafari && totalAmount !== 0) {
+        if (isSafari) {
           popup?.location.replace(tossUrl);
         }
       });
@@ -128,7 +136,7 @@ function OrderPay() {
     createOrder(workspaceId, tableNo, orderBasket, customerName)
       .then((res) => {
         navigate({
-          pathname: '/order-complete',
+          pathname: '/order-wait',
           search: createSearchParams({
             orderId: res.data.id.toString(),
             workspaceId: workspaceId || '',
@@ -159,13 +167,16 @@ function OrderPay() {
     <Container className={'order-pay-container'}>
       <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
       <SubContainer className={'order-pay-sub-container'}>
-        <OrderPayNavBar isTossAvailable={isTossAvailable} isTossPay={isTossPay} setIsTossPay={setIsTossPay} />
-        <InputContainer>
-          <Input type="text" placeholder={'입금자명을 입력해주세요.'} ref={customerNameRef} />
-        </InputContainer>
-        <DescriptionContainer>
-          <OrderPayDescription isTossPay={isTossPay} />
-        </DescriptionContainer>
+        <ContentsContainer>
+          <InputContainer>
+            <InputLabel>입금자명</InputLabel>
+            <NewAppInput ref={customerNameRef} placeholder={'입금자명을 입력해주세요.'} width={'100%'} height={33} />
+          </InputContainer>
+          <HorizontalDivider />
+          <OrderPayRadio isTossAvailable={isTossAvailable} isTossPay={isTossPay} setIsTossPay={setIsTossPay} />
+          <HorizontalDivider />
+          <OrderPayDescription />
+        </ContentsContainer>
       </SubContainer>
       <OrderButton
         showButton={orderBasket.length > 0}

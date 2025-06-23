@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useOrder from '@hooks/user/useOrder';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
@@ -8,22 +8,23 @@ import { Color } from '@resources/colors';
 import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import OrderStatusBar from '@components/user/order/OrderStatusBar';
 import useRefresh from '@hooks/useRefresh';
-import OrderAccountInfo from '@components/user/order/OrderAccountInfo';
 import OrderButton from '@components/user/order/OrderButton';
-import { userOrderAtom, userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
+import { userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
 import { useAtomValue } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
+import useBlockPopState from '@hooks/useBlockPopState';
+import { defaultUserOrderValue } from '@@types/defaultValues';
 
 const Container = styled.div`
   width: 100%;
   height: 100%;
+  padding-top: 50px;
 `;
 
 const SubContainer = styled.div`
-  margin-top: 45px;
   gap: 20px;
-  border-top: 10px solid ${Color.LIGHT_GREY};
-  padding-top: 12px;
+  padding-top: 20px;
+  padding-bottom: 120px;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
@@ -86,20 +87,6 @@ const OrderProductText = styled.div`
   font-weight: 500;
 `;
 
-const DescriptionContainer = styled.div`
-  padding: 20px 0;
-  width: 320px;
-  ${colFlex({ justify: 'center', align: 'center' })};
-`;
-
-const Description = styled.div`
-  font-size: 13px;
-  font-weight: 500;
-  text-align: center;
-  color: #898989;
-  white-space: pre-wrap;
-`;
-
 function OrderComplete() {
   const navigate = useNavigate();
 
@@ -112,7 +99,7 @@ function OrderComplete() {
   const { fetchOrder } = useOrder();
   const { allowPullToRefresh } = useRefresh();
   const resetOrderBasket = useResetAtom(userOrderBasketAtom);
-  const order = useAtomValue(userOrderAtom);
+  const [order, setOrder] = useState(defaultUserOrderValue);
   const workspace = useAtomValue(userWorkspaceAtom);
 
   const dateConverter = (date: Date) => {
@@ -123,9 +110,21 @@ function OrderComplete() {
     return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 ${ampm} ${hour}시 ${date.getMinutes()}분`;
   };
 
+  useBlockPopState();
+
   useEffect(() => {
+    const fetchOrderData = async () => {
+      if (!orderId || !workspaceId) {
+        alert('주문 정보가 없습니다. 다시 주문해주세요.');
+        navigate(-1);
+        return;
+      }
+      const fetchedOrder = await fetchOrder(orderId);
+      setOrder(fetchedOrder);
+    };
+
     resetOrderBasket();
-    fetchOrder(orderId);
+    fetchOrderData();
     fetchWorkspace(workspaceId);
     allowPullToRefresh();
   }, []);
@@ -177,10 +176,6 @@ function OrderComplete() {
               </OrderProductRow>
             </OrderProductContainer>
           </ContentBox>
-          <OrderAccountInfo />
-          <DescriptionContainer>
-            <Description>{'결제가 원활하게 진행되지 않았을 경우,\n상단의 계좌 정보를 통해 직접 계좌이체를 부탁드립니다.'}</Description>
-          </DescriptionContainer>
         </ContentContainer>
         <OrderButton
           showButton={true}
