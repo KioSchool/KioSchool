@@ -104,7 +104,7 @@ function OrderPay() {
     const isSafari = userAgent.includes('safari') && !userAgent.includes('chrome');
 
     let popup: Window | null = null;
-    if (isSafari && totalAmount !== 0) {
+    if (isSafari) {
       popup = window.open(undefined);
     }
 
@@ -120,13 +120,13 @@ function OrderPay() {
           }).toString(),
         });
 
-        if (!isSafari && totalAmount !== 0) {
+        if (!isSafari) {
           window.open(tossUrl);
         }
       })
       .catch(errorHandler)
       .then(() => {
-        if (isSafari && totalAmount !== 0) {
+        if (isSafari) {
           popup?.location.replace(tossUrl);
         }
       });

@@ -4,14 +4,15 @@ import OrderButton from '@components/user/order/OrderButton';
 import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
-import { userOrderAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
+import { userWorkspaceAtom } from 'src/jotai/user/atoms';
 import OrderAccountInfo from '@components/user/order/OrderAccountInfo';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import { Color } from '@resources/colors';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useBlockPopState from '@hooks/useBlockPopState';
-import { OrderStatus } from '@@types/index';
+import { Order, OrderStatus } from '@@types/index';
 import useOrder from '@hooks/user/useOrder';
+import { defaultUserOrderValue } from '@@types/defaultValues';
 
 const Container = styled.div`
   width: 100%;
@@ -76,20 +77,37 @@ function OrderWait() {
   const isTossPay = searchParams.get('tossPay') === 'true';
 
   const workspace = useAtomValue(userWorkspaceAtom);
-  const currentOrder = useAtomValue(userOrderAtom);
+  const [currentOrder, setCurrentOrder] = useState<Order>(defaultUserOrderValue);
 
-  const fetchIntervalTime = 1000;
+  const fetchIntervalTime = 5000;
   const { fetchOrder } = useOrder();
 
   useBlockPopState();
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      fetchOrder(orderId);
-    }, fetchIntervalTime);
+    const pollOrder = async () => {
+      if (!orderId) {
+        alert('주문 ID가 없습니다. 초기 화면으로 돌아갑니다.');
+        navigate({
+          pathname: '/order',
+          search: createSearchParams({
+            workspaceId: workspaceId || '',
+            tableNo: tableNo || '',
+          }).toString(),
+        });
+        return;
+      }
+
+      const orderData = await fetchOrder(orderId);
+      setCurrentOrder(orderData);
+    };
+
+    pollOrder();
+
+    const intervalId = setInterval(pollOrder, fetchIntervalTime);
 
     return () => clearInterval(intervalId);
-  }, [workspaceId]);
+  }, [orderId]);
 
   const currentOrderStatus = currentOrder?.status;
   const totalPrice = currentOrder?.totalPrice ?? 0;
