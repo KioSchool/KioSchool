@@ -108,7 +108,7 @@ function OrderBasket() {
       createOrder(workspaceId, tableNo, orderBasket, '0원 주문')
         .then((res) => {
           navigate({
-            pathname: '/order-wait',
+            pathname: '/order-complete',
             search: createSearchParams({
               orderId: res.data.id.toString(),
               workspaceId: workspaceId || '',

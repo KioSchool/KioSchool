@@ -25,7 +25,7 @@ const OptionContainer = styled.div`
   ${rowFlex({ justify: 'start', align: 'center' })}
 `;
 
-const StyledRadio = styled.input`
+const Radio = styled.input`
   appearance: none;
   margin: 0;
   border: max(2px, 0.1em) solid ${Color.GREY};
@@ -62,13 +62,13 @@ function OrderPayRadio({ isTossAvailable, isTossPay, setIsTossPay }: OrderPayRad
       <PaymentOptions name="paymentMethod">
         {isTossAvailable && (
           <OptionContainer>
-            <StyledRadio type={'radio'} id="tossPay" checked={isTossPay} onChange={() => setIsTossPay(true)} />
+            <Radio type={'radio'} id="tossPay" checked={isTossPay} onChange={() => setIsTossPay(true)} />
             <OptionLabel htmlFor="tossPay">토스페이</OptionLabel>
           </OptionContainer>
         )}
 
         <OptionContainer>
-          <StyledRadio type={'radio'} id="bankTransfer" checked={!isTossPay} onChange={() => setIsTossPay(false)} />
+          <Radio type={'radio'} id="bankTransfer" checked={!isTossPay} onChange={() => setIsTossPay(false)} />
           <OptionLabel htmlFor="bankTransfer">계좌이체</OptionLabel>
         </OptionContainer>
       </PaymentOptions>
