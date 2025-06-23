@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import OrderButton from '@components/user/order/OrderButton';
 import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
@@ -13,6 +12,7 @@ import useBlockPopState from '@hooks/useBlockPopState';
 import { Order, OrderStatus } from '@@types/index';
 import useOrder from '@hooks/user/useOrder';
 import { defaultUserOrderValue } from '@@types/defaultValues';
+import { keyframes } from '@emotion/react';
 
 const Container = styled.div`
   width: 100%;
@@ -66,6 +66,57 @@ const DescriptionText = styled.div`
   padding: 20px 30px;
   word-break: keep-all;
   ${colFlex({ justify: 'center', align: 'center' })}
+`;
+
+const loadingDots = keyframes`
+  0%, 20% {
+    content: '.';
+  }
+  40% {
+    content: '..';
+  }
+  60% {
+    content: '...';
+  }
+  80%, 100% {
+    content: '';
+  }
+`;
+
+const AnimatedButtonContainer = styled.div`
+  position: fixed;
+  bottom: 50px;
+  width: 100vw;
+  height: 50px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
+`;
+
+const AnimatedButtonSubContainer = styled.div`
+  padding: 10px;
+  border-radius: 20px;
+  background: ${Color.WHITE};
+  box-shadow: 0 16px 32px 0 rgba(194, 191, 172, 0.6);
+`;
+
+const TheActualAnimatedButton = styled.button`
+  width: 290px;
+  height: 50px;
+  background-color: ${Color.KIO_ORANGE};
+  color: white;
+  border: none;
+  border-radius: 15px;
+  cursor: default;
+  font-size: 18px;
+  font-weight: bold;
+  ${rowFlex({ justify: 'center', align: 'center' })}
+
+  .dots::after {
+    display: inline-block;
+    animation: ${loadingDots} 1.5s infinite;
+    content: '...';
+    text-align: left;
+    width: 25px;
+  }
 `;
 
 function OrderWait() {
@@ -130,10 +181,8 @@ function OrderWait() {
   }, [currentOrderStatus]);
 
   const waitingText = isTossPay
-    ? '현재 결제 확인 중입니다. 토스 앱이 자동으로 열리지 않았다면 재시도 해보시거나, 위 계좌로 직접 송금해주세요. 결제가 확인되면 자동으로 주문 내역 페이지로 이동합니다. 결제 완료까지 최대 3분정도 소요될 수 있습니다.'
-    : '위 계좌로 송금을 완료해주세요. 송금 후에는 잠시만 기다려주세요. 결제가 확인되면 자동으로 주문 내역 페이지로 이동합니다. 결제 완료까지 최대 3분정도 소요될 수 있습니다.';
-
-  const orderButtonText = '결제 확인 중 . . .';
+    ? '현재 결제 확인 중입니다. 토스 앱이 자동으로 열리지 않았다면 재시도 해보시거나, 위 계좌로 직접 송금해주세요. 결제가 확인되면 자동으로 주문 내역 페이지로 이동합니다. 결제 확인까지 최대 3분정도 소요될 수 있습니다.'
+    : '위 계좌로 송금을 완료해주세요. 송금 후에는 잠시만 기다려주세요. 결제가 확인되면 자동으로 주문 내역 페이지로 이동합니다. 결제 확인까지 최대 3분정도 소요될 수 있습니다.';
 
   const handleButtonClick = () => {
     if (currentOrderStatus === OrderStatus.NOT_PAID) {
@@ -157,7 +206,13 @@ function OrderWait() {
           </DescriptionContainer>
         </ContentsContainer>
       </SubContainer>
-      <OrderButton showButton={true} buttonLabel={orderButtonText} onClick={handleButtonClick} />
+      <AnimatedButtonContainer>
+        <AnimatedButtonSubContainer>
+          <TheActualAnimatedButton onClick={handleButtonClick}>
+            결제 확인 중<span className="dots" />
+          </TheActualAnimatedButton>
+        </AnimatedButtonSubContainer>
+      </AnimatedButtonContainer>
     </Container>
   );
 }
