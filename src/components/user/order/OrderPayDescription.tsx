@@ -17,7 +17,7 @@ const OrderInfoContainer = styled.div`
   ${rowFlex({ justify: 'space-between', align: 'center' })};
 `;
 
-const StyledLabel = styled.div`
+const Label = styled.div`
   font-size: 13px;
   font-weight: 600;
 `;
@@ -46,12 +46,12 @@ function OrderPayDescription() {
   return (
     <Container>
       <OrderInfoContainer>
-        <StyledLabel>결제 금액</StyledLabel>
-        <StyledLabel>{totalPrice.toLocaleString()}원</StyledLabel>
+        <Label>결제 금액</Label>
+        <Label>{totalPrice.toLocaleString()}원</Label>
       </OrderInfoContainer>
       <OrderInfoContainer>
-        <StyledLabel>상품 수량</StyledLabel>
-        <StyledLabel>{totalCount}개</StyledLabel>
+        <Label>상품 수량</Label>
+        <Label>{totalCount}개</Label>
       </OrderInfoContainer>
       <Description>결제하기 버튼을 누른 후 송금을 꼭 완료해주셔야 주문 내역 페이지로 이동합니다.</Description>
     </Container>

@@ -80,13 +80,7 @@ function OrderBasket() {
 
   useEffect(() => {
     if (orderBasket.length == 0) {
-      navigate({
-        pathname: '/order',
-        search: createSearchParams({
-          workspaceId: workspaceId || '',
-          tableNo: tableNo || '',
-        }).toString(),
-      });
+      navigate(-1);
     }
   }, [orderBasket.length]);
 

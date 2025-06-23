@@ -2,16 +2,16 @@ import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import OrderButton from '@components/user/order/OrderButton';
 import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
-import { adminOrdersAtom } from 'src/jotai/admin/atoms';
-import { userWorkspaceAtom } from 'src/jotai/user/atoms';
+import { userOrderAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
 import OrderAccountInfo from '@components/user/order/OrderAccountInfo';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import { Color } from '@resources/colors';
 import { useEffect } from 'react';
-import useAdminOrder from '@hooks/admin/useAdminOrder';
 import useBlockPopState from '@hooks/useBlockPopState';
+import { OrderStatus } from '@@types/index';
+import useOrder from '@hooks/user/useOrder';
 
 const Container = styled.div`
   width: 100%;
@@ -43,7 +43,7 @@ const OrderInfoContainer = styled.div`
   ${rowFlex({ justify: 'space-between', align: 'center' })};
 `;
 
-const StyledLabel = styled.div`
+const Label = styled.div`
   font-size: 13px;
   font-weight: 600;
 `;
@@ -72,46 +72,53 @@ function OrderWait() {
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
-  const orderId = searchParams.get('orderId');
-  const isTossAvailable = searchParams.get('isTossAvailable') === 'true';
+  const orderId = searchParams.get('orderId') || null;
+  const isTossPay = searchParams.get('tossPay') === 'true';
 
   const workspace = useAtomValue(userWorkspaceAtom);
-  const adminOrders = useAtomValue(adminOrdersAtom);
+  const currentOrder = useAtomValue(userOrderAtom);
 
-  const { fetchTodayOrders } = useAdminOrder(workspaceId || undefined);
+  const fetchIntervalTime = 1000;
+  const { fetchOrder } = useOrder();
 
   useBlockPopState();
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      fetchTodayOrders();
-    }, 1000);
+      fetchOrder(orderId);
+    }, fetchIntervalTime);
 
     return () => clearInterval(intervalId);
   }, [workspaceId]);
 
-  const currentOrder = adminOrders.find((order) => order.id === Number(orderId));
   const currentOrderStatus = currentOrder?.status;
   const totalPrice = currentOrder?.totalPrice ?? 0;
 
   const navigateToComplete = () => {
-    navigate(`/order-complete?orderId=${orderId}&workspaceId=${workspaceId}&tableNo=${tableNo}`);
+    navigate({
+      pathname: '/order-complete',
+      search: createSearchParams({
+        orderId: orderId || '',
+        workspaceId: workspaceId || '',
+        tableNo: tableNo || '',
+      }).toString(),
+    });
   };
 
   useEffect(() => {
-    if (currentOrderStatus === 'PAID') {
+    if (currentOrderStatus && currentOrderStatus !== OrderStatus.NOT_PAID) {
       navigateToComplete();
     }
   }, [currentOrderStatus]);
 
-  const waitingText = isTossAvailable
-    ? '현재 결제 확인 중입니다. 토스 앱이 자동으로 열리지 않았다면, 위 계좌로 직접 송금해주세요. 결제가 확인되면 자동으로 주문 내역 페이지로 이동합니다.'
-    : '위 계좌로 송금을 완료해주세요. 송금 후에는 잠시만 기다려주세요. 결제가 확인되면 자동으로 주문 내역 페이지로 이동합니다.';
+  const waitingText = isTossPay
+    ? '현재 결제 확인 중입니다. 토스 앱이 자동으로 열리지 않았다면 재시도 해보시거나, 위 계좌로 직접 송금해주세요. 결제가 확인되면 자동으로 주문 내역 페이지로 이동합니다. 결제 완료까지 최대 3분정도 소요될 수 있습니다.'
+    : '위 계좌로 송금을 완료해주세요. 송금 후에는 잠시만 기다려주세요. 결제가 확인되면 자동으로 주문 내역 페이지로 이동합니다. 결제 완료까지 최대 3분정도 소요될 수 있습니다.';
 
-  const orderButtonText = currentOrderStatus === 'NOT_PAID' ? '결제 확인 중 . . .' : '주문 확인 페이지로 이동';
+  const orderButtonText = '결제 확인 중 . . .';
 
   const handleButtonClick = () => {
-    if (currentOrderStatus === 'NOT_PAID') {
+    if (currentOrderStatus === OrderStatus.NOT_PAID) {
       alert('결제 확인 중입니다. 대기가 길어질 경우 운영진에게 문의해주세요.');
     }
   };
@@ -124,8 +131,8 @@ function OrderWait() {
           <OrderAccountInfo />
           <HorizontalDivider />
           <OrderInfoContainer>
-            <StyledLabel>결제 금액</StyledLabel>
-            <StyledLabel>{totalPrice.toLocaleString()}원</StyledLabel>
+            <Label>결제 금액</Label>
+            <Label>{totalPrice.toLocaleString()}원</Label>
           </OrderInfoContainer>
           <DescriptionContainer>
             <DescriptionText>{waitingText}</DescriptionText>
