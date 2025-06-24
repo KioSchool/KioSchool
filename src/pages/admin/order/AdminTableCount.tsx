@@ -11,9 +11,18 @@ import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import PreviewContainer from '@components/common/container/PreviewContainer';
 import { isDesktop } from 'react-device-detect';
 import { tabletMediaQuery } from '@styles/globalStyles';
-import { toBlob } from 'html-to-image';
 import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
 import { useAtom } from 'jotai';
+import {
+  calculateGridMetrics,
+  createOutputCanvas,
+  drawQRTiles,
+  getQRCodeCanvases,
+  initCanvasContext,
+  triggerDownload,
+  QR_IMAGE_SIZE,
+  drawQR,
+} from '@utils/qrCode';
 
 const Container = styled.div`
   width: 100vw;
@@ -69,81 +78,6 @@ const TableLink = styled.a`
   border-radius: 10px;
 `;
 
-const QR_IMAGE_SIZE = 150;
-const GRID_SPACING = 20;
-const COLUMNS_COUNT = 4;
-const LABEL_SIZE = 35;
-
-interface GridMetrics {
-  rowsCount: number;
-  cellStep: number;
-  canvasWidth: number;
-  canvasHeight: number;
-}
-
-function getQRCodeCanvases(container: HTMLDivElement): HTMLCanvasElement[] {
-  return Array.from(container.querySelectorAll<HTMLCanvasElement>('canvas'));
-}
-
-function calculateGridMetrics(itemCount: number): GridMetrics {
-  const rows = Math.ceil(itemCount / COLUMNS_COUNT);
-  const step = QR_IMAGE_SIZE + GRID_SPACING;
-  return {
-    rowsCount: rows,
-    cellStep: step,
-    canvasWidth: COLUMNS_COUNT * QR_IMAGE_SIZE + (COLUMNS_COUNT - 1) * GRID_SPACING,
-    canvasHeight: rows * QR_IMAGE_SIZE + (rows - 1) * GRID_SPACING,
-  };
-}
-
-function createOutputCanvas(width: number, height: number): HTMLCanvasElement {
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  return canvas;
-}
-
-function initCanvasContext(ctx: CanvasRenderingContext2D, width: number, height: number) {
-  ctx.fillStyle = Color.WHITE;
-  ctx.fillRect(0, 0, width, height);
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.font = 'bold 20px sans-serif';
-}
-
-function drawQRTiles(ctx: CanvasRenderingContext2D, qrCanvases: HTMLCanvasElement[], metrics: GridMetrics) {
-  qrCanvases.forEach((qrCanvas, idx) => {
-    const col = idx % COLUMNS_COUNT;
-    const row = Math.floor(idx / COLUMNS_COUNT);
-    const x = col * metrics.cellStep;
-    const y = row * metrics.cellStep;
-
-    ctx.drawImage(qrCanvas, x, y, QR_IMAGE_SIZE, QR_IMAGE_SIZE);
-
-    const labelX = x + QR_IMAGE_SIZE - LABEL_SIZE;
-    const labelY = y + QR_IMAGE_SIZE - LABEL_SIZE;
-    ctx.fillStyle = Color.KIO_ORANGE;
-    ctx.fillRect(labelX, labelY, LABEL_SIZE, LABEL_SIZE);
-
-    ctx.fillStyle = Color.WHITE;
-    ctx.fillText(`${idx + 1}`, labelX + LABEL_SIZE / 2, labelY + LABEL_SIZE / 2);
-  });
-}
-
-function triggerDownload(canvas: HTMLCanvasElement, fileName: string) {
-  canvas.toBlob((blob) => {
-    if (!blob) return alert('이미지 생성 실패');
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
-  });
-}
-
 function AdminTableCount() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchWorkspace, updateWorkspaceTableCount } = useAdminWorkspace();
@@ -198,30 +132,23 @@ function AdminTableCount() {
       return;
     }
 
-    toBlob(qrCodeElement, {
-      skipFonts: true,
-    })
-      .then((blob) => {
-        if (!blob) {
-          alert('QR 코드 이미지 생성에 실패했습니다.');
-          return;
-        }
+    const qrCanvas = qrCodeElement.querySelector('canvas');
+    if (!qrCanvas) {
+      alert('QR 코드 캔버스를 찾을 수 없습니다.');
+      return;
+    }
 
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.download = `${tableNo}번 테이블 QR코드.png`;
-        link.href = url;
+    const scale = 3;
+    const outputCanvas = createOutputCanvas(QR_IMAGE_SIZE * scale, QR_IMAGE_SIZE * scale);
+    const ctx = outputCanvas.getContext('2d')!;
 
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+    ctx.scale(scale, scale);
 
-        URL.revokeObjectURL(url);
-      })
-      .catch((err) => {
-        console.error(err);
-        alert('QR 코드 다운로드에 실패했습니다.');
-      });
+    initCanvasContext(ctx, QR_IMAGE_SIZE, QR_IMAGE_SIZE);
+
+    drawQR(ctx, qrCanvas, tableNo, 0, 0);
+
+    triggerDownload(outputCanvas, `${tableNo}번 테이블 QR코드.png`);
   };
 
   useEffect(() => {
