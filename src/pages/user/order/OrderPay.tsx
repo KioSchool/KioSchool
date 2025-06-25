@@ -103,6 +103,8 @@ function OrderPay() {
     const userAgent = navigator.userAgent.toLowerCase();
     const isSafari = userAgent.includes('safari') && !userAgent.includes('chrome');
 
+    const closePopUpDelay = 10000;
+
     let popup: Window | null = null;
     if (isSafari) {
       popup = window.open(undefined);
@@ -128,6 +130,13 @@ function OrderPay() {
       .then(() => {
         if (isSafari) {
           popup?.location.replace(tossUrl);
+        }
+      })
+      .finally(() => {
+        if (popup && !popup.closed) {
+          setTimeout(() => {
+            popup.close();
+          }, closePopUpDelay);
         }
       });
   };

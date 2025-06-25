@@ -218,14 +218,23 @@ function OrderWait() {
     const userAgent = navigator.userAgent.toLowerCase();
     const isSafari = userAgent.includes('safari') && !userAgent.includes('chrome');
 
+    const closePopUpDelay = 10000;
+    let popup: Window | null = null;
+
     if (isSafari) {
-      const popup = window.open(undefined);
+      popup = window.open(undefined);
       if (popup) {
         popup.location.replace(tossUrl);
       }
     } else {
-      window.open(tossUrl, '_blank');
+      popup = window.open(tossUrl, '_blank');
     }
+
+    setTimeout(() => {
+      if (popup && !popup.closed) {
+        popup?.close();
+      }
+    }, closePopUpDelay);
   };
 
   return (
