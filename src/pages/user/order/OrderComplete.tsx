@@ -15,6 +15,7 @@ import { useResetAtom } from 'jotai/utils';
 import useBlockPopState from '@hooks/useBlockPopState';
 import { defaultUserOrderValue } from '@@types/defaultValues';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
+import { Order, OrderStatus } from '@@types/index';
 
 const Container = styled.div`
   width: 100%;
@@ -117,7 +118,7 @@ function OrderComplete() {
   const { fetchOrder } = useOrder();
   const { allowPullToRefresh } = useRefresh();
   const resetOrderBasket = useResetAtom(userOrderBasketAtom);
-  const [order, setOrder] = useState(defaultUserOrderValue);
+  const [order, setOrder] = useState<Order>(defaultUserOrderValue);
   const workspace = useAtomValue(userWorkspaceAtom);
 
   const dateConverter = (date: Date) => {
@@ -130,22 +131,41 @@ function OrderComplete() {
 
   useBlockPopState();
 
+  const fetchIntervalTime = 5000;
+
   useEffect(() => {
-    const fetchOrderData = async () => {
-      if (!orderId || !workspaceId) {
-        alert('주문 정보가 없습니다. 다시 주문해주세요.');
-        navigate(-1);
+    let intervalId: NodeJS.Timeout | null = null;
+
+    const pollOrder = async () => {
+      if (!orderId) {
         return;
       }
-      const fetchedOrder = await fetchOrder(orderId);
-      setOrder(fetchedOrder);
+
+      const orderData = await fetchOrder(orderId);
+      setOrder(orderData);
+
+      if (intervalId && (orderData.status === OrderStatus.SERVED || orderData.status === OrderStatus.CANCELLED)) {
+        clearInterval(intervalId);
+      }
     };
 
+    if (!orderId || !workspaceId) {
+      alert('주문 정보가 없습니다. 다시 주문해주세요.');
+      navigate(-1);
+      return;
+    }
+
+    pollOrder();
+    intervalId = setInterval(pollOrder, fetchIntervalTime);
+
     resetOrderBasket();
-    fetchOrderData();
     fetchWorkspace(workspaceId);
     allowPullToRefresh();
-  }, []);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [orderId]);
 
   return (
     <Container className={'order-complete-container'}>
