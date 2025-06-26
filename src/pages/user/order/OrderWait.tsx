@@ -14,6 +14,7 @@ import useOrder from '@hooks/user/useOrder';
 import { defaultUserOrderValue } from '@@types/defaultValues';
 import { keyframes } from '@emotion/react';
 import useWorkspace from '@hooks/user/useWorkspace';
+import useTossPopup from '@hooks/user/useTossPopup';
 
 const Container = styled.div`
   width: 100%;
@@ -140,6 +141,7 @@ function OrderWait() {
   const isTossPay = searchParams.get('tossPay') === 'true';
 
   const { fetchWorkspace } = useWorkspace();
+  const { createTossUrl, createPopup, closePopupWithDelay, isSafariBrowser } = useTossPopup();
 
   const workspace = useAtomValue(userWorkspaceAtom);
   const [currentOrder, setCurrentOrder] = useState<Order>(defaultUserOrderValue);
@@ -211,30 +213,24 @@ function OrderWait() {
   const handleTossRetry = () => {
     if (!tossAccountUrl) {
       alert('토스 이체 정보를 가져올 수 없습니다.');
-      return;
+      return null;
     }
 
-    const tossUrl = `${tossAccountUrl}&amount=${totalPrice}`;
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isSafari = userAgent.includes('safari') && !userAgent.includes('chrome');
-
-    const closePopUpDelay = 10000;
+    const closePopUpDelay = 5000;
+    const tossUrl = createTossUrl(tossAccountUrl, totalPrice);
+    const isSafari = isSafariBrowser();
     let popup: Window | null = null;
 
     if (isSafari) {
-      popup = window.open(undefined);
+      popup = createPopup();
       if (popup) {
         popup.location.replace(tossUrl);
       }
     } else {
-      popup = window.open(tossUrl, '_blank');
+      popup = createPopup(tossUrl);
     }
 
-    setTimeout(() => {
-      if (popup && !popup.closed) {
-        popup?.close();
-      }
-    }, closePopUpDelay);
+    closePopupWithDelay(popup, closePopUpDelay);
   };
 
   return (

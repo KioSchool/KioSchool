@@ -15,6 +15,7 @@ import NewAppInput from '@components/common/input/NewAppInput';
 import { Color } from '@resources/colors';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import usePreventRefresh from '@hooks/usePreventRefresh';
+import useTossPopup from '@hooks/user/useTossPopup';
 
 const Container = styled.div`
   width: 100%;
@@ -63,6 +64,7 @@ function OrderPay() {
 
   const navigate = useNavigate();
   const { createOrder } = useOrder();
+  const { createPrePopupForSafari, navigatePopupToToss, closePopupWithDelay, isSafariBrowser, createTossUrl, createPopup } = useTossPopup();
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
@@ -99,16 +101,8 @@ function OrderPay() {
    * - API 호출 성공 후 생성된 팝업창의 URL을 이용해 Toss 결제 창으로 이동
    */
   const createOrderAndNavigateToToss = (customerName: string) => {
-    const tossUrl = `${tossAccountUrl}&amount=${totalAmount}`;
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isSafari = userAgent.includes('safari') && !userAgent.includes('chrome');
-
     const closePopUpDelay = 5000;
-
-    let popup: Window | null = null;
-    if (isSafari) {
-      popup = window.open(undefined);
-    }
+    const popup = createPrePopupForSafari();
 
     createOrder(workspaceId, tableNo, orderBasket, customerName)
       .then((res) => {
@@ -122,22 +116,18 @@ function OrderPay() {
           }).toString(),
         });
 
+        const isSafari = isSafariBrowser();
+        const tossUrl = createTossUrl(tossAccountUrl!, totalAmount);
         if (!isSafari) {
-          window.open(tossUrl);
+          createPopup(tossUrl);
         }
       })
       .catch(errorHandler)
       .then(() => {
-        if (isSafari) {
-          popup?.location.replace(tossUrl);
-        }
+        navigatePopupToToss(popup, tossAccountUrl!, totalAmount);
       })
       .finally(() => {
-        if (popup && !popup.closed) {
-          setTimeout(() => {
-            popup.close();
-          }, closePopUpDelay);
-        }
+        closePopupWithDelay(popup, closePopUpDelay);
       });
   };
 
