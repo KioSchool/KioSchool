@@ -13,6 +13,8 @@ import { Order, OrderStatus } from '@@types/index';
 import useOrder from '@hooks/user/useOrder';
 import { defaultUserOrderValue } from '@@types/defaultValues';
 import { keyframes } from '@emotion/react';
+import useWorkspace from '@hooks/user/useWorkspace';
+import useTossPopup from '@hooks/user/useTossPopup';
 
 const Container = styled.div`
   width: 100%;
@@ -50,10 +52,6 @@ const Label = styled.div`
 `;
 
 const DescriptionContainer = styled.div`
-  width: 100%;
-`;
-
-const DescriptionText = styled.div`
   box-sizing: border-box;
   border-radius: 10px;
   width: 100%;
@@ -65,6 +63,7 @@ const DescriptionText = styled.div`
   background: ${Color.LIGHT_GREY};
   padding: 20px 30px;
   word-break: keep-all;
+  gap: 10px;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
@@ -119,6 +118,18 @@ const TheActualAnimatedButton = styled.button`
   }
 `;
 
+const RetryButton = styled.button`
+  width: 145px;
+  height: 30px;
+  font-size: 12px;
+  background: ${Color.WHITE};
+  border: 0.5px solid #939393;
+  border-radius: 45px;
+  padding: 0 10px;
+  color: ${Color.BLACK};
+  ${rowFlex({ justify: 'center', align: 'center' })}
+`;
+
 const Dot = styled.span``;
 
 function OrderWait() {
@@ -129,8 +140,14 @@ function OrderWait() {
   const orderId = searchParams.get('orderId') || null;
   const isTossPay = searchParams.get('tossPay') === 'true';
 
+  const { fetchWorkspace } = useWorkspace();
+  const { openTossPopupSync } = useTossPopup();
+
   const workspace = useAtomValue(userWorkspaceAtom);
   const [currentOrder, setCurrentOrder] = useState<Order>(defaultUserOrderValue);
+
+  const account = workspace.owner.account;
+  const tossAccountUrl = account?.tossAccountUrl;
 
   const fetchIntervalTime = 5000;
   const { fetchOrder } = useOrder();
@@ -156,6 +173,7 @@ function OrderWait() {
     };
 
     pollOrder();
+    fetchWorkspace(workspaceId);
 
     const intervalId = setInterval(pollOrder, fetchIntervalTime);
 
@@ -192,6 +210,14 @@ function OrderWait() {
     }
   };
 
+  const handleTossRetry = () => {
+    openTossPopupSync({
+      tossAccountUrl,
+      amount: totalPrice,
+      closeDelay: 5000,
+    });
+  };
+
   return (
     <Container className={'order-wait-container'}>
       <OrderStickyNavBar useLeftArrow={false} showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
@@ -204,7 +230,8 @@ function OrderWait() {
             <Label>{totalPrice.toLocaleString()}원</Label>
           </OrderInfoContainer>
           <DescriptionContainer>
-            <DescriptionText>{waitingText}</DescriptionText>
+            {waitingText}
+            {isTossPay && <RetryButton onClick={handleTossRetry}>토스 앱 열기</RetryButton>}
           </DescriptionContainer>
         </ContentsContainer>
       </SubContainer>

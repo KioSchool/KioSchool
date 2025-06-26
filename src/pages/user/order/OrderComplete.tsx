@@ -14,6 +14,8 @@ import { useAtomValue } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
 import useBlockPopState from '@hooks/useBlockPopState';
 import { defaultUserOrderValue } from '@@types/defaultValues';
+import HorizontalDivider from '@components/common/divider/HorizontalDivider';
+import { Order, OrderStatus } from '@@types/index';
 
 const Container = styled.div`
   width: 100%;
@@ -22,59 +24,75 @@ const Container = styled.div`
 `;
 
 const SubContainer = styled.div`
-  gap: 20px;
-  padding-top: 20px;
-  padding-bottom: 120px;
-  ${colFlex({ justify: 'center', align: 'center' })}
+  box-sizing: border-box;
+  width: 100%;
+  padding: 20px 20px 120px 20px;
+  gap: 15px;
+  ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
-const SubTitleContainer = styled.div`
-  width: 100%;
-  padding: 0 40px;
+const ContentsContainer = styled.div`
   box-sizing: border-box;
-  gap: 10px;
-  ${colFlex()};
+  width: 100%;
+  padding: 12px 10px;
+  gap: 20px;
+  border-radius: 9px;
+  border: 0.5px solid #939393;
+  ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
 const SubTitle = styled.div`
   font-size: 16px;
   font-weight: 600;
-`;
-
-const ContentContainer = styled.div`
-  width: 100%;
-  gap: 6px;
-  ${colFlex({ align: 'center' })}
-`;
-
-const ContentTitleContainer = styled.div`
-  width: 300px;
-  ${rowFlex({ justify: 'space-between' })}
+  padding-left: 10px;
 `;
 
 const ContentTitle = styled.div`
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 600;
+  padding-bottom: 8px;
 `;
 
-const ContentBox = styled.div`
+const InfoContainer = styled.div`
   width: 100%;
-  padding: 20px 40px;
+  padding: 0 10px;
   box-sizing: border-box;
-  background: ${Color.LIGHT_GREY};
+  gap: 8px;
   ${colFlex()}
+`;
+
+const InfoRow = styled.div`
+  width: 100%;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const ContentText = styled.div`
   font-size: 13px;
-  font-weight: 500;
-  color: #898989;
+  font-weight: 400;
+  color: ${Color.GREY};
+`;
+
+const OrderStatusContainer = styled.div<{}>`
+  box-sizing: border-box;
+  width: 100%;
+  padding: 7px 10px;
+  gap: 10px;
+  ${colFlex({ justify: 'space-between', align: 'start' })};
 `;
 
 const OrderProductContainer = styled.div`
+  box-sizing: border-box;
   width: 100%;
   gap: 10px;
+  padding: 0 10px;
   ${colFlex()}
+`;
+
+const OrderPriceContainer = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  padding: 7px 10px;
+  ${rowFlex({ justify: 'space-between', align: 'center' })};
 `;
 
 const OrderProductRow = styled.div`
@@ -84,7 +102,8 @@ const OrderProductRow = styled.div`
 
 const OrderProductText = styled.div`
   font-size: 13px;
-  font-weight: 500;
+  color: ${Color.GREY};
+  font-weight: 400;
 `;
 
 function OrderComplete() {
@@ -99,7 +118,7 @@ function OrderComplete() {
   const { fetchOrder } = useOrder();
   const { allowPullToRefresh } = useRefresh();
   const resetOrderBasket = useResetAtom(userOrderBasketAtom);
-  const [order, setOrder] = useState(defaultUserOrderValue);
+  const [order, setOrder] = useState<Order>(defaultUserOrderValue);
   const workspace = useAtomValue(userWorkspaceAtom);
 
   const dateConverter = (date: Date) => {
@@ -112,85 +131,100 @@ function OrderComplete() {
 
   useBlockPopState();
 
+  const fetchIntervalTime = 60000;
+
   useEffect(() => {
-    const fetchOrderData = async () => {
-      if (!orderId || !workspaceId) {
-        alert('주문 정보가 없습니다. 다시 주문해주세요.');
-        navigate(-1);
+    let intervalId: NodeJS.Timeout | null = null;
+
+    const pollOrder = async () => {
+      if (!orderId) {
         return;
       }
-      const fetchedOrder = await fetchOrder(orderId);
-      setOrder(fetchedOrder);
+
+      const orderData = await fetchOrder(orderId);
+      setOrder(orderData);
+
+      if (intervalId && (orderData.status === OrderStatus.SERVED || orderData.status === OrderStatus.CANCELLED)) {
+        clearInterval(intervalId);
+      }
     };
 
+    if (!orderId || !workspaceId) {
+      alert('주문 정보가 없습니다. 다시 주문해주세요.');
+      navigate(-1);
+      return;
+    }
+
+    pollOrder();
+    intervalId = setInterval(pollOrder, fetchIntervalTime);
+
     resetOrderBasket();
-    fetchOrderData();
     fetchWorkspace(workspaceId);
     allowPullToRefresh();
-  }, []);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [orderId]);
 
   return (
     <Container className={'order-complete-container'}>
       <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={order.tableNumber} useShareButton={true} useLeftArrow={false} />
       <SubContainer className={'order-complete-sub-container'}>
-        <SubTitleContainer className={'order-complete-sub-title-container'}>
-          <SubTitle>주문내역</SubTitle>
-        </SubTitleContainer>
-        <ContentContainer>
-          <ContentTitleContainer>
+        <SubTitle>주문내역</SubTitle>
+        <ContentsContainer>
+          <InfoContainer>
             <ContentTitle>주문 정보</ContentTitle>
-          </ContentTitleContainer>
-          <ContentBox>
-            <ContentText>주문일시 | {dateConverter(new Date(order.createdAt))}</ContentText>
-            <ContentText>주문번호 | {order.orderNumber}</ContentText>
-            <ContentText>입금자명 | {order.customerName}</ContentText>
-          </ContentBox>
-
-          <ContentTitleContainer>
+            <InfoRow>
+              <ContentText>주문일시</ContentText>
+              <ContentText>{dateConverter(new Date(order.createdAt))}</ContentText>
+            </InfoRow>
+            <InfoRow>
+              <ContentText>주문번호</ContentText>
+              <ContentText>{order.orderNumber}</ContentText>
+            </InfoRow>
+            <InfoRow>
+              <ContentText>입금자명</ContentText>
+              <ContentText>{order.customerName}</ContentText>
+            </InfoRow>
+          </InfoContainer>
+          <HorizontalDivider />
+          <OrderStatusContainer>
             <ContentTitle>주문 상태</ContentTitle>
-          </ContentTitleContainer>
-          <ContentBox>
             <OrderStatusBar status={order.status} />
-          </ContentBox>
-
-          <ContentTitleContainer>
+          </OrderStatusContainer>
+          <HorizontalDivider />
+          <OrderProductContainer>
             <ContentTitle>상품 정보</ContentTitle>
-          </ContentTitleContainer>
-          <ContentBox>
-            <OrderProductContainer>
-              {order.orderProducts.map((orderProduct) => (
-                <OrderProductRow key={orderProduct.id}>
-                  <OrderProductText>
-                    {orderProduct.productName} · {orderProduct.quantity}개
-                  </OrderProductText>
-                  <OrderProductText>{orderProduct.totalPrice.toLocaleString()}원</OrderProductText>
-                </OrderProductRow>
-              ))}
-            </OrderProductContainer>
-          </ContentBox>
-          <ContentBox>
-            <OrderProductContainer>
-              <OrderProductRow key={order.id}>
-                <OrderProductText>상품 합계</OrderProductText>
-                <OrderProductText>{order.totalPrice.toLocaleString()}원</OrderProductText>
+            {order.orderProducts.map((orderProduct) => (
+              <OrderProductRow key={orderProduct.id}>
+                <OrderProductText>
+                  {orderProduct.productName} · {orderProduct.quantity}개
+                </OrderProductText>
+                <OrderProductText>{orderProduct.totalPrice.toLocaleString()}원</OrderProductText>
               </OrderProductRow>
-            </OrderProductContainer>
-          </ContentBox>
-        </ContentContainer>
-        <OrderButton
-          showButton={true}
-          buttonLabel={`더 주문하기`}
-          onClick={() =>
-            navigate({
-              pathname: '/order',
-              search: createSearchParams({
-                workspaceId: workspaceId || '',
-                tableNo: tableNo || '',
-              }).toString(),
-            })
-          }
-        />
+            ))}
+          </OrderProductContainer>
+          <HorizontalDivider />
+          <OrderPriceContainer key={order.id}>
+            <ContentTitle>결제 금액</ContentTitle>
+            <ContentTitle>{order.totalPrice.toLocaleString()}원</ContentTitle>
+          </OrderPriceContainer>
+        </ContentsContainer>
       </SubContainer>
+      <OrderButton
+        showButton={true}
+        buttonLabel={`더 주문하기`}
+        onClick={() =>
+          navigate({
+            pathname: '/order',
+            search: createSearchParams({
+              workspaceId: workspaceId || '',
+              tableNo: tableNo || '',
+            }).toString(),
+          })
+        }
+      />
     </Container>
   );
 }
