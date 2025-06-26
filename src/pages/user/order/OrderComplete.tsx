@@ -163,7 +163,9 @@ function OrderComplete() {
     allowPullToRefresh();
 
     return () => {
-      clearInterval(intervalId);
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
     };
   }, [orderId]);
 
