@@ -103,7 +103,7 @@ function OrderPay() {
     const userAgent = navigator.userAgent.toLowerCase();
     const isSafari = userAgent.includes('safari') && !userAgent.includes('chrome');
 
-    const closePopUpDelay = 10000;
+    const closePopUpDelay = 5000;
 
     let popup: Window | null = null;
     if (isSafari) {
