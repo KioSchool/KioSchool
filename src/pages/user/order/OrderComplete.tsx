@@ -131,7 +131,7 @@ function OrderComplete() {
 
   useBlockPopState();
 
-  const fetchIntervalTime = 5000;
+  const fetchIntervalTime = 60000;
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout | null = null;
