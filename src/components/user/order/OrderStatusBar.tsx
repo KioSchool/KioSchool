@@ -65,7 +65,7 @@ const Node = styled.div<{ active: boolean }>`
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: ${({ active }) => (active ? Color.KIO_ORANGE : 'white')};
+  background-color: ${({ active }) => (active ? Color.KIO_ORANGE : Color.WHITE)};
   border: 1px solid ${({ active }) => (active ? Color.KIO_ORANGE : '#e0e0e0')};
   box-sizing: border-box;
 `;
