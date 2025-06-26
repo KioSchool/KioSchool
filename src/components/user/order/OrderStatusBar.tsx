@@ -21,8 +21,7 @@ const LabelsContainer = styled.div`
 const Label = styled.div<{ active: boolean }>`
   font-size: 13px;
   font-weight: 400;
-  color: ${Color.GREY};
-  color: ${({ active }) => (active ? Color.BLACK : '#898989')};
+  color: ${({ active }) => (active ? Color.BLACK : Color.GREY)};
 `;
 
 const ProgressBarContainer = styled.div`
