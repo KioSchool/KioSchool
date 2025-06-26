@@ -141,7 +141,7 @@ function OrderWait() {
   const isTossPay = searchParams.get('tossPay') === 'true';
 
   const { fetchWorkspace } = useWorkspace();
-  const { createTossUrl, createPopup, closePopupWithDelay, isSafariBrowser } = useTossPopup();
+  const { openTossPopupSync } = useTossPopup();
 
   const workspace = useAtomValue(userWorkspaceAtom);
   const [currentOrder, setCurrentOrder] = useState<Order>(defaultUserOrderValue);
@@ -211,26 +211,11 @@ function OrderWait() {
   };
 
   const handleTossRetry = () => {
-    if (!tossAccountUrl) {
-      alert('토스 이체 정보를 가져올 수 없습니다.');
-      return null;
-    }
-
-    const closePopUpDelay = 5000;
-    const tossUrl = createTossUrl(tossAccountUrl, totalPrice);
-    const isSafari = isSafariBrowser();
-    let popup: Window | null = null;
-
-    if (isSafari) {
-      popup = createPopup();
-      if (popup) {
-        popup.location.replace(tossUrl);
-      }
-    } else {
-      popup = createPopup(tossUrl);
-    }
-
-    closePopupWithDelay(popup, closePopUpDelay);
+    openTossPopupSync({
+      tossAccountUrl,
+      amount: totalPrice,
+      closeDelay: 5000,
+    });
   };
 
   return (

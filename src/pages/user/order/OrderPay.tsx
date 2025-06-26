@@ -64,7 +64,7 @@ function OrderPay() {
 
   const navigate = useNavigate();
   const { createOrder } = useOrder();
-  const { createPrePopupForSafari, navigatePopupToToss, closePopupWithDelay, isSafariBrowser, createTossUrl, createPopup } = useTossPopup();
+  const { openTossPopupWithPromise } = useTossPopup();
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
@@ -101,11 +101,12 @@ function OrderPay() {
    * - API 호출 성공 후 생성된 팝업창의 URL을 이용해 Toss 결제 창으로 이동
    */
   const createOrderAndNavigateToToss = (customerName: string) => {
-    const closePopUpDelay = 5000;
-    const popup = createPrePopupForSafari();
-
-    createOrder(workspaceId, tableNo, orderBasket, customerName)
-      .then((res) => {
+    openTossPopupWithPromise({
+      tossAccountUrl,
+      amount: totalAmount,
+      closeDelay: 5000,
+      promise: createOrder(workspaceId, tableNo, orderBasket, customerName),
+      onSuccess: (res) => {
         navigate({
           pathname: '/order-wait',
           search: createSearchParams({
@@ -115,20 +116,9 @@ function OrderPay() {
             tossPay: 'true',
           }).toString(),
         });
-
-        const isSafari = isSafariBrowser();
-        const tossUrl = createTossUrl(tossAccountUrl!, totalAmount);
-        if (!isSafari) {
-          createPopup(tossUrl);
-        }
-      })
-      .catch(errorHandler)
-      .then(() => {
-        navigatePopupToToss(popup, tossAccountUrl!, totalAmount);
-      })
-      .finally(() => {
-        closePopupWithDelay(popup, closePopUpDelay);
-      });
+      },
+      onError: errorHandler,
+    });
   };
 
   const createOrderAndNavigateToComplete = (customerName: string) => {
