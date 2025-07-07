@@ -1,3 +1,4 @@
+import { Table } from '@@types/index';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
@@ -5,7 +6,7 @@ import useCustomNavigate from '@hooks/useCustomNavigate';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
 
@@ -51,14 +52,22 @@ const TableCell = styled.div`
 function AdminOrderTable() {
   const navigate = useNavigate();
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchWorkspace } = useAdminWorkspace();
+  const { fetchWorkspaceTables } = useAdminWorkspace();
   const workspace = useAtomValue(adminWorkspaceAtom);
   const { appendPathWithPage } = useCustomNavigate();
+  const [tables, setTables] = useState<Table[]>([]);
 
   useEffect(() => {
-    fetchWorkspace(workspaceId);
+    fetchWorkspaceTables(workspaceId)
+      .then((response) => {
+        setTables(response.data);
+      })
+      .catch((error) => {
+        console.error('테이블 데이터를 조회하는데 문제가 발생했습니다:', error);
+      });
   }, []);
 
+  console.log('tables', tables);
   return (
     <AppContainer
       useFlex={colFlex({ justify: 'center' })}
