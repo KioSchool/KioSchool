@@ -7,6 +7,7 @@ export interface Order {
   status: OrderStatus;
   cancelReason: string;
   orderNumber: number;
+  orderSession: OrderSession | null;
   id: number;
   createdAt: string;
   updatedAt: string;
@@ -21,6 +22,15 @@ export interface OrderProductBase {
 export interface OrderWebsocket {
   type: 'CREATED' | 'UPDATED';
   data: Order;
+}
+
+export interface OrderSession {
+  expectedEndAt: string;
+  endAt: string | null;
+  tableNumber: number;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface OrderProduct extends OrderProductBase {
@@ -81,6 +91,7 @@ export interface Workspace {
   images: Array<WorkspaceImage>;
   notice: string;
   tableCount: number;
+  workspaceSetting: WorkspaceSetting;
   id: number;
   createdAt: string;
   updatedAt: string;
@@ -88,6 +99,14 @@ export interface Workspace {
 
 export interface WorkspaceImage {
   url: string;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface WorkspaceSetting {
+  useOrderSessionTimeLimit: boolean;
+  orderSessionTimeLimitMinutes: number;
   id: number;
   createdAt: string;
   updatedAt: string;
@@ -166,6 +185,15 @@ export interface Bank {
 export interface EmailDomain {
   name: string;
   domain: string;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Table {
+  tableNumber: number;
+  tableHash: string;
+  orderSession: OrderSession | null;
   id: number;
   createdAt: string;
   updatedAt: string;
