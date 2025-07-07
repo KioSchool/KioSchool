@@ -83,6 +83,11 @@ function OrderPay() {
       navigate(-2);
       return;
     }
+
+    if (error.response.status === HttpStatusCode.BadRequest) {
+      alert(error.response.data.message);
+      return;
+    }
   };
   usePreventRefresh();
 
