@@ -12,9 +12,10 @@ interface TableOrderListProps {
 function TableOrderList({ workspaceId, orderSessionId }: TableOrderListProps) {
   const { fetchTableOrders } = useAdminOrder(String(workspaceId));
   const [tableOrders, setTableOrders] = useState<Order[]>([]);
+
   useEffect(() => {
-    if (workspaceId) {
-      const getTableOrders = () => {
+    const getTableOrders = () => {
+      if (workspaceId && orderSessionId) {
         fetchTableOrders(orderSessionId)
           .then((response) => {
             setTableOrders(response.data);
@@ -22,15 +23,18 @@ function TableOrderList({ workspaceId, orderSessionId }: TableOrderListProps) {
           .catch((error) => {
             console.error('Error fetching table orders:', error);
           });
-      };
-      getTableOrders();
-      const intervalId = setInterval(getTableOrders, defaultInterval);
+      } else if (!orderSessionId) {
+        setTableOrders([]);
+      }
+    };
 
-      return () => clearInterval(intervalId);
-    }
-  }, [workspaceId]);
+    getTableOrders();
 
-  return <div>{tableOrders.map((order: Order) => order.orderNumber)}</div>;
+    const intervalId = setInterval(getTableOrders, defaultInterval);
+    return () => clearInterval(intervalId);
+  }, [workspaceId, orderSessionId]);
+
+  return <div>{tableOrders.length ? tableOrders.map((order: Order) => order.orderNumber) : '주문 없음'}</div>;
 }
 
 export default TableOrderList;

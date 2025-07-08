@@ -1,6 +1,7 @@
 import { Table } from '@@types/index';
 import TableOrderList from '@components/admin/order/table/TableOrderList';
 import TableSessionInfo from '@components/admin/order/table/TableSessionInfo';
+import TableSessionList from '@components/admin/order/table/TableSessionList';
 import TableUsageTime from '@components/admin/order/table/TableUsageTime';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
@@ -21,12 +22,6 @@ const Container = styled.div`
   gap: 10px;
 `;
 
-const TableList = styled.div`
-  height: 600px;
-  overflow: auto;
-  border: 1px solid black;
-`;
-
 const TableDetail = styled.div`
   height: 600px;
   display: grid;
@@ -44,7 +39,8 @@ function AdminOrderTable() {
   const navigate = useNavigate();
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const workspaceSetting = useAtomValue(adminWorkspaceAtom).workspaceSetting;
-  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [searchParams] = useSearchParams();
   const tableNo = searchParams.get('tableNo');
   const { fetchWorkspaceTables } = useAdminWorkspace();
 
@@ -70,14 +66,6 @@ function AdminOrderTable() {
     }
   }, [tableNo, tables]);
 
-  console.log('tables', tables);
-  console.log('selectedTable', selectedTable);
-
-  const onClickTable = (tableNumber: number) => {
-    const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.set('tableNo', String(tableNumber));
-    setSearchParams(newSearchParams);
-  };
   return (
     <AppContainer
       useFlex={colFlex({ justify: 'center' })}
@@ -88,22 +76,7 @@ function AdminOrderTable() {
       }}
     >
       <Container>
-        <TableList>
-          {tables.length > 0 &&
-            tables.map((table) => {
-              const remainTime = formatRemainingTime(table.orderSession?.expectedEndAt);
-              const isUsing = table.orderSession;
-              return (
-                <div key={table.id} onClick={() => onClickTable(table.tableNumber)}>
-                  <div>
-                    <div>{table.tableNumber}</div>
-                    <div>{remainTime}</div>
-                    <div>{isUsing ? '사용중' : '종료됨'}</div>
-                  </div>
-                </div>
-              );
-            })}
-        </TableList>
+        <TableSessionList tables={tables} />
 
         <TableDetail>
           <DetailHeader>
