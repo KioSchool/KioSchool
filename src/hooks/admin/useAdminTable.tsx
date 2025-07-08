@@ -1,22 +1,43 @@
 import useApi from '@hooks/useApi';
 
-function useTable() {
+function useTable(workspaceId: string | undefined) {
   const { adminApi } = useApi();
 
-  const fetchTableOrders = async (workspaceId: number | undefined | null, orderSessionId: number) => {
-    const params = {
-      workspaceId,
-      orderSessionId,
-    };
+  const patchTableSession = async (orderSessionId: number, expectedEndAt: string) => {
     return adminApi
-      .get('/order/session', { params })
-      .then((res) => res.data)
+      .patch(`/order/session`, {
+        workspaceId,
+        orderSessionId,
+        expectedEndAt,
+      })
       .catch((error) => {
-        console.error('Error fetching table orders:', error);
-        throw error;
+        console.error('Error patching table session:', error);
       });
   };
 
-  return { fetchTableOrders };
+  const finishTableSession = async (orderSessionId: number, tableNumber: number) => {
+    return adminApi
+      .post(`/order/session/end`, {
+        workspaceId,
+        tableNumber,
+        orderSessionId,
+      })
+      .catch((error) => {
+        console.error('Error finishing table session:', error);
+      });
+  };
+
+  const startTableSession = async (tableNumber: number) => {
+    return adminApi
+      .post(`/order/session/start`, {
+        workspaceId,
+        tableNumber,
+      })
+      .catch((error) => {
+        console.error('Error starting table session:', error);
+      });
+  };
+
+  return { patchTableSession, finishTableSession, startTableSession };
 }
 export default useTable;

@@ -47,7 +47,7 @@ function AdminOrderTable() {
   const [tables, setTables] = useState<Table[]>([]);
   const [selectedTable, setSelectedTable] = useState<Table | null>(null);
 
-  useEffect(() => {
+  const fetchTables = () => {
     fetchWorkspaceTables(workspaceId)
       .then((response) => {
         setTables(response.data.sort((a: Table, b: Table) => a.tableNumber - b.tableNumber));
@@ -55,6 +55,10 @@ function AdminOrderTable() {
       .catch((error) => {
         console.error('테이블 데이터를 조회하는데 문제가 발생했습니다:', error);
       });
+  };
+
+  useEffect(() => {
+    fetchTables();
   }, [workspaceId]);
 
   useEffect(() => {
@@ -81,7 +85,14 @@ function AdminOrderTable() {
         <TableDetail>
           <DetailHeader>
             <TableUsageTime usageTime={formatRemainingTime(selectedTable?.orderSession?.expectedEndAt)} />
-            <TableSessionInfo timeLimit={workspaceSetting.orderSessionTimeLimitMinutes} />
+            <TableSessionInfo
+              timeLimit={workspaceSetting.orderSessionTimeLimitMinutes}
+              workspaceId={workspaceId}
+              orderSessionId={selectedTable?.orderSession?.id}
+              currentExpectedEndAt={selectedTable?.orderSession?.expectedEndAt || ''}
+              tableNumber={selectedTable?.tableNumber}
+              refetchTable={fetchTables}
+            />
             <QRCodeCanvas value={location.origin + `/order?workspaceId=${workspaceId}&tableNo=${selectedTable?.tableNumber}`} />
           </DetailHeader>
           <TableOrderList workspaceId={Number(workspaceId)} orderSessionId={selectedTable?.orderSession?.id || 0} />
