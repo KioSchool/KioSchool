@@ -27,22 +27,28 @@ function AdminOrderTable() {
     fetchWorkspaceTables(workspaceId)
       .then((response) => {
         setTables(response.data);
-        if (tableNo) {
-          const table = response.data.find((t: Table) => t.tableNumber === Number(tableNo));
-          setSelectedTable(table || null);
-        }
       })
       .catch((error) => {
         console.error('테이블 데이터를 조회하는데 문제가 발생했습니다:', error);
       });
-  }, [workspaceId, tableNo]);
+  }, [workspaceId]);
+
+  useEffect(() => {
+    if (tableNo) {
+      const table = tables.find((t) => t.tableNumber === Number(tableNo));
+      setSelectedTable(table || null);
+    } else {
+      setSelectedTable(null);
+    }
+  }, [tableNo, tables]);
 
   console.log('tables', tables);
   console.log('selectedTable', selectedTable);
 
   const onClickTable = (tableNumber: number) => {
-    searchParams.set('tableNo', String(tableNumber));
-    setSearchParams(searchParams);
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set('tableNo', String(tableNumber));
+    setSearchParams(newSearchParams);
   };
   return (
     <AppContainer
