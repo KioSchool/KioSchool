@@ -80,6 +80,10 @@ function useAdminOrder(workspaceId: string | undefined) {
     return response;
   };
 
+  const fetchTableOrders = (orderSessionId: number) => {
+    return adminApi.get<Order[]>('/order/session', { params: { workspaceId, orderSessionId } });
+  };
+
   return {
     fetchAllOrders,
     payOrder,
@@ -91,6 +95,7 @@ function useAdminOrder(workspaceId: string | undefined) {
     fetchWorkspaceTable,
     updateOrderProductCount,
     fetchOrderHourlyPrices,
+    fetchTableOrders,
   };
 }
 
