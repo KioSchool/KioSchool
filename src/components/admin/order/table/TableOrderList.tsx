@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import { RiSearchLine } from '@remixicon/react';
 import { formatTime } from '@utils/TableTime';
 import { Color } from '@resources/colors';
+import useModal from '@hooks/useModal';
+import OrderDetailModal from '../realtime/modal/order-detail/OrderDetailModal';
 
 const defaultInterval = 5000;
 
@@ -67,6 +69,7 @@ interface TableOrderListProps {
 }
 
 function TableOrderList({ workspaceId, orderSessionId }: TableOrderListProps) {
+  const { isModalOpen, openModal, closeModal } = useModal();
   const { fetchTableOrders } = useAdminOrder(String(workspaceId));
   const [tableOrders, setTableOrders] = useState<Order[]>([]);
 
@@ -92,13 +95,13 @@ function TableOrderList({ workspaceId, orderSessionId }: TableOrderListProps) {
   }, [workspaceId, orderSessionId]);
 
   const onClickOrder = () => {
-    console.log(`Order clicked`);
+    openModal();
   };
 
   return (
     <OrderListContainer>
       <OrderHeader>
-        <div>ID</div>
+        <div>번호</div>
         <div>주문시간</div>
         <div>상품명</div>
         <div>입금자명</div>
@@ -117,6 +120,7 @@ function TableOrderList({ workspaceId, orderSessionId }: TableOrderListProps) {
               <div>
                 <SearchIcon onClick={onClickOrder} />
               </div>
+              <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
             </OrderRow>
           ))
         ) : (
