@@ -1,4 +1,5 @@
 import useAdminTable from '@hooks/admin/useAdminTable';
+import { useState } from 'react';
 
 interface TableSessionInfoProps {
   timeLimit: number;
@@ -10,6 +11,7 @@ interface TableSessionInfoProps {
 }
 
 function TableSessionInfo({ timeLimit, workspaceId, orderSessionId, currentExpectedEndAt, tableNumber, refetchTable }: TableSessionInfoProps) {
+  const [selectedTimeLimit, setSelectedTimeLimit] = useState(timeLimit);
   const { patchTableSession, finishTableSession, startTableSession } = useAdminTable(workspaceId);
 
   const handleDecreaseTime = () => {
@@ -46,9 +48,18 @@ function TableSessionInfo({ timeLimit, workspaceId, orderSessionId, currentExpec
     }
   };
 
+  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedTimeLimit(Number(e.target.value));
+  };
+
   return (
     <div>
-      <div>{timeLimit}분</div>
+      <div>
+        <button onClick={() => setSelectedTimeLimit((prev) => prev - 1)}>-</button>
+        <input type="number" value={selectedTimeLimit} onChange={handleTimeChange} />
+        <span>분</span>
+        <button onClick={() => setSelectedTimeLimit((prev) => prev + 1)}>+</button>
+      </div>
       <button onClick={handleDecreaseTime}>감소</button>
       <button onClick={handleExtendTime}>연장</button>
       <button onClick={handleEndSession}>사용종료</button>
