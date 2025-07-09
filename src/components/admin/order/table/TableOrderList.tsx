@@ -43,7 +43,7 @@ const OrderItem = styled.div`
 const OrderFallback = styled.div`
   text-align: center;
   padding: 20px;
-  color: ${Color.LIGHT_GREY};
+  color: ${Color.GREY};
 `;
 
 const SearchIcon = styled(RiSearchLine)`

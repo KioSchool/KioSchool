@@ -1,5 +1,10 @@
+import styled from '@emotion/styled';
 import useAdminTable from '@hooks/admin/useAdminTable';
 import { useState } from 'react';
+
+const Container = styled.div`
+  border: 1px solid black;
+`;
 
 interface TableSessionInfoProps {
   timeLimit: number;
@@ -53,7 +58,7 @@ function TableSessionInfo({ timeLimit, workspaceId, orderSessionId, currentExpec
   };
 
   return (
-    <div>
+    <Container>
       <div>
         <button onClick={() => setSelectedTimeLimit((prev) => prev - 1)}>-</button>
         <input type="number" value={selectedTimeLimit} onChange={handleTimeChange} />
@@ -64,7 +69,7 @@ function TableSessionInfo({ timeLimit, workspaceId, orderSessionId, currentExpec
       <button onClick={handleExtendTime}>연장</button>
       <button onClick={handleEndSession}>사용종료</button>
       <button onClick={handleStartSession}>사용시작</button>
-    </div>
+    </Container>
   );
 }
 
