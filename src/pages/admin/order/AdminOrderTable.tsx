@@ -14,6 +14,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
 
+const defaultInterval = 10000;
+
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -59,6 +61,9 @@ function AdminOrderTable() {
 
   useEffect(() => {
     fetchTables();
+    const intervalId = setInterval(fetchTables, defaultInterval);
+
+    return () => clearInterval(intervalId);
   }, [workspaceId]);
 
   useEffect(() => {
