@@ -20,3 +20,12 @@ export const formatRemainingTime = (expectedEndAt?: string): string => {
 
   return `${minutes}분 남음`;
 };
+
+export const formatTime = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleTimeString('ko-KR', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  });
+};
