@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react';
 import { RiSearchLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import useModal from '@hooks/useModal';
-import OrderDetailModal from '../realtime/modal/order-detail/OrderDetailModal';
 import { formatTime } from '@utils/FormatDate';
+import OrderDetailModal from './modal/OrderDetailModal';
 
 const defaultInterval = 5000;
 
