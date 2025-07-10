@@ -36,7 +36,7 @@ function TableSessionItem({ expectedEndAt, isUsing, table }: TableSessionItemPro
   };
 
   return (
-    <Row key={table.id} onClick={() => onClickTable(table.tableNumber)} isSelected={selectedTableNo === String(table.tableNumber)}>
+    <Row onClick={() => onClickTable(table.tableNumber)} isSelected={selectedTableNo === String(table.tableNumber)}>
       <div>{table.tableNumber}</div>
       <div>{remainTime}</div>
       <div>{isUsing ? '사용중' : '종료됨'}</div>
