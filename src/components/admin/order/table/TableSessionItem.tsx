@@ -1,6 +1,6 @@
 import { Table } from '@@types/index';
 import styled from '@emotion/styled';
-import useDelayTime from '@hooks/useFormattedTime';
+import useFormattedTime from '@hooks/useFormattedTime';
 import { Color } from '@resources/colors';
 import { formatRemainingTableTime } from '@utils/FormatDate';
 import { useSearchParams } from 'react-router-dom';
@@ -20,13 +20,13 @@ const Row = styled.div<{ isSelected: boolean }>`
 `;
 
 interface TableSessionItemProps {
-  expectedEndAt: string;
+  expectedEndAt: string | undefined;
   isUsing: boolean;
   table: Table;
 }
 
 function TableSessionItem({ expectedEndAt, isUsing, table }: TableSessionItemProps) {
-  const remainTime = useDelayTime<string>({ date: expectedEndAt, formatter: formatRemainingTableTime });
+  const remainTime = useFormattedTime<string>({ date: expectedEndAt, formatter: formatRemainingTableTime });
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedTableNo = searchParams.get('tableNo');
 

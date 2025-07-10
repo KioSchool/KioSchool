@@ -48,7 +48,7 @@ function TableSessionList({ tables }: TableSessionListProps) {
         {tables.length > 0 ? (
           tables.map((table) => {
             const isUsing = table.orderSession !== null;
-            const expectedEndAt = table.orderSession?.expectedEndAt || '';
+            const expectedEndAt = table.orderSession?.expectedEndAt;
             return <TableSessionItem expectedEndAt={expectedEndAt} isUsing={isUsing} table={table} />;
           })
         ) : (
