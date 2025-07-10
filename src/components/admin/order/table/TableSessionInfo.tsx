@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import useAdminTable from '@hooks/admin/useAdminTable';
-import { toLocalISOString } from '@utils/TableTime';
+import { dateConverter } from '@utils/FormatDate';
 import { useState } from 'react';
 
 const Container = styled.div`
@@ -31,7 +31,7 @@ function TableSessionInfo({ timeLimit, workspaceId, orderSessionId, currentExpec
 
     const currentEndDate = new Date(currentExpectedEndAt);
     const newEndDate = new Date(currentEndDate.getTime() - selectedTimeLimit * 60 * 1000);
-    const newEndDateString = toLocalISOString(newEndDate);
+    const newEndDateString = dateConverter(newEndDate);
     const isExpired = newEndDate.getTime() < new Date().getTime();
 
     if (isExpired) {
@@ -47,7 +47,7 @@ function TableSessionInfo({ timeLimit, workspaceId, orderSessionId, currentExpec
 
     const currentEndDate = new Date(currentExpectedEndAt);
     const newEndDate = new Date(currentEndDate.getTime() + selectedTimeLimit * 60 * 1000);
-    const newEndDateString = toLocalISOString(newEndDate);
+    const newEndDateString = dateConverter(newEndDate);
 
     handleApiAndRefetch(patchTableSession(orderSessionId, newEndDateString));
   };

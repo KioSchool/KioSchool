@@ -2,8 +2,7 @@ import { Table } from '@@types/index';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
-import { formatRemainingTime } from '@utils/TableTime';
-import { useSearchParams } from 'react-router-dom';
+import TableSessionItem from './TableSessionItem';
 
 const ListContainer = styled.div`
   height: 600px;
@@ -33,33 +32,11 @@ const FallbackMessage = styled.div`
   ${rowFlex({ justify: 'center', align: 'center' })};
 `;
 
-const Row = styled.div<{ isSelected: boolean }>`
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  padding: 10px;
-  border-bottom: 1px solid #e0e0e0;
-  cursor: pointer;
-  text-align: center;
-  background-color: ${({ isSelected }) => (isSelected ? Color.LIGHT_GREY : 'transparent')};
-
-  &:hover {
-    background-color: #f5f5f5;
-  }
-`;
-
 interface TableSessionListProps {
   tables: Table[];
 }
 
 function TableSessionList({ tables }: TableSessionListProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const selectedTableNo = searchParams.get('tableNo');
-
-  const onClickTable = (tableNumber: number) => {
-    searchParams.set('tableNo', String(tableNumber));
-    setSearchParams(searchParams);
-  };
-
   return (
     <ListContainer>
       <Header>
@@ -70,15 +47,9 @@ function TableSessionList({ tables }: TableSessionListProps) {
       <ListBody>
         {tables.length > 0 ? (
           tables.map((table) => {
-            const remainTime = formatRemainingTime(table.orderSession?.expectedEndAt);
-            const isUsing = table.orderSession;
-            return (
-              <Row key={table.id} onClick={() => onClickTable(table.tableNumber)} isSelected={selectedTableNo === String(table.tableNumber)}>
-                <div>{table.tableNumber}</div>
-                <div>{remainTime}</div>
-                <div>{isUsing ? '사용중' : '종료됨'}</div>
-              </Row>
-            );
+            const isUsing = table.orderSession !== null;
+            const expectedEndAt = table.orderSession?.expectedEndAt || '';
+            return <TableSessionItem expectedEndAt={expectedEndAt} isUsing={isUsing} table={table} />;
           })
         ) : (
           <FallbackMessage>테이블 정보가 없습니다.</FallbackMessage>

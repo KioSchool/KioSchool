@@ -3,10 +3,10 @@ import useAdminOrder from '@hooks/admin/useAdminOrder';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { RiSearchLine } from '@remixicon/react';
-import { formatTime } from '@utils/TableTime';
 import { Color } from '@resources/colors';
 import useModal from '@hooks/useModal';
 import OrderDetailModal from '../realtime/modal/order-detail/OrderDetailModal';
+import { formatTime } from '@utils/FormatDate';
 
 const defaultInterval = 5000;
 

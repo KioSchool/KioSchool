@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
+import useFormattedTime from '@hooks/useFormattedTime';
 import { colFlex } from '@styles/flexStyles';
+import { formatElapsedTime } from '@utils/FormatDate';
 
 const Container = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -7,11 +9,16 @@ const Container = styled.div`
 `;
 
 interface TableUsageTimeProps {
-  usageTime: string;
+  createdAt: string;
 }
 
-function TableUsageTime({ usageTime }: TableUsageTimeProps) {
-  return <Container>{usageTime}</Container>;
+function TableUsageTime({ createdAt }: TableUsageTimeProps) {
+  const elapsedTime = useFormattedTime<string>({
+    date: createdAt,
+    formatter: formatElapsedTime,
+  });
+
+  return <Container>사용시간: {elapsedTime}</Container>;
 }
 
 export default TableUsageTime;

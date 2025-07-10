@@ -7,14 +7,11 @@ import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { colFlex } from '@styles/flexStyles';
-import { formatRemainingTime } from '@utils/TableTime';
 import { useAtomValue } from 'jotai';
 import { QRCodeCanvas } from 'qrcode.react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
-
-const defaultInterval = 10000;
 
 const Container = styled.div`
   width: 100%;
@@ -61,10 +58,7 @@ function AdminOrderTable() {
 
   useEffect(() => {
     fetchTables();
-    const intervalId = setInterval(fetchTables, defaultInterval);
-
-    return () => clearInterval(intervalId);
-  }, [workspaceId]);
+  }, []);
 
   useEffect(() => {
     if (tableNo) {
@@ -89,7 +83,7 @@ function AdminOrderTable() {
 
         <TableDetail>
           <DetailHeader>
-            <TableUsageTime usageTime={formatRemainingTime(selectedTable?.orderSession?.expectedEndAt)} />
+            <TableUsageTime createdAt={selectedTable?.orderSession?.createdAt || ''} />
             <TableSessionInfo
               timeLimit={workspaceSetting.orderSessionTimeLimitMinutes}
               workspaceId={workspaceId}
