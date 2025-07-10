@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import useAdminTable from '@hooks/admin/useAdminTable';
+import { toLocalISOString } from '@utils/TableTime';
 import { useState } from 'react';
 
 const Container = styled.div`
@@ -19,38 +20,46 @@ function TableSessionInfo({ timeLimit, workspaceId, orderSessionId, currentExpec
   const [selectedTimeLimit, setSelectedTimeLimit] = useState(timeLimit);
   const { patchTableSession, finishTableSession, startTableSession } = useAdminTable(workspaceId);
 
+  const handleApiAndRefetch = (apiCall: Promise<any>) => {
+    apiCall.then((res) => {
+      if (res) refetchTable();
+    });
+  };
+
   const handleDecreaseTime = () => {
-    if (currentExpectedEndAt && orderSessionId) {
-      const currentEndDate = new Date(currentExpectedEndAt);
-      const newEndDate = new Date(currentEndDate.getTime() - timeLimit * 60 * 1000);
-      patchTableSession(orderSessionId, newEndDate.toISOString()).then((res) => {
-        if (res) refetchTable();
-      });
-    }
-  };
-  const handleExtendTime = () => {
-    if (currentExpectedEndAt && orderSessionId) {
-      const currentEndDate = new Date(currentExpectedEndAt);
-      const newEndDate = new Date(currentEndDate.getTime() + timeLimit * 60 * 1000);
-      patchTableSession(orderSessionId, newEndDate.toISOString()).then((res) => {
-        if (res) refetchTable();
-      });
-    }
-  };
-  const handleEndSession = () => {
-    if (orderSessionId && tableNumber) {
-      finishTableSession(orderSessionId, tableNumber).then((res) => {
-        if (res) refetchTable();
-      });
+    if (!currentExpectedEndAt || !orderSessionId) return;
+
+    const currentEndDate = new Date(currentExpectedEndAt);
+    const newEndDate = new Date(currentEndDate.getTime() - selectedTimeLimit * 60 * 1000);
+    const newEndDateString = toLocalISOString(newEndDate);
+    const isExpired = newEndDate.getTime() < new Date().getTime();
+
+    if (isExpired) {
+      if (!tableNumber) return;
+      handleApiAndRefetch(finishTableSession(orderSessionId, tableNumber));
+    } else {
+      handleApiAndRefetch(patchTableSession(orderSessionId, newEndDateString));
     }
   };
 
+  const handleExtendTime = () => {
+    if (!currentExpectedEndAt || !orderSessionId) return;
+
+    const currentEndDate = new Date(currentExpectedEndAt);
+    const newEndDate = new Date(currentEndDate.getTime() + selectedTimeLimit * 60 * 1000);
+    const newEndDateString = toLocalISOString(newEndDate);
+
+    handleApiAndRefetch(patchTableSession(orderSessionId, newEndDateString));
+  };
+
+  const handleEndSession = () => {
+    if (!orderSessionId || !tableNumber) return;
+    handleApiAndRefetch(finishTableSession(orderSessionId, tableNumber));
+  };
+
   const handleStartSession = () => {
-    if (tableNumber) {
-      startTableSession(tableNumber).then((res) => {
-        if (res) refetchTable();
-      });
-    }
+    if (!tableNumber) return;
+    handleApiAndRefetch(startTableSession(tableNumber));
   };
 
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {

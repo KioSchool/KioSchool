@@ -21,6 +21,20 @@ export const formatRemainingTime = (expectedEndAt?: string): string => {
   return `${minutes}분 남음`;
 };
 
+export const toLocalISOString = (date: Date): string => {
+  const pad = (num: number) => num.toString().padStart(2, '0');
+
+  const year = date.getFullYear();
+  const month = pad(date.getMonth() + 1);
+  const day = pad(date.getDate());
+  const hours = pad(date.getHours());
+  const minutes = pad(date.getMinutes());
+  const seconds = pad(date.getSeconds());
+  const milliseconds = date.getMilliseconds().toString().padStart(3, '0');
+
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
+};
+
 export const formatTime = (dateString: string) => {
   const date = new Date(dateString);
   return date.toLocaleTimeString('ko-KR', {
