@@ -1,6 +1,7 @@
 import { Table } from '@@types/index';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
+import { rowFlex } from '@styles/flexStyles';
 import { formatRemainingTime } from '@utils/TableTime';
 import { useSearchParams } from 'react-router-dom';
 
@@ -23,6 +24,13 @@ const Header = styled.div`
 
 const ListBody = styled.div`
   overflow-y: auto;
+  height: 100%;
+`;
+
+const FallbackMessage = styled.div`
+  height: 100%;
+  color: ${Color.GREY};
+  ${rowFlex({ justify: 'center', align: 'center' })};
 `;
 
 const Row = styled.div<{ isSelected: boolean }>`
@@ -60,7 +68,7 @@ function TableSessionList({ tables }: TableSessionListProps) {
         <div>상태</div>
       </Header>
       <ListBody>
-        {tables.length > 0 &&
+        {tables.length > 0 ? (
           tables.map((table) => {
             const remainTime = formatRemainingTime(table.orderSession?.expectedEndAt);
             const isUsing = table.orderSession;
@@ -71,7 +79,10 @@ function TableSessionList({ tables }: TableSessionListProps) {
                 <div>{isUsing ? '사용중' : '종료됨'}</div>
               </Row>
             );
-          })}
+          })
+        ) : (
+          <FallbackMessage>테이블 정보가 없습니다.</FallbackMessage>
+        )}
       </ListBody>
     </ListContainer>
   );
