@@ -11,7 +11,7 @@ interface TableSessionInfoProps {
   timeLimit: number;
   workspaceId: string | undefined;
   orderSessionId: number | undefined;
-  currentExpectedEndAt: string;
+  currentExpectedEndAt: string | undefined;
   tableNumber?: number;
   refetchTable: () => void;
 }

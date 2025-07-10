@@ -83,12 +83,12 @@ function AdminOrderTable() {
 
         <TableDetail>
           <DetailHeader>
-            <TableUsageTime createdAt={selectedTable?.orderSession?.createdAt || ''} />
+            <TableUsageTime createdAt={selectedTable?.orderSession?.createdAt} />
             <TableSessionInfo
               timeLimit={workspaceSetting.orderSessionTimeLimitMinutes}
               workspaceId={workspaceId}
               orderSessionId={selectedTable?.orderSession?.id}
-              currentExpectedEndAt={selectedTable?.orderSession?.expectedEndAt || ''}
+              currentExpectedEndAt={selectedTable?.orderSession?.expectedEndAt}
               tableNumber={selectedTable?.tableNumber}
               refetchTable={fetchTables}
             />

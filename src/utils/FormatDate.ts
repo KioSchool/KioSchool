@@ -56,7 +56,7 @@ export const formatRemainingTableTime = (expectedEndAt?: string): string => {
   return `${minutes}분 남음`;
 };
 
-export const formatElapsedTime = (date: string): string => {
+export const formatElapsedTime = (date: string | undefined): string => {
   if (!date) {
     return '-';
   }

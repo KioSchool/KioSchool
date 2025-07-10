@@ -9,7 +9,7 @@ const Container = styled.div`
 `;
 
 interface TableUsageTimeProps {
-  createdAt: string;
+  createdAt: string | undefined;
 }
 
 function TableUsageTime({ createdAt }: TableUsageTimeProps) {
