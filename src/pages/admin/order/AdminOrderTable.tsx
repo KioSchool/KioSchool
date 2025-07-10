@@ -6,6 +6,7 @@ import TableUsageTime from '@components/admin/order/table/TableUsageTime';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
+import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
 import { QRCodeCanvas } from 'qrcode.react';
@@ -32,6 +33,14 @@ const DetailHeader = styled.div`
   display: grid;
   grid-template-columns: 1.3fr 1fr 1fr;
   border: 1px solid black;
+`;
+
+const FallbackContainer = styled.div`
+  height: 600px;
+  border: 1px solid black;
+  font-size: 1.5rem;
+  color: ${Color.GREY};
+  ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
 function AdminOrderTable() {
@@ -80,22 +89,27 @@ function AdminOrderTable() {
     >
       <Container>
         <TableSessionList tables={tables} />
-
-        <TableDetail>
-          <DetailHeader>
-            <TableUsageTime createdAt={selectedTable?.orderSession?.createdAt} />
-            <TableSessionInfo
-              timeLimit={workspaceSetting.orderSessionTimeLimitMinutes}
-              workspaceId={workspaceId}
-              orderSessionId={selectedTable?.orderSession?.id}
-              currentExpectedEndAt={selectedTable?.orderSession?.expectedEndAt}
-              tableNumber={selectedTable?.tableNumber}
-              refetchTable={fetchTables}
-            />
-            <QRCodeCanvas value={location.origin + `/order?workspaceId=${workspaceId}&tableNo=${selectedTable?.tableNumber}`} />
-          </DetailHeader>
-          <TableOrderList workspaceId={Number(workspaceId)} orderSessionId={selectedTable?.orderSession?.id || 0} />
-        </TableDetail>
+        {selectedTable ? (
+          <TableDetail>
+            <DetailHeader>
+              <TableUsageTime createdAt={selectedTable.orderSession?.createdAt} />
+              <TableSessionInfo
+                timeLimit={workspaceSetting.orderSessionTimeLimitMinutes}
+                workspaceId={workspaceId}
+                orderSessionId={selectedTable.orderSession?.id}
+                currentExpectedEndAt={selectedTable.orderSession?.expectedEndAt}
+                tableNumber={selectedTable.tableNumber}
+                refetchTable={fetchTables}
+              />
+              <QRCodeCanvas value={`${location.origin}/order?workspaceId=${workspaceId}&tableNo=${selectedTable.tableNumber}`} />
+            </DetailHeader>
+            <TableOrderList workspaceId={Number(workspaceId)} orderSessionId={selectedTable.orderSession?.id || 0} />
+          </TableDetail>
+        ) : (
+          <FallbackContainer>
+            <div>테이블을 선택하여 상세 정보를 확인하세요.</div>
+          </FallbackContainer>
+        )}
       </Container>
     </AppContainer>
   );
