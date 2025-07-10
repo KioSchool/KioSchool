@@ -31,9 +31,10 @@ function TableSessionInfo({ timeLimit, workspaceId, orderSessionId, currentExpec
       alert('세션 ID가 없습니다. 세션을 시작해주세요.');
       return;
     }
+
     const timeToDecrease = Number(selectedTimeLimit);
     if (isNaN(timeToDecrease) || timeToDecrease <= 0) {
-      alert('연장 시간을 올바르게 입력해주세요.');
+      alert('단축 시간을 올바르게 입력해주세요.');
       return;
     }
 
@@ -55,14 +56,10 @@ function TableSessionInfo({ timeLimit, workspaceId, orderSessionId, currentExpec
       alert('세션 ID가 없습니다. 세션을 시작해주세요.');
       return;
     }
+
     const timeToExtend = Number(selectedTimeLimit);
     if (isNaN(timeToExtend) || timeToExtend <= 0) {
       alert('연장 시간을 올바르게 입력해주세요.');
-      return;
-    }
-
-    if (!orderSessionId) {
-      alert('세션 ID가 없습니다. 세션을 시작해주세요.');
       return;
     }
 
