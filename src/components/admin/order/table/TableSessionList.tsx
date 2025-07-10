@@ -49,7 +49,7 @@ function TableSessionList({ tables }: TableSessionListProps) {
           tables.map((table) => {
             const isUsing = table.orderSession !== null;
             const expectedEndAt = table.orderSession?.expectedEndAt;
-            return <TableSessionItem expectedEndAt={expectedEndAt} isUsing={isUsing} table={table} />;
+            return <TableSessionItem key={table.id} expectedEndAt={expectedEndAt} isUsing={isUsing} table={table} />;
           })
         ) : (
           <FallbackMessage>테이블 정보가 없습니다.</FallbackMessage>

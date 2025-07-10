@@ -17,7 +17,7 @@ interface TableSessionInfoProps {
 }
 
 function TableSessionInfo({ timeLimit, workspaceId, orderSessionId, currentExpectedEndAt, tableNumber, refetchTable }: TableSessionInfoProps) {
-  const [selectedTimeLimit, setSelectedTimeLimit] = useState(timeLimit);
+  const [selectedTimeLimit, setSelectedTimeLimit] = useState<number | ''>(timeLimit);
   const { patchTableSession, finishTableSession, startTableSession } = useAdminTable(workspaceId);
 
   const handleApiAndRefetch = (apiCall: Promise<any>) => {
@@ -27,10 +27,18 @@ function TableSessionInfo({ timeLimit, workspaceId, orderSessionId, currentExpec
   };
 
   const handleDecreaseTime = () => {
-    if (!currentExpectedEndAt || !orderSessionId) return;
+    if (!currentExpectedEndAt || !orderSessionId) {
+      alert('세션 ID가 없습니다. 세션을 시작해주세요.');
+      return;
+    }
+    const timeToDecrease = Number(selectedTimeLimit);
+    if (isNaN(timeToDecrease) || timeToDecrease <= 0) {
+      alert('연장 시간을 올바르게 입력해주세요.');
+      return;
+    }
 
     const currentEndDate = new Date(currentExpectedEndAt);
-    const newEndDate = new Date(currentEndDate.getTime() - selectedTimeLimit * 60 * 1000);
+    const newEndDate = new Date(currentEndDate.getTime() - timeToDecrease * 60 * 1000);
     const newEndDateString = dateConverter(newEndDate);
     const isExpired = newEndDate.getTime() < new Date().getTime();
 
@@ -43,10 +51,23 @@ function TableSessionInfo({ timeLimit, workspaceId, orderSessionId, currentExpec
   };
 
   const handleExtendTime = () => {
-    if (!currentExpectedEndAt || !orderSessionId) return;
+    if (!currentExpectedEndAt || !orderSessionId) {
+      alert('세션 ID가 없습니다. 세션을 시작해주세요.');
+      return;
+    }
+    const timeToExtend = Number(selectedTimeLimit);
+    if (isNaN(timeToExtend) || timeToExtend <= 0) {
+      alert('연장 시간을 올바르게 입력해주세요.');
+      return;
+    }
+
+    if (!orderSessionId) {
+      alert('세션 ID가 없습니다. 세션을 시작해주세요.');
+      return;
+    }
 
     const currentEndDate = new Date(currentExpectedEndAt);
-    const newEndDate = new Date(currentEndDate.getTime() + selectedTimeLimit * 60 * 1000);
+    const newEndDate = new Date(currentEndDate.getTime() + timeToExtend * 60 * 1000);
     const newEndDateString = dateConverter(newEndDate);
 
     handleApiAndRefetch(patchTableSession(orderSessionId, newEndDateString));
@@ -63,16 +84,34 @@ function TableSessionInfo({ timeLimit, workspaceId, orderSessionId, currentExpec
   };
 
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedTimeLimit(Number(e.target.value));
+    const value = e.target.value;
+    const sanitizedValue = value.replace(/[^0-9]/g, '');
+
+    if (sanitizedValue === '') {
+      setSelectedTimeLimit('');
+    } else {
+      setSelectedTimeLimit(parseInt(sanitizedValue, 10));
+    }
+  };
+
+  const handleIncrement = () => {
+    setSelectedTimeLimit((prev) => (Number(prev) || 0) + 1);
+  };
+
+  const handleDecrement = () => {
+    setSelectedTimeLimit((prev) => {
+      const currentValue = Number(prev) || 0;
+      return Math.max(0, currentValue - 1);
+    });
   };
 
   return (
     <Container>
       <div>
-        <button onClick={() => setSelectedTimeLimit((prev) => prev - 1)}>-</button>
+        <button onClick={handleDecrement}>-</button>
         <input type="number" value={selectedTimeLimit} onChange={handleTimeChange} />
         <span>분</span>
-        <button onClick={() => setSelectedTimeLimit((prev) => prev + 1)}>+</button>
+        <button onClick={handleIncrement}>+</button>
       </div>
       <button onClick={handleDecreaseTime}>감소</button>
       <button onClick={handleExtendTime}>연장</button>
