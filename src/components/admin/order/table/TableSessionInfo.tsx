@@ -76,8 +76,7 @@ function TableSessionInfo({ timeLimit, workspaceId, orderSessionId, currentExpec
       </div>
       <button onClick={handleDecreaseTime}>감소</button>
       <button onClick={handleExtendTime}>연장</button>
-      <button onClick={handleEndSession}>사용종료</button>
-      <button onClick={handleStartSession}>사용시작</button>
+      {orderSessionId ? <button onClick={handleEndSession}>사용종료</button> : <button onClick={handleStartSession}>사용시작</button>}
     </Container>
   );
 }
