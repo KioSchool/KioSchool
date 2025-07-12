@@ -75,7 +75,7 @@ function TableOrderList({ workspaceId, orderSessionId }: TableOrderListProps) {
 
   useEffect(() => {
     const getTableOrders = () => {
-      if (workspaceId && orderSessionId) {
+      if (orderSessionId) {
         fetchTableOrders(orderSessionId)
           .then((response) => {
             setTableOrders(response.data);
@@ -83,7 +83,7 @@ function TableOrderList({ workspaceId, orderSessionId }: TableOrderListProps) {
           .catch((error) => {
             console.error('Error fetching table orders:', error);
           });
-      } else if (!orderSessionId) {
+      } else {
         setTableOrders([]);
       }
     };
@@ -93,10 +93,6 @@ function TableOrderList({ workspaceId, orderSessionId }: TableOrderListProps) {
     const intervalId = setInterval(getTableOrders, defaultInterval);
     return () => clearInterval(intervalId);
   }, [workspaceId, orderSessionId]);
-
-  const onClickOrder = () => {
-    openModal();
-  };
 
   return (
     <OrderListContainer>
@@ -118,7 +114,7 @@ function TableOrderList({ workspaceId, orderSessionId }: TableOrderListProps) {
               <div>{order.customerName}</div>
               <div>{`${order.totalPrice.toLocaleString()}원`}</div>
               <div>
-                <SearchIcon onClick={onClickOrder} />
+                <SearchIcon onClick={openModal} />
               </div>
               <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
             </OrderRow>
