@@ -53,12 +53,13 @@ function AdminOrderTable() {
   const { fetchWorkspaceTables } = useAdminWorkspace();
 
   const [tables, setTables] = useState<Table[]>([]);
-  const [selectedTable, setSelectedTable] = useState<Table | null>(null);
+
+  const selectedTable = tables.find((t) => t.tableNumber === Number(tableNo)) || tables[0];
 
   const fetchTables = () => {
     fetchWorkspaceTables(workspaceId)
       .then((response) => {
-        setTables(response.data.sort((a: Table, b: Table) => a.tableNumber - b.tableNumber));
+        setTables(response.data);
       })
       .catch((error) => {
         console.error('테이블 데이터를 조회하는데 문제가 발생했습니다:', error);
@@ -68,15 +69,6 @@ function AdminOrderTable() {
   useEffect(() => {
     fetchTables();
   }, []);
-
-  useEffect(() => {
-    if (tableNo) {
-      const table = tables.find((t) => t.tableNumber === Number(tableNo));
-      setSelectedTable(table || null);
-    } else {
-      setSelectedTable(null);
-    }
-  }, [tableNo, tables]);
 
   return (
     <AppContainer
