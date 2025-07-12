@@ -63,7 +63,7 @@ interface OrderModalMainContentsProps {
   order: Order;
 }
 
-function OrderModalMainContents({ order }: OrderModalMainContentsProps) {
+function TableOrderModalContent({ order }: OrderModalMainContentsProps) {
   const isPaidStatus = order.status === OrderStatus.PAID;
 
   return (
@@ -104,4 +104,4 @@ function OrderModalMainContents({ order }: OrderModalMainContentsProps) {
   );
 }
 
-export default OrderModalMainContents;
+export default TableOrderModalContent;

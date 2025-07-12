@@ -2,7 +2,7 @@ import { Table } from '@@types/index';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
-import TableSessionItem from './TableSessionItem';
+import TableListItem from './TableListItem';
 
 const ListContainer = styled.div`
   height: 600px;
@@ -36,7 +36,7 @@ interface TableSessionListProps {
   tables: Table[];
 }
 
-function TableSessionList({ tables }: TableSessionListProps) {
+function AdminTableList({ tables }: TableSessionListProps) {
   return (
     <ListContainer>
       <Header>
@@ -49,7 +49,7 @@ function TableSessionList({ tables }: TableSessionListProps) {
           tables.map((table) => {
             const isUsing = table.orderSession !== null;
             const expectedEndAt = table.orderSession?.expectedEndAt;
-            return <TableSessionItem key={table.id} expectedEndAt={expectedEndAt} isUsing={isUsing} table={table} />;
+            return <TableListItem key={table.id} expectedEndAt={expectedEndAt} isUsing={isUsing} table={table} />;
           })
         ) : (
           <FallbackMessage>테이블 정보가 없습니다.</FallbackMessage>
@@ -59,4 +59,4 @@ function TableSessionList({ tables }: TableSessionListProps) {
   );
 }
 
-export default TableSessionList;
+export default AdminTableList;

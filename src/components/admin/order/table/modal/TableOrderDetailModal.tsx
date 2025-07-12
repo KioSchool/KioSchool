@@ -6,7 +6,7 @@ import OrderModalHeaderContents from '@components/admin/order/realtime/modal/ord
 import { createPortal } from 'react-dom';
 import { useEffect } from 'react';
 import useModal from '@hooks/useModal';
-import OrderModalMainContents from './OrderModalMainContents';
+import TableOrderModalContent from './TableOrderModalContent';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -41,7 +41,7 @@ interface Props {
   isModalOpen: boolean;
   closeModal: () => void;
 }
-function OrderDetailModal({ order, isModalOpen, closeModal }: Props) {
+function TableOrderDetailModal({ order, isModalOpen, closeModal }: Props) {
   const { modalKey } = useModal();
 
   useEffect(() => {
@@ -65,7 +65,7 @@ function OrderDetailModal({ order, isModalOpen, closeModal }: Props) {
       <ModalOverlay onClick={closeModal} />
       <ModalContainer>
         <OrderModalHeaderContents onClose={closeModal} order={order} />
-        <OrderModalMainContents order={order} />
+        <TableOrderModalContent order={order} />
         <ModalFooter />
       </ModalContainer>
     </>,
@@ -73,4 +73,4 @@ function OrderDetailModal({ order, isModalOpen, closeModal }: Props) {
   );
 }
 
-export default OrderDetailModal;
+export default TableOrderDetailModal;

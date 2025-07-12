@@ -25,7 +25,7 @@ interface TableSessionItemProps {
   table: Table;
 }
 
-function TableSessionItem({ expectedEndAt, isUsing, table }: TableSessionItemProps) {
+function TableListItem({ expectedEndAt, isUsing, table }: TableSessionItemProps) {
   const remainTime = useFormattedTime<string>({ date: expectedEndAt, formatter: formatRemainingTableTime });
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedTableNo = searchParams.get('tableNo');
@@ -44,4 +44,4 @@ function TableSessionItem({ expectedEndAt, isUsing, table }: TableSessionItemPro
   );
 }
 
-export default TableSessionItem;
+export default TableListItem;

@@ -12,7 +12,7 @@ interface TableUsageTimeProps {
   createdAt: string | undefined;
 }
 
-function TableUsageTime({ createdAt }: TableUsageTimeProps) {
+function TableElapsedTimer({ createdAt }: TableUsageTimeProps) {
   const elapsedTime = useFormattedTime<string>({
     date: createdAt,
     formatter: formatElapsedTime,
@@ -21,4 +21,4 @@ function TableUsageTime({ createdAt }: TableUsageTimeProps) {
   return <Container>사용시간: {elapsedTime}</Container>;
 }
 
-export default TableUsageTime;
+export default TableElapsedTimer;

@@ -6,7 +6,7 @@ import { RiSearchLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import useModal from '@hooks/useModal';
 import { formatTime } from '@utils/FormatDate';
-import OrderDetailModal from './modal/OrderDetailModal';
+import TableOrderDetailModal from './modal/TableOrderDetailModal';
 
 const defaultInterval = 5000;
 
@@ -68,7 +68,7 @@ interface TableOrderListProps {
   orderSessionId: number;
 }
 
-function TableOrderList({ workspaceId, orderSessionId }: TableOrderListProps) {
+function AdminTableOrderList({ workspaceId, orderSessionId }: TableOrderListProps) {
   const { isModalOpen, openModal, closeModal } = useModal();
   const { fetchTableOrders } = useAdminOrder(String(workspaceId));
   const [tableOrders, setTableOrders] = useState<Order[]>([]);
@@ -116,7 +116,7 @@ function TableOrderList({ workspaceId, orderSessionId }: TableOrderListProps) {
               <div>
                 <SearchIcon onClick={openModal} />
               </div>
-              <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
+              <TableOrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
             </OrderRow>
           ))
         ) : (
@@ -127,4 +127,4 @@ function TableOrderList({ workspaceId, orderSessionId }: TableOrderListProps) {
   );
 }
 
-export default TableOrderList;
+export default AdminTableOrderList;

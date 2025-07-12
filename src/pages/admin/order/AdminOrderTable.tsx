@@ -1,8 +1,8 @@
 import { Table } from '@@types/index';
-import TableOrderList from '@components/admin/order/table/TableOrderList';
-import TableSessionInfo from '@components/admin/order/table/TableSessionInfo';
-import TableSessionList from '@components/admin/order/table/TableSessionList';
-import TableUsageTime from '@components/admin/order/table/TableUsageTime';
+import AdminTableOrderList from '@components/admin/order/table/AdminTableOrderList';
+import TableSessionControl from '@components/admin/order/table/TableSessionControl';
+import AdminTableList from '@components/admin/order/table/AdminTableList';
+import TableElapsedTimer from '@components/admin/order/table/TableElapsedTimer';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
@@ -88,12 +88,12 @@ function AdminOrderTable() {
       }}
     >
       <Container>
-        <TableSessionList tables={tables} />
+        <AdminTableList tables={tables} />
         {selectedTable ? (
           <TableDetail>
             <DetailHeader>
-              <TableUsageTime createdAt={selectedTable.orderSession?.createdAt} />
-              <TableSessionInfo
+              <TableElapsedTimer createdAt={selectedTable.orderSession?.createdAt} />
+              <TableSessionControl
                 timeLimit={workspaceSetting.orderSessionTimeLimitMinutes}
                 workspaceId={workspaceId}
                 orderSessionId={selectedTable.orderSession?.id}
@@ -103,7 +103,7 @@ function AdminOrderTable() {
               />
               <QRCodeCanvas value={`${location.origin}/order?workspaceId=${workspaceId}&tableNo=${selectedTable.tableNumber}`} />
             </DetailHeader>
-            <TableOrderList workspaceId={Number(workspaceId)} orderSessionId={selectedTable.orderSession?.id || 0} />
+            <AdminTableOrderList workspaceId={Number(workspaceId)} orderSessionId={selectedTable.orderSession?.id || 0} />
           </TableDetail>
         ) : (
           <FallbackContainer>

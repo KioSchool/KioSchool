@@ -16,7 +16,7 @@ interface TableSessionInfoProps {
   refetchTable: () => void;
 }
 
-function TableSessionInfo({ timeLimit, workspaceId, orderSessionId, currentExpectedEndAt, tableNumber, refetchTable }: TableSessionInfoProps) {
+function TableSessionControl({ timeLimit, workspaceId, orderSessionId, currentExpectedEndAt, tableNumber, refetchTable }: TableSessionInfoProps) {
   const [selectedTimeLimit, setSelectedTimeLimit] = useState<number>(timeLimit);
   const { patchTableSession, finishTableSession, startTableSession } = useAdminTable(workspaceId);
 
@@ -107,4 +107,4 @@ function TableSessionInfo({ timeLimit, workspaceId, orderSessionId, currentExpec
   );
 }
 
-export default TableSessionInfo;
+export default TableSessionControl;
