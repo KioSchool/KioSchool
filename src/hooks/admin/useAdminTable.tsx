@@ -5,7 +5,7 @@ function useTable(workspaceId: string | undefined) {
 
   const patchTableSession = async (orderSessionId: number, expectedEndAt: string) => {
     return adminApi
-      .patch(`/order/session`, {
+      .patch('/order/session', {
         workspaceId,
         orderSessionId,
         expectedEndAt,
@@ -17,7 +17,7 @@ function useTable(workspaceId: string | undefined) {
 
   const finishTableSession = async (orderSessionId: number, tableNumber: number) => {
     return adminApi
-      .post(`/order/session/end`, {
+      .post('/order/session/end', {
         workspaceId,
         tableNumber,
         orderSessionId,
@@ -29,7 +29,7 @@ function useTable(workspaceId: string | undefined) {
 
   const startTableSession = async (tableNumber: number) => {
     return adminApi
-      .post(`/order/session/start`, {
+      .post('/order/session/start', {
         workspaceId,
         tableNumber,
       })
