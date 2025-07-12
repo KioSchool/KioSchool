@@ -70,13 +70,13 @@ interface TableOrderListProps {
 
 function AdminTableOrderList({ workspaceId, orderSessionId }: TableOrderListProps) {
   const { isModalOpen, openModal, closeModal } = useModal();
-  const { fetchTableOrders } = useAdminOrder(String(workspaceId));
+  const { fetchOrderSession } = useAdminOrder(String(workspaceId));
   const [tableOrders, setTableOrders] = useState<Order[]>([]);
 
   useEffect(() => {
     const getTableOrders = () => {
       if (orderSessionId) {
-        fetchTableOrders(orderSessionId)
+        fetchOrderSession(orderSessionId)
           .then((response) => {
             setTableOrders(response.data);
           })
