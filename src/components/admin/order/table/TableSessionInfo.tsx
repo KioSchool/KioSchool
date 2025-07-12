@@ -17,7 +17,7 @@ interface TableSessionInfoProps {
 }
 
 function TableSessionInfo({ timeLimit, workspaceId, orderSessionId, currentExpectedEndAt, tableNumber, refetchTable }: TableSessionInfoProps) {
-  const [selectedTimeLimit, setSelectedTimeLimit] = useState<number | ''>(timeLimit);
+  const [selectedTimeLimit, setSelectedTimeLimit] = useState<number>(timeLimit);
   const { patchTableSession, finishTableSession, startTableSession } = useAdminTable(workspaceId);
 
   const handleApiAndRefetch = (apiCall: Promise<any>) => {
@@ -45,7 +45,7 @@ function TableSessionInfo({ timeLimit, workspaceId, orderSessionId, currentExpec
     handleApiAndRefetch(patchTableSession(orderSessionId, newEndDateString));
   };
 
-  const handleExtendTime = () => {
+  const handleIncreaseTime = () => {
     if (!currentExpectedEndAt || !orderSessionId) {
       alert('세션 ID가 없습니다. 세션을 시작해주세요.');
       return;
@@ -78,11 +78,7 @@ function TableSessionInfo({ timeLimit, workspaceId, orderSessionId, currentExpec
     const value = e.target.value;
     const sanitizedValue = value.replace(/[^0-9]/g, '');
 
-    if (sanitizedValue === '') {
-      setSelectedTimeLimit('');
-    } else {
-      setSelectedTimeLimit(parseInt(sanitizedValue, 10));
-    }
+    setSelectedTimeLimit(parseInt(sanitizedValue, 10));
   };
 
   const handleIncrement = () => {
@@ -105,7 +101,7 @@ function TableSessionInfo({ timeLimit, workspaceId, orderSessionId, currentExpec
         <button onClick={handleIncrement}>+</button>
       </div>
       <button onClick={handleDecreaseTime}>감소</button>
-      <button onClick={handleExtendTime}>연장</button>
+      <button onClick={handleIncreaseTime}>연장</button>
       {orderSessionId ? <button onClick={handleEndSession}>사용종료</button> : <button onClick={handleStartSession}>사용시작</button>}
     </Container>
   );
