@@ -41,14 +41,8 @@ function TableSessionInfo({ timeLimit, workspaceId, orderSessionId, currentExpec
     const currentEndDate = new Date(currentExpectedEndAt);
     const newEndDate = new Date(currentEndDate.getTime() - timeToDecrease * 60 * 1000);
     const newEndDateString = dateConverter(newEndDate);
-    const isExpired = newEndDate.getTime() < new Date().getTime();
 
-    if (isExpired) {
-      if (!tableNumber) return;
-      handleApiAndRefetch(finishTableSession(orderSessionId, tableNumber));
-    } else {
-      handleApiAndRefetch(patchTableSession(orderSessionId, newEndDateString));
-    }
+    handleApiAndRefetch(patchTableSession(orderSessionId, newEndDateString));
   };
 
   const handleExtendTime = () => {
