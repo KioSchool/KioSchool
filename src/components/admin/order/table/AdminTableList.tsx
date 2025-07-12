@@ -1,7 +1,6 @@
 import { Table } from '@@types/index';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import { rowFlex } from '@styles/flexStyles';
 import TableListItem from './TableListItem';
 
 const ListContainer = styled.div`
@@ -26,12 +25,6 @@ const ListBody = styled.div`
   height: 100%;
 `;
 
-const FallbackMessage = styled.div`
-  height: 100%;
-  color: ${Color.GREY};
-  ${rowFlex({ justify: 'center', align: 'center' })};
-`;
-
 interface TableSessionListProps {
   tables: Table[];
 }
@@ -45,15 +38,11 @@ function AdminTableList({ tables }: TableSessionListProps) {
         <div>상태</div>
       </Header>
       <ListBody>
-        {tables.length > 0 ? (
-          tables.map((table) => {
-            const isUsing = table.orderSession !== null;
-            const expectedEndAt = table.orderSession?.expectedEndAt;
-            return <TableListItem key={table.id} expectedEndAt={expectedEndAt} isUsing={isUsing} table={table} />;
-          })
-        ) : (
-          <FallbackMessage>테이블 정보가 없습니다.</FallbackMessage>
-        )}
+        {tables.map((table) => {
+          const isUsing = table.orderSession !== null;
+          const expectedEndAt = table.orderSession?.expectedEndAt;
+          return <TableListItem key={table.id} expectedEndAt={expectedEndAt} isUsing={isUsing} table={table} />;
+        })}
       </ListBody>
     </ListContainer>
   );
