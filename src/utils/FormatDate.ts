@@ -33,7 +33,7 @@ export const formatTime = (dateString: string) => {
   return format(date, 'p', { locale: ko });
 };
 
-export const formatRemainingTableTime = (expectedEndAt?: string): string => {
+export const formatRemainingTime = (expectedEndAt?: string): string => {
   if (!expectedEndAt) {
     return '-';
   }
