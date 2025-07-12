@@ -1,9 +1,9 @@
 import useApi from '@hooks/useApi';
 
-function useTable(workspaceId: string | undefined) {
+function useAdminTable(workspaceId: string | undefined) {
   const { adminApi } = useApi();
 
-  const patchTableSession = async (orderSessionId: number, expectedEndAt: string) => {
+  const updateSessionEndTime = async (orderSessionId: number, expectedEndAt: string) => {
     return adminApi
       .patch('/order/session', {
         workspaceId,
@@ -11,7 +11,7 @@ function useTable(workspaceId: string | undefined) {
         expectedEndAt,
       })
       .catch((error) => {
-        console.error('Error patching table session:', error);
+        console.error('Error updating session end time:', error);
       });
   };
 
@@ -38,6 +38,7 @@ function useTable(workspaceId: string | undefined) {
       });
   };
 
-  return { patchTableSession, finishTableSession, startTableSession };
+  return { updateSessionEndTime, finishTableSession, startTableSession };
 }
-export default useTable;
+
+export default useAdminTable;

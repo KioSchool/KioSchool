@@ -18,7 +18,7 @@ interface TableSessionInfoProps {
 
 function TableSessionControl({ timeLimit, workspaceId, orderSessionId, currentExpectedEndAt, tableNumber, refetchTable }: TableSessionInfoProps) {
   const [selectedTimeLimit, setSelectedTimeLimit] = useState<number>(timeLimit);
-  const { patchTableSession, finishTableSession, startTableSession } = useAdminTable(workspaceId);
+  const { updateSessionEndTime, finishTableSession, startTableSession } = useAdminTable(workspaceId);
 
   const handleApiAndRefetch = (apiCall: Promise<any>) => {
     apiCall.then((res) => {
@@ -42,7 +42,7 @@ function TableSessionControl({ timeLimit, workspaceId, orderSessionId, currentEx
     const newEndDate = new Date(currentEndDate.getTime() - timeToDecrease * 60 * 1000);
     const newEndDateString = dateConverter(newEndDate);
 
-    handleApiAndRefetch(patchTableSession(orderSessionId, newEndDateString));
+    handleApiAndRefetch(updateSessionEndTime(orderSessionId, newEndDateString));
   };
 
   const handleIncreaseTime = () => {
@@ -61,7 +61,7 @@ function TableSessionControl({ timeLimit, workspaceId, orderSessionId, currentEx
     const newEndDate = new Date(currentEndDate.getTime() + timeToExtend * 60 * 1000);
     const newEndDateString = dateConverter(newEndDate);
 
-    handleApiAndRefetch(patchTableSession(orderSessionId, newEndDateString));
+    handleApiAndRefetch(updateSessionEndTime(orderSessionId, newEndDateString));
   };
 
   const handleEndSession = () => {
