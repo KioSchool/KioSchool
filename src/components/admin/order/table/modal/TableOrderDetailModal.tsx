@@ -1,13 +1,12 @@
 import { Order } from '@@types/index';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import { colFlex } from '@styles/flexStyles';
-import OrderModalFooterContents from '@components/admin/order/realtime/modal/order-detail/OrderModalFooterContents';
-import OrderModalMainContents from '@components/admin/order/realtime/modal/order-detail/OrderModalMainContents';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import OrderModalHeaderContents from '@components/admin/order/realtime/modal/order-detail/OrderModalHeaderContents';
 import { createPortal } from 'react-dom';
 import { useEffect } from 'react';
 import useModal from '@hooks/useModal';
+import TableOrderModalContent from './TableOrderModalContent';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -32,13 +31,17 @@ const ModalContainer = styled.div`
   z-index: 2001;
   gap: 15px;
 `;
+const ModalFooter = styled.div`
+  padding: 15px 40px 40px 40px;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
+`;
 
 interface Props {
   order: Order;
   isModalOpen: boolean;
   closeModal: () => void;
 }
-function OrderDetailModal({ order, isModalOpen, closeModal }: Props) {
+function TableOrderDetailModal({ order, isModalOpen, closeModal }: Props) {
   const { modalKey } = useModal();
 
   useEffect(() => {
@@ -65,12 +68,12 @@ function OrderDetailModal({ order, isModalOpen, closeModal }: Props) {
       <ModalOverlay onClick={closeModal} />
       <ModalContainer>
         <OrderModalHeaderContents onClose={closeModal} order={order} />
-        <OrderModalMainContents order={order} />
-        <OrderModalFooterContents orderStatus={order.status} id={order.id} closeModal={closeModal} />
+        <TableOrderModalContent order={order} />
+        <ModalFooter />
       </ModalContainer>
     </>,
     document.getElementById(modalKey) as HTMLElement,
   );
 }
 
-export default OrderDetailModal;
+export default TableOrderDetailModal;

@@ -84,7 +84,9 @@ function useAdminWorkspace() {
       });
   };
 
-  return { fetchWorkspace, updateWorkspaceTableCount, updateWorkspaceInfoAndImage };
+  const fetchWorkspaceTables = (workspaceId: string | undefined | null) => adminApi.get(`/workspace/tables`, { params: { workspaceId } });
+
+  return { fetchWorkspace, updateWorkspaceTableCount, updateWorkspaceInfoAndImage, fetchWorkspaceTables };
 }
 
 export default useAdminWorkspace;

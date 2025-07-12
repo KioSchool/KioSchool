@@ -9,8 +9,9 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
 import OrderItemList from '@components/admin/order/realtime/OrderItemList';
 import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
-import useDelayTime from '@hooks/useDelayTime';
 import useModal from '@hooks/useModal';
+import { extractMinFromDate } from '@utils/FormatDate';
+import useFormattedTime from '@hooks/useFormattedTime';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -76,7 +77,7 @@ interface OrderCardProps {
 }
 
 function PaidOrderCard({ order }: OrderCardProps) {
-  const { delayMinutes } = useDelayTime({ date: order.createdAt });
+  const delayMinutes = useFormattedTime<number>({ date: order.createdAt, formatter: extractMinFromDate });
   const { isModalOpen, openModal, closeModal } = useModal();
 
   const orderInfoClickHandler = () => {

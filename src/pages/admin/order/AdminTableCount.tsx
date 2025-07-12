@@ -80,7 +80,7 @@ const TableLink = styled.a`
 
 function AdminTableCount() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchWorkspace, updateWorkspaceTableCount } = useAdminWorkspace();
+  const { updateWorkspaceTableCount } = useAdminWorkspace();
   const [workspace, setAdminWorkspace] = useAtom(adminWorkspaceAtom);
   const QRCodeRefs = useRef<{ [key: number]: HTMLDivElement | null }>([]);
   const QRCodeContainerRef = useRef<HTMLDivElement | null>(null);
@@ -154,7 +154,6 @@ function AdminTableCount() {
   useEffect(() => {
     // will be deleted
     localStorage.removeItem(`workspace-${workspaceId}-tableCount`);
-    fetchWorkspace(workspaceId);
   }, []);
 
   return (

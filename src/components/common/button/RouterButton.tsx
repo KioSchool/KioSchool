@@ -32,17 +32,28 @@ const TitleContainer = styled.div`
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
-interface Props {
+interface RouterButtonProps {
   name: string;
   path: string;
   imageSrc?: string;
+  defaultQuery?: Record<string, string>;
 }
 
-function RouterButton({ name, path, imageSrc }: Props) {
+function RouterButton({ name, path, imageSrc, defaultQuery }: RouterButtonProps) {
   const { appendPath } = useCustomNavigate();
 
+  const handleClick = () => {
+    if (defaultQuery) {
+      const queryString = new URLSearchParams(defaultQuery).toString();
+      const fullPath = `${path}?${queryString}`;
+      appendPath(fullPath);
+    } else {
+      appendPath(path);
+    }
+  };
+
   return (
-    <Container src={imageSrc} onClick={() => appendPath(path)}>
+    <Container src={imageSrc} onClick={handleClick}>
       <TitleContainer>
         <AppLabel color={Color.WHITE} size={20} style={{ textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)', fontWeight: 600 }}>
           {name}
