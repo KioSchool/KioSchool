@@ -42,13 +42,16 @@ function OrderDetailModal({ order, isModalOpen, closeModal }: Props) {
   const { modalKey } = useModal();
 
   useEffect(() => {
-    window.addEventListener('keydown', (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         closeModal();
       }
-    });
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
 
     return () => {
+      window.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'auto';
     };
   }, []);
