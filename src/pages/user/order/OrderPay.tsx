@@ -84,6 +84,13 @@ function OrderPay() {
       return;
     }
 
+    if (error.response?.status === HttpStatusCode.NotFound) {
+      alert('존재하지 않는 상품이 있습니다. 주문 화면으로 돌아갑니다.');
+      setOrderBasket([]);
+      navigate(-2);
+      return;
+    }
+
     if (error.response?.status === HttpStatusCode.BadRequest) {
       alert(error.response?.data?.message || '알 수 없는 오류가 발생했습니다.');
       return;
