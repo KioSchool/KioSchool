@@ -45,7 +45,8 @@ function RouterButton({ name, path, imageSrc, defaultQuery }: RouterButtonProps)
   const handleClick = () => {
     if (defaultQuery) {
       const queryString = new URLSearchParams(defaultQuery).toString();
-      const fullPath = `${path}?${queryString}`;
+      const separator = path.includes('?') ? '&' : '?';
+      const fullPath = `${path}${separator}${queryString}`;
       appendPath(fullPath);
     } else {
       appendPath(path);
