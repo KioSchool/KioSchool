@@ -1,6 +1,5 @@
 import { format } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
-import { ko } from 'date-fns/locale';
 
 export const formatDate = (date: string) => {
   const options: Intl.DateTimeFormatOptions = {
@@ -27,12 +26,6 @@ export const dateConverter = (date: Date) => {
   return format(zonedDate, "yyyy-MM-dd'T'HH:mm:ss.SSS");
 };
 
-export const formatTime = (dateString: string) => {
-  if (!dateString) return '';
-  const date = new Date(dateString);
-  return format(date, 'p', { locale: ko });
-};
-
 export const formatRemainingTime = (expectedEndAt?: string): string => {
   if (!expectedEndAt) {
     return '-';
@@ -56,26 +49,13 @@ export const formatRemainingTime = (expectedEndAt?: string): string => {
   return `${minutes}분`;
 };
 
-export const formatElapsedTime = (date: string | undefined): string => {
-  if (!date) {
-    return '-';
-  }
-
-  const startDate = new Date(date.replace(' ', 'T'));
-  const currentTime = new Date();
-  const elapsedMilliseconds = currentTime.getTime() - startDate.getTime();
-
-  if (elapsedMilliseconds < 0) {
-    return '0분';
-  }
-
-  const totalMinutes = Math.floor(elapsedMilliseconds / (1000 * 60));
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
-
-  if (hours > 0) {
-    return `${hours}시간 ${minutes}분`;
-  }
-
-  return `${minutes}분`;
+export const formatKoreanTime = (dateString: string): string => {
+  if (!dateString) return '시작 시간 없음';
+  const date = new Date(dateString);
+  const options: Intl.DateTimeFormatOptions = {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  };
+  return new Intl.DateTimeFormat('ko-KR', options).format(date);
 };
