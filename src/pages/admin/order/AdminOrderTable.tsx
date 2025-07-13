@@ -26,13 +26,13 @@ const TableDetail = styled.div`
   height: 600px;
   display: grid;
   grid-template-rows: 2fr 7fr;
-  border: 1px solid black;
+  gap: 5px;
 `;
 
 const DetailHeader = styled.div`
   display: grid;
   grid-template-columns: 1.3fr 1fr 1fr;
-  border: 1px solid black;
+  gap: 5px;
 `;
 
 const FallbackContainer = styled.div`
@@ -84,7 +84,7 @@ function AdminOrderTable() {
         {selectedTable ? (
           <TableDetail>
             <DetailHeader>
-              <TableElapsedTimer createdAt={selectedTable.orderSession?.createdAt} />
+              <TableElapsedTimer createdAt={selectedTable.orderSession?.createdAt} expectedEndAt={selectedTable.orderSession?.expectedEndAt} />
               <TableSessionControler
                 timeLimit={workspaceSetting.orderSessionTimeLimitMinutes}
                 workspaceId={workspaceId}
