@@ -16,6 +16,7 @@ const ListContainer = styled.div`
 `;
 
 const Header = styled.div`
+  box-sizing: border-box;
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   padding: 5px 10px;
@@ -23,7 +24,7 @@ const Header = styled.div`
   background-color: ${Color.LIGHT_GREY};
   text-align: center;
   border-bottom: 1px solid #ececec;
-  height: 30px;
+  height: 40px;
 `;
 
 const HeaderText = styled.div<{ clickable?: boolean }>`
