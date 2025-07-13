@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import useOrder from '@hooks/user/useOrder';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
-import useWorkspace from '@hooks/user/useWorkspace';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
@@ -114,7 +113,6 @@ function OrderComplete() {
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
 
-  const { fetchWorkspace } = useWorkspace();
   const { fetchOrder } = useOrder();
   const { allowPullToRefresh } = useRefresh();
   const resetOrderBasket = useResetAtom(userOrderBasketAtom);
@@ -159,7 +157,6 @@ function OrderComplete() {
     intervalId = setInterval(pollOrder, fetchIntervalTime);
 
     resetOrderBasket();
-    fetchWorkspace(workspaceId);
     allowPullToRefresh();
 
     return () => {

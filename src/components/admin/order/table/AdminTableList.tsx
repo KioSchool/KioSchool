@@ -1,0 +1,51 @@
+import { Table } from '@@types/index';
+import styled from '@emotion/styled';
+import { Color } from '@resources/colors';
+import TableListItem from './TableListItem';
+
+const ListContainer = styled.div`
+  height: 600px;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Header = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  padding: 10px;
+  font-weight: bold;
+  background-color: ${Color.LIGHT_GREY};
+  border-bottom: 1px solid black;
+  text-align: center;
+`;
+
+const ListBody = styled.div`
+  overflow-y: auto;
+  height: 100%;
+`;
+
+interface TableSessionListProps {
+  tables: Table[];
+}
+
+function AdminTableList({ tables }: TableSessionListProps) {
+  return (
+    <ListContainer>
+      <Header>
+        <div>테이블 번호</div>
+        <div>잔여 시간</div>
+        <div>상태</div>
+      </Header>
+      <ListBody>
+        {tables.map((table) => {
+          const isUsing = table.orderSession !== null;
+          const expectedEndAt = table.orderSession?.expectedEndAt;
+          return <TableListItem key={table.id} expectedEndAt={expectedEndAt} isUsing={isUsing} table={table} />;
+        })}
+      </ListBody>
+    </ListContainer>
+  );
+}
+
+export default AdminTableList;
