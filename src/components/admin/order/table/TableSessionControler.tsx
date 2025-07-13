@@ -7,7 +7,7 @@ const Container = styled.div`
   border: 1px solid black;
 `;
 
-interface TableSessionInfoProps {
+interface TableSessionControlerProps {
   timeLimit: number;
   workspaceId: string | undefined;
   orderSessionId: number | undefined;
@@ -16,7 +16,7 @@ interface TableSessionInfoProps {
   refetchTable: () => void;
 }
 
-function TableSessionControl({ timeLimit, workspaceId, orderSessionId, currentExpectedEndAt, tableNumber, refetchTable }: TableSessionInfoProps) {
+function TableSessionControler({ timeLimit, workspaceId, orderSessionId, currentExpectedEndAt, tableNumber, refetchTable }: TableSessionControlerProps) {
   const [selectedTimeLimit, setSelectedTimeLimit] = useState<number>(timeLimit);
   const { updateSessionEndTime, finishTableSession, startTableSession } = useAdminTable(workspaceId);
 
@@ -107,4 +107,4 @@ function TableSessionControl({ timeLimit, workspaceId, orderSessionId, currentEx
   );
 }
 
-export default TableSessionControl;
+export default TableSessionControler;

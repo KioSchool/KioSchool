@@ -1,6 +1,6 @@
 import { Table } from '@@types/index';
 import AdminTableOrderList from '@components/admin/order/table/AdminTableOrderList';
-import TableSessionControl from '@components/admin/order/table/TableSessionControl';
+import TableSessionControler from '@components/admin/order/table/TableSessionControler';
 import AdminTableList from '@components/admin/order/table/AdminTableList';
 import TableElapsedTimer from '@components/admin/order/table/TableElapsedTimer';
 import AppContainer from '@components/common/container/AppContainer';
@@ -85,7 +85,7 @@ function AdminOrderTable() {
           <TableDetail>
             <DetailHeader>
               <TableElapsedTimer createdAt={selectedTable.orderSession?.createdAt} />
-              <TableSessionControl
+              <TableSessionControler
                 timeLimit={workspaceSetting.orderSessionTimeLimitMinutes}
                 workspaceId={workspaceId}
                 orderSessionId={selectedTable.orderSession?.id}
