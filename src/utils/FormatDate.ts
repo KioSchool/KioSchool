@@ -50,10 +50,10 @@ export const formatRemainingTime = (expectedEndAt?: string): string => {
   const minutes = totalRemainingMinutes % 60;
 
   if (hours > 0) {
-    return `${hours}시간 ${minutes}분 남음`;
+    return `${hours}시간 ${minutes}분`;
   }
 
-  return `${minutes}분 남음`;
+  return `${minutes}분`;
 };
 
 export const formatElapsedTime = (date: string | undefined): string => {

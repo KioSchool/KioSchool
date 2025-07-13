@@ -8,15 +8,34 @@ import { useSearchParams } from 'react-router-dom';
 const Row = styled.div<{ isSelected: boolean }>`
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
-  padding: 10px;
+  align-items: center;
+  padding: 5px 10px;
   border-bottom: 1px solid #e0e0e0;
   cursor: pointer;
   text-align: center;
-  background-color: ${({ isSelected }) => (isSelected ? Color.LIGHT_GREY : 'transparent')};
+  height: 30px;
+  color: ${({ isSelected }) => (isSelected ? Color.WHITE : Color.GREY)};
+  background-color: ${({ isSelected }) => (isSelected ? Color.KIO_ORANGE : 'transparent')};
 
   &:hover {
-    background-color: #f5f5f5;
+    color: ${Color.WHITE};
+    background-color: ${Color.KIO_ORANGE};
   }
+
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+const Text = styled.div``;
+
+const StatusTag = styled.div<{ isUsing: boolean }>`
+  color: ${({ isUsing }) => (isUsing ? '#0CAF60' : '#6A6A6A')};
+  font-size: 15px;
+  margin-left: 10px;
+  padding: 5px 10px;
+  border-radius: 13px;
+  background-color: ${({ isUsing }) => (isUsing ? '#e7f7ef' : '#F5F5F5')};
 `;
 
 interface TableSessionItemProps {
@@ -37,9 +56,9 @@ function TableListItem({ expectedEndAt, isUsing, table }: TableSessionItemProps)
 
   return (
     <Row onClick={() => onClickTable(table.tableNumber)} isSelected={selectedTableNo === String(table.tableNumber)}>
-      <div>{table.tableNumber}</div>
-      <div>{remainTime}</div>
-      <div>{isUsing ? '사용중' : '종료됨'}</div>
+      <Text>{table.tableNumber}</Text>
+      <Text>{remainTime}</Text>
+      <StatusTag isUsing={isUsing}>{isUsing ? '사용중' : '종료됨'}</StatusTag>
     </Row>
   );
 }
