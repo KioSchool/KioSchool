@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { RiSearchLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import useModal from '@hooks/useModal';
-import { formatTime } from '@utils/FormatDate';
+import { formatKoreanTime } from '@utils/FormatDate';
 import TableOrderDetailModal from './modal/TableOrderDetailModal';
 
 const defaultInterval = 5000;
@@ -109,7 +109,7 @@ function AdminTableOrderList({ workspaceId, orderSessionId }: TableOrderListProp
           tableOrders.map((order: Order) => (
             <OrderRow key={order.id}>
               <div>{order.id}</div>
-              <div>{formatTime(order.createdAt)}</div>
+              <div>{formatKoreanTime(order.createdAt)}</div>
               <div>{formatProductNames(order.orderProducts)}</div>
               <div>{order.customerName}</div>
               <div>{`${order.totalPrice.toLocaleString()}원`}</div>
