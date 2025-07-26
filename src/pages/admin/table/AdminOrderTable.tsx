@@ -77,7 +77,7 @@ function AdminOrderTable() {
       titleNavBarProps={{
         title: '테이블 주문 조회',
         children: (
-          <RoundedAppButton size={'170px'} onClick={() => navigate(`/admin/workspace/${workspaceId}/table/manage`)}>
+          <RoundedAppButton size={'170px'} onClick={() => navigate(`/admin/workspace/${workspaceId}/order/table/manage`)}>
             테이블 관리
           </RoundedAppButton>
         ),
