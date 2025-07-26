@@ -38,6 +38,7 @@ import useNetworkStatusNotifier from '@hooks/useNetworkStatusNotifier';
 import useServerHealth from '@hooks/useServerHealth';
 import ServerErrorFallback from '@components/common/fallback/ServerErrorFallback';
 import OrderWait from '@pages/user/order/OrderWait';
+import AdminOrderTableManage from '@pages/admin/order/AdminOrderTableManage';
 
 function App() {
   useNetworkStatusNotifier();
@@ -77,6 +78,7 @@ function App() {
         <Route path="/admin/workspace/:workspaceId/order/statistics" element={<AdminOrderStatistics />} />
         <Route path="/admin/workspace/:workspaceId/order/table" element={<AdminOrderTable />} />
         <Route path="/admin/workspace/:workspaceId/order/table/:tableNumber" element={<AdminOrderTableHistory />} />
+        <Route path="/admin/workspace/:workspaceId/table-manage" element={<AdminOrderTableManage />} />
         <Route path="/admin/workspace/:workspaceId/table-count" element={<AdminTableCount />} />
         <Route path="/admin/workspace/:workspaceId/products" element={<AdminProduct />} />
         <Route path="/admin/workspace/:workspaceId/products/add-product" element={<AdminProductAdd />} />
