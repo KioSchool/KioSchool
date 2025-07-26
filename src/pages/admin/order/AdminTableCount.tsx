@@ -12,7 +12,7 @@ import PreviewContainer from '@components/common/container/PreviewContainer';
 import { isDesktop } from 'react-device-detect';
 import { tabletMediaQuery } from '@styles/globalStyles';
 import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
-import { useAtom } from 'jotai';
+import { useAtomValue } from 'jotai';
 import {
   calculateGridMetrics,
   createOutputCanvas,
@@ -81,7 +81,7 @@ const TableLink = styled.a`
 function AdminTableCount() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { updateWorkspaceTableCount } = useAdminWorkspace();
-  const [workspace, setAdminWorkspace] = useAtom(adminWorkspaceAtom);
+  const workspace = useAtomValue(adminWorkspaceAtom);
   const QRCodeRefs = useRef<{ [key: number]: HTMLDivElement | null }>([]);
   const QRCodeContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -93,10 +93,10 @@ function AdminTableCount() {
   }, [debouncedId]);
 
   const handleTableCount = (count: number) => {
-    setAdminWorkspace((prev) => ({ ...prev, tableCount: count }));
-
     const delayDebouncedId = setTimeout(() => {
-      updateWorkspaceTableCount(workspaceId, count);
+      updateWorkspaceTableCount(workspaceId, count).catch(() => {
+        alert('테이블 수 변경에 실패했습니다. 다시 시도해주세요.');
+      });
     }, 300);
 
     setDebouncedId(delayDebouncedId);
