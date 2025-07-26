@@ -9,13 +9,13 @@ import QRCode from 'qrcode';
 import { useRef } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
 import { getQRCodeCanvases, calculateGridMetrics, createOutputCanvas, initCanvasContext, drawQRTiles, triggerDownload } from '@utils/qrCode';
+import QRInfoTooltip from './QRInfoTooltip';
 
 const Container = styled.div`
   width: 100%;
   height: 150px;
   border: 1px solid #ececec;
   border-radius: 10px;
-  overflow: hidden;
   ${colFlex({ justify: 'start', align: 'center' })}
 `;
 
@@ -35,6 +35,7 @@ const Header = styled.div`
 `;
 
 const HeaderSection = styled.div`
+  position: relative;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
@@ -122,7 +123,10 @@ function TableQRCodes() {
       <Header>
         <HeaderSection>테이블 전체 QR</HeaderSection>
         <HeaderDivider />
-        <HeaderSection>미리보기 QR</HeaderSection>
+        <HeaderSection>
+          <span>미리보기 QR</span>
+          <QRInfoTooltip />
+        </HeaderSection>
       </Header>
       <Content>
         <Section>
