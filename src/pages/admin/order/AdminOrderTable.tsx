@@ -1,9 +1,9 @@
 import { Table } from '@@types/index';
-import AdminTableList from '@components/admin/order/table-management/list/AdminTableList';
-import AdminTableOrderList from '@components/admin/order/table-management/list/AdminTableOrderList';
-import TableQRCode from '@components/admin/order/table-management/qrcode/TableQRCode';
-import TableElapsedTimer from '@components/admin/order/table-management/timer/TableElapsedTimer';
-import TableSessionControler from '@components/admin/order/table-management/timer/TableSessionControler';
+import AdminTableList from '@components/admin/order/table-manage/list/AdminTableList';
+import AdminTableOrderList from '@components/admin/order/table-manage/list/AdminTableOrderList';
+import TableQRCode from '@components/admin/order/table-manage/qrcode/TableQRCode';
+import TableElapsedTimer from '@components/admin/order/table-manage/timer/TableElapsedTimer';
+import TableSessionControler from '@components/admin/order/table-manage/timer/TableSessionControler';
 import RoundedAppButton from '@components/common/button/RoundedAppButton';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';

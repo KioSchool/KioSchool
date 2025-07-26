@@ -1,6 +1,6 @@
-import TableCount from '@components/admin/order/table-management/setting/TableCount';
-import TableQRCodes from '@components/admin/order/table-management/setting/TableQRCodes';
-import TableTimeLimit from '@components/admin/order/table-management/setting/TableTimeLimit';
+import TableCount from '@components/admin/order/table-manage/setting/TableCount';
+import TableQRCodes from '@components/admin/order/table-manage/setting/TableQRCodes';
+import TableTimeLimit from '@components/admin/order/table-manage/setting/TableTimeLimit';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
