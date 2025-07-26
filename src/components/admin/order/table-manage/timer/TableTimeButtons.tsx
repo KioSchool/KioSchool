@@ -49,7 +49,7 @@ function TableTimeButtons({ handleDecreaseTime, handleIncreaseTime, handleEndSes
     <Container>
       <TopRow>
         <Button onClick={handleDecreaseTime}>감소</Button>
-        <Button onClick={handleIncreaseTime}>연장</Button>
+        <Button onClick={handleIncreaseTime}>증가</Button>
       </TopRow>
       <BottomRow>
         {orderSessionId ? (
