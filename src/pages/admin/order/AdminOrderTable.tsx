@@ -4,6 +4,7 @@ import AdminTableOrderList from '@components/admin/order/table-management/list/A
 import TableQRCode from '@components/admin/order/table-management/qrcode/TableQRCode';
 import TableElapsedTimer from '@components/admin/order/table-management/timer/TableElapsedTimer';
 import TableSessionControler from '@components/admin/order/table-management/timer/TableSessionControler';
+import RoundedAppButton from '@components/common/button/RoundedAppButton';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
@@ -75,6 +76,11 @@ function AdminOrderTable() {
       useFlex={colFlex({ justify: 'center' })}
       titleNavBarProps={{
         title: '테이블 주문 조회',
+        children: (
+          <RoundedAppButton size={'170px'} onClick={() => navigate(`/admin/workspace/${workspaceId}/table-manage`)}>
+            테이블 관리
+          </RoundedAppButton>
+        ),
         subTitle: `${selectedTable?.tableNumber}번 테이블`,
         onLeftArrowClick: () => navigate(`/admin/workspace/${workspaceId}`),
       }}
