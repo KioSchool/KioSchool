@@ -25,14 +25,12 @@ function useAdminWorkspace() {
   };
 
   const updateWorkspaceTableCount = (workspaceId: string | undefined | null, tableCount: number) => {
-    adminApi
+    return adminApi
       .post<Workspace>('/workspace/table-count', { workspaceId, tableCount })
       .then((res) => {
         setAdminWorkspace(res.data);
       })
-      .catch((error) => {
-        alert(error.response.data.message);
-      });
+      .catch(() => Promise.reject());
   };
 
   const updateWorkspaceInfo = (workspaceId: number, name: string, description: string, notice?: string) => {
