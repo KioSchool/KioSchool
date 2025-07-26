@@ -5,27 +5,49 @@ import { useEffect, useState } from 'react';
 import { RiSearchLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import useModal from '@hooks/useModal';
-import { formatTime } from '@utils/FormatDate';
-import TableOrderDetailModal from './modal/TableOrderDetailModal';
+import { formatKoreanTime } from '@utils/FormatDate';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import TableOrderDetailModal from '../modal/TableOrderDetailModal';
 
 const defaultInterval = 5000;
 
+const Container = styled.div`
+  border: 1px solid #ececec;
+  border-radius: 10px;
+  overflow: hidden;
+  ${colFlex({ justify: 'start', align: 'center' })}
+  height: 100%;
+`;
+
+const Header = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  height: 40px;
+  padding: 5px 10px;
+  color: ${Color.GREY};
+  background-color: ${Color.LIGHT_GREY};
+  font-size: 15px;
+  font-weight: 600;
+  border-bottom: 1px solid #ececec;
+  ${colFlex({ justify: 'center', align: 'center' })};
+`;
+
 const OrderListContainer = styled.div`
-  display: flex;
-  flex-direction: column;
   width: 100%;
   height: 100%;
   overflow-y: auto;
+  ${colFlex()};
 `;
 
 const OrderHeader = styled.div`
   display: grid;
   grid-template-columns: 0.5fr 1.5fr 2fr 1fr 1fr 0.5fr;
   padding: 10px;
-  font-weight: bold;
   background-color: ${Color.LIGHT_GREY};
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #ececec;
   text-align: center;
+  font-size: 15px;
+  font-weight: 600;
 `;
 
 const OrderRow = styled.div`
@@ -51,6 +73,18 @@ const OrderFallback = styled.div`
 const SearchIcon = styled(RiSearchLine)`
   color: ${Color.GREY};
   cursor: pointer;
+`;
+
+const HeaderCell = styled.div`
+  color: ${Color.GREY};
+`;
+
+const OrderCell = styled.div`
+  color: ${Color.GREY};
+`;
+
+const ActionCell = styled.div`
+  ${rowFlex({ justify: 'center', align: 'center' })};
 `;
 
 const formatProductNames = (orderProducts: OrderProduct[] | undefined) => {
@@ -95,35 +129,42 @@ function AdminTableOrderList({ workspaceId, orderSessionId }: TableOrderListProp
   }, [workspaceId, orderSessionId]);
 
   return (
-    <OrderListContainer>
-      <OrderHeader>
-        <div>번호</div>
-        <div>주문시간</div>
-        <div>상품명</div>
-        <div>입금자명</div>
-        <div>금액</div>
-        <div />
-      </OrderHeader>
-      <OrderItem>
-        {tableOrders.length > 0 ? (
-          tableOrders.map((order: Order) => (
-            <OrderRow key={order.id}>
-              <div>{order.id}</div>
-              <div>{formatTime(order.createdAt)}</div>
-              <div>{formatProductNames(order.orderProducts)}</div>
-              <div>{order.customerName}</div>
-              <div>{`${order.totalPrice.toLocaleString()}원`}</div>
-              <div>
-                <SearchIcon onClick={openModal} />
-              </div>
-              <TableOrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
-            </OrderRow>
-          ))
-        ) : (
-          <OrderFallback>주문 없음</OrderFallback>
-        )}
-      </OrderItem>
-    </OrderListContainer>
+    <Container>
+      <Header>주문 내역</Header>
+      <OrderListContainer>
+        <OrderHeader>
+          <HeaderCell>번호</HeaderCell>
+          <HeaderCell>시간</HeaderCell>
+          <HeaderCell>상품명</HeaderCell>
+          <HeaderCell>입금자명</HeaderCell>
+          <HeaderCell>금액</HeaderCell>
+          <HeaderCell>보기</HeaderCell>
+        </OrderHeader>
+        <OrderItem>
+          {tableOrders.length > 0 ? (
+            tableOrders.map((order: Order) => {
+              const formattedStartTime = formatKoreanTime(order.createdAt) || '시간 없음';
+
+              return (
+                <OrderRow key={order.id}>
+                  <OrderCell>{order.id}</OrderCell>
+                  <OrderCell>{formattedStartTime}</OrderCell>
+                  <OrderCell>{formatProductNames(order.orderProducts)}</OrderCell>
+                  <OrderCell>{order.customerName}</OrderCell>
+                  <OrderCell>{`${order.totalPrice.toLocaleString()}원`}</OrderCell>
+                  <ActionCell>
+                    <SearchIcon onClick={openModal} />
+                  </ActionCell>
+                  <TableOrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
+                </OrderRow>
+              );
+            })
+          ) : (
+            <OrderFallback>주문 없음</OrderFallback>
+          )}
+        </OrderItem>
+      </OrderListContainer>
+    </Container>
   );
 }
 

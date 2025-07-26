@@ -3,13 +3,14 @@ import { Color } from '@resources/colors';
 
 export interface RoundedAppButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: string;
+  fontSize?: string;
 }
 
 const Container = styled.button`
   width: ${(props: RoundedAppButtonProps) => props.size};
   background: ${Color.KIO_ORANGE};
   color: ${Color.WHITE};
-  font-size: 15px;
+  font-size: ${(props: RoundedAppButtonProps) => props.fontSize || '15px'};
   border: none;
   border-radius: 20px;
   height: 35px;

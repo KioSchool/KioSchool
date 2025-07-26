@@ -1,15 +1,16 @@
 import { Table } from '@@types/index';
-import AdminTableOrderList from '@components/admin/order/table/AdminTableOrderList';
-import TableSessionControler from '@components/admin/order/table/TableSessionControler';
-import AdminTableList from '@components/admin/order/table/AdminTableList';
-import TableElapsedTimer from '@components/admin/order/table/TableElapsedTimer';
+import AdminTableList from '@components/admin/order/table-manage/list/AdminTableList';
+import AdminTableOrderList from '@components/admin/order/table-manage/list/AdminTableOrderList';
+import TableQRCode from '@components/admin/order/table-manage/qrcode/TableQRCode';
+import TableElapsedTimer from '@components/admin/order/table-manage/timer/TableElapsedTimer';
+import TableSessionControler from '@components/admin/order/table-manage/timer/TableSessionControler';
+import RoundedAppButton from '@components/common/button/RoundedAppButton';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
-import { QRCodeCanvas } from 'qrcode.react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
@@ -26,21 +27,26 @@ const TableDetail = styled.div`
   height: 600px;
   display: grid;
   grid-template-rows: 2fr 7fr;
-  border: 1px solid black;
+  gap: 5px;
 `;
 
 const DetailHeader = styled.div`
   display: grid;
   grid-template-columns: 1.3fr 1fr 1fr;
-  border: 1px solid black;
+  gap: 5px;
 `;
 
 const FallbackContainer = styled.div`
   height: 600px;
-  border: 1px solid black;
+  border: 1px solid #ececec;
+  border-radius: 10px;
   font-size: 1.5rem;
   color: ${Color.GREY};
   ${colFlex({ justify: 'center', align: 'center' })};
+`;
+
+const FallbackText = styled.div`
+  font-size: 1.5rem;
 `;
 
 function AdminOrderTable() {
@@ -75,6 +81,11 @@ function AdminOrderTable() {
       useFlex={colFlex({ justify: 'center' })}
       titleNavBarProps={{
         title: '테이블 주문 조회',
+        children: (
+          <RoundedAppButton size={'170px'} onClick={() => navigate(`/admin/workspace/${workspaceId}/order/table/manage`)}>
+            테이블 관리
+          </RoundedAppButton>
+        ),
         subTitle: `${selectedTable?.tableNumber}번 테이블`,
         onLeftArrowClick: () => navigate(`/admin/workspace/${workspaceId}`),
       }}
@@ -84,7 +95,7 @@ function AdminOrderTable() {
         {selectedTable ? (
           <TableDetail>
             <DetailHeader>
-              <TableElapsedTimer createdAt={selectedTable.orderSession?.createdAt} />
+              <TableElapsedTimer createdAt={selectedTable.orderSession?.createdAt} expectedEndAt={selectedTable.orderSession?.expectedEndAt} />
               <TableSessionControler
                 timeLimit={workspaceSetting.orderSessionTimeLimitMinutes}
                 workspaceId={workspaceId}
@@ -93,13 +104,13 @@ function AdminOrderTable() {
                 tableNumber={selectedTable.tableNumber}
                 refetchTable={fetchTables}
               />
-              <QRCodeCanvas value={`${location.origin}/order?workspaceId=${workspaceId}&tableNo=${selectedTable.tableNumber}`} />
+              <TableQRCode workspaceId={workspaceId} selectedTable={selectedTable} />
             </DetailHeader>
             <AdminTableOrderList workspaceId={Number(workspaceId)} orderSessionId={selectedTable.orderSession?.id || 0} />
           </TableDetail>
         ) : (
           <FallbackContainer>
-            <div>테이블을 선택하여 상세 정보를 확인하세요.</div>
+            <FallbackText>테이블을 선택하여 상세 정보를 확인하세요.</FallbackText>
           </FallbackContainer>
         )}
       </Container>

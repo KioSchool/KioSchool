@@ -25,14 +25,25 @@ function useAdminWorkspace() {
   };
 
   const updateWorkspaceTableCount = (workspaceId: string | undefined | null, tableCount: number) => {
-    adminApi
+    return adminApi
       .post<Workspace>('/workspace/table-count', { workspaceId, tableCount })
       .then((res) => {
         setAdminWorkspace(res.data);
       })
-      .catch((error) => {
-        alert(error.response.data.message);
-      });
+      .catch(() => Promise.reject());
+  };
+
+  const updateWorkspaceOrderSetting = (workspaceId: string | undefined | null, useOrderSessionTimeLimit: boolean, orderSessionTimeLimitMinutes: number) => {
+    return adminApi
+      .put<Workspace>('/workspace/setting/order', {
+        workspaceId: workspaceId,
+        useOrderSessionTimeLimit,
+        orderSessionTimeLimitMinutes,
+      })
+      .then((res) => {
+        setAdminWorkspace(res.data);
+      })
+      .catch(() => Promise.reject());
   };
 
   const updateWorkspaceInfo = (workspaceId: number, name: string, description: string, notice?: string) => {
@@ -86,7 +97,7 @@ function useAdminWorkspace() {
 
   const fetchWorkspaceTables = (workspaceId: string | undefined | null) => adminApi.get(`/workspace/tables`, { params: { workspaceId } });
 
-  return { fetchWorkspace, updateWorkspaceTableCount, updateWorkspaceInfoAndImage, fetchWorkspaceTables };
+  return { fetchWorkspace, updateWorkspaceTableCount, updateWorkspaceOrderSetting, updateWorkspaceInfoAndImage, fetchWorkspaceTables };
 }
 
 export default useAdminWorkspace;
