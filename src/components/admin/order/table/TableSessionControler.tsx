@@ -5,6 +5,7 @@ import { colFlex } from '@styles/flexStyles';
 import { dateConverter } from '@utils/FormatDate';
 import { useState } from 'react';
 import TableTimeControler from './TableTimeControler';
+import TableTimeButtons from './TableTimeButtons';
 
 const Container = styled.div`
   border: 1px solid #ececec;
@@ -29,6 +30,8 @@ const Header = styled.div`
 
 const Content = styled.div`
   width: 90%;
+  height: 100%;
+  gap: 5px;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
@@ -127,9 +130,13 @@ function TableSessionControler({ timeLimit, workspaceId, orderSessionId, current
           handleIncrement={handleIncrement}
           handleTimeChange={handleTimeChange}
         />
-        <button onClick={handleDecreaseTime}>감소</button>
-        <button onClick={handleIncreaseTime}>연장</button>
-        {orderSessionId ? <button onClick={handleEndSession}>사용종료</button> : <button onClick={handleStartSession}>사용시작</button>}
+        <TableTimeButtons
+          handleDecreaseTime={handleDecreaseTime}
+          handleIncreaseTime={handleIncreaseTime}
+          handleEndSession={handleEndSession}
+          handleStartSession={handleStartSession}
+          orderSessionId={orderSessionId}
+        />
       </Content>
     </Container>
   );
