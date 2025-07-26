@@ -67,15 +67,15 @@ const compareByStatus = (table1: Table, table2: Table, prioritizeUsing: boolean)
   const table1Using = table1.orderSession !== null;
   const table2Using = table2.orderSession !== null;
 
-  if (table1Using !== table2Using) {
-    if (prioritizeUsing) {
-      return table2Using ? 1 : -1;
-    } else {
-      return table1Using ? 1 : -1;
-    }
+  if (table1Using === table2Using) {
+    return compareById(table1, table2);
   }
 
-  return compareById(table1, table2);
+  if (prioritizeUsing) {
+    return table1Using ? -1 : 1;
+  }
+
+  return table1Using ? 1 : -1;
 };
 
 type SortType = 'default' | 'status-asc' | 'status-desc';
