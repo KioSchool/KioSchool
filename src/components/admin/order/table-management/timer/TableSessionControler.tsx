@@ -29,7 +29,7 @@ const Header = styled.div`
 
 const Content = styled.div`
   width: 90%;
-  margin: auto 0;
+  flex: 1;
   gap: 5px;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;

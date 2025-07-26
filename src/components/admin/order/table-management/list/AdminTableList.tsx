@@ -43,6 +43,7 @@ const HeaderText = styled.div<{ clickable?: boolean }>`
 const ListBody = styled.div`
   overflow-y: auto;
   height: 100%;
+  flex: 1;
 `;
 
 const ExpandIcon = styled(RiExpandUpDownFill)`
