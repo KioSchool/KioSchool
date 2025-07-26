@@ -9,7 +9,7 @@ const Container = styled.div`
   border: 1px solid #ececec;
   border-radius: 10px;
   overflow: hidden;
-  ${colFlex({ justify: 'center', align: 'center' })}
+  ${colFlex({ justify: 'start', align: 'center' })}
 `;
 
 const Header = styled.div`
@@ -17,6 +17,7 @@ const Header = styled.div`
   width: 100%;
   height: 40px;
   padding: 5px 10px;
+  color: ${Color.GREY};
   background-color: ${Color.LIGHT_GREY};
   font-size: 15px;
   font-weight: 600;
