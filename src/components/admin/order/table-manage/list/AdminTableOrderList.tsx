@@ -143,12 +143,12 @@ function AdminTableOrderList({ workspaceId, orderSessionId }: TableOrderListProp
         <OrderItem>
           {tableOrders.length > 0 ? (
             tableOrders.map((order: Order) => {
-              const formattedStartTime = formatKoreanTime(order.createdAt);
+              const formattedStartTime = formatKoreanTime(order.createdAt) || '시간 없음';
 
               return (
                 <OrderRow key={order.id}>
                   <OrderCell>{order.id}</OrderCell>
-                  <OrderCell>{formattedStartTime ? formattedStartTime : '시간 없음'}</OrderCell>
+                  <OrderCell>{formattedStartTime}</OrderCell>
                   <OrderCell>{formatProductNames(order.orderProducts)}</OrderCell>
                   <OrderCell>{order.customerName}</OrderCell>
                   <OrderCell>{`${order.totalPrice.toLocaleString()}원`}</OrderCell>
