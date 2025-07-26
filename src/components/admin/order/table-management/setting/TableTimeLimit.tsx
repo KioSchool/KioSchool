@@ -149,7 +149,7 @@ function TableTimeLimit() {
           <Input type="text" disabled={!isTimeLimited} value={formatTime(timeLimitMinutes)} onChange={handleInputChange} readOnly />
           <PlusButton disabled={!isTimeLimited} onClick={handlePlusClick} />
         </InputContainer>
-        <RoundedAppButton fontSize={'16px'} onClick={handleConfirm}>
+        <RoundedAppButton size={'130px'} fontSize={'16px'} onClick={handleConfirm}>
           확인
         </RoundedAppButton>
       </Content>

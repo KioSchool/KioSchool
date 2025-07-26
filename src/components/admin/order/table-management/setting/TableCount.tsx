@@ -115,7 +115,7 @@ function TableCount() {
           <Input type="number" min="1" value={tableCount} onChange={handleInputChange} />
           <PlusButton onClick={handlePlusClick} />
         </InputContainer>
-        <RoundedAppButton fontSize={'16px'} onClick={handleConfirm}>
+        <RoundedAppButton size={'130px'} fontSize={'16px'} onClick={handleConfirm}>
           확인
         </RoundedAppButton>
       </Content>
