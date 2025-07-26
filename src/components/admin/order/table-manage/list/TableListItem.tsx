@@ -7,6 +7,8 @@ import { useSearchParams } from 'react-router-dom';
 
 type TimeStatus = 'selected' | 'expired' | 'warning' | 'normal';
 
+const WARNING_THRESHOLD_MS = 10 * 60 * 1000;
+
 const getTimeStatus = (isSelected: boolean, expectedEndAt: string | undefined, isUsing: boolean): TimeStatus => {
   if (isSelected) return 'selected';
   if (!isUsing || !expectedEndAt) return 'normal';
@@ -14,7 +16,7 @@ const getTimeStatus = (isSelected: boolean, expectedEndAt: string | undefined, i
   const remainingTime = new Date(expectedEndAt).getTime() - new Date().getTime();
 
   if (remainingTime <= 0) return 'expired';
-  if (remainingTime <= 600000) return 'warning';
+  if (remainingTime <= WARNING_THRESHOLD_MS) return 'warning';
 
   return 'normal';
 };
