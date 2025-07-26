@@ -78,18 +78,22 @@ const compareByStatus = (table1: Table, table2: Table, prioritizeUsing: boolean)
   return table1Using ? 1 : -1;
 };
 
-type SortType = 'default' | 'status-asc' | 'status-desc';
+const DEFAULT = 'default' as const;
+const STATUS_ASC = 'status-asc' as const;
+const STATUS_DESC = 'status-desc' as const;
+
+type SortType = typeof DEFAULT | typeof STATUS_ASC | typeof STATUS_DESC;
 
 const SORT_ICONS = {
-  default: <ExpandIcon />,
-  'status-asc': <DropDownIcon />,
-  'status-desc': <DropUpIcon />,
+  [DEFAULT]: <ExpandIcon />,
+  [STATUS_ASC]: <DropDownIcon />,
+  [STATUS_DESC]: <DropUpIcon />,
 } as const;
 
 const SORT_TRANSITIONS = {
-  default: 'status-asc',
-  'status-asc': 'status-desc',
-  'status-desc': 'default',
+  [DEFAULT]: STATUS_ASC,
+  [STATUS_ASC]: STATUS_DESC,
+  [STATUS_DESC]: DEFAULT,
 } as const;
 
 interface TableSessionListProps {
@@ -97,15 +101,15 @@ interface TableSessionListProps {
 }
 
 function AdminTableList({ tables }: TableSessionListProps) {
-  const [sortType, setSortType] = useState<SortType>('default');
+  const [sortType, setSortType] = useState<SortType>(DEFAULT);
 
   const getSortedTables = () => {
     const copiedTables = [...tables];
 
     switch (sortType) {
-      case 'status-asc':
+      case STATUS_ASC:
         return copiedTables.sort((a, b) => compareByStatus(a, b, true));
-      case 'status-desc':
+      case STATUS_DESC:
         return copiedTables.sort((a, b) => compareByStatus(a, b, false));
       default:
         return copiedTables.sort(compareById);
@@ -115,7 +119,7 @@ function AdminTableList({ tables }: TableSessionListProps) {
   const sortedTables = getSortedTables();
 
   const handleStatusClick = () => {
-    setSortType((prev) => SORT_TRANSITIONS[prev] || 'status-asc');
+    setSortType((prev) => SORT_TRANSITIONS[prev] || STATUS_ASC);
   };
 
   return (
