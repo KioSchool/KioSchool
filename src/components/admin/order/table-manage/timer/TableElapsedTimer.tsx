@@ -71,7 +71,8 @@ function TableElapsedTimer({ createdAt, expectedEndAt }: TableUsageTimeProps) {
         endAngle={90}
         cornerRadius="50%"
         text={({ value }) => {
-          const startTime = createdAt ? `${formatKoreanTime(createdAt)}부터` : '-';
+          const formattedStartTime = createdAt && formatKoreanTime(createdAt);
+          const startTime = formattedStartTime ? `${formattedStartTime}부터` : '시작시간 없음';
           const currentMinutes = value || 0;
           const formattedCurrent = formatMinutesToTime(currentMinutes);
           const formattedMax = formatMinutesToTime(maxMinutes);

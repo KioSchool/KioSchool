@@ -50,8 +50,9 @@ export const formatRemainingTime = (expectedEndAt?: string): string => {
   return `${minutes}분`;
 };
 
-export const formatKoreanTime = (dateString: string): string => {
-  if (!dateString) return '시작 시간 없음';
+export const formatKoreanTime = (dateString: string): string | null => {
+  if (!dateString) return null;
+
   const date = new Date(dateString);
   const options: Intl.DateTimeFormatOptions = {
     hour: 'numeric',

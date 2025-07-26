@@ -142,19 +142,23 @@ function AdminTableOrderList({ workspaceId, orderSessionId }: TableOrderListProp
         </OrderHeader>
         <OrderItem>
           {tableOrders.length > 0 ? (
-            tableOrders.map((order: Order) => (
-              <OrderRow key={order.id}>
-                <OrderCell>{order.id}</OrderCell>
-                <OrderCell>{formatKoreanTime(order.createdAt)}</OrderCell>
-                <OrderCell>{formatProductNames(order.orderProducts)}</OrderCell>
-                <OrderCell>{order.customerName}</OrderCell>
-                <OrderCell>{`${order.totalPrice.toLocaleString()}원`}</OrderCell>
-                <ActionCell>
-                  <SearchIcon onClick={openModal} />
-                </ActionCell>
-                <TableOrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
-              </OrderRow>
-            ))
+            tableOrders.map((order: Order) => {
+              const formattedStartTime = formatKoreanTime(order.createdAt);
+
+              return (
+                <OrderRow key={order.id}>
+                  <OrderCell>{order.id}</OrderCell>
+                  <OrderCell>{formattedStartTime ? formattedStartTime : '시간 없음'}</OrderCell>
+                  <OrderCell>{formatProductNames(order.orderProducts)}</OrderCell>
+                  <OrderCell>{order.customerName}</OrderCell>
+                  <OrderCell>{`${order.totalPrice.toLocaleString()}원`}</OrderCell>
+                  <ActionCell>
+                    <SearchIcon onClick={openModal} />
+                  </ActionCell>
+                  <TableOrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
+                </OrderRow>
+              );
+            })
           ) : (
             <OrderFallback>주문 없음</OrderFallback>
           )}
