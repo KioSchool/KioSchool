@@ -6,14 +6,14 @@ import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 
 const Contents = styled.div`
-  width: 80%;
-  gap: 10px;
+  width: 60%;
+  gap: 20px;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
 function AdminOrderTableManage() {
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })} titleNavBarProps={{ title: '테이블 관리' }}>
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} titleNavBarProps={{ title: '테이블 관리' }}>
       <Contents>
         <TableCount />
         <TableTimeLimit />
