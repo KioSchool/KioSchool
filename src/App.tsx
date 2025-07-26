@@ -18,14 +18,13 @@ import AdminOrderStatistics from '@pages/admin/order/AdminOrderStatistics';
 import AdminProductEdit from '@pages/admin/AdminProductEdit';
 import AdminMyInfo from '@pages/admin/AdminMyInfo';
 import AdminProductCategories from '@pages/admin/AdminProductCategoires';
-import AdminTableCount from '@pages/admin/order/AdminTableCount';
 import ResetPassword from '@pages/user/ResetPassword';
 import Info from '@pages/user/info/Info';
 import SuperAdminHome from '@pages/super-admin/SuperAdminHome';
 import SuperAdminWorkspace from '@pages/super-admin/SuperAdminWorkspace';
 import SuperAdminManage from '@pages/super-admin/SuperAdminManage';
 import SuperAdminUser from '@pages/super-admin/SuperAdminUser';
-import AdminOrderTable from '@pages/admin/order/AdminOrderTable';
+import AdminOrderTable from '@pages/admin/table/AdminOrderTable';
 import AdminOrderTableHistory from '@pages/admin/order/AdminOrderTableHistory';
 import AdminOrderRealtime from '@pages/admin/order/AdminOrderRealtime';
 import SuperAdminEmailDomainList from '@pages/super-admin/SuperAdminEmailDomainList';
@@ -38,7 +37,7 @@ import useNetworkStatusNotifier from '@hooks/useNetworkStatusNotifier';
 import useServerHealth from '@hooks/useServerHealth';
 import ServerErrorFallback from '@components/common/fallback/ServerErrorFallback';
 import OrderWait from '@pages/user/order/OrderWait';
-import AdminOrderTableManage from '@pages/admin/order/AdminOrderTableManage';
+import AdminOrderTableManage from '@pages/admin/table/AdminOrderTableManage';
 
 function App() {
   useNetworkStatusNotifier();
@@ -79,7 +78,6 @@ function App() {
         <Route path="/admin/workspace/:workspaceId/order/table" element={<AdminOrderTable />} />
         <Route path="/admin/workspace/:workspaceId/order/table/:tableNumber" element={<AdminOrderTableHistory />} />
         <Route path="/admin/workspace/:workspaceId/table/manage" element={<AdminOrderTableManage />} />
-        <Route path="/admin/workspace/:workspaceId/table/count" element={<AdminTableCount />} />
         <Route path="/admin/workspace/:workspaceId/products" element={<AdminProduct />} />
         <Route path="/admin/workspace/:workspaceId/products/add-product" element={<AdminProductAdd />} />
         <Route path="/admin/workspace/:workspaceId/products/edit-product" element={<AdminProductEdit />} />
