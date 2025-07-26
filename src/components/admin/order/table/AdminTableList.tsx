@@ -29,6 +29,7 @@ const Header = styled.div`
 
 const HeaderText = styled.div<{ clickable?: boolean }>`
   font-size: 15px;
+  font-weight: 600;
   color: ${Color.GREY};
   cursor: ${({ clickable }) => (clickable ? 'pointer' : 'default')};
   gap: 4px;
