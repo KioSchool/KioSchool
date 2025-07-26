@@ -38,10 +38,15 @@ const DetailHeader = styled.div`
 
 const FallbackContainer = styled.div`
   height: 600px;
-  border: 1px solid black;
+  border: 1px solid #ececec;
+  border-radius: 10px;
   font-size: 1.5rem;
   color: ${Color.GREY};
   ${colFlex({ justify: 'center', align: 'center' })};
+`;
+
+const FallbackText = styled.div`
+  font-size: 1.5rem;
 `;
 
 function AdminOrderTable() {
@@ -105,7 +110,7 @@ function AdminOrderTable() {
           </TableDetail>
         ) : (
           <FallbackContainer>
-            <div>테이블을 선택하여 상세 정보를 확인하세요.</div>
+            <FallbackText>테이블을 선택하여 상세 정보를 확인하세요.</FallbackText>
           </FallbackContainer>
         )}
       </Container>
