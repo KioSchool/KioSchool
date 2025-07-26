@@ -28,7 +28,7 @@ const Header = styled.div`
 `;
 
 const Content = styled.div`
-  width: 100%;
+  width: 90%;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
