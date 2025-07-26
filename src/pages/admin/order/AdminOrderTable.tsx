@@ -9,10 +9,10 @@ import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
-import { QRCodeCanvas } from 'qrcode.react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
+import TableQRCode from '@components/admin/order/table/TableQRCode';
 
 const Container = styled.div`
   width: 100%;
@@ -93,7 +93,7 @@ function AdminOrderTable() {
                 tableNumber={selectedTable.tableNumber}
                 refetchTable={fetchTables}
               />
-              <QRCodeCanvas value={`${location.origin}/order?workspaceId=${workspaceId}&tableNo=${selectedTable.tableNumber}`} />
+              <TableQRCode workspaceId={workspaceId} selectedTable={selectedTable} />
             </DetailHeader>
             <AdminTableOrderList workspaceId={Number(workspaceId)} orderSessionId={selectedTable.orderSession?.id || 0} />
           </TableDetail>
