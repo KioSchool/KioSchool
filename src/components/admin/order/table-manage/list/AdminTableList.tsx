@@ -90,7 +90,7 @@ const SORT_ICONS = {
   [STATUS_DESC]: <DropUpIcon />,
 } as const;
 
-const SORT_TRANSITIONS = {
+const NEXT_SORT_STATE = {
   [DEFAULT]: STATUS_ASC,
   [STATUS_ASC]: STATUS_DESC,
   [STATUS_DESC]: DEFAULT,
@@ -119,7 +119,7 @@ function AdminTableList({ tables }: TableSessionListProps) {
   const sortedTables = getSortedTables();
 
   const handleStatusClick = () => {
-    setSortType((prev) => SORT_TRANSITIONS[prev] || STATUS_ASC);
+    setSortType((prev) => NEXT_SORT_STATE[prev] || STATUS_ASC);
   };
 
   return (
