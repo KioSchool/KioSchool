@@ -97,6 +97,11 @@ function TableCount() {
   };
 
   const handleConfirm = () => {
+    if (tableCount < 1) {
+      alert('테이블 수는 1 이상이어야 합니다.');
+      return;
+    }
+
     updateWorkspaceTableCount(workspaceId, tableCount)
       .then(() => {
         alert('테이블 수가 성공적으로 변경되었습니다.');
