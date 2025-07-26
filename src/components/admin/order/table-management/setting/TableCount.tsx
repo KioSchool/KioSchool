@@ -1,10 +1,12 @@
 import RoundedAppButton from '@components/common/button/RoundedAppButton';
 import styled from '@emotion/styled';
+import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { RiAddFill, RiSubtractFill } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
 
 const Container = styled.div`
@@ -73,8 +75,11 @@ const PlusButton = styled(RiAddFill)`
 `;
 
 function TableCount() {
+  const { workspaceId } = useParams<{ workspaceId: string }>();
   const workspace = useAtomValue(adminWorkspaceAtom);
   const [tableCount, setTableCount] = useState(workspace.tableCount || 1);
+
+  const { updateWorkspaceTableCount } = useAdminWorkspace();
 
   const handleMinusClick = () => {
     setTableCount((prev) => Math.max(1, prev - 1));
@@ -91,6 +96,16 @@ function TableCount() {
     setTableCount(parseInt(sanitizedValue, 10));
   };
 
+  const handleConfirm = () => {
+    updateWorkspaceTableCount(workspaceId, tableCount)
+      .then(() => {
+        alert('테이블 수가 성공적으로 변경되었습니다.');
+      })
+      .catch(() => {
+        alert('테이블 수 변경에 실패했습니다. 다시 시도해주세요.');
+      });
+  };
+
   return (
     <Container>
       <Header>테이블 수</Header>
@@ -100,7 +115,7 @@ function TableCount() {
           <Input type="number" min="1" value={tableCount} onChange={handleInputChange} />
           <PlusButton onClick={handlePlusClick} />
         </InputContainer>
-        <RoundedAppButton fontSize={'16px'} onClick={() => console.log('테이블 수 변경:', tableCount)}>
+        <RoundedAppButton fontSize={'16px'} onClick={handleConfirm}>
           확인
         </RoundedAppButton>
       </Content>
