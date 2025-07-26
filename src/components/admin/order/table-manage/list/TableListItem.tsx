@@ -24,7 +24,7 @@ const TIME_STATUS_STYLES = {
   expired: { background: '#FF8080', color: Color.WHITE },
   warning: { background: '#FFEBEB', color: Color.GREY },
   normal: { background: 'transparent', color: Color.GREY },
-} as const;
+};
 
 const Row = styled.div<{ isSelected: boolean; expectedEndAt?: string; isUsing: boolean }>`
   display: grid;
@@ -38,10 +38,10 @@ const Row = styled.div<{ isSelected: boolean; expectedEndAt?: string; isUsing: b
 
   ${({ isSelected, expectedEndAt, isUsing }) => {
     const status = getTimeStatus(isSelected, expectedEndAt, isUsing);
-    const styles = TIME_STATUS_STYLES[status];
+    const style = TIME_STATUS_STYLES[status];
     return `
-      color: ${styles.color};
-      background-color: ${styles.background};
+      color: ${style.color};
+      background-color: ${style.background};
     `;
   }}
 
