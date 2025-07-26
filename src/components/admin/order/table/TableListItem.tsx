@@ -5,7 +5,28 @@ import { Color } from '@resources/colors';
 import { formatRemainingTime } from '@utils/FormatDate';
 import { useSearchParams } from 'react-router-dom';
 
-const Row = styled.div<{ isSelected: boolean }>`
+type TimeStatus = 'selected' | 'expired' | 'warning' | 'normal';
+
+const getTimeStatus = (isSelected: boolean, expectedEndAt: string | undefined, isUsing: boolean): TimeStatus => {
+  if (isSelected) return 'selected';
+  if (!isUsing || !expectedEndAt) return 'normal';
+
+  const remainingTime = new Date(expectedEndAt).getTime() - new Date().getTime();
+
+  if (remainingTime <= 0) return 'expired';
+  if (remainingTime <= 600000) return 'warning';
+
+  return 'normal';
+};
+
+const TIME_STATUS_STYLES = {
+  selected: { background: Color.KIO_ORANGE, color: Color.WHITE },
+  expired: { background: '#FF8080', color: Color.WHITE },
+  warning: { background: '#FFEBEB', color: Color.GREY },
+  normal: { background: 'transparent', color: Color.GREY },
+} as const;
+
+const Row = styled.div<{ isSelected: boolean; expectedEndAt?: string; isUsing: boolean }>`
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   align-items: center;
@@ -14,8 +35,15 @@ const Row = styled.div<{ isSelected: boolean }>`
   cursor: pointer;
   text-align: center;
   height: 30px;
-  color: ${({ isSelected }) => (isSelected ? Color.WHITE : Color.GREY)};
-  background-color: ${({ isSelected }) => (isSelected ? Color.KIO_ORANGE : 'transparent')};
+
+  ${({ isSelected, expectedEndAt, isUsing }) => {
+    const status = getTimeStatus(isSelected, expectedEndAt, isUsing);
+    const styles = TIME_STATUS_STYLES[status];
+    return `
+      color: ${styles.color};
+      background-color: ${styles.background};
+    `;
+  }}
 
   &:hover {
     color: ${Color.WHITE};
@@ -55,7 +83,12 @@ function TableListItem({ expectedEndAt, isUsing, table }: TableSessionItemProps)
   };
 
   return (
-    <Row onClick={() => onClickTable(table.tableNumber)} isSelected={selectedTableNo === String(table.tableNumber)}>
+    <Row
+      onClick={() => onClickTable(table.tableNumber)}
+      isSelected={selectedTableNo === String(table.tableNumber)}
+      expectedEndAt={expectedEndAt}
+      isUsing={isUsing}
+    >
       <Text>{table.tableNumber}</Text>
       <Text>{remainTime}</Text>
       <StatusTag isUsing={isUsing}>{isUsing ? '사용중' : '종료됨'}</StatusTag>
