@@ -105,13 +105,6 @@ function TableTimeLimit() {
     setTimeLimitMinutes((prev) => prev + 1);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value, 10);
-    if (!isNaN(value) && value >= 1) {
-      setTimeLimitMinutes(value);
-    }
-  };
-
   const formatTime = (minutes: number) => {
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
@@ -146,7 +139,7 @@ function TableTimeLimit() {
       <Content>
         <InputContainer disabled={!isTimeLimited}>
           <MinusButton disabled={!isTimeLimited} onClick={handleMinusClick} />
-          <Input type="text" disabled={!isTimeLimited} value={formatTime(timeLimitMinutes)} onChange={handleInputChange} readOnly />
+          <Input type="text" disabled={!isTimeLimited} value={formatTime(timeLimitMinutes)} readOnly />
           <PlusButton disabled={!isTimeLimited} onClick={handlePlusClick} />
         </InputContainer>
         <RoundedAppButton size={'130px'} fontSize={'16px'} onClick={handleConfirm}>
