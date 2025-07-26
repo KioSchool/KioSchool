@@ -62,19 +62,20 @@ const DropUpIcon = styled(RiArrowDropUpFill)`
   height: 25px;
 `;
 
-const sortById = (a: Table, b: Table) => a.id - b.id;
-const sortByStatus = (a: Table, b: Table, prioritizeUsing: boolean) => {
-  const aUsing = a.orderSession !== null;
-  const bUsing = b.orderSession !== null;
+const compareById = (table1: Table, table2: Table) => table1.id - table2.id;
+const compareByStatus = (table1: Table, table2: Table, prioritizeUsing: boolean) => {
+  const table1Using = table1.orderSession !== null;
+  const table2Using = table2.orderSession !== null;
 
-  if (aUsing !== bUsing) {
+  if (table1Using !== table2Using) {
     if (prioritizeUsing) {
-      return bUsing ? 1 : -1;
+      return table2Using ? 1 : -1;
     } else {
-      return aUsing ? 1 : -1;
+      return table1Using ? 1 : -1;
     }
   }
-  return sortById(a, b);
+
+  return compareById(table1, table2);
 };
 
 type SortType = 'default' | 'status-asc' | 'status-desc';
@@ -103,11 +104,11 @@ function AdminTableList({ tables }: TableSessionListProps) {
 
     switch (sortType) {
       case 'status-asc':
-        return copiedTables.sort((a, b) => sortByStatus(a, b, true));
+        return copiedTables.sort((a, b) => compareByStatus(a, b, true));
       case 'status-desc':
-        return copiedTables.sort((a, b) => sortByStatus(a, b, false));
+        return copiedTables.sort((a, b) => compareByStatus(a, b, false));
       default:
-        return copiedTables.sort(sortById);
+        return copiedTables.sort(compareById);
     }
   };
 
