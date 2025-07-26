@@ -23,14 +23,13 @@ const Header = styled.div`
   background-color: ${Color.LIGHT_GREY};
   font-size: 15px;
   font-weight: 600;
-  width: 100%;
   border-bottom: 1px solid #ececec;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
 const Content = styled.div`
   width: 90%;
-  height: 100%;
+  margin: auto 0;
   gap: 5px;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
