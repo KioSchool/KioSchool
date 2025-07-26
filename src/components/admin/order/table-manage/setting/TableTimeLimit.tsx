@@ -87,10 +87,11 @@ const PlusButton = styled(RiAddFill)<{ disabled: boolean }>`
 function TableTimeLimit() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const workspace = useAtomValue(adminWorkspaceAtom);
+  const { useOrderSessionTimeLimit, orderSessionTimeLimitMinutes } = workspace.workspaceSetting;
   const { updateWorkspaceOrderSetting } = useAdminWorkspace();
 
-  const [isTimeLimited, setIsTimeLimited] = useState(workspace.workspaceSetting.useOrderSessionTimeLimit);
-  const [timeLimitMinutes, setTimeLimitMinutes] = useState(workspace.workspaceSetting.orderSessionTimeLimitMinutes);
+  const [isTimeLimited, setIsTimeLimited] = useState(useOrderSessionTimeLimit);
+  const [timeLimitMinutes, setTimeLimitMinutes] = useState(orderSessionTimeLimitMinutes);
 
   const handleTimeLimitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsTimeLimited(e.target.checked);
