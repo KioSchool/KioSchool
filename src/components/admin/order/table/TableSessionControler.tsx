@@ -1,10 +1,35 @@
 import styled from '@emotion/styled';
 import useAdminTable from '@hooks/admin/useAdminTable';
+import { Color } from '@resources/colors';
+import { colFlex } from '@styles/flexStyles';
 import { dateConverter } from '@utils/FormatDate';
 import { useState } from 'react';
+import TableTimeControler from './TableTimeControler';
 
 const Container = styled.div`
-  border: 1px solid black;
+  border: 1px solid #ececec;
+  border-radius: 10px;
+  overflow: hidden;
+  ${colFlex({ justify: 'start', align: 'center' })}
+`;
+
+const Header = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  height: 40px;
+  padding: 5px 10px;
+  color: ${Color.GREY};
+  background-color: ${Color.LIGHT_GREY};
+  font-size: 15px;
+  font-weight: 600;
+  width: 100%;
+  border-bottom: 1px solid #ececec;
+  ${colFlex({ justify: 'center', align: 'center' })};
+`;
+
+const Content = styled.div`
+  width: 100%;
+  ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
 interface TableSessionControlerProps {
@@ -94,15 +119,18 @@ function TableSessionControler({ timeLimit, workspaceId, orderSessionId, current
 
   return (
     <Container>
-      <div>
-        <button onClick={handleDecrement}>-</button>
-        <input type="number" value={selectedTimeLimit} onChange={handleTimeChange} />
-        <span>분</span>
-        <button onClick={handleIncrement}>+</button>
-      </div>
-      <button onClick={handleDecreaseTime}>감소</button>
-      <button onClick={handleIncreaseTime}>연장</button>
-      {orderSessionId ? <button onClick={handleEndSession}>사용종료</button> : <button onClick={handleStartSession}>사용시작</button>}
+      <Header>상태 변경</Header>
+      <Content>
+        <TableTimeControler
+          timeLimit={selectedTimeLimit}
+          handleDecrement={handleDecrement}
+          handleIncrement={handleIncrement}
+          handleTimeChange={handleTimeChange}
+        />
+        <button onClick={handleDecreaseTime}>감소</button>
+        <button onClick={handleIncreaseTime}>연장</button>
+        {orderSessionId ? <button onClick={handleEndSession}>사용종료</button> : <button onClick={handleStartSession}>사용시작</button>}
+      </Content>
     </Container>
   );
 }
