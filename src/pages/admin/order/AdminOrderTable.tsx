@@ -1,8 +1,9 @@
 import { Table } from '@@types/index';
-import AdminTableOrderList from '@components/admin/order/table/AdminTableOrderList';
-import TableSessionControler from '@components/admin/order/table/TableSessionControler';
-import AdminTableList from '@components/admin/order/table/AdminTableList';
-import TableElapsedTimer from '@components/admin/order/table/TableElapsedTimer';
+import AdminTableList from '@components/admin/order/table-management/list/AdminTableList';
+import AdminTableOrderList from '@components/admin/order/table-management/list/AdminTableOrderList';
+import TableQRCode from '@components/admin/order/table-management/qrcode/TableQRCode';
+import TableElapsedTimer from '@components/admin/order/table-management/timer/TableElapsedTimer';
+import TableSessionControler from '@components/admin/order/table-management/timer/TableSessionControler';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
@@ -12,7 +13,6 @@ import { useAtomValue } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
-import TableQRCode from '@components/admin/order/table/TableQRCode';
 
 const Container = styled.div`
   width: 100%;

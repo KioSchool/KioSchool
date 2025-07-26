@@ -7,7 +7,7 @@ import { Color } from '@resources/colors';
 import useModal from '@hooks/useModal';
 import { formatKoreanTime } from '@utils/FormatDate';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import TableOrderDetailModal from './modal/TableOrderDetailModal';
+import TableOrderDetailModal from '../modal/TableOrderDetailModal';
 
 const defaultInterval = 5000;
 
