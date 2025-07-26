@@ -39,6 +39,8 @@ const HeaderSection = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
+const HeaderText = styled.span``;
+
 const HeaderDivider = styled.div`
   width: 1px;
   height: 100%;
@@ -124,7 +126,7 @@ function TableQRCodes() {
         <HeaderSection>테이블 전체 QR</HeaderSection>
         <HeaderDivider />
         <HeaderSection>
-          <span>미리보기 QR</span>
+          <HeaderText>미리보기 QR</HeaderText>
           <QRInfoTooltip />
         </HeaderSection>
       </Header>

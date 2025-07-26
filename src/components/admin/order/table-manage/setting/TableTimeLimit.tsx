@@ -26,13 +26,12 @@ const Header = styled.div`
   background-color: ${Color.LIGHT_GREY};
   font-size: 15px;
   font-weight: 400;
+  color: ${Color.GREY};
   border-bottom: 1px solid #ececec;
   ${rowFlex({ justify: 'center', align: 'center' })};
-
-  label {
-    color: ${Color.GREY};
-  }
 `;
+
+const HeaderText = styled.span``;
 
 const Content = styled.div`
   width: 100%;
@@ -124,7 +123,7 @@ function TableTimeLimit() {
   return (
     <Container>
       <Header>
-        <label>테이블 시간 제한</label>
+        <HeaderText>테이블 시간 제한</HeaderText>
         <Checkbox
           checked={isTimeLimited}
           onChange={handleTimeLimitChange}
