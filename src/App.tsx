@@ -78,8 +78,8 @@ function App() {
         <Route path="/admin/workspace/:workspaceId/order/statistics" element={<AdminOrderStatistics />} />
         <Route path="/admin/workspace/:workspaceId/order/table" element={<AdminOrderTable />} />
         <Route path="/admin/workspace/:workspaceId/order/table/:tableNumber" element={<AdminOrderTableHistory />} />
-        <Route path="/admin/workspace/:workspaceId/table-manage" element={<AdminOrderTableManage />} />
-        <Route path="/admin/workspace/:workspaceId/table-count" element={<AdminTableCount />} />
+        <Route path="/admin/workspace/:workspaceId/table/manage" element={<AdminOrderTableManage />} />
+        <Route path="/admin/workspace/:workspaceId/table/count" element={<AdminTableCount />} />
         <Route path="/admin/workspace/:workspaceId/products" element={<AdminProduct />} />
         <Route path="/admin/workspace/:workspaceId/products/add-product" element={<AdminProductAdd />} />
         <Route path="/admin/workspace/:workspaceId/products/edit-product" element={<AdminProductEdit />} />
