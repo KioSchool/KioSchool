@@ -63,19 +63,30 @@ const DropUpIcon = styled(RiArrowDropUpFill)`
 `;
 
 const compareById = (table1: Table, table2: Table) => table1.id - table2.id;
+
+/**
+ * 테이블 사용 상태를 기준으로 정렬하는 비교 함수
+ * @param table1 비교할 첫 번째 테이블
+ * @param table2 비교할 두 번째 테이블
+ * @param prioritizeUsing true면 사용중 테이블을 앞으로, false면 종료된 테이블을 앞으로
+ * @returns 정렬 순서 (-1: table1이 앞, 0: 동일, 1: table2가 앞)
+ */
 const compareByStatus = (table1: Table, table2: Table, prioritizeUsing: boolean) => {
   const table1Using = table1.orderSession !== null;
   const table2Using = table2.orderSession !== null;
 
+  // 두 테이블의 사용 상태가 같으면 ID로 정렬
   if (table1Using === table2Using) {
     return compareById(table1, table2);
   }
 
+  // 사용중 테이블을 우선하는 경우
   if (prioritizeUsing) {
-    return table1Using ? -1 : 1;
+    return table1Using ? -1 : 1; // table1이 사용중이면 앞으로
   }
 
-  return table1Using ? 1 : -1;
+  // 종료된 테이블을 우선하는 경우
+  return table1Using ? 1 : -1; // table1이 사용중이면 뒤로
 };
 
 const DEFAULT = 'default' as const;
