@@ -3,10 +3,13 @@ import useAdminTable from '@hooks/admin/useAdminTable';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { dateConverter } from '@utils/FormatDate';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TableTimeControler from './TableTimeControler';
 import TableTimeButtons from './TableTimeButtons';
 import { Table } from '@@types/index';
+
+const SESSION_STORAGE_KEY = 'selectedTimeLimit';
+const DEFAULT_TIME_LIMIT = 10;
 
 const Container = styled.div`
   border: 1px solid #ececec;
@@ -37,7 +40,6 @@ const Content = styled.div`
 
 interface TableSessionControlerProps {
   tables: Table[];
-  timeLimit: number;
   workspaceId: string | undefined;
   orderSessionId: number | undefined;
   currentExpectedEndAt: string | undefined;
@@ -45,16 +47,20 @@ interface TableSessionControlerProps {
   refetchTable: () => void;
 }
 
-function TableSessionControler({
-  tables,
-  timeLimit,
-  workspaceId,
-  orderSessionId,
-  currentExpectedEndAt,
-  tableNumber,
-  refetchTable,
-}: TableSessionControlerProps) {
-  const [selectedTimeLimit, setSelectedTimeLimit] = useState<number>(timeLimit);
+function TableSessionControler({ tables, workspaceId, orderSessionId, currentExpectedEndAt, tableNumber, refetchTable }: TableSessionControlerProps) {
+  const [selectedTimeLimit, setSelectedTimeLimit] = useState<number>(() => {
+    const storedTime = sessionStorage.getItem(SESSION_STORAGE_KEY);
+    if (storedTime) {
+      return parseInt(storedTime, 10);
+    }
+    sessionStorage.setItem(SESSION_STORAGE_KEY, DEFAULT_TIME_LIMIT.toString());
+    return DEFAULT_TIME_LIMIT;
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem(SESSION_STORAGE_KEY, selectedTimeLimit.toString());
+  }, [selectedTimeLimit]);
+
   const { updateSessionEndTime, finishTableSession, startTableSession } = useAdminTable(workspaceId);
   const nowTable = tables.find((table) => table.tableNumber === tableNumber);
   const isTableUsing = nowTable?.orderSession;
