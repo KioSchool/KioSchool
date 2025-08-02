@@ -17,22 +17,23 @@ const BottomRow = styled.div`
   width: 100%;
 `;
 
-const Button = styled.button<{ isFullWidth?: boolean }>`
-  background: ${Color.KIO_ORANGE};
-  color: ${Color.WHITE};
+const Button = styled.button<{ isFullWidth?: boolean; disabled?: boolean }>`
+  background: ${({ disabled }) => (disabled ? Color.LIGHT_GREY : Color.KIO_ORANGE)};
+  color: ${({ disabled }) => (disabled ? Color.GREY : Color.WHITE)};
   border: none;
   border-radius: 40px;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   font-family: 'LINE Seed Sans KR', sans-serif;
   font-size: 12px;
   font-weight: 700;
   padding: 8px;
   width: ${({ isFullWidth }) => (isFullWidth ? '100%' : '81px')};
   height: 30px;
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
   ${rowFlex({ justify: 'center', align: 'center' })}
 
   &:hover {
-    background: #ff9d50;
+    background: ${({ disabled }) => (disabled ? Color.LIGHT_GREY : '#ff9d50')};
   }
 `;
 
@@ -42,18 +43,23 @@ interface TableTimeButtonsProps {
   handleEndSession: () => void;
   handleStartSession: () => void;
   orderSessionId?: number;
+  disabled?: boolean;
 }
 
-function TableTimeButtons({ handleDecreaseTime, handleIncreaseTime, handleEndSession, handleStartSession, orderSessionId }: TableTimeButtonsProps) {
+function TableTimeButtons({ handleDecreaseTime, handleIncreaseTime, handleEndSession, handleStartSession, orderSessionId, disabled }: TableTimeButtonsProps) {
   return (
     <Container>
       <TopRow>
-        <Button onClick={handleDecreaseTime}>감소</Button>
-        <Button onClick={handleIncreaseTime}>증가</Button>
+        <Button disabled={disabled} onClick={disabled ? undefined : handleDecreaseTime}>
+          감소
+        </Button>
+        <Button disabled={disabled} onClick={disabled ? undefined : handleIncreaseTime}>
+          증가
+        </Button>
       </TopRow>
       <BottomRow>
         {orderSessionId ? (
-          <Button isFullWidth onClick={handleEndSession}>
+          <Button isFullWidth disabled={disabled} onClick={disabled ? undefined : handleEndSession}>
             사용종료
           </Button>
         ) : (
