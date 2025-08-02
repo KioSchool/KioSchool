@@ -6,6 +6,7 @@ import { dateConverter } from '@utils/FormatDate';
 import { useState } from 'react';
 import TableTimeControler from './TableTimeControler';
 import TableTimeButtons from './TableTimeButtons';
+import { Table } from '@@types/index';
 
 const Container = styled.div`
   border: 1px solid #ececec;
@@ -35,6 +36,7 @@ const Content = styled.div`
 `;
 
 interface TableSessionControlerProps {
+  tables: Table[];
   timeLimit: number;
   workspaceId: string | undefined;
   orderSessionId: number | undefined;
@@ -43,10 +45,19 @@ interface TableSessionControlerProps {
   refetchTable: () => void;
 }
 
-function TableSessionControler({ timeLimit, workspaceId, orderSessionId, currentExpectedEndAt, tableNumber, refetchTable }: TableSessionControlerProps) {
+function TableSessionControler({
+  tables,
+  timeLimit,
+  workspaceId,
+  orderSessionId,
+  currentExpectedEndAt,
+  tableNumber,
+  refetchTable,
+}: TableSessionControlerProps) {
   const [selectedTimeLimit, setSelectedTimeLimit] = useState<number>(timeLimit);
   const { updateSessionEndTime, finishTableSession, startTableSession } = useAdminTable(workspaceId);
-
+  const nowTable = tables.find((table) => table.tableNumber === tableNumber);
+  const isTableUsing = nowTable?.orderSession;
   const handleApiAndRefetch = (apiCall: Promise<any>) => {
     apiCall.then((res) => {
       if (res) refetchTable();
@@ -128,6 +139,7 @@ function TableSessionControler({ timeLimit, workspaceId, orderSessionId, current
           handleDecrement={handleDecrement}
           handleIncrement={handleIncrement}
           handleTimeChange={handleTimeChange}
+          disabled={!isTableUsing}
         />
         <TableTimeButtons
           handleDecreaseTime={handleDecreaseTime}
@@ -135,6 +147,7 @@ function TableSessionControler({ timeLimit, workspaceId, orderSessionId, current
           handleEndSession={handleEndSession}
           handleStartSession={handleStartSession}
           orderSessionId={orderSessionId}
+          disabled={!isTableUsing}
         />
       </Content>
     </Container>

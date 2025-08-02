@@ -103,6 +103,7 @@ function AdminOrderTable() {
                 currentExpectedEndAt={selectedTable.orderSession?.expectedEndAt}
                 tableNumber={selectedTable.tableNumber}
                 refetchTable={fetchTables}
+                tables={tables}
               />
               <TableQRCode workspaceId={workspaceId} selectedTable={selectedTable} />
             </DetailHeader>
