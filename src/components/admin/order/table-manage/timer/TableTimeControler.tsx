@@ -19,54 +19,66 @@ const InputWrapper = styled.div`
   ${rowFlex({ justify: 'center', align: 'center' })};
 `;
 
+const MinusButton = styled(RiSubtractFill)<{ disabled?: boolean }>`
+  width: 20px;
+  height: 20px;
+  color: ${({ disabled }) => (disabled ? Color.GREY : Color.KIO_ORANGE)};
+  background-color: ${Color.WHITE};
+  border-radius: 50%;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+`;
+
+const PlusButton = styled(RiAddFill)<{ disabled?: boolean }>`
+  width: 20px;
+  height: 20px;
+  color: ${({ disabled }) => (disabled ? Color.GREY : Color.WHITE)};
+  background-color: ${({ disabled }) => (disabled ? Color.LIGHT_GREY : Color.KIO_ORANGE)};
+  border-radius: 50%;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+`;
+
 const Input = styled.input`
   width: 90px;
   text-align: center;
   background: none;
   border: none;
+  cursor: text;
+
   &:focus {
     outline: none;
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 `;
 
-const Unit = styled.span`
+const Unit = styled.span<{ disabled?: boolean }>`
   font-size: 14px;
-`;
-
-const MinusButton = styled(RiSubtractFill)`
-  width: 20px;
-  height: 20px;
-  color: ${Color.KIO_ORANGE};
-  background-color: ${Color.WHITE};
-  border-radius: 50%;
-  cursor: pointer;
-`;
-
-const PlusButton = styled(RiAddFill)`
-  width: 20px;
-  height: 20px;
-  color: ${Color.WHITE};
-  background-color: ${Color.KIO_ORANGE};
-  border-radius: 50%;
-  cursor: pointer;
+  color: ${({ disabled }) => (disabled ? Color.GREY : 'inherit')};
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 `;
 
 interface TableTimeControlerProps {
-  timeLimit: number;
+  timeLimit: string;
   handleDecrement: () => void;
   handleIncrement: () => void;
   handleTimeChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled: boolean;
 }
 
-function TableTimeControler({ timeLimit, handleDecrement, handleIncrement, handleTimeChange }: TableTimeControlerProps) {
+function TableTimeControler({ timeLimit, handleDecrement, handleIncrement, handleTimeChange, disabled }: TableTimeControlerProps) {
   return (
     <Container>
-      <MinusButton onClick={handleDecrement} />
+      <MinusButton disabled={disabled} onClick={handleDecrement} />
       <InputWrapper>
-        <Input type="number" value={timeLimit} onChange={handleTimeChange} />
-        <Unit>분</Unit>
+        <Input value={timeLimit} disabled={disabled} onChange={handleTimeChange} />
+        <Unit disabled={disabled}>분</Unit>
       </InputWrapper>
-      <PlusButton onClick={handleIncrement} />
+      <PlusButton disabled={disabled} onClick={handleIncrement} />
     </Container>
   );
 }

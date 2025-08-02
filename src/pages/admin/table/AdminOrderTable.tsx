@@ -10,10 +10,8 @@ import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import { useAtomValue } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
 
 const Container = styled.div`
   width: 100%;
@@ -52,7 +50,6 @@ const FallbackText = styled.div`
 function AdminOrderTable() {
   const navigate = useNavigate();
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const workspaceSetting = useAtomValue(adminWorkspaceAtom).workspaceSetting;
 
   const [searchParams] = useSearchParams();
   const tableNo = searchParams.get('tableNo');
@@ -97,12 +94,12 @@ function AdminOrderTable() {
             <DetailHeader>
               <TableElapsedTimer createdAt={selectedTable.orderSession?.createdAt} expectedEndAt={selectedTable.orderSession?.expectedEndAt} />
               <TableSessionControler
-                timeLimit={workspaceSetting.orderSessionTimeLimitMinutes}
                 workspaceId={workspaceId}
                 orderSessionId={selectedTable.orderSession?.id}
                 currentExpectedEndAt={selectedTable.orderSession?.expectedEndAt}
                 tableNumber={selectedTable.tableNumber}
                 refetchTable={fetchTables}
+                tables={tables}
               />
               <TableQRCode workspaceId={workspaceId} selectedTable={selectedTable} />
             </DetailHeader>

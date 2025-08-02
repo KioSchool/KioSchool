@@ -32,7 +32,14 @@ const Button = styled.button<{ isFullWidth?: boolean }>`
   ${rowFlex({ justify: 'center', align: 'center' })}
 
   &:hover {
-    background: #ff9d50;
+    background: ${({ disabled }) => (disabled ? Color.LIGHT_GREY : '#ff9d50')};
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    background: ${Color.LIGHT_GREY};
+    color: ${Color.GREY};
   }
 `;
 
@@ -42,18 +49,23 @@ interface TableTimeButtonsProps {
   handleEndSession: () => void;
   handleStartSession: () => void;
   orderSessionId?: number;
+  disabled?: boolean;
 }
 
-function TableTimeButtons({ handleDecreaseTime, handleIncreaseTime, handleEndSession, handleStartSession, orderSessionId }: TableTimeButtonsProps) {
+function TableTimeButtons({ handleDecreaseTime, handleIncreaseTime, handleEndSession, handleStartSession, orderSessionId, disabled }: TableTimeButtonsProps) {
   return (
     <Container>
       <TopRow>
-        <Button onClick={handleDecreaseTime}>감소</Button>
-        <Button onClick={handleIncreaseTime}>증가</Button>
+        <Button disabled={disabled} onClick={handleDecreaseTime}>
+          감소
+        </Button>
+        <Button disabled={disabled} onClick={handleIncreaseTime}>
+          증가
+        </Button>
       </TopRow>
       <BottomRow>
         {orderSessionId ? (
-          <Button isFullWidth onClick={handleEndSession}>
+          <Button isFullWidth disabled={disabled} onClick={handleEndSession}>
             사용종료
           </Button>
         ) : (

@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
-import useAdminTable from '@hooks/admin/useAdminTable';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import { dateConverter } from '@utils/FormatDate';
-import { useState } from 'react';
 import TableTimeControler from './TableTimeControler';
 import TableTimeButtons from './TableTimeButtons';
+import { Table } from '@@types/index';
+import { useTableSession } from '@hooks/admin/useTableSession';
+import { useAtomValue } from 'jotai';
+import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
 
 const Container = styled.div`
   border: 1px solid #ececec;
@@ -35,7 +36,7 @@ const Content = styled.div`
 `;
 
 interface TableSessionControlerProps {
-  timeLimit: number;
+  tables: Table[];
   workspaceId: string | undefined;
   orderSessionId: number | undefined;
   currentExpectedEndAt: string | undefined;
@@ -43,91 +44,39 @@ interface TableSessionControlerProps {
   refetchTable: () => void;
 }
 
-function TableSessionControler({ timeLimit, workspaceId, orderSessionId, currentExpectedEndAt, tableNumber, refetchTable }: TableSessionControlerProps) {
-  const [selectedTimeLimit, setSelectedTimeLimit] = useState<number>(timeLimit);
-  const { updateSessionEndTime, finishTableSession, startTableSession } = useAdminTable(workspaceId);
+function TableSessionControler({ tables, workspaceId, orderSessionId, currentExpectedEndAt, tableNumber, refetchTable }: TableSessionControlerProps) {
+  const {
+    selectedTimeLimit,
+    handleDecrement,
+    handleIncrement,
+    handleTimeChange,
+    handleDecreaseTime,
+    handleIncreaseTime,
+    handleEndSession,
+    handleStartSession,
+  } = useTableSession({
+    workspaceId,
+    currentExpectedEndAt,
+    orderSessionId,
+    tableNumber,
+    refetchTable,
+  });
 
-  const handleApiAndRefetch = (apiCall: Promise<any>) => {
-    apiCall.then((res) => {
-      if (res) refetchTable();
-    });
-  };
-
-  const handleDecreaseTime = () => {
-    if (!currentExpectedEndAt || !orderSessionId) {
-      alert('세션 ID가 없습니다. 세션을 시작해주세요.');
-      return;
-    }
-
-    const timeToDecrease = Number(selectedTimeLimit);
-    if (isNaN(timeToDecrease) || timeToDecrease <= 0) {
-      alert('단축 시간을 올바르게 입력해주세요.');
-      return;
-    }
-
-    const currentEndDate = new Date(currentExpectedEndAt);
-    const newEndDate = new Date(currentEndDate.getTime() - timeToDecrease * 60 * 1000);
-    const newEndDateString = dateConverter(newEndDate);
-
-    handleApiAndRefetch(updateSessionEndTime(orderSessionId, newEndDateString));
-  };
-
-  const handleIncreaseTime = () => {
-    if (!currentExpectedEndAt || !orderSessionId) {
-      alert('세션 ID가 없습니다. 세션을 시작해주세요.');
-      return;
-    }
-
-    const timeToExtend = Number(selectedTimeLimit);
-    if (isNaN(timeToExtend) || timeToExtend <= 0) {
-      alert('연장 시간을 올바르게 입력해주세요.');
-      return;
-    }
-
-    const currentEndDate = new Date(currentExpectedEndAt);
-    const newEndDate = new Date(currentEndDate.getTime() + timeToExtend * 60 * 1000);
-    const newEndDateString = dateConverter(newEndDate);
-
-    handleApiAndRefetch(updateSessionEndTime(orderSessionId, newEndDateString));
-  };
-
-  const handleEndSession = () => {
-    if (!orderSessionId || !tableNumber) return;
-    handleApiAndRefetch(finishTableSession(orderSessionId, tableNumber));
-  };
-
-  const handleStartSession = () => {
-    if (!tableNumber) return;
-    handleApiAndRefetch(startTableSession(tableNumber));
-  };
-
-  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const sanitizedValue = value.replace(/[^0-9]/g, '');
-
-    setSelectedTimeLimit(parseInt(sanitizedValue, 10));
-  };
-
-  const handleIncrement = () => {
-    setSelectedTimeLimit((prev) => (Number(prev) || 0) + 1);
-  };
-
-  const handleDecrement = () => {
-    setSelectedTimeLimit((prev) => {
-      const currentValue = Number(prev) || 0;
-      return Math.max(0, currentValue - 1);
-    });
-  };
+  const workspace = useAtomValue(adminWorkspaceAtom);
+  const nowTable = tables.find((table) => table.tableNumber === tableNumber);
+  const isDisabledSession = !nowTable?.orderSession;
+  const defaultSessionTimeLimit = String(workspace?.workspaceSetting?.orderSessionTimeLimitMinutes);
 
   return (
     <Container>
       <Header>상태 변경</Header>
       <Content>
         <TableTimeControler
-          timeLimit={selectedTimeLimit}
+          timeLimit={isDisabledSession ? defaultSessionTimeLimit : selectedTimeLimit}
           handleDecrement={handleDecrement}
           handleIncrement={handleIncrement}
           handleTimeChange={handleTimeChange}
+          disabled={isDisabledSession}
         />
         <TableTimeButtons
           handleDecreaseTime={handleDecreaseTime}
@@ -135,6 +84,7 @@ function TableSessionControler({ timeLimit, workspaceId, orderSessionId, current
           handleEndSession={handleEndSession}
           handleStartSession={handleStartSession}
           orderSessionId={orderSessionId}
+          disabled={isDisabledSession}
         />
       </Content>
     </Container>
