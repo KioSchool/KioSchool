@@ -5,6 +5,8 @@ import TableTimeControler from './TableTimeControler';
 import TableTimeButtons from './TableTimeButtons';
 import { Table } from '@@types/index';
 import { useTableSession } from '@hooks/admin/useTableSession';
+import { useAtomValue } from 'jotai';
+import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
 
 const Container = styled.div`
   border: 1px solid #ececec;
@@ -60,15 +62,17 @@ function TableSessionControler({ tables, workspaceId, orderSessionId, currentExp
     refetchTable,
   });
 
+  const workspace = useAtomValue(adminWorkspaceAtom);
   const nowTable = tables.find((table) => table.tableNumber === tableNumber);
   const isDisabledSession = !nowTable?.orderSession;
+  const defaultSessionTimeLimit = String(workspace?.workspaceSetting?.orderSessionTimeLimitMinutes);
 
   return (
     <Container>
       <Header>상태 변경</Header>
       <Content>
         <TableTimeControler
-          timeLimit={selectedTimeLimit}
+          timeLimit={isDisabledSession ? defaultSessionTimeLimit : selectedTimeLimit}
           handleDecrement={handleDecrement}
           handleIncrement={handleIncrement}
           handleTimeChange={handleTimeChange}
