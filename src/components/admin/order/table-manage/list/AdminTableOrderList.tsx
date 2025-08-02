@@ -64,7 +64,7 @@ const OrderListContainer = styled.div`
 
 const OrderHeader = styled.div`
   display: grid;
-  grid-template-columns: 0.5fr 1.5fr 2fr 1fr 1fr 0.5fr;
+  grid-template-columns: 0.5fr 1.2fr 1.8fr 1fr 1fr 1fr 0.5fr;
   padding: 10px;
   background-color: ${Color.LIGHT_GREY};
   border-bottom: 1px solid #ececec;
@@ -75,7 +75,7 @@ const OrderHeader = styled.div`
 
 const OrderRow = styled.div`
   display: grid;
-  grid-template-columns: 0.5fr 1.5fr 2fr 1fr 1fr 0.5fr;
+  grid-template-columns: 0.5fr 1.2fr 1.8fr 1fr 1fr 1fr 0.5fr;
   padding: 10px;
   border-bottom: 1px solid ${Color.LIGHT_GREY};
   text-align: center;
@@ -118,6 +118,12 @@ const formatProductNames = (orderProducts: OrderProduct[] | undefined) => {
     return orderProducts[0].productName;
   }
   return `${orderProducts[0].productName} 외 ${orderProducts.length - 1}개`;
+};
+
+const ORDER_STATUS_MAP = {
+  NOT_PAID: '주문 완료',
+  PAID: '결제 완료',
+  SERVED: '서빙 완료',
 };
 
 interface TableOrderListProps {
@@ -170,6 +176,7 @@ function AdminTableOrderList({ workspaceId, orderSessionId }: TableOrderListProp
           <HeaderCell>상품명</HeaderCell>
           <HeaderCell>입금자명</HeaderCell>
           <HeaderCell>금액</HeaderCell>
+          <HeaderCell>주문상태</HeaderCell>
           <HeaderCell>보기</HeaderCell>
         </OrderHeader>
         <OrderItem>
@@ -184,6 +191,7 @@ function AdminTableOrderList({ workspaceId, orderSessionId }: TableOrderListProp
                   <OrderCell>{formatProductNames(order.orderProducts)}</OrderCell>
                   <OrderCell>{order.customerName}</OrderCell>
                   <OrderCell>{`${order.totalPrice.toLocaleString()}원`}</OrderCell>
+                  <OrderCell>{ORDER_STATUS_MAP[order.status as keyof typeof ORDER_STATUS_MAP] || order.status}</OrderCell>
                   <ActionCell>
                     <SearchIcon onClick={openModal} />
                   </ActionCell>
