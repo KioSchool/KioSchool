@@ -21,12 +21,19 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
     if (storedTime) {
       return storedTime;
     }
-    sessionStorage.setItem(SESSION_STORAGE_KEY, DEFAULT_TIME_LIMIT.toString());
     return DEFAULT_TIME_LIMIT.toString();
   });
 
   useEffect(() => {
-    sessionStorage.setItem(SESSION_STORAGE_KEY, selectedTimeLimit.toString());
+    const existingValue = sessionStorage.getItem(SESSION_STORAGE_KEY);
+
+    if (!existingValue) {
+      sessionStorage.setItem(SESSION_STORAGE_KEY, selectedTimeLimit);
+    }
+  }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem(SESSION_STORAGE_KEY, selectedTimeLimit);
   }, [selectedTimeLimit]);
 
   const { updateSessionEndTime, finishTableSession, startTableSession } = useAdminTable(workspaceId);
