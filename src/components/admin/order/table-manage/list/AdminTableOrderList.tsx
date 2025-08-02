@@ -2,7 +2,7 @@ import { Order, OrderProduct } from '@@types/index';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
-import { RiSearchLine } from '@remixicon/react';
+import { RiSearchLine, RiResetRightFill } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import useModal from '@hooks/useModal';
 import { formatKoreanTime } from '@utils/FormatDate';
@@ -29,7 +29,30 @@ const Header = styled.div`
   font-size: 15px;
   font-weight: 600;
   border-bottom: 1px solid #ececec;
-  ${colFlex({ justify: 'center', align: 'center' })};
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+`;
+
+const RefreshSection = styled.div`
+  ${rowFlex({ align: 'center' })};
+  gap: 10px;
+  cursor: pointer;
+  &:hover {
+    color: ${Color.KIO_ORANGE};
+  }
+`;
+
+const NowTimeLabel = styled.div``;
+
+const RefreshIcon = styled(RiResetRightFill)`
+  width: 20px;
+  height: 20px;
+`;
+
+const HeaderTitle = styled.div`
+  text-align: center;
 `;
 
 const OrderListContainer = styled.div`
@@ -107,6 +130,8 @@ function AdminTableOrderList({ workspaceId, orderSessionId }: TableOrderListProp
   const { fetchOrderSession } = useAdminOrder(String(workspaceId));
   const [tableOrders, setTableOrders] = useState<Order[]>([]);
 
+  const formattedNowTime = formatKoreanTime(new Date().toISOString()) || '시간 없음';
+
   useEffect(() => {
     const getTableOrders = () => {
       if (orderSessionId) {
@@ -130,7 +155,14 @@ function AdminTableOrderList({ workspaceId, orderSessionId }: TableOrderListProp
 
   return (
     <Container>
-      <Header>주문 내역</Header>
+      <Header>
+        <RefreshSection>
+          <NowTimeLabel>{formattedNowTime}</NowTimeLabel>
+          <RefreshIcon />
+        </RefreshSection>
+        <HeaderTitle>주문 내역</HeaderTitle>
+        <div />
+      </Header>
       <OrderListContainer>
         <OrderHeader>
           <HeaderCell>번호</HeaderCell>
