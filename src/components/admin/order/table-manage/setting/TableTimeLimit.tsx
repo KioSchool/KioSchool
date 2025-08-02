@@ -114,7 +114,7 @@ function TableTimeLimit() {
   const handleConfirm = () => {
     updateWorkspaceOrderSetting(workspaceId, isTimeLimited, timeLimitMinutes)
       .then(() => {
-        alert(`테이블 시간 제한이 ${isTimeLimited ? '활성화' : '비활성화'}되었습니다.`);
+        alert(`테이블 시간 제한이 ${isTimeLimited ? `${formatTime(timeLimitMinutes)}으로 설정` : '비활성화'}되었습니다.`);
       })
       .catch(() => {
         alert('테이블 시간 제한 설정에 실패했습니다. 다시 시도해주세요.');
@@ -143,7 +143,7 @@ function TableTimeLimit() {
           <PlusButton disabled={!isTimeLimited} onClick={handlePlusClick} />
         </InputContainer>
         <RoundedAppButton size={'130px'} fontSize={'16px'} onClick={handleConfirm}>
-          확인
+          저장
         </RoundedAppButton>
       </Content>
     </Container>
