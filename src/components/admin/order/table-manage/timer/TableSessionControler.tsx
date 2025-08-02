@@ -61,7 +61,7 @@ function TableSessionControler({ tables, workspaceId, orderSessionId, currentExp
   });
 
   const nowTable = tables.find((table) => table.tableNumber === tableNumber);
-  const isTableUsing = nowTable?.orderSession;
+  const isDisabledSession = !nowTable?.orderSession;
 
   return (
     <Container>
@@ -72,7 +72,7 @@ function TableSessionControler({ tables, workspaceId, orderSessionId, currentExp
           handleDecrement={handleDecrement}
           handleIncrement={handleIncrement}
           handleTimeChange={handleTimeChange}
-          disabled={!isTableUsing}
+          disabled={isDisabledSession}
         />
         <TableTimeButtons
           handleDecreaseTime={handleDecreaseTime}
@@ -80,7 +80,7 @@ function TableSessionControler({ tables, workspaceId, orderSessionId, currentExp
           handleEndSession={handleEndSession}
           handleStartSession={handleStartSession}
           orderSessionId={orderSessionId}
-          disabled={!isTableUsing}
+          disabled={isDisabledSession}
         />
       </Content>
     </Container>
