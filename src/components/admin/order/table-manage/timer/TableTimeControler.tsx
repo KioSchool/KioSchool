@@ -39,15 +39,20 @@ const PlusButton = styled(RiAddFill)<{ disabled?: boolean }>`
   opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 `;
 
-const Input = styled.input<{ disabled?: boolean }>`
+const Input = styled.input`
   width: 90px;
   text-align: center;
   background: none;
   border: none;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'text')};
-  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+  cursor: text;
+
   &:focus {
     outline: none;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
   }
 `;
 
@@ -62,18 +67,18 @@ interface TableTimeControlerProps {
   handleDecrement: () => void;
   handleIncrement: () => void;
   handleTimeChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  disabled?: boolean;
+  disabled: boolean;
 }
 
 function TableTimeControler({ timeLimit, handleDecrement, handleIncrement, handleTimeChange, disabled }: TableTimeControlerProps) {
   return (
     <Container>
-      <MinusButton disabled={disabled} onClick={disabled ? undefined : handleDecrement} />
+      <MinusButton disabled={disabled} onClick={handleDecrement} />
       <InputWrapper>
-        <Input value={timeLimit} onChange={disabled ? undefined : handleTimeChange} disabled={disabled} />
+        <Input value={timeLimit} disabled={disabled} onChange={handleTimeChange} />
         <Unit disabled={disabled}>분</Unit>
       </InputWrapper>
-      <PlusButton disabled={disabled} onClick={disabled ? undefined : handleIncrement} />
+      <PlusButton disabled={disabled} onClick={handleIncrement} />
     </Container>
   );
 }
