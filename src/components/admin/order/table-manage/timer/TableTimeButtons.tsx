@@ -17,23 +17,29 @@ const BottomRow = styled.div`
   width: 100%;
 `;
 
-const Button = styled.button<{ isFullWidth?: boolean; disabled?: boolean }>`
-  background: ${({ disabled }) => (disabled ? Color.LIGHT_GREY : Color.KIO_ORANGE)};
-  color: ${({ disabled }) => (disabled ? Color.GREY : Color.WHITE)};
+const Button = styled.button<{ isFullWidth?: boolean }>`
+  background: ${Color.KIO_ORANGE};
+  color: ${Color.WHITE};
   border: none;
   border-radius: 40px;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  cursor: pointer;
   font-family: 'LINE Seed Sans KR', sans-serif;
   font-size: 12px;
   font-weight: 700;
   padding: 8px;
   width: ${({ isFullWidth }) => (isFullWidth ? '100%' : '81px')};
   height: 30px;
-  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
   ${rowFlex({ justify: 'center', align: 'center' })}
 
   &:hover {
     background: ${({ disabled }) => (disabled ? Color.LIGHT_GREY : '#ff9d50')};
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    background: ${Color.LIGHT_GREY};
+    color: ${Color.GREY};
   }
 `;
 
@@ -50,16 +56,16 @@ function TableTimeButtons({ handleDecreaseTime, handleIncreaseTime, handleEndSes
   return (
     <Container>
       <TopRow>
-        <Button disabled={disabled} onClick={disabled ? undefined : handleDecreaseTime}>
+        <Button disabled={disabled} onClick={handleDecreaseTime}>
           감소
         </Button>
-        <Button disabled={disabled} onClick={disabled ? undefined : handleIncreaseTime}>
+        <Button disabled={disabled} onClick={handleIncreaseTime}>
           증가
         </Button>
       </TopRow>
       <BottomRow>
         {orderSessionId ? (
-          <Button isFullWidth disabled={disabled} onClick={disabled ? undefined : handleEndSession}>
+          <Button isFullWidth disabled={disabled} onClick={handleEndSession}>
             사용종료
           </Button>
         ) : (
