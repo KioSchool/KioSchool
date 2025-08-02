@@ -1,15 +1,10 @@
 import styled from '@emotion/styled';
-import useAdminTable from '@hooks/admin/useAdminTable';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import { dateConverter } from '@utils/FormatDate';
-import { useState, useEffect } from 'react';
 import TableTimeControler from './TableTimeControler';
 import TableTimeButtons from './TableTimeButtons';
 import { Table } from '@@types/index';
-
-const SESSION_STORAGE_KEY = 'selectedTimeLimit';
-const DEFAULT_TIME_LIMIT = 10;
+import { useTableSession } from '@hooks/admin/useTableSession';
 
 const Container = styled.div`
   border: 1px solid #ececec;
@@ -48,93 +43,25 @@ interface TableSessionControlerProps {
 }
 
 function TableSessionControler({ tables, workspaceId, orderSessionId, currentExpectedEndAt, tableNumber, refetchTable }: TableSessionControlerProps) {
-  const [selectedTimeLimit, setSelectedTimeLimit] = useState<number>(() => {
-    const storedTime = sessionStorage.getItem(SESSION_STORAGE_KEY);
-    if (storedTime) {
-      return parseInt(storedTime, 10);
-    }
-    sessionStorage.setItem(SESSION_STORAGE_KEY, DEFAULT_TIME_LIMIT.toString());
-    return DEFAULT_TIME_LIMIT;
+  const {
+    selectedTimeLimit,
+    handleDecrement,
+    handleIncrement,
+    handleTimeChange,
+    handleDecreaseTime,
+    handleIncreaseTime,
+    handleEndSession,
+    handleStartSession,
+  } = useTableSession({
+    workspaceId,
+    currentExpectedEndAt,
+    orderSessionId,
+    tableNumber,
+    refetchTable,
   });
 
-  useEffect(() => {
-    sessionStorage.setItem(SESSION_STORAGE_KEY, selectedTimeLimit.toString());
-  }, [selectedTimeLimit]);
-
-  const { updateSessionEndTime, finishTableSession, startTableSession } = useAdminTable(workspaceId);
   const nowTable = tables.find((table) => table.tableNumber === tableNumber);
   const isTableUsing = nowTable?.orderSession;
-  const handleApiAndRefetch = (apiCall: Promise<any>) => {
-    apiCall.then((res) => {
-      if (res) refetchTable();
-    });
-  };
-
-  const handleDecreaseTime = () => {
-    if (!currentExpectedEndAt || !orderSessionId) {
-      alert('세션 ID가 없습니다. 세션을 시작해주세요.');
-      return;
-    }
-
-    const timeToDecrease = Number(selectedTimeLimit);
-    if (isNaN(timeToDecrease) || timeToDecrease <= 0) {
-      alert('단축 시간을 올바르게 입력해주세요.');
-      return;
-    }
-
-    const currentEndDate = new Date(currentExpectedEndAt);
-    const newEndDate = new Date(currentEndDate.getTime() - timeToDecrease * 60 * 1000);
-    const newEndDateString = dateConverter(newEndDate);
-
-    handleApiAndRefetch(updateSessionEndTime(orderSessionId, newEndDateString));
-  };
-
-  const handleIncreaseTime = () => {
-    if (!currentExpectedEndAt || !orderSessionId) {
-      alert('세션 ID가 없습니다. 세션을 시작해주세요.');
-      return;
-    }
-
-    const timeToExtend = Number(selectedTimeLimit);
-    if (isNaN(timeToExtend) || timeToExtend <= 0) {
-      alert('연장 시간을 올바르게 입력해주세요.');
-      return;
-    }
-
-    const currentEndDate = new Date(currentExpectedEndAt);
-    const newEndDate = new Date(currentEndDate.getTime() + timeToExtend * 60 * 1000);
-    const newEndDateString = dateConverter(newEndDate);
-
-    handleApiAndRefetch(updateSessionEndTime(orderSessionId, newEndDateString));
-  };
-
-  const handleEndSession = () => {
-    if (!orderSessionId || !tableNumber) return;
-    handleApiAndRefetch(finishTableSession(orderSessionId, tableNumber));
-  };
-
-  const handleStartSession = () => {
-    if (!tableNumber) return;
-    handleApiAndRefetch(startTableSession(tableNumber));
-  };
-
-  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const sanitizedValue = value.replace(/[^0-9]/g, '');
-
-    setSelectedTimeLimit(parseInt(sanitizedValue, 10));
-  };
-
-  const handleIncrement = () => {
-    setSelectedTimeLimit((prev) => (Number(prev) || 0) + 1);
-  };
-
-  const handleDecrement = () => {
-    setSelectedTimeLimit((prev) => {
-      const currentValue = Number(prev) || 0;
-      return Math.max(0, currentValue - 1);
-    });
-  };
 
   return (
     <Container>
