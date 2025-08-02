@@ -132,21 +132,21 @@ function AdminTableOrderList({ workspaceId, orderSessionId }: TableOrderListProp
 
   const formattedNowTime = formatKoreanTime(new Date().toISOString()) || '시간 없음';
 
-  useEffect(() => {
-    const getTableOrders = () => {
-      if (orderSessionId) {
-        fetchOrderSession(orderSessionId)
-          .then((response) => {
-            setTableOrders(response.data);
-          })
-          .catch((error) => {
-            console.error('Error fetching table orders:', error);
-          });
-      } else {
-        setTableOrders([]);
-      }
-    };
+  const getTableOrders = () => {
+    if (orderSessionId) {
+      fetchOrderSession(orderSessionId)
+        .then((response) => {
+          setTableOrders(response.data);
+        })
+        .catch((error) => {
+          console.error('Error fetching table orders:', error);
+        });
+    } else {
+      setTableOrders([]);
+    }
+  };
 
+  useEffect(() => {
     getTableOrders();
 
     const intervalId = setInterval(getTableOrders, defaultInterval);
@@ -156,7 +156,7 @@ function AdminTableOrderList({ workspaceId, orderSessionId }: TableOrderListProp
   return (
     <Container>
       <Header>
-        <RefreshSection>
+        <RefreshSection onClick={getTableOrders}>
           <NowTimeLabel>{formattedNowTime}</NowTimeLabel>
           <RefreshIcon />
         </RefreshSection>
