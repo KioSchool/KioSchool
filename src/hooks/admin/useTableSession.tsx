@@ -6,7 +6,6 @@ const SESSION_STORAGE_KEY = 'selectedTimeLimit';
 const DEFAULT_TIME_LIMIT = 10;
 const MINUTES_TO_MILLISECONDS = 60 * 1000;
 const NUMBER_ONLY_REGEX = /[^0-9]/g;
-const MINIMUM_TIME_LIMIT = 0;
 
 interface UseTableSessionProps {
   workspaceId: string | undefined;
@@ -17,13 +16,13 @@ interface UseTableSessionProps {
 }
 
 export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessionId, tableNumber, refetchTable }: UseTableSessionProps) {
-  const [selectedTimeLimit, setSelectedTimeLimit] = useState<number>(() => {
+  const [selectedTimeLimit, setSelectedTimeLimit] = useState<string>(() => {
     const storedTime = sessionStorage.getItem(SESSION_STORAGE_KEY);
     if (storedTime) {
-      return parseInt(storedTime, 10);
+      return storedTime;
     }
     sessionStorage.setItem(SESSION_STORAGE_KEY, DEFAULT_TIME_LIMIT.toString());
-    return DEFAULT_TIME_LIMIT;
+    return DEFAULT_TIME_LIMIT.toString();
   });
 
   useEffect(() => {
@@ -90,15 +89,15 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
     const value = e.target.value;
     const sanitizedValue = value.replace(NUMBER_ONLY_REGEX, '');
 
-    setSelectedTimeLimit(parseInt(sanitizedValue, 10));
+    setSelectedTimeLimit(sanitizedValue);
   };
 
   const handleIncrement = () => {
-    setSelectedTimeLimit((prevTimeLimit) => (prevTimeLimit || MINIMUM_TIME_LIMIT) + 1);
+    setSelectedTimeLimit((prevTimeLimit) => (Number(prevTimeLimit || '0') + 1).toString());
   };
 
   const handleDecrement = () => {
-    setSelectedTimeLimit((prevTimeLimit) => Math.max(MINIMUM_TIME_LIMIT, prevTimeLimit - 1));
+    setSelectedTimeLimit((prevTimeLimit) => Math.max(0, Number(prevTimeLimit) - 1).toString());
   };
 
   return {

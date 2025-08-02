@@ -58,7 +58,7 @@ const Unit = styled.span<{ disabled?: boolean }>`
 `;
 
 interface TableTimeControlerProps {
-  timeLimit: number;
+  timeLimit: string;
   handleDecrement: () => void;
   handleIncrement: () => void;
   handleTimeChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -70,7 +70,7 @@ function TableTimeControler({ timeLimit, handleDecrement, handleIncrement, handl
     <Container>
       <MinusButton disabled={disabled} onClick={disabled ? undefined : handleDecrement} />
       <InputWrapper>
-        <Input type="number" value={timeLimit} onChange={disabled ? undefined : handleTimeChange} disabled={disabled} />
+        <Input value={timeLimit} onChange={disabled ? undefined : handleTimeChange} disabled={disabled} />
         <Unit disabled={disabled}>분</Unit>
       </InputWrapper>
       <PlusButton disabled={disabled} onClick={disabled ? undefined : handleIncrement} />
