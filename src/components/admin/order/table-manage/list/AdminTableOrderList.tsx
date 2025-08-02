@@ -9,7 +9,7 @@ import { formatKoreanTime } from '@utils/FormatDate';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import TableOrderDetailModal from '../modal/TableOrderDetailModal';
 
-const defaultInterval = 5000;
+const defaultInterval = 60000;
 
 const Container = styled.div`
   border: 1px solid #ececec;
