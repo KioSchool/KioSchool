@@ -131,12 +131,12 @@ interface TableOrderListProps {
   orderSessionId: number;
 }
 
+const formattedNowTime = formatKoreanTime(new Date().toISOString()) || '시간 없음';
+
 function AdminTableOrderList({ workspaceId, orderSessionId }: TableOrderListProps) {
   const { isModalOpen, openModal, closeModal } = useModal();
   const { fetchOrderSession } = useAdminOrder(String(workspaceId));
   const [tableOrders, setTableOrders] = useState<Order[]>([]);
-
-  const formattedNowTime = formatKoreanTime(new Date().toISOString()) || '시간 없음';
 
   const getTableOrders = () => {
     if (orderSessionId) {
