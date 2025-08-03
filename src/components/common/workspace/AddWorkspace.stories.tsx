@@ -2,6 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { BrowserRouter } from 'react-router-dom';
 import AddWorkspace from './AddWorkspace';
 import { Workspace, UserRole, Product } from '@@types/index';
+import { defaultWorkspaceSetting } from '@@types/defaultValues';
 import { Provider } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
 import { adminWorkspacesAtom } from 'src/jotai/admin/atoms';
@@ -84,6 +85,7 @@ const createMockWorkspace = (id: number, name: string, description: string, prod
   ],
   notice: '공지사항입니다.',
   tableCount: 10,
+  workspaceSetting: defaultWorkspaceSetting,
   owner: {
     id: 1,
     name: '테스트 사용자',
