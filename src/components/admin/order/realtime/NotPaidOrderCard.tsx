@@ -10,8 +10,9 @@ import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
 import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
-import useDelayTime from '@hooks/useDelayTime';
+import useFormattedTime from '@hooks/useFormattedTime';
 import useModal from '@hooks/useModal';
+import { extractMinFromDate } from '@utils/FormatDate';
 
 const CardContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -105,7 +106,7 @@ const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => 
 function NotPaidOrderCard({ order }: OrderCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { payOrder, cancelOrder } = useAdminOrder(workspaceId);
-  const { delayMinutes } = useDelayTime({ date: order.createdAt });
+  const delayMinutes = useFormattedTime<number>({ date: order.createdAt, formatter: extractMinFromDate });
   const { isModalOpen, openModal, closeModal } = useModal();
 
   const checkClickHandler = () => {
