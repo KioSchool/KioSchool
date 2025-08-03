@@ -13,6 +13,7 @@ import {
   UserRole,
   Workspace,
   WorkspaceImage,
+  WorkspaceSetting,
 } from '.';
 
 export const defaultCategoryValue: ProductCategory = {
@@ -57,6 +58,7 @@ export const defaultUserOrderValue: Order = {
   status: OrderStatus.NOT_PAID,
   cancelReason: '',
   orderNumber: 0,
+  orderSession: null,
   id: 0,
   createdAt: '',
   updatedAt: '',
@@ -161,6 +163,14 @@ export const defaultUserValue: User = {
   updatedAt: '',
 };
 
+export const defaultWorkspaceSetting: WorkspaceSetting = {
+  useOrderSessionTimeLimit: false,
+  orderSessionTimeLimitMinutes: 0,
+  id: 0,
+  createdAt: '',
+  updatedAt: '',
+};
+
 export const defaultWorkspaceValue: Workspace = {
   name: '',
   description: '',
@@ -170,6 +180,7 @@ export const defaultWorkspaceValue: Workspace = {
   images: [defaultImageValue],
   notice: '',
   tableCount: 0,
+  workspaceSetting: defaultWorkspaceSetting,
   id: 0,
   createdAt: '',
   updatedAt: '',
