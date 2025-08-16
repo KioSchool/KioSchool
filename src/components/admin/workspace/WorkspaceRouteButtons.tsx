@@ -3,7 +3,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import workspaceEditImage from '@resources/image/admin/workspace/workspaceEditImage.png';
-import tableCountImage from '@resources/image/admin/workspace/tableCountImage.png';
+import tableCountImage from '@resources/image/admin/workspace/orderTableSetting.png';
 import { Color } from '@resources/colors';
 import { tabletMediaQuery } from '@styles/globalStyles';
 
@@ -32,7 +32,7 @@ const ButtonContainer = styled.div`
 function WorkspaceManageContent() {
   const buttonContents = [
     { name: '주점 정보 관리', path: '/edit', imageSrc: workspaceEditImage },
-    { name: '테이블 관리', path: '/order/table/manage', imageSrc: tableCountImage },
+    { name: '주점 테이블 설정', path: '/order/table/manage', imageSrc: tableCountImage },
   ];
 
   return (
