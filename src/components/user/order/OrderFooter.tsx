@@ -7,6 +7,7 @@ const Container = styled.div`
   min-height: 150px;
   height: auto;
   background: ${Color.LIGHT_GREY};
+  padding-top: 20px;
   padding-bottom: 120px;
   color: ${Color.GREY};
   ${colFlex({ justify: 'center', align: 'center' })}
