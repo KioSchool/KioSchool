@@ -77,7 +77,7 @@ function AdminOrderTable() {
     <AppContainer
       useFlex={colFlex({ justify: 'center' })}
       titleNavBarProps={{
-        title: '테이블 주문 조회',
+        title: '실시간 테이블 관리',
         children: (
           <RoundedAppButton size={'170px'} onClick={() => navigate(`/admin/workspace/${workspaceId}/order/table/manage`)}>
             테이블 관리

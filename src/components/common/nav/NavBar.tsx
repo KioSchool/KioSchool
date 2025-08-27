@@ -7,7 +7,7 @@ import { rowFlex } from '@styles/flexStyles';
 
 const NavContainer = styled.div<{ useBackground: boolean }>`
   z-index: 1001;
-  width: 100vw;
+  min-width: 100vw;
   flex-wrap: wrap;
   top: 0;
   position: fixed;

@@ -7,6 +7,7 @@ import { css } from '@emotion/react';
 import AppFooter from '@components/common/footer/AppFooter';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
+import AppFaqButton from '@components/common/button/AppFaqButton';
 
 const MainTitle = styled.div`
   width: 540px;
@@ -85,6 +86,7 @@ function Home() {
         </LinkAdminHome>
         <AppFooter />
         <HoverOverlay isHover={isHover} />
+        <AppFaqButton />
       </>
     </AppContainer>
   );

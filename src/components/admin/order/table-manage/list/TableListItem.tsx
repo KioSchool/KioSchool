@@ -51,10 +51,6 @@ const Row = styled.div<{ isSelected: boolean; expectedEndAt?: string; isUsing: b
     color: ${Color.WHITE};
     background-color: ${Color.KIO_ORANGE};
   }
-
-  &:last-child {
-    border-bottom: none;
-  }
 `;
 
 const Text = styled.div``;
@@ -81,7 +77,7 @@ function TableListItem({ expectedEndAt, isUsing, table }: TableSessionItemProps)
 
   const onClickTable = (tableNumber: number) => {
     searchParams.set('tableNo', String(tableNumber));
-    setSearchParams(searchParams);
+    setSearchParams(searchParams, { replace: true });
   };
 
   return (
