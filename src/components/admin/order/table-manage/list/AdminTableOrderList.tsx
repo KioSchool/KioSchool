@@ -20,6 +20,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.div`
+  position: relative;
   box-sizing: border-box;
   width: 100%;
   height: 40px;
@@ -29,13 +30,12 @@ const Header = styled.div`
   font-size: 15px;
   font-weight: 600;
   border-bottom: 1px solid #ececec;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 10px;
+  ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
 const RefreshSection = styled.div`
+  position: absolute;
+  left: 10px;
   ${rowFlex({ align: 'center' })};
   gap: 10px;
   cursor: pointer;
@@ -167,7 +167,6 @@ function AdminTableOrderList({ workspaceId, orderSessionId }: TableOrderListProp
           <RefreshIcon />
         </RefreshSection>
         <HeaderTitle>주문 내역</HeaderTitle>
-        <div />
       </Header>
       <OrderListContainer>
         <OrderHeader>
