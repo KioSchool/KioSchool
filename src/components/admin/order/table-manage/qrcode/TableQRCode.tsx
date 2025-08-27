@@ -4,6 +4,7 @@ import { QRCodeCanvas } from 'qrcode.react';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import QRCode from 'qrcode';
+import { RiDownloadLine } from '@remixicon/react';
 
 const Container = styled.div`
   border: 1px solid #ececec;
@@ -13,6 +14,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.div`
+  position: relative;
   box-sizing: border-box;
   width: 100%;
   height: 40px;
@@ -22,7 +24,20 @@ const Header = styled.div`
   font-size: 15px;
   font-weight: 600;
   border-bottom: 1px solid #ececec;
-  ${colFlex({ justify: 'center', align: 'center' })};
+  ${rowFlex({ justify: 'center', align: 'center' })};
+`;
+
+const DownloadIcon = styled(RiDownloadLine)`
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  color: ${Color.GREY};
+  width: 20px;
+  height: 20px;
+
+  &:hover {
+    color: ${Color.KIO_ORANGE};
+  }
 `;
 
 const Content = styled.div`
@@ -33,22 +48,21 @@ const Content = styled.div`
 `;
 
 const Button = styled.button`
-  background: ${Color.LIGHT_GREY};
-  color: ${Color.GREY};
+  background: ${Color.KIO_ORANGE};
+  color: ${Color.WHITE};
   border: none;
   border-radius: 40px;
   cursor: pointer;
   font-family: 'LINE Seed Sans KR', sans-serif;
   font-size: 12px;
   font-weight: 700;
-  padding: 8px;
+  padding: 10px 8px;
   width: 90%;
   height: 30px;
   ${rowFlex({ justify: 'center', align: 'center' })}
 
   &:hover {
-    color: ${Color.WHITE};
-    background: ${Color.KIO_ORANGE};
+    background: #ff9d50;
   }
 `;
 
@@ -59,6 +73,8 @@ interface TableQRCodeProps {
 
 function TableQRCode({ workspaceId, selectedTable }: TableQRCodeProps) {
   const qrCodeUrl = `${location.origin}/order?workspaceId=${workspaceId}&tableNo=${selectedTable.tableNumber}`;
+  const baseUrl = location.origin;
+  const previewUrl = `${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${selectedTable.tableNumber}`;
 
   const onClickDownloadQRCode = async () => {
     try {
@@ -77,12 +93,19 @@ function TableQRCode({ workspaceId, selectedTable }: TableQRCodeProps) {
     }
   };
 
+  const onClickOrderLink = () => {
+    window.open(previewUrl, '_blank');
+  };
+
   return (
     <Container>
-      <Header>QR 코드</Header>
+      <Header>
+        <span>QR 코드</span>
+        <DownloadIcon onClick={onClickDownloadQRCode} />
+      </Header>
       <Content>
         <QRCodeCanvas value={qrCodeUrl} size={80} bgColor="#ffffff" fgColor="#000000" level="M" />
-        <Button onClick={onClickDownloadQRCode}>QR 다운로드</Button>
+        <Button onClick={onClickOrderLink}>주문하기 링크</Button>
       </Content>
     </Container>
   );
