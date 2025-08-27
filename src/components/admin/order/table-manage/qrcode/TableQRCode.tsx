@@ -19,10 +19,7 @@ const Header = styled.div`
   width: 100%;
   height: 40px;
   padding: 5px 10px;
-  color: ${Color.GREY};
   background-color: ${Color.LIGHT_GREY};
-  font-size: 15px;
-  font-weight: 600;
   border-bottom: 1px solid #ececec;
   ${rowFlex({ justify: 'center', align: 'center' })};
 `;
@@ -66,6 +63,12 @@ const Button = styled.button`
   }
 `;
 
+const Label = styled.span`
+  color: ${Color.GREY};
+  font-size: 15px;
+  font-weight: 600;
+`;
+
 interface TableQRCodeProps {
   workspaceId: string | undefined;
   selectedTable: Table;
@@ -100,7 +103,7 @@ function TableQRCode({ workspaceId, selectedTable }: TableQRCodeProps) {
   return (
     <Container>
       <Header>
-        <span>QR 코드</span>
+        <Label>QR 코드</Label>
         <DownloadIcon onClick={onClickDownloadQRCode} />
       </Header>
       <Content>
