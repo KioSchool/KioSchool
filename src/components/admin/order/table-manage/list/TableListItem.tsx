@@ -81,7 +81,7 @@ function TableListItem({ expectedEndAt, isUsing, table }: TableSessionItemProps)
 
   const onClickTable = (tableNumber: number) => {
     searchParams.set('tableNo', String(tableNumber));
-    setSearchParams(searchParams);
+    setSearchParams(searchParams, { replace: true });
   };
 
   return (
