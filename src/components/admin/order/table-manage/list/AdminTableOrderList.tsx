@@ -88,9 +88,11 @@ const OrderItem = styled.div`
 `;
 
 const OrderFallback = styled.div`
-  text-align: center;
-  padding: 20px;
+  height: 100%;
   color: ${Color.GREY};
+  font-size: 20px;
+  font-weight: 600;
+  ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
 const SearchIcon = styled(RiSearchLine)`

@@ -6,6 +6,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { RiArrowRightLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import { useNavigate } from 'react-router-dom';
+import AppFaqButton from '@components/common/button/AppFaqButton';
 
 const Container = styled.div`
   position: relative;
@@ -142,6 +143,7 @@ export default function HomeMobile() {
       </SignBoard>
 
       <Ground />
+      <AppFaqButton />
     </Container>
   );
 }

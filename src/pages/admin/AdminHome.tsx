@@ -7,6 +7,7 @@ import AppFooter from '@components/common/footer/AppFooter';
 import { rowFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
 import { adminUserAtom, adminWorkspacesAtom } from 'src/jotai/admin/atoms';
+import AppFaqButton from '@components/common/button/AppFaqButton';
 
 function AdminHome() {
   const { fetchWorkspaces, fetchAdminUser } = useAdminUser();
@@ -27,6 +28,7 @@ function AdminHome() {
           <AddWorkspace key={i} workspaces={workspaces} />
         ))}
         <AppFooter />
+        <AppFaqButton />
       </>
     </AppContainer>
   );

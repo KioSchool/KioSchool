@@ -21,7 +21,7 @@ function useServerHealth() {
     try {
       setStatus((prev) => ({ ...prev, isChecking: true }));
 
-      await axios.get(`${API_BASE_URL}/favicon.ico`, {
+      await axios.get(`${API_BASE_URL}/actuator/health`, {
         timeout: 10000,
         validateStatus: (statusCode) => statusCode < 500,
       });
