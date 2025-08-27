@@ -17,7 +17,7 @@ const Container = styled.div<{ useSubTitle: boolean }>`
   z-index: 1002;
   margin-bottom: 25px;
   height: 50px;
-  width: 100vw;
+  min-width: 100vw;
   position: fixed;
   top: 61px;
   background: rgba(255, 255, 255, 0.95);
