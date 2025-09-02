@@ -35,15 +35,19 @@ const CloseButtonContainer = styled.div`
   width: 100%;
   gap: 10px;
   ${rowFlex({ justify: 'end', align: 'center' })};
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const CloseText = styled.div`
-  font-size: 12px;
-  font-weight: 400;
+  font-size: 14px;
+  font-weight: 600;
   opacity: 0.56;
 `;
 
-const CloseButton = styled(RiCloseCircleFill)`
+const CloseButtonIcon = styled(RiCloseCircleFill)`
   width: 20px;
   height: 20px;
   cursor: pointer;
@@ -76,13 +80,13 @@ function AppPopup() {
     <Container>
       <SubContainer>
         <ContentContainer>
-          <CloseButtonContainer>
+          <CloseButtonContainer
+            onClick={() => {
+              closePopupForDay(popupId);
+            }}
+          >
             <CloseText>하루 동안 보지 않기</CloseText>
-            <CloseButton
-              onClick={() => {
-                closePopupForDay(popupId);
-              }}
-            />
+            <CloseButtonIcon />
           </CloseButtonContainer>
           {children}
         </ContentContainer>
