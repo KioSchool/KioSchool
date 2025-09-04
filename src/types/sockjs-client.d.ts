@@ -1,6 +1,3 @@
 declare module 'sockjs-client/dist/sockjs' {
-  import SockJS from '@types/sockjs-client';
-
-  export = SockJS;
-  export as namespace SockJS;
+  export default (await import('sockjs-client')).default;
 }
