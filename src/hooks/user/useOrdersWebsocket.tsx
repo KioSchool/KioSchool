@@ -71,20 +71,24 @@ function useOrdersWebsocket({ workspaceId, refetchOrders }: UseOrdersWebsocketPr
   );
 
   useEffect(() => {
+    let subscription: StompJs.StompSubscription | null = null;
+
     client.onConnect = () => {
       stopPolling();
 
-      client.subscribe(`/sub/order/${workspaceId}`, (response) => {
-        const orderWebsocket: OrderWebsocket = JSON.parse(response.body);
-        const order = orderWebsocket.data;
+      if (!subscription) {
+        subscription = client.subscribe(`/sub/order/${workspaceId}`, (response) => {
+          const orderWebsocket: OrderWebsocket = JSON.parse(response.body);
+          const order = orderWebsocket.data;
 
-        if (orderWebsocket.type === 'CREATED') {
-          playOrderCreateAudio();
-          addOrder(order);
-        } else if (orderWebsocket.type === 'UPDATED') {
-          updateOrder(order);
-        }
-      });
+          if (orderWebsocket.type === 'CREATED') {
+            playOrderCreateAudio();
+            addOrder(order);
+          } else if (orderWebsocket.type === 'UPDATED') {
+            updateOrder(order);
+          }
+        });
+      }
     };
 
     client.onWebSocketError = (error) => {
@@ -100,6 +104,9 @@ function useOrdersWebsocket({ workspaceId, refetchOrders }: UseOrdersWebsocketPr
     client.activate();
 
     return () => {
+      if (subscription) {
+        subscription.unsubscribe();
+      }
       client.deactivate();
       stopPolling();
     };
