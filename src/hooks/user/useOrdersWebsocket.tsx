@@ -3,7 +3,7 @@ import kioSchoolOrderAlarm from '@resources/audio/kioSchoolOrderAlarm.mp3';
 import { Order, OrderWebsocket } from '@@types/index';
 import { useSetAtom } from 'jotai';
 import { adminOrdersAtom } from '../../jotai/admin/atoms';
-import { useEffect, useCallback, useRef, useMemo } from 'react';
+import { useEffect, useCallback, useMemo } from 'react';
 import SockJS from 'sockjs-client/dist/sockjs';
 
 const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT;
@@ -15,14 +15,8 @@ function playOrderCreateAudio() {
   audio.play().catch((error) => console.error('Audio play failed:', error));
 }
 
-interface UseOrdersWebsocketProps {
-  workspaceId: string | undefined;
-  refetchOrders: () => void;
-}
-
-function useOrdersWebsocket({ workspaceId, refetchOrders }: UseOrdersWebsocketProps) {
+function useOrdersWebsocket(workspaceId: string | undefined) {
   const setOrders = useSetAtom(adminOrdersAtom);
-  const timerIdRef = useRef<NodeJS.Timeout | null>(null);
 
   const addOrder = useCallback(
     (order: Order) => {
@@ -37,26 +31,6 @@ function useOrdersWebsocket({ workspaceId, refetchOrders }: UseOrdersWebsocketPr
     },
     [setOrders],
   );
-
-  const startPolling = useCallback(() => {
-    if (timerIdRef.current) {
-      return;
-    }
-
-    if (refetchOrders) {
-      const RESYNC_INTERVAL_MS = 1000;
-      timerIdRef.current = setInterval(() => {
-        refetchOrders();
-      }, RESYNC_INTERVAL_MS);
-    }
-  }, []);
-
-  const stopPolling = useCallback(() => {
-    if (timerIdRef.current) {
-      clearInterval(timerIdRef.current);
-      timerIdRef.current = null;
-    }
-  }, []);
 
   const client = useMemo(
     () =>
@@ -77,8 +51,6 @@ function useOrdersWebsocket({ workspaceId, refetchOrders }: UseOrdersWebsocketPr
     let subscription: StompJs.StompSubscription | null = null;
 
     client.onConnect = () => {
-      stopPolling();
-
       if (!subscription) {
         subscription = client.subscribe(`/sub/order/${workspaceId}`, (response) => {
           const orderWebsocket: OrderWebsocket = JSON.parse(response.body);
@@ -96,12 +68,10 @@ function useOrdersWebsocket({ workspaceId, refetchOrders }: UseOrdersWebsocketPr
 
     client.onWebSocketError = (error) => {
       console.error('WebSocket error', error);
-      startPolling();
     };
 
     client.onStompError = (frame) => {
       console.error('Broker reported error: ' + frame.headers.message);
-      client.deactivate();
     };
 
     client.activate();
@@ -111,9 +81,8 @@ function useOrdersWebsocket({ workspaceId, refetchOrders }: UseOrdersWebsocketPr
         subscription.unsubscribe();
       }
       client.deactivate();
-      stopPolling();
     };
-  }, [client, workspaceId, addOrder, updateOrder, startPolling, stopPolling]);
+  }, [client, workspaceId, addOrder, updateOrder]);
 }
 
 export default useOrdersWebsocket;

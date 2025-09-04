@@ -25,7 +25,7 @@ function AdminOrderRealtime() {
   const paidOrders = orders.filter((order) => order.status === OrderStatus.PAID);
   const servedOrders = orders.filter((order) => order.status === OrderStatus.SERVED);
 
-  useOrdersWebsocket({ workspaceId, refetchOrders: fetchTodayOrders });
+  useOrdersWebsocket(workspaceId);
 
   useEffect(() => {
     fetchTodayOrders();
