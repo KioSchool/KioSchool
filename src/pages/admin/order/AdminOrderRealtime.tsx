@@ -13,13 +13,10 @@ import OrderByProductModalButton from '@components/admin/order/realtime/modal/or
 import { useAtomValue } from 'jotai';
 import { adminOrdersAtom } from 'src/jotai/admin/atoms';
 
-const RESYNC_INTERVAL_MS = 5 * 60 * 1000;
-
 function AdminOrderRealtime() {
   const { isModalOpen, openModal, closeModal } = useModal();
 
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { subscribeOrders, unsubscribeOrders } = useOrdersWebsocket(workspaceId);
   const { fetchTodayOrders } = useAdminOrder(workspaceId);
   const { fetchProducts } = useAdminProducts(workspaceId);
 
@@ -28,18 +25,11 @@ function AdminOrderRealtime() {
   const paidOrders = orders.filter((order) => order.status === OrderStatus.PAID);
   const servedOrders = orders.filter((order) => order.status === OrderStatus.SERVED);
 
+  useOrdersWebsocket(workspaceId);
+
   useEffect(() => {
-    subscribeOrders();
     fetchTodayOrders();
     fetchProducts();
-    const intervalId = setInterval(() => {
-      fetchTodayOrders();
-    }, RESYNC_INTERVAL_MS);
-
-    return () => {
-      unsubscribeOrders();
-      clearInterval(intervalId);
-    };
   }, []);
 
   return (

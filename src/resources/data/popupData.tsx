@@ -18,7 +18,7 @@ export const popupDatas: PopupData[] = [
   {
     popupId: 1,
     title: '키오스쿨 사용 인터뷰에 참여해주세요!',
-    expireDate: dayjs().set('year', 2025).set('month', 6).set('date', 30).toDate(),
+    expireDate: dayjs().set('year', 2025).set('month', 9).set('date', 30).toDate(),
     children: <PopupContent1 />,
   },
 ];

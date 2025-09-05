@@ -20,6 +20,7 @@
     "@types/react-dom": "^18.0.6",
     "@types/react-scroll": "^1.8.10",
     "@types/react-transition-group": "^4.4.12",
+    "@types/sockjs-client": "^1.5.4",
     "axios": "1.6.0",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
@@ -44,6 +45,7 @@
     "react-scroll": "npm:@kioschool/react-scroll",
     "react-toastify": "^11.0.5",
     "recharts": "2.15.3",
+    "sockjs-client": "^1.6.1",
     "styled-components": "^6.1.19"
   },
   "scripts": {
