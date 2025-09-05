@@ -7,7 +7,6 @@ import { useEffect, useCallback, useMemo } from 'react';
 import SockJS from 'sockjs-client/dist/sockjs';
 
 const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT;
-const url = ENVIRONMENT === 'development' ? 'ws://localhost:8080/ws' : 'wss://api.kio-school.com/ws';
 const sockJSUrl = ENVIRONMENT === 'development' ? 'http://localhost:8080/ws' : 'https://api.kio-school.com/ws';
 
 function playOrderCreateAudio() {
@@ -35,7 +34,6 @@ function useOrdersWebsocket(workspaceId: string | undefined) {
   const client = useMemo(
     () =>
       new StompJs.Client({
-        brokerURL: url,
         webSocketFactory: () => new SockJS(sockJSUrl),
         debug: (str) => {
           console.log(str);
