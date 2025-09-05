@@ -19,10 +19,6 @@ function useAdminProducts(workspaceId: string | undefined | null) {
       })
       .then((res) => {
         setProducts(res.data);
-      })
-      .catch((error) => {
-        alert(error.response.data.message);
-        navigate(-1);
       });
   };
 
