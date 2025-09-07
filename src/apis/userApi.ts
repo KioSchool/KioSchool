@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 import { loadingManager } from 'src/utils/loadingManager';
 
 const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT;
@@ -21,7 +21,6 @@ class UserApiManager {
 
   public renewController(): void {
     this.controller = new AbortController();
-    this.api.defaults.signal = this.controller.signal;
   }
 
   public abort(): void {
@@ -37,24 +36,41 @@ class UserApiManager {
   }
 
   private setupInterceptors(): void {
+    const pendingTimers = new Map<InternalAxiosRequestConfig, NodeJS.Timeout>();
+
+    const responseHandler = (config: InternalAxiosRequestConfig) => {
+      const timer = pendingTimers.get(config);
+
+      if (timer) {
+        clearTimeout(timer);
+        pendingTimers.delete(config);
+        loadingManager.decrement();
+      }
+    };
+
     this.api.interceptors.request.use(
       (config) => {
-        loadingManager.increment();
+        const timer = setTimeout(() => {
+          loadingManager.increment();
+        }, 500);
+
+        pendingTimers.set(config, timer);
+
+        config.signal = this.controller.signal;
         return config;
       },
-      (error) => {
-        loadingManager.decrement();
-        return Promise.reject(error);
-      },
+      (error) => Promise.reject(error),
     );
 
     this.api.interceptors.response.use(
       (response) => {
-        loadingManager.decrement();
+        responseHandler(response.config);
         return response;
       },
       (error) => {
-        loadingManager.decrement();
+        if (error.config) {
+          responseHandler(error.config);
+        }
         return Promise.reject(error);
       },
     );
