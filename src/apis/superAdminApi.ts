@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import { loadingManager } from 'src/utils/loadingManager';
 
 const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT;
 
@@ -37,9 +38,25 @@ class SuperAdminApiManager {
   }
 
   private setupInterceptors(): void {
-    this.api.interceptors.response.use(
-      (response) => response,
+    this.api.interceptors.request.use(
+      (config) => {
+        loadingManager.increment();
+        return config;
+      },
       (error) => {
+        loadingManager.decrement();
+        return Promise.reject(error);
+      },
+    );
+
+    this.api.interceptors.response.use(
+      (response) => {
+        loadingManager.decrement();
+        return response;
+      },
+      (error) => {
+        loadingManager.decrement();
+
         if (error.response?.status === 403) {
           this.abort();
           window.dispatchEvent(new CustomEvent('adminAuthError'));

@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import { loadingManager } from 'src/utils/loadingManager';
 
 const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT;
 
@@ -36,9 +37,26 @@ class UserApiManager {
   }
 
   private setupInterceptors(): void {
+    this.api.interceptors.request.use(
+      (config) => {
+        loadingManager.increment();
+        return config;
+      },
+      (error) => {
+        loadingManager.decrement();
+        return Promise.reject(error);
+      },
+    );
+
     this.api.interceptors.response.use(
-      (response) => response,
-      (error) => Promise.reject(error),
+      (response) => {
+        loadingManager.decrement();
+        return response;
+      },
+      (error) => {
+        loadingManager.decrement();
+        return Promise.reject(error);
+      },
     );
   }
 }
