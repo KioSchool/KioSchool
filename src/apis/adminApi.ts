@@ -38,6 +38,17 @@ class AdminApiManager {
   private setupInterceptors(): void {
     const pendingTimers = new Map<InternalAxiosRequestConfig, NodeJS.Timeout>();
 
+    const requestHandler = (config: InternalAxiosRequestConfig) => {
+      const timer = setTimeout(() => {
+        loadingManager.increment();
+      }, 500);
+
+      pendingTimers.set(config, timer);
+      config.signal = this.controller.signal;
+
+      return config;
+    };
+
     const responseHandler = (config: InternalAxiosRequestConfig) => {
       const timer = pendingTimers.get(config);
 
@@ -49,16 +60,7 @@ class AdminApiManager {
     };
 
     this.api.interceptors.request.use(
-      (config) => {
-        const timer = setTimeout(() => {
-          loadingManager.increment();
-        }, 500);
-
-        pendingTimers.set(config, timer);
-
-        config.signal = this.controller.signal;
-        return config;
-      },
+      (config) => requestHandler(config),
       (error) => Promise.reject(error),
     );
 
