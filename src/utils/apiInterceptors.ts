@@ -18,6 +18,7 @@ export function setupApiInterceptors(
   const handleRequestStart = (config: InternalAxiosRequestConfig) => {
     const timerId = setTimeout(() => {
       loadingManager.increment();
+      pendingTimers.delete(config);
     }, 500);
 
     pendingTimers.set(config, timerId);
@@ -31,6 +32,7 @@ export function setupApiInterceptors(
     if (timerId) {
       clearTimeout(timerId);
       pendingTimers.delete(config);
+    } else {
       loadingManager.decrement();
     }
   };
