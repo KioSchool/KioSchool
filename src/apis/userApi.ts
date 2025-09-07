@@ -36,7 +36,7 @@ class UserApiManager {
   }
 
   private setupInterceptors(): void {
-    setupApiInterceptors(this.api, this.controller);
+    setupApiInterceptors(this.api);
   }
 }
 

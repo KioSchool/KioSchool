@@ -13,6 +13,7 @@ class AdminApiManager {
     this.api = axios.create({
       baseURL: ENVIRONMENT == 'development' ? 'http://localhost:8080/admin' : 'https://api.kio-school.com/admin',
       withCredentials: true,
+      signal: this.controller.signal,
       timeout: 30000,
     });
 
@@ -21,6 +22,7 @@ class AdminApiManager {
 
   public renewController(): void {
     this.controller = new AbortController();
+    this.api.defaults.signal = this.controller.signal;
   }
 
   public abort(): void {
@@ -36,7 +38,7 @@ class AdminApiManager {
   }
 
   private setupInterceptors(): void {
-    setupApiInterceptors(this.api, this.controller, {
+    setupApiInterceptors(this.api, {
       authErrorEvent: 'adminAuthError',
       onAuthError: () => {
         this.abort();

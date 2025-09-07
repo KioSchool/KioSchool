@@ -4,12 +4,10 @@ import { loadingManager } from './loadingManager';
 /**
  * 공통 인터셉터 설정 함수
  * @param api - axios 인스턴스
- * @param getController - AbortController를 반환하는 함수
  * @param options - 인터셉터 옵션
  */
 export function setupApiInterceptors(
   api: AxiosInstance,
-  controller: AbortController,
   options: {
     authErrorEvent?: string;
     onAuthError?: () => void;
@@ -23,7 +21,6 @@ export function setupApiInterceptors(
     }, 500);
 
     pendingTimers.set(config, timerId);
-    config.signal = controller.signal;
 
     return config;
   };

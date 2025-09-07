@@ -13,6 +13,7 @@ class SuperAdminApiManager {
     this.api = axios.create({
       baseURL: ENVIRONMENT == 'development' ? 'http://localhost:8080/super-admin' : 'https://api.kio-school.com/super-admin',
       withCredentials: true,
+      signal: this.controller.signal,
       timeout: 30000,
     });
 
@@ -21,6 +22,7 @@ class SuperAdminApiManager {
 
   public renewController(): void {
     this.controller = new AbortController();
+    this.api.defaults.signal = this.controller.signal;
   }
 
   public abort(): void {
@@ -36,7 +38,7 @@ class SuperAdminApiManager {
   }
 
   private setupInterceptors(): void {
-    setupApiInterceptors(this.api, this.controller, {
+    setupApiInterceptors(this.api, {
       authErrorEvent: 'adminAuthError',
       onAuthError: () => {
         this.abort();
