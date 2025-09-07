@@ -9,7 +9,7 @@ import { loadingManager } from './loadingManager';
  */
 export function setupApiInterceptors(
   api: AxiosInstance,
-  getController: () => AbortController,
+  controller: AbortController,
   options: {
     authErrorEvent?: string;
     onAuthError?: () => void;
@@ -23,7 +23,7 @@ export function setupApiInterceptors(
     }, 500);
 
     pendingTimers.set(config, timerId);
-    config.signal = getController().signal;
+    config.signal = controller.signal;
 
     return config;
   };
@@ -39,12 +39,9 @@ export function setupApiInterceptors(
   };
 
   const handleAuthError = () => {
-    if (options.onAuthError) {
+    if (options.onAuthError && options.authErrorEvent) {
       options.onAuthError();
-
-      if (options.authErrorEvent) {
-        window.dispatchEvent(new CustomEvent(options.authErrorEvent));
-      }
+      window.dispatchEvent(new CustomEvent(options.authErrorEvent));
     }
   };
 

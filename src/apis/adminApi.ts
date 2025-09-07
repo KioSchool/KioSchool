@@ -36,7 +36,7 @@ class AdminApiManager {
   }
 
   private setupInterceptors(): void {
-    setupApiInterceptors(this.api, () => this.controller, {
+    setupApiInterceptors(this.api, this.controller, {
       authErrorEvent: 'adminAuthError',
       onAuthError: () => {
         this.abort();
