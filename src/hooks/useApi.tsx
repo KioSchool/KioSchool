@@ -1,5 +1,5 @@
 import { adminApiManager } from 'src/apis/adminAPI';
-import { superAdminApiManager } from 'src/apis/supserAdminApi';
+import { superAdminApiManager } from 'src/apis/superAdminApi';
 import { userApiManager } from 'src/apis/userApi';
 
 function useApi() {
