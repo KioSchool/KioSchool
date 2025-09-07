@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import LoadingSvg from '@resources/svg/LoadingSvg';
 import { rowFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
-import { isLoadingAtom } from 'src/jotai/atoms';
+import { loadingCountAtom } from 'src/jotai/atoms';
 
 const Container = styled.div`
   z-index: 5002;
@@ -37,8 +37,9 @@ const Circle = styled.div`
 `;
 
 function LoadingModal() {
-  const isLoading = useAtomValue(isLoadingAtom);
-  if (!isLoading) return null;
+  const loadingCount = useAtomValue(loadingCountAtom);
+
+  if (loadingCount === 0) return null;
 
   return (
     <Container>
