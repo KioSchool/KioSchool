@@ -1,4 +1,4 @@
-import { adminApiManager } from 'src/apis/adminAPI';
+import { adminApiManager } from 'src/apis/adminApi';
 import { superAdminApiManager } from 'src/apis/superAdminApi';
 import { userApiManager } from 'src/apis/userApi';
 
