@@ -1,5 +1,5 @@
-import axios, { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
-import { loadingManager } from 'src/utils/loadingManager';
+import axios, { AxiosInstance } from 'axios';
+import { setupApiInterceptors } from 'src/utils/apiInterceptors';
 
 const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT;
 
@@ -36,53 +36,13 @@ class AdminApiManager {
   }
 
   private setupInterceptors(): void {
-    const pendingTimers = new Map<InternalAxiosRequestConfig, NodeJS.Timeout>();
-
-    const requestHandler = (config: InternalAxiosRequestConfig) => {
-      const timer = setTimeout(() => {
-        loadingManager.increment();
-      }, 500);
-
-      pendingTimers.set(config, timer);
-      config.signal = this.controller.signal;
-
-      return config;
-    };
-
-    const responseHandler = (config: InternalAxiosRequestConfig) => {
-      const timer = pendingTimers.get(config);
-
-      if (timer) {
-        clearTimeout(timer);
-        pendingTimers.delete(config);
-        loadingManager.decrement();
-      }
-    };
-
-    this.api.interceptors.request.use(
-      (config) => requestHandler(config),
-      (error) => Promise.reject(error),
-    );
-
-    this.api.interceptors.response.use(
-      (response) => {
-        responseHandler(response.config);
-        return response;
+    setupApiInterceptors(this.api, () => this.controller, {
+      authErrorEvent: 'adminAuthError',
+      onAuthError: () => {
+        this.abort();
+        this.renewController();
       },
-      (error) => {
-        if (error.config) {
-          responseHandler(error.config);
-        }
-
-        if (error.response?.status === 403) {
-          this.abort();
-          window.dispatchEvent(new CustomEvent('adminAuthError'));
-          this.renewController();
-        }
-
-        return Promise.reject(error);
-      },
-    );
+    });
   }
 }
 
