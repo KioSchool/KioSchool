@@ -12,7 +12,7 @@ function AuthErrorListener() {
 
   useEffect(() => {
     window.addEventListener('adminAuthError', handleAdminAuthError);
-    console.log('AuthErrorListener mounted');
+
     return () => {
       window.removeEventListener('adminAuthError', handleAdminAuthError);
     };
