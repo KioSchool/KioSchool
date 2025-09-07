@@ -1,6 +1,8 @@
 import { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { loadingManager } from './loadingManager';
 
+const TIMEOUT_BEFORE_SHOW_LOADING = 500;
+
 /**
  * 공통 인터셉터 설정 함수
  * @param api - axios 인스턴스
@@ -19,7 +21,7 @@ export function setupApiInterceptors(
     const timerId = setTimeout(() => {
       loadingManager.increment();
       pendingTimers.delete(config);
-    }, 500);
+    }, TIMEOUT_BEFORE_SHOW_LOADING);
 
     pendingTimers.set(config, timerId);
 

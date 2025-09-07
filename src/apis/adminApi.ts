@@ -2,6 +2,7 @@ import axios, { AxiosInstance } from 'axios';
 import { setupApiInterceptors } from 'src/utils/apiInterceptors';
 
 const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT;
+const AUTH_ERROR_EVENT = 'adminAuthError';
 
 class AdminApiManager {
   private controller: AbortController;
@@ -39,7 +40,7 @@ class AdminApiManager {
 
   private setupInterceptors(): void {
     setupApiInterceptors(this.api, {
-      authErrorEvent: 'adminAuthError',
+      authErrorEvent: AUTH_ERROR_EVENT,
       onAuthError: () => {
         this.abort();
         this.renewController();

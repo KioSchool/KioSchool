@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const AUTH_ERROR_EVENT = 'adminAuthError';
+
 function AuthErrorListener() {
   const navigate = useNavigate();
 
@@ -11,10 +13,10 @@ function AuthErrorListener() {
   };
 
   useEffect(() => {
-    window.addEventListener('adminAuthError', handleAdminAuthError);
+    window.addEventListener(AUTH_ERROR_EVENT, handleAdminAuthError);
 
     return () => {
-      window.removeEventListener('adminAuthError', handleAdminAuthError);
+      window.removeEventListener(AUTH_ERROR_EVENT, handleAdminAuthError);
     };
   }, []);
 
