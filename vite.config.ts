@@ -1,10 +1,18 @@
+import { sentryVitePlugin } from '@sentry/vite-plugin';
 /* eslint-disable import/no-extraneous-dependencies */
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
-  plugins: [react(), tsconfigPaths()],
+  plugins: [
+    react(),
+    tsconfigPaths(),
+    sentryVitePlugin({
+      org: 'kioschool',
+      project: 'kio-school',
+    }),
+  ],
   server: {
     host: 'localhost',
     port: 3000,
@@ -15,5 +23,6 @@ export default defineConfig({
   },
   build: {
     outDir: 'build',
+    sourcemap: true,
   },
 });
