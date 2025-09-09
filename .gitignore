@@ -27,3 +27,6 @@ yarn-debug.log*
 yarn-error.log*
 
 *storybook.log
+
+# Sentry Config File
+.env.sentry-build-plugin
