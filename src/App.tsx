@@ -8,6 +8,7 @@ import AdminProduct from '@pages/admin/AdminProduct';
 import Order from '@pages/user/order/Order';
 import AdminAccount from '@pages/admin/AdminAccount';
 import LoadingModal from '@components/common/modal/LoadingModal';
+import AuthErrorListener from '@components/common/AuthErrorListener';
 import { Global } from '@emotion/react';
 import { globalStyles } from '@styles/globalStyles';
 import OrderBasket from '@pages/user/order/OrderBasket';
@@ -49,6 +50,7 @@ function App() {
 
   return (
     <>
+      <AuthErrorListener />
       <ToastContainer
         position="top-right"
         hideProgressBar={false}

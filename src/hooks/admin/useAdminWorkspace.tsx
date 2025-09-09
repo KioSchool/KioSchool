@@ -19,8 +19,7 @@ function useAdminWorkspace() {
         setAdminWorkspace(res.data);
       })
       .catch((error) => {
-        alert(error.response.data.message);
-        navigate(-1);
+        console.error(error.response.data.message);
       });
   };
 
@@ -91,7 +90,7 @@ function useAdminWorkspace() {
         navigate(`/admin/workspace/${workspaceId}`);
       })
       .catch((error) => {
-        alert(error.response.data.message);
+        console.error(error.response.data.message);
       });
   };
 

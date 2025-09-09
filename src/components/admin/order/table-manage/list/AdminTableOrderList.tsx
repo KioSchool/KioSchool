@@ -1,13 +1,12 @@
-import { Order, OrderProduct } from '@@types/index';
+import { Order } from '@@types/index';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
-import { RiSearchLine, RiResetRightFill } from '@remixicon/react';
+import { RiResetRightFill } from '@remixicon/react';
 import { Color } from '@resources/colors';
-import useModal from '@hooks/useModal';
 import { formatKoreanTime } from '@utils/FormatDate';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import TableOrderDetailModal from '../modal/TableOrderDetailModal';
+import OrderRowItem from './OrderRowItem';
 
 const defaultInterval = 60000;
 
@@ -73,15 +72,6 @@ const OrderHeader = styled.div`
   font-weight: 600;
 `;
 
-const OrderRow = styled.div`
-  display: grid;
-  grid-template-columns: 0.5fr 1.2fr 1.8fr 1fr 1fr 1fr 0.5fr;
-  padding: 10px;
-  border-bottom: 1px solid ${Color.LIGHT_GREY};
-  text-align: center;
-  align-items: center;
-`;
-
 const OrderItem = styled.div`
   overflow-y: auto;
   flex-grow: 1;
@@ -95,38 +85,9 @@ const OrderFallback = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
-const SearchIcon = styled(RiSearchLine)`
-  color: ${Color.GREY};
-  cursor: pointer;
-`;
-
 const HeaderCell = styled.div`
   color: ${Color.GREY};
 `;
-
-const OrderCell = styled.div`
-  color: ${Color.GREY};
-`;
-
-const ActionCell = styled.div`
-  ${rowFlex({ justify: 'center', align: 'center' })};
-`;
-
-const formatProductNames = (orderProducts: OrderProduct[] | undefined) => {
-  if (!orderProducts || orderProducts.length === 0) {
-    return '상품 없음';
-  }
-  if (orderProducts.length === 1) {
-    return orderProducts[0].productName;
-  }
-  return `${orderProducts[0].productName} 외 ${orderProducts.length - 1}개`;
-};
-
-const ORDER_STATUS_MAP = {
-  NOT_PAID: '주문 완료',
-  PAID: '결제 완료',
-  SERVED: '서빙 완료',
-};
 
 interface TableOrderListProps {
   workspaceId: number | undefined | null;
@@ -136,7 +97,6 @@ interface TableOrderListProps {
 const formattedNowTime = formatKoreanTime(new Date().toISOString()) || '시간 없음';
 
 function AdminTableOrderList({ workspaceId, orderSessionId }: TableOrderListProps) {
-  const { isModalOpen, openModal, closeModal } = useModal();
   const { fetchOrderSession } = useAdminOrder(String(workspaceId));
   const [tableOrders, setTableOrders] = useState<Order[]>([]);
 
@@ -181,28 +141,7 @@ function AdminTableOrderList({ workspaceId, orderSessionId }: TableOrderListProp
           <HeaderCell>보기</HeaderCell>
         </OrderHeader>
         <OrderItem>
-          {tableOrders.length > 0 ? (
-            tableOrders.map((order: Order) => {
-              const formattedStartTime = formatKoreanTime(order.createdAt) || '시간 없음';
-
-              return (
-                <OrderRow key={order.id}>
-                  <OrderCell>{order.id}</OrderCell>
-                  <OrderCell>{formattedStartTime}</OrderCell>
-                  <OrderCell>{formatProductNames(order.orderProducts)}</OrderCell>
-                  <OrderCell>{order.customerName}</OrderCell>
-                  <OrderCell>{`${order.totalPrice.toLocaleString()}원`}</OrderCell>
-                  <OrderCell>{ORDER_STATUS_MAP[order.status as keyof typeof ORDER_STATUS_MAP] || order.status}</OrderCell>
-                  <ActionCell>
-                    <SearchIcon onClick={openModal} />
-                  </ActionCell>
-                  <TableOrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
-                </OrderRow>
-              );
-            })
-          ) : (
-            <OrderFallback>주문 없음</OrderFallback>
-          )}
+          {tableOrders.length > 0 ? tableOrders.map((order: Order) => <OrderRowItem key={order.id} order={order} />) : <OrderFallback>주문 없음</OrderFallback>}
         </OrderItem>
       </OrderListContainer>
     </Container>

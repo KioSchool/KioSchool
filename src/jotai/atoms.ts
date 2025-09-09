@@ -1,3 +1,3 @@
 import { atom } from 'jotai';
 
-export const isLoadingAtom = atom<boolean>(false);
+export const loadingCountAtom = atom<number>(0);
