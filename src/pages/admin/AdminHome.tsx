@@ -8,8 +8,10 @@ import { rowFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
 import { adminUserAtom, adminWorkspacesAtom } from 'src/jotai/admin/atoms';
 import AppFaqButton from '@components/common/button/AppFaqButton';
+import { useNavigate } from 'react-router-dom';
 
 function AdminHome() {
+  const navigate = useNavigate();
   const { fetchWorkspaces, fetchAdminUser } = useAdminUser();
   const workspaces = useAtomValue(adminWorkspacesAtom);
   const user = useAtomValue(adminUserAtom);
@@ -17,7 +19,12 @@ function AdminHome() {
 
   useEffect(() => {
     fetchWorkspaces();
-    fetchAdminUser();
+    fetchAdminUser().then(() => {
+      if (!user.account) {
+        alert('계좌 정보가 등록되어 있지 않습니다. 계좌 정보를 등록해주세요.');
+        navigate('/admin/register-account');
+      }
+    });
   }, []);
 
   return (
