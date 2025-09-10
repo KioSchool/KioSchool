@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import youtubeThumbnail from '@resources/image/home/youtubeThumbnail.png';
 
-const YOUTUBE_TOAST_COOKIE = 'youtube_toast_hidden';
+const KIOSCHOOL_GUIDE_YOUTUBE_TOAST_COOKIE = 'kioschool_guide_youtube_toast_hidden';
 const YOUTUBE_URL = 'https://www.youtube.com/watch?v=4tZjnj48hBk';
 const ONE_WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
 
@@ -94,7 +94,7 @@ interface YoutubeGuideToastProps {
 }
 
 export function YoutubeGuideToast({ onDismiss }: YoutubeGuideToastProps) {
-  const [, setCookie] = useCookies([YOUTUBE_TOAST_COOKIE]);
+  const [, setCookie] = useCookies([KIOSCHOOL_GUIDE_YOUTUBE_TOAST_COOKIE]);
 
   const handleVideoClick = () => {
     window.open(YOUTUBE_URL, '_blank', 'noopener,noreferrer');
@@ -102,7 +102,7 @@ export function YoutubeGuideToast({ onDismiss }: YoutubeGuideToastProps) {
   };
 
   const handleDismissClick = () => {
-    setCookie(YOUTUBE_TOAST_COOKIE, 'true', { maxAge: ONE_WEEK_IN_SECONDS });
+    setCookie(KIOSCHOOL_GUIDE_YOUTUBE_TOAST_COOKIE, 'true', { maxAge: ONE_WEEK_IN_SECONDS });
     onDismiss();
   };
 
@@ -120,4 +120,4 @@ export function YoutubeGuideToast({ onDismiss }: YoutubeGuideToastProps) {
   );
 }
 
-export { YOUTUBE_TOAST_COOKIE };
+export { KIOSCHOOL_GUIDE_YOUTUBE_TOAST_COOKIE };
