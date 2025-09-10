@@ -89,11 +89,11 @@ const Button = styled.button`
   }
 `;
 
-interface YoutubeGuideToastProps {
+interface KioSchoolGuideYoutubeContentProps {
   onDismiss: () => void;
 }
 
-export function YoutubeGuideToast({ onDismiss }: YoutubeGuideToastProps) {
+function KioSchoolGuideYoutubeContent({ onDismiss }: KioSchoolGuideYoutubeContentProps) {
   const [, setCookie] = useCookies([KIOSCHOOL_GUIDE_YOUTUBE_TOAST_COOKIE]);
 
   const handleVideoClick = () => {
@@ -121,3 +121,4 @@ export function YoutubeGuideToast({ onDismiss }: YoutubeGuideToastProps) {
 }
 
 export { KIOSCHOOL_GUIDE_YOUTUBE_TOAST_COOKIE };
+export default KioSchoolGuideYoutubeContent;
