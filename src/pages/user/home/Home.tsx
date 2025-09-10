@@ -109,7 +109,7 @@ function Home() {
               toast.dismiss(YOUTUBE_TOAST_ID);
             }}
           >
-            <ThumbnailImage src={youtubeThumbnail} alt="YouTube 썸네일" />
+            <ThumbnailImage src={youtubeThumbnail} alt="키오스쿨 가이드 영상 썸네일" />
             <PlayButton>
               <RiPlayFill size={24} />
             </PlayButton>
