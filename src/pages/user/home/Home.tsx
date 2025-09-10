@@ -12,6 +12,7 @@ import youtubeThumbnail from '@resources/image/home/youtubeThumbnail.png';
 const YOUTUBE_TOAST_COOKIE = 'youtube_toast_hidden';
 const YOUTUBE_TOAST_ID = 'youtube-guide-toast';
 const YOUTUBE_URL = 'https://www.youtube.com/watch?v=4tZjnj48hBk';
+const ONE_WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
 
 const ToastContent = styled.div`
   gap: 15px;
@@ -115,9 +116,7 @@ function Home() {
           </ThumbnailContainer>
           <Button
             onClick={() => {
-              const oneWeekLater = new Date();
-              oneWeekLater.setDate(oneWeekLater.getDate() + 7);
-              setCookie(YOUTUBE_TOAST_COOKIE, 'true', { expires: oneWeekLater });
+              setCookie(YOUTUBE_TOAST_COOKIE, 'true', { maxAge: ONE_WEEK_IN_SECONDS });
               toast.dismiss(YOUTUBE_TOAST_ID);
             }}
           >
