@@ -14,7 +14,7 @@ function useAdminUser() {
   const navigate = useNavigate();
 
   const fetchAdminUser = () => {
-    adminApi
+    return adminApi
       .get('/user')
       .then((res) => setAdminUser(res.data))
       .catch((error) => console.error('Failed to fetch adminUser:', error));
