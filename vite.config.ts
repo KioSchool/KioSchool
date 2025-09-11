@@ -11,6 +11,9 @@ export default defineConfig({
     sentryVitePlugin({
       org: 'kioschool',
       project: 'kio-school',
+      reactComponentAnnotation: {
+        enabled: true,
+      },
     }),
   ],
   server: {
