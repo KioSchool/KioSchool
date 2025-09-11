@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import Home from '@pages/user/home/Home';
 import AdminHome from '@pages/admin/AdminHome';
 import Login from '@pages/user/Login';
@@ -39,6 +39,8 @@ import useServerHealth from '@hooks/useServerHealth';
 import ServerErrorFallback from '@components/common/fallback/ServerErrorFallback';
 import OrderWait from '@pages/user/order/OrderWait';
 import AdminOrderTableManage from '@pages/admin/table/AdminOrderTableManage';
+import SentryTestPage from '@components/common/test/SentryTestPage';
+import { SentryRoutes } from 'src';
 
 function App() {
   useNetworkStatusNotifier();
@@ -62,7 +64,7 @@ function App() {
         pauseOnHover
         theme="light"
       />
-      <Routes>
+      <SentryRoutes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -97,7 +99,9 @@ function App() {
         <Route path="/order-pay" element={<OrderPay />} />
         <Route path="/order-wait" element={<OrderWait />} />
         <Route path="/order-complete" element={<OrderComplete />} />
-      </Routes>
+
+        <Route path="/sentry-test" element={<SentryTestPage />} />
+      </SentryRoutes>
       <Global styles={globalStyles} />
       <LoadingModal />
     </>

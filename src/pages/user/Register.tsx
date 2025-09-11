@@ -144,7 +144,7 @@ function Register() {
     }
 
     localStorage.setItem('isLoggedIn', 'true');
-    navigate('/admin/register-account');
+    navigate('/');
   };
 
   const sendCode = async () => {
