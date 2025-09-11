@@ -10,6 +10,8 @@
     "@mui/styled-engine-sc": "^7.2.0",
     "@mui/x-charts": "^8.8.0",
     "@remixicon/react": "^4.6.0",
+    "@sentry/react": "^10.11.0",
+    "@sentry/vite-plugin": "^4.3.0",
     "@stomp/stompjs": "^7.0.0",
     "@types/lodash": "^4.14.202",
     "@types/node": "^22.14.0",

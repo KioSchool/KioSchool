@@ -1,5 +1,6 @@
 import { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { loadingManager } from './loadingManager';
+import * as Sentry from '@sentry/react';
 
 const TIMEOUT_BEFORE_SHOW_LOADING = 500;
 
@@ -56,6 +57,20 @@ export function setupApiInterceptors(
   const handleResponseError = (error: AxiosError) => {
     if (error.config) {
       cleanupRequest(error.config);
+    }
+
+    if (error.response?.status !== 403 && error.response?.status !== 401) {
+      Sentry.captureException(error, {
+        tags: {
+          errorType: 'apiError',
+          statusCode: error.response?.status,
+        },
+        extra: {
+          url: error.config?.url,
+          method: error.config?.method,
+          responseData: error.response?.data,
+        },
+      });
     }
 
     if (error.response?.status === 403) {
