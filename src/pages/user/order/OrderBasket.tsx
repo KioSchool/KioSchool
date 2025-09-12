@@ -72,7 +72,12 @@ function OrderBasket() {
   const [orderBasket, setOrderBasket] = useAtom(userOrderBasketAtom);
   const productsMap = _.keyBy(workspace.products, 'id');
   const totalAmount = orderBasket.reduce((acc, cur) => {
-    return acc + productsMap[cur.productId].price * cur.quantity;
+    const product = productsMap[cur.productId];
+    if (!product) {
+      return acc;
+    }
+
+    return acc + product.price * cur.quantity;
   }, 0);
 
   const navigate = useNavigate();

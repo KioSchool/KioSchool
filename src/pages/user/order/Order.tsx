@@ -71,7 +71,12 @@ function Order() {
   const navigate = useNavigate();
   const orderBasket = useAtomValue(userOrderBasketAtom);
   const totalAmount = orderBasket.reduce((acc, cur) => {
-    return acc + productsMap[cur.productId].price * cur.quantity;
+    const product = productsMap[cur.productId];
+    if (!product) {
+      return acc;
+    }
+
+    return acc + product.price * cur.quantity;
   }, 0);
 
   const headerRef = useRef<HTMLDivElement>(null);
