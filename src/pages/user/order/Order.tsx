@@ -70,13 +70,11 @@ function Order() {
   const { fetchCategories } = useProduct(workspaceId);
   const navigate = useNavigate();
   const orderBasket = useAtomValue(userOrderBasketAtom);
-  const totalAmount = orderBasket.reduce((acc, cur) => {
-    const product = productsMap[cur.productId];
-    if (!product) {
-      return acc;
-    }
+  const validOrderBasket = orderBasket.filter((product) => productsMap[product.productId]);
+  const totalAmount = validOrderBasket.reduce((acc, currentProduct) => {
+    const product = productsMap[currentProduct.productId];
 
-    return acc + product.price * cur.quantity;
+    return acc + product.price * currentProduct.quantity;
   }, 0);
 
   const headerRef = useRef<HTMLDivElement>(null);
