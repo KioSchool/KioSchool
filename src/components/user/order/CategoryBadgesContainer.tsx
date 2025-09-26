@@ -41,6 +41,7 @@ interface CategoryBadgesContainerProps {
 
 function CategoryBadgesContainer({ productCategories, productsByCategory }: CategoryBadgesContainerProps) {
   const duration = 400;
+  const offset = -100;
   const isScrolling = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -70,7 +71,7 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
               to={`category_${category.id}`}
               spy={true}
               smooth={true}
-              offset={-350}
+              offset={offset}
               duration={duration}
               onSetActive={() => {
                 categoryClick(category.id);
@@ -89,7 +90,7 @@ function CategoryBadgesContainer({ productCategories, productsByCategory }: Cate
           to="category_default"
           spy={true}
           smooth={true}
-          offset={-350}
+          offset={offset}
           duration={duration}
           onSetActive={() => {
             categoryClick(-1);
