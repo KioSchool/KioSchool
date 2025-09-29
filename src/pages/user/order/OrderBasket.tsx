@@ -71,7 +71,26 @@ function OrderBasket() {
   const workspace = useAtomValue(userWorkspaceAtom);
   const [orderBasket, setOrderBasket] = useAtom(userOrderBasketAtom);
   const productsMap = _.keyBy(workspace.products, 'id');
-  const totalAmount = orderBasket.reduce((acc, cur) => {
+
+  useEffect(() => {
+    const invalidItems = orderBasket.filter((item) => !productsMap[item.productId]);
+
+    if (invalidItems.length > 0) {
+      console.error('장바구니에서 유효하지 않은 상품이 감지되어 제거되었습니다.', {
+        제거된_상품: invalidItems,
+        현재_장바구니_상태: orderBasket,
+        현재_상품_목록_ID: Object.keys(productsMap),
+        Workspace: workspace,
+        ProductsMap: productsMap,
+      });
+      const validBasket = orderBasket.filter((item) => productsMap[item.productId]);
+      setOrderBasket(validBasket);
+    }
+  }, [orderBasket, productsMap, setOrderBasket]);
+
+  const validOrderBasket = orderBasket.filter((item) => productsMap[item.productId]);
+
+  const totalAmount = validOrderBasket.reduce((acc, cur) => {
     return acc + productsMap[cur.productId].price * cur.quantity;
   }, 0);
 
@@ -83,10 +102,12 @@ function OrderBasket() {
   const { createOrder } = useOrder();
 
   useEffect(() => {
-    if (orderBasket.length == 0) {
+    if (orderBasket.length > 0 && validOrderBasket.length === 0) {
+      navigate(-1);
+    } else if (orderBasket.length === 0) {
       navigate(-1);
     }
-  }, [orderBasket.length]);
+  }, [orderBasket.length, validOrderBasket.length, navigate]);
 
   const clearOrderBasket = () => {
     if (confirm('정말로 모두 삭제하시겠습니까?')) {
@@ -105,7 +126,7 @@ function OrderBasket() {
 
   const navigateHandler = () => {
     if (totalAmount === 0) {
-      createOrder(workspaceId, tableNo, orderBasket, '0원 주문')
+      createOrder(workspaceId, tableNo, validOrderBasket, '0원 주문')
         .then((res) => {
           navigate({
             pathname: '/order-complete',
@@ -139,9 +160,9 @@ function OrderBasket() {
           <Button onClick={clearOrderBasket}>전체 삭제 </Button>
         </Header>
         <OrderBasketContainer className={'order-basket-content'}>
-          {orderBasket.map((basket, index) => {
+          {validOrderBasket.map((basket, index) => {
             const product = productsMap[basket.productId];
-            const isShowDivider = index !== orderBasket.length - 1;
+            const isShowDivider = index !== validOrderBasket.length - 1;
 
             return (
               <ProductCounterBadgeContainer key={index}>
@@ -151,7 +172,7 @@ function OrderBasket() {
             );
           })}
         </OrderBasketContainer>
-        <OrderButton showButton={orderBasket.length > 0} buttonLabel={`${totalAmount.toLocaleString()}원 주문하기`} onClick={navigateHandler} />
+        <OrderButton showButton={validOrderBasket.length > 0} buttonLabel={`${totalAmount.toLocaleString()}원 주문하기`} onClick={navigateHandler} />
       </SubContainer>
     </Container>
   );
