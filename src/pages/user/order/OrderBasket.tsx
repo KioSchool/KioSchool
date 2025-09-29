@@ -9,7 +9,7 @@ import { Color } from '@resources/colors';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import { userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
 import { useAtom, useAtomValue } from 'jotai';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import useOrder from '@hooks/user/useOrder';
 import { HttpStatusCode } from 'axios';
 
@@ -70,7 +70,9 @@ const ProductCounterBadgeContainer = styled.div`
 function OrderBasket() {
   const workspace = useAtomValue(userWorkspaceAtom);
   const [orderBasket, setOrderBasket] = useAtom(userOrderBasketAtom);
-  const productsMap = _.keyBy(workspace.products, 'id');
+  const productsMap = useMemo(() => {
+    return _.keyBy(workspace.products, 'id');
+  }, [workspace.products]);
 
   useEffect(() => {
     const invalidItems = orderBasket.filter((item) => !productsMap[item.productId]);
