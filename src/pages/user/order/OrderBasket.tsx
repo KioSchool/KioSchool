@@ -9,7 +9,7 @@ import { Color } from '@resources/colors';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import { userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
 import { useAtom, useAtomValue } from 'jotai';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import useOrder from '@hooks/user/useOrder';
 import { HttpStatusCode } from 'axios';
 
@@ -70,7 +70,26 @@ const ProductCounterBadgeContainer = styled.div`
 function OrderBasket() {
   const workspace = useAtomValue(userWorkspaceAtom);
   const [orderBasket, setOrderBasket] = useAtom(userOrderBasketAtom);
-  const productsMap = _.keyBy(workspace.products, 'id');
+  const productsMap = useMemo(() => {
+    return _.keyBy(workspace.products, 'id');
+  }, [workspace.products]);
+
+  useEffect(() => {
+    const invalidItems = orderBasket.filter((item) => !productsMap[item.productId]);
+
+    if (invalidItems.length > 0) {
+      console.error('장바구니에서 유효하지 않은 상품이 감지되어 제거되었습니다.', {
+        제거된_상품: invalidItems,
+        현재_장바구니_상태: orderBasket,
+        현재_상품_목록_ID: Object.keys(productsMap),
+        Workspace: workspace,
+        ProductsMap: productsMap,
+      });
+      const validBasket = orderBasket.filter((item) => productsMap[item.productId]);
+      setOrderBasket(validBasket);
+    }
+  }, [orderBasket, productsMap, setOrderBasket]);
+
   const totalAmount = orderBasket.reduce((acc, cur) => {
     return acc + productsMap[cur.productId].price * cur.quantity;
   }, 0);
@@ -83,10 +102,10 @@ function OrderBasket() {
   const { createOrder } = useOrder();
 
   useEffect(() => {
-    if (orderBasket.length == 0) {
+    if (orderBasket.length === 0) {
       navigate(-1);
     }
-  }, [orderBasket.length]);
+  }, [orderBasket.length, navigate]);
 
   const clearOrderBasket = () => {
     if (confirm('정말로 모두 삭제하시겠습니까?')) {
