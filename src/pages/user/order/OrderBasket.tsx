@@ -90,9 +90,7 @@ function OrderBasket() {
     }
   }, [orderBasket, productsMap, setOrderBasket]);
 
-  const validOrderBasket = orderBasket.filter((item) => productsMap[item.productId]);
-
-  const totalAmount = validOrderBasket.reduce((acc, cur) => {
+  const totalAmount = orderBasket.reduce((acc, cur) => {
     return acc + productsMap[cur.productId].price * cur.quantity;
   }, 0);
 
@@ -104,12 +102,10 @@ function OrderBasket() {
   const { createOrder } = useOrder();
 
   useEffect(() => {
-    if (orderBasket.length > 0 && validOrderBasket.length === 0) {
-      navigate(-1);
-    } else if (orderBasket.length === 0) {
+    if (orderBasket.length === 0) {
       navigate(-1);
     }
-  }, [orderBasket.length, validOrderBasket.length, navigate]);
+  }, [orderBasket.length, navigate]);
 
   const clearOrderBasket = () => {
     if (confirm('정말로 모두 삭제하시겠습니까?')) {
@@ -128,7 +124,7 @@ function OrderBasket() {
 
   const navigateHandler = () => {
     if (totalAmount === 0) {
-      createOrder(workspaceId, tableNo, validOrderBasket, '0원 주문')
+      createOrder(workspaceId, tableNo, orderBasket, '0원 주문')
         .then((res) => {
           navigate({
             pathname: '/order-complete',
@@ -162,9 +158,9 @@ function OrderBasket() {
           <Button onClick={clearOrderBasket}>전체 삭제 </Button>
         </Header>
         <OrderBasketContainer className={'order-basket-content'}>
-          {validOrderBasket.map((basket, index) => {
+          {orderBasket.map((basket, index) => {
             const product = productsMap[basket.productId];
-            const isShowDivider = index !== validOrderBasket.length - 1;
+            const isShowDivider = index !== orderBasket.length - 1;
 
             return (
               <ProductCounterBadgeContainer key={index}>
@@ -174,7 +170,7 @@ function OrderBasket() {
             );
           })}
         </OrderBasketContainer>
-        <OrderButton showButton={validOrderBasket.length > 0} buttonLabel={`${totalAmount.toLocaleString()}원 주문하기`} onClick={navigateHandler} />
+        <OrderButton showButton={orderBasket.length > 0} buttonLabel={`${totalAmount.toLocaleString()}원 주문하기`} onClick={navigateHandler} />
       </SubContainer>
     </Container>
   );
