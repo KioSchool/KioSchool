@@ -11,7 +11,7 @@ class UserApiManager {
   constructor() {
     this.controller = new AbortController();
     this.api = axios.create({
-      baseURL: ENVIRONMENT == 'development' ? 'http://localhost:8080' : 'https://api.kio-school.com',
+      baseURL: ENVIRONMENT == 'development' ? '/api' : 'https://api.kio-school.com',
       withCredentials: true,
       timeout: 30000,
     });

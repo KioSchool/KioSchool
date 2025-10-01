@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { userApi } from '../apis/userApi';
 
 interface ServerHealthStatus {
   isServerHealthy: boolean;
   isChecking: boolean;
   error: string | null;
 }
-
-const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT;
-const API_BASE_URL = ENVIRONMENT === 'development' ? 'http://localhost:8080' : 'https://api.kio-school.com';
 
 function useServerHealth() {
   const [status, setStatus] = useState<ServerHealthStatus>({
@@ -21,7 +18,7 @@ function useServerHealth() {
     try {
       setStatus((prev) => ({ ...prev, isChecking: true }));
 
-      await axios.get(`${API_BASE_URL}/actuator/health`, {
+      await userApi.get('/actuator/health', {
         timeout: 10000,
         validateStatus: (statusCode) => statusCode < 500,
       });

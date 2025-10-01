@@ -12,7 +12,7 @@ class AdminApiManager {
   constructor() {
     this.controller = new AbortController();
     this.api = axios.create({
-      baseURL: ENVIRONMENT == 'development' ? 'http://localhost:8080/admin' : 'https://api.kio-school.com/admin',
+      baseURL: ENVIRONMENT == 'development' ? '/api/admin' : 'https://api.kio-school.com/admin',
       withCredentials: true,
       signal: this.controller.signal,
       timeout: 30000,
