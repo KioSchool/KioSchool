@@ -12,7 +12,7 @@ class SuperAdminApiManager {
   constructor() {
     this.controller = new AbortController();
     this.api = axios.create({
-      baseURL: ENVIRONMENT == 'development' ? 'http://localhost:8080/super-admin' : 'https://api.kio-school.com/super-admin',
+      baseURL: ENVIRONMENT == 'development' ? '/api/super-admin' : 'https://api.kio-school.com/super-admin',
       withCredentials: true,
       signal: this.controller.signal,
       timeout: 30000,
