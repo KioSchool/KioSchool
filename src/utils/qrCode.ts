@@ -4,6 +4,7 @@ export const QR_IMAGE_SIZE = 150;
 export const GRID_SPACING = 20;
 export const COLUMNS_COUNT = 4;
 export const LABEL_SIZE = 35;
+export const CANVAS_PADDING = 20;
 
 export interface GridMetrics {
   rowsCount: number;
@@ -22,8 +23,8 @@ export function calculateGridMetrics(itemCount: number): GridMetrics {
   return {
     rowsCount: rows,
     cellStep: step,
-    canvasWidth: COLUMNS_COUNT * QR_IMAGE_SIZE + (COLUMNS_COUNT - 1) * GRID_SPACING,
-    canvasHeight: rows * QR_IMAGE_SIZE + (rows - 1) * GRID_SPACING,
+    canvasWidth: COLUMNS_COUNT * QR_IMAGE_SIZE + (COLUMNS_COUNT - 1) * GRID_SPACING + CANVAS_PADDING * 2,
+    canvasHeight: rows * QR_IMAGE_SIZE + (rows - 1) * GRID_SPACING + CANVAS_PADDING * 2,
   };
 }
 
@@ -58,8 +59,8 @@ export function drawQRTiles(ctx: CanvasRenderingContext2D, qrCanvases: HTMLCanva
   qrCanvases.forEach((qrCanvas, idx) => {
     const col = idx % COLUMNS_COUNT;
     const row = Math.floor(idx / COLUMNS_COUNT);
-    const x = col * metrics.cellStep;
-    const y = row * metrics.cellStep;
+    const x = col * metrics.cellStep + CANVAS_PADDING;
+    const y = row * metrics.cellStep + CANVAS_PADDING;
     drawQR(ctx, qrCanvas, idx + 1, x, y);
   });
 }
