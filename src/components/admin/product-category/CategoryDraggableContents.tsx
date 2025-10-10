@@ -8,6 +8,7 @@ import { rowFlex } from '@styles/flexStyles';
 import { Draggable } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
 import { expandButtonStyle } from '@styles/buttonStyles';
+import { defaultCategoryNotice } from '@resources/data/categoryData';
 
 const CategoryItemContainer = styled.div`
   position: relative;
@@ -79,7 +80,7 @@ function CategoryDraggableContents({ category, index, isDefault }: DraggableProp
             {!isDefault && <DeleteIcon onClick={deleteCategoryHandler} />}
             <CategoryContentsContainer>
               <CategoryName>{category.name}</CategoryName>
-              {isDefault && <DefaultCategoryNotice>기본 메뉴는 상단 고정 메뉴입니다.</DefaultCategoryNotice>}
+              {isDefault && <DefaultCategoryNotice>{defaultCategoryNotice}</DefaultCategoryNotice>}
               {!isDefault && <GripIcon />}
             </CategoryContentsContainer>
           </CategoryItemContainer>
