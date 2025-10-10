@@ -32,6 +32,11 @@ const CategoryName = styled.label`
   width: 50%;
 `;
 
+const DefaultCategoryNotice = styled.label`
+  font-size: 14px;
+  color: #8d8d8d;
+`;
+
 const DeleteIcon = styled(RiDeleteBinFill)`
   position: absolute;
   left: -10px;
@@ -74,7 +79,8 @@ function CategoryDraggableContents({ category, index, isDefault }: DraggableProp
             {!isDefault && <DeleteIcon onClick={deleteCategoryHandler} />}
             <CategoryContentsContainer>
               <CategoryName>{category.name}</CategoryName>
-              <GripIcon />
+              {isDefault && <DefaultCategoryNotice>기본 메뉴는 상단 고정 메뉴입니다.</DefaultCategoryNotice>}
+              {!isDefault && <GripIcon />}
             </CategoryContentsContainer>
           </CategoryItemContainer>
         )}
