@@ -46,9 +46,10 @@ const GripIcon = styled(RiMenuLine)`
 interface DraggableProps {
   category: ProductCategory;
   index: number;
+  isDefault: boolean;
 }
 
-function CategoryDraggableContents({ category, index }: DraggableProps) {
+function CategoryDraggableContents({ category, index, isDefault }: DraggableProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { deleteCategory } = useAdminProducts(workspaceId);
   const { ConfirmModal, confirm } = useConfirm({
@@ -67,10 +68,10 @@ function CategoryDraggableContents({ category, index }: DraggableProps) {
 
   return (
     <>
-      <Draggable key={category.id} draggableId={String(category.id)} index={index}>
+      <Draggable key={category.id} draggableId={String(category.id)} index={index} isDragDisabled={isDefault}>
         {(provided) => (
           <CategoryItemContainer ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className={'draggable-category-container'}>
-            <DeleteIcon onClick={deleteCategoryHandler} />
+            {!isDefault && <DeleteIcon onClick={deleteCategoryHandler} />}
             <CategoryContentsContainer>
               <CategoryName>{category.name}</CategoryName>
               <GripIcon />
