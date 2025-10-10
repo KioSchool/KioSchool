@@ -12,7 +12,7 @@ function CategoryDragAndDropContent() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchCategories } = useAdminProducts(workspaceId);
   const [rawCategories, setRawCategories] = useAtom(adminCategoriesAtom);
-  const categories: ProductCategory[] = [defaultCategory, ...rawCategories];
+  const categories: ProductCategory[] = [defaultCategory, ...rawCategories.map((category) => ({ ...category }))];
 
   useEffect(() => {
     fetchCategories();
