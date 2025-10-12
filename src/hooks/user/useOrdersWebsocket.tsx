@@ -3,11 +3,11 @@ import kioSchoolOrderAlarm from '@resources/audio/kioSchoolOrderAlarm.mp3';
 import { Order, OrderWebsocket } from '@@types/index';
 import { useSetAtom } from 'jotai';
 import { adminOrdersAtom } from '../../jotai/admin/atoms';
-import { useEffect, useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import SockJS from 'sockjs-client/dist/sockjs';
 
 const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT;
-const sockJSUrl = ENVIRONMENT === 'development' ? 'http://localhost:8080/ws' : 'https://api.kio-school.com/ws';
+const sockJSUrl = ENVIRONMENT === 'development' ? 'http://localhost:8080/api/ws' : 'https://api.kio-school.com/ws';
 
 function playOrderCreateAudio() {
   const audio = new Audio(kioSchoolOrderAlarm);
