@@ -120,7 +120,6 @@ function OrderPay() {
       closeDelay: 5000,
       promise: createOrder(workspaceId, tableNo, orderBasket, customerName),
       onSuccess: (res) => {
-        setIsSubmitting(false);
         navigate({
           pathname: '/order-wait',
           search: createSearchParams({
@@ -131,11 +130,8 @@ function OrderPay() {
           }).toString(),
         });
       },
-      onError: (err) => {
-        errorHandler(err);
-        setIsSubmitting(false);
-      },
-    });
+      onError: errorHandler,
+    })?.finally(() => setIsSubmitting(false));
   };
 
   const createOrderAndNavigateToComplete = (customerName: string) => {
@@ -194,11 +190,7 @@ function OrderPay() {
       <OrderButton
         showButton={orderBasket.length > 0}
         disabled={isSubmitting}
-        buttonLabel={
-          isSubmitting
-            ? '주문 처리 중...'
-            : `${totalAmount.toLocaleString()}원 · ${isTossPay ? 'Toss로' : '계좌로'} 결제하기`
-        }
+        buttonLabel={isSubmitting ? '주문 처리 중...' : `${totalAmount.toLocaleString()}원 · ${isTossPay ? 'Toss로' : '계좌로'} 결제하기`}
         onClick={payOrder}
       />
     </Container>
