@@ -18,6 +18,7 @@ const FixedHeightContainer = styled.div`
 `;
 
 const ListWrapper = styled.div`
+  width: 100%;
   overflow-y: auto;
   ${colFlex({ align: 'center' })}
   padding: 0 20px;
@@ -27,7 +28,6 @@ const ListWrapper = styled.div`
 
 const FixedItemWrapper = styled.div`
   ${colFlex({ align: 'center' })}
-  padding-right: 15px;
 `;
 
 function CategoryDragAndDropContent() {
