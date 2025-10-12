@@ -12,7 +12,7 @@ import { useAtomValue } from 'jotai';
 
 const Container = styled.div`
   gap: 15px;
-  padding-top: 100px;
+  padding-top: 20px;
   ${colFlex({ align: 'center' })}
 `;
 
@@ -45,6 +45,7 @@ const StyledInput = styled.input`
 const CategoriesButtonContainer = styled.div`
   width: 100%;
   height: 100px;
+  margin-top: 20px;
   ${colFlex({ align: 'center' })}
 `;
 

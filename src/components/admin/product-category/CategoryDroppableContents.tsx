@@ -5,7 +5,6 @@ import { ProductCategory } from '@@types/index';
 
 const CategoriesContentContainer = styled.div`
   width: 100%;
-  height: 400px;
   overflow: auto;
   ${colFlex({ align: 'center' })}
 `;

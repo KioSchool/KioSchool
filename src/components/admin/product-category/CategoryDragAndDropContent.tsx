@@ -42,7 +42,6 @@ function CategoryDragAndDropContent() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <CategoryItem category={defaultCategory} isDefault={true} />
       <Droppable droppableId="droppable">
         {(provided) => (
           <ListWrapper ref={provided.innerRef} {...provided.droppableProps}>
@@ -51,6 +50,7 @@ function CategoryDragAndDropContent() {
           </ListWrapper>
         )}
       </Droppable>
+      <CategoryItem category={defaultCategory} isDefault={true} />
     </DragDropContext>
   );
 }
