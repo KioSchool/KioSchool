@@ -2,8 +2,6 @@ import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import CategoryDraggableContents from '@components/admin/product-category/CategoryDraggableContents';
 import { ProductCategory } from '@@types/index';
-import { DroppableProvided } from 'react-beautiful-dnd';
-import { defaultCategoryName } from '@resources/data/categoryData';
 
 const CategoriesContentContainer = styled.div`
   width: 100%;
@@ -13,18 +11,16 @@ const CategoriesContentContainer = styled.div`
 `;
 
 interface DroppableProps {
-  provided: DroppableProvided;
   categories: ProductCategory[];
 }
 
-function CategoryDroppableContents({ provided, categories }: DroppableProps) {
+function CategoryDroppableContents({ categories }: DroppableProps) {
   return (
-    <CategoriesContentContainer ref={provided.innerRef} {...provided.droppableProps} className={'droppable-container'}>
+    <CategoriesContentContainer className={'droppable-container'}>
       {categories.map((category, index) => {
-        const isDefault = category.name === defaultCategoryName;
+        const isDefault = category.id === -1;
         return <CategoryDraggableContents key={category.id} category={category} index={index} isDefault={isDefault} />;
       })}
-      {provided.placeholder}
     </CategoriesContentContainer>
   );
 }
