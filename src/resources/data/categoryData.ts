@@ -2,7 +2,7 @@
 
 export const defaultCategoryName = '기본 메뉴';
 
-export const defaultCategoryNotice = '기본 메뉴는 상단 고정 메뉴입니다.';
+export const defaultCategoryNotice = '기본 메뉴는 하단 고정 메뉴입니다.';
 
 export const defaultCategory: ProductCategory = {
   id: -1,
