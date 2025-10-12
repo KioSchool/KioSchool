@@ -74,6 +74,7 @@ function OrderPay() {
   const isTossAvailable = !!tossAccountUrl;
 
   const [isTossPay, setIsTossPay] = useState<boolean>(isTossAvailable);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const customerNameRef = useRef<HTMLInputElement>(null);
 
   const errorHandler = (error: any) => {
@@ -130,7 +131,7 @@ function OrderPay() {
         });
       },
       onError: errorHandler,
-    });
+    })?.finally(() => setIsSubmitting(false));
   };
 
   const createOrderAndNavigateToComplete = (customerName: string) => {
@@ -145,16 +146,23 @@ function OrderPay() {
           }).toString(),
         });
       })
-      .catch(errorHandler);
+      .catch(errorHandler)
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   const payOrder = () => {
+    if (isSubmitting) return;
+
     const customerName = customerNameRef.current?.value;
 
     if (!customerName) {
       alert('입금자명을 입력해주세요.');
       return;
     }
+
+    setIsSubmitting(true);
 
     if (isTossPay) {
       createOrderAndNavigateToToss(customerName);
@@ -181,7 +189,8 @@ function OrderPay() {
       </SubContainer>
       <OrderButton
         showButton={orderBasket.length > 0}
-        buttonLabel={`${totalAmount.toLocaleString()}원 · ${isTossPay ? 'Toss로' : '계좌로'} 결제하기`}
+        disabled={isSubmitting}
+        buttonLabel={isSubmitting ? '주문 처리 중...' : `${totalAmount.toLocaleString()}원 · ${isTossPay ? 'Toss로' : '계좌로'} 결제하기`}
         onClick={payOrder}
       />
     </Container>

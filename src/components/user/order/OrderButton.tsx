@@ -22,15 +22,16 @@ interface OrderButtonProps {
   showButton: boolean;
   buttonLabel: string;
   onClick?: () => void;
+  disabled?: boolean;
 }
 
-function OrderButton({ showButton, buttonLabel, onClick }: OrderButtonProps) {
+function OrderButton({ showButton, buttonLabel, onClick, disabled }: OrderButtonProps) {
   if (!showButton) return null;
 
   return (
     <Container className={'order-button-container'}>
       <OrderButtonSubContainer className={'order-button-sub-container'}>
-        <AppButton size={290} onClick={onClick} style={{ fontWeight: 'bold' }}>
+        <AppButton size={290} onClick={onClick} style={{ fontWeight: 'bold' }} disabled={disabled}>
           {buttonLabel}
         </AppButton>
       </OrderButtonSubContainer>

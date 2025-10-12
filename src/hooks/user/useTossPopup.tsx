@@ -63,7 +63,7 @@ function useTossPopup() {
     const isSafari = isSafariBrowser();
     const popup = isSafari ? createPopup() : null;
 
-    promise
+    return promise
       .then((response) => {
         onSuccess?.(response);
 
