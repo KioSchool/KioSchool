@@ -12,7 +12,7 @@ import { useAtomValue } from 'jotai';
 
 const Container = styled.div`
   gap: 15px;
-  padding-top: 20px;
+  padding-top: 100px;
   ${colFlex({ align: 'center' })}
 `;
 

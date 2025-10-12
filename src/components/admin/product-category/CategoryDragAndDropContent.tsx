@@ -9,10 +9,25 @@ import { useAtom } from 'jotai';
 import { defaultCategory } from '@resources/data/categoryData';
 import CategoryItem from '@components/admin/product-category/CategoryItem';
 import styled from '@emotion/styled';
+import { colFlex } from '@styles/flexStyles';
+
+const FixedHeightContainer = styled.div`
+  ${colFlex({ align: 'center' })}
+  height: 450px;
+  width: 100%;
+`;
 
 const ListWrapper = styled.div`
-  width: 100%;
-  min-height: 50px;
+  overflow-y: auto;
+  ${colFlex({ align: 'center' })}
+  padding: 0 20px;
+  box-sizing: border-box;
+  scrollbar-gutter: stable;
+`;
+
+const FixedItemWrapper = styled.div`
+  ${colFlex({ align: 'center' })}
+  padding-right: 15px;
 `;
 
 function CategoryDragAndDropContent() {
@@ -42,15 +57,20 @@ function CategoryDragAndDropContent() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="droppable">
-        {(provided) => (
-          <ListWrapper ref={provided.innerRef} {...provided.droppableProps}>
-            <CategoryDroppableContents categories={rawCategories} />
-            {provided.placeholder}
-          </ListWrapper>
-        )}
-      </Droppable>
-      <CategoryItem category={defaultCategory} isDefault={true} />
+      <FixedHeightContainer>
+        <Droppable droppableId="droppable">
+          {(provided) => (
+            <ListWrapper ref={provided.innerRef} {...provided.droppableProps}>
+              <CategoryDroppableContents categories={rawCategories} />
+              {provided.placeholder}
+            </ListWrapper>
+          )}
+        </Droppable>
+
+        <FixedItemWrapper>
+          <CategoryItem category={defaultCategory} isDefault={true} />
+        </FixedItemWrapper>
+      </FixedHeightContainer>
     </DragDropContext>
   );
 }
