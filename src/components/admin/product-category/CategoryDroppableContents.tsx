@@ -17,8 +17,7 @@ function CategoryDroppableContents({ categories }: DroppableProps) {
   return (
     <CategoriesContentContainer className={'droppable-container'}>
       {categories.map((category, index) => {
-        const isDefault = category.id === -1;
-        return <CategoryDraggableContents key={category.id} category={category} index={index} isDefault={isDefault} />;
+        return <CategoryDraggableContents key={category.id} category={category} index={index} />;
       })}
     </CategoriesContentContainer>
   );

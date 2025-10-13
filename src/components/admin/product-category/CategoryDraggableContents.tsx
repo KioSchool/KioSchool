@@ -8,10 +8,9 @@ import CategoryItem from '@components/admin/product-category/CategoryItem';
 interface DraggableProps {
   category: ProductCategory;
   index: number;
-  isDefault: boolean;
 }
 
-function CategoryDraggableContents({ category, index, isDefault }: DraggableProps) {
+function CategoryDraggableContents({ category, index }: DraggableProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { deleteCategory } = useAdminProducts(workspaceId);
   const { ConfirmModal, confirm } = useConfirm({
@@ -30,11 +29,11 @@ function CategoryDraggableContents({ category, index, isDefault }: DraggableProp
 
   return (
     <>
-      <Draggable key={category.id} draggableId={String(category.id)} index={index} isDragDisabled={isDefault}>
+      <Draggable key={category.id} draggableId={String(category.id)} index={index}>
         {(provided) => (
           <CategoryItem
             category={category}
-            isDefault={isDefault}
+            isDefault={false}
             deleteHandler={deleteCategoryHandler}
             innerRef={provided.innerRef}
             draggableProps={provided.draggableProps}
