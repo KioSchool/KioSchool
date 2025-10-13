@@ -6,17 +6,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overscroll-behavior-y: contain;
-  /* 익스플로러 스크롤바 옵션 */
-  -ms-overflow-style: none;
- 	/* 파이어폭스 스크롤바 옵션 */
-  scrollbar-width: none;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
-
-::-webkit-scrollbar {
-	display: none;
 }
