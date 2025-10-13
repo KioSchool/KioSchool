@@ -28,7 +28,7 @@ const FixedItemWrapper = styled.div`
 function CategoryDragAndDropContent() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchCategories } = useAdminProducts(workspaceId);
-  const [rawCategories, setRawCategories] = useAtom(adminCategoriesAtom);
+  const [categories, setCategories] = useAtom(adminCategoriesAtom);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -46,19 +46,19 @@ function CategoryDragAndDropContent() {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
 
-    const oldIndex = rawCategories.findIndex((c) => c.id === active.id);
-    const newIndex = rawCategories.findIndex((c) => c.id === over.id);
+    const oldIndex = categories.findIndex((c) => c.id === active.id);
+    const newIndex = categories.findIndex((c) => c.id === over.id);
     if (oldIndex !== newIndex) {
-      const newList = arrayMove(rawCategories, oldIndex, newIndex);
-      setRawCategories(newList);
+      const newList = arrayMove(categories, oldIndex, newIndex);
+      setCategories(newList);
     }
   };
 
   return (
     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-      <SortableContext items={rawCategories.map((c) => c.id)} strategy={verticalListSortingStrategy}>
+      <SortableContext items={categories.map((c) => c.id)} strategy={verticalListSortingStrategy}>
         <ListWrapper>
-          {rawCategories.map((category) => (
+          {categories.map((category) => (
             <CategoryDraggableContents key={category.id} category={category} />
           ))}
         </ListWrapper>
