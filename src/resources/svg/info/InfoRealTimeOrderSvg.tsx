@@ -1,4 +1,3 @@
-
 interface InfoRealTimeOrderSvgProps extends React.SVGProps<SVGSVGElement> {}
 
 function InfoRealTimeOrderSvg(props: InfoRealTimeOrderSvgProps) {

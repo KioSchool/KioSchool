@@ -4,7 +4,7 @@ on:
 
 jobs:
   test:
-    name: Check Prettier
+    name: Check ESLint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -28,8 +28,8 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install
 
-      - name: Check prettier
-        run: yarn prettier --check src/*.{ts,tsx}
+      - name: Check ESLint
+        run: yarn eslint src
 
   check-pr-title:
     name: Check PR title

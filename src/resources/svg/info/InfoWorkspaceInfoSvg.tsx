@@ -1,4 +1,3 @@
-
 interface InfoWorkspaceInfoSvgProps extends React.SVGProps<SVGSVGElement> {}
 
 function InfoWorkspaceInfoSvg(props: InfoWorkspaceInfoSvgProps) {

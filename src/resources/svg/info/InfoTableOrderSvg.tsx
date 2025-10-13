@@ -1,4 +1,3 @@
-
 interface InfoTableOrderSvgProps extends React.SVGProps<SVGSVGElement> {}
 
 function InfoTableOrderSvg(props: InfoTableOrderSvgProps) {
