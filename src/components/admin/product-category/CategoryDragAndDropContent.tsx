@@ -8,11 +8,12 @@ import CategoryItem from '@components/admin/product-category/CategoryItem';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import CategoryDraggableContents from './CategoryDraggableContents';
-import { closestCenter, DndContext, DragEndEvent } from '@dnd-kit/core';
+import { closestCenter, DndContext, DragEndEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 const ListWrapper = styled.div`
   width: 100%;
+  max-height: 360px;
   overflow-y: auto;
   ${colFlex({ align: 'center' })}
   padding: 0 20px;
@@ -29,13 +30,21 @@ function CategoryDragAndDropContent() {
   const { fetchCategories } = useAdminProducts(workspaceId);
   const [rawCategories, setRawCategories] = useAtom(adminCategoriesAtom);
 
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+  );
+
   useEffect(() => {
     fetchCategories();
   }, []);
 
   const onDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    if (!over) return;
+    if (!over || active.id === over.id) return;
 
     const oldIndex = rawCategories.findIndex((c) => c.id === active.id);
     const newIndex = rawCategories.findIndex((c) => c.id === over.id);
@@ -46,7 +55,7 @@ function CategoryDragAndDropContent() {
   };
 
   return (
-    <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
       <SortableContext items={rawCategories.map((c) => c.id)} strategy={verticalListSortingStrategy}>
         <ListWrapper>
           {rawCategories.map((category) => (
