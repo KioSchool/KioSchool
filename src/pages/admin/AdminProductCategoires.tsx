@@ -45,6 +45,7 @@ const StyledInput = styled.input`
 const CategoriesButtonContainer = styled.div`
   width: 100%;
   height: 100px;
+  margin-top: 20px;
   ${colFlex({ align: 'center' })}
 `;
 

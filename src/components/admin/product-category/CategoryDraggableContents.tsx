@@ -1,47 +1,9 @@
 import { ProductCategory } from '@@types/index';
-import styled from '@emotion/styled';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import useConfirm from '@hooks/useConfirm';
-import { Color } from '@resources/colors';
-import { RiMenuLine, RiDeleteBinFill } from '@remixicon/react';
-import { rowFlex } from '@styles/flexStyles';
 import { Draggable } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
-import { expandButtonStyle } from '@styles/buttonStyles';
-
-const CategoryItemContainer = styled.div`
-  position: relative;
-  width: 650px;
-  ${rowFlex({ justify: 'center', align: 'center' })}
-`;
-
-const CategoryContentsContainer = styled.div`
-  box-sizing: border-box;
-  padding: 15px 30px;
-  width: 600px;
-  height: 55px;
-  background-color: ${Color.WHITE};
-  border-radius: 51px;
-  border: 1px solid rgba(201, 201, 201, 0.5);
-  margin: 10px 0;
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
-`;
-
-const CategoryName = styled.label`
-  font-size: 18px;
-  width: 50%;
-`;
-
-const DeleteIcon = styled(RiDeleteBinFill)`
-  position: absolute;
-  left: -10px;
-  color: #b9b9b9;
-  ${expandButtonStyle}
-`;
-
-const GripIcon = styled(RiMenuLine)`
-  color: #b9b9b9;
-`;
+import CategoryItem from '@components/admin/product-category/CategoryItem';
 
 interface DraggableProps {
   category: ProductCategory;
@@ -69,13 +31,14 @@ function CategoryDraggableContents({ category, index }: DraggableProps) {
     <>
       <Draggable key={category.id} draggableId={String(category.id)} index={index}>
         {(provided) => (
-          <CategoryItemContainer ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className={'draggable-category-container'}>
-            <DeleteIcon onClick={deleteCategoryHandler} />
-            <CategoryContentsContainer>
-              <CategoryName>{category.name}</CategoryName>
-              <GripIcon />
-            </CategoryContentsContainer>
-          </CategoryItemContainer>
+          <CategoryItem
+            category={category}
+            isDefault={false}
+            deleteHandler={deleteCategoryHandler}
+            innerRef={provided.innerRef}
+            draggableProps={provided.draggableProps}
+            dragHandleProps={provided.dragHandleProps}
+          />
         )}
       </Draggable>
       <ConfirmModal />
