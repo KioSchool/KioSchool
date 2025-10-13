@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { RiMenuLine, RiDeleteBinFill } from '@remixicon/react';
 import { rowFlex } from '@styles/flexStyles';
-import { DraggableProvidedDraggableProps, DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { defaultCategoryNotice } from '@resources/data/categoryData';
 
@@ -57,18 +56,15 @@ interface CategoryItemProps {
   category: ProductCategory;
   isDefault: boolean;
   deleteHandler?: () => void;
-  innerRef?: (element: HTMLElement | null) => void;
-  draggableProps?: DraggableProvidedDraggableProps;
-  dragHandleProps?: DraggableProvidedDragHandleProps | null;
 }
 
-function CategoryItem({ category, isDefault, deleteHandler, innerRef, draggableProps, dragHandleProps }: CategoryItemProps) {
+function CategoryItem({ category, isDefault, deleteHandler }: CategoryItemProps) {
   return (
-    <CategoryItemContainer ref={innerRef} {...draggableProps}>
+    <CategoryItemContainer>
       {!isDefault && <DeleteIcon onClick={deleteHandler} />}
       <CategoryContentsContainer>
         <CategoryName>{category.name}</CategoryName>
-        <DragHandle {...dragHandleProps}>
+        <DragHandle>
           {isDefault && <DefaultCategoryNotice>{defaultCategoryNotice}</DefaultCategoryNotice>}
           {!isDefault && <GripIcon />}
         </DragHandle>
