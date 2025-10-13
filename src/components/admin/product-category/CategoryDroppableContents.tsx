@@ -3,7 +3,7 @@ import { colFlex } from '@styles/flexStyles';
 import CategoryDraggableContents from './CategoryDraggableContents';
 import { ProductCategory } from '@@types/index';
 import { DroppableProvided } from 'react-beautiful-dnd';
-
+const hi = '';
 const CategoriesContentContainer = styled.div`
   width: 100%;
   height: 400px;
