@@ -1,24 +1,19 @@
 import useAdminProducts from '@hooks/admin/useAdminProducts';
-import { useEffect } from 'react';
-import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { ProductCategory } from '@@types/index';
 import { adminCategoriesAtom } from 'src/jotai/admin/atoms';
 import { useAtom } from 'jotai';
 import { defaultCategory } from '@resources/data/categoryData';
 import CategoryItem from '@components/admin/product-category/CategoryItem';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
-import CategoryDraggableContents from './CategoryDraggableContents';
-
-const FixedHeightContainer = styled.div`
-  ${colFlex({ align: 'center' })}
-  height: 450px;
-  width: 100%;
-`;
+import CategoryDraggableContents from '@components/admin/product-category/CategoryDraggableContents';
+import { closestCenter, DndContext, DragEndEvent, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 const ListWrapper = styled.div`
   width: 100%;
+  max-height: 360px;
   overflow-y: auto;
   ${colFlex({ align: 'center' })}
   padding: 0 20px;
@@ -33,47 +28,55 @@ const FixedItemWrapper = styled.div`
 function CategoryDragAndDropContent() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchCategories } = useAdminProducts(workspaceId);
-  const [rawCategories, setRawCategories] = useAtom(adminCategoriesAtom);
+  const [categories, setCategories] = useAtom(adminCategoriesAtom);
+  const [activeId, setActiveId] = useState(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 2,
+      },
+    }),
+  );
 
   useEffect(() => {
     fetchCategories();
   }, []);
 
-  const reorder = (list: ProductCategory[], startIndex: number, endIndex: number) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-
-    result.splice(endIndex, 0, removed);
-
-    return result;
+  const onDragStart = (event: any) => {
+    setActiveId(event.active.id);
   };
 
-  const onDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
-    const changedCategories = reorder(rawCategories, result.source.index, result.destination.index);
+  const onDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    setActiveId(null);
 
-    setRawCategories(changedCategories);
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = categories.findIndex((c) => c.id === active.id);
+    const newIndex = categories.findIndex((c) => c.id === over.id);
+    if (oldIndex !== newIndex) {
+      const newList = arrayMove(categories, oldIndex, newIndex);
+      setCategories(newList);
+    }
   };
+
+  const activeCategory = categories.find((c) => c.id === activeId);
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <FixedHeightContainer>
-        <Droppable droppableId="droppable">
-          {(provided) => (
-            <ListWrapper ref={provided.innerRef} {...provided.droppableProps}>
-              {rawCategories.map((category, index) => (
-                <CategoryDraggableContents key={category.id} category={category} index={index} />
-              ))}
-              {provided.placeholder}
-            </ListWrapper>
-          )}
-        </Droppable>
-
-        <FixedItemWrapper>
-          <CategoryItem category={defaultCategory} isDefault={true} />
-        </FixedItemWrapper>
-      </FixedHeightContainer>
-    </DragDropContext>
+    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={onDragStart} onDragEnd={onDragEnd}>
+      <SortableContext items={categories.map((c) => c.id)} strategy={verticalListSortingStrategy}>
+        <ListWrapper>
+          {categories.map((category) => (
+            <CategoryDraggableContents key={category.id} category={category} />
+          ))}
+        </ListWrapper>
+      </SortableContext>
+      <FixedItemWrapper>
+        <CategoryItem category={defaultCategory} isDefault={true} />
+      </FixedItemWrapper>
+      <DragOverlay>{activeCategory ? <CategoryItem category={activeCategory} isDefault={false} /> : null}</DragOverlay>
+    </DndContext>
   );
 }
 
