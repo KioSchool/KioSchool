@@ -12,6 +12,7 @@ const DraggableContainer = styled.div<{ transform?: string; transition?: string;
   transition: ${({ transition }) => transition};
   z-index: ${({ isDragging }) => (isDragging ? 999 : 'auto')};
   visibility: ${({ isDragging }) => (isDragging ? 'hidden' : 'visible')};
+  touch-action: none;
 `;
 
 interface DraggableProps {

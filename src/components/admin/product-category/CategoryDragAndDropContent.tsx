@@ -7,7 +7,7 @@ import { defaultCategory } from '@resources/data/categoryData';
 import CategoryItem from '@components/admin/product-category/CategoryItem';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
-import CategoryDraggableContents from './CategoryDraggableContents';
+import CategoryDraggableContents from '@components/admin/product-category/CategoryDraggableContents';
 import { closestCenter, DndContext, DragEndEvent, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
@@ -34,7 +34,7 @@ function CategoryDragAndDropContent() {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 8,
+        distance: 2,
       },
     }),
   );
