@@ -8,9 +8,10 @@ import { CSS } from '@dnd-kit/utilities';
 import styled from '@emotion/styled';
 
 const DraggableContainer = styled.div<{ transform?: string; transition?: string; isDragging?: boolean }>`
-  transform: ${({ transform }) => transform ?? 'none'};
-  transition: ${({ transition }) => transition ?? 'transform 0.2s ease'};
+  transform: ${({ transform }) => transform};
+  transition: ${({ transition }) => transition};
   z-index: ${({ isDragging }) => (isDragging ? 999 : 'auto')};
+  visibility: ${({ isDragging }) => (isDragging ? 'hidden' : 'visible')};
 `;
 
 interface DraggableProps {
