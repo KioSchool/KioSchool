@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useAdminTable from '@hooks/admin/useAdminTable';
 import { dateConverter } from '@utils/FormatDate';
 
@@ -82,7 +82,7 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
   };
 
   const handleDecreaseTime = () => {
-    if (!currentExpectedEndAt || !orderSessionId) {
+    if (!orderSessionId) {
       alert('세션 ID가 없습니다. 세션을 시작해주세요.');
       return;
     }
@@ -101,7 +101,7 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
   };
 
   const handleIncreaseTime = () => {
-    if (!currentExpectedEndAt || !orderSessionId) {
+    if (!orderSessionId) {
       alert('세션 ID가 없습니다. 세션을 시작해주세요.');
       return;
     }
