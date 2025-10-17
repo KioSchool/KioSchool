@@ -1,11 +1,13 @@
 import styled from '@emotion/styled';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
+import { useState } from 'react';
 import kioLogo from '@resources/image/kioLogo.png';
 import AuthenticationButton from '@components/user/AuthenticationButton';
 import { navBarLabelStyle } from '@styles/navBarStyles';
 import { rowFlex } from '@styles/flexStyles';
 import { RiMenuFill } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
+import SideNav from './SideNav';
 
 const NavContainer = styled.div<{ useBackground: boolean }>`
   z-index: 1005;
@@ -63,37 +65,52 @@ interface NavBarProps {
 
 function NavBar({ useBackground = false }: NavBarProps) {
   const location = useLocation();
+  const { workspaceId } = useParams<{ workspaceId: string }>();
+  const [isSideNavOpen, setIsSideNavOpen] = useState(false);
+
   const isShowHamburger = location.pathname.startsWith('/admin/workspace/');
 
-  return (
-    <NavContainer useBackground={useBackground} className={'nav-container'}>
-      <NavContent className={'nav-content'}>
-        <LeftSection>
-          {isShowHamburger && <HamburgerButton className={'hamburger-button'} />}
-          <LogoLink to={'/'}>
-            <LogoImage src={kioLogo} alt="키오스쿨" />
-          </LogoLink>
-        </LeftSection>
+  const handleHamburgerClick = () => {
+    setIsSideNavOpen((prev) => !prev);
+  };
 
-        <NavLinkContainer className={'nav-link-container'}>
-          <NavLinkItem to={'/info'} className={'nav-link-item'}>
-            키오스쿨 소개
-          </NavLinkItem>
-          <NavUrl
-            href="https://ji-in.notion.site/FAQ-09eb07eac4a34ab4aa883727994e0b08?pvs=4"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={'nav-link-item'}
-          >
-            FAQ
-          </NavUrl>
-          <AuthenticationButton />
-          <NavLinkItem to={'/admin/my-info'} className={'nav-link-item'}>
-            마이페이지
-          </NavLinkItem>
-        </NavLinkContainer>
-      </NavContent>
-    </NavContainer>
+  const handleCloseSideNav = () => {
+    setIsSideNavOpen(false);
+  };
+
+  return (
+    <>
+      <NavContainer useBackground={useBackground} className={'nav-container'}>
+        <NavContent className={'nav-content'}>
+          <LeftSection>
+            {isShowHamburger && <HamburgerButton className={'hamburger-button'} onClick={handleHamburgerClick} />}
+            <LogoLink to={'/'}>
+              <LogoImage src={kioLogo} alt="키오스쿨" />
+            </LogoLink>
+          </LeftSection>
+
+          <NavLinkContainer className={'nav-link-container'}>
+            <NavLinkItem to={'/info'} className={'nav-link-item'}>
+              키오스쿨 소개
+            </NavLinkItem>
+            <NavUrl
+              href="https://ji-in.notion.site/FAQ-09eb07eac4a34ab4aa883727994e0b08?pvs=4"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={'nav-link-item'}
+            >
+              FAQ
+            </NavUrl>
+            <AuthenticationButton />
+            <NavLinkItem to={'/admin/my-info'} className={'nav-link-item'}>
+              마이페이지
+            </NavLinkItem>
+          </NavLinkContainer>
+        </NavContent>
+      </NavContainer>
+
+      {isShowHamburger && workspaceId && <SideNav isOpen={isSideNavOpen} onClose={handleCloseSideNav} workspaceId={workspaceId} />}
+    </>
   );
 }
 
