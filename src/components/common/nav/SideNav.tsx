@@ -4,7 +4,6 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { adminNavData } from '@resources/data/adminNavData';
 import { RiSubtractLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
-import { useCallback } from 'react';
 
 const Overlay = styled.div<{ isOpen: boolean }>`
   position: fixed;
@@ -84,15 +83,15 @@ function SideNav({ isOpen, onClose }: SideNavProps) {
 
   const URL_PREFIX = `/admin/workspace/${workspaceId}`;
 
-  const isActiveLink = useCallback(
-    (path: string): boolean => {
-      const currentPath = location.pathname.replace(`/admin/workspace/${workspaceId}`, '');
-      const itemPathname = path.split('?')[0];
+  const isActiveLink = (path: string): boolean => {
+    const currentPath = location.pathname.replace(`/admin/workspace/${workspaceId}`, '');
+    return currentPath === path;
+  };
 
-      return currentPath === itemPathname;
-    },
-    [location.pathname, workspaceId],
-  );
+  const buildNavPath = (path: string, defaultQuery?: string): string => {
+    const fullPath = `${URL_PREFIX}${path}`;
+    return defaultQuery ? `${fullPath}?${defaultQuery}` : fullPath;
+  };
 
   return (
     <>
@@ -103,7 +102,7 @@ function SideNav({ isOpen, onClose }: SideNavProps) {
             <NavCategory key={categoryData.category}>
               <CategoryTitle>{categoryData.category}</CategoryTitle>
               {categoryData.items.map((item) => (
-                <SideNavLink key={item.path} to={`${URL_PREFIX}${item.path}`} isActive={isActiveLink(item.path)}>
+                <SideNavLink key={item.path} to={buildNavPath(item.path, item.defaultQuery)} isActive={isActiveLink(item.path)}>
                   <ItemPreIcon />
                   {item.name}
                 </SideNavLink>
