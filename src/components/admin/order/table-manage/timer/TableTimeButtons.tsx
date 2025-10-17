@@ -65,7 +65,7 @@ function TableTimeButtons({ handleDecreaseTime, handleIncreaseTime, handleEndSes
       </TopRow>
       <BottomRow>
         {orderSessionId ? (
-          <Button isFullWidth disabled={disabled} onClick={handleEndSession}>
+          <Button isFullWidth onClick={handleEndSession}>
             사용종료
           </Button>
         ) : (

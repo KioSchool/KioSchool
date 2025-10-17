@@ -64,8 +64,9 @@ function TableSessionControler({ tables, workspaceId, orderSessionId, currentExp
 
   const workspace = useAtomValue(adminWorkspaceAtom);
   const nowTable = tables.find((table) => table.tableNumber === tableNumber);
-  const isDisabledSession = !nowTable?.orderSession;
-  const defaultSessionTimeLimit = String(workspace?.workspaceSetting?.orderSessionTimeLimitMinutes);
+  const setting = workspace?.workspaceSetting;
+  const defaultSessionTimeLimit = String(setting.orderSessionTimeLimitMinutes);
+  const isDisabledSession = !nowTable?.orderSession || !setting.useOrderSessionTimeLimit;
 
   return (
     <Container>
