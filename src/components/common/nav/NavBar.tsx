@@ -4,6 +4,8 @@ import kioLogo from '@resources/image/kioLogo.png';
 import AuthenticationButton from '@components/user/AuthenticationButton';
 import { navBarLabelStyle } from '@styles/navBarStyles';
 import { rowFlex } from '@styles/flexStyles';
+import { RiMenuFill } from '@remixicon/react';
+import { expandButtonStyle } from '@styles/buttonStyles';
 
 const NavContainer = styled.div<{ useBackground: boolean }>`
   z-index: 1005;
@@ -20,6 +22,25 @@ const NavContent = styled.div`
   width: 100%;
   padding: 20px 40px;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
+`;
+
+const LeftSection = styled.div`
+  gap: 38px;
+  margin-right: auto;
+  ${rowFlex({ justify: 'center', align: 'center' })}
+`;
+
+const LogoLink = styled(Link)`
+  ${rowFlex({ justify: 'center', align: 'center' })}
+`;
+
+const LogoImage = styled.img`
+  width: 43px;
+  height: 21px;
+`;
+
+const HamburgerButton = styled(RiMenuFill)`
+  ${expandButtonStyle}
 `;
 
 const NavLinkContainer = styled.div`
@@ -44,9 +65,12 @@ function NavBar({ useBackground = false }: NavBarProps) {
   return (
     <NavContainer useBackground={useBackground} className={'nav-container'}>
       <NavContent className={'nav-content'}>
-        <Link to={'/'}>
-          <img src={kioLogo} width={'43px'} height={'21px'} alt="Kio Logo" />
-        </Link>
+        <LeftSection>
+          <HamburgerButton className={'hamburger-button'} />
+          <LogoLink to={'/'}>
+            <LogoImage src={kioLogo} alt="키오스쿨" />
+          </LogoLink>
+        </LeftSection>
 
         <NavLinkContainer className={'nav-link-container'}>
           <NavLinkItem to={'/info'} className={'nav-link-item'}>
