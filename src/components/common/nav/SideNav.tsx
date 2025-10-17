@@ -26,8 +26,7 @@ const SideNavContainer = styled.nav<{ isOpen: boolean }>`
   z-index: 1011;
   transform: translateX(${(props) => (props.isOpen ? '0' : '-100%')});
   transition: transform 0.3s ease;
-  border-right: 1px solid var(--blueGrey3, #e8eef2);
-  overflow-y: auto;
+  border-right: 1px solid #e8eef2;
   ${colFlex({ justify: 'flex-start', align: 'stretch' })}
 `;
 
@@ -43,7 +42,7 @@ const NavCategory = styled.div`
 `;
 
 const CategoryTitle = styled.h2`
-  margin: 10px;
+  margin: 10px 0;
   color: #464a4d;
   font-family: 'LINE Seed Sans KR';
   font-size: 18px;
@@ -64,7 +63,6 @@ const SideNavLink = styled(Link)<{ isActive: boolean }>`
   font-style: normal;
   font-weight: ${(props) => (props.isActive ? 700 : 400)};
   cursor: pointer;
-
   ${rowFlex({ justify: 'flex-start', align: 'center' })}
 
   &:hover {
@@ -89,10 +87,9 @@ function SideNav({ isOpen, onClose, workspaceId }: SideNavProps) {
 
   const isActiveLink = (itemPath: string): boolean => {
     const currentPathWithoutWorkspace = location.pathname.replace(`/admin/workspace/${workspaceId}`, '');
-    const currentPathname = currentPathWithoutWorkspace.split('?')[0];
     const itemPathname = itemPath.split('?')[0];
 
-    return currentPathname === itemPathname;
+    return currentPathWithoutWorkspace === itemPathname;
   };
 
   return (
