@@ -63,9 +63,6 @@ function AdminOrderTable() {
     fetchWorkspaceTables(workspaceId)
       .then((response) => {
         setTables(response.data);
-        if (!tableNo && response.data.length > 0) {
-          navigate(`/admin/workspace/${workspaceId}/order/table?tableNo=${response.data[0].tableNumber}`, { replace: true });
-        }
       })
       .catch((error) => {
         console.error('테이블 데이터를 조회하는데 문제가 발생했습니다:', error);
@@ -74,7 +71,7 @@ function AdminOrderTable() {
 
   useEffect(() => {
     fetchTables();
-  }, [tableNo]);
+  }, []);
 
   return (
     <AppContainer

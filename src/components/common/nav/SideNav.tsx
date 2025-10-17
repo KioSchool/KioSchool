@@ -73,8 +73,6 @@ const SideNavLink = styled(Link, {
   }
 `;
 
-const URL_PREFIX = '/admin/workspace/';
-
 interface SideNavProps {
   isOpen: boolean;
   onClose: () => void;
@@ -84,10 +82,14 @@ function SideNav({ isOpen, onClose }: SideNavProps) {
   const location = useLocation();
   const { workspaceId } = useParams<{ workspaceId: string }>();
 
+  const URL_PREFIX = `/admin/workspace/${workspaceId}`;
+
   const isActiveLink = useCallback(
-    (itemPath: string): boolean => {
+    (path: string): boolean => {
       const currentPath = location.pathname.replace(`/admin/workspace/${workspaceId}`, '');
-      return currentPath === itemPath;
+      const itemPathname = path.split('?')[0];
+
+      return currentPath === itemPathname;
     },
     [location.pathname, workspaceId],
   );
@@ -101,7 +103,7 @@ function SideNav({ isOpen, onClose }: SideNavProps) {
             <NavCategory key={categoryData.category}>
               <CategoryTitle>{categoryData.category}</CategoryTitle>
               {categoryData.items.map((item) => (
-                <SideNavLink key={item.path} to={`${URL_PREFIX}${workspaceId}${item.path}`} isActive={isActiveLink(item.path)}>
+                <SideNavLink key={item.path} to={`${URL_PREFIX}${item.path}`} isActive={isActiveLink(item.path)}>
                   <ItemPreIcon />
                   {item.name}
                 </SideNavLink>
