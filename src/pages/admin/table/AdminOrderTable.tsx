@@ -57,7 +57,7 @@ function AdminOrderTable() {
 
   const [tables, setTables] = useState<Table[]>([]);
 
-  const selectedTable = tables.find((t) => t.tableNumber === Number(tableNo)) || tables[0];
+  const selectedTable = tables.find((t) => t.tableNumber === Number(tableNo));
 
   const fetchTables = () => {
     fetchWorkspaceTables(workspaceId)
@@ -72,6 +72,12 @@ function AdminOrderTable() {
   useEffect(() => {
     fetchTables();
   }, []);
+
+  useEffect(() => {
+    if (!tableNo && tables.length > 0) {
+      navigate(`/admin/workspace/${workspaceId}/order/table?tableNo=${tables[0].tableNumber}`, { replace: true });
+    }
+  }, [tableNo, tables, workspaceId, navigate]);
 
   return (
     <AppContainer
