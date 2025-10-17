@@ -55,7 +55,9 @@ const ItemPreIcon = styled(RiSubtractLine)`
   margin-right: 8px;
 `;
 
-const SideNavLink = styled(Link)<{ isActive: boolean }>`
+const SideNavLink = styled(Link, {
+  shouldForwardProp: (prop) => prop !== 'isActive',
+})<{ isActive: boolean }>`
   text-decoration: none;
   color: #464a4d;
   font-family: 'LINE Seed Sans KR';
