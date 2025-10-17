@@ -2,7 +2,7 @@ import { Color } from '@resources/colors';
 
 export const navBarLabelStyle = `
   text-align: center;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 400;
   text-decoration: none;
   color: ${Color.GREY};
