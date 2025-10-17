@@ -92,7 +92,7 @@ function SideNav({ isOpen, onClose }: SideNavProps) {
     const fullPath = `${URL_PREFIX}${path}`;
     if (!defaultQuery) return fullPath;
 
-    const queryString = new URLSearchParams(Object.entries(defaultQuery).map(([key, value]) => [key, value])).toString();
+    const queryString = new URLSearchParams(defaultQuery).toString();
 
     return `${fullPath}?${queryString}`;
   };
