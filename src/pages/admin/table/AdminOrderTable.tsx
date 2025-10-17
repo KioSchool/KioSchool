@@ -74,7 +74,7 @@ function AdminOrderTable() {
 
   useEffect(() => {
     fetchTables();
-  }, []);
+  }, [tableNo]);
 
   return (
     <AppContainer
