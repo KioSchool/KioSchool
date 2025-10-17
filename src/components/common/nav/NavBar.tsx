@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
-import { Link, useLocation, useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import kioLogo from '@resources/image/kioLogo.png';
 import AuthenticationButton from '@components/user/AuthenticationButton';
 import { navBarLabelStyle } from '@styles/navBarStyles';
@@ -8,6 +7,8 @@ import { rowFlex } from '@styles/flexStyles';
 import { RiMenuFill } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import SideNav from './SideNav';
+import { useAtom } from 'jotai';
+import { adminSideNavIsOpenAtom } from 'src/jotai/admin/atoms';
 
 const NavContainer = styled.div<{ useBackground: boolean }>`
   z-index: 1005;
@@ -59,14 +60,15 @@ const NavUrl = styled.a`
   ${navBarLabelStyle}
 `;
 
+const NOTION_FAQ_URL = 'https://ji-in.notion.site/FAQ-09eb07eac4a34ab4aa883727994e0b08?pvs=4';
+
 interface NavBarProps {
   useBackground?: boolean;
 }
 
 function NavBar({ useBackground = false }: NavBarProps) {
   const location = useLocation();
-  const { workspaceId } = useParams<{ workspaceId: string }>();
-  const [isSideNavOpen, setIsSideNavOpen] = useState(false);
+  const [isSideNavOpen, setIsSideNavOpen] = useAtom(adminSideNavIsOpenAtom);
 
   const isShowHamburger = location.pathname.startsWith('/admin/workspace/');
 
@@ -93,12 +95,7 @@ function NavBar({ useBackground = false }: NavBarProps) {
             <NavLinkItem to={'/info'} className={'nav-link-item'}>
               키오스쿨 소개
             </NavLinkItem>
-            <NavUrl
-              href="https://ji-in.notion.site/FAQ-09eb07eac4a34ab4aa883727994e0b08?pvs=4"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={'nav-link-item'}
-            >
+            <NavUrl href={NOTION_FAQ_URL} target="_blank" rel="noopener noreferrer" className={'nav-link-item'}>
               FAQ
             </NavUrl>
             <AuthenticationButton />
@@ -109,7 +106,7 @@ function NavBar({ useBackground = false }: NavBarProps) {
         </NavContent>
       </NavContainer>
 
-      {isShowHamburger && workspaceId && <SideNav isOpen={isSideNavOpen} onClose={handleCloseSideNav} workspaceId={workspaceId} />}
+      {isShowHamburger && <SideNav isOpen={isSideNavOpen} onClose={handleCloseSideNav} />}
     </>
   );
 }

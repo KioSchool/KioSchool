@@ -51,3 +51,5 @@ export const adminUserTossAccountAtom = atom((get) => {
 
   return { tossBankName, tossAccountNumber };
 });
+
+export const adminSideNavIsOpenAtom = atom(false);
