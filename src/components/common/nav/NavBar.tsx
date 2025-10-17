@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import kioLogo from '@resources/image/kioLogo.png';
 import AuthenticationButton from '@components/user/AuthenticationButton';
 import { navBarLabelStyle } from '@styles/navBarStyles';
@@ -62,11 +62,14 @@ interface NavBarProps {
 }
 
 function NavBar({ useBackground = false }: NavBarProps) {
+  const location = useLocation();
+  const isShowHamburger = location.pathname.startsWith('/admin/workspace/');
+
   return (
     <NavContainer useBackground={useBackground} className={'nav-container'}>
       <NavContent className={'nav-content'}>
         <LeftSection>
-          <HamburgerButton className={'hamburger-button'} />
+          {isShowHamburger && <HamburgerButton className={'hamburger-button'} />}
           <LogoLink to={'/'}>
             <LogoImage src={kioLogo} alt="키오스쿨" />
           </LogoLink>
