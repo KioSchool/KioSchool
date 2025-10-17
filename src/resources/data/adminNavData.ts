@@ -1,7 +1,7 @@
 export interface AdminNavItem {
   name: string;
   path: string;
-  defaultQuery?: string;
+  defaultQuery?: Record<string, string>;
 }
 
 export interface AdminNavCategory {
@@ -20,7 +20,7 @@ export const adminNavData: AdminNavCategory[] = [
       {
         name: '실시간 테이블 관리',
         path: '/order/table',
-        defaultQuery: 'tableNo=1',
+        defaultQuery: { tableNo: '1', hi: 'there' },
       },
     ],
   },
