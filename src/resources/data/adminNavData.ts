@@ -13,7 +13,7 @@ export const adminNavData: AdminNavItem[] = [
   {
     category: '주문',
     name: '실시간 테이블 관리',
-    path: '/order/table?tableNo=1',
+    path: '/order/table',
   },
   {
     category: '상품',
