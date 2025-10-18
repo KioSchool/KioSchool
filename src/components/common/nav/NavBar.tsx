@@ -16,15 +16,11 @@ const NavContainer = styled.div<{ useBackground: boolean }>`
   flex-wrap: wrap;
   top: 0;
   position: fixed;
+  padding: 20px 40px;
+  box-sizing: border-box;
   background: ${(props) => (props.useBackground ? 'rgba(255, 255, 255, 0.95)' : 'transparent')};
   border-bottom: 1px solid #e8eef2;
   ${rowFlex({ justify: 'center' })}
-`;
-
-const NavContent = styled.div`
-  width: 100%;
-  padding: 20px 40px;
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const LeftSection = styled.div`
@@ -83,27 +79,25 @@ function NavBar({ useBackground = false }: NavBarProps) {
   return (
     <>
       <NavContainer useBackground={useBackground} className={'nav-container'}>
-        <NavContent className={'nav-content'}>
-          <LeftSection>
-            {isShowHamburger && <HamburgerButton className={'hamburger-button'} onClick={handleHamburgerClick} />}
-            <LogoLink to={'/'}>
-              <LogoImage src={kioLogo} alt="키오스쿨" />
-            </LogoLink>
-          </LeftSection>
+        <LeftSection>
+          {isShowHamburger && <HamburgerButton className={'hamburger-button'} onClick={handleHamburgerClick} />}
+          <LogoLink to={'/'}>
+            <LogoImage src={kioLogo} alt="키오스쿨" />
+          </LogoLink>
+        </LeftSection>
 
-          <NavLinkContainer className={'nav-link-container'}>
-            <NavLinkItem to={'/info'} className={'nav-link-item'}>
-              키오스쿨 소개
-            </NavLinkItem>
-            <NavUrl href={NOTION_FAQ_URL} target="_blank" rel="noopener noreferrer" className={'nav-link-item'}>
-              FAQ
-            </NavUrl>
-            <AuthenticationButton />
-            <NavLinkItem to={'/admin/my-info'} className={'nav-link-item'}>
-              마이페이지
-            </NavLinkItem>
-          </NavLinkContainer>
-        </NavContent>
+        <NavLinkContainer className={'nav-link-container'}>
+          <NavLinkItem to={'/info'} className={'nav-link-item'}>
+            키오스쿨 소개
+          </NavLinkItem>
+          <NavUrl href={NOTION_FAQ_URL} target="_blank" rel="noopener noreferrer" className={'nav-link-item'}>
+            FAQ
+          </NavUrl>
+          <AuthenticationButton />
+          <NavLinkItem to={'/admin/my-info'} className={'nav-link-item'}>
+            마이페이지
+          </NavLinkItem>
+        </NavLinkContainer>
       </NavContainer>
 
       {isShowHamburger && <SideNav isOpen={isSideNavOpen} onClose={handleCloseSideNav} />}

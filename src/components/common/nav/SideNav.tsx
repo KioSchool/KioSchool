@@ -23,16 +23,13 @@ const SideNavContainer = styled.nav<{ isOpen: boolean }>`
   height: calc(100vh - 65px);
   width: 280px;
   background: white;
+  box-sizing: border-box;
+  padding: 20px 10px 0 40px;
+  gap: 24px;
   z-index: 1011;
   transform: translateX(${(props) => (props.isOpen ? '0' : '-100%')});
   transition: transform 0.3s ease;
   border-right: 1px solid #e8eef2;
-  ${colFlex()}
-`;
-
-const SideNavContent = styled.div`
-  padding: 20px 10px 0 40px;
-  gap: 24px;
   ${colFlex()}
 `;
 
@@ -101,19 +98,17 @@ function SideNav({ isOpen, onClose }: SideNavProps) {
     <>
       <Overlay isOpen={isOpen} onClick={onClose} />
       <SideNavContainer isOpen={isOpen}>
-        <SideNavContent>
-          {adminNavData.map((categoryData) => (
-            <NavCategory key={categoryData.category}>
-              <CategoryTitle>{categoryData.category}</CategoryTitle>
-              {categoryData.items.map((item) => (
-                <SideNavLink key={item.path} to={buildNavPath(item.path, item.defaultQuery)} isActive={isActiveLink(item.path)}>
-                  <ItemPreIcon />
-                  {item.name}
-                </SideNavLink>
-              ))}
-            </NavCategory>
-          ))}
-        </SideNavContent>
+        {adminNavData.map((categoryData) => (
+          <NavCategory key={categoryData.category}>
+            <CategoryTitle>{categoryData.category}</CategoryTitle>
+            {categoryData.items.map((item) => (
+              <SideNavLink key={item.path} to={buildNavPath(item.path, item.defaultQuery)} isActive={isActiveLink(item.path)}>
+                <ItemPreIcon />
+                {item.name}
+              </SideNavLink>
+            ))}
+          </NavCategory>
+        ))}
       </SideNavContainer>
     </>
   );
