@@ -57,7 +57,7 @@ function AdminOrderTable() {
 
   const [tables, setTables] = useState<Table[]>([]);
 
-  const selectedTable = tables.find((t) => t.tableNumber === Number(tableNo)) || tables[0];
+  const selectedTable = tables.find((t) => t.tableNumber === Number(tableNo));
 
   const fetchTables = () => {
     fetchWorkspaceTables(workspaceId)

@@ -1,30 +1,18 @@
 import useAuthentication from '@hooks/useAuthentication';
 import { NavLinkItem } from '@components/common/nav/NavBar';
-import styled from '@emotion/styled';
-import { useNavigate } from 'react-router-dom';
-import { navBarLabelStyle } from '@styles/navBarStyles';
-
-const LogoutText = styled.p`
-  margin: 0;
-  ${navBarLabelStyle}
-`;
+import { useAtomValue } from 'jotai';
+import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
 
 function AuthenticationButton() {
-  const { logout, isLoggedIn } = useAuthentication();
-  const navigate = useNavigate();
+  const { isLoggedIn } = useAuthentication();
+  const workspace = useAtomValue(adminWorkspaceAtom);
 
   return (
     <>
       {isLoggedIn() ? (
-        <LogoutText
-          onClick={async () => {
-            await logout();
-            navigate('/');
-          }}
-          className={'nav-link-item'}
-        >
-          로그아웃
-        </LogoutText>
+        <NavLinkItem to={`/admin/workspace/${workspace.id}`} className={'nav-link-item'}>
+          내 주점
+        </NavLinkItem>
       ) : (
         <>
           <NavLinkItem to={'/login'} className={'nav-link-item'}>
