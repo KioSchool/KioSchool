@@ -1,111 +1,42 @@
 import styled from '@emotion/styled';
-import MyInfoItemContent from './MyInfoItemContent';
-import { useNavigate } from 'react-router-dom';
-import DeleteUserSvg from '@resources/svg/DeleteUserSvg';
-import useConfirm from '@hooks/useConfirm';
-import useAdminUser from '@hooks/admin/useAdminUser';
 import AppFooter from '@components/common/footer/AppFooter';
-import { rowFlex } from '@styles/flexStyles';
-import { UserRole } from '@@types/index';
-import { RiSettings3Fill, RiBankCardFill } from '@remixicon/react';
-import { Color } from '@resources/colors';
-import { adminUserAtom } from 'src/jotai/admin/atoms';
-import { useAtomValue } from 'jotai';
+import { rowFlex, colFlex } from '@styles/flexStyles';
+import { User, UserRole } from '@@types/index';
+import { myInfoCardsData } from '@resources/data/myInfoData';
+import { useMyInfoActions } from '@hooks/admin/useMyInfoActions';
+import MyInfoCard from './MyInfoCard';
 
-const MyInfoContainer = styled.div`
-  width: 1100px;
-  height: 300px;
-  gap: 10px;
-  flex-shrink: 0;
-  border-radius: 20px;
-  box-shadow: 0 4px 16.8px 0 rgba(0, 0, 0, 0.25);
+const Container = styled.div`
+  gap: 40px;
+  ${colFlex({ justify: 'center', align: 'center' })}
+`;
+
+const CardsContainer = styled.div`
+  width: 100%;
+  gap: 20px;
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
-const MyInfoSubContainer = styled.div`
-  width: 100%;
-  height: 220px;
-  ${rowFlex({ justify: 'space-evenly', align: 'center' })}
-`;
+interface MyInfoContentProps {
+  user: User;
+}
 
-const VerticalLine = styled.div`
-  width: 1px;
-  height: 215px;
-  background: #ccc;
-`;
+function MyInfoContent({ user }: MyInfoContentProps) {
+  const { handleCardAction, DeleteUserConfirmModal, LogoutConfirmModal } = useMyInfoActions();
 
-const CommonButtonStyle = `
-  cursor: pointer;
-  position: absolute;
-  width: 70px;
-  height: 70px;
-  right: 44px;
-  left: 44px;
-  top: 12px;
-  transition: transform 0.1s ease;
-
-  &:hover {
-    transform: scale(1.1);
-  }
-`;
-
-const SuperAdminButton = styled(RiSettings3Fill)`
-  color: ${Color.KIO_ORANGE};
-  ${CommonButtonStyle};
-`;
-
-const AccountButton = styled(RiBankCardFill)`
-  color: ${Color.KIO_ORANGE};
-  ${CommonButtonStyle};
-`;
-
-const DeleteUserButton = styled(DeleteUserSvg)`
-  ${CommonButtonStyle};
-`;
-
-function MyInfoContent() {
-  const navigate = useNavigate();
-  const { deleteUser } = useAdminUser();
-  const user = useAtomValue(adminUserAtom);
-
-  const { ConfirmModal: DeleteUserConfirmModal, confirm: deleteUserConfirm } = useConfirm({
-    title: '계정을 탈퇴하시겠습니까?',
-    description: '확인 후 되돌릴 수 없습니다.',
-    okText: '확인',
-    cancelText: '취소',
-  });
-
-  const deleteUserHandler = async () => {
-    const userInput = await deleteUserConfirm();
-    if (userInput) deleteUser();
-  };
+  const visibleCards = myInfoCardsData.filter((card) => !card.requiresSuperAdmin || user.role === UserRole.SUPER_ADMIN);
 
   return (
-    <MyInfoContainer className={'my-info-container'}>
-      <MyInfoSubContainer className={'my-info-sub-container'}>
-        {user.role === UserRole.SUPER_ADMIN && (
-          <>
-            <MyInfoItemContent label="SUPER ADMIN">
-              <SuperAdminButton onClick={() => navigate('/super-admin')} />
-            </MyInfoItemContent>
-
-            <VerticalLine />
-          </>
-        )}
-
-        <MyInfoItemContent label="계좌관리">
-          <AccountButton onClick={() => navigate('/admin/register-account')} />
-        </MyInfoItemContent>
-
-        <VerticalLine />
-
-        <MyInfoItemContent label="계정탈퇴">
-          <DeleteUserButton onClick={deleteUserHandler} />
-        </MyInfoItemContent>
-      </MyInfoSubContainer>
+    <Container>
+      <CardsContainer>
+        {visibleCards.map((card) => (
+          <MyInfoCard key={card.id} icon={card.icon} label={card.label} onClick={() => handleCardAction(card)} />
+        ))}
+      </CardsContainer>
       <DeleteUserConfirmModal />
+      <LogoutConfirmModal />
       <AppFooter />
-    </MyInfoContainer>
+    </Container>
   );
 }
 

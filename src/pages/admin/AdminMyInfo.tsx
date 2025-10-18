@@ -1,16 +1,10 @@
 import AppContainer from '@components/common/container/AppContainer';
 import MyInfoContent from '@components/admin/my-info/MyInfoContent';
-import styled from '@emotion/styled';
 import useAdminUser from '@hooks/admin/useAdminUser';
 import { useEffect } from 'react';
 import { colFlex } from '@styles/flexStyles';
 import { adminUserAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
-
-const MyInfoContainer = styled.div`
-  width: 100%;
-  ${colFlex({ justify: 'center', align: 'center' })}
-`;
 
 function AdminMyInfo() {
   const { fetchAdminUser } = useAdminUser();
@@ -28,9 +22,7 @@ function AdminMyInfo() {
         subTitle: user.email,
       }}
     >
-      <MyInfoContainer className={'my-info-container'}>
-        <MyInfoContent />
-      </MyInfoContainer>
+      <MyInfoContent user={user} />
     </AppContainer>
   );
 }
