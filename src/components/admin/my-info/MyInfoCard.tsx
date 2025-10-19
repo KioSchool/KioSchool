@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 
 const CardContainer = styled.div`
-  width: 300px;
+  width: 295px;
   height: 300px;
   padding: 18px 0;
   box-sizing: border-box;

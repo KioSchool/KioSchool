@@ -13,7 +13,7 @@ const Container = styled.div`
 
 const CardsContainer = styled.div`
   width: 100%;
-  gap: 20px;
+  gap: 10px;
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
