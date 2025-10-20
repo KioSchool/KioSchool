@@ -7,26 +7,37 @@ import NotPaidOrderCard from './NotPaidOrderCard';
 import PaidOrderCard from './PaidOrderCard';
 import ServedOrderCard from './ServedOrderCard';
 import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
+import { RiInformationFill } from '@remixicon/react';
 
-const TitleContainer = styled.div`
+const TitledOrderStatusContainer = styled.div`
   width: 100%;
-  height: 40px;
-  border-radius: 10px;
-  background: #ececec;
-  padding: 0 20px;
+  font-family: 'LINE Seed Sans KR', sans-serif;
+  border: 1px solid #e8eef2;
+  border-radius: 16px;
+  background: #ffffff50;
+  padding: 18px 30px;
   box-sizing: border-box;
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
+  ${colFlex({ align: 'stretch' })}
+  gap: 10px;
+  box-shadow: 0 4px 20px 0 rgba(92, 92, 92, 0.05) outset;
+`;
+
+const TitleWrapper = styled.div`
+  width: 100%;
+  height: 24px;
+  gap: 10px;
+  ${rowFlex({ justify: 'flex-start', align: 'center' })}
 `;
 
 const OrderCardListContainer = styled.div`
   ${colFlex({ align: 'start' })}
-  gap: 10px;
+  gap: 8px;
   width: 100%;
   overflow-x: auto;
 `;
 
 const CardListContainer = styled.div<{ height?: number }>`
-  gap: 10px;
+  gap: 8px;
   height: ${(props) => props.height || 200}px;
   ${rowFlex({ align: 'start' })}
 `;
@@ -66,13 +77,15 @@ interface OrderStatusListProps {
 
 function TitledOrderStatusList({ orders, orderStatus, title, description }: OrderStatusListProps) {
   return (
-    <>
-      <TitleContainer>
-        <AppLabel size={20} style={{ fontWeight: 700 }}>
+    <TitledOrderStatusContainer>
+      <TitleWrapper>
+        <AppLabel size={16} style={{ fontWeight: 700 }}>
           {title}
         </AppLabel>
-        <AppLabel size={14}>{description}</AppLabel>
-      </TitleContainer>
+        {/* tood: info tag로 뺄 것 */}
+        <RiInformationFill size={20} color="#464A4D" />
+        <AppLabel size={0}>{description}</AppLabel>
+      </TitleWrapper>
       <OrderCardListContainer>
         <CardListContainer height={getOrderContainerHeight(orderStatus)}>
           {orders.map((order) => {
@@ -86,7 +99,7 @@ function TitledOrderStatusList({ orders, orderStatus, title, description }: Orde
           })}
         </CardListContainer>
       </OrderCardListContainer>
-    </>
+    </TitledOrderStatusContainer>
   );
 }
 
