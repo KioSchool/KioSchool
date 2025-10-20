@@ -6,19 +6,23 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 const ListContainer = styled.div`
   ${colFlex()}
   width: 100%;
-  height: 160px;
+  height: 100%;
+  padding: 10px 0;
   gap: 5px;
   overflow-y: auto;
 `;
 
 const ItemContainer = styled.div`
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
+  ${rowFlex({ justify: 'space-between', align: 'start' })}
   width: 100%;
 `;
 
 const StyledText = styled.div<{ $isServed: boolean }>`
-  font-size: 15px;
-  color: ${({ $isServed }) => ($isServed ? Color.GREY : Color.BLACK)};
+  height: 24px;
+  font-family: 'LINE Seed Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: ${({ $isServed }) => ($isServed ? Color.GREY : '#464A4D')};
   text-decoration: ${({ $isServed }) => ($isServed ? 'line-through' : 'none')};
 `;
 
