@@ -89,7 +89,7 @@ function TitledOrderStatusList({ orders, orderStatus, title, description }: Orde
         <AppLabel size={16} style={{ fontWeight: 700 }}>
           {title}
         </AppLabel>
-        {/* tood: info tag로 뺄 것 */}
+        {/* todo: info tag 클릭 시, APP label 내용 올릴 것*/}
         <RiInformationFill size={20} color="#464A4D" />
         <AppLabel size={0}>{description}</AppLabel>
       </TitleWrapper>

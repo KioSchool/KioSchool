@@ -37,6 +37,7 @@ function PaidOrderCard({ order }: OrderCardProps) {
         </DescriptionContainer>
       </OrderInfoContainer>
       <OrderItemList order={order} />
+      {/* todo: openModal 말고 서빙 완료 액션으로 변경? */}
       <CheckButtonContainer>
         <CheckIcon onClick={openModal} />
       </CheckButtonContainer>
