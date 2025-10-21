@@ -8,7 +8,6 @@ const ListContainer = styled.div`
   width: 100%;
   height: 100%;
   padding: 10px 0;
-  gap: 5px;
   overflow-y: auto;
 `;
 
