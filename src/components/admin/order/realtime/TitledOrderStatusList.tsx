@@ -39,7 +39,14 @@ const OrderCardListContainer = styled.div`
 const CardListContainer = styled.div<{ height?: number }>`
   gap: 8px;
   height: ${(props) => props.height || 200}px;
+  width: 100%;
   ${rowFlex({ align: 'start' })}
+`;
+
+const EmptyListMessageContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 function areOrdersEqual(prevOrders: Order[], nextOrders: Order[]) {
@@ -60,9 +67,9 @@ const getOrderContainerHeight = (status: OrderStatus) => {
     case OrderStatus.NOT_PAID:
       return 110;
     case OrderStatus.PAID:
-      return 270;
+      return 260;
     case OrderStatus.SERVED:
-      return 110;
+      return 74;
     default:
       return 200;
   }
@@ -88,15 +95,23 @@ function TitledOrderStatusList({ orders, orderStatus, title, description }: Orde
       </TitleWrapper>
       <OrderCardListContainer>
         <CardListContainer height={getOrderContainerHeight(orderStatus)}>
-          {orders.map((order) => {
-            if (order.status === OrderStatus.NOT_PAID) {
-              return <NotPaidOrderCard key={order.id} order={order} />;
-            } else if (order.status === OrderStatus.PAID) {
-              return <PaidOrderCard key={order.id} order={order} />;
-            } else if (order.status === OrderStatus.SERVED) {
-              return <ServedOrderCard key={order.id} order={order} />;
-            }
-          })}
+          {orders.length > 0 ? (
+            orders.map((order) => {
+              if (order.status === OrderStatus.NOT_PAID) {
+                return <NotPaidOrderCard key={order.id} order={order} />;
+              } else if (order.status === OrderStatus.PAID) {
+                return <PaidOrderCard key={order.id} order={order} />;
+              } else if (order.status === OrderStatus.SERVED) {
+                return <ServedOrderCard key={order.id} order={order} />;
+              }
+            })
+          ) : (
+            <EmptyListMessageContainer>
+              <AppLabel size={16} style={{ color: '#464A4D' }}>
+                현재 표시할 주문 내역이 없습니다.
+              </AppLabel>
+            </EmptyListMessageContainer>
+          )}
         </CardListContainer>
       </OrderCardListContainer>
     </TitledOrderStatusContainer>
