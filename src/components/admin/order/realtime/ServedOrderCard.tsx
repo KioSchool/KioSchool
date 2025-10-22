@@ -22,7 +22,7 @@ function ServedOrderCard({ order }: OrderCardProps) {
   };
 
   return (
-    <CardContainer height={48} onClick={openModal}>
+    <CardContainer height={48}>
       <OrderInfoContainer onClick={orderInfoClickHandler}>
         <AppLabel size={16} style={{ fontWeight: 800, color: '#464A4D' }}>
           {order.customerName}

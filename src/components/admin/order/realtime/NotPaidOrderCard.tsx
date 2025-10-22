@@ -33,7 +33,7 @@ function NotPaidOrderCard({ order }: OrderCardProps) {
   };
 
   return (
-    <CardContainer height={84} onClick={openModal}>
+    <CardContainer height={84}>
       <OrderInfoContainer onClick={orderInfoClickHandler}>
         <AppLabel size={16} style={{ fontWeight: 800, color: '#464A4D' }}>
           {order.customerName}
