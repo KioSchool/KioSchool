@@ -83,6 +83,28 @@ interface OrderStatusListProps {
 }
 
 function TitledOrderStatusList({ orders, orderStatus, title, description }: OrderStatusListProps) {
+  let orderListContent: React.ReactNode;
+
+  if (orders.length > 0) {
+    orderListContent = orders.map((order) => {
+      if (order.status === OrderStatus.NOT_PAID) {
+        return <NotPaidOrderCard key={order.id} order={order} />;
+      } else if (order.status === OrderStatus.PAID) {
+        return <PaidOrderCard key={order.id} order={order} />;
+      } else if (order.status === OrderStatus.SERVED) {
+        return <ServedOrderCard key={order.id} order={order} />;
+      }
+    });
+  } else {
+    orderListContent = (
+      <EmptyListMessageContainer>
+        <AppLabel size={16} style={{ color: '#464A4D' }}>
+          현재 표시할 주문 내역이 없습니다.
+        </AppLabel>
+      </EmptyListMessageContainer>
+    );
+  }
+
   return (
     <TitledOrderStatusContainer>
       <TitleWrapper>
@@ -94,25 +116,7 @@ function TitledOrderStatusList({ orders, orderStatus, title, description }: Orde
         <AppLabel size={0}>{description}</AppLabel>
       </TitleWrapper>
       <OrderCardListContainer>
-        <CardListContainer height={getOrderContainerHeight(orderStatus)}>
-          {orders.length > 0 ? (
-            orders.map((order) => {
-              if (order.status === OrderStatus.NOT_PAID) {
-                return <NotPaidOrderCard key={order.id} order={order} />;
-              } else if (order.status === OrderStatus.PAID) {
-                return <PaidOrderCard key={order.id} order={order} />;
-              } else if (order.status === OrderStatus.SERVED) {
-                return <ServedOrderCard key={order.id} order={order} />;
-              }
-            })
-          ) : (
-            <EmptyListMessageContainer>
-              <AppLabel size={16} style={{ color: '#464A4D' }}>
-                현재 표시할 주문 내역이 없습니다.
-              </AppLabel>
-            </EmptyListMessageContainer>
-          )}
-        </CardListContainer>
+        <CardListContainer height={getOrderContainerHeight(orderStatus)}>{orderListContent}</CardListContainer>
       </OrderCardListContainer>
     </TitledOrderStatusContainer>
   );
