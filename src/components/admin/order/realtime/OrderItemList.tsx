@@ -1,19 +1,18 @@
 import { Order } from '@@types/index';
 import styled from '@emotion/styled';
-import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const ListContainer = styled.div`
-  ${colFlex()}
   width: 100%;
-  height: 100%;
-  padding: 10px 0;
+  flex-grow: 1;
+  padding: 6px 0;
   overflow-y: auto;
+  ${colFlex()}
 `;
 
 const ItemContainer = styled.div`
-  ${rowFlex({ justify: 'space-between', align: 'start' })}
   width: 100%;
+  ${rowFlex({ justify: 'space-between', align: 'start' })}
 `;
 
 const StyledText = styled.div<{ $isServed: boolean }>`
@@ -21,8 +20,7 @@ const StyledText = styled.div<{ $isServed: boolean }>`
   font-family: 'LINE Seed Sans KR', sans-serif;
   font-size: 12px;
   font-weight: 400;
-  color: ${({ $isServed }) => ($isServed ? Color.GREY : '#464A4D')};
-  text-decoration: ${({ $isServed }) => ($isServed ? 'line-through' : 'none')};
+  color: ${({ $isServed }) => ($isServed ? '#D1D5D8' : '#464A4D')};
 `;
 
 interface OrderItemListProps {

@@ -6,7 +6,7 @@ import { expandButtonStyle } from '@styles/buttonStyles';
 
 export const CardContainer = styled.div<{ height: number }>`
   ${colFlex({
-    justify: 'space-between',
+    justify: 'flex-start',
     align: 'start',
   })}
   background-color: ${Color.WHITE};
@@ -32,6 +32,8 @@ export const OrderInfoContainer = styled.div`
   width: 100%;
   cursor: pointer;
   border-radius: 10px;
+  flex-grow: 1;
+  min-height: 0;
   ${colFlex()}
 `;
 
@@ -62,12 +64,21 @@ export const CheckIcon = styled(RiCheckboxCircleFill)`
 interface CardTextProps {
   size: number;
   weight?: string | number;
+  height?: number;
 }
 
 export const CardText = styled.span<CardTextProps>`
+  height: ${(props) => props.height || 'auto'};
   font-size: ${(props) => props.size}px;
   font-weight: ${(props) => props.weight || 400};
   color: #464a4d;
   cursor: pointer;
   background-color: transparent;
 `;
+
+export const HorizontalLine = styled.hr`
+  width: 100%;
+  border: 0.8px solid #e8eef2;
+`;
+
+export const HeaderContainer = styled.div``;
