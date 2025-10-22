@@ -8,6 +8,8 @@ import useModal from '@hooks/useModal';
 import { extractMinFromDate } from '@utils/FormatDate';
 import useFormattedTime from '@hooks/useFormattedTime';
 import { CardContainer, CheckButtonContainer, CheckIcon, DescriptionContainer, OrderInfoContainer } from '@styles/orderCardStyles';
+import useAdminOrder from '@hooks/admin/useAdminOrder';
+import { useParams } from 'react-router-dom';
 
 const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => {
   return areOrdersEquivalent(prevProps.order, nextProps.order);
@@ -21,12 +23,20 @@ function PaidOrderCard({ order }: OrderCardProps) {
   const delayMinutes = useFormattedTime<number>({ date: order.createdAt, formatter: extractMinFromDate });
   const { isModalOpen, openModal, closeModal } = useModal();
 
+  const { workspaceId } = useParams<{ workspaceId: string }>();
+  const { serveOrder } = useAdminOrder(workspaceId);
+
   const orderInfoClickHandler = () => {
     openModal();
   };
 
+  const handleServeOrderClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    serveOrder(order.id);
+  };
+
   return (
-    <CardContainer height={234} onClick={openModal}>
+    <CardContainer height={234}>
       <OrderInfoContainer onClick={orderInfoClickHandler}>
         <AppLabel size={16} style={{ fontWeight: 800, color: '#464A4D' }}>
           {order.customerName}
@@ -37,9 +47,8 @@ function PaidOrderCard({ order }: OrderCardProps) {
         </DescriptionContainer>
       </OrderInfoContainer>
       <OrderItemList order={order} />
-      {/* todo: openModal 말고 서빙 완료 액션으로 변경? */}
       <CheckButtonContainer>
-        <CheckIcon onClick={openModal} />
+        <CheckIcon onClick={handleServeOrderClick} />
       </CheckButtonContainer>
       <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
     </CardContainer>
