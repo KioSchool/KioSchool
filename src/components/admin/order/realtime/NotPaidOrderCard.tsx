@@ -19,6 +19,7 @@ const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => 
 
 function NotPaidOrderCard({ order }: OrderCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
+  // todo : modal에 주문 취소 기능 전달 추가 필요
   const { payOrder } = useAdminOrder(workspaceId);
   const delayMinutes = useFormattedTime<number>({ date: order.createdAt, formatter: extractMinFromDate });
   const { isModalOpen, openModal, closeModal } = useModal();
