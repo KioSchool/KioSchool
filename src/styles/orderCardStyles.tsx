@@ -21,7 +21,7 @@ export const CardContainer = styled.div<{ height: number }>`
 
     & * {
       background-color: ${Color.KIO_ORANGE};
-      color: ${Color.WHITE} !important;
+      color: ${Color.WHITE};
       stroke: ${Color.WHITE};
     }
   }
@@ -57,4 +57,17 @@ export const CheckIcon = styled(RiCheckboxCircleFill)`
   height: 20px;
   color: ${Color.GREY};
   ${expandButtonStyle}
+`;
+
+interface CardTextProps {
+  size: number;
+  weight?: string | number;
+}
+
+export const CardText = styled.span<CardTextProps>`
+  font-size: ${(props) => props.size}px;
+  font-weight: ${(props) => props.weight || 400};
+  color: #464a4d;
+  cursor: pointer;
+  background-color: transparent;
 `;

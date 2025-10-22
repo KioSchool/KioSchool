@@ -1,6 +1,5 @@
 import { memo } from 'react';
 import { Order } from '@@types/index';
-import AppLabel from '@components/common/label/AppLabel';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
@@ -8,7 +7,7 @@ import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
 import useFormattedTime from '@hooks/useFormattedTime';
 import useModal from '@hooks/useModal';
 import { extractMinFromDate } from '@utils/FormatDate';
-import { CardContainer, OrderInfoContainer, DescriptionContainer, CheckButtonContainer, CheckIcon } from '@styles/orderCardStyles';
+import { CardContainer, OrderInfoContainer, DescriptionContainer, CheckButtonContainer, CheckIcon, CardText } from '@styles/orderCardStyles';
 
 interface OrderCardProps {
   order: Order;
@@ -35,12 +34,12 @@ function NotPaidOrderCard({ order }: OrderCardProps) {
   return (
     <CardContainer height={84}>
       <OrderInfoContainer onClick={orderInfoClickHandler}>
-        <AppLabel size={16} style={{ fontWeight: 800, color: '#464A4D' }}>
+        <CardText size={16} weight={800}>
           {order.customerName}
-        </AppLabel>
+        </CardText>
         <DescriptionContainer>
-          <AppLabel size={12} style={{ fontWeight: 800, color: '#464A4D' }}>{`${delayMinutes}분 전`}</AppLabel>
-          <AppLabel size={12} style={{ fontWeight: 800, color: '#464A4D' }}>{`총 ${order.totalPrice.toLocaleString()}원`}</AppLabel>
+          <CardText size={12} weight={800}>{`${delayMinutes}분 전`}</CardText>
+          <CardText size={12} weight={800}>{`총 ${order.totalPrice.toLocaleString()}원`}</CardText>
         </DescriptionContainer>
       </OrderInfoContainer>
       <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />

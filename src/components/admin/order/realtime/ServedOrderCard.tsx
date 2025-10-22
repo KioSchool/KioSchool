@@ -1,10 +1,9 @@
 import { memo } from 'react';
 import { Order } from '@@types/index';
-import AppLabel from '@components/common/label/AppLabel';
 import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
 import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
 import useModal from '@hooks/useModal';
-import { CardContainer, OrderInfoContainer, DescriptionContainer } from '@styles/orderCardStyles';
+import { CardContainer, OrderInfoContainer, DescriptionContainer, CardText } from '@styles/orderCardStyles';
 
 const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => {
   return areOrdersEquivalent(prevProps.order, nextProps.order);
@@ -24,12 +23,12 @@ function ServedOrderCard({ order }: OrderCardProps) {
   return (
     <CardContainer height={48}>
       <OrderInfoContainer onClick={orderInfoClickHandler}>
-        <AppLabel size={16} style={{ fontWeight: 800, color: '#464A4D' }}>
+        <CardText size={16} weight={800}>
           {order.customerName}
-        </AppLabel>
+        </CardText>
         <DescriptionContainer>
-          <AppLabel size={12} style={{ fontWeight: 800, color: '#464A4D' }}>{`주문번호 ${order.orderNumber}`}</AppLabel>
-          <AppLabel size={12} style={{ fontWeight: 800, color: '#464A4D' }}>{`총 ${order.totalPrice.toLocaleString()}원`}</AppLabel>
+          <CardText size={12} weight={800}>{`주문번호 ${order.orderNumber}`}</CardText>
+          <CardText size={12} weight={800}>{`총 ${order.totalPrice.toLocaleString()}원`}</CardText>
         </DescriptionContainer>
       </OrderInfoContainer>
       <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
