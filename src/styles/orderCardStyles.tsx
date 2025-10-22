@@ -28,11 +28,11 @@ export const CardContainer = styled.div<{ height: number }>`
 `;
 
 export const OrderInfoContainer = styled.div`
-  ${colFlex()}
   box-sizing: border-box;
   width: 100%;
   cursor: pointer;
   border-radius: 10px;
+  ${colFlex()}
 `;
 
 export const TitleContainer = styled.div`
