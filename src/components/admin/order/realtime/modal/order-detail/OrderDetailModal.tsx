@@ -21,16 +21,17 @@ const ModalOverlay = styled.div`
 `;
 
 const ModalContainer = styled.div`
-  ${colFlex({ justify: 'center' })}
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: ${Color.WHITE};
   border-radius: 10px;
+  border: 1px solid #e8eef2;
   width: 700px;
   z-index: 2001;
   gap: 15px;
+  ${colFlex({ justify: 'center' })}
 `;
 
 interface Props {
@@ -38,6 +39,7 @@ interface Props {
   isModalOpen: boolean;
   closeModal: () => void;
 }
+
 function OrderDetailModal({ order, isModalOpen, closeModal }: Props) {
   const { modalKey } = useModal();
 
