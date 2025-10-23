@@ -1,25 +1,26 @@
 import { Order } from '@@types/index';
 import styled from '@emotion/styled';
-import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const ListContainer = styled.div`
-  ${colFlex()}
   width: 100%;
-  height: 160px;
-  gap: 5px;
+  flex-grow: 1;
+  padding: 6px 0;
   overflow-y: auto;
+  ${colFlex()}
 `;
 
 const ItemContainer = styled.div`
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
   width: 100%;
+  ${rowFlex({ justify: 'space-between', align: 'start' })}
 `;
 
 const StyledText = styled.div<{ $isServed: boolean }>`
-  font-size: 15px;
-  color: ${({ $isServed }) => ($isServed ? Color.GREY : Color.BLACK)};
-  text-decoration: ${({ $isServed }) => ($isServed ? 'line-through' : 'none')};
+  height: 24px;
+  font-family: 'LINE Seed Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: ${({ $isServed }) => ($isServed ? '#D1D5D8' : '#464A4D')};
 `;
 
 interface OrderItemListProps {
