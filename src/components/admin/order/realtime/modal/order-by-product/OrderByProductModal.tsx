@@ -67,8 +67,8 @@ const ProductContainer = styled.div`
 `;
 
 const ProductItem = styled.div`
-  ${rowFlex({ align: 'center' })};
   gap: 12px;
+  ${rowFlex({ align: 'center' })};
 `;
 
 const ProductImage = styled.img`

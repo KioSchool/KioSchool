@@ -29,9 +29,9 @@ const ModalPrimaryButton = styled(BaseButton)`
 `;
 
 const ModalFooter = styled.div<{ actionCount: number }>`
-  ${rowFlex({ align: 'center' })}
   justify-content: ${(props) => (props.actionCount === 1 ? 'flex-start' : 'space-between')};
   padding: 0 20px 30px 20px;
+  ${rowFlex({ align: 'center' })}
 `;
 
 interface OrderModalFooterContentsProps {
