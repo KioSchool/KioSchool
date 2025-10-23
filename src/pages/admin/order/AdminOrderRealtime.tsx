@@ -54,8 +54,8 @@ function AdminOrderRealtime() {
           description={'결제가 확인되어 현재 조리 중인 주문입니다. 왼쪽부터 오래된 주문 순으로 표시됩니다.'}
         />
         <TitledOrderStatusList orders={servedOrders} orderStatus={OrderStatus.SERVED} title={'서빙 완료'} description={'서빙이 완료된 주문입니다.'} />
-        <OrderByProductModal orders={paidOrders} isModalOpen={isModalOpen} />
-        <OrderByProductModalButton isModalOpen={isModalOpen} openModal={openModal} closeModal={closeModal} />
+        <OrderByProductModal orders={paidOrders} isModalOpen={isModalOpen} closeModal={closeModal} />
+        <OrderByProductModalButton openModal={openModal} />
       </>
     </AppContainer>
   );
