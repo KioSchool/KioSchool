@@ -6,6 +6,7 @@ import { CookiesProvider } from 'react-cookie';
 import * as Sentry from '@sentry/react';
 import React from 'react';
 import SentryErrorFallback from './components/common/fallback/SentryErrorFallback';
+import axios from 'axios';
 
 const environment = import.meta.env.VITE_ENVIRONMENT;
 
@@ -33,6 +34,23 @@ Sentry.init({
     /^https:\/\/.*\.kio-school\.com\/user\//,
     /^https:\/\/.*\.kio-school\.com\/super-admin\//,
   ],
+  beforeSend(event, hint) {
+    const error = hint.originalException;
+
+    if (axios.isCancel(error)) {
+      return null;
+    }
+
+    if (axios.isAxiosError(error)) {
+      const isAuthError = error.response?.status === 401 || error.response?.status === 403;
+
+      if (isAuthError) {
+        return null;
+      }
+    }
+
+    return event;
+  },
 });
 export const SentryRoutes = Sentry.withSentryReactRouterV6Routing(Routes);
 
