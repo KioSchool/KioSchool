@@ -31,6 +31,7 @@ const ModalContainer = styled.div`
   width: 700px;
   z-index: 2001;
   gap: 15px;
+  box-shadow: 0 4px 20px 0 rgba(92, 92, 92, 0.05);
   ${colFlex({ justify: 'center' })}
 `;
 
