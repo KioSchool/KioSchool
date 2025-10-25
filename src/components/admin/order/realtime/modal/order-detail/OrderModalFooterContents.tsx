@@ -29,18 +29,11 @@ const ModalPrimaryButton = styled(BaseButton)`
 `;
 
 const ModalFooter = styled.div<{ actionCount: number }>`
-  justify-content: ${(props) => (props.actionCount === 1 ? 'flex-start' : 'space-between')};
   padding: 0 20px 30px 20px;
-  ${rowFlex({ align: 'center' })}
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
-interface OrderModalFooterContentsProps {
-  orderStatus: OrderStatus;
-  id: number;
-  closeModal: () => void;
-}
-
-const getActions = (orderStatus: OrderStatus, actionHandlers: Record<string, () => void>) => {
+const getOrderStatusActions = (orderStatus: OrderStatus, actionHandlers: Record<string, () => void>) => {
   switch (orderStatus) {
     case OrderStatus.NOT_PAID:
       return [
@@ -58,6 +51,12 @@ const getActions = (orderStatus: OrderStatus, actionHandlers: Record<string, () 
       return [];
   }
 };
+
+interface OrderModalFooterContentsProps {
+  orderStatus: OrderStatus;
+  id: number;
+  closeModal: () => void;
+}
 
 function OrderModalFooterContents({ orderStatus, id, closeModal }: OrderModalFooterContentsProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
@@ -82,12 +81,12 @@ function OrderModalFooterContents({ orderStatus, id, closeModal }: OrderModalFoo
     },
   };
 
-  const actions = getActions(orderStatus, actionHandlers);
+  const actions = getOrderStatusActions(orderStatus, actionHandlers);
 
   return (
     <ModalFooter actionCount={actions.length}>
-      {actions.map(({ label, onClick, Component }, index) => (
-        <Component key={index} onClick={onClick}>
+      {actions.map(({ label, onClick, Component }) => (
+        <Component key={label} onClick={onClick}>
           {label}
         </Component>
       ))}
