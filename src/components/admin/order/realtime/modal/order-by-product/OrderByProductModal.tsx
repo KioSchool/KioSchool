@@ -9,28 +9,37 @@ import { useAtomValue } from 'jotai';
 import { adminProductsAtom } from 'src/jotai/admin/atoms';
 import { RiCloseLine } from '@remixicon/react';
 
+const Overlay = styled.div<{ isOpen: boolean }>`
+  position: fixed;
+  top: 65px;
+  right: 0;
+  bottom: 0;
+  width: 50%;
+  z-index: 1010;
+  opacity: ${(props) => (props.isOpen ? 1 : 0)};
+  visibility: ${(props) => (props.isOpen ? 'visible' : 'hidden')};
+`;
+
 const SidebarContainer = styled.div<{ isOpen: boolean }>`
   position: fixed;
-  top: 0;
+  top: 65px;
   right: 0;
-  width: 331px;
-  height: 100vh;
+  width: 280px;
+  height: calc(100vh - 65px);
   background-color: ${Color.WHITE};
   border-left: 1px solid #e8eef2;
   box-shadow: -4px 0 12px rgba(0, 0, 0, 0.05);
-  z-index: 1999;
-  padding: 46px 41px;
   box-sizing: border-box;
+  z-index: 1011;
+  padding: 20px 10px 0 40px;
   gap: 15px;
   font-family: 'LINE Seed Sans KR', sans-serif;
-
-  transform: translateX(${({ isOpen }) => (isOpen ? '0' : '100%')});
+  transform: translateX(${(props) => (props.isOpen ? '0' : '100%')});
   transition: transform 0.3s ease-in-out;
-
-  ${colFlex({ align: 'stretch' })};
+  ${colFlex()}
 
   ${tabletMediaQuery} {
-    width: 331px;
+    width: 280px;
   }
 `;
 
@@ -116,37 +125,40 @@ function OrderByProductModal({ orders, isModalOpen, closeModal }: OrderByProduct
     .sort((a, b) => b.count - a.count);
 
   return (
-    <SidebarContainer isOpen={isModalOpen}>
-      <SidebarHeader>
-        <CloseButton onClick={closeModal}>
-          <RiCloseLine size={24} />
-        </CloseButton>
+    <>
+      <Overlay isOpen={isModalOpen} onClick={closeModal} />
+      <SidebarContainer isOpen={isModalOpen}>
+        <SidebarHeader>
+          <CloseButton onClick={closeModal}>
+            <RiCloseLine size={24} />
+          </CloseButton>
 
-        <TitleContainer>
-          <AppLabel size={18} style={{ fontWeight: 700 }}>
-            실시간 상품별 주문량
-          </AppLabel>
-          <AppLabel size={16}>*결제 완료 주문만 표시됩니다.</AppLabel>
-        </TitleContainer>
-      </SidebarHeader>
-      <ProductContainer>
-        {sortedProducts.map(({ productId, count }) => {
-          const product = productMap[productId];
+          <TitleContainer>
+            <AppLabel size={18} style={{ fontWeight: 700 }}>
+              실시간 상품별 주문량
+            </AppLabel>
+            <AppLabel size={16}>*결제 완료 주문만 표시됩니다.</AppLabel>
+          </TitleContainer>
+        </SidebarHeader>
+        <ProductContainer>
+          {sortedProducts.map(({ productId, count }) => {
+            const product = productMap[productId];
 
-          if (!product || count <= 0) return null;
+            if (!product || count <= 0) return null;
 
-          return (
-            <ProductItem key={productId}>
-              <ProductImage src={product.imageUrl} alt={product.name} />
-              <ProductInfoContainer>
-                <AppLabel size={16}>{product.name}</AppLabel>
-                <AppLabel size={14}>{count}개</AppLabel>
-              </ProductInfoContainer>
-            </ProductItem>
-          );
-        })}
-      </ProductContainer>
-    </SidebarContainer>
+            return (
+              <ProductItem key={productId}>
+                <ProductImage src={product.imageUrl} alt={product.name} />
+                <ProductInfoContainer>
+                  <AppLabel size={16}>{product.name}</AppLabel>
+                  <AppLabel size={14}>{count}개</AppLabel>
+                </ProductInfoContainer>
+              </ProductItem>
+            );
+          })}
+        </ProductContainer>
+      </SidebarContainer>
+    </>
   );
 }
 

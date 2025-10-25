@@ -13,7 +13,7 @@ const ModalButtonContainer = styled.div`
   width: 50px;
   height: 50px;
   cursor: pointer;
-  z-index: 1998;
+  z-index: 1009;
   box-sizing: border-box;
   ${colFlex({ justify: 'center', align: 'center' })};
   ${expandButtonStyle}
