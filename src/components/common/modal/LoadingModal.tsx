@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
-import LoadingSvg from '@resources/svg/LoadingSvg';
+import { keyframes } from '@emotion/react';
 import { rowFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
 import { loadingCountAtom } from 'src/jotai/atoms';
+import { Color } from '@resources/colors';
 
 const Container = styled.div`
   z-index: 5002;
@@ -11,29 +12,32 @@ const Container = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: gray;
-  opacity: 0.3;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(5px);
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
-const Circle = styled.div`
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+const bounce = keyframes`
+  0%, 80%, 100% {
+    transform: translateY(0);
   }
+  40% {
+    transform: translateY(-20px);
+  }
+`;
 
-  position: absolute;
-  width: 150px;
-  height: 150px;
-  padding: 40px;
-  text-align: center;
-  background: transparent;
-  border-radius: 10px;
-  animation: spin 1s ease infinite;
+const DotsContainer = styled.div`
+  ${rowFlex({ justify: 'center', align: 'center' })}
+  gap: 8px;
+`;
+
+const Dot = styled.div<{ delay: number }>`
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: ${Color.KIO_ORANGE};
+  animation: ${bounce} 1s infinite ease-in-out;
+  animation-delay: ${(props) => props.delay}s;
 `;
 
 function LoadingModal() {
@@ -43,9 +47,12 @@ function LoadingModal() {
 
   return (
     <Container>
-      <Circle>
-        <LoadingSvg />
-      </Circle>
+      <DotsContainer>
+        <Dot delay={0} />
+        <Dot delay={0.2} />
+        <Dot delay={0.4} />
+        <Dot delay={0.6} />
+      </DotsContainer>
     </Container>
   );
 }
