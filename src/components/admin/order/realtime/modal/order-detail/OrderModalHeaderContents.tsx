@@ -5,6 +5,7 @@ import { RiCloseLargeLine, RiArrowRightSLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { formatDate } from '@utils/FormatDate';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const ModalHeader = styled.div`
   padding: 20px 30px 12px 30px;
@@ -50,6 +51,17 @@ interface OrderModalHeaderContentsProps {
 }
 
 function OrderModalHeaderContents({ onClose, order }: OrderModalHeaderContentsProps) {
+  const navigate = useNavigate();
+  const { workspaceId } = useParams<{ workspaceId: string }>();
+
+  const handleNavigateToTable = () => {
+    onClose();
+    navigate({
+      pathname: `/admin/workspace/${workspaceId}/order/table`,
+      search: `?tableNo=${order.tableNumber}`,
+    });
+  };
+
   return (
     <ModalHeader>
       <ModalHeaderTitle>
@@ -62,8 +74,7 @@ function OrderModalHeaderContents({ onClose, order }: OrderModalHeaderContentsPr
         <AppLabel size={14}>{`${formatDate(order.createdAt)} · ${order.customerName}`}</AppLabel>
         <ModalTableDescription>
           <AppLabel size={14}>{`테이블 ${order.tableNumber}`}</AppLabel>
-          {/* todo: 어떤 click action? */}
-          <ArrowRightIcon onClick={() => {}} />
+          <ArrowRightIcon onClick={handleNavigateToTable} />
         </ModalTableDescription>
       </ModalDescription>
     </ModalHeader>
