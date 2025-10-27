@@ -8,7 +8,7 @@ import { tabletMediaQuery } from '@styles/globalStyles';
 import { isMobile } from 'react-device-detect';
 import { css } from '@emotion/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
-import { URLS } from 'src/constants/urls';
+import { URLS } from '@constants/urls';
 
 const Container = styled.div`
   width: 100%;

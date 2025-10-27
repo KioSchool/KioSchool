@@ -9,7 +9,7 @@ import { expandButtonStyle } from '@styles/buttonStyles';
 import SideNav from './SideNav';
 import { useAtom } from 'jotai';
 import { adminSideNavIsOpenAtom } from 'src/jotai/admin/atoms';
-import { URLS } from 'src/constants/urls';
+import { URLS } from '@constants/urls';
 
 const NavContainer = styled.div<{ useBackground: boolean }>`
   z-index: 1005;

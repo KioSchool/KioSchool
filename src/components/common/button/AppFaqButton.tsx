@@ -2,7 +2,7 @@ import { colFlex } from '@styles/flexStyles';
 import styled from '@emotion/styled';
 import { RiQuestionFill } from '@remixicon/react';
 import { Color } from '@resources/colors';
-import { URLS } from 'src/constants/urls';
+import { URLS } from '@constants/urls';
 
 const FixedContainer = styled.div`
   z-index: 1001;

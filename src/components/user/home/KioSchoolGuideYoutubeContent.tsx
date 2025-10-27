@@ -3,7 +3,7 @@ import { RiPlayFill } from '@remixicon/react';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import youtubeThumbnail from '@resources/image/home/youtubeThumbnail.png';
-import { URLS } from 'src/constants/urls';
+import { URLS } from '@constants/urls';
 
 const KIOSCHOOL_GUIDE_YOUTUBE_TOAST_COOKIE = 'kioschool_guide_youtube_toast_hidden';
 const ONE_WEEK_IN_SECONDS = 7 * 24 * 60 * 60;

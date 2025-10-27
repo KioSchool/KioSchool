@@ -5,7 +5,7 @@ import { useSetAtom } from 'jotai';
 import { adminOrdersAtom } from '../../jotai/admin/atoms';
 import { useCallback, useEffect, useMemo } from 'react';
 import SockJS from 'sockjs-client/dist/sockjs';
-import { URLS } from 'src/constants/urls';
+import { URLS } from '@constants/urls';
 
 function playOrderCreateAudio() {
   const audio = new Audio(kioSchoolOrderAlarm);

@@ -6,7 +6,7 @@ import { CookiesProvider } from 'react-cookie';
 import * as Sentry from '@sentry/react';
 import React from 'react';
 import SentryErrorFallback from './components/common/fallback/SentryErrorFallback';
-import { URLS } from './constants/urls';
+import { URLS } from '@constants/urls';
 
 const environment = import.meta.env.VITE_ENVIRONMENT;
 

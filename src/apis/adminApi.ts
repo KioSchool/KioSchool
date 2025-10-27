@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { setupApiInterceptors } from 'src/utils/apiInterceptors';
-import { URLS } from 'src/constants/urls';
+import { URLS } from '@constants/urls';
 
 const AUTH_ERROR_EVENT = 'adminAuthError';
 
