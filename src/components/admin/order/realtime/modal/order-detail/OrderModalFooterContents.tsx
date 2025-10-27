@@ -28,7 +28,7 @@ const ModalPrimaryButton = styled(BaseButton)`
   color: ${Color.WHITE};
 `;
 
-const ModalFooter = styled.div<{ actionCount: number }>`
+const ModalFooter = styled.div`
   padding: 0 20px 30px 20px;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
@@ -84,7 +84,7 @@ function OrderModalFooterContents({ orderStatus, id, closeModal }: OrderModalFoo
   const actions = getOrderStatusActions(orderStatus, actionHandlers);
 
   return (
-    <ModalFooter actionCount={actions.length}>
+    <ModalFooter>
       {actions.map(({ label, onClick, Component }) => (
         <Component key={label} onClick={onClick}>
           {label}
