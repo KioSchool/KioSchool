@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { rowFlex } from '@styles/flexStyles';
 import { RiInformationFill } from '@remixicon/react';
 import { Color } from '@resources/colors';
-import { afterAccountInfoRegisteredDescription, beforeAccountInfoRegisteredDescription } from '@resources/data/tossAccountInfoData';
+import { afterAccountInfoRegisteredDescription, beforeAccountInfoRegisteredDescription } from '@constants/data/tossAccountInfoData';
 import { useState } from 'react';
 import { adminUserAccountAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';

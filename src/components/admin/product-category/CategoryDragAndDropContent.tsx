@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { adminCategoriesAtom } from 'src/jotai/admin/atoms';
 import { useAtom } from 'jotai';
-import { defaultCategory } from '@resources/data/categoryData';
+import { defaultCategory } from '@constants/data/categoryData';
 import CategoryItem from '@components/admin/product-category/CategoryItem';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
