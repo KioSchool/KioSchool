@@ -145,14 +145,16 @@ function OrderByProductModal({ orders, isModalOpen, closeModal }: OrderByProduct
         <ProductContainer>
           {sortedProducts.map(({ productId, count }) => {
             const product = productMap[productId];
+            const productImageUrl = product.imageUrl;
+            const productName = product.name;
 
             if (!product || count <= 0) return null;
 
             return (
               <ProductItem key={productId}>
-                <ProductImage src={product.imageUrl} alt={product.name} />
+                <ProductImage src={productImageUrl} alt={productName} />
                 <ProductInfoContainer>
-                  <AppLabel size={16}>{product.name}</AppLabel>
+                  <AppLabel size={16}>{productName}</AppLabel>
                   <AppLabel size={14}>{count}개</AppLabel>
                 </ProductInfoContainer>
               </ProductItem>
