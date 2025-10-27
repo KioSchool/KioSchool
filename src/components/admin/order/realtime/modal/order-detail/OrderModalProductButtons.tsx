@@ -50,12 +50,12 @@ function OrderModalProductButtons({ servedCount, quantity, isServed, onIncrease,
 
   return (
     <ButtonContainer>
-      <IconWrapper>
-        <MinusIcon disabled={isDecreaseDisabled} onClick={onDecrease} />
+      <IconWrapper onClick={onDecrease}>
+        <MinusIcon disabled={isDecreaseDisabled} />
       </IconWrapper>
       <AppLabel size={12}>{`${servedCount} / ${quantity}`}</AppLabel>
-      <IconWrapper>
-        <PlusIcon disabled={isIncreaseDisabled} onClick={onIncrease} />
+      <IconWrapper onClick={onIncrease}>
+        <PlusIcon disabled={isIncreaseDisabled} />
       </IconWrapper>
     </ButtonContainer>
   );
