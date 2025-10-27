@@ -13,6 +13,7 @@ const ButtonContainer = styled.div`
 const IconWrapper = styled.div`
   width: 28px;
   height: 28px;
+  cursor: pointer;
   ${rowFlex({ justify: 'center', align: 'center' })}
 
   &:hover {
@@ -53,7 +54,7 @@ function OrderModalProductButtons({ servedCount, quantity, isServed, onIncrease,
       <IconWrapper onClick={onDecrease}>
         <MinusIcon disabled={isDecreaseDisabled} />
       </IconWrapper>
-      <AppLabel size={12}>{`${servedCount} / ${quantity}`}</AppLabel>
+      <AppLabel size={14}>{`${servedCount} / ${quantity}`}</AppLabel>
       <IconWrapper onClick={onIncrease}>
         <PlusIcon disabled={isIncreaseDisabled} />
       </IconWrapper>
