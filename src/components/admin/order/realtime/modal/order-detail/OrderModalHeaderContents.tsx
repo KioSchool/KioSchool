@@ -5,7 +5,7 @@ import { RiCloseLargeLine, RiArrowRightSLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { formatDate } from '@utils/FormatDate';
-import { useNavigate, useParams } from 'react-router-dom';
+import { createSearchParams, useNavigate, useParams } from 'react-router-dom';
 
 const ModalHeader = styled.div`
   padding: 20px 30px 12px 30px;
@@ -58,7 +58,9 @@ function OrderModalHeaderContents({ onClose, order }: OrderModalHeaderContentsPr
     onClose();
     navigate({
       pathname: `/admin/workspace/${workspaceId}/order/table`,
-      search: `?tableNo=${order.tableNumber}`,
+      search: createSearchParams({
+        tableNo: `${order.tableNumber}` || '',
+      }).toString(),
     });
   };
 
