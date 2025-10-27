@@ -93,7 +93,7 @@ function OrderModalFooterContents({ orderStatus, id, closeModal }: OrderModalFoo
     },
   };
 
-  const actions = generateOrderActionElements(orderStatus, actionHandlers);
+  const elements = generateOrderActionElements(orderStatus, actionHandlers);
 
   return <ModalFooter>{actions}</ModalFooter>;
 }
