@@ -33,20 +33,32 @@ const ModalFooter = styled.div`
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
-const getOrderStatusActions = (orderStatus: OrderStatus, actionHandlers: Record<string, () => void>) => {
+const generateOrderActionElements = (orderStatus: OrderStatus, actionHandlers: Record<string, () => void>) => {
   switch (orderStatus) {
     case OrderStatus.NOT_PAID:
       return [
-        { label: '주문 취소', onClick: actionHandlers.cancelOrder, Component: ModalSecondaryButton },
-        { label: '결제 완료', onClick: actionHandlers.payOrder, Component: ModalPrimaryButton },
+        <ModalSecondaryButton key="cancel" onClick={actionHandlers.cancelOrder}>
+          주문 취소
+        </ModalSecondaryButton>,
+        <ModalPrimaryButton key="pay" onClick={actionHandlers.payOrder}>
+          결제 완료
+        </ModalPrimaryButton>,
       ];
     case OrderStatus.PAID:
       return [
-        { label: '되돌리기', onClick: actionHandlers.refundOrder, Component: ModalSecondaryButton },
-        { label: '서빙 완료', onClick: actionHandlers.serveOrder, Component: ModalPrimaryButton },
+        <ModalSecondaryButton key="refund" onClick={actionHandlers.refundOrder}>
+          되돌리기
+        </ModalSecondaryButton>,
+        <ModalPrimaryButton key="serve" onClick={actionHandlers.serveOrder}>
+          서빙 완료
+        </ModalPrimaryButton>,
       ];
     case OrderStatus.SERVED:
-      return [{ label: '되돌리기', onClick: actionHandlers.payOrder, Component: ModalSecondaryButton }];
+      return [
+        <ModalSecondaryButton key="pay-again" onClick={actionHandlers.payOrder}>
+          되돌리기
+        </ModalSecondaryButton>,
+      ];
     default:
       return [];
   }
@@ -81,17 +93,9 @@ function OrderModalFooterContents({ orderStatus, id, closeModal }: OrderModalFoo
     },
   };
 
-  const actions = getOrderStatusActions(orderStatus, actionHandlers);
+  const actions = generateOrderActionElements(orderStatus, actionHandlers);
 
-  return (
-    <ModalFooter>
-      {actions.map(({ label, onClick, Component }) => (
-        <Component key={label} onClick={onClick}>
-          {label}
-        </Component>
-      ))}
-    </ModalFooter>
-  );
+  return <ModalFooter>{actions}</ModalFooter>;
 }
 
 export default OrderModalFooterContents;
