@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { adminNavData } from '@resources/data/adminNavData';
+import { adminNavData } from '@constants/data/adminNavData';
 import { RiSubtractLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 

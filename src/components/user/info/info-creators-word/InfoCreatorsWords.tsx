@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import InfoTitle from '@components/user/info/InfoTitle';
 import InfoCreatorsContent from '@components/user/info/info-creators-word/InfoCreatorsContent';
-import { infoCreatorData } from '@resources/data/infoData';
+import { infoCreatorData } from '@constants/data/infoData';
 
 const Container = styled.div`
   width: 100%;

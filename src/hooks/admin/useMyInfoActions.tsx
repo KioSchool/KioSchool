@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import useConfirm from '@hooks/useConfirm';
 import useAdminUser from '@hooks/admin/useAdminUser';
 import useAuthentication from '@hooks/useAuthentication';
-import { MyInfoCardData } from '@resources/data/myInfoData';
+import { MyInfoCardData } from '@constants/data/myInfoData';
 
 export const useMyInfoActions = () => {
   const navigate = useNavigate();

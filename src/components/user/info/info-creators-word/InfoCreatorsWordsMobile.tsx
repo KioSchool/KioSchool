@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import InfoTitle from '@components/user/info/InfoTitle';
-import { infoCreatorData } from '@resources/data/infoData';
+import { infoCreatorData } from '@constants/data/infoData';
 import InfoCreatorsContentMobile from '@components/user/info/info-creators-word/InfoCreatorsContentMobile';
 
 const Container = styled.div`

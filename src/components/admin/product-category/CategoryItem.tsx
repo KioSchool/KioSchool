@@ -4,7 +4,7 @@ import { Color } from '@resources/colors';
 import { RiMenuLine, RiDeleteBinFill } from '@remixicon/react';
 import { rowFlex } from '@styles/flexStyles';
 import { expandButtonStyle } from '@styles/buttonStyles';
-import { defaultCategoryNotice } from '@resources/data/categoryData';
+import { defaultCategoryNotice } from '@constants/data/categoryData';
 
 const CategoryItemContainer = styled.div`
   position: relative;
