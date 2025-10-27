@@ -95,7 +95,7 @@ function OrderModalFooterContents({ orderStatus, id, closeModal }: OrderModalFoo
 
   const elements = generateOrderActionElements(orderStatus, actionHandlers);
 
-  return <ModalFooter>{actions}</ModalFooter>;
+  return <ModalFooter>{elements}</ModalFooter>;
 }
 
 export default OrderModalFooterContents;
