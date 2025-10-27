@@ -21,7 +21,20 @@ const TitleContainer = styled.div`
   gap: 10px;
   padding: 0 30px;
   box-sizing: border-box;
-  ${rowFlex({ justify: 'start', align: 'end' })}
+  ${rowFlex({ justify: 'space-between', align: 'end' })}
+`;
+
+const StatusLabelContainer = styled.div<{ isServed: boolean }>`
+  width: 84px;
+  height: 24px;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 12px;
+  font-family: 'LINE Seed Sans KR', sans-serif;
+  background-color: ${(props) => (props.isServed ? '#ff9142' : 'white')};
+  border: ${(props) => (props.isServed ? '' : '1px solid #e8eef2')};
+  color: ${(props) => (props.isServed ? '#ffffff' : '#464a4d')};
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const TotalLabelContainer = styled.div`
@@ -59,7 +72,8 @@ function OrderModalMainContents({ order }: OrderModalMainContentsProps) {
         <AppLabel size={16} style={{ fontWeight: 700 }}>
           {`주문 상품 ${order.orderProducts.length}개`}
         </AppLabel>
-        {isPaidStatus && <AppLabel size={12}>{isAllServed ? '모든 서빙 완료' : '결제 완료'}</AppLabel>}
+
+        {isPaidStatus && <StatusLabelContainer isServed={isAllServed}>{isAllServed ? '서빙 완료' : '서빙 미완료'}</StatusLabelContainer>}
       </TitleContainer>
 
       <OrderModalProductList
