@@ -9,6 +9,8 @@ import { useAtomValue } from 'jotai';
 import { adminProductsAtom } from 'src/jotai/admin/atoms';
 import { RiCloseLine } from '@remixicon/react';
 
+const ProductModalContainer = styled.div``;
+
 const Overlay = styled.div<{ isOpen: boolean }>`
   position: fixed;
   top: 65px;
@@ -24,7 +26,7 @@ const SidebarContainer = styled.div<{ isOpen: boolean }>`
   position: fixed;
   top: 65px;
   right: 0;
-  width: 280px;
+  width: 300px;
   height: calc(100vh - 65px);
   background-color: ${Color.WHITE};
   border-left: 1px solid #e8eef2;
@@ -125,7 +127,7 @@ function OrderByProductModal({ orders, isModalOpen, closeModal }: OrderByProduct
     .sort((a, b) => b.count - a.count);
 
   return (
-    <>
+    <ProductModalContainer>
       <Overlay isOpen={isModalOpen} onClick={closeModal} />
       <SidebarContainer isOpen={isModalOpen}>
         <SidebarHeader>
@@ -158,7 +160,7 @@ function OrderByProductModal({ orders, isModalOpen, closeModal }: OrderByProduct
           })}
         </ProductContainer>
       </SidebarContainer>
-    </>
+    </ProductModalContainer>
   );
 }
 
