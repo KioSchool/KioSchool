@@ -66,11 +66,11 @@ interface OrderModalProductListProps {
 function OrderModalProductList({ orderProducts, productMap, isPaidStatus, onIncrease, onDecrease }: OrderModalProductListProps) {
   return (
     <OrderProductContainer>
-      {orderProducts.map((orderProduct, index) => {
+      {orderProducts.map((orderProduct) => {
         const product = productMap[orderProduct.productId];
 
         return (
-          <ProductContainer key={`${orderProduct.id}-${index}`} isServed={orderProduct.isServed}>
+          <ProductContainer key={`${orderProduct.id}`} isServed={orderProduct.isServed}>
             <ProductLeftContainer>
               <ProductImage src={product?.imageUrl} alt={orderProduct.productName} />
               <ProducDescription>
