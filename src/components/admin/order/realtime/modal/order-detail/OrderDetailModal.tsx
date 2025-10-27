@@ -9,13 +9,15 @@ import { createPortal } from 'react-dom';
 import { useEffect } from 'react';
 import useModal from '@hooks/useModal';
 
+const DetailModalContainer = styled.div``;
+
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(70, 74, 77, 0.3);
   backdrop-filter: blur(2px);
   z-index: 2000;
 `;
@@ -28,7 +30,7 @@ const ModalContainer = styled.div`
   background-color: ${Color.WHITE};
   border-radius: 10px;
   border: 1px solid #e8eef2;
-  width: 700px;
+  width: 500px;
   z-index: 2001;
   gap: 15px;
   box-shadow: 0 4px 20px 0 rgba(92, 92, 92, 0.05);
@@ -64,14 +66,14 @@ function OrderDetailModal({ order, isModalOpen, closeModal }: Props) {
   }
 
   return createPortal(
-    <>
+    <DetailModalContainer>
       <ModalOverlay onClick={closeModal} />
       <ModalContainer>
         <OrderModalHeaderContents onClose={closeModal} order={order} />
         <OrderModalMainContents order={order} />
         <OrderModalFooterContents orderStatus={order.status} id={order.id} closeModal={closeModal} />
       </ModalContainer>
-    </>,
+    </DetailModalContainer>,
     document.getElementById(modalKey) as HTMLElement,
   );
 }
