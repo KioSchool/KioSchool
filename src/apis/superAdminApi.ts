@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 import { setupApiInterceptors } from 'src/utils/apiInterceptors';
+import { URLS } from 'src/constants/urls';
 
-const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT;
 const AUTH_ERROR_EVENT = 'adminAuthError';
 
 class SuperAdminApiManager {
@@ -12,7 +12,7 @@ class SuperAdminApiManager {
   constructor() {
     this.controller = new AbortController();
     this.api = axios.create({
-      baseURL: ENVIRONMENT == 'development' ? '/api/super-admin' : 'https://api.kio-school.com/super-admin',
+      baseURL: URLS.API.SUPER_ADMIN,
       withCredentials: true,
       signal: this.controller.signal,
       timeout: 30000,

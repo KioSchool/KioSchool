@@ -2,6 +2,7 @@ import { colFlex } from '@styles/flexStyles';
 import styled from '@emotion/styled';
 import { RiQuestionFill } from '@remixicon/react';
 import { Color } from '@resources/colors';
+import { URLS } from 'src/constants/urls';
 
 const FixedContainer = styled.div`
   z-index: 1001;
@@ -25,9 +26,7 @@ const QuestionIcon = styled(RiQuestionFill)`
 
 function AppFaqButton() {
   const handleButtonClick = () => {
-    const notionUrl = 'https://ji-in.notion.site/FAQ-09eb07eac4a34ab4aa883727994e0b08?pvs=4';
-
-    window.open(notionUrl, '_blank');
+    window.open(URLS.EXTERNAL.NOTION_FAQ, '_blank');
   };
 
   return (

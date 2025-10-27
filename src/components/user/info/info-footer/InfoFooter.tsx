@@ -8,6 +8,7 @@ import { tabletMediaQuery } from '@styles/globalStyles';
 import { isMobile } from 'react-device-detect';
 import { css } from '@emotion/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
+import { URLS } from 'src/constants/urls';
 
 const Container = styled.div`
   width: 100%;
@@ -71,15 +72,11 @@ const FooterContent = styled.div`
 
 function InfoFooter() {
   const handleInstagramClick = () => {
-    const instagramUrl = 'https://www.instagram.com/kioschool/';
-
-    window.open(instagramUrl, '_blank');
+    window.open(URLS.EXTERNAL.INSTAGRAM, '_blank');
   };
 
   const handleNotionClick = () => {
-    const notionUrl = 'https://ji-in.notion.site/FAQ-09eb07eac4a34ab4aa883727994e0b08?pvs=4';
-
-    window.open(notionUrl, '_blank');
+    window.open(URLS.EXTERNAL.NOTION_FAQ, '_blank');
   };
 
   const pcContentSizes = {

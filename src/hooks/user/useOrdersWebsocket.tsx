@@ -5,9 +5,7 @@ import { useSetAtom } from 'jotai';
 import { adminOrdersAtom } from '../../jotai/admin/atoms';
 import { useCallback, useEffect, useMemo } from 'react';
 import SockJS from 'sockjs-client/dist/sockjs';
-
-const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT;
-const sockJSUrl = ENVIRONMENT === 'development' ? 'http://localhost:8080/api/ws' : 'https://api.kio-school.com/ws';
+import { URLS } from 'src/constants/urls';
 
 function playOrderCreateAudio() {
   const audio = new Audio(kioSchoolOrderAlarm);
@@ -34,7 +32,7 @@ function useOrdersWebsocket(workspaceId: string | undefined) {
   const client = useMemo(
     () =>
       new StompJs.Client({
-        webSocketFactory: () => new SockJS(sockJSUrl),
+        webSocketFactory: () => new SockJS(URLS.WS),
         debug: (str) => {
           console.log(str);
         },
