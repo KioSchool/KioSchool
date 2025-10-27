@@ -5,6 +5,7 @@ import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import AppLabel from '@components/common/label/AppLabel';
 import OrderModalProductButtons from './OrderModalProductButtons';
+import defaultProductImage from '@resources/image/defaultWorkspaceImage.png';
 
 const OrderProductContainer = styled.div`
   width: 100%;
@@ -68,11 +69,12 @@ function OrderModalProductList({ orderProducts, productMap, isPaidStatus, onIncr
     <OrderProductContainer>
       {orderProducts.map((orderProduct) => {
         const product = productMap[orderProduct.productId];
+        const productImageUrl = product?.imageUrl ? product.imageUrl : defaultProductImage;
 
         return (
           <ProductContainer key={`${orderProduct.id}`} isServed={orderProduct.isServed}>
             <ProductLeftContainer>
-              <ProductImage src={product?.imageUrl} alt={orderProduct.productName} />
+              <ProductImage src={productImageUrl} alt={orderProduct.productName} />
               <ProducDescription>
                 <AppLabel size={14}>{orderProduct.productName}</AppLabel>
                 <AppLabel size={12}>{`${orderProduct.quantity}개`}</AppLabel>
