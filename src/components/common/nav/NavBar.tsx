@@ -9,6 +9,7 @@ import { expandButtonStyle } from '@styles/buttonStyles';
 import SideNav from './SideNav';
 import { useAtom } from 'jotai';
 import { adminSideNavIsOpenAtom } from 'src/jotai/admin/atoms';
+import { URLS } from '@constants/urls';
 
 const NavContainer = styled.div<{ useBackground: boolean }>`
   z-index: 1005;
@@ -56,8 +57,6 @@ const NavUrl = styled.a`
   ${navBarLabelStyle}
 `;
 
-const NOTION_FAQ_URL = 'https://ji-in.notion.site/FAQ-09eb07eac4a34ab4aa883727994e0b08?pvs=4';
-
 interface NavBarProps {
   useBackground?: boolean;
 }
@@ -90,7 +89,7 @@ function NavBar({ useBackground = false }: NavBarProps) {
           <NavLinkItem to={'/info'} className={'nav-link-item'}>
             키오스쿨 소개
           </NavLinkItem>
-          <NavUrl href={NOTION_FAQ_URL} target="_blank" rel="noopener noreferrer" className={'nav-link-item'}>
+          <NavUrl href={URLS.EXTERNAL.NOTION_FAQ} target="_blank" rel="noopener noreferrer" className={'nav-link-item'}>
             FAQ
           </NavUrl>
           <AuthenticationButton />
@@ -99,7 +98,6 @@ function NavBar({ useBackground = false }: NavBarProps) {
           </NavLinkItem>
         </NavLinkContainer>
       </NavContainer>
-
       {isShowHamburger && <SideNav isOpen={isSideNavOpen} onClose={handleCloseSideNav} />}
     </>
   );

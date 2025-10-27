@@ -3,9 +3,9 @@ import { RiPlayFill } from '@remixicon/react';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import youtubeThumbnail from '@resources/image/home/youtubeThumbnail.png';
+import { URLS } from '@constants/urls';
 
 const KIOSCHOOL_GUIDE_YOUTUBE_TOAST_COOKIE = 'kioschool_guide_youtube_toast_hidden';
-const YOUTUBE_URL = 'https://www.youtube.com/watch?v=4tZjnj48hBk';
 const ONE_WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
 
 const ToastContent = styled.div`
@@ -97,7 +97,7 @@ function KioSchoolGuideYoutubeContent({ onDismiss }: KioSchoolGuideYoutubeConten
   const [, setCookie] = useCookies([KIOSCHOOL_GUIDE_YOUTUBE_TOAST_COOKIE]);
 
   const handleVideoClick = () => {
-    window.open(YOUTUBE_URL, '_blank', 'noopener,noreferrer');
+    window.open(URLS.EXTERNAL.YOUTUBE, '_blank', 'noopener,noreferrer');
     onDismiss();
   };
 

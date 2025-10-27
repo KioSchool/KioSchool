@@ -1,7 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { setupApiInterceptors } from 'src/utils/apiInterceptors';
-
-const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT;
+import { URLS } from '@constants/urls';
 
 class UserApiManager {
   private controller: AbortController;
@@ -11,7 +10,7 @@ class UserApiManager {
   constructor() {
     this.controller = new AbortController();
     this.api = axios.create({
-      baseURL: ENVIRONMENT == 'development' ? '/api' : 'https://api.kio-school.com',
+      baseURL: URLS.API.USER,
       withCredentials: true,
       timeout: 30000,
     });
