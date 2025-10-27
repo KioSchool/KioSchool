@@ -25,7 +25,7 @@ const TitleContainer = styled.div`
 `;
 
 const TotalLabelContainer = styled.div`
-  padding: 10px 30px 0 30px;
+  padding: 2px 30px 0 30px;
   width: 100%;
   box-sizing: border-box;
   ${rowFlex({ justify: 'space-between', align: 'center' })}

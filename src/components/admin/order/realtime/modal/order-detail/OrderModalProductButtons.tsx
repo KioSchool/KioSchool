@@ -6,9 +6,19 @@ import { rowFlex } from '@styles/flexStyles';
 import AppLabel from '@components/common/label/AppLabel';
 
 const ButtonContainer = styled.div`
-  width: 84px;
-  padding-right: 4px;
+  gap: 4px;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
+`;
+
+const IconWrapper = styled.div`
+  width: 28px;
+  height: 28px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
+
+  &:hover {
+    border-radius: 99px;
+    background-color: #e8eef2;
+  }
 `;
 
 const iconStyle = (disabled: boolean) => css`
@@ -40,9 +50,13 @@ function OrderModalProductButtons({ servedCount, quantity, isServed, onIncrease,
 
   return (
     <ButtonContainer>
-      <MinusIcon disabled={isDecreaseDisabled} onClick={onDecrease} />
+      <IconWrapper>
+        <MinusIcon disabled={isDecreaseDisabled} onClick={onDecrease} />
+      </IconWrapper>
       <AppLabel size={12}>{`${servedCount} / ${quantity}`}</AppLabel>
-      <PlusIcon disabled={isIncreaseDisabled} onClick={onIncrease} />
+      <IconWrapper>
+        <PlusIcon disabled={isIncreaseDisabled} onClick={onIncrease} />
+      </IconWrapper>
     </ButtonContainer>
   );
 }
