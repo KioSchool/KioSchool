@@ -9,22 +9,25 @@ const ButtonContainer = styled.div`
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
-const IconWrapper = styled.div`
+const IconWrapper = styled.div<{ disabled: boolean }>`
   width: 28px;
   height: 28px;
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
   border-radius: 99px;
   background-color: #f0f5f8;
   ${rowFlex({ justify: 'center', align: 'center' })}
 
-  &:hover {
-    background-color: #d1d5d8;
-  }
+  ${(props) =>
+    !props.disabled &&
+    css`
+      &:hover {
+        background-color: #d1d5d8;
+      }
+    `}
 `;
 
 const iconStyle = (disabled: boolean) => css`
   width: 18px;
-  cursor: ${disabled ? 'not-allowed' : 'pointer'};
   opacity: ${disabled ? 0.4 : 1};
   color: ${disabled ? Color.GREY : 'inherit'};
 `;
@@ -60,11 +63,11 @@ function OrderModalProductButtons({ servedCount, quantity, isServed, onIncrease,
 
   return (
     <ButtonContainer>
-      <IconWrapper onClick={onDecrease}>
+      <IconWrapper onClick={onDecrease} disabled={isDecreaseDisabled}>
         <MinusIcon disabled={isDecreaseDisabled} />
       </IconWrapper>
       <QuantityLabel>{`${servedCount} / ${quantity}`}</QuantityLabel>
-      <IconWrapper onClick={onIncrease}>
+      <IconWrapper onClick={onIncrease} disabled={isIncreaseDisabled}>
         <PlusIcon disabled={isIncreaseDisabled} />
       </IconWrapper>
     </ButtonContainer>
