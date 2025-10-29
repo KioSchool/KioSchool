@@ -57,6 +57,7 @@ const CheckIcon = styled(RiCheckboxCircleFill)`
 
 const ProductNameContainer = styled.div`
   gap: 4px;
+  user-select: none;
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
@@ -65,12 +66,14 @@ const ProductNameLabel = styled.div<{ isServed: boolean }>`
   font-size: 15px;
   font-weight: 700;
   color: ${(props) => props.isServed && Color.KIO_ORANGE};
+  user-select: none;
   ${rowFlex({ justify: 'center' })}
 `;
 
 const ProductQuantityLabel = styled.div`
   font-family: 'LINE Seed Sans KR', sans-serif;
   font-size: 12px;
+  user-select: none;
 `;
 
 interface OrderModalProductListProps {
