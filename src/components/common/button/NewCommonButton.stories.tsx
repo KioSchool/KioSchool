@@ -59,6 +59,34 @@ export const Disabled = {
     size: 'xs',
     color: 'kio_orange',
     children: 'Disabled',
-    onClick: () => alert('Button clicked!'), // disabled 상태라 클릭되지 않습니다.
+    onClick: () => alert('Button clicked!'),
+  },
+};
+
+export const CustomColors = {
+  args: {
+    size: 'sm',
+    children: 'Custom Green',
+    onClick: () => alert('Button clicked!'),
+    customColors: {
+      background: '#28a745',
+      color: '#ffffff',
+      border: '2px solid #218838',
+      hoverBackground: '#218838',
+      hoverColor: '#ffffff',
+    },
+  },
+};
+
+export const CustomBlueGrayVariant = {
+  args: {
+    size: 'sm',
+    color: 'blue_gray',
+    children: 'Custom Border',
+    onClick: () => alert('Button clicked!'),
+    customColors: {
+      border: '2px solid #007bff',
+      hoverBackground: '#f0f8ff',
+    },
   },
 };

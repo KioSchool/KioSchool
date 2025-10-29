@@ -11,12 +11,21 @@ export interface CustomButtonSize {
   height?: number;
 }
 
+export interface CustomColorTheme {
+  background?: string;
+  color?: string;
+  border?: string;
+  hoverBackground?: string;
+  hoverColor?: string;
+  hoverBorder?: string;
+}
+
 const sizeStyles = (size: ButtonSize, customSize: CustomButtonSize | undefined) => {
   if (customSize) {
     return css`
       width: ${customSize.width ?? 150}px;
       height: ${customSize.height ?? 35}px;
-      font-size: ${customSize.height ? `${customSize.height * 0.5}px` : '20px'};
+      font-size: ${customSize.height ? `${customSize.height * 0.5}px` : '18px'};
     `;
   }
 
@@ -69,10 +78,29 @@ const colorStyles = (color: ButtonColor) => {
   }
 };
 
+const customColorStyles = (theme: CustomColorTheme | undefined) => {
+  if (!theme) {
+    return css``;
+  }
+
+  return css`
+    ${theme.background && `background: ${theme.background};`}
+    ${theme.color && `color: ${theme.color};`}
+    ${theme.border && `border: ${theme.border};`}
+
+    &:hover:not(:disabled) {
+      ${theme.hoverBackground && `background: ${theme.hoverBackground};`}
+      ${theme.hoverColor && `color: ${theme.hoverColor};`}
+      ${theme.hoverBorder && `border: ${theme.hoverBorder};`}
+    }
+  `;
+};
+
 interface NewCommonButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize;
   customSize?: CustomButtonSize;
   color?: ButtonColor;
+  customColors?: CustomColorTheme;
 }
 
 const StyledButton = styled.button<NewCommonButtonProps>`
@@ -85,6 +113,7 @@ const StyledButton = styled.button<NewCommonButtonProps>`
 
   ${({ size = 'md', customSize }) => sizeStyles(size, customSize)}
   ${({ color = 'kio_orange' }) => colorStyles(color)}
+  ${({ customColors }) => customColorStyles(customColors)}
 
   &:disabled {
     //todo: disabled 색상 선정 여부 논의 필요
