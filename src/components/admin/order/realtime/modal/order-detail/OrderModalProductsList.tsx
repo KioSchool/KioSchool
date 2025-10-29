@@ -89,7 +89,7 @@ function OrderModalProductList({ orderProducts, productMap, isPaidStatus, onIncr
     <OrderProductContainer>
       {orderProducts.map((orderProduct) => {
         const product = productMap[orderProduct.productId];
-        const productImageUrl = product?.imageUrl ? product.imageUrl : defaultProductImage;
+        const productImageUrl = product.imageUrl || defaultProductImage;
 
         return (
           <ProductContainer key={`${orderProduct.id}`}>
