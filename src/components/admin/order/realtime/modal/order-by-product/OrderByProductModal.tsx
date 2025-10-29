@@ -7,57 +7,92 @@ import AppLabel from '@components/common/label/AppLabel';
 import { Color } from '@resources/colors';
 import { useAtomValue } from 'jotai';
 import { adminProductsAtom } from 'src/jotai/admin/atoms';
+import { RiCloseLine } from '@remixicon/react';
+import defaultProductImage from '@resources/image/defaultWorkspaceImage.png';
 
-const ModalContainer = styled.div`
-  ${colFlex({ align: 'center' })};
+const ProductModalContainer = styled.div``;
+
+const Overlay = styled.div<{ isOpen: boolean }>`
   position: fixed;
-  top: calc(50% - 275px);
-  right: 150px;
-  background-color: rgba(233, 233, 233, 0.8);
-  border-radius: 10px;
-  width: 240px;
-  height: 550px;
-  z-index: 1999;
-  padding: 25px;
+  top: 65px;
+  right: 0;
+  bottom: 0;
+  width: 50%;
+  z-index: 1010;
+  opacity: ${(props) => (props.isOpen ? 1 : 0)};
+  visibility: ${(props) => (props.isOpen ? 'visible' : 'hidden')};
+`;
+
+const SidebarContainer = styled.div<{ isOpen: boolean }>`
+  position: fixed;
+  top: 65px;
+  right: 0;
+  width: 300px;
+  height: calc(100vh - 65px);
+  background-color: ${Color.WHITE};
+  border-left: 1px solid #e8eef2;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
-  gap: 40px;
+  z-index: 1011;
+  padding: 20px 10px 0 40px;
+  gap: 15px;
+  font-family: 'LINE Seed Sans KR', sans-serif;
+  transform: translateX(${(props) => (props.isOpen ? '0' : '100%')});
+  transition: transform 0.3s ease-in-out;
+  ${colFlex()}
 
   ${tabletMediaQuery} {
-    right: 120px;
+    width: 280px;
   }
 `;
 
-const HeaderContainer = styled.div`
-  ${colFlex({ justify: 'center', align: 'center' })};
+const SidebarHeader = styled.div`
   width: 100%;
-  gap: 3px;
+  ${colFlex({ justify: 'center', align: 'center' })};
+`;
+
+const TitleContainer = styled.div`
+  width: 100%;
+  gap: 8px;
+  ${colFlex({ justify: 'start', align: 'start' })};
+`;
+
+const CloseButton = styled.button`
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  color: #464a4d;
+  cursor: pointer;
+  ${rowFlex({ justify: 'end', align: 'end' })}
 `;
 
 const ProductContainer = styled.div`
-  ${colFlex()};
   width: 100%;
-  height: 450px;
+  flex-grow: 1;
+  min-height: 0;
   overflow-y: auto;
-  background: ${Color.LIGHT_GREY};
   border-radius: 10px;
   box-sizing: border-box;
-  padding: 10px;
-  gap: 12px;
+  gap: 8px;
+  ${colFlex()};
 `;
 
 const ProductItem = styled.div`
+  gap: 12px;
   ${rowFlex({ align: 'center' })};
-  gap: 20px;
 `;
 
 const ProductImage = styled.img`
   width: 50px;
   height: 50px;
-  border-radius: 50%;
+  border-radius: 8px;
+  border: 1px solid #e8eef2;
 `;
 
 const ProductInfoContainer = styled.div`
-  ${colFlex({ justify: 'center', align: 'flex-start' })};
+  height: 50px;
+  gap: 4px;
   min-width: 0;
   & > * {
     overflow: hidden;
@@ -65,22 +100,21 @@ const ProductInfoContainer = styled.div`
     text-overflow: ellipsis;
     width: 100%;
   }
+  ${colFlex({ justify: 'center', align: 'flex-start' })};
 `;
 
 interface OrderByProductModalProps {
   orders: Order[];
   isModalOpen: boolean;
+  closeModal: () => void;
 }
 
-function OrderByProductModal({ orders, isModalOpen }: OrderByProductModalProps) {
+function OrderByProductModal({ orders, isModalOpen, closeModal }: OrderByProductModalProps) {
   const products = useAtomValue(adminProductsAtom);
-
-  if (!isModalOpen) {
-    return null;
-  }
 
   const productMap = _.keyBy(products, 'id');
   const productCounts: Record<number, number> = {};
+
   orders.forEach((order) => {
     order.orderProducts.forEach((orderProduct) => {
       const quantity = orderProduct.quantity - orderProduct.servedCount;
@@ -90,38 +124,48 @@ function OrderByProductModal({ orders, isModalOpen }: OrderByProductModalProps) 
       }
     });
   });
+
   const sortedProducts = Object.entries(productCounts)
     .map(([productId, count]) => ({ productId, count }))
     .sort((a, b) => b.count - a.count);
 
   return (
-    <ModalContainer>
-      <HeaderContainer>
-        <AppLabel size={20} style={{ fontWeight: 700 }}>
-          실시간 상품별 주문량
-        </AppLabel>
-        <AppLabel size={14}>*결제 완료 주문만 표시됩니다.</AppLabel>
-      </HeaderContainer>
-      <ProductContainer>
-        {sortedProducts.map(({ productId, count }) => {
-          const product = productMap[productId];
+    <ProductModalContainer>
+      <Overlay isOpen={isModalOpen} onClick={closeModal} />
+      <SidebarContainer isOpen={isModalOpen}>
+        <SidebarHeader>
+          <CloseButton onClick={closeModal}>
+            <RiCloseLine size={24} />
+          </CloseButton>
 
-          if (!product || count <= 0) return null;
+          <TitleContainer>
+            <AppLabel size={18} style={{ fontWeight: 700 }}>
+              실시간 상품별 주문량
+            </AppLabel>
+            <AppLabel size={16}>*결제 완료 주문만 표시됩니다.</AppLabel>
+          </TitleContainer>
+        </SidebarHeader>
+        <ProductContainer>
+          {sortedProducts.map(({ productId, count }) => {
+            const product = productMap[productId];
+            const productImageUrl = product?.imageUrl || defaultProductImage;
+            const productName = product.name;
 
-          return (
-            <ProductItem key={productId}>
-              <ProductImage src={product.imageUrl} alt={product.name} />
-              <ProductInfoContainer>
-                <AppLabel size={14} style={{ fontWeight: 700 }}>
-                  {product.name}
-                </AppLabel>
-                <AppLabel size={14}>{count}개</AppLabel>
-              </ProductInfoContainer>
-            </ProductItem>
-          );
-        })}
-      </ProductContainer>
-    </ModalContainer>
+            if (count <= 0) return null;
+
+            return (
+              <ProductItem key={productId}>
+                <ProductImage src={productImageUrl} alt={productName} />
+                <ProductInfoContainer>
+                  <AppLabel size={16}>{productName}</AppLabel>
+                  <AppLabel size={14}>{count}개</AppLabel>
+                </ProductInfoContainer>
+              </ProductItem>
+            );
+          })}
+        </ProductContainer>
+      </SidebarContainer>
+    </ProductModalContainer>
   );
 }
 

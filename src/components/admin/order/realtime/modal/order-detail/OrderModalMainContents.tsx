@@ -1,79 +1,51 @@
-import { Order, OrderProduct, OrderStatus } from '@@types/index';
-import AppLabel from '@components/common/label/AppLabel';
+import { Order, OrderProduct, OrderStatus, Product } from '@@types/index';
 import styled from '@emotion/styled';
-import { Color } from '@resources/colors';
-import { RiAddCircleFill, RiCheckLine, RiIndeterminateCircleLine } from '@remixicon/react';
-import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
-import { css } from '@emotion/react';
-
-const HorizontalLine = styled.hr`
-  width: 100%;
-  border: 1px solid #eeecec;
-`;
+import { useAtomValue } from 'jotai';
+import { adminProductsAtom } from 'src/jotai/admin/atoms';
+import _ from 'lodash';
+import OrderModalProductList from './OrderModalProductsList';
 
 const ModalContent = styled.div`
-  ${colFlex({ justify: 'space-between', align: 'start' })}
+  font-family: 'LINE Seed Sans KR', sans-serif;
+  color: #464a4d;
   gap: 10px;
-  padding: 10px 40px;
-`;
-
-const OrderProductContainer = styled.div`
-  ${colFlex({ justify: 'start' })}
-  width: 100%;
-  height: 300px;
-  padding: 2px 0;
-  gap: 15px;
-  overflow-y: auto;
+  ${colFlex({ justify: 'start', align: 'start' })}
 `;
 
 const TitleContainer = styled.div`
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
   width: 100%;
-  gap: 10px;
+  padding: 0 30px;
+  box-sizing: border-box;
+  ${rowFlex({ justify: 'space-between', align: 'end' })}
 `;
 
-const ServedStyle = css`
-  & * {
-    color: ${Color.KIO_ORANGE};
-  }
-`;
-
-const ProductContainer = styled.div<{ isServed: boolean }>`
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
-  width: 100%;
-  ${(props) => props.isServed && ServedStyle}
-`;
-
-const ProductLeftContainer = styled.div`
-  ${rowFlex({ align: 'center' })}
-  gap: 10px;
+const StatusLabelContainer = styled.div<{ isServed: boolean }>`
+  width: 84px;
+  height: 24px;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 12px;
+  font-family: 'LINE Seed Sans KR', sans-serif;
+  background-color: ${(props) => (props.isServed ? '#ff9142' : 'white')};
+  border: ${(props) => (props.isServed ? '' : '1px solid #e8eef2')};
+  color: ${(props) => (props.isServed ? '#ffffff' : '#464a4d')};
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const TotalLabelContainer = styled.div`
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
+  padding: 2px 30px 0 30px;
   width: 100%;
+  box-sizing: border-box;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
-const ProductRightContainer = styled.div`
-  ${rowFlex()};
-  gap: 10px;
-`;
-
-const ButtonContainer = styled.div`
-  ${rowFlex({ justify: 'space-between' })}
-  width: 120px;
-  padding-right: 2px;
-`;
-
-const PlusIcon = styled(RiAddCircleFill)`
-  ${expandButtonStyle};
-`;
-
-const MinusIcon = styled(RiIndeterminateCircleLine)`
-  ${expandButtonStyle};
+const MainLabel = styled.div`
+  font-family: 'LINE Seed Sans KR', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
 `;
 
 interface OrderModalMainContentsProps {
@@ -83,6 +55,9 @@ interface OrderModalMainContentsProps {
 function OrderModalMainContents({ order }: OrderModalMainContentsProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { updateOrderProductCount } = useAdminOrder(workspaceId);
+
+  const products = useAtomValue(adminProductsAtom);
+  const productMap: Record<number, Product> = _.keyBy(products, 'id');
 
   const isPaidStatus = order.status === OrderStatus.PAID;
   const isAllServed = order.orderProducts.every((orderProduct) => orderProduct.isServed);
@@ -98,58 +73,21 @@ function OrderModalMainContents({ order }: OrderModalMainContentsProps) {
   return (
     <ModalContent>
       <TitleContainer>
-        <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: 700 }}>
-          주문 내역
-        </AppLabel>
-        {isPaidStatus && (
-          <AppLabel color={isAllServed ? Color.KIO_ORANGE : Color.GREY} size={20} style={{ fontWeight: 700 }}>
-            {isAllServed ? '모든 서빙 완료' : '서빙 미완료'}
-          </AppLabel>
-        )}
+        <MainLabel>{`주문 상품 ${order.orderProducts.length}개`}</MainLabel>
+        {isPaidStatus && <StatusLabelContainer isServed={isAllServed}>{isAllServed ? '서빙 완료' : '서빙 미완료'}</StatusLabelContainer>}
       </TitleContainer>
-      <HorizontalLine />
-      <OrderProductContainer>
-        {order.orderProducts.map((orderProduct) => (
-          <ProductContainer key={orderProduct.id} isServed={orderProduct.isServed}>
-            <ProductLeftContainer>
-              <AppLabel color={Color.BLACK} size={20}>
-                {isPaidStatus ? `${orderProduct.productName}` : `${orderProduct.productName} - ${orderProduct.quantity}개`}
-              </AppLabel>
-              {orderProduct.isServed && <RiCheckLine />}
-            </ProductLeftContainer>
-            <ProductRightContainer>
-              <AppLabel color={Color.BLACK} size={20}>
-                {`${orderProduct.totalPrice.toLocaleString()}원`}
-              </AppLabel>
-              {isPaidStatus && (
-                <ButtonContainer>
-                  <MinusIcon
-                    onClick={() => {
-                      handleDecrease(orderProduct);
-                    }}
-                  />
-                  <AppLabel color={Color.BLACK} size={20}>
-                    {`${orderProduct.servedCount} / ${orderProduct.quantity}`}
-                  </AppLabel>
-                  <PlusIcon
-                    onClick={() => {
-                      handleIncrease(orderProduct);
-                    }}
-                  />
-                </ButtonContainer>
-              )}
-            </ProductRightContainer>
-          </ProductContainer>
-        ))}
-      </OrderProductContainer>
-      <HorizontalLine />
+
+      <OrderModalProductList
+        orderProducts={order.orderProducts}
+        productMap={productMap}
+        isPaidStatus={isPaidStatus}
+        onIncrease={handleIncrease}
+        onDecrease={handleDecrease}
+      />
+
       <TotalLabelContainer>
-        <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: 700 }}>
-          {'상품 합계'}
-        </AppLabel>
-        <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: 700 }}>
-          {`${order.totalPrice.toLocaleString()}원`}
-        </AppLabel>
+        <MainLabel>{'총 결제 금액'}</MainLabel>
+        <MainLabel>{`${order.totalPrice.toLocaleString()}원`}</MainLabel>
       </TotalLabelContainer>
     </ModalContent>
   );
