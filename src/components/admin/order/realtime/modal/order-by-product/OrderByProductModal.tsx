@@ -8,6 +8,7 @@ import { Color } from '@resources/colors';
 import { useAtomValue } from 'jotai';
 import { adminProductsAtom } from 'src/jotai/admin/atoms';
 import { RiCloseLine } from '@remixicon/react';
+import defaultProductImage from '@resources/image/defaultWorkspaceImage.png';
 
 const ProductModalContainer = styled.div``;
 
@@ -113,6 +114,7 @@ function OrderByProductModal({ orders, isModalOpen, closeModal }: OrderByProduct
 
   const productMap = _.keyBy(products, 'id');
   const productCounts: Record<number, number> = {};
+
   orders.forEach((order) => {
     order.orderProducts.forEach((orderProduct) => {
       const quantity = orderProduct.quantity - orderProduct.servedCount;
@@ -122,6 +124,7 @@ function OrderByProductModal({ orders, isModalOpen, closeModal }: OrderByProduct
       }
     });
   });
+
   const sortedProducts = Object.entries(productCounts)
     .map(([productId, count]) => ({ productId, count }))
     .sort((a, b) => b.count - a.count);
@@ -145,10 +148,10 @@ function OrderByProductModal({ orders, isModalOpen, closeModal }: OrderByProduct
         <ProductContainer>
           {sortedProducts.map(({ productId, count }) => {
             const product = productMap[productId];
-            const productImageUrl = product.imageUrl;
+            const productImageUrl = product?.imageUrl || defaultProductImage;
             const productName = product.name;
 
-            if (!product || count <= 0) return null;
+            if (count <= 0) return null;
 
             return (
               <ProductItem key={productId}>
