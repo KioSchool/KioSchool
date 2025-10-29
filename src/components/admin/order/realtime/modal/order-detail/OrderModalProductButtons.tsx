@@ -3,7 +3,6 @@ import { css } from '@emotion/react';
 import { RiAddLine, RiSubtractLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
-import AppLabel from '@components/common/label/AppLabel';
 
 const ButtonContainer = styled.div`
   gap: 4px;
@@ -14,11 +13,12 @@ const IconWrapper = styled.div`
   width: 28px;
   height: 28px;
   cursor: pointer;
+  border-radius: 99px;
+  background-color: #f0f5f8;
   ${rowFlex({ justify: 'center', align: 'center' })}
 
   &:hover {
-    border-radius: 99px;
-    background-color: #e8eef2;
+    background-color: #d1d5d8;
   }
 `;
 
@@ -35,6 +35,14 @@ const PlusIcon = styled(RiAddLine)<{ disabled: boolean }>`
 
 const MinusIcon = styled(RiSubtractLine)<{ disabled: boolean }>`
   ${(props) => iconStyle(props.disabled)}
+`;
+
+const QuantityLabel = styled.div`
+  width: 40px;
+  font-family: 'LINE Seed Sans KR', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  ${rowFlex({ justify: 'center' })}
 `;
 
 interface OrderModalProductButtonsProps {
@@ -54,7 +62,7 @@ function OrderModalProductButtons({ servedCount, quantity, isServed, onIncrease,
       <IconWrapper onClick={onDecrease}>
         <MinusIcon disabled={isDecreaseDisabled} />
       </IconWrapper>
-      <AppLabel size={14}>{`${servedCount} / ${quantity}`}</AppLabel>
+      <QuantityLabel>{`${servedCount} / ${quantity}`}</QuantityLabel>
       <IconWrapper onClick={onIncrease}>
         <PlusIcon disabled={isIncreaseDisabled} />
       </IconWrapper>

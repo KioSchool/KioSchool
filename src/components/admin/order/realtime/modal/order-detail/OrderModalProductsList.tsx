@@ -1,32 +1,24 @@
 ﻿import styled from '@emotion/styled';
-import { css } from '@emotion/react';
 import { OrderProduct, Product } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import AppLabel from '@components/common/label/AppLabel';
 import OrderModalProductButtons from './OrderModalProductButtons';
 import defaultProductImage from '@resources/image/defaultWorkspaceImage.png';
+import { RiCheckboxCircleFill } from '@remixicon/react';
 
 const OrderProductContainer = styled.div`
   width: 100%;
   height: 300px;
-  padding: 10px 30px;
-  gap: 15px;
+  padding: 2px 30px 10px 30px;
+  gap: 8px;
   overflow-y: auto;
   border-bottom: 1px solid #e8eef2;
   box-sizing: border-box;
   ${colFlex({ justify: 'start' })}
 `;
 
-const ServedStyle = css`
-  & * {
-    color: ${Color.KIO_ORANGE};
-  }
-`;
-
-const ProductContainer = styled.div<{ isServed: boolean }>`
+const ProductContainer = styled.div`
   width: 100%;
-  ${(props) => props.isServed && ServedStyle}
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
@@ -56,6 +48,31 @@ const ProductImage = styled.img`
   user-select: none;
 `;
 
+const CheckIcon = styled(RiCheckboxCircleFill)`
+  width: 15px;
+  height: 15px;
+  color: ${Color.KIO_ORANGE};
+  ${rowFlex({ align: 'center' })}
+`;
+
+const ProductNameContainer = styled.div`
+  gap: 4px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
+`;
+
+const ProductNameLabel = styled.div<{ isServed: boolean }>`
+  font-family: 'LINE Seed Sans KR', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: ${(props) => props.isServed && Color.KIO_ORANGE};
+  ${rowFlex({ justify: 'center' })}
+`;
+
+const ProductQuantityLabel = styled.div`
+  font-family: 'LINE Seed Sans KR', sans-serif;
+  font-size: 12px;
+`;
+
 interface OrderModalProductListProps {
   orderProducts: OrderProduct[];
   productMap: Record<number, Product>;
@@ -72,15 +89,15 @@ function OrderModalProductList({ orderProducts, productMap, isPaidStatus, onIncr
         const productImageUrl = product?.imageUrl ? product.imageUrl : defaultProductImage;
 
         return (
-          <ProductContainer key={`${orderProduct.id}`} isServed={orderProduct.isServed}>
+          <ProductContainer key={`${orderProduct.id}`}>
             <ProductLeftContainer>
               <ProductImage src={productImageUrl} alt={orderProduct.productName} />
               <ProducDescription>
-                <AppLabel size={14}>{orderProduct.productName}</AppLabel>
-                <AppLabel size={12}>{`${orderProduct.quantity}개`}</AppLabel>
-                <AppLabel size={12} style={{ fontWeight: 700 }}>
-                  {`${orderProduct.totalPrice.toLocaleString()}원`}
-                </AppLabel>
+                <ProductNameContainer>
+                  <ProductNameLabel isServed={orderProduct.isServed}>{orderProduct.productName}</ProductNameLabel>
+                  {orderProduct.isServed && <CheckIcon />}
+                </ProductNameContainer>
+                <ProductQuantityLabel>{`${orderProduct.quantity}개 · ${orderProduct.totalPrice.toLocaleString()}원`}</ProductQuantityLabel>
               </ProducDescription>
             </ProductLeftContainer>
             <ProductRightContainer>

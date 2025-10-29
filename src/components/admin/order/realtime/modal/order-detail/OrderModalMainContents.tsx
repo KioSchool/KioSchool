@@ -1,5 +1,4 @@
 import { Order, OrderProduct, OrderStatus, Product } from '@@types/index';
-import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
@@ -18,7 +17,6 @@ const ModalContent = styled.div`
 
 const TitleContainer = styled.div`
   width: 100%;
-  gap: 10px;
   padding: 0 30px;
   box-sizing: border-box;
   ${rowFlex({ justify: 'space-between', align: 'end' })}
@@ -42,6 +40,12 @@ const TotalLabelContainer = styled.div`
   width: 100%;
   box-sizing: border-box;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
+`;
+
+const MainLabel = styled.div`
+  font-family: 'LINE Seed Sans KR', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
 `;
 
 interface OrderModalMainContentsProps {
@@ -69,10 +73,7 @@ function OrderModalMainContents({ order }: OrderModalMainContentsProps) {
   return (
     <ModalContent>
       <TitleContainer>
-        <AppLabel size={16} style={{ fontWeight: 700 }}>
-          {`주문 상품 ${order.orderProducts.length}개`}
-        </AppLabel>
-
+        <MainLabel>{`주문 상품 ${order.orderProducts.length}개`}</MainLabel>
         {isPaidStatus && <StatusLabelContainer isServed={isAllServed}>{isAllServed ? '서빙 완료' : '서빙 미완료'}</StatusLabelContainer>}
       </TitleContainer>
 
@@ -85,12 +86,8 @@ function OrderModalMainContents({ order }: OrderModalMainContentsProps) {
       />
 
       <TotalLabelContainer>
-        <AppLabel size={16} style={{ fontWeight: 700 }}>
-          {'총 결제 금액'}
-        </AppLabel>
-        <AppLabel size={16} style={{ fontWeight: 700 }}>
-          {`${order.totalPrice.toLocaleString()}원`}
-        </AppLabel>
+        <MainLabel>{'총 결제 금액'}</MainLabel>
+        <MainLabel>{`${order.totalPrice.toLocaleString()}원`}</MainLabel>
       </TotalLabelContainer>
     </ModalContent>
   );
