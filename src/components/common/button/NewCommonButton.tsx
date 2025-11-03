@@ -109,9 +109,8 @@ const StyledButton = styled.button<NewCommonButtonProps>`
   ${({ customColors }) => customColorStyles(customColors)}
 
   &:disabled {
-    //todo: disabled 색상 선정 여부 논의 필요
-    background: #b1b1b1;
-    color: ${Color.WHITE};
+    background: #e8eef2;
+    color: #d1d5d8;
     border: none;
     cursor: not-allowed;
   }
