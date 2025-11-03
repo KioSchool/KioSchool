@@ -2,6 +2,7 @@
 import { css } from '@emotion/react';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
+import { lineSeedKrFont } from '@styles/fonts';
 
 type ButtonSize = 'xs' | 'sm' | 'md';
 type ButtonColor = 'kio_orange' | 'blue_gray';
@@ -101,8 +102,8 @@ const StyledButton = styled.button<NewCommonButtonProps>`
   border-radius: 40px;
   cursor: pointer;
   padding: 0 14px;
-  font-family: 'LINE Seed Sans KR', sans-serif;
   font-weight: 700;
+  ${lineSeedKrFont}
   ${rowFlex({ justify: 'center', align: 'center' })}
 
   ${({ size = 'md', customSize }) => sizeStyles(size, customSize)}
