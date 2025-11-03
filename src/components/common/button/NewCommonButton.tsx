@@ -96,13 +96,6 @@ const customColorStyles = (theme: CustomColorTheme | undefined) => {
   `;
 };
 
-interface NewCommonButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  size?: ButtonSize;
-  customSize?: CustomButtonSize;
-  color?: ButtonColor;
-  customColors?: CustomColorTheme;
-}
-
 const StyledButton = styled.button<NewCommonButtonProps>`
   border-radius: 40px;
   cursor: pointer;
@@ -123,6 +116,13 @@ const StyledButton = styled.button<NewCommonButtonProps>`
     cursor: not-allowed;
   }
 `;
+
+interface NewCommonButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  size?: ButtonSize;
+  customSize?: CustomButtonSize;
+  color?: ButtonColor;
+  customColors?: CustomColorTheme;
+}
 
 function NewCommonButton(props: NewCommonButtonProps) {
   return <StyledButton {...props} />;
