@@ -9,6 +9,7 @@ type ButtonColor = 'kio_orange' | 'blue_gray';
 export interface CustomButtonSize {
   width?: number;
   height?: number;
+  font?: number;
 }
 
 export interface CustomColorTheme {
@@ -25,7 +26,7 @@ const sizeStyles = (size: ButtonSize, customSize: CustomButtonSize | undefined) 
     return css`
       width: ${customSize.width ?? 150}px;
       height: ${customSize.height ?? 35}px;
-      font-size: ${customSize.height ? `${customSize.height * 0.5}px` : '18px'};
+      font-size: ${customSize.font ?? 13}px;
     `;
   }
 
