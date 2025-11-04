@@ -2,7 +2,7 @@ name: Update Notion Task Status from PR
 
 on:
   pull_request:
-    types: [opened, closed]
+    types: [opened, reopened, closed]
 
 jobs:
   update_notion:

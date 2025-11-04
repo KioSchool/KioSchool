@@ -29,6 +29,8 @@ async function main() {
   if (PR_ACTION === 'opened') {
     newStatus = STATUS_IN_PROGRESS;
     commentText = `🚀 PR이 생성되었습니다: ${PR_URL}`;
+  } else if (PR_ACTION === 'reopened') {
+    newStatus = STATUS_IN_PROGRESS;
   } else if (PR_ACTION === 'closed' && isMerged) {
     newStatus = STATUS_DONE;
     commentText = `✅ PR이 병합되었습니다: ${PR_URL}`;
