@@ -1,0 +1,52 @@
+name: Update Notion Task Status from PR
+
+on:
+  pull_request:
+    types: [opened, closed] # PR이 열리거나 닫힐 때(merge 포함) 실행
+
+jobs:
+  update_notion:
+    runs-on: ubuntu-latest
+    if: "contains(github.head_ref, 'KIO-')" # 브랜치 이름에 'KIO-'가 포함된 경우
+
+    steps:
+      # 1. GitHub 저장소 코드 체크아웃 (스크립트 파일 접근 위함)
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. 브랜치 이름에서 KIO- 다음의 '숫자'만 캡처
+      - name: Get Task ID Number from Branch Name
+        id: get_id
+        run: |
+          BRANCH_NAME="${{ github.head_ref }}"
+          REGEX="KIO-([0-9]+)"
+          if [[ $BRANCH_NAME =~ $REGEX ]]; then
+            echo "task_id_num=${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
+          else
+            echo "No KIO-[number] ID found in branch name."
+          fi
+
+      # 3. Node.js 환경 설정
+      - name: Set up Node.js
+        if: steps.get_id.outputs.task_id_num
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18' # 또는 최신 LTS 버전
+
+      # 4. 노션 클라이언트 라이브러리 설치
+      - name: Install Notion Client
+        if: steps.get_id.outputs.task_id_num
+        run: npm install @notionhq/client
+
+      # 5. 분리된 Node.js 스크립트 실행
+      - name: Run Notion Sync Script
+        if: steps.get_id.outputs.task_id_num
+        run: node .github/scripts/notion-sync.js
+        env:
+          # ⭐️ 스크립트에 필요한 모든 변수를 환경 변수로 전달 ⭐️
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          TASK_ID_NUM: ${{ steps.get_id.outputs.task_id_num }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_ACTION: ${{ github.event.action }}
+          PR_IS_MERGED: ${{ github.event.pull_request.merged }}
