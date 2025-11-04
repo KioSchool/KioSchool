@@ -33,7 +33,7 @@ async function main() {
     newStatus = STATUS_IN_PROGRESS;
   } else if (PR_ACTION === 'closed' && isMerged) {
     newStatus = STATUS_DONE;
-    commentText = `✅ PR이 병합되었습니다: ${PR_URL}`;
+    commentText = '✅ PR이 머지되었습니다';
   } else {
     console.log(`Skipping: PR action '${PR_ACTION}', merged status '${isMerged}'.`);
     return;
