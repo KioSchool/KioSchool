@@ -83,6 +83,10 @@ async function main() {
 
   // 4. 노션 페이지에 코멘트 추가 (링크 포함)
   try {
+    if (!commentText) {
+      return;
+    }
+
     await notion.comments.create({
       parent: { page_id: pageId },
       rich_text: [
