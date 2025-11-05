@@ -27,7 +27,6 @@ const IconWrapper = styled.div`
 
 const Label = styled.div`
   color: #464a4d;
-  font-family: 'LINE Seed Sans KR';
   font-size: 20px;
   font-weight: 700;
 `;

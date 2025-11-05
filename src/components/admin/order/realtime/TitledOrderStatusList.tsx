@@ -11,7 +11,6 @@ import { RiInformationFill } from '@remixicon/react';
 
 const TitledOrderStatusContainer = styled.div`
   width: 100%;
-  font-family: 'LINE Seed Sans KR', sans-serif;
   border: 1px solid #e8eef2;
   border-radius: 16px;
   background: #ffffff50;

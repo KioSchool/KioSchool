@@ -13,7 +13,6 @@ const sizeMap = {
 };
 
 const Container = styled.label<{ size?: 'small' | 'medium' | 'large' | number; color?: Color }>`
-  font-family: 'LINE Seed Sans KR', sans-serif;
   color: ${(props) => props.color || Color.GREY};
   font-size: ${(props: AppLabelProps) => {
     if (typeof props.size === 'number') return `${props.size}px`;

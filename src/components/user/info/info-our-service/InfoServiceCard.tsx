@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { jsx } from '@emotion/react';
-import { lineSeedKrFont } from '@styles/fonts';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { Color } from '@resources/colors';
 import { tabletMediaQuery } from '@styles/globalStyles';
@@ -50,8 +49,6 @@ const Title = styled.div`
   font-weight: 700;
   line-height: 56px;
   margin-top: 18px;
-  font-family: 'LINESeedKR-Rg', 'sans-serif';
-  ${lineSeedKrFont}
   ${tabletMediaQuery} {
     margin: 0;
     font-size: 15px;
@@ -63,10 +60,8 @@ const Title = styled.div`
 const Description = styled.div`
   font-size: 16px;
   font-weight: 400;
-  font-family: 'LINESeedKR-Rg', 'sans-serif';
   color: #5b5b5b;
   word-break: keep-all;
-  ${lineSeedKrFont}
   ${tabletMediaQuery} {
     font-size: 12px;
     text-align: right;

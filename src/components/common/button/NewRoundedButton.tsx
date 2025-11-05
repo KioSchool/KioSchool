@@ -54,7 +54,6 @@ const StyledButton = styled.button<NewRoundedButtonProps>`
   border-radius: 40px;
   cursor: pointer;
   padding: 5px 25px;
-  font-family: 'LINE Seed Sans KR', sans-serif;
   font-weight: 700;
 
   ${({ size = 'md', customSize }) => sizeStyles(size, customSize)}

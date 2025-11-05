@@ -42,7 +42,6 @@ const MinusIcon = styled(RiSubtractLine)<{ disabled: boolean }>`
 
 const QuantityLabel = styled.div`
   width: 40px;
-  font-family: 'LINE Seed Sans KR', sans-serif;
   font-size: 14px;
   font-weight: 700;
   user-select: none;

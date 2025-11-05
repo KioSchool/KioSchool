@@ -1,6 +1,5 @@
 import { colFlex } from '@styles/flexStyles';
 import styled from '@emotion/styled';
-import { lineSeedKrFont } from '@styles/fonts';
 import { tabletMediaQuery } from '@styles/globalStyles';
 
 interface InfoTitleProps {
@@ -17,10 +16,8 @@ const TextContainer = styled.div`
   width: 100%;
   font-size: 36px;
   white-space: pre-line;
-  font-family: 'LINESeedKR-Rg', 'sans-serif';
   font-weight: 700;
   text-align: center;
-  ${lineSeedKrFont};
   ${tabletMediaQuery} {
     font-size: 18px;
   }

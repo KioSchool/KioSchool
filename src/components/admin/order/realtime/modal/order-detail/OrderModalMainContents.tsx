@@ -9,7 +9,6 @@ import _ from 'lodash';
 import OrderModalProductList from './OrderModalProductsList';
 
 const ModalContent = styled.div`
-  font-family: 'LINE Seed Sans KR', sans-serif;
   color: #464a4d;
   gap: 10px;
   ${colFlex({ justify: 'start', align: 'start' })}
@@ -28,7 +27,6 @@ const StatusLabelContainer = styled.div<{ isServed: boolean }>`
   border-radius: 8px;
   box-sizing: border-box;
   font-size: 12px;
-  font-family: 'LINE Seed Sans KR', sans-serif;
   background-color: ${(props) => (props.isServed ? '#ff9142' : 'white')};
   border: ${(props) => (props.isServed ? '' : '1px solid #e8eef2')};
   color: ${(props) => (props.isServed ? '#ffffff' : '#464a4d')};
@@ -43,7 +41,6 @@ const TotalLabelContainer = styled.div`
 `;
 
 const MainLabel = styled.div`
-  font-family: 'LINE Seed Sans KR', sans-serif;
   font-size: 16px;
   font-weight: 700;
 `;

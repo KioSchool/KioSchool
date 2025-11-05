@@ -17,7 +17,6 @@ const ItemContainer = styled.div`
 
 const StyledText = styled.div<{ $isServed: boolean }>`
   height: 24px;
-  font-family: 'LINE Seed Sans KR', sans-serif;
   font-size: 12px;
   font-weight: 400;
   color: ${({ $isServed }) => ($isServed ? '#D1D5D8' : '#464A4D')};

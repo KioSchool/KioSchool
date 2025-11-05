@@ -50,7 +50,6 @@ const Button = styled.button`
   border: none;
   border-radius: 40px;
   cursor: pointer;
-  font-family: 'LINE Seed Sans KR', sans-serif;
   font-size: 12px;
   font-weight: 700;
   padding: 10px 8px;

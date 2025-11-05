@@ -10,7 +10,6 @@ import { createSearchParams, useNavigate, useParams } from 'react-router-dom';
 const ModalHeader = styled.div`
   padding: 20px 30px 12px 30px;
   border-bottom: 1px solid #e8eef2;
-  font-family: 'LINE Seed Sans KR', sans-serif;
   color: #464a4d;
   ${colFlex({ justify: 'space-between', align: 'start' })}
 `;

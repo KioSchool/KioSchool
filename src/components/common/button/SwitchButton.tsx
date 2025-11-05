@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { rowFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import { lineSeedKrFont } from '@styles/fonts';
 
 const UncheckedStyle = css`
   box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.1) inset;
@@ -39,12 +38,12 @@ const Circle = styled.div<{ checked: boolean }>`
 `;
 
 const TextStyle = css`
-  font-family: 'LINESeedKR-Rg', 'sans-serif';
-  font-size: 13px;
+  width: 100%;
+  height: 100%;
+  font-size: 16px;
   font-weight: 700;
-  width: calc(100% - 32px);
-  text-align: center;
-  ${lineSeedKrFont};
+  cursor: pointer;
+  ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
 const CheckedText = styled.span`

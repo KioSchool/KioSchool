@@ -41,7 +41,6 @@ const NavCategory = styled.div`
 const CategoryTitle = styled.h2`
   margin: 10px 0;
   color: #464a4d;
-  font-family: 'LINE Seed Sans KR';
   font-size: 18px;
   font-style: normal;
   font-weight: 700;
@@ -57,7 +56,6 @@ const SideNavLink = styled(Link, {
 })<{ isActive: boolean }>`
   text-decoration: none;
   color: #464a4d;
-  font-family: 'LINE Seed Sans KR';
   font-size: 16px;
   font-style: normal;
   font-weight: ${(props) => (props.isActive ? 700 : 400)};
