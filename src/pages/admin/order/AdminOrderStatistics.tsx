@@ -47,7 +47,8 @@ const HeaderContainer = styled.div`
   background: ${Color.KIO_ORANGE};
 `;
 
-const HeaderLabel = styled.span`
+const HeaderLabel = styled.p`
+  color: ${Color.WHITE};
   font-size: 20px;
   font-weight: 700;
 `;
