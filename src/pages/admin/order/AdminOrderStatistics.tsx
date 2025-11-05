@@ -12,7 +12,6 @@ import { Color } from '@resources/colors';
 import TotalOrder from '@components/admin/order/statistic/TotalOrder';
 import ProductStatistics from '@components/admin/order/statistic/ProductStatistics';
 import OrderPriceStatistics from '@components/admin/order/statistic/OrderPriceStatistics';
-import { lineSeedKrFont } from '@styles/fonts';
 import dayjs from 'dayjs';
 import { dateConverter } from '@utils/formatDate';
 import { adminOrdersAtom } from 'src/jotai/admin/atoms';
@@ -50,13 +49,8 @@ const HeaderContainer = styled.div`
 
 const HeaderLabel = styled.p`
   color: ${Color.WHITE};
-  text-align: center;
-  ${lineSeedKrFont}
-  font-family: 'LINE Seed Sans KR', 'sans-serif';
   font-size: 20px;
   font-weight: 700;
-  line-height: 140%;
-  letter-spacing: -0.4px;
 `;
 
 const CategoryContainer = styled.div`

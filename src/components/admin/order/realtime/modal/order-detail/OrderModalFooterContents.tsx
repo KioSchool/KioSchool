@@ -12,7 +12,6 @@ const BaseButton = styled.button`
   border-radius: 40px;
   font-size: 13px;
   font-weight: 700;
-  font-family: 'LINE Seed Sans KR', sans-serif;
   border: 1px solid ${Color.KIO_ORANGE};
   ${expandButtonStyle}
 `;

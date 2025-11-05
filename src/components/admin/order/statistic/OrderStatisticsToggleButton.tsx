@@ -11,7 +11,6 @@ const StyledButton = styled.button`
   cursor: pointer;
   padding: 5px 25px;
   font-size: 16px;
-  font-family: 'LINE Seed Sans KR', sans-serif;
   font-weight: 700;
   height: 37px;
 

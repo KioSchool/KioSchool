@@ -1,11 +1,8 @@
 import { css } from '@emotion/react';
-import { pretendardFont } from '@styles/fonts';
 
 export const globalStyles = css`
-  ${pretendardFont}
-
   * {
-    font-family: 'Pretendard', sans-serif;
+    font-family: 'LINE Seed Sans KR', sans-serif;
   }
 `;
 

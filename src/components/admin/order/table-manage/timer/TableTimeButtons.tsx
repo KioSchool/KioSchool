@@ -23,7 +23,6 @@ const Button = styled.button<{ isFullWidth?: boolean }>`
   border: none;
   border-radius: 40px;
   cursor: pointer;
-  font-family: 'LINE Seed Sans KR', sans-serif;
   font-size: 12px;
   font-weight: 700;
   padding: 8px;

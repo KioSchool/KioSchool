@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import InfoTitle from '@components/user/info/InfoTitle';
-import { lineSeedKrFont } from '@styles/fonts';
 import AnimatedInfoLineGraphSvg from '@resources/svg/AnimatedInfoLineGraphSvg';
 import { tabletMediaQuery } from '@styles/globalStyles';
 
@@ -47,8 +46,6 @@ const StatisticTitle = styled.div`
   line-height: 56px;
   font-size: 30px;
   font-weight: 700;
-  font-family: 'LINESeedKR-Bd', 'sans-serif';
-  ${lineSeedKrFont}
   ${tabletMediaQuery} {
     font-size: 15px;
   }
@@ -58,9 +55,7 @@ const StatisticContent = styled.div`
   width: 700px;
   font-size: 18px;
   font-weight: 400;
-  font-family: 'LINESeedKR-Rg', 'sans-serif';
   white-space: pre-wrap;
-  ${lineSeedKrFont}
   ${tabletMediaQuery} {
     width: 320px;
     font-size: 12px;

@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import InfoTitle from '@components/user/info/InfoTitle';
-import { lineSeedKrFont } from '@styles/fonts';
 import InfoServiceCard from '@components/user/info/info-our-service/InfoServiceCard';
 import InfoRealTimeOrderSvg from '@resources/svg/info/InfoRealTimeOrderSvg';
 import InfoAllOrderSvg from '@resources/svg/info/InfoAllOrderSvg';
@@ -38,10 +37,8 @@ const Description = styled.div`
   width: 1000px;
   font-size: 18px;
   font-weight: 400;
-  font-family: 'LINESeedKR-Rg', 'sans-serif';
   text-align: center;
   word-break: keep-all;
-  ${lineSeedKrFont}
   ${tabletMediaQuery} {
     width: 300px;
     font-size: 12px;

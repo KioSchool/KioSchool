@@ -62,7 +62,6 @@ const ProductNameContainer = styled.div`
 `;
 
 const ProductNameLabel = styled.div<{ isServed: boolean }>`
-  font-family: 'LINE Seed Sans KR', sans-serif;
   font-size: 15px;
   font-weight: 700;
   color: ${(props) => props.isServed && Color.KIO_ORANGE};
@@ -71,7 +70,6 @@ const ProductNameLabel = styled.div<{ isServed: boolean }>`
 `;
 
 const ProductQuantityLabel = styled.div`
-  font-family: 'LINE Seed Sans KR', sans-serif;
   font-size: 12px;
   user-select: none;
 `;

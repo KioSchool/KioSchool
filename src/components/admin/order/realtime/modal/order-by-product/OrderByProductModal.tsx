@@ -36,7 +36,6 @@ const SidebarContainer = styled.div<{ isOpen: boolean }>`
   z-index: 1011;
   padding: 20px 10px 0 40px;
   gap: 15px;
-  font-family: 'LINE Seed Sans KR', sans-serif;
   transform: translateX(${(props) => (props.isOpen ? '0' : '100%')});
   transition: transform 0.3s ease-in-out;
   ${colFlex()}

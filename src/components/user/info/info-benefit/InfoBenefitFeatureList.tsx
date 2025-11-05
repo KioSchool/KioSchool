@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import { RiCheckLine } from '@remixicon/react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { lineSeedKrFont } from '@styles/fonts';
 import { tabletMediaQuery } from '@styles/globalStyles';
 
 const features = [
@@ -35,8 +34,6 @@ const List = styled.div`
   gap: 25px;
   font-size: 18px;
   font-weight: 400;
-  font-family: 'LINESeedKR-Rg', 'sans-serif';
-  ${lineSeedKrFont};
   ${rowFlex({ align: 'center' })};
   ${tabletMediaQuery} {
     font-size: 13px;
