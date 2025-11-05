@@ -75,7 +75,7 @@ function TableElapsedTimer({ orderSession }: TableUsageTimeProps) {
         cornerRadius="50%"
         text={({ value }) => {
           if (!isTableSessionActive) {
-            return '세션없음';
+            return '테이블 사용 종료됨';
           }
 
           if (!isSessionLimitActive) {
