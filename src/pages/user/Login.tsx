@@ -8,6 +8,7 @@ import NewAppInput from '@components/common/input/NewAppInput';
 import LinkLabel from '@components/common/label/LinkLabel';
 import NewRoundedButton from '@components/common/button/NewRoundedButton';
 import { Color } from '@resources/colors';
+import { USER_ROUTES } from '@constants/routes';
 
 const ErrorContainer = styled.div`
   height: 30px;
@@ -33,7 +34,7 @@ function Login() {
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   useEffect(() => {
-    if (isLoggedIn()) navigate('/');
+    if (isLoggedIn()) navigate(USER_ROUTES.HOME);
   }, []);
 
   const handleSubmit = () => {
@@ -62,8 +63,8 @@ function Login() {
         <ErrorContainer>{errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}</ErrorContainer>
         <NewRoundedButton onClick={handleSubmit}>로그인</NewRoundedButton>
         <LinkContainer className={'button-container'}>
-          <LinkLabel text={'비밀번호 찾기'} href={'/reset-password'} />
-          <LinkLabel text={'회원가입 하기'} href={'/register'} />
+          <LinkLabel text={'비밀번호 찾기'} href={USER_ROUTES.RESET_PASSWORD} />
+          <LinkLabel text={'회원가입 하기'} href={USER_ROUTES.REGISTER} />
         </LinkContainer>
       </>
     </AppContainer>

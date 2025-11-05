@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import useAuthentication from '@hooks/useAuthentication';
 import { useSetAtom } from 'jotai';
 import { adminUserAtom, adminBanksAtom, adminWorkspacesAtom } from 'src/jotai/admin/atoms';
+import { USER_ROUTES } from '@constants/routes';
 
 function useAdminUser() {
   const { adminApi } = useApi();
@@ -63,7 +64,7 @@ function useAdminUser() {
       .delete('/user')
       .then(() => {
         alert('탈퇴가 완료되었습니다.');
-        navigate('/');
+        navigate(USER_ROUTES.HOME);
       })
       .catch((error) => console.error('Failed to delete user: ', error));
   };

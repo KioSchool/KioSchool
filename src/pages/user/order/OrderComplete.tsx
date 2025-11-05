@@ -15,6 +15,7 @@ import useBlockPopState from '@hooks/useBlockPopState';
 import { defaultUserOrderValue } from '@@types/defaultValues';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import { Order, OrderStatus } from '@@types/index';
+import { ORDER_ROUTES } from '@constants/routes';
 
 const Container = styled.div`
   width: 100%;
@@ -216,7 +217,7 @@ function OrderComplete() {
         buttonLabel={`더 주문하기`}
         onClick={() =>
           navigate({
-            pathname: '/order',
+            pathname: ORDER_ROUTES.ORDER,
             search: createSearchParams({
               workspaceId: workspaceId || '',
               tableNo: tableNo || '',

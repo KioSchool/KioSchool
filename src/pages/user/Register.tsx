@@ -8,6 +8,7 @@ import NewAppInput from '@components/common/input/NewAppInput';
 import NewRoundedButton from '@components/common/button/NewRoundedButton';
 import { Color } from '@resources/colors';
 import LinkLabel from '@components/common/label/LinkLabel';
+import { USER_ROUTES } from '@constants/routes';
 
 const FormContainer = styled.form`
   flex-wrap: wrap;
@@ -144,7 +145,7 @@ function Register() {
     }
 
     localStorage.setItem('isLoggedIn', 'true');
-    navigate('/');
+    navigate(USER_ROUTES.HOME);
   };
 
   const sendCode = async () => {
@@ -273,7 +274,7 @@ function Register() {
           <ErrorMessageContainer>{errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}</ErrorMessageContainer>
           <NewRoundedButton size={'sm'}>회원가입</NewRoundedButton>
         </FormContainer>
-        <LinkLabel text={'로그인하기'} href={'/login'} style={{ marginTop: '20px' }} />
+        <LinkLabel text={'로그인하기'} href={USER_ROUTES.LOGIN} style={{ marginTop: '20px' }} />
       </>
     </AppContainer>
   );

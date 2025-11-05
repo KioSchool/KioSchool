@@ -1,6 +1,7 @@
 import { ReactElement } from 'react';
 import { RiLogoutBoxRLine, RiLockFill, RiBankFill, RiDoorOpenFill } from '@remixicon/react';
 import { Color } from '@resources/colors';
+import { SUPER_ADMIN_ROUTES, ADMIN_ROUTES } from '@constants/routes';
 
 export interface MyInfoCardData {
   id: string;
@@ -17,7 +18,7 @@ export const myInfoCardsData: MyInfoCardData[] = [
     label: 'Super Admin',
     icon: <RiLockFill size={40} color={Color.KIO_ORANGE} />,
     action: 'navigate',
-    navigationPath: '/super-admin',
+    navigationPath: SUPER_ADMIN_ROUTES.HOME,
     requiresSuperAdmin: true,
   },
   {
@@ -25,7 +26,7 @@ export const myInfoCardsData: MyInfoCardData[] = [
     label: '계좌관리',
     icon: <RiBankFill size={40} color={Color.KIO_ORANGE} />,
     action: 'navigate',
-    navigationPath: '/admin/register-account',
+    navigationPath: ADMIN_ROUTES.REGISTER_ACCOUNT,
   },
   {
     id: 'logout',

@@ -10,6 +10,7 @@ import PaginationSearchContents from '@components/common/pagination/PaginationSe
 import { PaginationResponse, Workspace } from '@@types/index';
 import { useEffect, useState } from 'react';
 import { defaultPaginationValue } from '@@types/defaultValues';
+import { SUPER_ADMIN_ROUTES } from '@constants/routes';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   height: 550px;
@@ -46,7 +47,7 @@ function SuperAdminWorkspace() {
       customWidth={'1000px'}
       customHeight={'100%'}
       customGap={'20px'}
-      titleNavBarProps={{ title: '전체 워크스페이스 관리', onLeftArrowClick: () => navigate('/super-admin/manage') }}
+      titleNavBarProps={{ title: '전체 워크스페이스 관리', onLeftArrowClick: () => navigate(SUPER_ADMIN_ROUTES.MANAGE) }}
     >
       <>
         <PaginationSearchBar />

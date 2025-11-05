@@ -10,6 +10,7 @@ import useCustomNavigate from '@hooks/useCustomNavigate';
 import { Color } from '@resources/colors';
 import { adminCategoriesAtom, adminProductsAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
+import { getAdminWorkspacePath } from '@constants/routes';
 
 const ContainerPerCategory = styled.div`
   gap: 30px;
@@ -72,7 +73,7 @@ function AdminProduct() {
         title: '상품관리',
         children: <AdminProductTitleNavBarChildren />,
         onLeftArrowClick: () => {
-          navigate(`/admin/workspace/${workspaceId}`);
+          navigate(getAdminWorkspacePath(workspaceId!));
         },
       }}
       customWidth={'100%'}

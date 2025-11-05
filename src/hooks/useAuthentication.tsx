@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import useApi from '@hooks/useApi';
+import { ADMIN_ROUTES } from '@constants/routes';
 
 function useAuthentication() {
   const { userApi } = useApi();
@@ -28,7 +29,7 @@ function useAuthentication() {
       })
       .then(() => {
         localStorage.setItem('isLoggedIn', 'true');
-        navigate('/admin');
+        navigate(ADMIN_ROUTES.HOME);
       })
       .catch(() => {
         alert('Login Failed!');
