@@ -88,7 +88,7 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
     }
 
     if (!currentExpectedEndAt) {
-      alert('현재 예상 종료 시간이 없습니다. 세션을 다시 시작해주세요.');
+      alert('현재 예상 종료 시간이 없습니다. 사용 종료 후 다시 시작해주세요.');
       return;
     }
 
@@ -112,7 +112,7 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
     }
 
     if (!currentExpectedEndAt) {
-      alert('현재 예상 종료 시간이 없습니다. 세션을 다시 시작해주세요.');
+      alert('현재 예상 종료 시간이 없습니다. 사용 종료 후 다시 시작해주세요.');
       return;
     }
 
