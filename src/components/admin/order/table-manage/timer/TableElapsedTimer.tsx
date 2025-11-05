@@ -4,6 +4,7 @@ import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
 import { Color } from '@resources/colors';
 import useFormattedTime from '@hooks/useFormattedTime';
 import { formatKoreanTime } from '@utils/formatDate';
+import { OrderSession } from '@@types/index';
 
 const Container = styled.div`
   border: 1px solid #ececec;
@@ -46,17 +47,19 @@ const formatMinutesToTime = (minutes: number): string => {
 };
 
 interface TableUsageTimeProps {
-  createdAt: string | undefined;
-  expectedEndAt: string | undefined;
+  orderSession: OrderSession | null;
 }
 
-function TableElapsedTimer({ createdAt, expectedEndAt }: TableUsageTimeProps) {
+function TableElapsedTimer({ orderSession }: TableUsageTimeProps) {
   const elapsedMinutes = useFormattedTime<number>({
-    date: createdAt,
-    formatter: () => getMinutesDifference(createdAt),
+    date: orderSession?.createdAt,
+    formatter: () => getMinutesDifference(orderSession?.createdAt),
   });
-  const maxMinutes = createdAt && expectedEndAt ? Math.max(1, getMinutesDifference(createdAt, expectedEndAt)) : 60;
-  const gaugeValue = Math.min(elapsedMinutes || 0, maxMinutes);
+  const isTableSessionActive = !!orderSession;
+  const isSessionLimitActive = !!orderSession?.expectedEndAt;
+  const maxMinutes =
+    orderSession?.createdAt && orderSession?.expectedEndAt ? Math.max(1, getMinutesDifference(orderSession?.createdAt, orderSession?.expectedEndAt)) : 60;
+  const gaugeValue = isSessionLimitActive ? Math.min(elapsedMinutes || 0, maxMinutes) : maxMinutes;
 
   return (
     <Container>
@@ -71,7 +74,15 @@ function TableElapsedTimer({ createdAt, expectedEndAt }: TableUsageTimeProps) {
         endAngle={90}
         cornerRadius="50%"
         text={({ value }) => {
-          const formattedStartTime = createdAt && formatKoreanTime(createdAt);
+          if (!isTableSessionActive) {
+            return '세션없음';
+          }
+
+          if (!isSessionLimitActive) {
+            return '시간제한 없음';
+          }
+
+          const formattedStartTime = orderSession.createdAt && formatKoreanTime(orderSession.createdAt);
           const startTime = formattedStartTime ? `${formattedStartTime}부터` : '시작시간 없음';
           const currentMinutes = value || 0;
           const formattedCurrent = formatMinutesToTime(currentMinutes);
@@ -86,7 +97,7 @@ function TableElapsedTimer({ createdAt, expectedEndAt }: TableUsageTimeProps) {
             textAlign: 'center',
           },
           [`& .${gaugeClasses.valueArc}`]: {
-            fill: Color.KIO_ORANGE,
+            fill: isTableSessionActive ? Color.KIO_ORANGE : Color.LIGHT_GREY,
           },
           [`& .${gaugeClasses.referenceArc}`]: {
             fill: Color.LIGHT_GREY,
