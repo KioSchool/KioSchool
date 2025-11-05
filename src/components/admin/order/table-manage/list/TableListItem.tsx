@@ -2,7 +2,7 @@ import { Table } from '@@types/index';
 import styled from '@emotion/styled';
 import useFormattedTime from '@hooks/useFormattedTime';
 import { Color } from '@resources/colors';
-import { formatRemainingTime } from '@utils/FormatDate';
+import { formatRemainingTime } from '@utils/formatDate';
 import { useSearchParams } from 'react-router-dom';
 
 type TimeStatus = 'selected' | 'expired' | 'warning' | 'normal';

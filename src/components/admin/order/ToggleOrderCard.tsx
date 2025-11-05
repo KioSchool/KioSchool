@@ -5,7 +5,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import { RiArrowUpSLine } from '@remixicon/react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import { orderStatusConverter } from '@utils/OrderStatusConverter';
+import { orderStatusConverter } from '@utils/orderStatusConverter';
 
 interface ToggleOrderCardProps {
   order: Order;

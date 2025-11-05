@@ -6,7 +6,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import NotPaidOrderCard from './NotPaidOrderCard';
 import PaidOrderCard from './PaidOrderCard';
 import ServedOrderCard from './ServedOrderCard';
-import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
+import { areOrdersEquivalent } from '@utils/memoCompareFunction';
 import { RiInformationFill } from '@remixicon/react';
 
 const TitledOrderStatusContainer = styled.div`

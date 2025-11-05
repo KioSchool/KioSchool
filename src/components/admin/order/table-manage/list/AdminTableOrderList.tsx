@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { RiResetRightFill } from '@remixicon/react';
 import { Color } from '@resources/colors';
-import { formatKoreanTime } from '@utils/FormatDate';
+import { formatKoreanTime } from '@utils/formatDate';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import OrderRowItem from './OrderRowItem';
 

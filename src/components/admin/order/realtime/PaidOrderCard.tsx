@@ -2,9 +2,9 @@ import { memo } from 'react';
 import { Order } from '@@types/index';
 import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
 import OrderItemList from '@components/admin/order/realtime/OrderItemList';
-import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
+import { areOrdersEquivalent } from '@utils/memoCompareFunction';
 import useModal from '@hooks/useModal';
-import { extractMinFromDate } from '@utils/FormatDate';
+import { extractMinFromDate } from '@utils/formatDate';
 import useFormattedTime from '@hooks/useFormattedTime';
 import { CardContainer, CardText, DescriptionContainer, HeaderContainer, HorizontalLine, OrderInfoContainer } from '@styles/orderCardStyles';
 

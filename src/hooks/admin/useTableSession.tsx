@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import useAdminTable from '@hooks/admin/useAdminTable';
-import { dateConverter } from '@utils/FormatDate';
+import { dateConverter } from '@utils/formatDate';
 
 const SESSION_STORAGE_KEY = 'selectedTimeLimit';
 const DEFAULT_TIME_LIMIT = 10;
