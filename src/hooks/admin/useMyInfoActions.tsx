@@ -3,6 +3,7 @@ import useConfirm from '@hooks/useConfirm';
 import useAdminUser from '@hooks/admin/useAdminUser';
 import useAuthentication from '@hooks/useAuthentication';
 import { MyInfoCardData } from '@constants/data/myInfoData';
+import { USER_ROUTES } from '@constants/routes';
 
 export const useMyInfoActions = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ export const useMyInfoActions = () => {
         const logoutConfirmed = await logoutConfirm();
         if (logoutConfirmed) {
           await logout();
-          navigate('/');
+          navigate(USER_ROUTES.HOME);
         }
         break;
 

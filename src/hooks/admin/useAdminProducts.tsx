@@ -3,6 +3,7 @@ import { Product, ProductCategory } from '@@types/index';
 import { useNavigate } from 'react-router-dom';
 import { adminCategoriesAtom, adminProductsAtom } from 'src/jotai/admin/atoms';
 import { useSetAtom } from 'jotai';
+import { getAdminProductsPath } from '@constants/routes';
 
 function useAdminProducts(workspaceId: string | undefined | null) {
   const { adminApi } = useApi();
@@ -46,7 +47,7 @@ function useAdminProducts(workspaceId: string | undefined | null) {
     adminApi
       .post('/product', data)
       .then(() => {
-        navigate(`/admin/workspace/${product.workspaceId}/products`);
+        navigate(getAdminProductsPath(product.workspaceId));
       })
       .catch((error) => console.error('Failed to add product: ', error));
   };
@@ -57,7 +58,7 @@ function useAdminProducts(workspaceId: string | undefined | null) {
     adminApi
       .put('/product', data)
       .then(() => {
-        navigate(`/admin/workspace/${parameter.workspaceId}/products`);
+        navigate(getAdminProductsPath(parameter.workspaceId));
       })
       .catch((error) => console.error('Failed to add product: ', error));
   };
@@ -121,7 +122,7 @@ function useAdminProducts(workspaceId: string | undefined | null) {
     adminApi
       .post('/product-categories/sort', { workspaceId, productCategoryIds })
       .then(() => {
-        navigate(`/admin/workspace/${workspaceId}/products`);
+        navigate(getAdminProductsPath(workspaceId!));
       })
       .catch((error) => {
         console.error('Failed to reorder products categories : ', error);

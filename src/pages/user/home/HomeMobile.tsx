@@ -7,6 +7,7 @@ import { RiArrowRightLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import { useNavigate } from 'react-router-dom';
 import AppFaqButton from '@components/common/button/AppFaqButton';
+import { USER_ROUTES } from '@constants/routes';
 
 const Container = styled.div`
   position: relative;
@@ -135,7 +136,7 @@ export default function HomeMobile() {
       <SignBoard>
         <BoardContents>
           <BoardText>{infoText}</BoardText>
-          <BoardButton onClick={() => navigate('/info')}>
+          <BoardButton onClick={() => navigate(USER_ROUTES.INFO)}>
             키오스쿨 소개 페이지로 이동
             <RightIcon />
           </BoardButton>

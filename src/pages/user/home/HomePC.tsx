@@ -8,6 +8,7 @@ import AppFooter from '@components/common/footer/AppFooter';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import AppFaqButton from '@components/common/button/AppFaqButton';
+import { ADMIN_ROUTES } from '@constants/routes';
 
 const MainTitle = styled.div`
   width: 540px;
@@ -78,7 +79,7 @@ function Home() {
           키오스쿨로
           <br /> 주점관리를 손쉽게,
         </MainTitle>
-        <LinkAdminHome to={'/admin'} onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
+        <LinkAdminHome to={ADMIN_ROUTES.HOME} onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
           <LinkText>
             내 주점 바로가기
             <RightArrow />

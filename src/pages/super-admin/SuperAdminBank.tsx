@@ -11,6 +11,7 @@ import SuperAdminBankTitleNavBarChildren from '@components/super-admin/bank/Supe
 import SuperAdminBankContent from '@components/super-admin/bank/SuperAdminBankContent';
 import { superAdminBankPaginationResponseAtom } from 'src/jotai/super-admin/atoms';
 import { useAtomValue } from 'jotai';
+import { SUPER_ADMIN_ROUTES } from '@constants/routes';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   height: 550px;
@@ -45,7 +46,7 @@ function SuperAdminBank() {
       customGap={'20px'}
       titleNavBarProps={{
         title: '은행 관리',
-        onLeftArrowClick: () => navigate('/super-admin/manage'),
+        onLeftArrowClick: () => navigate(SUPER_ADMIN_ROUTES.MANAGE),
         children: <SuperAdminBankTitleNavBarChildren />,
       }}
     >

@@ -15,6 +15,7 @@ import AppPopup from '@components/common/popup/AppPopup';
 import { tabletMediaQuery } from '@styles/globalStyles';
 import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
+import { ADMIN_ROUTES } from '@constants/routes';
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -48,7 +49,7 @@ function AdminWorkspace() {
     <AppContainer
       useFlex={rowFlex({ justify: 'center', align: 'center' })}
       customWidth={'100vw'}
-      titleNavBarProps={{ title: workspace.name, subTitle: workspace.description, onLeftArrowClick: () => navigate('/admin') }}
+      titleNavBarProps={{ title: workspace.name, subTitle: workspace.description, onLeftArrowClick: () => navigate(ADMIN_ROUTES.HOME) }}
     >
       <>
         <ContentContainer>

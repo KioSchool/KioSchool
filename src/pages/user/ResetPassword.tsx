@@ -8,6 +8,7 @@ import NewAppInput from '@components/common/input/NewAppInput';
 import NewRoundedButton from '@components/common/button/NewRoundedButton';
 import LinkLabel from '@components/common/label/LinkLabel';
 import { Color } from '@resources/colors';
+import { USER_ROUTES } from '@constants/routes';
 
 const ErrorContainer = styled.div`
   height: 30px;
@@ -58,7 +59,7 @@ function ResetPassword() {
             비밀번호 재설정 링크 전송하기
           </NewRoundedButton>
 
-          <LinkLabel text={'로그인하기'} href={'/login'} />
+          <LinkLabel text={'로그인하기'} href={USER_ROUTES.LOGIN} />
         </>
       </AppContainer>
     );
@@ -110,7 +111,7 @@ function ResetPassword() {
     resetPassword(userPasswordInput, code)
       .then(() => {
         alert('비밀번호가 재설정되었습니다.');
-        navigate('/login');
+        navigate(USER_ROUTES.LOGIN);
       })
       .catch(() => {
         alert('비밀번호는 8자 이상 20자 이하로 설정해주세요.');

@@ -9,6 +9,7 @@ import { useAtomValue } from 'jotai';
 import { adminUserAtom, adminWorkspacesAtom } from 'src/jotai/admin/atoms';
 import AppFaqButton from '@components/common/button/AppFaqButton';
 import { useNavigate } from 'react-router-dom';
+import { ADMIN_ROUTES } from '@constants/routes';
 
 function AdminHome() {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ function AdminHome() {
     fetchAdminUser().then(() => {
       if (!user.account) {
         alert('계좌 정보가 등록되어 있지 않습니다. 계좌 정보를 등록해주세요.');
-        navigate('/admin/register-account');
+        navigate(ADMIN_ROUTES.REGISTER_ACCOUNT);
       }
     });
   }, []);

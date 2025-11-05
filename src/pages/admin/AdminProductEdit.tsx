@@ -14,6 +14,7 @@ import NewAppInput from '@components/common/input/NewAppInput';
 import NewRoundedButton from '@components/common/button/NewRoundedButton';
 import { adminCategoriesAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
+import { getAdminProductsPath } from '@constants/routes';
 
 function reducer(state: ProductEdit, action: ProductActionType) {
   switch (action.type) {
@@ -135,7 +136,7 @@ function AdminProductEdit() {
     if (!userInput) return;
 
     deleteProduct(productId);
-    navigate(`/admin/workspace/${workspaceId}/products`);
+    navigate(getAdminProductsPath(workspaceId!));
   };
 
   const titleNavBarChildren = (

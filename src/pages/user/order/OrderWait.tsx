@@ -15,6 +15,7 @@ import { defaultUserOrderValue } from '@@types/defaultValues';
 import { keyframes } from '@emotion/react';
 import useWorkspace from '@hooks/user/useWorkspace';
 import useTossPopup from '@hooks/user/useTossPopup';
+import { ORDER_ROUTES } from '@constants/routes';
 
 const Container = styled.div`
   width: 100%;
@@ -159,7 +160,7 @@ function OrderWait() {
       if (!orderId) {
         alert('주문 ID가 없습니다. 초기 화면으로 돌아갑니다.');
         navigate({
-          pathname: '/order',
+          pathname: ORDER_ROUTES.ORDER,
           search: createSearchParams({
             workspaceId: workspaceId || '',
             tableNo: tableNo || '',

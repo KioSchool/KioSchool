@@ -5,6 +5,7 @@ import RoundedAppButton from '@components/common/button/RoundedAppButton';
 import { lineSeedKrFont } from '@styles/fonts';
 import { tabletMediaQuery } from '@styles/globalStyles';
 import { isMobile } from 'react-device-detect';
+import { USER_ROUTES } from '@constants/routes';
 
 const Container = styled.div`
   width: 100%;
@@ -60,7 +61,7 @@ function InfoMainDescription() {
   const navigate = useNavigate();
 
   const onClickSignIn = () => {
-    navigate('/login');
+    navigate(USER_ROUTES.LOGIN);
   };
 
   return (

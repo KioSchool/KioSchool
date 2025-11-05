@@ -11,6 +11,7 @@ import SuperAdminEmailDomainContent from '@components/super-admin/email/SuperAdm
 import SuperAdminEmailDomainTitleNavBarChildren from '@components/super-admin/email/SuperAdminEmailDomainTitleNavBarChildren';
 import { superAdminEmailDomainPaginationResponseAtom } from 'src/jotai/super-admin/atoms';
 import { useAtomValue } from 'jotai';
+import { SUPER_ADMIN_ROUTES } from '@constants/routes';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   height: 550px;
@@ -45,7 +46,7 @@ function SuperAdminEmailDomainList() {
       customGap={'20px'}
       titleNavBarProps={{
         title: '이메일 도메인 관리',
-        onLeftArrowClick: () => navigate('/super-admin/manage'),
+        onLeftArrowClick: () => navigate(SUPER_ADMIN_ROUTES.MANAGE),
         children: <SuperAdminEmailDomainTitleNavBarChildren />,
       }}
     >

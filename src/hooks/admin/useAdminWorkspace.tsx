@@ -3,6 +3,7 @@ import { Workspace } from '@@types/index';
 import { useNavigate } from 'react-router-dom';
 import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
 import { useSetAtom } from 'jotai';
+import { getAdminWorkspacePath } from '@constants/routes';
 
 function useAdminWorkspace() {
   const { adminApi } = useApi();
@@ -87,7 +88,7 @@ function useAdminWorkspace() {
     Promise.all([updateWorkspaceInfoResult, updateWorkspaceImageResult])
       .then(([infoResponse]) => {
         setAdminWorkspace(infoResponse.data);
-        navigate(`/admin/workspace/${workspaceId}`);
+        navigate(getAdminWorkspacePath(workspaceId));
       })
       .catch((error) => {
         console.error(error.response.data.message);

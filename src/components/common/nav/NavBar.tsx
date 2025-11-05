@@ -10,6 +10,7 @@ import SideNav from './SideNav';
 import { useAtom } from 'jotai';
 import { adminSideNavIsOpenAtom } from 'src/jotai/admin/atoms';
 import { URLS } from '@constants/urls';
+import { USER_ROUTES, ADMIN_ROUTES } from '@constants/routes';
 
 const NavContainer = styled.div<{ useBackground: boolean }>`
   z-index: 1005;
@@ -80,20 +81,20 @@ function NavBar({ useBackground = false }: NavBarProps) {
       <NavContainer useBackground={useBackground} className={'nav-container'}>
         <LeftSection>
           {isShowHamburger && <HamburgerButton className={'hamburger-button'} onClick={handleHamburgerClick} />}
-          <LogoLink to={'/'}>
+          <LogoLink to={USER_ROUTES.HOME}>
             <LogoImage src={kioLogo} alt="키오스쿨" />
           </LogoLink>
         </LeftSection>
 
         <NavLinkContainer className={'nav-link-container'}>
-          <NavLinkItem to={'/info'} className={'nav-link-item'}>
+          <NavLinkItem to={USER_ROUTES.INFO} className={'nav-link-item'}>
             키오스쿨 소개
           </NavLinkItem>
           <NavUrl href={URLS.EXTERNAL.NOTION_FAQ} target="_blank" rel="noopener noreferrer" className={'nav-link-item'}>
             FAQ
           </NavUrl>
           <AuthenticationButton />
-          <NavLinkItem to={'/admin/my-info'} className={'nav-link-item'}>
+          <NavLinkItem to={ADMIN_ROUTES.MY_INFO} className={'nav-link-item'}>
             마이페이지
           </NavLinkItem>
         </NavLinkContainer>

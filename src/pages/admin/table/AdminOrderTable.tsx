@@ -12,6 +12,7 @@ import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { getAdminOrderTableManagePath, getAdminWorkspacePath } from '@constants/routes';
 
 const Container = styled.div`
   width: 100%;
@@ -79,12 +80,12 @@ function AdminOrderTable() {
       titleNavBarProps={{
         title: '실시간 테이블 관리',
         children: (
-          <RoundedAppButton size={'170px'} onClick={() => navigate(`/admin/workspace/${workspaceId}/order/table/manage`)}>
+          <RoundedAppButton size={'170px'} onClick={() => navigate(getAdminOrderTableManagePath(workspaceId!))}>
             테이블 관리
           </RoundedAppButton>
         ),
         subTitle: `${selectedTable?.tableNumber}번 테이블`,
-        onLeftArrowClick: () => navigate(`/admin/workspace/${workspaceId}`),
+        onLeftArrowClick: () => navigate(getAdminWorkspacePath(workspaceId!)),
       }}
     >
       <Container>

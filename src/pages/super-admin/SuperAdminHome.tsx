@@ -6,6 +6,7 @@ import { RiArrowRightLine } from '@remixicon/react';
 import { css } from '@emotion/react';
 import AppFooter from '@components/common/footer/AppFooter';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { SUPER_ADMIN_ROUTES } from '@constants/routes';
 
 const MainTitle = styled.div`
   width: 540px;
@@ -87,7 +88,7 @@ function SuperAdminHome() {
           <br /> 주점관리를 손쉽게,
         </MainTitle>
         <LinkSuperAdminHome
-          to={'/super-admin/manage'}
+          to={SUPER_ADMIN_ROUTES.MANAGE}
           onMouseEnter={() => setIsHover(true)}
           onMouseLeave={() => setIsHover(false)}
           className={'link-admin-home'}
