@@ -27,12 +27,4 @@ export const URLS = {
     /^https:\/\/.*\.kio-school\.com\/user\//,
     /^https:\/\/.*\.kio-school\.com\/super-admin\//,
   ],
-
-  FONTS: {
-    PRETENDARD: 'https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css',
-    LINE_SEED_KR: 'https://cdn.jsdelivr.net/npm/@kfonts/line-seed-sans-kr@0.1.0/index.min.css',
-    LINE_SEED_KR_BOLD: 'https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/LINESeedKR-Bd.woff2',
-    LINE_SEED_KR_REGULAR_EOT: 'https://cdn.jsdelivr.net/gh/wizfile/font/LINESeedKR-Rg.eot',
-    LINE_SEED_KR_REGULAR_WOFF: 'https://cdn.jsdelivr.net/gh/wizfile/font/LINESeedKR-Rg.woff',
-  },
 };
