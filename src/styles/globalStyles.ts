@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 
 export const globalStyles = css`
   * {
-    font-family: 'LINE Seed Sans KR', 'LINESeedKR-Rg', 'LINESeedKR-Bd', sans-serif;
+    font-family: 'LINE Seed Sans KR', sans-serif;
   }
 `;
 
