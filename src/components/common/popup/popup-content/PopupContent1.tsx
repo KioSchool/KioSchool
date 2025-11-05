@@ -30,6 +30,10 @@ const Title = styled.div`
 const Description = styled.div`
   text-align: center;
   word-break: keep-all;
+  font-size: 16px;
+  font-weight: 400;
+  opacity: 0.56;
+  white-space: pre-wrap;
 `;
 
 function PopupContent1() {

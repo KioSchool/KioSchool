@@ -48,7 +48,7 @@ const HeaderContainer = styled.div`
 `;
 
 const HeaderLabel = styled.span`
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
 `;
 
