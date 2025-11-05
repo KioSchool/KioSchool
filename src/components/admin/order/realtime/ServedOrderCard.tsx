@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { Order } from '@@types/index';
 import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
-import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
+import { areOrdersEquivalent } from '@utils/memoCompareFunction';
 import useModal from '@hooks/useModal';
 import { CardContainer, OrderInfoContainer, DescriptionContainer, CardText } from '@styles/orderCardStyles';
 

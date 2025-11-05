@@ -14,7 +14,7 @@ import ProductStatistics from '@components/admin/order/statistic/ProductStatisti
 import OrderPriceStatistics from '@components/admin/order/statistic/OrderPriceStatistics';
 import { lineSeedKrFont } from '@styles/fonts';
 import dayjs from 'dayjs';
-import { dateConverter } from '@utils/FormatDate';
+import { dateConverter } from '@utils/formatDate';
 import { adminOrdersAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
 

@@ -18,7 +18,7 @@ import OrderComplete from '@pages/user/order/OrderComplete';
 import AdminOrderStatistics from '@pages/admin/order/AdminOrderStatistics';
 import AdminProductEdit from '@pages/admin/AdminProductEdit';
 import AdminMyInfo from '@pages/admin/AdminMyInfo';
-import AdminProductCategories from '@pages/admin/AdminProductCategoires';
+import AdminProductCategories from '@pages/admin/AdminProductCategories';
 import ResetPassword from '@pages/user/ResetPassword';
 import Info from '@pages/user/info/Info';
 import SuperAdminHome from '@pages/super-admin/SuperAdminHome';

@@ -3,10 +3,10 @@ import { Order } from '@@types/index';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
-import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
+import { areOrdersEquivalent } from '@utils/memoCompareFunction';
 import useFormattedTime from '@hooks/useFormattedTime';
 import useModal from '@hooks/useModal';
-import { extractMinFromDate } from '@utils/FormatDate';
+import { extractMinFromDate } from '@utils/formatDate';
 import { CardContainer, OrderInfoContainer, DescriptionContainer, CheckButtonContainer, CheckIcon, CardText } from '@styles/orderCardStyles';
 
 interface OrderCardProps {

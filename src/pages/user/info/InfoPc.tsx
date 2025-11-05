@@ -17,7 +17,7 @@ const SubContainer = styled.div`
   background-position: center;
 `;
 
-function InfoPc() {
+function InfoPC() {
   return (
     <AppContainer useFlex={colFlex()} customWidth={'100%'} useScroll={true} useNavBackground={true}>
       <SubContainer>
@@ -32,4 +32,4 @@ function InfoPc() {
   );
 }
 
-export default InfoPc;
+export default InfoPC;

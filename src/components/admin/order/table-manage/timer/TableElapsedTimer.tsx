@@ -3,7 +3,7 @@ import { colFlex } from '@styles/flexStyles';
 import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
 import { Color } from '@resources/colors';
 import useFormattedTime from '@hooks/useFormattedTime';
-import { formatKoreanTime } from '@utils/FormatDate';
+import { formatKoreanTime } from '@utils/formatDate';
 
 const Container = styled.div`
   border: 1px solid #ececec;

@@ -3,7 +3,7 @@ import { RiSearchLine } from '@remixicon/react';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
-import { formatKoreanTime } from '@utils/FormatDate';
+import { formatKoreanTime } from '@utils/formatDate';
 import useModal from '@hooks/useModal';
 import TableOrderDetailModal from '../modal/TableOrderDetailModal';
 
