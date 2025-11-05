@@ -38,9 +38,7 @@ const Circle = styled.div<{ checked: boolean }>`
 `;
 
 const TextStyle = css`
-  width: 100%;
-  height: 100%;
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   ${colFlex({ justify: 'center', align: 'center' })};

@@ -23,7 +23,7 @@ const Icon = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 30px;
+  font-size: 24px;
   font-weight: 700;
 `;
 
