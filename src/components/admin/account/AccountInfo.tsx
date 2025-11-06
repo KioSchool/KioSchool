@@ -3,6 +3,7 @@ import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { adminUserAccountAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
+import { ACCOUNT_INFO } from '@constants/data/accountData';
 import RegisterAccountInfoContainer from './RegisterAccountInfoContainer';
 import RegistrationStatusInfo from './RegistrationStatusInfo';
 
@@ -57,19 +58,19 @@ function AccountInfo() {
   const content = accountInfo ? (
     <DetailsWrapper>
       <AccountInfoRow>
-        <InfoLabel>은행명</InfoLabel>
+        <InfoLabel>{ACCOUNT_INFO.BANK_NAME_LABEL}</InfoLabel>
         <ValueBox>
           <ValueText>{accountInfo.bankName}</ValueText>
         </ValueBox>
       </AccountInfoRow>
       <AccountInfoRow>
-        <InfoLabel>예금주</InfoLabel>
+        <InfoLabel>{ACCOUNT_INFO.HOLDER_LABEL}</InfoLabel>
         <ValueBox>
           <ValueText>{accountInfo.accountHolder}</ValueText>
         </ValueBox>
       </AccountInfoRow>
       <AccountInfoRow>
-        <InfoLabel>계좌번호</InfoLabel>
+        <InfoLabel>{ACCOUNT_INFO.ACCOUNT_NUMBER_LABEL}</InfoLabel>
         <ValueBox>
           <ValueText>{accountInfo.accountNumber}</ValueText>
         </ValueBox>
@@ -81,14 +82,14 @@ function AccountInfo() {
 
   return (
     <RegisterAccountInfoContainer
-      title="등록된 계좌"
+      title={ACCOUNT_INFO.TITLE}
       secondaryButton={{
-        text: '계좌 삭제',
+        text: ACCOUNT_INFO.SECONDARY_BUTTON,
         onClick: handleDeleteAccount,
         disabled: !accountInfo,
       }}
       primaryButton={{
-        text: '계좌 등록',
+        text: ACCOUNT_INFO.PRIMARY_BUTTON,
         onClick: handleRegisterAccount,
       }}
     >

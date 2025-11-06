@@ -1,5 +1,6 @@
 import { adminUserTossAccountAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
+import { TOSS_ACCOUNT_INFO } from '@constants/data/accountData';
 import RegisterAccountInfoContainer from './RegisterAccountInfoContainer';
 import RegistrationStatusInfo from './RegistrationStatusInfo';
 
@@ -19,17 +20,17 @@ function TossAccountInfo() {
 
   return (
     <RegisterAccountInfoContainer
-      title="등록된 토스 QR"
+      title={TOSS_ACCOUNT_INFO.TITLE}
       secondaryButton={{
-        text: 'QR 삭제',
+        text: TOSS_ACCOUNT_INFO.SECONDARY_BUTTON,
         onClick: handleDeleteQR,
         disabled: !tossAccountInfo,
       }}
       primaryButton={{
-        text: 'QR 등록',
+        text: TOSS_ACCOUNT_INFO.PRIMARY_BUTTON,
         onClick: handleRegisterQR,
       }}
-      infoTooltip="계좌번호를 복사해 직접 송금할 필요 없이, 바로 토스로 연결되어 간편하게 결제할 수 있습니다."
+      infoTooltip={TOSS_ACCOUNT_INFO.TOOLTIP}
     >
       <RegistrationStatusInfo status={status} />
     </RegisterAccountInfoContainer>

@@ -2,6 +2,7 @@
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { RiCheckboxCircleFill, RiCloseCircleFill } from '@remixicon/react';
+import { REGISTRATION_STATUS_CONTENT } from '@constants/data/accountData';
 
 type StatusType = 'registered' | 'unregistered' | 'unregisteredAccount';
 
@@ -53,20 +54,7 @@ interface RegistrationStatusInfoProps {
 }
 
 function RegistrationStatusInfo({ status }: RegistrationStatusInfoProps) {
-  const content = {
-    registered: {
-      title: '등록됨',
-      description: '현재 토스 QR이 정상적으로 등록되어 있습니다.',
-    },
-    unregistered: {
-      title: '등록되지 않음',
-      description: '현재 토스 QR이 등록되어 있지 않습니다.',
-    },
-    unregisteredAccount: {
-      title: '등록되지 않음',
-      description: '현재 계좌가 등록되어 있지 않습니다.',
-    },
-  };
+  const content = REGISTRATION_STATUS_CONTENT;
 
   const { title, description } = content[status];
 
