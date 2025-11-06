@@ -93,7 +93,7 @@ function AdminOrderTable() {
         {selectedTable ? (
           <TableDetail>
             <DetailHeader>
-              <TableElapsedTimer createdAt={selectedTable.orderSession?.createdAt} expectedEndAt={selectedTable.orderSession?.expectedEndAt} />
+              <TableElapsedTimer orderSession={selectedTable.orderSession} />
               <TableSessionControler
                 workspaceId={workspaceId}
                 orderSessionId={selectedTable.orderSession?.id}

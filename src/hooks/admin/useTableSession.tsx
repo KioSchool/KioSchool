@@ -87,6 +87,11 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
       return;
     }
 
+    if (!currentExpectedEndAt) {
+      alert('현재 예상 종료 시간이 없습니다. 사용 종료 후 다시 시작해주세요.');
+      return;
+    }
+
     const timeToDecrease = Number(selectedTimeLimit);
     if (isNaN(timeToDecrease) || timeToDecrease <= 0) {
       alert('단축 시간을 올바르게 입력해주세요.');
@@ -103,6 +108,11 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
   const handleIncreaseTime = () => {
     if (!orderSessionId) {
       alert('세션 ID가 없습니다. 세션을 시작해주세요.');
+      return;
+    }
+
+    if (!currentExpectedEndAt) {
+      alert('현재 예상 종료 시간이 없습니다. 사용 종료 후 다시 시작해주세요.');
       return;
     }
 
