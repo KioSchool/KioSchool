@@ -1,9 +1,10 @@
 ﻿import NewCommonButton from '@components/common/button/NewCommonButton';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { RiInformationFill } from '@remixicon/react';
+import { Color } from '@resources/colors';
 
 const Container = styled.div`
-  // TODO : 디자인이 생각보다 너무 넓어서 자체적으로 줄임
   width: 50%;
   height: 100%;
   padding: 18px 30px;
@@ -14,8 +15,48 @@ const Container = styled.div`
   ${colFlex({ justify: 'start', align: 'center' })}
 `;
 
-const Title = styled.span`
+const Tooltip = styled.div`
+  position: absolute;
+  width: 464px;
+  padding: 4px 8px;
+  box-sizing: border-box;
+  background: ${Color.WHITE};
+  border-radius: 4px;
+  border: 1px solid #e8eef2;
+  color: #5c5c5c;
+  font-size: 12px;
+  font-weight: 400;
+
+  bottom: calc(100% + 8px);
+  left: 0;
+  z-index: 10;
+
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  pointer-events: none;
+
+  ${rowFlex({ justify: 'center', align: 'center' })}
+`;
+
+const InfoIconWrapper = styled.div`
+  position: relative;
+  color: #adb5bd;
+  padding-left: 4px;
+  ${rowFlex({ justify: 'start', align: 'center' })}
+
+  &:hover > .info-tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+`;
+
+const TitleRow = styled.div`
   width: 100%;
+  ${rowFlex({ justify: 'start', align: 'center' })}
+`;
+
+const Title = styled.span`
   font-size: 16px;
   font-weight: bold;
   color: #464a4d;
@@ -45,12 +86,22 @@ interface RegisterAccountInfoContainerProps {
   children: React.ReactNode;
   primaryButton?: ButtonProps;
   secondaryButton?: ButtonProps;
+  infoTooltip?: string;
 }
 
-function RegisterAccountInfoContainer({ title, children, primaryButton, secondaryButton }: RegisterAccountInfoContainerProps) {
+function RegisterAccountInfoContainer({ title, children, primaryButton, secondaryButton, infoTooltip }: RegisterAccountInfoContainerProps) {
   return (
     <Container>
-      <Title>{title}</Title>
+      <TitleRow>
+        <Title>{title}</Title>
+        {infoTooltip && (
+          <InfoIconWrapper>
+            <RiInformationFill size={18} color="#464A4D" />
+            <Tooltip className="info-tooltip">{infoTooltip}</Tooltip>
+          </InfoIconWrapper>
+        )}
+      </TitleRow>
+
       <ContentWrapper>{children}</ContentWrapper>
       {(primaryButton || secondaryButton) && (
         <ButtonWrapper>

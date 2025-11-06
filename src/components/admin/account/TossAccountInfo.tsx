@@ -29,6 +29,7 @@ function TossAccountInfo() {
         text: 'QR 등록',
         onClick: handleRegisterQR,
       }}
+      infoTooltip="계좌번호를 복사해 직접 송금할 필요 없이, 바로 토스로 연결되어 간편하게 결제할 수 있습니다."
     >
       <RegistrationStatusInfo status={status} />
     </RegisterAccountInfoContainer>
