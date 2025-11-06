@@ -7,12 +7,12 @@ function TossAccountInfo() {
   const tossAccountInfo = useAtomValue(adminUserTossAccountAtom);
   const status = tossAccountInfo ? 'registered' : 'unregistered';
 
-  const handleRegisterQr = () => {
+  const handleRegisterQR = () => {
     // TODO: QR 등록 모달 열기 또는 관련 로직 실행
     console.log('QR 등록 클릭');
   };
 
-  const handleDeleteQr = () => {
+  const handleDeleteQR = () => {
     // TODO: QR 삭제 확인 또는 관련 로직 실행
     console.log('QR 삭제 클릭');
   };
@@ -22,12 +22,12 @@ function TossAccountInfo() {
       title="등록된 토스 QR"
       secondaryButton={{
         text: 'QR 삭제',
-        onClick: handleDeleteQr,
+        onClick: handleDeleteQR,
         disabled: !tossAccountInfo,
       }}
       primaryButton={{
         text: 'QR 등록',
-        onClick: handleRegisterQr,
+        onClick: handleRegisterQR,
       }}
     >
       <RegistrationStatusInfo status={status} />
