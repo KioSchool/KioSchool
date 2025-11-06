@@ -1,68 +1,99 @@
 import styled from '@emotion/styled';
-import { colFlex, rowFlex } from '@styles/flexStyles';
-import AppLabel from '@components/common/label/AppLabel';
 import { Color } from '@resources/colors';
+import { colFlex } from '@styles/flexStyles';
 import { adminUserAccountAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
+import RegisterAccountInfoContainer from './RegisterAccountInfoContainer';
+import RegistrationStatusInfo from './RegistrationStatusInfo';
 
-const Container = styled.div`
-  width: 70%;
-  ${rowFlex({ justify: 'start', align: 'center' })};
-`;
-
-const AccountInfoContainer = styled.div`
-  width: 350px;
-  gap: 25px;
-  ${colFlex({ justify: 'start', align: 'start' })};
-`;
-
-const TextContainer = styled.div`
-  ${colFlex({ align: 'start' })};
+const DetailsWrapper = styled.div`
+  width: 100%;
+  height: 86%;
   gap: 12px;
+  ${colFlex({ justify: 'start', align: 'start' })}
 `;
 
 const AccountInfoRow = styled.div`
-  display: grid;
-  column-gap: 40px;
-  grid-template-columns: 60px 1fr;
+  width: 100%;
+  gap: 8px;
+  ${colFlex({ justify: 'center', align: 'flex-start' })}
+`;
+
+const InfoLabel = styled.span`
+  font-size: 16px;
+  color: #464a4d;
+  font-weight: 700;
+`;
+
+const ValueBox = styled.div`
+  width: 100%;
+  height: 50px;
+  background-color: ${Color.WHITE};
+  border-bottom: 1px solid #e8eef2;
+  padding-left: 12px;
+  box-sizing: border-box;
+  ${colFlex({ justify: 'center', align: 'start' })}
+`;
+
+const ValueText = styled.span`
+  font-size: 16px;
+  color: #464a4d;
+  font-weight: 400;
 `;
 
 function AccountInfo() {
   const accountInfo = useAtomValue(adminUserAccountAtom);
 
-  const { bankName, accountNumber, accountHolder } = accountInfo;
+  const handleRegisterAccount = () => {
+    // TODO: 계좌 등록 모달 열기 또는 관련 로직 실행
+    console.log('계좌 등록 클릭');
+  };
+
+  const handleDeleteAccount = () => {
+    // TODO: 계좌 삭제 확인 또는 관련 로직 실행
+    console.log('계좌 삭제 클릭');
+  };
+
+  const content = accountInfo ? (
+    <DetailsWrapper>
+      <AccountInfoRow>
+        <InfoLabel>은행명</InfoLabel>
+        <ValueBox>
+          <ValueText>{accountInfo.bankName}</ValueText>
+        </ValueBox>
+      </AccountInfoRow>
+      <AccountInfoRow>
+        <InfoLabel>예금주</InfoLabel>
+        <ValueBox>
+          <ValueText>{accountInfo.accountHolder}</ValueText>
+        </ValueBox>
+      </AccountInfoRow>
+      <AccountInfoRow>
+        <InfoLabel>계좌번호</InfoLabel>
+        <ValueBox>
+          <ValueText>{accountInfo.accountNumber}</ValueText>
+        </ValueBox>
+      </AccountInfoRow>
+    </DetailsWrapper>
+  ) : (
+    <RegistrationStatusInfo status="unregisteredAccount" />
+  );
 
   return (
-    <Container>
-      <AccountInfoContainer>
-        <TextContainer>
-          <AccountInfoRow>
-            <AppLabel size={13} color={Color.BLACK} style={{ fontWeight: 500 }}>
-              은행명
-            </AppLabel>
-            <AppLabel size={13} style={{ fontWeight: 400 }}>
-              {bankName}
-            </AppLabel>
-          </AccountInfoRow>
-          <AccountInfoRow>
-            <AppLabel size={13} color={Color.BLACK} style={{ fontWeight: 500 }}>
-              예금주
-            </AppLabel>
-            <AppLabel size={13} style={{ fontWeight: 400 }}>
-              {accountHolder}
-            </AppLabel>
-          </AccountInfoRow>
-          <AccountInfoRow>
-            <AppLabel size={13} color={Color.BLACK} style={{ fontWeight: 500 }}>
-              계좌번호
-            </AppLabel>
-            <AppLabel size={13} style={{ fontWeight: 400 }}>
-              {accountNumber}
-            </AppLabel>
-          </AccountInfoRow>
-        </TextContainer>
-      </AccountInfoContainer>
-    </Container>
+    <RegisterAccountInfoContainer
+      title="등록된 계좌"
+      secondaryButton={{
+        text: '계좌 삭제',
+        onClick: handleDeleteAccount,
+        disabled: !accountInfo,
+      }}
+      primaryButton={{
+        text: '계좌 등록',
+        onClick: handleRegisterAccount,
+      }}
+    >
+      {content}
+    </RegisterAccountInfoContainer>
   );
 }
 
