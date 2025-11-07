@@ -1,45 +1,17 @@
 import styled from '@emotion/styled';
-import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { adminUserAccountAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
 import { ACCOUNT_INFO } from '@constants/data/accountData';
 import RegisterAccountInfoContainer from './RegisterAccountInfoContainer';
 import RegistrationStatusInfo from './RegistrationStatusInfo';
+import AccountInfoItem from './AccountInfoItem';
 
 const DetailsWrapper = styled.div`
   width: 100%;
   height: 86%;
   gap: 12px;
   ${colFlex({ justify: 'start', align: 'start' })}
-`;
-
-const AccountInfoRow = styled.div`
-  width: 100%;
-  gap: 8px;
-  ${colFlex({ justify: 'center', align: 'flex-start' })}
-`;
-
-const InfoLabel = styled.span`
-  font-size: 16px;
-  color: #464a4d;
-  font-weight: 700;
-`;
-
-const ValueBox = styled.div`
-  width: 100%;
-  height: 50px;
-  background-color: ${Color.WHITE};
-  border-bottom: 1px solid #e8eef2;
-  padding-left: 12px;
-  box-sizing: border-box;
-  ${colFlex({ justify: 'center', align: 'start' })}
-`;
-
-const ValueText = styled.span`
-  font-size: 16px;
-  color: #464a4d;
-  font-weight: 400;
 `;
 
 function AccountInfo() {
@@ -57,24 +29,9 @@ function AccountInfo() {
 
   const content = accountInfo ? (
     <DetailsWrapper>
-      <AccountInfoRow>
-        <InfoLabel>{ACCOUNT_INFO.BANK_NAME_LABEL}</InfoLabel>
-        <ValueBox>
-          <ValueText>{accountInfo.bankName}</ValueText>
-        </ValueBox>
-      </AccountInfoRow>
-      <AccountInfoRow>
-        <InfoLabel>{ACCOUNT_INFO.HOLDER_LABEL}</InfoLabel>
-        <ValueBox>
-          <ValueText>{accountInfo.accountHolder}</ValueText>
-        </ValueBox>
-      </AccountInfoRow>
-      <AccountInfoRow>
-        <InfoLabel>{ACCOUNT_INFO.ACCOUNT_NUMBER_LABEL}</InfoLabel>
-        <ValueBox>
-          <ValueText>{accountInfo.accountNumber}</ValueText>
-        </ValueBox>
-      </AccountInfoRow>
+      <AccountInfoItem label={ACCOUNT_INFO.BANK_NAME_LABEL} value={accountInfo.bankName} />
+      <AccountInfoItem label={ACCOUNT_INFO.HOLDER_LABEL} value={accountInfo.accountHolder} />
+      <AccountInfoItem label={ACCOUNT_INFO.ACCOUNT_NUMBER_LABEL} value={accountInfo.accountNumber} />
     </DetailsWrapper>
   ) : (
     <RegistrationStatusInfo status="unregisteredAccount" />
