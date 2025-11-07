@@ -6,7 +6,7 @@ import RegistrationStatusInfo from './RegistrationStatusInfo';
 
 function TossAccountInfo() {
   const tossAccountInfo = useAtomValue(adminUserTossAccountAtom);
-  const status = tossAccountInfo ? 'registered' : 'unregistered';
+  const status = tossAccountInfo ? 'registered' : 'unregisteredTossQR';
 
   const handleRegisterQR = () => {
     // TODO: QR 등록 모달 열기 또는 관련 로직 실행

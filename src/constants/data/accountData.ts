@@ -3,7 +3,7 @@
     title: '등록됨',
     description: '현재 토스 QR이 등록되어 있습니다.',
   },
-  unregistered: {
+  unregisteredTossQR: {
     title: '등록되지 않음',
     description: '현재 토스 QR이 등록되어 있지 않습니다.',
   },

@@ -4,13 +4,13 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { RiCheckboxCircleFill, RiCloseCircleFill } from '@remixicon/react';
 import { REGISTRATION_STATUS_CONTENT } from '@constants/data/accountData';
 
-type StatusType = 'registered' | 'unregistered' | 'unregisteredAccount';
+type StatusType = 'registered' | 'unregisteredTossQR' | 'unregisteredAccount';
 
 const getStatusColor = (status: StatusType) => {
   switch (status) {
     case 'registered':
       return Color.GREEN;
-    case 'unregistered':
+    case 'unregisteredTossQR':
     case 'unregisteredAccount':
       return Color.RED;
   }
