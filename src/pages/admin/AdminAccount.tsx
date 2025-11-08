@@ -36,7 +36,8 @@ function AdminAccount() {
         <AccountInfo />
         <TossAccountInfo />
       </AccountContainer>
-      {/* <RegisterAccount />
+      {/* todo: account 관련 사이드바로 이전 예정
+      <RegisterAccount />
       <RegisterTossAccount /> */}
     </AppContainer>
   );
