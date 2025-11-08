@@ -2,9 +2,7 @@
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { RiCheckboxCircleFill, RiCloseCircleFill } from '@remixicon/react';
-import { REGISTRATION_STATUS_CONTENT } from '@constants/data/accountData';
-
-type StatusType = 'registered' | 'unregisteredTossQR' | 'unregisteredAccount';
+import { REGISTRATION_STATUS_CONTENT, StatusType } from '@constants/data/accountData';
 
 const getStatusColor = (status: StatusType) => {
   switch (status) {
