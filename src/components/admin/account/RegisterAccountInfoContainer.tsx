@@ -51,7 +51,7 @@ const InfoIconWrapper = styled.div`
   }
 `;
 
-const InfoIcon = styled.div`
+const InfoIcon = styled(RiInformationFill)`
   width: 18px;
   height: 18px;
   color: '#464A4D';
@@ -102,9 +102,7 @@ function RegisterAccountInfoContainer({ title, children, primaryButton, secondar
         <Title>{title}</Title>
         {infoTooltip && (
           <InfoIconWrapper>
-            <InfoIcon>
-              <RiInformationFill />
-            </InfoIcon>
+            <InfoIcon />
             <Tooltip className="info-tooltip">{infoTooltip}</Tooltip>
           </InfoIconWrapper>
         )}
