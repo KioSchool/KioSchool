@@ -51,6 +51,12 @@ const InfoIconWrapper = styled.div`
   }
 `;
 
+const InfoIcon = styled.div`
+  width: 18px;
+  height: 18px;
+  color: '#464A4D';
+`;
+
 const TitleRow = styled.div`
   width: 100%;
   ${rowFlex({ justify: 'start', align: 'center' })}
@@ -96,7 +102,9 @@ function RegisterAccountInfoContainer({ title, children, primaryButton, secondar
         <Title>{title}</Title>
         {infoTooltip && (
           <InfoIconWrapper>
-            <RiInformationFill size={18} color="#464A4D" />
+            <InfoIcon>
+              <RiInformationFill />
+            </InfoIcon>
             <Tooltip className="info-tooltip">{infoTooltip}</Tooltip>
           </InfoIconWrapper>
         )}
@@ -107,7 +115,7 @@ function RegisterAccountInfoContainer({ title, children, primaryButton, secondar
         <NewCommonButton onClick={secondaryButton.onClick} disabled={secondaryButton.disabled} color="blue_gray" size="sm">
           {secondaryButton.text}
         </NewCommonButton>
-        <NewCommonButton onClick={primaryButton.onClick} disabled={primaryButton.disabled} color="kio_orange" size="sm">
+        <NewCommonButton onClick={primaryButton.onClick} disabled={primaryButton.disabled} size="sm">
           {primaryButton.text}
         </NewCommonButton>
       </ButtonWrapper>
