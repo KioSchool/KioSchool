@@ -27,15 +27,16 @@ function AccountInfo() {
     console.log('계좌 삭제 클릭');
   };
 
-  const content = accountInfo ? (
-    <DetailsWrapper>
-      <AccountInfoItem label={ACCOUNT_INFO.BANK_NAME_LABEL} value={accountInfo.bankName} />
-      <AccountInfoItem label={ACCOUNT_INFO.HOLDER_LABEL} value={accountInfo.accountHolder} />
-      <AccountInfoItem label={ACCOUNT_INFO.ACCOUNT_NUMBER_LABEL} value={accountInfo.accountNumber} />
-    </DetailsWrapper>
-  ) : (
-    <RegistrationStatusInfo status="unregisteredAccount" />
-  );
+  const content =
+    accountInfo && accountInfo.accountNumber ? (
+      <DetailsWrapper>
+        <AccountInfoItem label={ACCOUNT_INFO.BANK_NAME_LABEL} value={accountInfo.bankName} />
+        <AccountInfoItem label={ACCOUNT_INFO.HOLDER_LABEL} value={accountInfo.accountHolder} />
+        <AccountInfoItem label={ACCOUNT_INFO.ACCOUNT_NUMBER_LABEL} value={accountInfo.accountNumber} />
+      </DetailsWrapper>
+    ) : (
+      <RegistrationStatusInfo status="unregisteredAccount" />
+    );
 
   return (
     <RegisterAccountInfoContainer
