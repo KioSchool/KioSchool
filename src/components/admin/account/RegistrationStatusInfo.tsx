@@ -55,14 +55,14 @@ function RegistrationStatusInfo({ status }: RegistrationStatusInfoProps) {
   const { title, description } = REGISTRATION_STATUS_CONTENT[status];
 
   const IconComponent = status === 'registered' ? RiCheckboxCircleFill : RiCloseCircleFill;
-  const iconColor = getStatusColor(status);
+  const statusColor = getStatusColor(status);
 
   return (
     <StyledContainer>
       <InfoWrapper>
         <TitleWrapper>
-          <IconComponent color={iconColor} size={24} />
-          <Title color={iconColor}>{title}</Title>
+          <IconComponent color={statusColor} size={24} />
+          <Title color={statusColor}>{title}</Title>
         </TitleWrapper>
         <Description>{description}</Description>
       </InfoWrapper>
