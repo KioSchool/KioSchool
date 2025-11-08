@@ -1,68 +1,58 @@
 import styled from '@emotion/styled';
-import { colFlex, rowFlex } from '@styles/flexStyles';
-import AppLabel from '@components/common/label/AppLabel';
-import { Color } from '@resources/colors';
+import { colFlex } from '@styles/flexStyles';
 import { adminUserAccountAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
+import { ACCOUNT_INFO } from '@constants/data/accountData';
+import RegisterAccountInfoContainer from './RegisterAccountInfoContainer';
+import RegistrationStatusInfo from './RegistrationStatusInfo';
+import AccountInfoItem from './AccountInfoItem';
 
-const Container = styled.div`
-  width: 70%;
-  ${rowFlex({ justify: 'start', align: 'center' })};
-`;
-
-const AccountInfoContainer = styled.div`
-  width: 350px;
-  gap: 25px;
-  ${colFlex({ justify: 'start', align: 'start' })};
-`;
-
-const TextContainer = styled.div`
-  ${colFlex({ align: 'start' })};
+const DetailsWrapper = styled.div`
+  width: 100%;
+  height: 86%;
   gap: 12px;
-`;
-
-const AccountInfoRow = styled.div`
-  display: grid;
-  column-gap: 40px;
-  grid-template-columns: 60px 1fr;
+  ${colFlex({ justify: 'start', align: 'start' })}
 `;
 
 function AccountInfo() {
   const accountInfo = useAtomValue(adminUserAccountAtom);
 
-  const { bankName, accountNumber, accountHolder } = accountInfo;
+  const handleRegisterAccount = () => {
+    // TODO: 계좌 등록 모달 열기 또는 관련 로직 실행
+    console.log('계좌 등록 클릭');
+  };
+
+  const handleDeleteAccount = () => {
+    // TODO: 계좌 삭제 확인 또는 관련 로직 실행
+    console.log('계좌 삭제 클릭');
+  };
+
+  const content =
+    accountInfo && accountInfo.accountNumber ? (
+      <DetailsWrapper>
+        <AccountInfoItem label={ACCOUNT_INFO.BANK_NAME_LABEL} value={accountInfo.bankName} />
+        <AccountInfoItem label={ACCOUNT_INFO.HOLDER_LABEL} value={accountInfo.accountHolder} />
+        <AccountInfoItem label={ACCOUNT_INFO.ACCOUNT_NUMBER_LABEL} value={accountInfo.accountNumber} />
+      </DetailsWrapper>
+    ) : (
+      <RegistrationStatusInfo status="unregisteredAccount" />
+    );
 
   return (
-    <Container>
-      <AccountInfoContainer>
-        <TextContainer>
-          <AccountInfoRow>
-            <AppLabel size={13} color={Color.BLACK} style={{ fontWeight: 500 }}>
-              은행명
-            </AppLabel>
-            <AppLabel size={13} style={{ fontWeight: 400 }}>
-              {bankName}
-            </AppLabel>
-          </AccountInfoRow>
-          <AccountInfoRow>
-            <AppLabel size={13} color={Color.BLACK} style={{ fontWeight: 500 }}>
-              예금주
-            </AppLabel>
-            <AppLabel size={13} style={{ fontWeight: 400 }}>
-              {accountHolder}
-            </AppLabel>
-          </AccountInfoRow>
-          <AccountInfoRow>
-            <AppLabel size={13} color={Color.BLACK} style={{ fontWeight: 500 }}>
-              계좌번호
-            </AppLabel>
-            <AppLabel size={13} style={{ fontWeight: 400 }}>
-              {accountNumber}
-            </AppLabel>
-          </AccountInfoRow>
-        </TextContainer>
-      </AccountInfoContainer>
-    </Container>
+    <RegisterAccountInfoContainer
+      title={ACCOUNT_INFO.TITLE}
+      secondaryButton={{
+        text: ACCOUNT_INFO.SECONDARY_BUTTON,
+        onClick: handleDeleteAccount,
+        disabled: !accountInfo,
+      }}
+      primaryButton={{
+        text: ACCOUNT_INFO.PRIMARY_BUTTON,
+        onClick: handleRegisterAccount,
+      }}
+    >
+      {content}
+    </RegisterAccountInfoContainer>
   );
 }
 
