@@ -34,12 +34,12 @@ const TitleWrapper = styled.div`
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
-const Title = styled.div<{ status: StatusType }>`
+const Title = styled.div<{ color: string }>`
   font-size: 20px;
   font-weight: 700;
   line-height: 24px;
 
-  color: ${({ status }) => getStatusColor(status)};
+  color: ${({ color }) => color};
 `;
 
 const Description = styled.div`
@@ -54,9 +54,7 @@ interface RegistrationStatusInfoProps {
 }
 
 function RegistrationStatusInfo({ status }: RegistrationStatusInfoProps) {
-  const content = REGISTRATION_STATUS_CONTENT;
-
-  const { title, description } = content[status];
+  const { title, description } = REGISTRATION_STATUS_CONTENT[status];
 
   const IconComponent = status === 'registered' ? RiCheckboxCircleFill : RiCloseCircleFill;
   const iconColor = getStatusColor(status);
@@ -66,7 +64,7 @@ function RegistrationStatusInfo({ status }: RegistrationStatusInfoProps) {
       <InfoWrapper>
         <TitleWrapper>
           <IconComponent color={iconColor} size={24} />
-          <Title status={status}>{title}</Title>
+          <Title color={iconColor}>{title}</Title>
         </TitleWrapper>
         <Description>{description}</Description>
       </InfoWrapper>
