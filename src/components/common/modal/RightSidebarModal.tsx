@@ -3,8 +3,34 @@ import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { tabletMediaQuery } from '@styles/globalStyles';
 import { Color } from '@resources/colors';
-import { RiCloseLine } from '@remixicon/react';
-import AppLabel from '@components/common/label/AppLabel';
+import { RiArrowRightSLine } from '@remixicon/react';
+
+const AttachedCloseButton = styled.button`
+  position: absolute;
+  top: calc(50% - 25px);
+  left: -30px;
+  transform: translateY(-50%);
+
+  width: 30px;
+  height: 100px;
+  padding: 0;
+
+  background-color: ${Color.WHITE};
+  color: #464a4d;
+
+  border-left: 1px solid #e8eef2;
+  border-top: 1px solid #e8eef2;
+  border-bottom: 1px solid #e8eef2;
+  border-right: none;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.05);
+
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+
+  cursor: pointer;
+  z-index: -1;
+  ${colFlex({ justify: 'center', align: 'center' })};
+`;
 
 const SidebarContainer = styled.div<{ isOpen: boolean }>`
   position: fixed;
@@ -17,8 +43,7 @@ const SidebarContainer = styled.div<{ isOpen: boolean }>`
   border-left: 1px solid #e8eef2;
   box-shadow: -4px 0 12px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
-  z-index: 1011;
-  padding: 20px 10px 0 40px;
+  padding: 46px 10px 0 41px;
   gap: 15px;
   transform: translateX(${(props) => (props.isOpen ? '0' : '100%')});
   transition: transform 0.3s ease-in-out;
@@ -35,6 +60,7 @@ const SidebarHeader = styled.div`
 `;
 
 const TitleContainer = styled.div`
+  color: #464a4d;
   width: 100%;
   gap: 8px;
   ${colFlex({ justify: 'start', align: 'start' })};
@@ -49,11 +75,9 @@ const SubTitle = styled.div`
   font-size: 16px;
 `;
 
-const CloseButton = styled.button`
-  width: 100%;
-  background: none;
-  border: none;
-  padding: 0;
+const CloseButton = styled(RiArrowRightSLine)`
+  width: 24px;
+  height: 24px;
   color: #464a4d;
   cursor: pointer;
   ${rowFlex({ justify: 'end', align: 'end' })}
@@ -70,11 +94,13 @@ interface RightSidebarModalProps {
 function RightSidebarModal({ isOpen, onClose, title, subtitle, children }: RightSidebarModalProps) {
   return (
     <SidebarContainer isOpen={isOpen}>
-      <SidebarHeader>
-        <CloseButton onClick={onClose}>
-          <RiCloseLine size={24} />
-        </CloseButton>
+      {isOpen && (
+        <AttachedCloseButton onClick={onClose}>
+          <CloseButton />
+        </AttachedCloseButton>
+      )}
 
+      <SidebarHeader>
         <TitleContainer>
           <Title>{title}</Title>
           {subtitle && <SubTitle>{subtitle}</SubTitle>}
