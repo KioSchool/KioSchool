@@ -1,8 +1,6 @@
 import { useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import RoundedAppButton from '@components/common/button/RoundedAppButton';
 import AppContainer from '@components/common/container/AppContainer';
-import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { Color } from '@resources/colors';
@@ -12,15 +10,16 @@ import { extractImageIdsAndFiles, initWorkspaceImages, removeAndPushNull } from 
 import WorkspaceImageInput from '@components/admin/workspace/WorkspaceImageInput';
 import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
+import { css } from '@emotion/react';
+import NewCommonButton from '@components/common/button/NewCommonButton';
 
-const textAreaStyle = `
-  border-radius: 10px;
+const textAreaStyle = css`
+  box-sizing: border-box;
+  border-radius: 15px;
   border: none;
-  background: ${Color.LIGHT_GREY};
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
   padding: 10px;
   resize: none;
-
+  border: 1px solid #e8eef2;
   &:focus {
     outline: none;
     border: 1px solid ${Color.KIO_ORANGE};
@@ -30,45 +29,35 @@ const textAreaStyle = `
 const ContentContainer = styled.div`
   width: 100%;
   height: 100%;
+  gap: 10px;
+  ${colFlex({ justify: 'center', align: 'center' })}
+`;
+
+const Label = styled.label`
+  color: #464a4d;
+  font-size: 16px;
+  font-weight: 700;
 `;
 
 const TitleContainer = styled.div`
   width: 100%;
-  height: 50px;
-  border-top: 2px solid ${Color.HEAVY_GREY};
-  ${rowFlex({ justify: 'center', align: 'center' })}
-`;
-
-const TitleLabelContainer = styled.div`
-  width: 15%;
-  height: 100%;
-  ${rowFlex({ justify: 'center', align: 'center' })}
+  gap: 10px;
+  ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
 const TitleInput = styled.input`
-  width: 85%;
-  height: 65%;
+  width: 100%;
   ${textAreaStyle}
-  padding: 0 10px;
 `;
 
 const ImageContainer = styled.div`
   width: 100%;
-  height: 150px;
-  padding: 10px 0;
-  border-top: 1px solid ${Color.HEAVY_GREY};
-  ${rowFlex({ justify: 'center', align: 'center' })}
-`;
-
-const ImageLabelContainer = styled.div`
-  width: 15%;
-  height: 100%;
-  ${colFlex({ justify: 'start', align: 'center' })}
+  gap: 10px;
+  ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
 const ImageInputContainer = styled.div`
-  width: 85%;
-  height: 100%;
+  width: 100%;
   ${rowFlex({ justify: 'space-between', align: 'start' })}
 `;
 
@@ -76,18 +65,12 @@ const DescriptionContainer = styled.div`
   width: 100%;
   height: 150px;
   padding: 10px 0;
-  border-top: 1px solid ${Color.HEAVY_GREY};
-  ${rowFlex({ justify: 'center', align: 'start' })}
-`;
-
-const DescriptionLabelContainer = styled.div`
-  width: 15%;
-  height: 100%;
-  ${colFlex({ justify: 'start', align: 'center' })}
+  gap: 10px;
+  ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
 const DescriptionInput = styled.textarea`
-  width: 833px;
+  width: 100%;
   height: 130px;
   ${textAreaStyle}
 `;
@@ -96,27 +79,14 @@ const NoticeContainer = styled.div`
   width: 100%;
   height: 150px;
   padding: 10px 0;
-  border-top: 1px solid ${Color.HEAVY_GREY};
-  border-bottom: 2px solid ${Color.HEAVY_GREY};
-  ${rowFlex({ justify: 'center', align: 'start' })}
-`;
-
-const NoticeLabelContainer = styled.div`
-  width: 15%;
-  height: 100%;
-  ${colFlex({ justify: 'start', align: 'center' })}
+  gap: 10px;
+  ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
 const NoticeInput = styled.textarea`
-  width: 833px;
+  width: 100%;
   height: 130px;
   ${textAreaStyle}
-`;
-
-const SubmitButtonContainer = styled.div`
-  width: 100%;
-  height: 50px;
-  ${rowFlex({ justify: 'end', align: 'center' })}
 `;
 
 function AdminWorkspaceEdit() {
@@ -202,34 +172,26 @@ function AdminWorkspaceEdit() {
     >
       <ContentContainer>
         <TitleContainer>
-          <TitleLabelContainer>
-            <AppLabel size={20}>주점명</AppLabel>
-          </TitleLabelContainer>
+          <Label>주점명</Label>
           <TitleInput ref={titleRef} defaultValue={workspace?.name || ''} />
         </TitleContainer>
         <ImageContainer>
-          <ImageLabelContainer>
-            <AppLabel size={20}>대표 사진</AppLabel>
-          </ImageLabelContainer>
+          <Label>대표 사진</Label>
           <ImageInputContainer>
             <WorkspaceImageInput images={displayImages} handleImageClick={handleImageClick} ref={fileInputRef} handleAddNewImage={handleAddNewImage} />
           </ImageInputContainer>
         </ImageContainer>
         <DescriptionContainer>
-          <DescriptionLabelContainer>
-            <AppLabel size={20}>주점 설명</AppLabel>
-          </DescriptionLabelContainer>
+          <Label>주점 설명</Label>
           <DescriptionInput ref={descriptionRef} defaultValue={workspace?.description || ''} />
         </DescriptionContainer>
         <NoticeContainer>
-          <NoticeLabelContainer>
-            <AppLabel size={20}>공지 사항</AppLabel>
-          </NoticeLabelContainer>
+          <Label>공지 사항</Label>
           <NoticeInput ref={noticeRef} defaultValue={workspace?.notice || ''} />
         </NoticeContainer>
-        <SubmitButtonContainer>
-          <RoundedAppButton onClick={handleSubmit}>수정 완료</RoundedAppButton>
-        </SubmitButtonContainer>
+        <NewCommonButton size={'sm'} onClick={handleSubmit}>
+          편집 완료
+        </NewCommonButton>
       </ContentContainer>
     </AppContainer>
   );

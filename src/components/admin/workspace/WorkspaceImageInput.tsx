@@ -1,19 +1,16 @@
 import { WorkspaceImage } from '@@types/index';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Color } from '@resources/colors';
-import { RiAddLine } from '@remixicon/react';
+import { RiCameraFill } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { rowFlex } from '@styles/flexStyles';
 import { useEffect, useState, useMemo, forwardRef } from 'react';
 
 const BaseImageStyle = css`
-  width: 260px;
-  height: 100%;
-  border-radius: 10px;
-  border: none;
-  background: ${Color.LIGHT_GREY};
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
+  width: 320px;
+  height: 180px;
+  border-radius: 15px;
+  border: 1px solid #e8eef2;
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
@@ -28,10 +25,10 @@ const DummyContent = styled.div`
   cursor: pointer;
 `;
 
-const PlusIcon = styled(RiAddLine)`
+const PlusIcon = styled(RiCameraFill)`
   width: 30px;
   height: 30px;
-  color: ${Color.GREY};
+  color: #e8eef2;
 `;
 
 const HiddenInput = styled.input`
