@@ -2,7 +2,6 @@ import { Order } from '@@types/index';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import styled from '@emotion/styled';
 import _ from 'lodash';
-import AppLabel from '@components/common/label/AppLabel';
 import { useAtomValue } from 'jotai';
 import { adminProductsAtom } from 'src/jotai/admin/atoms';
 import defaultProductImage from '@resources/image/defaultWorkspaceImage.png';
@@ -44,6 +43,14 @@ const ProductInfoContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'flex-start' })};
 `;
 
+const ProductName = styled.div`
+  font-size: 16px;
+`;
+
+const ProductCount = styled.div`
+  font-size: 14px;
+`;
+
 interface OrderByProductModalProps {
   orders: Order[];
   isModalOpen: boolean;
@@ -52,6 +59,7 @@ interface OrderByProductModalProps {
 
 function OrderByProductModal({ orders, isModalOpen, closeModal }: OrderByProductModalProps) {
   const products = useAtomValue(adminProductsAtom);
+
   const productMap = _.keyBy(products, 'id');
   const productCounts: Record<number, number> = {};
 
@@ -83,8 +91,8 @@ function OrderByProductModal({ orders, isModalOpen, closeModal }: OrderByProduct
             <ProductItem key={productId}>
               <ProductImage src={productImageUrl} alt={productName} />
               <ProductInfoContainer>
-                <AppLabel size={16}>{productName}</AppLabel>
-                <AppLabel size={14}>{count}개</AppLabel>
+                <ProductName>{productName}</ProductName>
+                <ProductCount>{count}개</ProductCount>
               </ProductInfoContainer>
             </ProductItem>
           );

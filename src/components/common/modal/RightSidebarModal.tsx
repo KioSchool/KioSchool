@@ -40,6 +40,15 @@ const TitleContainer = styled.div`
   ${colFlex({ justify: 'start', align: 'start' })};
 `;
 
+const Title = styled.div`
+  font-size: 18px;
+  font-weight: 700;
+`;
+
+const SubTitle = styled.div`
+  font-size: 16px;
+`;
+
 const CloseButton = styled.button`
   width: 100%;
   background: none;
@@ -67,10 +76,8 @@ function RightSidebarModal({ isOpen, onClose, title, subtitle, children }: Right
         </CloseButton>
 
         <TitleContainer>
-          <AppLabel size={18} style={{ fontWeight: 700 }}>
-            {title}
-          </AppLabel>
-          {subtitle && <AppLabel size={16}>{subtitle}</AppLabel>}
+          <Title>{title}</Title>
+          {subtitle && <SubTitle>{subtitle}</SubTitle>}
         </TitleContainer>
       </SidebarHeader>
       {children}
