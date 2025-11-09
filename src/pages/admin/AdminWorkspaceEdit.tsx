@@ -13,7 +13,7 @@ import { useAtomValue } from 'jotai';
 import { css } from '@emotion/react';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 
-const textAreaStyle = css`
+const inputStyle = css`
   box-sizing: border-box;
   border-radius: 15px;
   border: none;
@@ -24,6 +24,12 @@ const textAreaStyle = css`
     outline: none;
     border: 1px solid ${Color.KIO_ORANGE};
   }
+`;
+
+const containerStyle = css`
+  width: 100%;
+  gap: 10px;
+  ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
 const ContentContainer = styled.div`
@@ -40,20 +46,16 @@ const Label = styled.label`
 `;
 
 const TitleContainer = styled.div`
-  width: 100%;
-  gap: 10px;
-  ${colFlex({ justify: 'center', align: 'start' })}
+  ${containerStyle}
 `;
 
 const TitleInput = styled.input`
   width: 100%;
-  ${textAreaStyle}
+  ${inputStyle}
 `;
 
 const ImageContainer = styled.div`
-  width: 100%;
-  gap: 10px;
-  ${colFlex({ justify: 'center', align: 'start' })}
+  ${containerStyle}
 `;
 
 const ImageInputContainer = styled.div`
@@ -62,31 +64,25 @@ const ImageInputContainer = styled.div`
 `;
 
 const DescriptionContainer = styled.div`
-  width: 100%;
   height: 150px;
-  padding: 10px 0;
-  gap: 10px;
-  ${colFlex({ justify: 'center', align: 'start' })}
+  ${containerStyle}
 `;
 
 const DescriptionInput = styled.textarea`
   width: 100%;
   height: 130px;
-  ${textAreaStyle}
+  ${inputStyle}
 `;
 
 const NoticeContainer = styled.div`
-  width: 100%;
   height: 150px;
-  padding: 10px 0;
-  gap: 10px;
-  ${colFlex({ justify: 'center', align: 'start' })}
+  ${containerStyle}
 `;
 
 const NoticeInput = styled.textarea`
   width: 100%;
   height: 130px;
-  ${textAreaStyle}
+  ${inputStyle}
 `;
 
 function AdminWorkspaceEdit() {
