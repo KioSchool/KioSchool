@@ -9,9 +9,9 @@ import { OrderStatus } from '@@types/index';
 import TitledOrderStatusList from '@components/admin/order/realtime/TitledOrderStatusList';
 import useModal from '@hooks/useModal';
 import OrderByProductModal from '@components/admin/order/realtime/modal/order-by-product/OrderByProductModal';
-import OrderByProductModalButton from '@components/admin/order/realtime/modal/order-by-product/OrderByProductModalButton';
 import { useAtomValue } from 'jotai';
 import { adminOrdersAtom } from 'src/jotai/admin/atoms';
+import RightSidebarOpenButton from '@components/common/modal/RightSidebarModalOpenButton';
 
 function AdminOrderRealtime() {
   const { isModalOpen, openModal, closeModal } = useModal();
@@ -55,7 +55,7 @@ function AdminOrderRealtime() {
         />
         <TitledOrderStatusList orders={servedOrders} orderStatus={OrderStatus.SERVED} title={'서빙 완료'} description={'서빙이 완료된 주문입니다.'} />
         <OrderByProductModal orders={paidOrders} isModalOpen={isModalOpen} closeModal={closeModal} />
-        <OrderByProductModalButton openModal={openModal} />
+        <RightSidebarOpenButton openModal={openModal} />
       </>
     </AppContainer>
   );

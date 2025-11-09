@@ -2,69 +2,11 @@ import { Order } from '@@types/index';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import styled from '@emotion/styled';
 import _ from 'lodash';
-import { tabletMediaQuery } from '@styles/globalStyles';
 import AppLabel from '@components/common/label/AppLabel';
-import { Color } from '@resources/colors';
 import { useAtomValue } from 'jotai';
 import { adminProductsAtom } from 'src/jotai/admin/atoms';
-import { RiCloseLine } from '@remixicon/react';
 import defaultProductImage from '@resources/image/defaultWorkspaceImage.png';
-
-const ProductModalContainer = styled.div``;
-
-const Overlay = styled.div<{ isOpen: boolean }>`
-  position: fixed;
-  top: 65px;
-  right: 0;
-  bottom: 0;
-  width: 50%;
-  z-index: 1010;
-  opacity: ${(props) => (props.isOpen ? 1 : 0)};
-  visibility: ${(props) => (props.isOpen ? 'visible' : 'hidden')};
-`;
-
-const SidebarContainer = styled.div<{ isOpen: boolean }>`
-  position: fixed;
-  top: 65px;
-  right: 0;
-  width: 300px;
-  height: calc(100vh - 65px);
-  background-color: ${Color.WHITE};
-  border-left: 1px solid #e8eef2;
-  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.05);
-  box-sizing: border-box;
-  z-index: 1011;
-  padding: 20px 10px 0 40px;
-  gap: 15px;
-  transform: translateX(${(props) => (props.isOpen ? '0' : '100%')});
-  transition: transform 0.3s ease-in-out;
-  ${colFlex()}
-
-  ${tabletMediaQuery} {
-    width: 280px;
-  }
-`;
-
-const SidebarHeader = styled.div`
-  width: 100%;
-  ${colFlex({ justify: 'center', align: 'center' })};
-`;
-
-const TitleContainer = styled.div`
-  width: 100%;
-  gap: 8px;
-  ${colFlex({ justify: 'start', align: 'start' })};
-`;
-
-const CloseButton = styled.button`
-  width: 100%;
-  background: none;
-  border: none;
-  padding: 0;
-  color: #464a4d;
-  cursor: pointer;
-  ${rowFlex({ justify: 'end', align: 'end' })}
-`;
+import RightSidebarModal from '@components/common/modal/RightSidebarModal';
 
 const ProductContainer = styled.div`
   width: 100%;
@@ -110,7 +52,6 @@ interface OrderByProductModalProps {
 
 function OrderByProductModal({ orders, isModalOpen, closeModal }: OrderByProductModalProps) {
   const products = useAtomValue(adminProductsAtom);
-
   const productMap = _.keyBy(products, 'id');
   const productCounts: Record<number, number> = {};
 
@@ -129,42 +70,27 @@ function OrderByProductModal({ orders, isModalOpen, closeModal }: OrderByProduct
     .sort((a, b) => b.count - a.count);
 
   return (
-    <ProductModalContainer>
-      <Overlay isOpen={isModalOpen} onClick={closeModal} />
-      <SidebarContainer isOpen={isModalOpen}>
-        <SidebarHeader>
-          <CloseButton onClick={closeModal}>
-            <RiCloseLine size={24} />
-          </CloseButton>
+    <RightSidebarModal isOpen={isModalOpen} onClose={closeModal} title="실시간 상품별 주문량" subtitle="*결제 완료 주문만 표시됩니다.">
+      <ProductContainer>
+        {sortedProducts.map(({ productId, count }) => {
+          const product = productMap[productId];
+          const productImageUrl = product?.imageUrl || defaultProductImage;
+          const productName = product.name;
 
-          <TitleContainer>
-            <AppLabel size={18} style={{ fontWeight: 700 }}>
-              실시간 상품별 주문량
-            </AppLabel>
-            <AppLabel size={16}>*결제 완료 주문만 표시됩니다.</AppLabel>
-          </TitleContainer>
-        </SidebarHeader>
-        <ProductContainer>
-          {sortedProducts.map(({ productId, count }) => {
-            const product = productMap[productId];
-            const productImageUrl = product?.imageUrl || defaultProductImage;
-            const productName = product.name;
+          if (count <= 0) return null;
 
-            if (count <= 0) return null;
-
-            return (
-              <ProductItem key={productId}>
-                <ProductImage src={productImageUrl} alt={productName} />
-                <ProductInfoContainer>
-                  <AppLabel size={16}>{productName}</AppLabel>
-                  <AppLabel size={14}>{count}개</AppLabel>
-                </ProductInfoContainer>
-              </ProductItem>
-            );
-          })}
-        </ProductContainer>
-      </SidebarContainer>
-    </ProductModalContainer>
+          return (
+            <ProductItem key={productId}>
+              <ProductImage src={productImageUrl} alt={productName} />
+              <ProductInfoContainer>
+                <AppLabel size={16}>{productName}</AppLabel>
+                <AppLabel size={14}>{count}개</AppLabel>
+              </ProductInfoContainer>
+            </ProductItem>
+          );
+        })}
+      </ProductContainer>
+    </RightSidebarModal>
   );
 }
 
