@@ -73,8 +73,8 @@ const WorkspaceImageInput = forwardRef<HTMLInputElement, WorkspaceImageInputProp
     const dummies = [];
     for (let i = 0; i < dummyLength; i++) {
       dummies.push(
-        <DummyContent key={`dummy-${validImagesCount + i}`} onClick={() => i === 0 && handleImageClick(validImagesCount)}>
-          {i === 0 && <PlusIcon />}
+        <DummyContent key={`dummy-${validImagesCount + i}`} onClick={() => handleImageClick(validImagesCount)}>
+          <PlusIcon />
         </DummyContent>,
       );
     }
