@@ -13,7 +13,7 @@ import { useAtomValue } from 'jotai';
 import { css } from '@emotion/react';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 
-const inputStyle = css`
+const inputStyle = `
   box-sizing: border-box;
   border-radius: 15px;
   border: none;
