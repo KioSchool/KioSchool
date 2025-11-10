@@ -1,4 +1,4 @@
-﻿import React from 'react';
+﻿import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { tabletMediaQuery } from '@styles/globalStyles';
@@ -88,16 +88,46 @@ interface RightSidebarModalProps {
   subtitle?: string;
   children: React.ReactNode;
   isOpenButtonVisible?: boolean;
+  isOpen?: boolean;
+  onClose?: () => void;
+  onOpen?: () => void;
 }
 
-function RightSidebarModal({ title, subtitle, children, isOpenButtonVisible }: RightSidebarModalProps) {
-  const { isModalOpen, openModal, closeModal } = useModal();
+function RightSidebarModal({
+  title,
+  subtitle,
+  children,
+  isOpenButtonVisible,
+  isOpen: controlledIsOpen,
+  onClose: controlledOnClose,
+  onOpen: controlledOnOpen,
+}: RightSidebarModalProps) {
+  const { isModalOpen: internalIsOpen, openModal: internalOpenModal, closeModal: internalCloseModal } = useModal();
+
+  const isControlled = controlledIsOpen !== undefined;
+
+  useEffect(() => {
+    if (!isControlled) {
+      return;
+    }
+
+    if (controlledIsOpen && !internalIsOpen) {
+      internalOpenModal();
+    } else if (!controlledIsOpen && internalIsOpen) {
+      internalCloseModal();
+    }
+  }, [isControlled, controlledIsOpen, internalIsOpen, internalOpenModal, internalCloseModal]);
+
+  const isOpen = isControlled ? controlledIsOpen : internalIsOpen;
+
+  const openModal = isControlled ? controlledOnOpen ?? (() => {}) : internalOpenModal;
+  const closeModal = isControlled ? controlledOnClose ?? (() => {}) : internalCloseModal;
 
   return (
     <Container>
       {isOpenButtonVisible && <RightSidebarModalOpenButton openModal={openModal} />}
-      <SidebarContainer isOpen={isModalOpen}>
-        {isModalOpen && (
+      <SidebarContainer isOpen={isOpen}>
+        {isOpen && (
           <AttachedCloseButton onClick={closeModal}>
             <CloseButton />
           </AttachedCloseButton>
