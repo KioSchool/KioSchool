@@ -87,14 +87,15 @@ interface RightSidebarModalProps {
   title: string;
   subtitle?: string;
   children: React.ReactNode;
+  isOpenButtonVisible?: boolean;
 }
 
-function RightSidebarModal({ title, subtitle, children }: RightSidebarModalProps) {
+function RightSidebarModal({ title, subtitle, children, isOpenButtonVisible }: RightSidebarModalProps) {
   const { isModalOpen, openModal, closeModal } = useModal();
 
   return (
     <Container>
-      <RightSidebarModalOpenButton openModal={openModal} />
+      {isOpenButtonVisible && <RightSidebarModalOpenButton openModal={openModal} />}
       <SidebarContainer isOpen={isModalOpen}>
         {isModalOpen && (
           <AttachedCloseButton onClick={closeModal}>
