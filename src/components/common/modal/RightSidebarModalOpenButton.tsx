@@ -1,4 +1,4 @@
-import { colFlex } from '@styles/flexStyles';
+﻿import { colFlex } from '@styles/flexStyles';
 import styled from '@emotion/styled';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { tabletMediaQuery } from '@styles/globalStyles';
@@ -26,20 +26,21 @@ const ModalButtonContainer = styled.div`
   }
 `;
 
-interface OrderByProductModalButtonProps {
+const OpenButton = styled(RiArrowLeftSLine)`
+  width: 35px;
+  height: 35px;
+`;
+
+interface RightSidebarModalOpenButtonProps {
   openModal: () => void;
 }
 
-function OrderByProductModalButton({ openModal }: OrderByProductModalButtonProps) {
-  const onClick = () => {
-    openModal();
-  };
-
+function RightSidebarModalOpenButton({ openModal }: RightSidebarModalOpenButtonProps) {
   return (
-    <ModalButtonContainer onClick={onClick}>
-      <RiArrowLeftSLine size={35} />
+    <ModalButtonContainer onClick={openModal}>
+      <OpenButton />
     </ModalButtonContainer>
   );
 }
 
-export default OrderByProductModalButton;
+export default RightSidebarModalOpenButton;
