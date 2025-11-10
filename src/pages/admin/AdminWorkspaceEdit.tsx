@@ -17,7 +17,7 @@ const inputStyle = `
   box-sizing: border-box;
   border-radius: 15px;
   border: none;
-  padding: 10px;
+  padding: 12px 20px;
   resize: none;
   border: 1px solid #e8eef2;
   &:focus {
