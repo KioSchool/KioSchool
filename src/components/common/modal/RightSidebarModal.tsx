@@ -4,6 +4,10 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { tabletMediaQuery } from '@styles/globalStyles';
 import { Color } from '@resources/colors';
 import { RiArrowRightSLine } from '@remixicon/react';
+import useModal from '@hooks/useModal';
+import RightSidebarModalOpenButton from './RightSidebarModalOpenButton';
+
+const Container = styled.div``;
 
 const AttachedCloseButton = styled.button`
   position: absolute;
@@ -80,30 +84,33 @@ const CloseButton = styled(RiArrowRightSLine)`
 `;
 
 interface RightSidebarModalProps {
-  isOpen: boolean;
-  onClose: () => void;
   title: string;
   subtitle?: string;
   children: React.ReactNode;
 }
 
-function RightSidebarModal({ isOpen, onClose, title, subtitle, children }: RightSidebarModalProps) {
-  return (
-    <SidebarContainer isOpen={isOpen}>
-      {isOpen && (
-        <AttachedCloseButton onClick={onClose}>
-          <CloseButton />
-        </AttachedCloseButton>
-      )}
+function RightSidebarModal({ title, subtitle, children }: RightSidebarModalProps) {
+  const { isModalOpen, openModal, closeModal } = useModal();
 
-      <SidebarHeader>
-        <TitleContainer>
-          <Title>{title}</Title>
-          {subtitle && <SubTitle>{subtitle}</SubTitle>}
-        </TitleContainer>
-      </SidebarHeader>
-      {children}
-    </SidebarContainer>
+  return (
+    <Container>
+      <RightSidebarModalOpenButton openModal={openModal} />
+      <SidebarContainer isOpen={isModalOpen}>
+        {isModalOpen && (
+          <AttachedCloseButton onClick={closeModal}>
+            <CloseButton />
+          </AttachedCloseButton>
+        )}
+
+        <SidebarHeader>
+          <TitleContainer>
+            <Title>{title}</Title>
+            {subtitle && <SubTitle>{subtitle}</SubTitle>}
+          </TitleContainer>
+        </SidebarHeader>
+        {children}
+      </SidebarContainer>
+    </Container>
   );
 }
 

@@ -5,7 +5,6 @@ import _ from 'lodash';
 import { useAtomValue } from 'jotai';
 import { adminProductsAtom } from 'src/jotai/admin/atoms';
 import defaultProductImage from '@resources/image/defaultWorkspaceImage.png';
-import RightSidebarModal from '@components/common/modal/RightSidebarModal';
 
 const ProductContainer = styled.div`
   width: 100%;
@@ -51,13 +50,11 @@ const ProductCount = styled.div`
   font-size: 14px;
 `;
 
-interface OrderByProductModalProps {
+interface OrderByProductListProps {
   orders: Order[];
-  isModalOpen: boolean;
-  closeModal: () => void;
 }
 
-function OrderByProductModal({ orders, isModalOpen, closeModal }: OrderByProductModalProps) {
+function OrderByProductList({ orders }: OrderByProductListProps) {
   const products = useAtomValue(adminProductsAtom);
 
   const productMap = _.keyBy(products, 'id');
@@ -78,28 +75,26 @@ function OrderByProductModal({ orders, isModalOpen, closeModal }: OrderByProduct
     .sort((a, b) => b.count - a.count);
 
   return (
-    <RightSidebarModal isOpen={isModalOpen} onClose={closeModal} title="실시간 상품별 주문량" subtitle="*결제 완료 주문만 표시됩니다.">
-      <ProductContainer>
-        {sortedProducts.map(({ productId, count }) => {
-          const product = productMap[productId];
-          const productImageUrl = product?.imageUrl || defaultProductImage;
-          const productName = product.name;
+    <ProductContainer>
+      {sortedProducts.map(({ productId, count }) => {
+        const product = productMap[productId];
+        const productImageUrl = product?.imageUrl || defaultProductImage;
+        const productName = product.name;
 
-          if (count <= 0) return null;
+        if (count <= 0) return null;
 
-          return (
-            <ProductItem key={productId}>
-              <ProductImage src={productImageUrl} alt={productName} />
-              <ProductInfoContainer>
-                <ProductName>{productName}</ProductName>
-                <ProductCount>{count}개</ProductCount>
-              </ProductInfoContainer>
-            </ProductItem>
-          );
-        })}
-      </ProductContainer>
-    </RightSidebarModal>
+        return (
+          <ProductItem key={productId}>
+            <ProductImage src={productImageUrl} alt={productName} />
+            <ProductInfoContainer>
+              <ProductName>{productName}</ProductName>
+              <ProductCount>{count}개</ProductCount>
+            </ProductInfoContainer>
+          </ProductItem>
+        );
+      })}
+    </ProductContainer>
   );
 }
 
-export default OrderByProductModal;
+export default OrderByProductList;
