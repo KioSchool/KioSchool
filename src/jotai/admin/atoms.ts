@@ -53,3 +53,5 @@ export const adminUserTossAccountAtom = atom((get) => {
 });
 
 export const adminSideNavIsOpenAtom = atom(false);
+
+export const isRegisterAccountModalOpenAtom = atom(false);

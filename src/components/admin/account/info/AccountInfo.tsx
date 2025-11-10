@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
-import { adminUserAccountAtom } from 'src/jotai/admin/atoms';
-import { useAtomValue } from 'jotai';
+import { adminUserAccountAtom, isRegisterAccountModalOpenAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { ACCOUNT_INFO } from '@constants/data/accountData';
 import RegisterAccountInfoContainer from './RegisterAccountInfoContainer';
 import RegistrationStatusInfo from './RegistrationStatusInfo';
@@ -17,9 +17,10 @@ const DetailsWrapper = styled.div`
 function AccountInfo() {
   const accountInfo = useAtomValue(adminUserAccountAtom);
 
+  const setIsRegisterAccountModalOpen = useSetAtom(isRegisterAccountModalOpenAtom);
+
   const handleRegisterAccount = () => {
-    // TODO: 계좌 등록 모달 열기 또는 관련 로직 실행
-    console.log('계좌 등록 클릭');
+    setIsRegisterAccountModalOpen(true);
   };
 
   const handleDeleteAccount = () => {
