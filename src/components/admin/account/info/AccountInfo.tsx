@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
-import { adminUserAccountAtom, isRegisterAccountModalOpenAtom } from 'src/jotai/admin/atoms';
+import { activeAdminSidebarAtom, adminUserAccountAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { ACCOUNT_INFO } from '@constants/data/accountData';
 import RegisterAccountInfoContainer from './RegisterAccountInfoContainer';
@@ -17,10 +17,10 @@ const DetailsWrapper = styled.div`
 function AccountInfo() {
   const accountInfo = useAtomValue(adminUserAccountAtom);
 
-  const setIsRegisterAccountModalOpen = useSetAtom(isRegisterAccountModalOpenAtom);
+  const setActiveSidebar = useSetAtom(activeAdminSidebarAtom);
 
   const handleRegisterAccount = () => {
-    setIsRegisterAccountModalOpen(true);
+    setActiveSidebar('REGISTER_ACCOUNT');
   };
 
   const handleDeleteAccount = () => {

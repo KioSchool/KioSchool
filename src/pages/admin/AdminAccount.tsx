@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import styled from '@emotion/styled';
 import useAdminUser from '@hooks/admin/useAdminUser';
 import TossAccountInfo from '@components/admin/account/info/TossAccountInfo';
-import { adminUserAtom, isRegisterAccountModalOpenAtom, isRegisterTossModalOpenAtom } from 'src/jotai/admin/atoms';
+import { activeAdminSidebarAtom, adminUserAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue, useAtom } from 'jotai';
 import RightSidebarModal from '@components/common/modal/RightSidebarModal';
 import { ACCOUNT_MODAL, TOSS_MODAL } from '@constants/data/accountData';
@@ -24,18 +24,27 @@ function AdminAccount() {
   const { fetchAdminUser } = useAdminUser();
   const user = useAtomValue(adminUserAtom);
 
-  const [isRegisterAccountModalOpen, setIsRegisterAccountModalOpen] = useAtom(isRegisterAccountModalOpenAtom);
-  const [isRegisterTossModalOpen, setIsRegisterTossModalOpen] = useAtom(isRegisterTossModalOpenAtom);
+  const [activeSidebar, setActiveSidebar] = useAtom(activeAdminSidebarAtom);
 
-  const handleRegisterAccountOpenModal = () => setIsRegisterAccountModalOpen(true);
-  const handleRegisterAccountCloseModal = () => setIsRegisterAccountModalOpen(false);
-
-  const handleRegisterTossOpenModal = () => setIsRegisterTossModalOpen(true);
-  const handleRegisterTossCloseModal = () => setIsRegisterTossModalOpen(false);
+  const handleCloseModal = () => setActiveSidebar(null);
 
   useEffect(() => {
     fetchAdminUser();
   }, []);
+
+  let modalTitle = '';
+  let modalSubtitle = '';
+  let modalContent: React.ReactNode = null;
+
+  if (activeSidebar === 'REGISTER_ACCOUNT') {
+    modalTitle = ACCOUNT_MODAL.TITLE;
+    modalSubtitle = ACCOUNT_MODAL.SUBTITLE;
+    modalContent = <RegisterAccount />;
+  } else if (activeSidebar === 'REGISTER_TOSS') {
+    modalTitle = TOSS_MODAL.TITLE;
+    modalSubtitle = TOSS_MODAL.SUBTITLE;
+    modalContent = <RegisterTossAccount />;
+  }
 
   return (
     <AppContainer
@@ -46,23 +55,9 @@ function AdminAccount() {
       <AccountContainer>
         <AccountInfo />
         <TossAccountInfo />
-        <RightSidebarModal
-          title={ACCOUNT_MODAL.TITLE}
-          subtitle={ACCOUNT_MODAL.SUBTITLE}
-          isOpen={isRegisterAccountModalOpen}
-          onClose={handleRegisterAccountCloseModal}
-          onOpen={handleRegisterAccountOpenModal}
-        >
-          <RegisterAccount />
-        </RightSidebarModal>
-        <RightSidebarModal
-          title={TOSS_MODAL.TITLE}
-          subtitle={TOSS_MODAL.SUBTITLE}
-          isOpen={isRegisterTossModalOpen}
-          onClose={handleRegisterTossCloseModal}
-          onOpen={handleRegisterTossOpenModal}
-        >
-          <RegisterTossAccount />
+
+        <RightSidebarModal title={modalTitle} subtitle={modalSubtitle} isOpen={activeSidebar !== null} onClose={handleCloseModal}>
+          {modalContent}
         </RightSidebarModal>
       </AccountContainer>
     </AppContainer>

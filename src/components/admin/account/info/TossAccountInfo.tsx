@@ -1,4 +1,4 @@
-import { adminUserTossAccountAtom, isRegisterTossModalOpenAtom } from 'src/jotai/admin/atoms';
+import { adminUserTossAccountAtom, activeAdminSidebarAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { TOSS_ACCOUNT_INFO } from '@constants/data/accountData';
 import RegisterAccountInfoContainer from './RegisterAccountInfoContainer';
@@ -6,11 +6,12 @@ import RegistrationStatusInfo from './RegistrationStatusInfo';
 
 function TossAccountInfo() {
   const tossAccountInfo = useAtomValue(adminUserTossAccountAtom);
-  const setIsRegisterTossModalOpen = useSetAtom(isRegisterTossModalOpenAtom);
+  const setActiveSidebar = useSetAtom(activeAdminSidebarAtom);
+
   const status = tossAccountInfo ? 'registered' : 'unregisteredTossQR';
 
   const handleRegisterQR = () => {
-    setIsRegisterTossModalOpen(true);
+    setActiveSidebar('REGISTER_TOSS');
   };
 
   const handleDeleteQR = () => {

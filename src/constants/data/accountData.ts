@@ -1,5 +1,7 @@
 ﻿export type StatusType = 'registered' | 'unregisteredTossQR' | 'unregisteredAccount';
 
+export type AdminSidebarType = 'REGISTER_ACCOUNT' | 'REGISTER_TOSS' | null;
+
 export const REGISTRATION_STATUS_CONTENT: Record<StatusType, { title: string; description: string }> = {
   registered: {
     title: '등록됨',
