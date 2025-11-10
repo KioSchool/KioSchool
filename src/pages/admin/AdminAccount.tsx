@@ -1,4 +1,4 @@
-import AccountInfo from '@components/admin/account/AccountInfo';
+import AccountInfo from '@components/admin/account/info/AccountInfo';
 // import RegisterAccount from '@components/admin/account/RegisterAccount';
 // import RegisterTossAccount from '@components/admin/account/RegisterTossAccount';
 import AppContainer from '@components/common/container/AppContainer';
@@ -6,7 +6,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useEffect } from 'react';
 import styled from '@emotion/styled';
 import useAdminUser from '@hooks/admin/useAdminUser';
-import TossAccountInfo from '@components/admin/account/TossAccountInfo';
+import TossAccountInfo from '@components/admin/account/info/TossAccountInfo';
 import { adminUserAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
 

@@ -5,7 +5,7 @@ import { RiAddLine } from '@remixicon/react';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import TossAccountInfoTooltip from '@components/admin/account/TossAccountInfoTooltip';
+import TossAccountInfoTooltip from '@components/admin/account/info/TossAccountInfoTooltip';
 import { adminUserAccountAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
 
