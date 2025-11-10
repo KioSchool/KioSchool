@@ -18,17 +18,13 @@ const AttachedCloseButton = styled.button`
   background-color: ${Color.WHITE};
   color: #464a4d;
 
-  border-left: 1px solid #e8eef2;
-  border-top: 1px solid #e8eef2;
-  border-bottom: 1px solid #e8eef2;
+  border: 1px solid #e8e8f2;
   border-right: none;
-  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.05);
 
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
 
   cursor: pointer;
-  z-index: -1;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
