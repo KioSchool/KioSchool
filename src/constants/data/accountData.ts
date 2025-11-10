@@ -30,3 +30,13 @@ export const ACCOUNT_INFO = {
   HOLDER_LABEL: '예금주',
   ACCOUNT_NUMBER_LABEL: '계좌번호',
 } as const;
+
+export const ACCOUNT_MODAL = {
+  TITLE: '계좌 등록',
+  SUBTITLE: '*편집 중 창을 닫지 마세요',
+} as const;
+
+export const TOSS_MODAL = {
+  TITLE: '토스 QR 등록',
+  SUBTITLE: '1. 토스 앱 실행\n2. 하단 전체 메뉴 선택\n3. 사진으로 송금 메뉴 검색\n4. 계좌 선택 후 받을 금액 미설정\n5. QR코드 발급',
+} as const;

@@ -1,16 +1,16 @@
-import { adminUserTossAccountAtom } from 'src/jotai/admin/atoms';
-import { useAtomValue } from 'jotai';
+import { adminUserTossAccountAtom, isRegisterTossModalOpenAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { TOSS_ACCOUNT_INFO } from '@constants/data/accountData';
 import RegisterAccountInfoContainer from './RegisterAccountInfoContainer';
 import RegistrationStatusInfo from './RegistrationStatusInfo';
 
 function TossAccountInfo() {
   const tossAccountInfo = useAtomValue(adminUserTossAccountAtom);
+  const setIsRegisterTossModalOpen = useSetAtom(isRegisterTossModalOpenAtom);
   const status = tossAccountInfo ? 'registered' : 'unregisteredTossQR';
 
   const handleRegisterQR = () => {
-    // TODO: QR 등록 모달 열기 또는 관련 로직 실행
-    console.log('QR 등록 클릭');
+    setIsRegisterTossModalOpen(true);
   };
 
   const handleDeleteQR = () => {
