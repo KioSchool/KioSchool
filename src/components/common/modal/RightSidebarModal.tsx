@@ -1,4 +1,4 @@
-﻿import React, { useEffect } from 'react';
+﻿import React from 'react';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { tabletMediaQuery } from '@styles/globalStyles';
@@ -73,6 +73,7 @@ const Title = styled.div`
 
 const SubTitle = styled.div`
   font-size: 16px;
+  white-space: pre-line;
 `;
 
 const CloseButton = styled(RiArrowRightSLine)`
@@ -93,42 +94,35 @@ interface RightSidebarModalProps {
   onOpen?: () => void;
 }
 
-function RightSidebarModal({
-  title,
-  subtitle,
-  children,
-  isOpenButtonVisible,
-  isOpen: controlledIsOpen,
-  onClose: controlledOnClose,
-  onOpen: controlledOnOpen,
-}: RightSidebarModalProps) {
-  const { isModalOpen: internalIsOpen, openModal: internalOpenModal, closeModal: internalCloseModal } = useModal();
+function RightSidebarModal({ title, subtitle, children, isOpenButtonVisible, isOpen, onClose, onOpen }: RightSidebarModalProps) {
+  const { isModalOpen, openModal, closeModal } = useModal();
+  const isControlled = typeof isOpen === 'boolean';
 
-  const isControlled = controlledIsOpen !== undefined;
-
-  useEffect(() => {
-    if (!isControlled) {
+  const resolvedIsOpen = isControlled ? (isOpen as boolean) : isModalOpen;
+  const handleOpen = () => {
+    if (isControlled) {
+      onOpen?.();
       return;
     }
 
-    if (controlledIsOpen && !internalIsOpen) {
-      internalOpenModal();
-    } else if (!controlledIsOpen && internalIsOpen) {
-      internalCloseModal();
+    openModal();
+  };
+
+  const handleClose = () => {
+    if (isControlled) {
+      onClose?.();
+      return;
     }
-  }, [isControlled, controlledIsOpen, internalIsOpen, internalOpenModal, internalCloseModal]);
 
-  const isOpen = isControlled ? controlledIsOpen : internalIsOpen;
-
-  const openModal = isControlled ? controlledOnOpen ?? (() => {}) : internalOpenModal;
-  const closeModal = isControlled ? controlledOnClose ?? (() => {}) : internalCloseModal;
+    closeModal();
+  };
 
   return (
     <Container>
-      {isOpenButtonVisible && <RightSidebarModalOpenButton openModal={openModal} />}
-      <SidebarContainer isOpen={isOpen}>
-        {isOpen && (
-          <AttachedCloseButton onClick={closeModal}>
+      {isOpenButtonVisible && <RightSidebarModalOpenButton openModal={handleOpen} />}
+      <SidebarContainer isOpen={resolvedIsOpen}>
+        {resolvedIsOpen && (
+          <AttachedCloseButton onClick={handleClose}>
             <CloseButton />
           </AttachedCloseButton>
         )}

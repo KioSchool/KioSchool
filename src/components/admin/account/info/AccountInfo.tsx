@@ -1,11 +1,13 @@
+import RegisterAccount from '@components/admin/account/register/RegisterAccount';
 import styled from '@emotion/styled';
-import { colFlex } from '@styles/flexStyles';
-import { activeAdminSidebarAtom, adminUserAccountAtom } from 'src/jotai/admin/atoms';
-import { useAtomValue, useSetAtom } from 'jotai';
-import { ACCOUNT_INFO } from '@constants/data/accountData';
+import { ACCOUNT_INFO, ACCOUNT_MODAL } from '@constants/data/accountData';
 import RegisterAccountInfoContainer from './RegisterAccountInfoContainer';
 import RegistrationStatusInfo from './RegistrationStatusInfo';
 import AccountInfoItem from './AccountInfoItem';
+import { colFlex } from '@styles/flexStyles';
+import { adminUserAccountAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue } from 'jotai';
+import type { RightSidebarModalPayload } from '@hooks/useRightSidebarModalController';
 
 const DetailsWrapper = styled.div`
   width: 100%;
@@ -14,13 +16,19 @@ const DetailsWrapper = styled.div`
   ${colFlex({ justify: 'start', align: 'start' })}
 `;
 
-function AccountInfo() {
+interface AccountInfoProps {
+  onOpenModal: (payload: RightSidebarModalPayload) => void;
+}
+
+function AccountInfo({ onOpenModal }: AccountInfoProps) {
   const accountInfo = useAtomValue(adminUserAccountAtom);
 
-  const setActiveSidebar = useSetAtom(activeAdminSidebarAtom);
-
   const handleRegisterAccount = () => {
-    setActiveSidebar('REGISTER_ACCOUNT');
+    onOpenModal({
+      title: ACCOUNT_MODAL.TITLE,
+      subtitle: ACCOUNT_MODAL.SUBTITLE,
+      content: <RegisterAccount />,
+    });
   };
 
   const handleDeleteAccount = () => {
