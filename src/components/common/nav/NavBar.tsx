@@ -22,6 +22,7 @@ const NavContainer = styled.div<{ useBackground: boolean }>`
   box-sizing: border-box;
   background: ${(props) => (props.useBackground ? 'rgba(255, 255, 255, 0.95)' : 'transparent')};
   border-bottom: 1px solid #e8eef2;
+  user-select: none;
   ${rowFlex({ justify: 'center' })}
 `;
 
@@ -72,10 +73,6 @@ function NavBar({ useBackground = false }: NavBarProps) {
     setIsSideNavOpen((prev) => !prev);
   };
 
-  const handleCloseSideNav = () => {
-    setIsSideNavOpen(false);
-  };
-
   return (
     <>
       <NavContainer useBackground={useBackground} className={'nav-container'}>
@@ -99,7 +96,7 @@ function NavBar({ useBackground = false }: NavBarProps) {
           </NavLinkItem>
         </NavLinkContainer>
       </NavContainer>
-      {isShowHamburger && <SideNav isOpen={isSideNavOpen} onClose={handleCloseSideNav} />}
+      {isShowHamburger && <SideNav isOpen={isSideNavOpen} />}
     </>
   );
 }
