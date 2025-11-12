@@ -5,11 +5,20 @@ export interface AdminNavItem {
 }
 
 export interface AdminNavCategory {
-  category: '주문' | '상품' | '주점';
+  category: '주문' | '상품' | '주점' | null;
   items: AdminNavItem[];
 }
 
 export const adminNavData: AdminNavCategory[] = [
+  {
+    category: null,
+    items: [
+      {
+        name: '홈',
+        path: '/',
+      },
+    ],
+  },
   {
     category: '주문',
     items: [
