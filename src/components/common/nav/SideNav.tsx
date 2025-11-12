@@ -27,7 +27,7 @@ const NavCategory = styled.div`
 `;
 
 const CategoryTitle = styled.h2`
-  margin: 5px 0;
+  margin: 10px 0;
   color: #464a4d;
   font-size: 18px;
   font-style: normal;
