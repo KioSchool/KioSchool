@@ -8,7 +8,7 @@ import { RiCheckboxCircleFill } from '@remixicon/react';
 
 const OrderProductContainer = styled.div`
   width: 100%;
-  height: 300px;
+  height: 385px;
   padding: 2px 30px 10px 30px;
   gap: 8px;
   overflow-y: auto;
