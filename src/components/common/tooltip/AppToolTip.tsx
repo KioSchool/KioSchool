@@ -15,7 +15,7 @@ const PopupContainer = styled.div`
   left: 0;
   max-width: 460px;
   height: 28px;
-  bottom: 100%;
+  bottom: 110%;
   white-space: pre-line;
   font-size: 13px;
   background: ${Color.WHITE};
