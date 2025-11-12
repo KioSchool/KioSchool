@@ -2,12 +2,12 @@ import { memo } from 'react';
 import styled from '@emotion/styled';
 import { Order, OrderStatus } from '@@types/index';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import AppLabel from '@components/common/label/AppLabel';
 import NotPaidOrderCard from './NotPaidOrderCard';
 import PaidOrderCard from './PaidOrderCard';
 import ServedOrderCard from './ServedOrderCard';
 import { areOrdersEquivalent } from '@utils/memoCompareFunction';
 import { RiInformationFill } from '@remixicon/react';
+import AppTooltip from '@components/common/tooltip/AppToolTip';
 
 const TitledOrderStatusContainer = styled.div`
   width: 100%;
@@ -16,23 +16,24 @@ const TitledOrderStatusContainer = styled.div`
   background: #ffffff50;
   padding: 18px 30px;
   box-sizing: border-box;
-  ${colFlex({ align: 'stretch' })}
   gap: 10px;
   box-shadow: 0 4px 20px 0 rgba(92, 92, 92, 0.05) outset;
+  ${colFlex({ align: 'stretch' })}
 `;
 
 const TitleWrapper = styled.div`
   width: 100%;
   height: 24px;
   gap: 10px;
+  color: #464a4d;
   ${rowFlex({ justify: 'flex-start', align: 'center' })}
 `;
 
 const OrderCardListContainer = styled.div`
-  ${colFlex({ align: 'start' })}
   gap: 8px;
   width: 100%;
   overflow-x: auto;
+  ${colFlex({ align: 'start' })}
 `;
 
 const CardListContainer = styled.div<{ height?: number }>`
@@ -46,6 +47,16 @@ const EmptyListMessageContainer = styled.div`
   width: 100%;
   height: 100%;
   ${rowFlex({ justify: 'center', align: 'center' })}
+`;
+
+const MessageLabel = styled.div`
+  font-size: 16px;
+  color: #464a4d;
+`;
+
+const TitleLabel = styled.div`
+  font-size: 16px;
+  font-weight: 700;
 `;
 
 function areOrdersEqual(prevOrders: Order[], nextOrders: Order[]) {
@@ -97,9 +108,7 @@ function TitledOrderStatusList({ orders, orderStatus, title, description }: Orde
   } else {
     orderListContent = (
       <EmptyListMessageContainer>
-        <AppLabel size={16} style={{ color: '#464A4D' }}>
-          현재 표시할 주문 내역이 없습니다.
-        </AppLabel>
+        <MessageLabel>현재 표시할 주문 내역이 없습니다.</MessageLabel>
       </EmptyListMessageContainer>
     );
   }
@@ -107,12 +116,10 @@ function TitledOrderStatusList({ orders, orderStatus, title, description }: Orde
   return (
     <TitledOrderStatusContainer>
       <TitleWrapper>
-        <AppLabel size={16} style={{ fontWeight: 700 }}>
-          {title}
-        </AppLabel>
-        {/* todo: info tag 클릭 시, APP label 내용 올릴 것*/}
-        <RiInformationFill size={20} color="#464A4D" />
-        <AppLabel size={0}>{description}</AppLabel>
+        <TitleLabel>{title}</TitleLabel>
+        <AppTooltip content={description}>
+          <RiInformationFill />
+        </AppTooltip>
       </TitleWrapper>
       <OrderCardListContainer>
         <CardListContainer height={getOrderContainerHeight(orderStatus)}>{orderListContent}</CardListContainer>

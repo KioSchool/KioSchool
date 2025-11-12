@@ -1,13 +1,14 @@
 import { ChangeEvent, useRef, useState } from 'react';
 import jsQR from 'jsqr';
 import useAdminUser from '@hooks/admin/useAdminUser';
-import { RiAddLine } from '@remixicon/react';
+import { RiAddLine, RiInformationFill } from '@remixicon/react';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import TossAccountInfoTooltip from '@components/admin/account/TossAccountInfoTooltip';
 import { adminUserAccountAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
+import AppTooltip from '@components/common/tooltip/AppToolTip';
+import { TOSS_ACCOUNT_INFO } from '@constants/data/accountData';
 
 const Container = styled.div`
   width: 30%;
@@ -132,7 +133,9 @@ function RegisterTossAccount() {
   return (
     <Container>
       <InfoIconContainer>
-        <TossAccountInfoTooltip />
+        <AppTooltip content={TOSS_ACCOUNT_INFO.TOOLTIP}>
+          <RiInformationFill />
+        </AppTooltip>
       </InfoIconContainer>
       <TitleContainer>
         <Title valid={isAccountRegistered}>토스 QR 등록</Title>
