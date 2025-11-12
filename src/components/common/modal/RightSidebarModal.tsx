@@ -6,6 +6,8 @@ import { Color } from '@resources/colors';
 import { RiArrowRightSLine } from '@remixicon/react';
 import useModal from '@hooks/useModal';
 import RightSidebarModalOpenButton from './RightSidebarModalOpenButton';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { externalSidebarAtom } from 'src/jotai/admin/atoms'; // 수정된 Atom 경로
 
 const Container = styled.div``;
 
@@ -14,20 +16,15 @@ const AttachedCloseButton = styled.button`
   top: calc(50% - 25px);
   left: -30px;
   transform: translateY(-50%);
-
   width: 30px;
   height: 100px;
   padding: 0;
-
   background-color: ${Color.WHITE};
   color: #464a4d;
-
   border: 1px solid #e8e8f2;
   border-right: none;
-
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
-
   cursor: pointer;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
@@ -84,42 +81,56 @@ const CloseButton = styled(RiArrowRightSLine)`
   ${rowFlex({ justify: 'end', align: 'end' })}
 `;
 
-interface RightSidebarModalProps {
+interface InternalControlProps {
   title: string;
-  subtitle?: string;
   children: React.ReactNode;
+  subtitle?: string;
   isOpenButtonVisible?: boolean;
-  isOpen?: boolean;
-  onClose?: () => void;
-  onOpen?: () => void;
+  useExternalControl?: never;
 }
 
-function RightSidebarModal({ title, subtitle, children, isOpenButtonVisible, isOpen, onClose, onOpen }: RightSidebarModalProps) {
-  const { isModalOpen, openModal, closeModal } = useModal();
-  const isControlled = typeof isOpen === 'boolean';
-
-  const resolvedIsOpen = isControlled ? (isOpen as boolean) : isModalOpen;
-  const handleOpen = () => {
-    if (isControlled) {
-      onOpen?.();
-      return;
-    }
-
-    openModal();
+interface ExternalControlProps {
+  title?: never;
+  children?: never;
+  subtitle?: never;
+  isOpenButtonVisible?: never;
+  useExternalControl: {
+    routerPath: string;
   };
+}
+
+type RightSidebarModalProps = InternalControlProps | ExternalControlProps;
+
+function RightSidebarModal({ title, subtitle, isOpenButtonVisible = true, children, useExternalControl }: RightSidebarModalProps) {
+  const { isModalOpen, openModal, closeModal } = useModal();
+  const externalSidebar = useAtomValue(externalSidebarAtom);
+  const setExternalSidebar = useSetAtom(externalSidebarAtom);
+
+  const isControlled = useExternalControl !== undefined;
+  const isControlledOpen = isControlled && externalSidebar?.action === 'OPEN' && externalSidebar?.router === useExternalControl.routerPath;
+
+  const resolvedIsOpen = isControlled ? isControlledOpen : isModalOpen;
+  const resolvedTitle = isControlled ? externalSidebar.title : title;
+  const resolvedSubtitle = isControlled ? externalSidebar.subtitle : subtitle;
+  const resolvedContent = isControlled ? externalSidebar.content : children;
 
   const handleClose = () => {
     if (isControlled) {
-      onClose?.();
-      return;
+      setExternalSidebar({
+        router: useExternalControl.routerPath,
+        title: externalSidebar.title,
+        action: 'CLOSE',
+        content: null,
+      });
+    } else {
+      closeModal();
     }
-
-    closeModal();
   };
 
   return (
     <Container>
-      {isOpenButtonVisible && <RightSidebarModalOpenButton openModal={handleOpen} />}
+      {!isControlled && isOpenButtonVisible && <RightSidebarModalOpenButton openModal={openModal} />}
+
       <SidebarContainer isOpen={resolvedIsOpen}>
         {resolvedIsOpen && (
           <AttachedCloseButton onClick={handleClose}>
@@ -127,13 +138,16 @@ function RightSidebarModal({ title, subtitle, children, isOpenButtonVisible, isO
           </AttachedCloseButton>
         )}
 
-        <SidebarHeader>
-          <TitleContainer>
-            <Title>{title}</Title>
-            {subtitle && <SubTitle>{subtitle}</SubTitle>}
-          </TitleContainer>
-        </SidebarHeader>
-        {children}
+        {(resolvedTitle || resolvedSubtitle) && (
+          <SidebarHeader>
+            <TitleContainer>
+              {resolvedTitle && <Title>{resolvedTitle}</Title>}
+              {resolvedSubtitle && <SubTitle>{resolvedSubtitle}</SubTitle>}
+            </TitleContainer>
+          </SidebarHeader>
+        )}
+
+        {resolvedContent}
       </SidebarContainer>
     </Container>
   );

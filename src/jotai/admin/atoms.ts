@@ -1,5 +1,5 @@
 import { defaultBanksValue, defaultUserValue, defaultWorkspaceValue } from '@@types/defaultValues';
-import { Bank, Order, Product, ProductCategory, User, Workspace } from '@@types/index';
+import { Bank, ExternalSidebarOptions, Order, Product, ProductCategory, User, Workspace } from '@@types/index';
 import { atom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 
@@ -53,3 +53,10 @@ export const adminUserTossAccountAtom = atom((get) => {
 });
 
 export const adminSideNavIsOpenAtom = atom(false);
+
+export const externalSidebarAtom = atom<ExternalSidebarOptions>({
+  router: '',
+  title: '',
+  action: 'CLOSE',
+  content: null,
+});

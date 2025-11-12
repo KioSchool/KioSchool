@@ -1,24 +1,23 @@
 import RegisterTossAccount from '@components/admin/account/register/RegisterTossAccount';
-import { TOSS_ACCOUNT_INFO, TOSS_MODAL } from '@constants/data/accountData';
+import { TOSS_ACCOUNT_INFO } from '@constants/data/accountData';
 import RegisterAccountInfoContainer from './RegisterAccountInfoContainer';
 import RegistrationStatusInfo from './RegistrationStatusInfo';
-import { adminUserTossAccountAtom } from 'src/jotai/admin/atoms';
-import { useAtomValue } from 'jotai';
-import type { RightSidebarModalPayload } from '@hooks/useRightSidebarModalController';
+import { adminUserTossAccountAtom, externalSidebarAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { useLocation } from 'react-router-dom';
 
-interface TossAccountInfoProps {
-  onOpenModal: (payload: RightSidebarModalPayload) => void;
-}
-
-function TossAccountInfo({ onOpenModal }: TossAccountInfoProps) {
+function TossAccountInfo() {
+  const location = useLocation();
   const tossAccountInfo = useAtomValue(adminUserTossAccountAtom);
+  const setExternalSidebar = useSetAtom(externalSidebarAtom);
 
   const status = tossAccountInfo ? 'registered' : 'unregisteredTossQR';
 
   const handleRegisterQR = () => {
-    onOpenModal({
-      title: TOSS_MODAL.TITLE,
-      subtitle: TOSS_MODAL.SUBTITLE,
+    setExternalSidebar({
+      router: location.pathname,
+      title: '토스 QR 등록',
+      action: 'OPEN',
       content: <RegisterTossAccount />,
     });
   };

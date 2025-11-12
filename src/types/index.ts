@@ -198,3 +198,11 @@ export interface Table {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface ExternalSidebarOptions {
+  router: string;
+  title: string;
+  subtitle?: string;
+  action: 'OPEN' | 'CLOSE';
+  content: React.ReactNode;
+}

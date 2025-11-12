@@ -1,13 +1,13 @@
 import RegisterAccount from '@components/admin/account/register/RegisterAccount';
 import styled from '@emotion/styled';
-import { ACCOUNT_INFO, ACCOUNT_MODAL } from '@constants/data/accountData';
+import { ACCOUNT_INFO } from '@constants/data/accountData';
 import RegisterAccountInfoContainer from './RegisterAccountInfoContainer';
 import RegistrationStatusInfo from './RegistrationStatusInfo';
 import AccountInfoItem from './AccountInfoItem';
 import { colFlex } from '@styles/flexStyles';
-import { adminUserAccountAtom } from 'src/jotai/admin/atoms';
-import { useAtomValue } from 'jotai';
-import type { RightSidebarModalPayload } from '@hooks/useRightSidebarModalController';
+import { adminUserAccountAtom, externalSidebarAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { useLocation } from 'react-router-dom';
 
 const DetailsWrapper = styled.div`
   width: 100%;
@@ -16,17 +16,16 @@ const DetailsWrapper = styled.div`
   ${colFlex({ justify: 'start', align: 'start' })}
 `;
 
-interface AccountInfoProps {
-  onOpenModal: (payload: RightSidebarModalPayload) => void;
-}
-
-function AccountInfo({ onOpenModal }: AccountInfoProps) {
+function AccountInfo() {
+  const location = useLocation();
   const accountInfo = useAtomValue(adminUserAccountAtom);
+  const setExternalSidebar = useSetAtom(externalSidebarAtom);
 
   const handleRegisterAccount = () => {
-    onOpenModal({
-      title: ACCOUNT_MODAL.TITLE,
-      subtitle: ACCOUNT_MODAL.SUBTITLE,
+    setExternalSidebar({
+      router: location.pathname,
+      title: '계좌 등록',
+      action: 'OPEN',
       content: <RegisterAccount />,
     });
   };
