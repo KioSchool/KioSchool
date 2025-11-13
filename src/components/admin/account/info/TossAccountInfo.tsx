@@ -16,7 +16,7 @@ function TossAccountInfo() {
 
   const handleRegisterQR = () => {
     setExternalSidebar({
-      router: location.pathname,
+      location: location,
       title: '토스 QR 등록',
       action: RIGHT_SIDEBAR_ACTION.OPEN,
       content: <RegisterTossAccount />,

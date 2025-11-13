@@ -6,9 +6,10 @@ import { Color } from '@resources/colors';
 import { RiArrowRightSLine } from '@remixicon/react';
 import useModal from '@hooks/useModal';
 import RightSidebarModalOpenButton from './RightSidebarModalOpenButton';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom } from 'jotai';
 import { externalSidebarAtom } from 'src/jotai/admin/atoms';
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
+import { Location } from 'react-router-dom';
 
 const Container = styled.div``;
 
@@ -96,7 +97,7 @@ interface ExternalSidebarControlProps {
   children?: never;
   useOpenButton?: never;
   useExternalControl: {
-    routerPath: string;
+    location: Location;
   };
 }
 
@@ -104,12 +105,12 @@ type RightSidebarModalProps = InternalSidebarControlProps | ExternalSidebarContr
 
 function RightSidebarModal({ title, subtitle, useOpenButton = true, children, useExternalControl }: RightSidebarModalProps) {
   const { isModalOpen, openModal, closeModal } = useModal();
-  const externalSidebar = useAtomValue(externalSidebarAtom);
-  const setExternalSidebar = useSetAtom(externalSidebarAtom);
+  const [externalSidebar, setExternalSidebar] = useAtom(externalSidebarAtom);
+  const { action, location: externalLocation } = externalSidebar;
 
   const isControlled = useExternalControl !== undefined;
 
-  const isOpen = isControlled ? externalSidebar.action === RIGHT_SIDEBAR_ACTION.OPEN && externalSidebar.router === useExternalControl.routerPath : isModalOpen;
+  const isOpen = isControlled ? action === RIGHT_SIDEBAR_ACTION.OPEN && externalLocation.pathname === useExternalControl.location.pathname : isModalOpen;
 
   const displayData = isControlled
     ? {
@@ -126,7 +127,7 @@ function RightSidebarModal({ title, subtitle, useOpenButton = true, children, us
   const handleClose = () => {
     if (isControlled) {
       setExternalSidebar({
-        router: useExternalControl.routerPath,
+        location: useExternalControl.location,
         title: externalSidebar.title,
         action: RIGHT_SIDEBAR_ACTION.CLOSE,
         content: null,

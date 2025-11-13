@@ -36,7 +36,7 @@ function AdminAccount() {
       <AccountContainer>
         <AccountInfo />
         <TossAccountInfo />
-        <RightSidebarModal useExternalControl={{ routerPath: router.pathname }} />
+        <RightSidebarModal useExternalControl={{ location: router }} />
       </AccountContainer>
     </AppContainer>
   );

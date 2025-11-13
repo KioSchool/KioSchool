@@ -25,7 +25,7 @@ function AccountInfo() {
 
   const handleRegisterAccount = () => {
     setExternalSidebar({
-      router: location.pathname,
+      location: location,
       title: '계좌 등록',
       action: RIGHT_SIDEBAR_ACTION.OPEN,
       content: <RegisterAccount />,
