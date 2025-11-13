@@ -9,7 +9,6 @@ import { Color } from '@resources/colors';
 import OrderRouteButtons from '@components/admin/workspace/OrderRouteButtons';
 import ProductRouteButtons from '@components/admin/workspace/ProductRouteButtons';
 import WorkspaceRouteButtons from '@components/admin/workspace/WorkspaceRouteButtons';
-import AppFooter from '@components/common/footer/AppFooter';
 import AppFaqButton from '@components/common/button/AppFaqButton';
 import AppPopup from '@components/common/popup/AppPopup';
 import { tabletMediaQuery } from '@styles/globalStyles';
@@ -47,7 +46,7 @@ function AdminWorkspace() {
 
   return (
     <AppContainer
-      useFlex={rowFlex({ justify: 'center', align: 'center' })}
+      useFlex={colFlex({ justify: 'center', align: 'center' })}
       customWidth={'100vw'}
       titleNavBarProps={{ title: workspace.name, subTitle: workspace.description, onLeftArrowClick: () => navigate(ADMIN_ROUTES.HOME) }}
     >
@@ -61,7 +60,6 @@ function AdminWorkspace() {
           </RouteContainer>
         </ContentContainer>
         <AppPopup />
-        <AppFooter />
         <AppFaqButton />
       </>
     </AppContainer>
