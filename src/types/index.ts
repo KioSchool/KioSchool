@@ -206,7 +206,7 @@ export const RIGHT_SIDEBAR_ACTION = {
   CLOSE: 'CLOSE',
 } as const;
 
-export type RightSidebarAction = (typeof RIGHT_SIDEBAR_ACTION)[keyof typeof RIGHT_SIDEBAR_ACTION];
+export type RightSidebarAction = typeof RIGHT_SIDEBAR_ACTION[keyof typeof RIGHT_SIDEBAR_ACTION];
 
 export interface ExternalRightSidebarOptions {
   location: Location;
