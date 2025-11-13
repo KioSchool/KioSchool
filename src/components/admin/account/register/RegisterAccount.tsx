@@ -46,7 +46,7 @@ function RegisterAccount() {
   const banks = useAtomValue(adminBanksAtom);
   const accountHolderRef = useRef<HTMLInputElement>(null);
   const accountNumberRef = useRef<HTMLInputElement>(null);
-  const [selectedBankId, setSelectedBankId] = useState<number | null>(null);
+  const [selectedBankId, setSelectedBankId] = useState<string>('');
 
   useEffect(() => {
     fetchBanks();
@@ -57,17 +57,17 @@ function RegisterAccount() {
     name: bank.name,
   }));
 
-  const allBanks = [{ id: -1, name: '은행을 선택해주세요.' }, ...filteredBanks];
+  const allBanks = [{ id: '', name: '은행을 선택해주세요.' }, ...filteredBanks];
 
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedBankId(Number(event.target.value));
+    setSelectedBankId(event.target.value);
   };
 
   const registerHandler = async () => {
     const accountHolder = accountHolderRef.current?.value;
     const accountNumber = accountNumberRef.current?.value;
 
-    if (selectedBankId === null || selectedBankId === -1) {
+    if (selectedBankId === '') {
       alert('은행을 선택해주세요.');
       return;
     }
@@ -87,12 +87,12 @@ function RegisterAccount() {
       return;
     }
 
-    const response = await registerAccount(selectedBankId, accountNumber, accountHolder);
+    const response = await registerAccount(Number(selectedBankId), accountNumber, accountHolder);
     if (response) {
       alert('계좌 등록이 완료되었습니다.');
       accountHolderRef.current!.value = '';
       accountNumberRef.current!.value = '';
-      setSelectedBankId(null);
+      setSelectedBankId('');
     }
   };
 
@@ -101,7 +101,7 @@ function RegisterAccount() {
       <InputContainer>
         <InputColContainer>
           <InputLabel>은행명</InputLabel>
-          <SelectWithOptions options={allBanks} isUseDefaultOption={false} onChange={handleSelect} width={'220px'} />
+          <SelectWithOptions options={allBanks} isUseDefaultOption={false} onChange={handleSelect} width={'220px'} value={selectedBankId} />
         </InputColContainer>
         <InputColContainer>
           <InputLabel>예금주</InputLabel>
@@ -109,7 +109,7 @@ function RegisterAccount() {
         </InputColContainer>
         <InputColContainer>
           <InputLabel>계좌번호</InputLabel>
-          <NewAppInput placeholder={'(-)를 제외한 계좌번호를 입력해주세요.'} type={'number'} ref={accountNumberRef} width={220} height={50} />
+          <NewAppInput placeholder={'(-)를 제외한 계좌번호를 입력해주세요.'} type={'text'} ref={accountNumberRef} width={220} height={50} />
         </InputColContainer>
       </InputContainer>
       <SubmitContainer>
