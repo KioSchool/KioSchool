@@ -1,49 +1,49 @@
 import { ChangeEvent, useRef, useState } from 'react';
 import jsQR from 'jsqr';
 import useAdminUser from '@hooks/admin/useAdminUser';
-import { RiAddLine, RiInformationFill } from '@remixicon/react';
+import { RiCameraFill } from '@remixicon/react';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { adminUserAccountAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
-import AppTooltip from '@components/common/tooltip/AppToolTip';
-import { TOSS_ACCOUNT_INFO } from '@constants/data/accountData';
+import NewCommonButton from '@components/common/button/NewCommonButton';
 
 const Container = styled.div`
-  width: 30%;
+  width: 100%;
   height: 100%;
-  padding: 15px;
-  box-sizing: border-box;
-  border-radius: 10px;
-  background: #f9f9f9;
+  padding: 10px 0 58px 0;
   ${colFlex({ justify: 'space-between', align: 'center' })};
 `;
 
-const InfoIconContainer = styled.div`
+const InputContainer = styled.div`
   width: 100%;
-  box-sizing: border-box;
-  ${rowFlex({ justify: 'end', align: 'center' })};
+  gap: 10px;
+  color: #464a4d;
+  ${colFlex({ justify: 'center', align: 'start' })};
 `;
 
-const TitleContainer = styled.div`
+const Title = styled.div`
   width: 100%;
-  ${rowFlex({ justify: 'center', align: 'center' })};
-`;
-
-const Title = styled.div<{ valid: boolean }>`
-  color: ${(props) => (props.valid ? Color.BLACK : Color.GREY)};
-  font-size: 15px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 700;
+  ${colFlex({ justify: 'center', align: 'start' })};
 `;
 
 const UploadIconContainer = styled.div<{ valid: boolean }>`
-  width: 100px;
-  height: 100px;
-  border-radius: 22px;
+  width: 220px;
+  height: 220px;
+  border-radius: 16px;
   cursor: ${(props) => (props.valid ? 'pointer' : 'not-allowed')};
   background: ${Color.WHITE};
+  border: 1px solid #e8eef2;
   ${colFlex({ justify: 'center', align: 'center' })};
+`;
+
+const UploadIcon = styled(RiCameraFill)`
+  width: 26px;
+  height: 26px;
+  color: #e8eef2;
 `;
 
 const HiddenInput = styled.input`
@@ -51,22 +51,15 @@ const HiddenInput = styled.input`
 `;
 
 const ImagePreview = styled.img`
-  width: 100px;
-  height: 100px;
+  width: 220px;
+  height: 220px;
   border-radius: 22px;
   cursor: pointer;
 `;
 
-const SubmitButton = styled.button<{ valid: boolean }>`
-  width: 90px;
-  height: 23px;
-  font-size: 12px;
-  color: ${(props) => (props.valid ? Color.BLACK : Color.GREY)};
-  background: ${Color.WHITE};
-  border: 1px solid ${(props) => (props.valid ? Color.BLACK : Color.GREY)};
-  border-radius: 20px;
-  cursor: pointer;
-  ${rowFlex({ justify: 'center', align: 'center' })}
+const SubmitContainer = styled.div`
+  gap: 10px;
+  ${rowFlex({ justify: 'end', align: 'center' })};
 `;
 
 function RegisterTossAccount() {
@@ -132,24 +125,25 @@ function RegisterTossAccount() {
 
   return (
     <Container>
-      <InfoIconContainer>
-        <AppTooltip content={TOSS_ACCOUNT_INFO.TOOLTIP}>
-          <RiInformationFill />
-        </AppTooltip>
-      </InfoIconContainer>
-      <TitleContainer>
-        <Title valid={isAccountRegistered}>토스 QR 등록</Title>
-      </TitleContainer>
-      {!fileURL && (
-        <UploadIconContainer valid={isAccountRegistered} onClick={handleQRInput}>
-          <RiAddLine size={48} color={Color.GREY} />
-        </UploadIconContainer>
-      )}
-      {fileURL && <ImagePreview src={fileURL} alt="QR Preview" onClick={handleQRInput} />}
+      <InputContainer>
+        <Title>토스 QR</Title>
+        {!fileURL && (
+          <UploadIconContainer valid={isAccountRegistered} onClick={handleQRInput}>
+            <UploadIcon />
+          </UploadIconContainer>
+        )}
+        {fileURL && <ImagePreview src={fileURL} alt="QR Preview" onClick={handleQRInput} />}
+      </InputContainer>
       <HiddenInput type="file" accept="image/*" ref={fileInputRef} onChange={onImageChange} />
-      <SubmitButton valid={isAccountRegistered} onClick={registerHandler}>
-        QR 등록
-      </SubmitButton>
+      <SubmitContainer>
+        {/* TODO : 내용 삭제 핸들러 구현 필요 */}
+        <NewCommonButton onClick={() => {}} customSize={{ width: 106, height: 40 }} color="blue_gray">
+          삭제
+        </NewCommonButton>
+        <NewCommonButton onClick={registerHandler} customSize={{ width: 106, height: 40 }}>
+          QR 등록
+        </NewCommonButton>
+      </SubmitContainer>
     </Container>
   );
 }

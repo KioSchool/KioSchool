@@ -18,6 +18,7 @@ function TossAccountInfo() {
     setExternalSidebar({
       location: location,
       title: '토스 QR 등록',
+      subtitle: '1. 토스 앱 실행\n2. 하단 전체 메뉴 선택\n 3. 사진으로 송금 메뉴 검색\n4. 계좌 선택 후 받을 금액 미설정\n5. QR코드 발급',
       action: RIGHT_SIDEBAR_ACTION.OPEN,
       content: <RegisterTossAccount />,
     });
