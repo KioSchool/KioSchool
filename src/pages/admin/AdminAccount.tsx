@@ -1,16 +1,14 @@
 import AccountInfo from '@components/admin/account/info/AccountInfo';
-import RegisterAccount from '@components/admin/account/register/RegisterAccount';
-import RegisterTossAccount from '@components/admin/account/register/RegisterTossAccount';
 import AppContainer from '@components/common/container/AppContainer';
-import { colFlex, rowFlex } from '@styles/flexStyles';
-import { useEffect } from 'react';
-import styled from '@emotion/styled';
-import useAdminUser from '@hooks/admin/useAdminUser';
-import TossAccountInfo from '@components/admin/account/info/TossAccountInfo';
-import { activeAdminSidebarAtom, adminUserAtom } from 'src/jotai/admin/atoms';
-import { useAtomValue, useAtom } from 'jotai';
 import RightSidebarModal from '@components/common/modal/RightSidebarModal';
-import { ACCOUNT_MODAL, TOSS_MODAL } from '@constants/data/accountData';
+import TossAccountInfo from '@components/admin/account/info/TossAccountInfo';
+import useAdminUser from '@hooks/admin/useAdminUser';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import styled from '@emotion/styled';
+import { useEffect } from 'react';
+import { useAtomValue } from 'jotai';
+import { adminUserAtom } from 'src/jotai/admin/atoms';
+import { useLocation } from 'react-router-dom';
 
 const AccountContainer = styled.div`
   width: 100%;
@@ -23,28 +21,11 @@ const AccountContainer = styled.div`
 function AdminAccount() {
   const { fetchAdminUser } = useAdminUser();
   const user = useAtomValue(adminUserAtom);
-
-  const [activeSidebar, setActiveSidebar] = useAtom(activeAdminSidebarAtom);
-
-  const handleCloseModal = () => setActiveSidebar(null);
+  const router = useLocation();
 
   useEffect(() => {
     fetchAdminUser();
   }, []);
-
-  let modalTitle = '';
-  let modalSubtitle = '';
-  let modalContent: React.ReactNode = null;
-
-  if (activeSidebar === 'REGISTER_ACCOUNT') {
-    modalTitle = ACCOUNT_MODAL.TITLE;
-    modalSubtitle = ACCOUNT_MODAL.SUBTITLE;
-    modalContent = <RegisterAccount />;
-  } else if (activeSidebar === 'REGISTER_TOSS') {
-    modalTitle = TOSS_MODAL.TITLE;
-    modalSubtitle = TOSS_MODAL.SUBTITLE;
-    modalContent = <RegisterTossAccount />;
-  }
 
   return (
     <AppContainer
@@ -55,10 +36,7 @@ function AdminAccount() {
       <AccountContainer>
         <AccountInfo />
         <TossAccountInfo />
-
-        <RightSidebarModal title={modalTitle} subtitle={modalSubtitle} isOpen={activeSidebar !== null} onClose={handleCloseModal}>
-          {modalContent}
-        </RightSidebarModal>
+        <RightSidebarModal useExternalControl={{ routerPath: router.pathname }} />
       </AccountContainer>
     </AppContainer>
   );
