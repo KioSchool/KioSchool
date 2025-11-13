@@ -72,6 +72,7 @@ const Title = styled.div`
 
 const SubTitle = styled.div`
   font-size: 16px;
+  line-height: 180%;
   white-space: pre-line;
 `;
 
