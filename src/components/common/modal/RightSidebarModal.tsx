@@ -1,4 +1,4 @@
-﻿import React, { useEffect } from 'react';
+﻿import React from 'react';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { tabletMediaQuery } from '@styles/globalStyles';
@@ -6,6 +6,9 @@ import { Color } from '@resources/colors';
 import { RiArrowRightSLine } from '@remixicon/react';
 import useModal from '@hooks/useModal';
 import RightSidebarModalOpenButton from './RightSidebarModalOpenButton';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { externalSidebarAtom } from 'src/jotai/admin/atoms';
+import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
 
 const Container = styled.div``;
 
@@ -14,20 +17,15 @@ const AttachedCloseButton = styled.button`
   top: calc(50% - 25px);
   left: -30px;
   transform: translateY(-50%);
-
   width: 30px;
   height: 100px;
   padding: 0;
-
   background-color: ${Color.WHITE};
   color: #464a4d;
-
   border: 1px solid #e8e8f2;
   border-right: none;
-
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
-
   cursor: pointer;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
@@ -73,6 +71,7 @@ const Title = styled.div`
 
 const SubTitle = styled.div`
   font-size: 16px;
+  white-space: pre-line;
 `;
 
 const CloseButton = styled(RiArrowRightSLine)`
@@ -83,63 +82,81 @@ const CloseButton = styled(RiArrowRightSLine)`
   ${rowFlex({ justify: 'end', align: 'end' })}
 `;
 
-interface RightSidebarModalProps {
+interface InternalSidebarControlProps {
   title: string;
   subtitle?: string;
   children: React.ReactNode;
-  isOpenButtonVisible?: boolean;
-  isOpen?: boolean;
-  onClose?: () => void;
-  onOpen?: () => void;
+  useOpenButton?: boolean;
+  useExternalControl?: never;
 }
 
-function RightSidebarModal({
-  title,
-  subtitle,
-  children,
-  isOpenButtonVisible,
-  isOpen: controlledIsOpen,
-  onClose: controlledOnClose,
-  onOpen: controlledOnOpen,
-}: RightSidebarModalProps) {
-  const { isModalOpen: internalIsOpen, openModal: internalOpenModal, closeModal: internalCloseModal } = useModal();
+interface ExternalSidebarControlProps {
+  title?: never;
+  subtitle?: never;
+  children?: never;
+  useOpenButton?: never;
+  useExternalControl: {
+    routerPath: string;
+  };
+}
 
-  const isControlled = controlledIsOpen !== undefined;
+type RightSidebarModalProps = InternalSidebarControlProps | ExternalSidebarControlProps;
 
-  useEffect(() => {
-    if (!isControlled) {
-      return;
+function RightSidebarModal({ title, subtitle, useOpenButton = true, children, useExternalControl }: RightSidebarModalProps) {
+  const { isModalOpen, openModal, closeModal } = useModal();
+  const externalSidebar = useAtomValue(externalSidebarAtom);
+  const setExternalSidebar = useSetAtom(externalSidebarAtom);
+
+  const isControlled = useExternalControl !== undefined;
+
+  const isOpen = isControlled ? externalSidebar.action === RIGHT_SIDEBAR_ACTION.OPEN && externalSidebar.router === useExternalControl.routerPath : isModalOpen;
+
+  const displayData = isControlled
+    ? {
+        title: externalSidebar.title,
+        subtitle: externalSidebar.subtitle,
+        content: externalSidebar.content,
+      }
+    : {
+        title: title,
+        subtitle: subtitle,
+        content: children,
+      };
+
+  const handleClose = () => {
+    if (isControlled) {
+      setExternalSidebar({
+        router: useExternalControl.routerPath,
+        title: externalSidebar.title,
+        action: RIGHT_SIDEBAR_ACTION.CLOSE,
+        content: null,
+      });
+    } else {
+      closeModal();
     }
-
-    if (controlledIsOpen && !internalIsOpen) {
-      internalOpenModal();
-    } else if (!controlledIsOpen && internalIsOpen) {
-      internalCloseModal();
-    }
-  }, [isControlled, controlledIsOpen, internalIsOpen, internalOpenModal, internalCloseModal]);
-
-  const isOpen = isControlled ? controlledIsOpen : internalIsOpen;
-
-  const openModal = isControlled ? controlledOnOpen ?? (() => {}) : internalOpenModal;
-  const closeModal = isControlled ? controlledOnClose ?? (() => {}) : internalCloseModal;
+  };
 
   return (
     <Container>
-      {isOpenButtonVisible && <RightSidebarModalOpenButton openModal={openModal} />}
+      {!isControlled && useOpenButton && <RightSidebarModalOpenButton openModal={openModal} />}
+
       <SidebarContainer isOpen={isOpen}>
         {isOpen && (
-          <AttachedCloseButton onClick={closeModal}>
+          <AttachedCloseButton onClick={handleClose}>
             <CloseButton />
           </AttachedCloseButton>
         )}
 
-        <SidebarHeader>
-          <TitleContainer>
-            <Title>{title}</Title>
-            {subtitle && <SubTitle>{subtitle}</SubTitle>}
-          </TitleContainer>
-        </SidebarHeader>
-        {children}
+        {(displayData.title || displayData.subtitle) && (
+          <SidebarHeader>
+            <TitleContainer>
+              {displayData.title && <Title>{displayData.title}</Title>}
+              {displayData.subtitle && <SubTitle>{displayData.subtitle}</SubTitle>}
+            </TitleContainer>
+          </SidebarHeader>
+        )}
+
+        {displayData.content}
       </SidebarContainer>
     </Container>
   );
