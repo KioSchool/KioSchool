@@ -27,6 +27,7 @@ function AccountInfo() {
     setExternalSidebar({
       location: location,
       title: '계좌 등록',
+      subtitle: '* 편집 중 창을 닫지 마세요.',
       action: RIGHT_SIDEBAR_ACTION.OPEN,
       content: <RegisterAccount />,
     });
