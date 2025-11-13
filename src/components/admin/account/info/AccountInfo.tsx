@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import { adminUserAccountAtom, externalSidebarAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { ACCOUNT_INFO } from '@constants/data/accountData';
+import { ACCOUNT_INFO, ACCOUNT_MODAL } from '@constants/data/accountData';
 import RegisterAccountInfoContainer from './RegisterAccountInfoContainer';
 import RegistrationStatusInfo from './RegistrationStatusInfo';
 import AccountInfoItem from './AccountInfoItem';
@@ -28,8 +28,8 @@ function AccountInfo() {
   const handleRegisterAccount = () => {
     setExternalSidebar({
       location: location,
-      title: '계좌 등록',
-      subtitle: '* 편집 중 창을 닫지 마세요.',
+      title: ACCOUNT_MODAL.TITLE,
+      subtitle: ACCOUNT_MODAL.SUBTITLE,
       action: RIGHT_SIDEBAR_ACTION.OPEN,
       content: <RegisterAccount />,
     });

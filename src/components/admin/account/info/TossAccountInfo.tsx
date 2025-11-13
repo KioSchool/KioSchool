@@ -1,7 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import { adminUserTossAccountAtom, externalSidebarAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { TOSS_ACCOUNT_INFO } from '@constants/data/accountData';
+import { TOSS_ACCOUNT_INFO, TOSS_MODAL } from '@constants/data/accountData';
 import RegisterAccountInfoContainer from './RegisterAccountInfoContainer';
 import RegistrationStatusInfo from './RegistrationStatusInfo';
 import RegisterTossAccount from '@components/admin/account/register/RegisterTossAccount';
@@ -17,8 +17,8 @@ function TossAccountInfo() {
   const handleRegisterQR = () => {
     setExternalSidebar({
       location: location,
-      title: '토스 QR 등록',
-      subtitle: '1. 토스 앱 실행\n2. 하단 전체 메뉴 선택\n 3. 사진으로 송금 메뉴 검색\n4. 계좌 선택 후 받을 금액 미설정\n5. QR코드 발급',
+      title: TOSS_MODAL.TITLE,
+      subtitle: TOSS_MODAL.SUBTITLE,
       action: RIGHT_SIDEBAR_ACTION.OPEN,
       content: <RegisterTossAccount />,
     });
