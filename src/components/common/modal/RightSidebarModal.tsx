@@ -148,14 +148,12 @@ function RightSidebarModal({ title, subtitle, useOpenButton = true, children, us
           </AttachedCloseButton>
         )}
 
-        {(displayData.title || displayData.subtitle) && (
-          <SidebarHeader>
-            <TitleContainer>
-              {displayData.title && <Title>{displayData.title}</Title>}
-              {displayData.subtitle && <SubTitle>{displayData.subtitle}</SubTitle>}
-            </TitleContainer>
-          </SidebarHeader>
-        )}
+        <SidebarHeader>
+          <TitleContainer>
+            {displayData.title && <Title>{displayData.title}</Title>}
+            {displayData.subtitle && <SubTitle>{displayData.subtitle}</SubTitle>}
+          </TitleContainer>
+        </SidebarHeader>
 
         {displayData.content}
       </SidebarContainer>
