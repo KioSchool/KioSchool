@@ -118,8 +118,8 @@ function RightSidebarModal({ title, subtitle, useOpenButton = true, children, us
         content: externalSidebar.content,
       }
     : {
-        title: title,
-        subtitle: subtitle,
+        title,
+        subtitle,
         content: children,
       };
 
