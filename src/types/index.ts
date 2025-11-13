@@ -1,3 +1,5 @@
+import { Location } from 'react-router-dom';
+
 export interface Order {
   tableNumber: number;
   phoneNumber: string;
@@ -197,4 +199,19 @@ export interface Table {
   id: number;
   createdAt: string;
   updatedAt: string;
+}
+
+export const RIGHT_SIDEBAR_ACTION = {
+  OPEN: 'OPEN',
+  CLOSE: 'CLOSE',
+} as const;
+
+export type RightSidebarAction = typeof RIGHT_SIDEBAR_ACTION[keyof typeof RIGHT_SIDEBAR_ACTION];
+
+export interface ExternalRightSidebarOptions {
+  location: Location;
+  title: string;
+  subtitle?: string;
+  action: RightSidebarAction;
+  content: React.ReactNode;
 }

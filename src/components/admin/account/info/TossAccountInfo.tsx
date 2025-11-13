@@ -1,16 +1,26 @@
-import { adminUserTossAccountAtom } from 'src/jotai/admin/atoms';
-import { useAtomValue } from 'jotai';
+import { useLocation } from 'react-router-dom';
+import { adminUserTossAccountAtom, externalSidebarAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { TOSS_ACCOUNT_INFO } from '@constants/data/accountData';
 import RegisterAccountInfoContainer from './RegisterAccountInfoContainer';
 import RegistrationStatusInfo from './RegistrationStatusInfo';
+import RegisterTossAccount from '@components/admin/account/register/RegisterTossAccount';
+import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
 
 function TossAccountInfo() {
+  const location = useLocation();
   const tossAccountInfo = useAtomValue(adminUserTossAccountAtom);
+  const setExternalSidebar = useSetAtom(externalSidebarAtom);
+
   const status = tossAccountInfo ? 'registered' : 'unregisteredTossQR';
 
   const handleRegisterQR = () => {
-    // TODO: QR 등록 모달 열기 또는 관련 로직 실행
-    console.log('QR 등록 클릭');
+    setExternalSidebar({
+      location: location,
+      title: '토스 QR 등록',
+      action: RIGHT_SIDEBAR_ACTION.OPEN,
+      content: <RegisterTossAccount />,
+    });
   };
 
   const handleDeleteQR = () => {

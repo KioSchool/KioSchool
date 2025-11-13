@@ -6,6 +6,10 @@ import { Color } from '@resources/colors';
 import { RiArrowRightSLine } from '@remixicon/react';
 import useModal from '@hooks/useModal';
 import RightSidebarModalOpenButton from './RightSidebarModalOpenButton';
+import { useAtom } from 'jotai';
+import { externalSidebarAtom } from 'src/jotai/admin/atoms';
+import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
+import { Location } from 'react-router-dom';
 
 const Container = styled.div``;
 
@@ -14,20 +18,15 @@ const AttachedCloseButton = styled.button`
   top: calc(50% - 25px);
   left: -30px;
   transform: translateY(-50%);
-
   width: 30px;
   height: 100px;
   padding: 0;
-
   background-color: ${Color.WHITE};
   color: #464a4d;
-
   border: 1px solid #e8e8f2;
   border-right: none;
-
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
-
   cursor: pointer;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
@@ -73,6 +72,7 @@ const Title = styled.div`
 
 const SubTitle = styled.div`
   font-size: 16px;
+  white-space: pre-line;
 `;
 
 const CloseButton = styled(RiArrowRightSLine)`
@@ -83,32 +83,79 @@ const CloseButton = styled(RiArrowRightSLine)`
   ${rowFlex({ justify: 'end', align: 'end' })}
 `;
 
-interface RightSidebarModalProps {
+interface InternalSidebarControlProps {
   title: string;
   subtitle?: string;
   children: React.ReactNode;
+  useOpenButton?: boolean;
+  useExternalControl?: never;
 }
 
-function RightSidebarModal({ title, subtitle, children }: RightSidebarModalProps) {
+interface ExternalSidebarControlProps {
+  title?: never;
+  subtitle?: never;
+  children?: never;
+  useOpenButton?: never;
+  useExternalControl: {
+    location: Location;
+  };
+}
+
+type RightSidebarModalProps = InternalSidebarControlProps | ExternalSidebarControlProps;
+
+function RightSidebarModal({ title, subtitle, useOpenButton = true, children, useExternalControl }: RightSidebarModalProps) {
   const { isModalOpen, openModal, closeModal } = useModal();
+  const [externalSidebar, setExternalSidebar] = useAtom(externalSidebarAtom);
+  const { action, location: externalLocation } = externalSidebar;
+
+  const isControlled = useExternalControl !== undefined;
+
+  const isOpen = isControlled ? action === RIGHT_SIDEBAR_ACTION.OPEN && externalLocation.pathname === useExternalControl.location.pathname : isModalOpen;
+
+  const displayData = isControlled
+    ? {
+        title: externalSidebar.title,
+        subtitle: externalSidebar.subtitle,
+        content: externalSidebar.content,
+      }
+    : {
+        title,
+        subtitle,
+        content: children,
+      };
+
+  const handleClose = () => {
+    if (isControlled) {
+      setExternalSidebar({
+        location: useExternalControl.location,
+        title: externalSidebar.title,
+        action: RIGHT_SIDEBAR_ACTION.CLOSE,
+        content: null,
+      });
+    } else {
+      closeModal();
+    }
+  };
 
   return (
     <Container>
-      <RightSidebarModalOpenButton openModal={openModal} />
-      <SidebarContainer isOpen={isModalOpen}>
-        {isModalOpen && (
-          <AttachedCloseButton onClick={closeModal}>
+      {!isControlled && useOpenButton && <RightSidebarModalOpenButton openModal={openModal} />}
+
+      <SidebarContainer isOpen={isOpen}>
+        {isOpen && (
+          <AttachedCloseButton onClick={handleClose}>
             <CloseButton />
           </AttachedCloseButton>
         )}
 
         <SidebarHeader>
           <TitleContainer>
-            <Title>{title}</Title>
-            {subtitle && <SubTitle>{subtitle}</SubTitle>}
+            {displayData.title && <Title>{displayData.title}</Title>}
+            {displayData.subtitle && <SubTitle>{displayData.subtitle}</SubTitle>}
           </TitleContainer>
         </SidebarHeader>
-        {children}
+
+        {displayData.content}
       </SidebarContainer>
     </Container>
   );

@@ -1,11 +1,14 @@
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
-import { adminUserAccountAtom } from 'src/jotai/admin/atoms';
-import { useAtomValue } from 'jotai';
+import { adminUserAccountAtom, externalSidebarAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { ACCOUNT_INFO } from '@constants/data/accountData';
 import RegisterAccountInfoContainer from './RegisterAccountInfoContainer';
 import RegistrationStatusInfo from './RegistrationStatusInfo';
 import AccountInfoItem from './AccountInfoItem';
+import { useLocation } from 'react-router-dom';
+import RegisterAccount from '@components/admin/account/register/RegisterAccount';
+import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
 
 const DetailsWrapper = styled.div`
   width: 100%;
@@ -15,11 +18,18 @@ const DetailsWrapper = styled.div`
 `;
 
 function AccountInfo() {
+  const location = useLocation();
   const accountInfo = useAtomValue(adminUserAccountAtom);
 
+  const setExternalSidebar = useSetAtom(externalSidebarAtom);
+
   const handleRegisterAccount = () => {
-    // TODO: 계좌 등록 모달 열기 또는 관련 로직 실행
-    console.log('계좌 등록 클릭');
+    setExternalSidebar({
+      location: location,
+      title: '계좌 등록',
+      action: RIGHT_SIDEBAR_ACTION.OPEN,
+      content: <RegisterAccount />,
+    });
   };
 
   const handleDeleteAccount = () => {

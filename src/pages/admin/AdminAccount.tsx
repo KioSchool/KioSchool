@@ -1,14 +1,14 @@
-import AccountInfo from '@components/admin/account/AccountInfo';
-// import RegisterAccount from '@components/admin/account/RegisterAccount';
-// import RegisterTossAccount from '@components/admin/account/RegisterTossAccount';
+import AccountInfo from '@components/admin/account/info/AccountInfo';
 import AppContainer from '@components/common/container/AppContainer';
-import { colFlex, rowFlex } from '@styles/flexStyles';
-import { useEffect } from 'react';
-import styled from '@emotion/styled';
+import RightSidebarModal from '@components/common/modal/RightSidebarModal';
+import TossAccountInfo from '@components/admin/account/info/TossAccountInfo';
 import useAdminUser from '@hooks/admin/useAdminUser';
-import TossAccountInfo from '@components/admin/account/TossAccountInfo';
-import { adminUserAtom } from 'src/jotai/admin/atoms';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import styled from '@emotion/styled';
+import { useEffect } from 'react';
 import { useAtomValue } from 'jotai';
+import { adminUserAtom } from 'src/jotai/admin/atoms';
+import { useLocation } from 'react-router-dom';
 
 const AccountContainer = styled.div`
   width: 100%;
@@ -21,6 +21,7 @@ const AccountContainer = styled.div`
 function AdminAccount() {
   const { fetchAdminUser } = useAdminUser();
   const user = useAtomValue(adminUserAtom);
+  const router = useLocation();
 
   useEffect(() => {
     fetchAdminUser();
@@ -35,10 +36,8 @@ function AdminAccount() {
       <AccountContainer>
         <AccountInfo />
         <TossAccountInfo />
+        <RightSidebarModal useExternalControl={{ location: router }} />
       </AccountContainer>
-      {/* todo: account 관련 사이드바로 이전 예정
-      <RegisterAccount />
-      <RegisterTossAccount /> */}
     </AppContainer>
   );
 }
