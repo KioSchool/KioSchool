@@ -9,6 +9,7 @@ import AccountInfoItem from './AccountInfoItem';
 import { useLocation } from 'react-router-dom';
 import RegisterAccount from '@components/admin/account/register/RegisterAccount';
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
+import useAdminUser from '@hooks/admin/useAdminUser';
 
 const DetailsWrapper = styled.div`
   width: 100%;
@@ -20,6 +21,7 @@ const DetailsWrapper = styled.div`
 function AccountInfo() {
   const location = useLocation();
   const accountInfo = useAtomValue(adminUserAccountAtom);
+  const { deleteAccount } = useAdminUser();
 
   const setExternalSidebar = useSetAtom(externalSidebarAtom);
 
@@ -34,8 +36,15 @@ function AccountInfo() {
   };
 
   const handleDeleteAccount = () => {
-    // TODO: 계좌 삭제 확인 또는 관련 로직 실행
-    console.log('계좌 삭제 클릭');
+    //TODO : 새로운 디자인의 공통 컨펌 컴포넌트로 변경 필요
+    if (window.confirm('현재 등록된 계좌를 삭제하시겠습니까?')) {
+      try {
+        deleteAccount();
+      } catch (error) {
+        console.error('계좌 삭제 중 오류 발생:', error);
+        alert('계좌 삭제 중 오류가 발생했습니다.');
+      }
+    }
   };
 
   const content =
@@ -55,7 +64,7 @@ function AccountInfo() {
       secondaryButton={{
         text: ACCOUNT_INFO.SECONDARY_BUTTON,
         onClick: handleDeleteAccount,
-        disabled: !accountInfo,
+        disabled: !accountInfo.accountNumber,
       }}
       primaryButton={{
         text: ACCOUNT_INFO.PRIMARY_BUTTON,

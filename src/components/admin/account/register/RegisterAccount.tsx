@@ -63,6 +63,17 @@ function RegisterAccount() {
     setSelectedBankId(event.target.value);
   };
 
+  const handleReset = () => {
+    setSelectedBankId('');
+
+    if (accountHolderRef.current) {
+      accountHolderRef.current.value = '';
+    }
+    if (accountNumberRef.current) {
+      accountNumberRef.current.value = '';
+    }
+  };
+
   const registerHandler = async () => {
     const accountHolder = accountHolderRef.current?.value;
     const accountNumber = accountNumberRef.current?.value;
@@ -90,9 +101,7 @@ function RegisterAccount() {
     const response = await registerAccount(Number(selectedBankId), accountNumber, accountHolder);
     if (response) {
       alert('계좌 등록이 완료되었습니다.');
-      accountHolderRef.current!.value = '';
-      accountNumberRef.current!.value = '';
-      setSelectedBankId('');
+      handleReset();
     }
   };
 
@@ -113,8 +122,7 @@ function RegisterAccount() {
         </InputColContainer>
       </InputContainer>
       <SubmitContainer>
-        {/* TODO : 내용 삭제 핸들러 구현 필요 */}
-        <NewCommonButton onClick={() => {}} customSize={{ width: 106, height: 40 }} color="blue_gray">
+        <NewCommonButton onClick={handleReset} customSize={{ width: 106, height: 40 }} color="blue_gray">
           삭제
         </NewCommonButton>
         <NewCommonButton onClick={registerHandler} customSize={{ width: 106, height: 40 }}>
