@@ -13,7 +13,7 @@ const PopupContainer = styled.div`
   position: absolute;
   width: max-content;
   left: 0;
-  max-width: 460px;
+  max-width: 500px;
   height: 28px;
   bottom: 110%;
   white-space: pre-line;
@@ -22,6 +22,7 @@ const PopupContainer = styled.div`
   border: 1px solid #e8eef2;
   padding: 0 12px;
   border-radius: 4px;
+  color: #464a4d;
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
