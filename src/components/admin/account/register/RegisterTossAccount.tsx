@@ -5,9 +5,10 @@ import { RiCameraFill } from '@remixicon/react';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { adminUserAccountAtom } from 'src/jotai/admin/atoms';
-import { useAtomValue } from 'jotai';
+import { adminUserAccountAtom, externalSidebarAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue, useSetAtom } from 'jotai';
 import NewCommonButton from '@components/common/button/NewCommonButton';
+import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
 
 const Container = styled.div`
   width: 100%;
@@ -71,6 +72,14 @@ function RegisterTossAccount() {
 
   const isAccountRegistered = !!accountInfo.accountNumber;
 
+  const setExternalSidebar = useSetAtom(externalSidebarAtom);
+
+  const closeSidebar = () => {
+    setExternalSidebar({
+      action: RIGHT_SIDEBAR_ACTION.CLOSE,
+    });
+  };
+
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files?.length) {
       setFileURL('');
@@ -111,7 +120,13 @@ function RegisterTossAccount() {
 
       const decodedUrl: string = qrCode.data;
       const url = removeAmountQuery(decodedUrl);
-      registerTossAccount(url);
+      registerTossAccount(url)
+        .then(() => {
+          closeSidebar();
+        })
+        .catch((error) => {
+          console.error('QR 등록 실패:', error);
+        });
     };
   };
 
@@ -136,11 +151,7 @@ function RegisterTossAccount() {
       </InputContainer>
       <HiddenInput type="file" accept="image/*" ref={fileInputRef} onChange={onImageChange} />
       <SubmitContainer>
-        {/* TODO : 내용 삭제 핸들러 구현 필요 */}
-        <NewCommonButton onClick={() => {}} customSize={{ width: 106, height: 40 }} color="blue_gray">
-          삭제
-        </NewCommonButton>
-        <NewCommonButton onClick={registerHandler} customSize={{ width: 106, height: 40 }}>
+        <NewCommonButton onClick={registerHandler} customSize={{ width: 106, height: 40 }} disabled={!isAccountRegistered}>
           QR 등록
         </NewCommonButton>
       </SubmitContainer>
