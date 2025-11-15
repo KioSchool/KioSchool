@@ -4,9 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import NewAppInput from '@components/common/input/NewAppInput';
-import { adminBanksAtom } from 'src/jotai/admin/atoms';
-import { useAtomValue } from 'jotai';
+import { adminBanksAtom, externalSidebarAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue, useSetAtom } from 'jotai';
 import NewCommonButton from '@components/common/button/NewCommonButton';
+import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
 
 const Container = styled.div`
   width: 100%;
@@ -47,6 +48,14 @@ function RegisterAccount() {
   const accountHolderRef = useRef<HTMLInputElement>(null);
   const accountNumberRef = useRef<HTMLInputElement>(null);
   const [selectedBankId, setSelectedBankId] = useState<string>('');
+
+  const setExternalSidebar = useSetAtom(externalSidebarAtom);
+
+  const closeSidebar = () => {
+    setExternalSidebar({
+      action: RIGHT_SIDEBAR_ACTION.CLOSE,
+    });
+  };
 
   useEffect(() => {
     fetchBanks();
@@ -102,6 +111,10 @@ function RegisterAccount() {
     if (response) {
       alert('계좌 등록이 완료되었습니다.');
       handleReset();
+      closeSidebar();
+    } else {
+      alert('계좌 등록에 실패하였습니다. 다시 시도해주세요.');
+      return;
     }
   };
 
