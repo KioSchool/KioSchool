@@ -49,7 +49,7 @@ function Login() {
   };
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} customGap={'20px'} titleNavBarProps={{ title: '로그인', useBackIcon: false }}>
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} customGap={'20px'} useTitle={false} useFullHeight={true}>
       <>
         <NewAppInput id={'userId'} ref={userIdInputRef} label={'아이디'} placeholder={'아이디를 입력해주세요.'} autoFocus={true} />
         <NewAppInput

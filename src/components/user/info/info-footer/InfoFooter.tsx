@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import AppLabel from '@components/common/label/AppLabel';
 import { RiInstagramLine, RiNotionLine } from '@remixicon/react';
-import AppFooter from '@components/common/footer/AppFooter';
 import { tabletMediaQuery } from '@styles/globalStyles';
 import { isMobile } from 'react-device-detect';
 import { css } from '@emotion/react';
@@ -65,11 +64,6 @@ const NotionBadge = styled(RiNotionLine)`
   ${BadgeStyle};
 `;
 
-const FooterContent = styled.div`
-  width: 100%;
-  ${rowFlex({ align: 'center' })};
-`;
-
 function InfoFooter() {
   const handleInstagramClick = () => {
     window.open(URLS.EXTERNAL.INSTAGRAM, '_blank');
@@ -105,9 +99,6 @@ function InfoFooter() {
           <NotionBadge onClick={handleNotionClick} />
         </BadgeContainer>
       </SubContainer>
-      <FooterContent>
-        <AppFooter fixed={false} color={Color.WHITE} />
-      </FooterContent>
     </Container>
   );
 }

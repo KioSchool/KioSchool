@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import AppFooter from '@components/common/footer/AppFooter';
 import { rowFlex, colFlex } from '@styles/flexStyles';
 import { User, UserRole } from '@@types/index';
 import { myInfoCardsData } from '@constants/data/myInfoData';
@@ -35,7 +34,6 @@ function MyInfoContent({ user }: MyInfoContentProps) {
       </CardsContainer>
       <DeleteUserConfirmModal />
       <LogoutConfirmModal />
-      <AppFooter />
     </Container>
   );
 }

@@ -4,7 +4,6 @@ import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import { RiArrowRightLine } from '@remixicon/react';
 import { css } from '@emotion/react';
-import AppFooter from '@components/common/footer/AppFooter';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { SUPER_ADMIN_ROUTES } from '@constants/routes';
 
@@ -81,7 +80,7 @@ function SuperAdminHome() {
   const [isHover, setIsHover] = useState<boolean>(false);
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center', align: 'start' })}>
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'start' })} useTitle={false}>
       <>
         <MainTitle className={'main-title'}>
           키오스쿨로
@@ -98,7 +97,6 @@ function SuperAdminHome() {
             <RightArrow />
           </LinkText>
         </LinkSuperAdminHome>
-        <AppFooter />
         <HoverOverlay isHover={isHover} className={'hover-overlay'} />
       </>
     </AppContainer>

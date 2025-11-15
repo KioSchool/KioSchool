@@ -1,8 +1,13 @@
 import { User } from '@@types/index';
-import { SubContainer } from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+
+const Container = styled.div`
+  width: 100%;
+  height: 80px;
+  ${colFlex({ justify: 'center', align: 'start' })}
+`;
 
 const SubLabelContainer = styled.div`
   color: ${Color.HEAVY_GREY};
@@ -29,10 +34,10 @@ function SuperAdminUserContent({ name, email, createdAt }: User) {
   const createdDateAndOwnerText = `${filteredCreatedDate} | ${email}`;
 
   return (
-    <SubContainer useFlex={colFlex({ justify: 'center', align: 'start' })} customWidth={'1000px'} customHeight={'80px'} customGap={'5px'}>
+    <Container>
       <WorkspaceLabel className={'user-label'}>{name}</WorkspaceLabel>
       <SubLabelContainer className={'sub-label-container'}>{createdDateAndOwnerText}</SubLabelContainer>
-    </SubContainer>
+    </Container>
   );
 }
 

@@ -41,13 +41,7 @@ function UserEmailDomain() {
   }, [searchParams.toString()]);
 
   return (
-    <AppContainer
-      useFlex={colFlex({ justify: 'center' })}
-      customWidth={'1000px'}
-      customHeight={'100%'}
-      customGap={'20px'}
-      titleNavBarProps={{ title: '이메일 도메인 조회', useBackIcon: false }}
-    >
+    <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'} customGap={'20px'}>
       <>
         <PaginationSearchBar />
         <ContentContainer justifyCenter={isEmptyEmailDomain} className={'content-container'}>

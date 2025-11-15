@@ -1,10 +1,15 @@
 import { Bank } from '@@types/index';
 import RoundedAppButton from '@components/common/button/RoundedAppButton';
-import { SubContainer } from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import useSuperAdminBank from '@hooks/super-admin/useSuperAdminBank';
+
+const Container = styled.div`
+  width: 100%;
+  height: 80px;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
+`;
 
 const SubLabelContainer = styled.div`
   color: ${Color.HEAVY_GREY};
@@ -43,7 +48,7 @@ function SuperAdminBankContent({ name, code, id }: Bank) {
   };
 
   return (
-    <SubContainer useFlex={rowFlex({ justify: 'space-between', align: 'start' })} customWidth={'1000px'} customHeight={'80px'} customGap={'5px'}>
+    <Container>
       <LabelContainer>
         <BankLabel className={'bank-label'}>{name}</BankLabel>
         <SubLabelContainer className={'sub-label-container'}>은행 코드: {code}</SubLabelContainer>
@@ -53,7 +58,7 @@ function SuperAdminBankContent({ name, code, id }: Bank) {
           삭제하기
         </RoundedAppButton>
       </ButtonContainer>
-    </SubContainer>
+    </Container>
   );
 }
 
