@@ -1,32 +1,68 @@
 import styled from '@emotion/styled';
 import NavBar from '@components/common/nav/NavBar';
 import { colFlex } from '@styles/flexStyles';
-import TitleNavBar, { TitleNavBarProps } from '../nav/TitleNavBar';
+import { TitleNavBarProps } from '../nav/TitleNavBar';
 import { SerializedStyles } from '@emotion/react';
 import { Color } from '@resources/colors';
+import { useLocation } from 'react-router-dom';
+import { useAtomValue } from 'jotai';
+import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
+import { getPageTitle } from '@@types/guard';
 
-export const MainContainer = styled.div<{ backgroundColor?: string; useScroll?: boolean }>`
+export const MainContainer = styled.div<{ backgroundColor?: string }>`
   width: 100%;
-  height: ${(props) => (props.useScroll ? '100%' : '100vh')};
+  min-height: 100vh;
   box-sizing: border-box;
   background-color: ${(props) => (props.backgroundColor ? props.backgroundColor : Color.WHITE)};
-  ${colFlex({ justify: 'center', align: 'center' })}
+  ${colFlex({ align: 'center' })}
 `;
 
 export const SubContainer = styled.div<{
-  useFlex: SerializedStyles;
   customWidth?: string;
-  customHeight?: string;
   customGap?: string;
   isTitleNavBar?: boolean;
+  useTitle?: boolean;
 }>`
-  width: ${(props) => props.customWidth || '65vw'};
-  height: ${(props) => props.customHeight || 'auto'};
-  min-width: 1000px;
-  padding-top: ${(props) => props.isTitleNavBar && '120px'};
+  max-width: ${(props) => props.customWidth || '1200px'};
+  width: 100%;
+  box-sizing: border-box;
+  padding-top: ${(props) => (props.useTitle ? '90px' : '0')};
+  flex-grow: 1;
+  ${colFlex({
+    justify: 'flex-start',
+    align: 'center',
+  })}
+`;
 
+const TitleContainer = styled.div`
+  padding-bottom: 30px;
+  gap: 15px;
+  ${colFlex({ justify: 'center', align: 'center' })}
+`;
+
+const WorkspaceName = styled.div`
+  color: #464a4d;
+  text-align: center;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 125%;
+`;
+
+const LocationLabel = styled.div`
+  color: #464a4d;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+`;
+
+const ContentContainer = styled.div<{ useFlex: SerializedStyles; customGap?: string; useFullHeight?: boolean }>`
+  padding-bottom: ${(props) => (props.useFullHeight ? '0' : '50px')};
+  flex-grow: 1;
+  width: 100%;
+  height: 100%;
   gap: ${(props) => props.customGap};
-  ${(props) => props.useFlex}
+  ${(props) => props.useFlex};
 `;
 
 interface Props {
@@ -34,27 +70,44 @@ interface Props {
   useFlex: SerializedStyles;
   backgroundColor?: string;
   useNavBackground?: boolean;
+  useTitle?: boolean;
+  useFullHeight?: boolean;
   customWidth?: string;
-  customHeight?: string;
   customGap?: string;
   titleNavBarProps?: TitleNavBarProps;
-  useScroll?: boolean;
 }
 
-function AppContainer({ children, useFlex, backgroundColor, useNavBackground, customWidth, customHeight, customGap, titleNavBarProps, useScroll }: Props) {
+function AppContainer({
+  children,
+  useFlex,
+  backgroundColor,
+  useNavBackground = true,
+  useTitle = true,
+  useFullHeight = false,
+  customWidth,
+  customGap,
+  titleNavBarProps,
+}: Props) {
+  const location = useLocation();
+  const workspace = useAtomValue(adminWorkspaceAtom);
+
+  const isAdminHome = location.pathname === '/admin';
+  const title = isAdminHome ? '키오스쿨' : workspace.name;
+  const label = isAdminHome ? `${workspace.owner.name}님 환영합니다.` : getPageTitle(location.pathname);
+
   return (
-    <MainContainer backgroundColor={backgroundColor} className={'main-container'} useScroll={useScroll}>
+    <MainContainer backgroundColor={backgroundColor} className={'main-container'}>
       <NavBar useBackground={useNavBackground} />
-      {titleNavBarProps && <TitleNavBar {...titleNavBarProps} />}
-      <SubContainer
-        useFlex={useFlex}
-        customWidth={customWidth}
-        customHeight={customHeight}
-        customGap={customGap}
-        className={'sub-container'}
-        isTitleNavBar={!!titleNavBarProps}
-      >
-        {children}
+      <SubContainer customWidth={customWidth} className={'sub-container'} useTitle={useTitle} isTitleNavBar={!!titleNavBarProps}>
+        {useTitle && (
+          <TitleContainer className={'title-container'}>
+            <WorkspaceName>{title}</WorkspaceName>
+            <LocationLabel>{label}</LocationLabel>
+          </TitleContainer>
+        )}
+        <ContentContainer useFlex={useFlex} customGap={customGap} useFullHeight={useFullHeight} className={'content-container'}>
+          {children}
+        </ContentContainer>
       </SubContainer>
     </MainContainer>
   );

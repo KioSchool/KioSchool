@@ -146,12 +146,7 @@ function AdminProductEdit() {
   );
 
   return (
-    <AppContainer
-      useFlex={colFlex({ justify: 'center' })}
-      useNavBackground={true}
-      titleNavBarProps={{ title: '상품 수정', children: titleNavBarChildren }}
-      useScroll={true}
-    >
+    <AppContainer useFlex={colFlex({ justify: 'center' })} useNavBackground={true} titleNavBarProps={{ title: '상품 수정', children: titleNavBarChildren }}>
       <Container>
         <SelectWithLabel
           titleLabel={'카테고리'}

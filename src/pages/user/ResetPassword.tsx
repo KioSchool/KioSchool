@@ -51,6 +51,8 @@ function ResetPassword() {
         useFlex={colFlex({ justify: 'center', align: 'center' })}
         customGap={'20px'}
         titleNavBarProps={{ title: '비밀번호 찾기', useBackIcon: false }}
+        useTitle={false}
+        useFullHeight={true}
       >
         <>
           <NewAppInput placeholder={'아이디를 입력해주세요'} ref={idInputRef} label={'아이디'} />

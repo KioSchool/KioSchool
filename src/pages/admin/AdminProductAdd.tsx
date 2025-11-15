@@ -101,7 +101,6 @@ function AdminProductAdd() {
       useFlex={colFlex({ justify: 'center', align: 'center' })}
       useNavBackground={true}
       titleNavBarProps={{ title: '상품 등록' }}
-      useScroll={true}
       customGap={'12px'}
     >
       <>

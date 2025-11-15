@@ -46,9 +46,9 @@ function SuperAdminUser() {
     <AppContainer
       useFlex={colFlex({ justify: 'center' })}
       customWidth={'1000px'}
-      customHeight={'100%'}
       customGap={'20px'}
       titleNavBarProps={{ title: '전체 유저 관리', onLeftArrowClick: () => navigate(SUPER_ADMIN_ROUTES.MANAGE) }}
+      useTitle={false}
     >
       <>
         <PaginationSearchBar />

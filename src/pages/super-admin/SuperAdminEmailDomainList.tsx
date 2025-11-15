@@ -42,13 +42,13 @@ function SuperAdminEmailDomainList() {
     <AppContainer
       useFlex={colFlex({ justify: 'center' })}
       customWidth={'1000px'}
-      customHeight={'100%'}
       customGap={'20px'}
       titleNavBarProps={{
         title: '이메일 도메인 관리',
         onLeftArrowClick: () => navigate(SUPER_ADMIN_ROUTES.MANAGE),
         children: <SuperAdminEmailDomainTitleNavBarChildren />,
       }}
+      useTitle={false}
     >
       <>
         <PaginationSearchBar />

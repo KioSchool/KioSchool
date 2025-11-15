@@ -1,10 +1,15 @@
 import { EmailDomain } from '@@types/index';
 import RoundedAppButton from '@components/common/button/RoundedAppButton';
-import { SubContainer } from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import useSuperAdminEmail from '@hooks/super-admin/useSuperAdminEmail';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+
+const Container = styled.div`
+  width: 100%;
+  height: 80px;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
+`;
 
 const SubLabelContainer = styled.div`
   color: ${Color.HEAVY_GREY};
@@ -43,7 +48,7 @@ function SuperAdminEmailDomainContent({ name, domain, id }: EmailDomain) {
   };
 
   return (
-    <SubContainer useFlex={rowFlex({ justify: 'space-between', align: 'start' })} customWidth={'1000px'} customHeight={'80px'} customGap={'5px'}>
+    <Container>
       <LabelContainer>
         <EmailLabel className={'email-label'}>{name}</EmailLabel>
         <SubLabelContainer className={'sub-label-container'}>{domain}</SubLabelContainer>
@@ -53,7 +58,7 @@ function SuperAdminEmailDomainContent({ name, domain, id }: EmailDomain) {
           삭제하기
         </RoundedAppButton>
       </ButtonContainer>
-    </SubContainer>
+    </Container>
   );
 }
 

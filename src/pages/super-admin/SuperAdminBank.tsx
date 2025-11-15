@@ -42,13 +42,13 @@ function SuperAdminBank() {
     <AppContainer
       useFlex={colFlex({ justify: 'center' })}
       customWidth={'1000px'}
-      customHeight={'100%'}
       customGap={'20px'}
       titleNavBarProps={{
         title: '은행 관리',
         onLeftArrowClick: () => navigate(SUPER_ADMIN_ROUTES.MANAGE),
         children: <SuperAdminBankTitleNavBarChildren />,
       }}
+      useTitle={false}
     >
       <>
         <PaginationSearchBar />

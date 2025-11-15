@@ -158,7 +158,7 @@ function AdminWorkspaceEdit() {
 
   return (
     <AppContainer
-      useFlex={rowFlex({ justify: 'center' })}
+      useFlex={colFlex({ justify: 'center' })}
       customWidth={'1000px'}
       titleNavBarProps={{
         title: workspace?.name || '',

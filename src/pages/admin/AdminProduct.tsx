@@ -14,7 +14,7 @@ import { getAdminWorkspacePath } from '@constants/routes';
 
 const ContainerPerCategory = styled.div`
   gap: 30px;
-  padding: 50px 0;
+  padding-top: 30px;
   min-width: 1000px;
   width: 100%;
   ${colFlex({ align: 'center' })}
@@ -67,7 +67,6 @@ function AdminProduct() {
 
   return (
     <AppContainer
-      useNavBackground={true}
       useFlex={colFlex({ justify: 'center', align: 'center' })}
       titleNavBarProps={{
         title: '상품관리',
@@ -77,7 +76,6 @@ function AdminProduct() {
         },
       }}
       customWidth={'100%'}
-      useScroll={true}
     >
       <>
         {categories.map((category) => (

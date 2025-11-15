@@ -80,7 +80,7 @@ function SuperAdminHome() {
   const [isHover, setIsHover] = useState<boolean>(false);
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center', align: 'start' })}>
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'start' })} useTitle={false}>
       <>
         <MainTitle className={'main-title'}>
           키오스쿨로

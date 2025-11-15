@@ -129,7 +129,6 @@ function AdminOrderStatistics() {
           />
         ),
       }}
-      useScroll={true}
     >
       <Container>
         <HeaderContainer>

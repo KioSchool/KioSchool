@@ -2,6 +2,10 @@ import { PaginationResponse } from '@@types/index';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 
+const ListItem = styled.div`
+  width: 100%;
+`;
+
 const HorizontalLine = styled.hr`
   width: 100%;
   border: 0.3px solid #eeecec;
@@ -26,10 +30,10 @@ function PaginationSearchContents({ contents, target, ContentComponent }: Conten
   return (
     <>
       {contents.content.map((item, index) => (
-        <div key={item.id}>
+        <ListItem key={item.id}>
           <ContentComponent {...item} />
           {index < contents.content.length - 1 && <HorizontalLine />}
-        </div>
+        </ListItem>
       ))}
     </>
   );
