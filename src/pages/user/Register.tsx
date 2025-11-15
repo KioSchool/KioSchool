@@ -204,12 +204,7 @@ function Register() {
   };
 
   return (
-    <AppContainer
-      useFlex={colFlex({ justify: 'center', align: 'center' })}
-      titleNavBarProps={{ title: '회원가입', useBackIcon: false }}
-      useTitle={false}
-      useFullHeight={true}
-    >
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} useTitle={false} useFullHeight={true}>
       <>
         <FormContainer id={'form'} onSubmit={submitHandler}>
           <NewAppInput label={'이름'} ref={userNameInputRef} placeholder={'이름을 입력해주세요.'} required />

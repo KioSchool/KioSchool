@@ -72,7 +72,7 @@ function AdminProductCategories() {
   };
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })} titleNavBarProps={{ title: '카테고리 관리' }}>
+    <AppContainer useFlex={colFlex({ justify: 'center' })}>
       <Container className={'admin-product-categories-container'}>
         <CategoriesInputContainer className={'categories-input-container'}>
           <StyledInput ref={categoryInputRef} type="text" placeholder="카테고리 이름을 입력해주세요" />

@@ -13,7 +13,7 @@ const Contents = styled.div`
 
 function AdminOrderTableManage() {
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} titleNavBarProps={{ title: '테이블 관리' }}>
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })}>
       <Contents>
         <TableCount />
         <TableTimeLimit />

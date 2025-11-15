@@ -22,7 +22,7 @@ const ButtonContainer = styled.div`
 function SuperAdminManage() {
   const { navigateWithPage } = useCustomNavigate();
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })} titleNavBarProps={{ title: '관리 페이지' }}>
+    <AppContainer useFlex={colFlex({ justify: 'center' })}>
       <Container>
         <ButtonContainer>
           <ImageRouteButton src={workspaceImage} onClick={() => navigateWithPage(SUPER_ADMIN_ROUTES.WORKSPACE)} buttonText={'워크스페이스 조회'} />

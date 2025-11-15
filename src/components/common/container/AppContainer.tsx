@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import NavBar from '@components/common/nav/NavBar';
 import { colFlex } from '@styles/flexStyles';
-import { TitleNavBarProps } from '../nav/TitleNavBar';
 import { SerializedStyles } from '@emotion/react';
 import { Color } from '@resources/colors';
 import { useLocation } from 'react-router-dom';
@@ -20,7 +19,6 @@ export const MainContainer = styled.div<{ backgroundColor?: string }>`
 export const SubContainer = styled.div<{
   customWidth?: string;
   customGap?: string;
-  isTitleNavBar?: boolean;
   useTitle?: boolean;
 }>`
   max-width: ${(props) => props.customWidth || '1200px'};
@@ -74,20 +72,9 @@ interface Props {
   useFullHeight?: boolean;
   customWidth?: string;
   customGap?: string;
-  titleNavBarProps?: TitleNavBarProps;
 }
 
-function AppContainer({
-  children,
-  useFlex,
-  backgroundColor,
-  useNavBackground = true,
-  useTitle = true,
-  useFullHeight = false,
-  customWidth,
-  customGap,
-  titleNavBarProps,
-}: Props) {
+function AppContainer({ children, useFlex, backgroundColor, useNavBackground = true, useTitle = true, useFullHeight = false, customWidth, customGap }: Props) {
   const location = useLocation();
   const workspace = useAtomValue(adminWorkspaceAtom);
 
@@ -98,7 +85,7 @@ function AppContainer({
   return (
     <MainContainer backgroundColor={backgroundColor} className={'main-container'}>
       <NavBar useBackground={useNavBackground} />
-      <SubContainer customWidth={customWidth} className={'sub-container'} useTitle={useTitle} isTitleNavBar={!!titleNavBarProps}>
+      <SubContainer customWidth={customWidth} className={'sub-container'} useTitle={useTitle}>
         {useTitle && (
           <TitleContainer className={'title-container'}>
             <WorkspaceName>{title}</WorkspaceName>

@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
@@ -86,7 +86,6 @@ const NoticeInput = styled.textarea`
 `;
 
 function AdminWorkspaceEdit() {
-  const navigate = useNavigate();
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { updateWorkspaceInfoAndImage } = useAdminWorkspace();
   const workspace = useAtomValue(adminWorkspaceAtom);
@@ -157,15 +156,7 @@ function AdminWorkspaceEdit() {
   };
 
   return (
-    <AppContainer
-      useFlex={colFlex({ justify: 'center' })}
-      customWidth={'1000px'}
-      titleNavBarProps={{
-        title: workspace?.name || '',
-        subTitle: '워크스페이스 관리',
-        onLeftArrowClick: () => navigate(-1),
-      }}
-    >
+    <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'}>
       <ContentContainer>
         <TitleContainer>
           <Label>주점명</Label>

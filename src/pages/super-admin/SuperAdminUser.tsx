@@ -6,11 +6,10 @@ import Pagination from '@components/common/pagination/Pagination';
 import AppContainer from '@components/common/container/AppContainer';
 import useSuperAdminUser from '@hooks/super-admin/useSuperAdminUser';
 import SuperAdminUserContent from '@components/super-admin/user/SuperAdminUserContent';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import PaginationSearchContents from '@components/common/pagination/PaginationSearchContents';
 import { PaginationResponse, User } from '@@types/index';
 import { defaultPaginationValue } from '@@types/defaultValues';
-import { SUPER_ADMIN_ROUTES } from '@constants/routes';
 
 const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
   height: 550px;
@@ -23,7 +22,6 @@ const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
 
 function SuperAdminUser() {
   const pageSize = 6;
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [users, setUsers] = useState<PaginationResponse<User>>(defaultPaginationValue);
   const { fetchAllUsers } = useSuperAdminUser();
@@ -43,13 +41,7 @@ function SuperAdminUser() {
   }, [searchParams.toString()]);
 
   return (
-    <AppContainer
-      useFlex={colFlex({ justify: 'center' })}
-      customWidth={'1000px'}
-      customGap={'20px'}
-      titleNavBarProps={{ title: '전체 유저 관리', onLeftArrowClick: () => navigate(SUPER_ADMIN_ROUTES.MANAGE) }}
-      useTitle={false}
-    >
+    <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'} customGap={'20px'} useTitle={false}>
       <>
         <PaginationSearchBar />
         <ContentContainer justifyCenter={isEmptyUsers} className={'content-container'}>

@@ -28,11 +28,7 @@ function AdminHome() {
   }, []);
 
   return (
-    <AppContainer
-      useFlex={rowFlex({ justify: 'center', align: 'center' })}
-      customGap={'30px'}
-      titleNavBarProps={{ title: `${user.name}님의 주점`, useBackIcon: false }}
-    >
+    <AppContainer useFlex={rowFlex({ justify: 'center', align: 'center' })} customGap={'30px'}>
       <>
         <WorkspaceContent workspaces={workspaces} />
         {Array.from({ length: addWorkspaceNumber }).map((_, i) => (
