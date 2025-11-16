@@ -1,5 +1,4 @@
 import PaginationSearchBar from '@components/common/pagination/PaginationSearchBar';
-import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import { useEffect } from 'react';
 import Pagination from '@components/common/pagination/Pagination';
@@ -11,22 +10,11 @@ import SuperAdminEmailDomainContent from '@components/super-admin/email/SuperAdm
 import { superAdminEmailDomainPaginationResponseAtom } from 'src/jotai/super-admin/atoms';
 import { useAtomValue } from 'jotai';
 
-const ContentContainer = styled.div<{ justifyCenter?: boolean }>`
-  height: 550px;
-  ${(props) =>
-    colFlex({
-      justify: props.justifyCenter ? 'center' : 'flex-start',
-      align: 'center',
-    })}
-`;
-
 function SuperAdminEmailDomainList() {
   const pageSize = 6;
   const [searchParams, setSearchParams] = useSearchParams();
   const emailDomain = useAtomValue(superAdminEmailDomainPaginationResponseAtom);
   const { fetchAllEmailDomain } = useSuperAdminEmail();
-
-  const isEmptyEmailDomain = emailDomain.empty;
 
   useEffect(() => {
     const nowPage = Number(searchParams.get('page'));
@@ -39,9 +27,7 @@ function SuperAdminEmailDomainList() {
     <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'} customGap={'20px'} useTitle={false}>
       <>
         <PaginationSearchBar />
-        <ContentContainer justifyCenter={isEmptyEmailDomain} className={'content-container'}>
-          <PaginationSearchContents contents={emailDomain} target={'이메일'} ContentComponent={SuperAdminEmailDomainContent} />
-        </ContentContainer>
+        <PaginationSearchContents contents={emailDomain} target={'이메일'} ContentComponent={SuperAdminEmailDomainContent} />
         <Pagination
           totalPageCount={emailDomain.totalPages}
           paginateFunction={(page: number) => {

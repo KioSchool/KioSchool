@@ -1,6 +1,16 @@
 import { PaginationResponse } from '@@types/index';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
+import { colFlex } from '@styles/flexStyles';
+
+const Container = styled.div<{ justifyCenter?: boolean }>`
+  height: 550px;
+  ${(props) =>
+    colFlex({
+      justify: props.justifyCenter ? 'center' : 'flex-start',
+      align: 'center',
+    })}
+`;
 
 const ListItem = styled.div`
   width: 100%;
@@ -28,14 +38,14 @@ function PaginationSearchContents({ contents, target, ContentComponent }: Conten
   }
 
   return (
-    <>
+    <Container justifyCenter={contents.empty}>
       {contents.content.map((item, index) => (
         <ListItem key={item.id}>
           <ContentComponent {...item} />
           {index < contents.content.length - 1 && <HorizontalLine />}
         </ListItem>
       ))}
-    </>
+    </Container>
   );
 }
 
