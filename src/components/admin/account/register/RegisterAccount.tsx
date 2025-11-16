@@ -107,16 +107,12 @@ function RegisterAccount() {
       return;
     }
 
-    try {
-      await registerAccount(Number(selectedBankId), accountNumber, accountHolder);
+    const response = await registerAccount(Number(selectedBankId), accountNumber, accountHolder);
 
+    if (response) {
       alert('계좌 등록이 완료되었습니다.');
       handleReset();
       closeSidebar();
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.message || '계좌 등록에 실패하였습니다. 다시 시도해주세요.';
-      alert(errorMessage);
-      return;
     }
   };
 

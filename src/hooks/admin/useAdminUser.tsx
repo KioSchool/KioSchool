@@ -90,7 +90,7 @@ function useAdminUser() {
         return res.data;
       })
       .catch((error) => {
-        throw error;
+        alert(error.response.data.message);
       });
   };
 
