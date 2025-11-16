@@ -16,7 +16,7 @@ export const ROUTES_PATH_KR_MAP = {
 
   [ADMIN_ROUTES.HOME]: '대시보드',
   [ADMIN_ROUTES.MY_INFO]: '내 정보',
-  [ADMIN_ROUTES.REGISTER_ACCOUNT]: '관리자 계정 등록',
+  [ADMIN_ROUTES.REGISTER_ACCOUNT]: '계좌 관리',
   [ADMIN_ROUTES.WORKSPACE]: '워크스페이스',
   [ADMIN_ROUTES.WORKSPACE_EDIT]: '워크스페이스 수정',
   [ADMIN_ROUTES.ORDER_REALTIME]: '실시간 주문 현황',
