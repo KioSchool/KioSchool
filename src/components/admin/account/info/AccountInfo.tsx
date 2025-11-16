@@ -38,12 +38,7 @@ function AccountInfo() {
   const handleDeleteAccount = () => {
     //TODO : 새로운 디자인의 공통 컨펌 컴포넌트로 변경 필요
     if (window.confirm('현재 등록된 계좌를 삭제하시겠습니까?')) {
-      try {
-        deleteAccount();
-      } catch (error) {
-        console.error('계좌 삭제 중 오류 발생:', error);
-        alert('계좌 삭제 중 오류가 발생했습니다.');
-      }
+      deleteAccount();
     }
   };
 

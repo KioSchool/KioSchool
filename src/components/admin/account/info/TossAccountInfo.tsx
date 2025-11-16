@@ -30,12 +30,7 @@ function TossAccountInfo() {
   const handleDeleteQR = () => {
     //TODO : 새로운 디자인의 공통 컨펌 컴포넌트로 변경 필요
     if (window.confirm('현재 등록된 Toss QR 정보를 삭제하시겠습니까?')) {
-      try {
-        deleteTossAccount();
-      } catch (error) {
-        console.error('QR 삭제 중 오류 발생:', error);
-        alert('QR 삭제 중 오류가 발생했습니다.');
-      }
+      deleteTossAccount();
     }
   };
 

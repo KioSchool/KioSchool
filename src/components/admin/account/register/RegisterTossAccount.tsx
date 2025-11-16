@@ -120,13 +120,9 @@ function RegisterTossAccount() {
 
       const decodedUrl: string = qrCode.data;
       const url = removeAmountQuery(decodedUrl);
-      registerTossAccount(url)
-        .then(() => {
-          closeSidebar();
-        })
-        .catch((error) => {
-          console.error('QR 등록 실패:', error);
-        });
+      registerTossAccount(url).then(() => {
+        closeSidebar();
+      });
     };
   };
 
