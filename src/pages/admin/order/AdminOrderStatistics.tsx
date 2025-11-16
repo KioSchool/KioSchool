@@ -75,6 +75,7 @@ function AdminOrderStatistics() {
   const { fetchOrders } = useAdminOrder(workspaceId);
   const orders = useAtomValue(adminOrdersAtom);
 
+  // TODO: 사용하지 않는 상태 변수 정리
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showServedOrder, setShowServedOrder] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
