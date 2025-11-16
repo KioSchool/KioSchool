@@ -115,7 +115,7 @@ function ResetPassword() {
   };
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} customGap={'20px'}>
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} customGap={'20px'} useTitle={false} useFullHeight={true}>
       <>
         <NewAppInput
           label={'비밀번호'}
