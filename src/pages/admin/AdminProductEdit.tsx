@@ -141,7 +141,7 @@ function AdminProductEdit() {
   };
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })} useNavBackground={true}>
+    <AppContainer useFlex={colFlex({ justify: 'center' })}>
       <Container>
         <SelectWithLabel
           titleLabel={'카테고리'}

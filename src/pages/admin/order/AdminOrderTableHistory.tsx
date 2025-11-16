@@ -54,7 +54,7 @@ function AdminOrderTableHistory() {
   }, [searchParams.toString()]);
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'} useNavBackground={true}>
+    <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'}>
       <>
         <ContentContainer justifyCenter={isEmptyWorkspaces} className={'content-container'}>
           {tableOrders.content.map((item) => (

@@ -72,7 +72,7 @@ function Home() {
   const [isHover, setIsHover] = useState<boolean>(false);
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center', align: 'start' })} useTitle={false} useNavBackground={false}>
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'start' })} useTitle={false}>
       <>
         <MainTitle>
           키오스쿨로

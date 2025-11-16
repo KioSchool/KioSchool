@@ -97,7 +97,7 @@ function AdminProductAdd() {
   };
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} useNavBackground={true} customGap={'12px'}>
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} customGap={'12px'}>
       <>
         <SelectWithLabel
           titleLabel={'카테고리'}

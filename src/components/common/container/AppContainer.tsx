@@ -67,20 +67,21 @@ interface Props {
   children: JSX.Element;
   useFlex: SerializedStyles;
   backgroundColor?: string;
-  useNavBackground?: boolean;
   useTitle?: boolean;
   useFullHeight?: boolean;
   customWidth?: string;
   customGap?: string;
 }
 
-function AppContainer({ children, useFlex, backgroundColor, useNavBackground = true, useTitle = true, useFullHeight = false, customWidth, customGap }: Props) {
+function AppContainer({ children, useFlex, backgroundColor, useTitle = true, useFullHeight = false, customWidth, customGap }: Props) {
   const location = useLocation();
   const workspace = useAtomValue(adminWorkspaceAtom);
 
   const isAdminHome = location.pathname === '/admin';
   const title = isAdminHome ? '키오스쿨' : workspace.name;
   const label = isAdminHome ? `${workspace.owner.name}님 환영합니다.` : getPageTitle(location.pathname);
+
+  const useNavBackground = location.pathname !== '/';
 
   return (
     <MainContainer backgroundColor={backgroundColor} className={'main-container'}>

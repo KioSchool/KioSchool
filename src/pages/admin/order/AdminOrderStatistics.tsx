@@ -117,7 +117,7 @@ function AdminOrderStatistics() {
   ];
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} useNavBackground>
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })}>
       <Container>
         <HeaderContainer>
           <HeaderLabel>총 매출액</HeaderLabel>
