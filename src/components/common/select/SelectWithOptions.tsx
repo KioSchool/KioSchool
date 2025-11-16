@@ -51,7 +51,8 @@ function SelectWithOptions({ options, isUseDefaultOption = true, width, ...other
   const allOptions = isUseDefaultOption ? [defaultOption, ...options] : [...options];
 
   const isControlled = otherProps.value !== undefined;
-  const defaultValueProp = !isControlled && allOptions.length > 0 ? { defaultValue: allOptions[0].id } : {};
+  const useDefaultOption = !isControlled && allOptions.length > 0;
+  const defaultValueProp = useDefaultOption ? { defaultValue: allOptions[0].id } : {};
 
   return (
     <Container {...defaultValueProp} {...otherProps} width={width} required>
