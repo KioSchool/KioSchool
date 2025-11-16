@@ -111,7 +111,7 @@ function RightSidebarModal({ title, subtitle, useOpenButton = true, children, us
 
   const isControlled = useExternalControl !== undefined;
 
-  const isOpen = isControlled ? action === RIGHT_SIDEBAR_ACTION.OPEN && externalLocation.pathname === useExternalControl.location.pathname : isModalOpen;
+  const isOpen = isControlled ? action === RIGHT_SIDEBAR_ACTION.OPEN && externalLocation?.pathname === useExternalControl.location.pathname : isModalOpen;
 
   const displayData = isControlled
     ? {
