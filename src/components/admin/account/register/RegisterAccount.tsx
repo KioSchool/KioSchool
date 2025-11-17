@@ -66,7 +66,7 @@ function RegisterAccount() {
     name: bank.name,
   }));
 
-  const allBanks = [{ id: '', name: '은행을 선택해주세요.' }, ...filteredBanks];
+  const allBanks = [{ id: 1, name: '은행을 선택해주세요.' }, ...filteredBanks];
 
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedBankId(event.target.value);
@@ -134,7 +134,7 @@ function RegisterAccount() {
       </InputContainer>
       <SubmitContainer>
         <NewCommonButton onClick={handleReset} customSize={{ width: 106, height: 40 }} color="blue_gray">
-          삭제
+          초기화
         </NewCommonButton>
         <NewCommonButton onClick={registerHandler} customSize={{ width: 106, height: 40 }}>
           편집 완료
