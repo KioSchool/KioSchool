@@ -107,44 +107,59 @@ type RightSidebarModalProps = InternalSidebarControlProps | ExternalSidebarContr
 function RightSidebarModal({ title, subtitle, useOpenButton = true, children, useExternalControl }: RightSidebarModalProps) {
   const { isModalOpen, openModal, closeModal } = useModal();
   const [externalSidebar, setExternalSidebar] = useAtom(externalSidebarAtom);
-  const { action, location: externalLocation } = externalSidebar;
 
-  const isControlled = useExternalControl !== undefined;
+  if (useExternalControl) {
+    const { action, location: externalLocation } = externalSidebar;
 
-  const isOpen = isControlled ? action === RIGHT_SIDEBAR_ACTION.OPEN && externalLocation?.pathname === useExternalControl.location.pathname : isModalOpen;
+    const isOpen = action === RIGHT_SIDEBAR_ACTION.OPEN && externalLocation?.pathname === useExternalControl.location.pathname;
 
-  const displayData = isControlled
-    ? {
-        title: externalSidebar.title,
-        subtitle: externalSidebar.subtitle,
-        content: externalSidebar.content,
-      }
-    : {
-        title,
-        subtitle,
-        content: children,
-      };
+    const displayData = {
+      title: externalSidebar.title,
+      subtitle: externalSidebar.subtitle,
+      content: externalSidebar.content,
+    };
 
-  const handleClose = () => {
-    if (isControlled) {
+    const handleClose = () => {
       setExternalSidebar({
         location: useExternalControl.location,
         title: externalSidebar.title,
         action: RIGHT_SIDEBAR_ACTION.CLOSE,
         content: null,
       });
-    } else {
-      closeModal();
-    }
-  };
+    };
+
+    return (
+      <Container>
+        <SidebarContainer isOpen={isOpen}>
+          {isOpen && (
+            <AttachedCloseButton onClick={handleClose}>
+              <CloseButton />
+            </AttachedCloseButton>
+          )}
+
+          <SidebarHeader>
+            <TitleContainer>
+              {displayData.title && <Title>{displayData.title}</Title>}
+              {displayData.subtitle && <SubTitle>{displayData.subtitle}</SubTitle>}
+            </TitleContainer>
+          </SidebarHeader>
+
+          {displayData.content}
+        </SidebarContainer>
+      </Container>
+    );
+  }
+
+  const isOpen = isModalOpen;
+  const displayData = { title, subtitle, content: children };
 
   return (
     <Container>
-      {!isControlled && useOpenButton && <RightSidebarModalOpenButton openModal={openModal} />}
+      {useOpenButton && <RightSidebarModalOpenButton openModal={openModal} />}
 
       <SidebarContainer isOpen={isOpen}>
         {isOpen && (
-          <AttachedCloseButton onClick={handleClose}>
+          <AttachedCloseButton onClick={closeModal}>
             <CloseButton />
           </AttachedCloseButton>
         )}
