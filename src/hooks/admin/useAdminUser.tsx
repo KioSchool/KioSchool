@@ -47,11 +47,12 @@ function useAdminUser() {
   };
 
   const registerTossAccount = (accountUrl: string) => {
-    adminApi
+    return adminApi
       .post('/toss-account', { accountUrl })
       .then((res) => {
         setAdminUser(res.data);
         alert('계좌 정보가 성공적으로 저장되었습니다.');
+        return res.data;
       })
       .catch((error) => {
         alert(error.response.data.message);
@@ -92,7 +93,42 @@ function useAdminUser() {
       });
   };
 
-  return { fetchWorkspaces, createWorkspaces, leaveWorkspace, registerTossAccount, fetchAdminUser, deleteUser, fetchBanks, registerAccount };
+  const deleteAccount = () => {
+    adminApi
+      .delete<User>('/account')
+      .then((res) => {
+        setAdminUser(res.data);
+        alert('계좌 삭제가 완료되었습니다.');
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
+  };
+
+  const deleteTossAccount = () => {
+    adminApi
+      .delete<User>('/toss-account')
+      .then((res) => {
+        setAdminUser(res.data);
+        alert('Toss QR 정보 삭제가 완료되었습니다.');
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
+  };
+
+  return {
+    fetchWorkspaces,
+    createWorkspaces,
+    leaveWorkspace,
+    registerTossAccount,
+    fetchAdminUser,
+    deleteUser,
+    fetchBanks,
+    registerAccount,
+    deleteAccount,
+    deleteTossAccount,
+  };
 }
 
 export default useAdminUser;

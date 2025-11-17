@@ -72,6 +72,7 @@ const Title = styled.div`
 
 const SubTitle = styled.div`
   font-size: 16px;
+  line-height: 180%;
   white-space: pre-line;
 `;
 
@@ -110,7 +111,7 @@ function RightSidebarModal({ title, subtitle, useOpenButton = true, children, us
 
   const isControlled = useExternalControl !== undefined;
 
-  const isOpen = isControlled ? action === RIGHT_SIDEBAR_ACTION.OPEN && externalLocation.pathname === useExternalControl.location.pathname : isModalOpen;
+  const isOpen = isControlled ? action === RIGHT_SIDEBAR_ACTION.OPEN && externalLocation?.pathname === useExternalControl.location.pathname : isModalOpen;
 
   const displayData = isControlled
     ? {
@@ -126,12 +127,7 @@ function RightSidebarModal({ title, subtitle, useOpenButton = true, children, us
 
   const handleClose = () => {
     if (isControlled) {
-      setExternalSidebar({
-        location: useExternalControl.location,
-        title: externalSidebar.title,
-        action: RIGHT_SIDEBAR_ACTION.CLOSE,
-        content: null,
-      });
+      setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE });
     } else {
       closeModal();
     }

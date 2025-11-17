@@ -3,57 +3,43 @@ import useAdminUser from '@hooks/admin/useAdminUser';
 import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import AppLabel from '@components/common/label/AppLabel';
-import { Color } from '@resources/colors';
 import NewAppInput from '@components/common/input/NewAppInput';
-import { adminBanksAtom } from 'src/jotai/admin/atoms';
-import { useAtomValue } from 'jotai';
+import { adminBanksAtom, externalSidebarAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue, useSetAtom } from 'jotai';
+import NewCommonButton from '@components/common/button/NewCommonButton';
+import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
 
 const Container = styled.div`
-  width: 70%;
-  height: 100%;
-  gap: 20px;
-  ${colFlex({ justify: 'center', align: 'center' })};
-`;
-
-const ContentsContainer = styled.div`
   width: 100%;
   height: 100%;
-  border-radius: 10px;
-  padding: 30px 40px;
-  box-sizing: border-box;
-  background: #f9f9f9;
-  ${rowFlex({ justify: 'space-between', align: 'center' })};
+  gap: 24px;
+  padding: 10px 0 58px 0;
+  ${colFlex({ justify: 'space-between', align: 'center' })};
 `;
 
 const InputContainer = styled.div`
   width: 100%;
   gap: 10px;
+  color: #464a4d;
   ${colFlex({ justify: 'center', align: 'start' })};
 `;
 
-const InputRowContainer = styled.div`
+const InputLabel = styled.div`
   width: 100%;
-  display: grid;
-  column-gap: 10px;
-  grid-template-columns: 60px 1fr;
-  align-items: center;
+  font-size: 16px;
+  font-weight: 700;
+  ${colFlex({ justify: 'center', align: 'start' })};
+`;
+
+const InputColContainer = styled.div`
+  width: 100%;
+  gap: 4px;
+  ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
 const SubmitContainer = styled.div`
-  height: 100%;
-  ${colFlex({ justify: 'end', align: 'center' })};
-`;
-
-const SubmitButton = styled.button`
-  width: 90px;
-  height: 23px;
-  font-size: 12px;
-  background: ${Color.WHITE};
-  border: 1px solid ${Color.GREY};
-  border-radius: 20px;
-  cursor: pointer;
-  ${rowFlex({ justify: 'center', align: 'center' })}
+  gap: 10px;
+  ${rowFlex({ justify: 'end', align: 'center' })};
 `;
 
 function RegisterAccount() {
@@ -61,7 +47,13 @@ function RegisterAccount() {
   const banks = useAtomValue(adminBanksAtom);
   const accountHolderRef = useRef<HTMLInputElement>(null);
   const accountNumberRef = useRef<HTMLInputElement>(null);
-  const [selectedBankId, setSelectedBankId] = useState<number | null>(null);
+  const [selectedBankId, setSelectedBankId] = useState<string>('');
+
+  const setExternalSidebar = useSetAtom(externalSidebarAtom);
+
+  const closeSidebar = () => {
+    setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE });
+  };
 
   useEffect(() => {
     fetchBanks();
@@ -72,17 +64,28 @@ function RegisterAccount() {
     name: bank.name,
   }));
 
-  const allBanks = [{ id: -1, name: '은행을 선택해주세요.' }, ...filteredBanks];
+  const allBanks = [{ id: 1, name: '은행을 선택해주세요.' }, ...filteredBanks];
 
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedBankId(Number(event.target.value));
+    setSelectedBankId(event.target.value);
+  };
+
+  const handleReset = () => {
+    setSelectedBankId('');
+
+    if (accountHolderRef.current) {
+      accountHolderRef.current.value = '';
+    }
+    if (accountNumberRef.current) {
+      accountNumberRef.current.value = '';
+    }
   };
 
   const registerHandler = async () => {
     const accountHolder = accountHolderRef.current?.value;
     const accountNumber = accountNumberRef.current?.value;
 
-    if (selectedBankId === null || selectedBankId === -1) {
+    if (selectedBankId === '') {
       alert('은행을 선택해주세요.');
       return;
     }
@@ -102,45 +105,39 @@ function RegisterAccount() {
       return;
     }
 
-    const response = await registerAccount(selectedBankId, accountNumber, accountHolder);
+    const response = await registerAccount(Number(selectedBankId), accountNumber, accountHolder);
+
     if (response) {
       alert('계좌 등록이 완료되었습니다.');
-      accountHolderRef.current!.value = '';
-      accountNumberRef.current!.value = '';
-      setSelectedBankId(null);
+      handleReset();
+      closeSidebar();
     }
   };
 
   return (
     <Container>
-      <ContentsContainer>
-        <InputContainer>
-          <AppLabel size={15} color={Color.BLACK} style={{ fontWeight: 500 }}>
-            등록할 계좌
-          </AppLabel>
-          <InputRowContainer>
-            <AppLabel size={13} color={Color.BLACK} style={{ fontWeight: 500 }}>
-              은행명
-            </AppLabel>
-            <SelectWithOptions options={allBanks} isUseDefaultOption={false} onChange={handleSelect} width={'300px'} />
-          </InputRowContainer>
-          <InputRowContainer>
-            <AppLabel size={13} color={Color.BLACK} style={{ fontWeight: 500 }}>
-              예금주
-            </AppLabel>
-            <NewAppInput placeholder={'예금주명을 입력해주세요.'} type={'text'} ref={accountHolderRef} width={300} height={50} />
-          </InputRowContainer>
-          <InputRowContainer>
-            <AppLabel size={13} color={Color.BLACK} style={{ fontWeight: 500 }}>
-              계좌번호
-            </AppLabel>
-            <NewAppInput placeholder={'(-)를 제외한 계좌번호를 입력해주세요.'} type={'number'} ref={accountNumberRef} width={300} height={50} />
-          </InputRowContainer>
-        </InputContainer>
-        <SubmitContainer>
-          <SubmitButton onClick={registerHandler}>계좌 등록</SubmitButton>
-        </SubmitContainer>
-      </ContentsContainer>
+      <InputContainer>
+        <InputColContainer>
+          <InputLabel>은행명</InputLabel>
+          <SelectWithOptions options={allBanks} isUseDefaultOption={false} onChange={handleSelect} width={'220px'} value={selectedBankId} />
+        </InputColContainer>
+        <InputColContainer>
+          <InputLabel>예금주</InputLabel>
+          <NewAppInput placeholder={'예금주명을 입력해주세요.'} type={'text'} ref={accountHolderRef} width={220} height={50} />
+        </InputColContainer>
+        <InputColContainer>
+          <InputLabel>계좌번호</InputLabel>
+          <NewAppInput placeholder={'(-)를 제외한 계좌번호를 입력해주세요.'} type={'text'} ref={accountNumberRef} width={220} height={50} />
+        </InputColContainer>
+      </InputContainer>
+      <SubmitContainer>
+        <NewCommonButton onClick={handleReset} customSize={{ width: 106, height: 40 }} color="blue_gray">
+          초기화
+        </NewCommonButton>
+        <NewCommonButton onClick={registerHandler} customSize={{ width: 106, height: 40 }}>
+          편집 완료
+        </NewCommonButton>
+      </SubmitContainer>
     </Container>
   );
 }

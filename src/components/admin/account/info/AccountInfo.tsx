@@ -2,13 +2,14 @@ import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import { adminUserAccountAtom, externalSidebarAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { ACCOUNT_INFO } from '@constants/data/accountData';
+import { ACCOUNT_INFO, ACCOUNT_MODAL } from '@constants/data/accountData';
 import RegisterAccountInfoContainer from './RegisterAccountInfoContainer';
 import RegistrationStatusInfo from './RegistrationStatusInfo';
 import AccountInfoItem from './AccountInfoItem';
 import { useLocation } from 'react-router-dom';
 import RegisterAccount from '@components/admin/account/register/RegisterAccount';
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
+import useAdminUser from '@hooks/admin/useAdminUser';
 
 const DetailsWrapper = styled.div`
   width: 100%;
@@ -20,21 +21,25 @@ const DetailsWrapper = styled.div`
 function AccountInfo() {
   const location = useLocation();
   const accountInfo = useAtomValue(adminUserAccountAtom);
+  const { deleteAccount } = useAdminUser();
 
   const setExternalSidebar = useSetAtom(externalSidebarAtom);
 
   const handleRegisterAccount = () => {
     setExternalSidebar({
       location: location,
-      title: '계좌 등록',
+      title: ACCOUNT_MODAL.TITLE,
+      subtitle: ACCOUNT_MODAL.SUBTITLE,
       action: RIGHT_SIDEBAR_ACTION.OPEN,
       content: <RegisterAccount />,
     });
   };
 
   const handleDeleteAccount = () => {
-    // TODO: 계좌 삭제 확인 또는 관련 로직 실행
-    console.log('계좌 삭제 클릭');
+    //TODO : 새로운 디자인의 공통 컨펌 컴포넌트로 변경 필요
+    if (window.confirm('현재 등록된 계좌를 삭제하시겠습니까?')) {
+      deleteAccount();
+    }
   };
 
   const content =
@@ -54,7 +59,7 @@ function AccountInfo() {
       secondaryButton={{
         text: ACCOUNT_INFO.SECONDARY_BUTTON,
         onClick: handleDeleteAccount,
-        disabled: !accountInfo,
+        disabled: !accountInfo.accountNumber,
       }}
       primaryButton={{
         text: ACCOUNT_INFO.PRIMARY_BUTTON,
