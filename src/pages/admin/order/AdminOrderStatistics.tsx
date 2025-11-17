@@ -7,7 +7,6 @@ import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { OrderStatus } from '@@types/index';
 import { tabletMediaQuery } from '@styles/globalStyles';
-import OrderStatisticsNavBarChildren from '@components/admin/order/statistic/OrderStatisticsNavBarChildren';
 import { Color } from '@resources/colors';
 import TotalOrder from '@components/admin/order/statistic/TotalOrder';
 import ProductStatistics from '@components/admin/order/statistic/ProductStatistics';
@@ -75,8 +74,13 @@ function AdminOrderStatistics() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchOrders } = useAdminOrder(workspaceId);
   const orders = useAtomValue(adminOrdersAtom);
+
+  // TODO: 사용하지 않는 상태 변수 정리
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showServedOrder, setShowServedOrder] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [startDate, setStartDate] = useState<Date>(() => dayjs().subtract(1, 'day').toDate());
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [endDate, setEndDate] = useState(new Date());
   const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('all');
 
@@ -113,24 +117,7 @@ function AdminOrderStatistics() {
   ];
 
   return (
-    <AppContainer
-      useFlex={colFlex({ justify: 'center', align: 'center' })}
-      useNavBackground
-      titleNavBarProps={{
-        title: '주문 통계',
-        children: (
-          <OrderStatisticsNavBarChildren
-            showServedOrder={showServedOrder}
-            setShowServedOrder={setShowServedOrder}
-            startDate={startDate}
-            setStartDate={setStartDate}
-            endDate={endDate}
-            setEndDate={setEndDate}
-          />
-        ),
-      }}
-      useScroll={true}
-    >
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })}>
       <Container>
         <HeaderContainer>
           <HeaderLabel>총 매출액</HeaderLabel>

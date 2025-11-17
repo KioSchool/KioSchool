@@ -19,7 +19,7 @@ const SubContainer = styled.div`
 
 function InfoPC() {
   return (
-    <AppContainer useFlex={colFlex()} customWidth={'100%'} useScroll={true} useNavBackground={true}>
+    <AppContainer useFlex={colFlex()} customWidth={'100%'} useTitle={false} useFullHeight={true}>
       <SubContainer>
         <InfoMain />
         <InfoBenefit />

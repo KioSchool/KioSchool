@@ -1,20 +1,18 @@
 import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import styled from '@emotion/styled';
 import ProductCard from '@components/admin/product/ProductCard';
 import { colFlex } from '@styles/flexStyles';
 import AppContainer from '@components/common/container/AppContainer';
-import AdminProductTitleNavBarChildren from './AdminProductTitleNavBarChildren';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import { Color } from '@resources/colors';
 import { adminCategoriesAtom, adminProductsAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
-import { getAdminWorkspacePath } from '@constants/routes';
 
 const ContainerPerCategory = styled.div`
   gap: 30px;
-  padding: 50px 0;
+  padding-top: 30px;
   min-width: 1000px;
   width: 100%;
   ${colFlex({ align: 'center' })}
@@ -58,7 +56,6 @@ function AdminProduct() {
   const rawCategories = useAtomValue(adminCategoriesAtom);
   const categories = [...rawCategories, { id: null, name: '기본메뉴' }];
   const { appendPath } = useCustomNavigate();
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProducts();
@@ -66,19 +63,7 @@ function AdminProduct() {
   }, []);
 
   return (
-    <AppContainer
-      useNavBackground={true}
-      useFlex={colFlex({ justify: 'center', align: 'center' })}
-      titleNavBarProps={{
-        title: '상품관리',
-        children: <AdminProductTitleNavBarChildren />,
-        onLeftArrowClick: () => {
-          navigate(getAdminWorkspacePath(workspaceId!));
-        },
-      }}
-      customWidth={'100%'}
-      useScroll={true}
-    >
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} customWidth={'100%'}>
       <>
         {categories.map((category) => (
           <ContainerPerCategory key={`product_category_${category.id}`} className={'container-per-category'}>

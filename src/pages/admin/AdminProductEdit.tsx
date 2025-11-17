@@ -6,7 +6,6 @@ import SelectWithLabel from '@components/common/select/SelectWithLabel';
 import AppImageInput from '@components/common/input/AppImageInput';
 import useConfirm from '@hooks/useConfirm';
 import { colFlex } from '@styles/flexStyles';
-import RoundedAppButton from '@components/common/button/RoundedAppButton';
 import AppContainer from '@components/common/container/AppContainer';
 import { defaultProductEditValue } from '@@types/defaultValues';
 import { ProductActionType, ProductEdit, ProductStateType } from '@@types/index';
@@ -131,6 +130,8 @@ function AdminProductEdit() {
     dispatch({ type: 'PRODUCT_IMAGE_INPUT', payload: { url: newFileURL, file: newFile } });
   };
 
+  // TODO: 별도의 버튼으로 변경
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const deleteProductHandler = async () => {
     const userInput = await confirm();
     if (!userInput) return;
@@ -139,19 +140,8 @@ function AdminProductEdit() {
     navigate(getAdminProductsPath(workspaceId!));
   };
 
-  const titleNavBarChildren = (
-    <RoundedAppButton size={'160px'} onClick={deleteProductHandler}>
-      상품 삭제
-    </RoundedAppButton>
-  );
-
   return (
-    <AppContainer
-      useFlex={colFlex({ justify: 'center' })}
-      useNavBackground={true}
-      titleNavBarProps={{ title: '상품 수정', children: titleNavBarChildren }}
-      useScroll={true}
-    >
+    <AppContainer useFlex={colFlex({ justify: 'center' })}>
       <Container>
         <SelectWithLabel
           titleLabel={'카테고리'}

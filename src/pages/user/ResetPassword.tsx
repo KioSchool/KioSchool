@@ -47,11 +47,7 @@ function ResetPassword() {
 
   if (!code) {
     return (
-      <AppContainer
-        useFlex={colFlex({ justify: 'center', align: 'center' })}
-        customGap={'20px'}
-        titleNavBarProps={{ title: '비밀번호 찾기', useBackIcon: false }}
-      >
+      <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} customGap={'20px'} useTitle={false} useFullHeight={true}>
         <>
           <NewAppInput placeholder={'아이디를 입력해주세요'} ref={idInputRef} label={'아이디'} />
           <NewAppInput placeholder={'이메일을 입력해주세요'} ref={emailInputRef} label={'이메일'} />
@@ -119,11 +115,7 @@ function ResetPassword() {
   };
 
   return (
-    <AppContainer
-      useFlex={colFlex({ justify: 'center', align: 'center' })}
-      customGap={'20px'}
-      titleNavBarProps={{ title: '비밀번호 재설정', useBackIcon: false }}
-    >
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} customGap={'20px'} useTitle={false} useFullHeight={true}>
       <>
         <NewAppInput
           label={'비밀번호'}

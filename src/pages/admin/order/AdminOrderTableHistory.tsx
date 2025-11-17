@@ -4,7 +4,6 @@ import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import useCustomNavigate from '@hooks/useCustomNavigate';
 import { Color } from '@resources/colors';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { Order, PaginationResponse } from '@@types/index';
@@ -36,7 +35,6 @@ function AdminOrderTableHistory() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { workspaceId, tableNumber } = useParams<{ workspaceId: string; tableNumber: string }>();
   const [tableOrders, setTableOrders] = useState<PaginationResponse<Order>>(defaultPaginationValue);
-  const { replaceLastPath } = useCustomNavigate();
   const { fetchWorkspaceTable } = useAdminOrder(workspaceId);
 
   const isEmptyWorkspaces = tableOrders.empty;
@@ -56,13 +54,7 @@ function AdminOrderTableHistory() {
   }, [searchParams.toString()]);
 
   return (
-    <AppContainer
-      useFlex={colFlex({ justify: 'center' })}
-      customWidth={'1000px'}
-      useNavBackground={true}
-      useScroll={true}
-      titleNavBarProps={{ title: `${tableNumber}번 테이블`, onLeftArrowClick: () => replaceLastPath('') }}
-    >
+    <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'}>
       <>
         <ContentContainer justifyCenter={isEmptyWorkspaces} className={'content-container'}>
           {tableOrders.content.map((item) => (

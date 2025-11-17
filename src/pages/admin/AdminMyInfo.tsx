@@ -15,13 +15,7 @@ function AdminMyInfo() {
   }, []);
 
   return (
-    <AppContainer
-      useFlex={colFlex({ justify: 'center', align: 'center' })}
-      titleNavBarProps={{
-        title: `${user.name} 님의 마이페이지`,
-        subTitle: user.email,
-      }}
-    >
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })}>
       <MyInfoContent user={user} />
     </AppContainer>
   );

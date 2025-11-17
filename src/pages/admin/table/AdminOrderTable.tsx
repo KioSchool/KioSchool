@@ -4,15 +4,13 @@ import AdminTableOrderList from '@components/admin/order/table-manage/list/Admin
 import TableQRCode from '@components/admin/order/table-manage/qrcode/TableQRCode';
 import TableElapsedTimer from '@components/admin/order/table-manage/timer/TableElapsedTimer';
 import TableSessionControler from '@components/admin/order/table-manage/timer/TableSessionControler';
-import RoundedAppButton from '@components/common/button/RoundedAppButton';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { getAdminOrderTableManagePath, getAdminWorkspacePath } from '@constants/routes';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 const Container = styled.div`
   width: 100%;
@@ -49,7 +47,6 @@ const FallbackText = styled.div`
 `;
 
 function AdminOrderTable() {
-  const navigate = useNavigate();
   const { workspaceId } = useParams<{ workspaceId: string }>();
 
   const [searchParams] = useSearchParams();
@@ -75,19 +72,7 @@ function AdminOrderTable() {
   }, []);
 
   return (
-    <AppContainer
-      useFlex={colFlex({ justify: 'center' })}
-      titleNavBarProps={{
-        title: '실시간 테이블 관리',
-        children: (
-          <RoundedAppButton size={'170px'} onClick={() => navigate(getAdminOrderTableManagePath(workspaceId!))}>
-            테이블 관리
-          </RoundedAppButton>
-        ),
-        subTitle: `${selectedTable?.tableNumber}번 테이블`,
-        onLeftArrowClick: () => navigate(getAdminWorkspacePath(workspaceId!)),
-      }}
-    >
+    <AppContainer useFlex={colFlex({ justify: 'center' })}>
       <Container>
         <AdminTableList tables={tables} />
         {selectedTable ? (

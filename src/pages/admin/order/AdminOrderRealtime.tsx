@@ -11,6 +11,13 @@ import { useAtomValue } from 'jotai';
 import { adminOrdersAtom } from 'src/jotai/admin/atoms';
 import RightSidebarModal from '@components/common/modal/RightSidebarModal';
 import OrderByProductList from '@components/admin/order/realtime/OrderByProductList';
+import styled from '@emotion/styled';
+
+const ListContainer = styled.div`
+  width: 100%;
+  gap: 20px;
+  ${colFlex({ justify: 'center', align: 'center' })}
+`;
 
 function AdminOrderRealtime() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
@@ -30,14 +37,8 @@ function AdminOrderRealtime() {
   }, []);
 
   return (
-    <AppContainer
-      useFlex={colFlex({ justify: 'center' })}
-      customGap={'14px'}
-      useScroll={true}
-      titleNavBarProps={{ title: '실시간 주문 조회' }}
-      useNavBackground={true}
-    >
-      <>
+    <AppContainer useFlex={colFlex({ justify: 'center' })}>
+      <ListContainer>
         <TitledOrderStatusList
           orders={notPaidOrders}
           orderStatus={OrderStatus.NOT_PAID}
@@ -54,7 +55,7 @@ function AdminOrderRealtime() {
         <RightSidebarModal title="실시간 상품별 주문량" subtitle="*결제 완료 주문만 표시됩니다." useOpenButton={true}>
           <OrderByProductList orders={paidOrders} />
         </RightSidebarModal>
-      </>
+      </ListContainer>
     </AppContainer>
   );
 }

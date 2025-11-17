@@ -6,8 +6,6 @@ import useAdminUser from '@hooks/admin/useAdminUser';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import styled from '@emotion/styled';
 import { useEffect } from 'react';
-import { useAtomValue } from 'jotai';
-import { adminUserAtom } from 'src/jotai/admin/atoms';
 import { useLocation } from 'react-router-dom';
 
 const AccountContainer = styled.div`
@@ -20,7 +18,6 @@ const AccountContainer = styled.div`
 
 function AdminAccount() {
   const { fetchAdminUser } = useAdminUser();
-  const user = useAtomValue(adminUserAtom);
   const router = useLocation();
 
   useEffect(() => {
@@ -28,11 +25,7 @@ function AdminAccount() {
   }, []);
 
   return (
-    <AppContainer
-      useFlex={colFlex({ justify: 'center' })}
-      customWidth={'1000px'}
-      titleNavBarProps={{ title: `${user.name}님의 마이페이지`, subTitle: '계좌관리' }}
-    >
+    <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'}>
       <AccountContainer>
         <AccountInfo />
         <TossAccountInfo />
