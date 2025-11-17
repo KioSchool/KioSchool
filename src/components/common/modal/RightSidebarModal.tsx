@@ -127,12 +127,7 @@ function RightSidebarModal({ title, subtitle, useOpenButton = true, children, us
 
   const handleClose = () => {
     if (isControlled) {
-      setExternalSidebar({
-        location: useExternalControl.location,
-        title: externalSidebar.title,
-        action: RIGHT_SIDEBAR_ACTION.CLOSE,
-        content: null,
-      });
+      setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE });
     } else {
       closeModal();
     }

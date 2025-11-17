@@ -2,7 +2,6 @@ import { defaultBanksValue, defaultUserValue, defaultWorkspaceValue } from '@@ty
 import { Bank, ExternalRightSidebarOptions, Order, Product, ProductCategory, RIGHT_SIDEBAR_ACTION, User, Workspace } from '@@types/index';
 import { atom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
-import { Location } from 'react-router-dom';
 
 export const adminOrdersAtom = atom<Order[]>([]);
 export const adminWorkspacesAtom = atom<Workspace[]>([]);
@@ -55,17 +54,4 @@ export const adminUserTossAccountAtom = atom((get) => {
 
 export const adminSideNavIsOpenAtom = atom(false);
 
-const defaultLocation: Location = {
-  pathname: '',
-  search: '',
-  hash: '',
-  state: null,
-  key: 'default',
-};
-
-export const externalSidebarAtom = atom<ExternalRightSidebarOptions>({
-  location: defaultLocation,
-  title: '',
-  action: RIGHT_SIDEBAR_ACTION.CLOSE,
-  content: null,
-});
+export const externalSidebarAtom = atom<ExternalRightSidebarOptions>({ action: RIGHT_SIDEBAR_ACTION.CLOSE });

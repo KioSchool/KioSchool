@@ -52,9 +52,7 @@ function RegisterAccount() {
   const setExternalSidebar = useSetAtom(externalSidebarAtom);
 
   const closeSidebar = () => {
-    setExternalSidebar({
-      action: RIGHT_SIDEBAR_ACTION.CLOSE,
-    });
+    setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE });
   };
 
   useEffect(() => {

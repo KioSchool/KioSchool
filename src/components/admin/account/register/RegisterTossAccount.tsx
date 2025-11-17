@@ -75,9 +75,7 @@ function RegisterTossAccount() {
   const setExternalSidebar = useSetAtom(externalSidebarAtom);
 
   const closeSidebar = () => {
-    setExternalSidebar({
-      action: RIGHT_SIDEBAR_ACTION.CLOSE,
-    });
+    setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE });
   };
 
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
