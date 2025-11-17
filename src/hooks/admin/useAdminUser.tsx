@@ -56,7 +56,6 @@ function useAdminUser() {
       })
       .catch((error) => {
         alert(error.response.data.message);
-        throw error;
       });
   };
 
