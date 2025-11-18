@@ -19,7 +19,7 @@ function TossAccountInfo() {
   const status = tossAccountInfo ? 'registered' : 'unregisteredTossQR';
 
   const { ConfirmModal, confirm } = useConfirm({
-    title: `현재 등록된 QR을 삭제하시겠습니까?`,
+    title: '현재 등록된 QR을 삭제하시겠습니까?',
     description: '확인 후 되돌릴 수 없습니다.',
     okText: '삭제하기',
     cancelText: '취소',
