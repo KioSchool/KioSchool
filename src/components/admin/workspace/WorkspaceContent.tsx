@@ -1,12 +1,13 @@
 import { Workspace } from '@@types/index';
 import styled from '@emotion/styled';
 import useAdminUser from '@hooks/admin/useAdminUser';
-import useCustomNavigate from '@hooks/useCustomNavigate';
 import useConfirm from '@hooks/useConfirm';
 import { RiDeleteBinFill } from '@remixicon/react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { expandButtonStyle } from '@styles/buttonStyles';
+import { useNavigate } from 'react-router-dom';
+import { getAdminWorkspacePath } from '@constants/routes';
 
 const WorkspaceContainer = styled.div`
   box-sizing: border-box;
@@ -77,8 +78,8 @@ interface Props {
 }
 
 function WorkspaceContent({ workspaces }: Props) {
+  const navigate = useNavigate();
   const { leaveWorkspace } = useAdminUser();
-  const { appendPath } = useCustomNavigate();
   const { ConfirmModal, confirm } = useConfirm({
     title: '해당 워크스페이스를 삭제하시겠습니까?',
     description: '확인 후 되돌릴 수 없습니다.',
@@ -98,7 +99,7 @@ function WorkspaceContent({ workspaces }: Props) {
         <WorkspaceContainer
           key={it.id}
           onClick={() => {
-            appendPath(`/workspace/${it.id}`);
+            navigate(getAdminWorkspacePath(it.id));
           }}
           className={'workspace-container'}
         >

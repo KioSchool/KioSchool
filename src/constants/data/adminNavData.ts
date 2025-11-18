@@ -14,8 +14,8 @@ export const adminNavData: AdminNavCategory[] = [
     category: '홈',
     items: [
       {
-        name: '홈',
-        path: '/',
+        name: '주점 대시보드',
+        path: '',
       },
     ],
   },
