@@ -7,6 +7,7 @@ import RegistrationStatusInfo from './RegistrationStatusInfo';
 import RegisterTossAccount from '@components/admin/account/register/RegisterTossAccount';
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
 import useAdminUser from '@hooks/admin/useAdminUser';
+import useConfirm from '@hooks/useConfirm';
 
 function TossAccountInfo() {
   const location = useLocation();
@@ -16,6 +17,13 @@ function TossAccountInfo() {
   const { deleteTossAccount } = useAdminUser();
 
   const status = tossAccountInfo ? 'registered' : 'unregisteredTossQR';
+
+  const { ConfirmModal, confirm } = useConfirm({
+    title: '현재 등록된 QR을 삭제하시겠습니까?',
+    description: '확인 후 되돌릴 수 없습니다.',
+    okText: '삭제하기',
+    cancelText: '취소',
+  });
 
   const handleRegisterQR = () => {
     setExternalSidebar({
@@ -27,11 +35,10 @@ function TossAccountInfo() {
     });
   };
 
-  const handleDeleteQR = () => {
-    //TODO : 새로운 디자인의 공통 컨펌 컴포넌트로 변경 필요
-    if (window.confirm('현재 등록된 Toss QR 정보를 삭제하시겠습니까?')) {
-      deleteTossAccount();
-    }
+  const handleDeleteQR = async () => {
+    const userInput = await confirm();
+    if (!userInput) return;
+    deleteTossAccount();
   };
 
   return (
@@ -50,6 +57,7 @@ function TossAccountInfo() {
       infoTooltip={TOSS_ACCOUNT_INFO.TOOLTIP}
     >
       <RegistrationStatusInfo status={status} />
+      <ConfirmModal />
     </RegisterAccountInfoContainer>
   );
 }

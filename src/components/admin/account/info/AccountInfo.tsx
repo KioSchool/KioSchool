@@ -10,6 +10,7 @@ import { useLocation } from 'react-router-dom';
 import RegisterAccount from '@components/admin/account/register/RegisterAccount';
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
 import useAdminUser from '@hooks/admin/useAdminUser';
+import useConfirm from '@hooks/useConfirm';
 
 const DetailsWrapper = styled.div`
   width: 100%;
@@ -25,6 +26,13 @@ function AccountInfo() {
 
   const setExternalSidebar = useSetAtom(externalSidebarAtom);
 
+  const { ConfirmModal, confirm } = useConfirm({
+    title: '현재 등록된 계좌를 삭제하시겠습니까?',
+    description: '확인 후 되돌릴 수 없습니다.',
+    okText: '삭제하기',
+    cancelText: '취소',
+  });
+
   const handleRegisterAccount = () => {
     setExternalSidebar({
       location: location,
@@ -35,11 +43,10 @@ function AccountInfo() {
     });
   };
 
-  const handleDeleteAccount = () => {
-    //TODO : 새로운 디자인의 공통 컨펌 컴포넌트로 변경 필요
-    if (window.confirm('현재 등록된 계좌를 삭제하시겠습니까?')) {
-      deleteAccount();
-    }
+  const handleDeleteAccount = async () => {
+    const userInput = await confirm();
+    if (!userInput) return;
+    deleteAccount();
   };
 
   const content =
@@ -48,6 +55,7 @@ function AccountInfo() {
         <AccountInfoItem label={ACCOUNT_INFO.BANK_NAME_LABEL} value={accountInfo.bankName} />
         <AccountInfoItem label={ACCOUNT_INFO.HOLDER_LABEL} value={accountInfo.accountHolder} />
         <AccountInfoItem label={ACCOUNT_INFO.ACCOUNT_NUMBER_LABEL} value={accountInfo.accountNumber} />
+        <ConfirmModal />
       </DetailsWrapper>
     ) : (
       <RegistrationStatusInfo status="unregisteredAccount" />
