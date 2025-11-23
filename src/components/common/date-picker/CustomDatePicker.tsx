@@ -124,6 +124,7 @@ const CustomDatePicker = () => {
     setInput: React.Dispatch<React.SetStateAction<string>>,
     setDate: React.Dispatch<React.SetStateAction<Date | null>>,
     setTimeInput: React.Dispatch<React.SetStateAction<string>>,
+    type: 'START' | 'END',
   ) => {
     const val = event.target.value;
     setInput(val);
@@ -134,6 +135,16 @@ const CustomDatePicker = () => {
       setDate(newDate);
       setTimeInput('00:00');
       setRangeCategory('CUSTOM');
+
+      if (type === 'START' && endDate && newDate > endDate) {
+        setEndDate(newDate);
+        setEndDateInput(format(newDate, 'yyyy년 MM월 dd일'));
+        setEndTimeInput('00:00');
+      } else if (type === 'END' && startDate && newDate < startDate) {
+        setStartDate(newDate);
+        setStartDateInput(format(newDate, 'yyyy년 MM월 dd일'));
+        setStartTimeInput('00:00');
+      }
     }
   };
 
@@ -164,14 +175,18 @@ const CustomDatePicker = () => {
       <InputRow>
         <DateInput
           value={startDateInput}
-          onChange={(event) => handleManualDateInput(event, setStartDateInput, setStartDate, setStartTimeInput)}
+          onChange={(event) => handleManualDateInput(event, setStartDateInput, setStartDate, setStartTimeInput, 'START')}
           placeholder="시작일"
         />
         <CustomSelect value={startTimeInput} options={TIME_OPTIONS} onChange={(val) => handleTimeChange('START', val)} flex="4" />
       </InputRow>
 
       <InputRow>
-        <DateInput value={endDateInput} onChange={(event) => handleManualDateInput(event, setEndDateInput, setEndDate, setEndTimeInput)} placeholder="종료일" />
+        <DateInput
+          value={endDateInput}
+          onChange={(event) => handleManualDateInput(event, setEndDateInput, setEndDate, setEndTimeInput, 'END')}
+          placeholder="종료일"
+        />
         <CustomSelect value={endTimeInput} options={TIME_OPTIONS} onChange={(val) => handleTimeChange('END', val)} flex="4" />
       </InputRow>
 
