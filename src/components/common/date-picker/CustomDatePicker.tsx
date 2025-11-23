@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useReducer } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format, setHours, setMinutes, subHours, subDays, subWeeks, subMonths } from 'date-fns';
@@ -12,6 +12,48 @@ import CustomSelect from '../select/CustomSelect';
 import CustomDatePickerHeader from './CustomDatePickerHeader';
 import { RangeCategory } from '@@types/index';
 import { RANGE_OPTIONS, TIME_OPTIONS } from '@constants/data/datePickerData';
+
+type InputState = {
+  startDateInput: string;
+  endDateInput: string;
+  startTimeInput: string;
+  endTimeInput: string;
+};
+
+type InputAction =
+  | { type: 'SET_START_DATE'; payload: string }
+  | { type: 'SET_END_DATE'; payload: string }
+  | { type: 'SET_START_TIME'; payload: string }
+  | { type: 'SET_END_TIME'; payload: string }
+  | { type: 'SET_ALL'; payload: { startDate: string; endDate: string; startTime: string; endTime: string } }
+  | { type: 'RESET_TIME'; target: 'START' | 'END' | 'BOTH' };
+
+const inputReducer = (state: InputState, action: InputAction): InputState => {
+  switch (action.type) {
+    case 'SET_START_DATE':
+      return { ...state, startDateInput: action.payload };
+    case 'SET_END_DATE':
+      return { ...state, endDateInput: action.payload };
+    case 'SET_START_TIME':
+      return { ...state, startTimeInput: action.payload };
+    case 'SET_END_TIME':
+      return { ...state, endTimeInput: action.payload };
+    case 'SET_ALL':
+      return {
+        startDateInput: action.payload.startDate,
+        endDateInput: action.payload.endDate,
+        startTimeInput: action.payload.startTime,
+        endTimeInput: action.payload.endTime,
+      };
+    case 'RESET_TIME':
+      if (action.target === 'BOTH') {
+        return { ...state, startTimeInput: '00:00', endTimeInput: '00:00' };
+      }
+      return action.target === 'START' ? { ...state, startTimeInput: '00:00' } : { ...state, endTimeInput: '00:00' };
+    default:
+      return state;
+  }
+};
 
 const Container = styled.div`
   box-sizing: border-box;
@@ -62,19 +104,24 @@ const CustomDatePicker = () => {
   const [endDate, setEndDate] = useState<Date | null>(new Date());
   const [rangeCategory, setRangeCategory] = useState<RangeCategory>('2HOURS');
 
-  const [startDateInput, setStartDateInput] = useState('');
-  const [endDateInput, setEndDateInput] = useState('');
-  const [startTimeInput, setStartTimeInput] = useState('00:00');
-  const [endTimeInput, setEndTimeInput] = useState('00:00');
+  const [inputState, dispatch] = useReducer(inputReducer, {
+    startDateInput: '',
+    endDateInput: '',
+    startTimeInput: '00:00',
+    endTimeInput: '00:00',
+  });
 
   useEffect(() => {
-    if (startDate) {
-      setStartDateInput(format(startDate, 'yyyy년 MM월 dd일'));
-      setStartTimeInput(format(startDate, 'HH:mm'));
-    }
-    if (endDate) {
-      setEndDateInput(format(endDate, 'yyyy년 MM월 dd일'));
-      setEndTimeInput(format(endDate, 'HH:mm'));
+    if (startDate && endDate) {
+      dispatch({
+        type: 'SET_ALL',
+        payload: {
+          startDate: format(startDate, 'yyyy년 MM월 dd일'),
+          endDate: format(endDate, 'yyyy년 MM월 dd일'),
+          startTime: format(startDate, 'HH:mm'),
+          endTime: format(endDate, 'HH:mm'),
+        },
+      });
     }
   }, [startDate, endDate]);
 
@@ -119,31 +166,48 @@ const CustomDatePicker = () => {
     }
   };
 
-  const handleManualDateInput = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    setInput: React.Dispatch<React.SetStateAction<string>>,
-    setDate: React.Dispatch<React.SetStateAction<Date | null>>,
-    setTimeInput: React.Dispatch<React.SetStateAction<string>>,
-    type: 'START' | 'END',
-  ) => {
+  const handleManualDateInput = (event: React.ChangeEvent<HTMLInputElement>, type: 'START' | 'END') => {
     const val = event.target.value;
-    setInput(val);
+    dispatch({ type: type === 'START' ? 'SET_START_DATE' : 'SET_END_DATE', payload: val });
 
     const parsed = parseDateInput(val);
     if (parsed) {
       const newDate = setHours(setMinutes(parsed, 0), 0);
-      setDate(newDate);
-      setTimeInput('00:00');
-      setRangeCategory('CUSTOM');
 
-      if (type === 'START' && endDate && newDate > endDate) {
-        setEndDate(newDate);
-        setEndDateInput(format(newDate, 'yyyy년 MM월 dd일'));
-        setEndTimeInput('00:00');
-      } else if (type === 'END' && startDate && newDate < startDate) {
+      if (type === 'START') {
         setStartDate(newDate);
-        setStartDateInput(format(newDate, 'yyyy년 MM월 dd일'));
-        setStartTimeInput('00:00');
+        dispatch({ type: 'RESET_TIME', target: 'START' });
+        setRangeCategory('CUSTOM');
+
+        if (endDate && newDate > endDate) {
+          setEndDate(newDate);
+          dispatch({
+            type: 'SET_ALL',
+            payload: {
+              startDate: format(newDate, 'yyyy년 MM월 dd일'),
+              endDate: format(newDate, 'yyyy년 MM월 dd일'),
+              startTime: '00:00',
+              endTime: '00:00',
+            },
+          });
+        }
+      } else {
+        setEndDate(newDate);
+        dispatch({ type: 'RESET_TIME', target: 'END' });
+        setRangeCategory('CUSTOM');
+
+        if (startDate && newDate < startDate) {
+          setStartDate(newDate);
+          dispatch({
+            type: 'SET_ALL',
+            payload: {
+              startDate: format(newDate, 'yyyy년 MM월 dd일'),
+              endDate: format(newDate, 'yyyy년 MM월 dd일'),
+              startTime: '00:00',
+              endTime: '00:00',
+            },
+          });
+        }
       }
     }
   };
@@ -151,18 +215,14 @@ const CustomDatePicker = () => {
   const handleTimeChange = (type: 'START' | 'END', timeStr: string) => {
     const [hours, minutes] = timeStr.split(':').map(Number);
 
-    if (type === 'START') {
-      setStartTimeInput(timeStr);
-      if (startDate) {
-        const newDate = setHours(setMinutes(startDate, minutes), hours);
-        setStartDate(newDate);
-      }
-    } else if (type === 'END') {
-      setEndTimeInput(timeStr);
-      if (endDate) {
-        const newDate = setHours(setMinutes(endDate, minutes), hours);
-        setEndDate(newDate);
-      }
+    dispatch({ type: type === 'START' ? 'SET_START_TIME' : 'SET_END_TIME', payload: timeStr });
+
+    if (type === 'START' && startDate) {
+      const newDate = setHours(setMinutes(startDate, minutes), hours);
+      setStartDate(newDate);
+    } else if (type === 'END' && endDate) {
+      const newDate = setHours(setMinutes(endDate, minutes), hours);
+      setEndDate(newDate);
     }
 
     setRangeCategory('CUSTOM');
@@ -173,21 +233,13 @@ const CustomDatePicker = () => {
       <CustomSelect value={rangeCategory} options={RANGE_OPTIONS} onChange={handleRangeCategoryChange} />
 
       <InputRow>
-        <DateInput
-          value={startDateInput}
-          onChange={(event) => handleManualDateInput(event, setStartDateInput, setStartDate, setStartTimeInput, 'START')}
-          placeholder="시작일"
-        />
-        <CustomSelect value={startTimeInput} options={TIME_OPTIONS} onChange={(val) => handleTimeChange('START', val)} flex="4" />
+        <DateInput value={inputState.startDateInput} onChange={(event) => handleManualDateInput(event, 'START')} placeholder="시작일" />
+        <CustomSelect value={inputState.startTimeInput} options={TIME_OPTIONS} onChange={(val) => handleTimeChange('START', val)} flex="4" />
       </InputRow>
 
       <InputRow>
-        <DateInput
-          value={endDateInput}
-          onChange={(event) => handleManualDateInput(event, setEndDateInput, setEndDate, setEndTimeInput, 'END')}
-          placeholder="종료일"
-        />
-        <CustomSelect value={endTimeInput} options={TIME_OPTIONS} onChange={(val) => handleTimeChange('END', val)} flex="4" />
+        <DateInput value={inputState.endDateInput} onChange={(event) => handleManualDateInput(event, 'END')} placeholder="종료일" />
+        <CustomSelect value={inputState.endTimeInput} options={TIME_OPTIONS} onChange={(val) => handleTimeChange('END', val)} flex="4" />
       </InputRow>
 
       {rangeCategory !== '2HOURS' && (
