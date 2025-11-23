@@ -5,7 +5,7 @@ import { format, setHours, setMinutes, subHours, subDays, subWeeks, subMonths } 
 import { ko } from 'date-fns/locale';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import { parseDateInput } from '../../../utils/formatDate';
+import { parseDateInput } from '@utils/formatDate';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { datePickerStyles } from '@styles/datePickerStyles';
 import CustomSelect from '../select/CustomSelect';
