@@ -1,4 +1,4 @@
-import { RangeCategory } from '@@types/index';
+import { RangeCategory } from '@@types/datePicker';
 
 export const RANGE_OPTIONS: { value: RangeCategory; label: string }[] = [
   { value: '2HOURS', label: '최근 2시간' },
