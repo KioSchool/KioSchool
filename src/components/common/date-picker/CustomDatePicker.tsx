@@ -11,6 +11,7 @@ import { datePickerStyles } from '@styles/datePickerStyles';
 import CustomSelect from '../select/CustomSelect';
 import CustomDatePickerHeader from './CustomDatePickerHeader';
 import { RangeCategory } from '@@types/index';
+import { isRangeCategory } from '@@types/guard';
 import { RANGE_OPTIONS, TIME_OPTIONS } from '@constants/data/datePickerData';
 
 type InputState = {
@@ -125,9 +126,9 @@ const CustomDatePicker = () => {
     }
   }, [startDate, endDate]);
 
-  const handleRangeCategoryChange = (value: string) => {
-    // TODO: 타입 가드 추가
-    const category = value as RangeCategory;
+  const handleRangeCategoryChange = (category: string) => {
+    if (!isRangeCategory(category)) return;
+
     setRangeCategory(category);
 
     const now = new Date();
