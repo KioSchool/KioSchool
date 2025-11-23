@@ -225,3 +225,5 @@ interface CloseSidebarOptions {
 }
 
 export type ExternalRightSidebarOptions = OpenSidebarOptions | CloseSidebarOptions;
+
+export type RangeCategory = '2HOURS' | '1DAY' | '1WEEK' | '1MONTH' | 'CUSTOM';
