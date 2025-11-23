@@ -1,6 +1,6 @@
 import { ROUTES_PATH_KR_MAP } from '@constants/data/urlMapData';
 import { matchPath } from 'react-router-dom';
-import type { RangeCategory } from './index';
+import { RangeCategory } from './datePicker';
 
 type AppPath = keyof typeof ROUTES_PATH_KR_MAP;
 function isValidPath(path: string): path is AppPath {
