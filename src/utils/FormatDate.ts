@@ -63,13 +63,11 @@ export const formatKoreanTime = (dateString: string): string | null => {
 };
 
 export const parseDateInput = (input: string): Date | null => {
-  // Expected format: YYYY년 MM월 DD일
-  // Simple regex or just replace non-digits
   const digits = input.replace(/\D/g, '');
   if (digits.length !== 8) return null;
 
   const year = parseInt(digits.substring(0, 4));
-  const month = parseInt(digits.substring(4, 6)) - 1; // 0-indexed
+  const month = parseInt(digits.substring(4, 6)) - 1;
   const day = parseInt(digits.substring(6, 8));
 
   const date = new Date(year, month, day);
