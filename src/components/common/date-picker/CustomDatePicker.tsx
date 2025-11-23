@@ -221,9 +221,35 @@ const CustomDatePicker = () => {
     if (type === 'START' && startDate) {
       const newDate = setHours(setMinutes(startDate, minutes), hours);
       setStartDate(newDate);
+
+      if (endDate && newDate > endDate) {
+        setEndDate(newDate);
+        dispatch({
+          type: 'SET_ALL',
+          payload: {
+            startDate: format(newDate, 'yyyy년 MM월 dd일'),
+            endDate: format(newDate, 'yyyy년 MM월 dd일'),
+            startTime: timeStr,
+            endTime: timeStr,
+          },
+        });
+      }
     } else if (type === 'END' && endDate) {
       const newDate = setHours(setMinutes(endDate, minutes), hours);
       setEndDate(newDate);
+
+      if (startDate && newDate < startDate) {
+        setStartDate(newDate);
+        dispatch({
+          type: 'SET_ALL',
+          payload: {
+            startDate: format(newDate, 'yyyy년 MM월 dd일'),
+            endDate: format(newDate, 'yyyy년 MM월 dd일'),
+            startTime: timeStr,
+            endTime: timeStr,
+          },
+        });
+      }
     }
 
     setRangeCategory('CUSTOM');
