@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, isValid } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
 
 export const formatDate = (date: string) => {
@@ -60,4 +60,18 @@ export const formatKoreanTime = (dateString: string): string | null => {
     hour12: true,
   };
   return new Intl.DateTimeFormat('ko-KR', options).format(date);
+};
+
+export const parseDateInput = (input: string): Date | null => {
+  // Expected format: YYYY년 MM월 DD일
+  // Simple regex or just replace non-digits
+  const digits = input.replace(/\D/g, '');
+  if (digits.length !== 8) return null;
+
+  const year = parseInt(digits.substring(0, 4));
+  const month = parseInt(digits.substring(4, 6)) - 1; // 0-indexed
+  const day = parseInt(digits.substring(6, 8));
+
+  const date = new Date(year, month, day);
+  return isValid(date) ? date : null;
 };
