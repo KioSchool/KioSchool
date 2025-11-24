@@ -5,7 +5,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 
 const Container = styled.div`
-  z-index: 1002;
+  z-index: 1011;
   position: fixed;
   top: 0;
   left: 0;
