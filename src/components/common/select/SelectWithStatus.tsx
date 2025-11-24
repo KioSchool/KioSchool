@@ -2,7 +2,8 @@
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import { ProductStatus, STATUS_OPTIONS } from '@constants/data/productData';
+import { STATUS_OPTIONS } from '@constants/data/productData';
+import { ProductStatus } from '@@types/index';
 
 const Container = styled.div`
   position: relative;

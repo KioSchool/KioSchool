@@ -1,4 +1,4 @@
-﻿export type ProductStatus = 'SELLING' | 'SOLD_OUT' | 'HIDDEN';
+﻿import { ProductStatus } from '@@types/index';
 
 interface StatusOption {
   label: string;

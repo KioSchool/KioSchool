@@ -45,6 +45,8 @@ export interface OrderProduct extends OrderProductBase {
   updatedAt: string;
 }
 
+export type ProductStatus = 'SELLING' | 'SOLD_OUT' | 'HIDDEN';
+
 export interface Product {
   name: string;
   description: string;
