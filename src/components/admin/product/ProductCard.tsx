@@ -17,7 +17,7 @@ const unSellableStyle = `
 const Container = styled.div<{ isSellable: boolean | null }>`
   width: 180px;
   height: 228px;
-  padding: 16px;
+  padding: 12px;
   border-radius: 16px;
   border: 1px solid #e8eef2;
   box-sizing: border-box;
@@ -32,7 +32,7 @@ const Title = styled.div`
 `;
 
 const Price = styled.div`
-  line-height: 24px;
+  line-height: 20px;
   font-size: 12px;
   font-weight: 500;
 `;
@@ -40,8 +40,8 @@ const Price = styled.div`
 const ContentContainer = styled.div`
   cursor: pointer;
   width: 100%;
-  ${colFlex({ justify: 'center', align: 'center' })};
   flex: 1;
+  ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
 const TextContainer = styled.div<{ isSellable: boolean | null }>`
