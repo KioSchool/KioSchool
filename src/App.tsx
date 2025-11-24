@@ -13,10 +13,8 @@ import { Global } from '@emotion/react';
 import { globalStyles } from '@styles/globalStyles';
 import OrderBasket from '@pages/user/order/OrderBasket';
 import OrderPay from '@pages/user/order/OrderPay';
-import AdminProductAdd from '@pages/admin/AdminProductAdd';
 import OrderComplete from '@pages/user/order/OrderComplete';
 import AdminOrderStatistics from '@pages/admin/order/AdminOrderStatistics';
-import AdminProductEdit from '@pages/admin/AdminProductEdit';
 import AdminMyInfo from '@pages/admin/AdminMyInfo';
 import AdminProductCategories from '@pages/admin/AdminProductCategories';
 import ResetPassword from '@pages/user/ResetPassword';
@@ -87,8 +85,6 @@ function App() {
         <Route path={ADMIN_ROUTES.ORDER_TABLE_MANAGE} element={<AdminOrderTableManage />} />
 
         <Route path={ADMIN_ROUTES.PRODUCTS} element={<AdminProduct />} />
-        <Route path={ADMIN_ROUTES.PRODUCTS_ADD} element={<AdminProductAdd />} />
-        <Route path={ADMIN_ROUTES.PRODUCTS_EDIT} element={<AdminProductEdit />} />
         <Route path={ADMIN_ROUTES.PRODUCTS_CATEGORIES} element={<AdminProductCategories />} />
 
         <Route path={SUPER_ADMIN_ROUTES.HOME} element={<SuperAdminHome />} />

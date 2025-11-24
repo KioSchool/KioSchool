@@ -30,8 +30,6 @@ export const ADMIN_ROUTES = {
   ORDER_TABLE_MANAGE: '/admin/workspace/:workspaceId/order/table/manage',
 
   PRODUCTS: '/admin/workspace/:workspaceId/products',
-  PRODUCTS_ADD: '/admin/workspace/:workspaceId/products/add-product',
-  PRODUCTS_EDIT: '/admin/workspace/:workspaceId/products/edit-product',
   PRODUCTS_CATEGORIES: '/admin/workspace/:workspaceId/products/categories',
 } as const;
 
