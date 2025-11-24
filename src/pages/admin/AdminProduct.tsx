@@ -1,20 +1,30 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import styled from '@emotion/styled';
-import ProductCard from '@components/admin/product/ProductCard';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { adminCategoriesAtom, adminProductsAtom, externalSidebarAtom } from 'src/jotai/admin/atoms';
+import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
+import useConfirm from '@hooks/useConfirm';
 import AppContainer from '@components/common/container/AppContainer';
-import useCustomNavigate from '@hooks/useCustomNavigate';
-import { adminCategoriesAtom, adminProductsAtom } from 'src/jotai/admin/atoms';
-import { useAtomValue } from 'jotai';
 import NewCommonButton from '@components/common/button/NewCommonButton';
+import ProductCard from '@components/admin/product/ProductCard';
+import RightSidebarModal from '@components/common/modal/RightSidebarModal';
+import ProductAdd from '@components/admin/product/ProductAdd';
+import ProductEdit from '@components/admin/product/ProductEdit';
 
 const Container = styled.div`
   width: 100%;
   color: #464a4d;
   gap: 10px;
   ${colFlex({ align: 'center' })}
+`;
+
+const ProductAddButtonContainer = styled.div`
+  width: 1000px;
+  padding-bottom: 24px;
+  ${colFlex({ align: 'end' })}
 `;
 
 const ProductContainer = styled.div`
@@ -49,42 +59,78 @@ const EmptyContainer = styled.div`
 
 function AdminProduct() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchProducts, fetchCategories } = useAdminProducts(workspaceId);
+  const location = useLocation();
+  const { fetchProducts, fetchCategories, deleteProduct } = useAdminProducts(workspaceId); // [추가] deleteProduct 가져오기
   const products = useAtomValue(adminProductsAtom);
   const rawCategories = useAtomValue(adminCategoriesAtom);
   const categories = [...rawCategories, { id: null, name: '기본메뉴' }];
-  const { appendPath } = useCustomNavigate();
+
+  const setExternalSidebar = useSetAtom(externalSidebarAtom);
+
+  //TODO : useConfirm hook 수정 여부
+  const { ConfirmModal, confirm } = useConfirm({
+    title: `해당 상품을 삭제하시겠습니까?`,
+    description: '확인 후 되돌릴 수 없습니다.',
+    okText: '삭제하기',
+    cancelText: '취소',
+  });
 
   useEffect(() => {
     fetchProducts();
     fetchCategories();
   }, []);
 
+  const handleOpenAddProduct = () => {
+    setExternalSidebar({
+      location: location,
+      title: '상품 추가',
+      subtitle: '*편집 중 창을 닫지 마세요.',
+      action: RIGHT_SIDEBAR_ACTION.OPEN,
+      content: <ProductAdd />,
+    });
+  };
+
+  const handleDeleteProduct = async (productId: number) => {
+    const userInput = await confirm();
+    if (!userInput) return;
+
+    try {
+      await deleteProduct(productId);
+      await fetchProducts();
+      alert('상품이 삭제되었습니다.');
+      setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE });
+    } catch (e) {
+      console.error(e);
+      alert('상품 삭제에 실패했습니다.');
+    }
+  };
+
+  const handleOpenEditProduct = (productId: number) => {
+    setExternalSidebar({
+      location: location,
+      title: '상품 편집',
+      subtitle: '*편집 중 창을 닫지 마세요.',
+      action: RIGHT_SIDEBAR_ACTION.OPEN,
+      content: <ProductEdit productId={productId} onDelete={() => handleDeleteProduct(productId)} />,
+    });
+  };
+
   return (
     <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} customWidth={'100%'}>
       <Container>
-        <NewCommonButton
-          size="sm"
-          onClick={() => {
-            appendPath('/add-product');
-          }}
-        >
-          상품 추가
-        </NewCommonButton>
+        <ProductAddButtonContainer>
+          <NewCommonButton size="sm" onClick={handleOpenAddProduct}>
+            상품 추가
+          </NewCommonButton>
+        </ProductAddButtonContainer>
         {categories.map((category) => (
-          <ProductContainer className={'products-container'}>
+          <ProductContainer key={category.id || 'default'} className={'products-container'}>
             <CategoryTitle>{category.name}</CategoryTitle>
             <ProductCardsContainer className={'product-cards-container'}>
               {products
                 .filter((product) => (product.productCategory?.id || null) === category.id)
                 .map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    onClick={() => {
-                      appendPath(`/edit-product?productId=${product.id}`);
-                    }}
-                  />
+                  <ProductCard key={product.id} product={product} onClick={() => handleOpenEditProduct(product.id)} />
                 ))}
               {products.filter((product) => (product.productCategory?.id || null) === category.id).length === 0 && (
                 <EmptyContainer className={'product-empty-container'}>등록된 상품이 없습니다.</EmptyContainer>
@@ -92,6 +138,8 @@ function AdminProduct() {
             </ProductCardsContainer>
           </ProductContainer>
         ))}
+        <RightSidebarModal useExternalControl={{ location: location }} />
+        <ConfirmModal />
       </Container>
     </AppContainer>
   );
