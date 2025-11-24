@@ -1,9 +1,10 @@
-import { Product } from '@@types/index';
+import { Product, ProductStatus } from '@@types/index';
 import styled from '@emotion/styled';
-// import useAdminProducts from '@hooks/admin/useAdminProducts';
-// import { useParams } from 'react-router-dom';
+import useAdminProducts from '@hooks/admin/useAdminProducts';
+import { useParams } from 'react-router-dom';
 import { colFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
+import SelectWithStatus from '@components/common/select/SelectWithStatus';
 
 const sellableStyle = `
   background: ${Color.WHITE};
@@ -21,18 +22,16 @@ const Container = styled.div<{ isSellable: boolean | null }>`
   border: 1px solid #e8eef2;
   box-sizing: border-box;
   ${(props) => (props.isSellable ? sellableStyle : unSellableStyle)}
-  ${colFlex({ justify: 'start', align: 'center' })}
+  ${colFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const Title = styled.div`
-  color: #464a4d;
   line-height: 24px;
   font-size: 16px;
   font-weight: 700;
 `;
 
 const Price = styled.div`
-  color: #464a4d;
   line-height: 24px;
   font-size: 12px;
   font-weight: 500;
@@ -40,11 +39,13 @@ const Price = styled.div`
 
 const ContentContainer = styled.div`
   cursor: pointer;
+  width: 100%;
   ${colFlex({ justify: 'center', align: 'center' })};
+  flex: 1;
 `;
 
 const TextContainer = styled.div<{ isSellable: boolean | null }>`
-  color: ${(props) => (props.isSellable ? Color.BLACK : '#B2B2B2')};
+  color: ${(props) => (props.isSellable ? '#464a4d' : '#B2B2B2')};
   padding-bottom: 12px;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
@@ -54,17 +55,39 @@ const Image = styled.img<{ isSellable: boolean | null }>`
   height: 100px;
   border-radius: 6px;
   border: 1px solid #e8eef2;
-  opacity: ${(props) => (props.isSellable ? 1 : 0.2)};
+  opacity: ${(props) => (props.isSellable ? 1 : 0.4)};
 `;
 
-interface Props {
+const SelectorWrapper = styled.div`
+  width: 100%;
+  ${colFlex({ justify: 'center', align: 'center' })}
+`;
+
+interface ProductCardProps {
   product: Product;
   onClick?: () => void;
 }
 
-function ProductCard({ product, onClick }: Props) {
-  // const { workspaceId } = useParams<{ workspaceId: string }>();
-  // const { editProductSellable } = useAdminProducts(workspaceId);
+function ProductCard({ product, onClick }: ProductCardProps) {
+  const { workspaceId } = useParams<{ workspaceId: string }>();
+  const { editProductSellable } = useAdminProducts(workspaceId);
+
+  const getCurrentStatus = (): ProductStatus => {
+    if (product.isSellable) return 'SELLING';
+    return 'HIDDEN';
+  };
+
+  const handleStatusChange = (newStatus: ProductStatus) => {
+    if (newStatus === 'SELLING') {
+      editProductSellable(product.id, true);
+    } else if (newStatus === 'HIDDEN') {
+      editProductSellable(product.id, false);
+    } else if (newStatus === 'SOLD_OUT') {
+      // TODO: 품절 처리 로직 (product에 status 추가)
+      // 현재는 판매 불가 상태로 처리
+      editProductSellable(product.id, false);
+    }
+  };
 
   return (
     <Container isSellable={product.isSellable} className={'product-card-container'}>
@@ -75,16 +98,10 @@ function ProductCard({ product, onClick }: Props) {
         </TextContainer>
         <Image isSellable={product.isSellable} src={product.imageUrl} alt={product.name} />
       </ContentContainer>
-      {/* <SwitchButtonContainer>
-        <SwitchButton
-          checked={!!product.isSellable}
-          onChange={() => {
-            editProductSellable(product.id, !product.isSellable);
-          }}
-          checkedText="SHOW"
-          uncheckedText="HIDE"
-        />
-      </SwitchButtonContainer> */}
+
+      <SelectorWrapper onClick={(e) => e.stopPropagation()}>
+        <SelectWithStatus currentStatus={getCurrentStatus()} onStatusChange={handleStatusChange} />
+      </SelectorWrapper>
     </Container>
   );
 }
