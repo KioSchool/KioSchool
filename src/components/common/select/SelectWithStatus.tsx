@@ -1,40 +1,32 @@
 ﻿import { useState, useRef, useEffect } from 'react';
 import styled from '@emotion/styled';
-import { colFlex, rowFlex } from '@styles/flexStyles';
+import { ItemBaseStyle } from '@styles/selectItemStyles';
+import { colFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { STATUS_OPTIONS } from '@constants/data/productData';
 import { ProductStatus } from '@@types/index';
 
 const Container = styled.div`
   position: relative;
-  width: 100%;
+  width: 100px;
   font-size: 12px;
-  color: #464a4d;
-  ${rowFlex({ justify: 'center', align: 'center' })};
 `;
 
 const SelectorButton = styled.button<{ isOpen: boolean }>`
-  width: 100px;
-  height: 24px;
+  width: 100%;
   background-color: ${Color.WHITE};
   border: 1px solid #e8eef2;
   border-radius: 6px;
-  padding-left: 24px;
-  gap: 8px;
-  cursor: pointer;
-  box-sizing: border-box;
-  position: relative;
-  ${rowFlex({ justify: 'flex-start', align: 'center' })}
+  ${ItemBaseStyle};
 `;
 
 const DropdownList = styled.div`
   position: absolute;
-  top: 24px;
-  left: 24;
-  width: 100px;
+  top: 28px;
+  left: 0;
+  width: 100%;
   background-color: ${Color.WHITE};
   border: 1px solid #e8eef2;
-  border-top: none;
   border-radius: 6px;
   box-sizing: border-box;
   z-index: 10;
@@ -43,14 +35,13 @@ const DropdownList = styled.div`
 `;
 
 const OptionItem = styled.div`
-  height: 24px;
   width: 100%;
-  cursor: pointer;
-  border-top: 1px solid #e8eef2;
   background-color: ${Color.WHITE};
-  padding-left: 48px;
-  gap: 12px;
-  ${rowFlex({ justify: 'flex-start', align: 'center' })};
+  ${ItemBaseStyle};
+
+  &:not(:first-of-type) {
+    border-top: 1px solid #e8eef2;
+  }
 
   &:hover {
     background-color: #f9f9f9;
@@ -62,11 +53,13 @@ const Dot = styled.div<{ color: string }>`
   height: 6px;
   border-radius: 50%;
   background-color: ${(props) => props.color};
+  flex-shrink: 0;
 `;
 
 const Label = styled.span`
   line-height: 24px;
   font-weight: 700;
+  white-space: nowrap;
 `;
 
 interface SelectWithStatusProps {
