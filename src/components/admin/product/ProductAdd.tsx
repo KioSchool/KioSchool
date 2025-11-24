@@ -185,7 +185,7 @@ function ProductAdd() {
         </InputColContainer>
 
         <InputColContainer>
-          <AppImageInput title={'상품 사진'} file={file} onImageChange={onImageChange} width={220} height={220} />
+          <AppImageInput title={'상품 사진'} file={file} onImageChange={onImageChange} width={224} height={224} />
         </InputColContainer>
 
         <InputColContainer>
@@ -202,7 +202,7 @@ function ProductAdd() {
 
       <SubmitContainer>
         <NewCommonButton onClick={closeSidebar} customSize={{ width: 106, height: 40 }} color="blue_gray">
-          삭제
+          취소
         </NewCommonButton>
         <NewCommonButton onClick={AddProduct} customSize={{ width: 106, height: 40 }}>
           추가 완료
