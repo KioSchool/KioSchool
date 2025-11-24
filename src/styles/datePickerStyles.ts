@@ -5,7 +5,7 @@ export const datePickerStyles = css`
   /* DatePicker 기본 스타일 */
   .react-datepicker {
     border: none;
-    font-family: inherit;
+    font-family: 'LINE Seed Sans KR', sans-serif;
     width: 100%;
     display: block;
   }
