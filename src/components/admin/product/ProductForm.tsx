@@ -127,7 +127,7 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
       productId: state.id ? String(state.id) : undefined,
       name: state.name,
       description: state.description,
-      price: Number(state.price),
+      price: state.price,
       workspaceId: workspaceId,
       productCategoryId: state.productCategory?.id,
     };
