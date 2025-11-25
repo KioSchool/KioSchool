@@ -1,5 +1,6 @@
-import { format } from 'date-fns';
+import { format, isValid } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 
 export const formatDate = (date: string) => {
   const options: Intl.DateTimeFormatOptions = {
@@ -60,4 +61,35 @@ export const formatKoreanTime = (dateString: string): string | null => {
     hour12: true,
   };
   return new Intl.DateTimeFormat('ko-KR', options).format(date);
+};
+
+export const parseDateInput = (input: string): Date | null => {
+  const digits = input.replace(/\D/g, '');
+  if (digits.length !== 8) return null;
+
+  const year = parseInt(digits.substring(0, 4));
+  const month = parseInt(digits.substring(4, 6)) - 1;
+  const day = parseInt(digits.substring(6, 8));
+
+  const date = new Date(year, month, day);
+  return isValid(date) ? date : null;
+};
+
+/**
+ * 두 날짜를 비교하여 시작일이 종료일보다 늦은지 확인
+ */
+export const isStartAfterEnd = (start: Date, end: Date): boolean => {
+  return dayjs(start).isAfter(dayjs(end));
+};
+
+/**
+ * 날짜를 포맷팅하여 반환
+ */
+export const formatDateRange = (startDate: Date, endDate: Date) => {
+  return {
+    startDate: format(startDate, 'yyyy년 MM월 dd일'),
+    endDate: format(endDate, 'yyyy년 MM월 dd일'),
+    startTime: format(startDate, 'HH:mm'),
+    endTime: format(endDate, 'HH:mm'),
+  };
 };

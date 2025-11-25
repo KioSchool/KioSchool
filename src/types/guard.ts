@@ -1,9 +1,16 @@
 import { ROUTES_PATH_KR_MAP } from '@constants/data/urlMapData';
 import { matchPath } from 'react-router-dom';
+import { RangeCategory } from './datePicker';
 
 type AppPath = keyof typeof ROUTES_PATH_KR_MAP;
 function isValidPath(path: string): path is AppPath {
   return path in ROUTES_PATH_KR_MAP;
+}
+
+const RANGE_CATEGORIES = ['2HOURS', '1DAY', '1WEEK', '1MONTH', 'CUSTOM'] as const;
+
+export function isRangeCategory(value: string): value is RangeCategory {
+  return RANGE_CATEGORIES.includes(value as RangeCategory);
 }
 
 /**
