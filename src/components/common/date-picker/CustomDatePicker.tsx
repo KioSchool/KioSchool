@@ -9,6 +9,7 @@ import CustomSelect from '../select/CustomSelect';
 import CustomDatePickerHeader from './CustomDatePickerHeader';
 import { RANGE_OPTIONS, TIME_OPTIONS } from '@constants/data/datePickerData';
 import useDateRange from '@hooks/useDateRange';
+import { Dispatch, SetStateAction } from 'react';
 
 const Container = styled.div`
   box-sizing: border-box;
@@ -55,14 +56,24 @@ const CalendarWrapper = styled.div`
   ${datePickerStyles}
 `;
 
-// TODO: startDate, endDate 상태 및 setter들을 props로 받기
-const CustomDatePicker = () => {
-  const { startDate, endDate, rangeCategory, inputState, handleRangeCategoryChange, handleDateChange, handleManualDateInput, handleTimeChange } =
-    useDateRange();
+interface CustomDatePickerProps {
+  startDate: Date | null;
+  endDate: Date | null;
+  setStartDate: Dispatch<SetStateAction<Date | null>>;
+  setEndDate: Dispatch<SetStateAction<Date | null>>;
+}
+
+const CustomDatePicker = ({ startDate, endDate, setStartDate, setEndDate }: CustomDatePickerProps) => {
+  const { rangeCategory, inputState, handleRangeCategoryChange, handleDateChange, handleManualDateInput, handleTimeChange } = useDateRange({
+    startDate,
+    endDate,
+    setStartDate,
+    setEndDate,
+  });
 
   return (
     <Container>
-      <CustomSelect value={rangeCategory} options={RANGE_OPTIONS} onChange={handleRangeCategoryChange} />
+      <CustomSelect value={rangeCategory} options={RANGE_OPTIONS} onChange={handleRangeCategoryChange} width={'100%'} />
 
       <InputRow>
         <DateInput value={inputState.startDateInput} onChange={(event) => handleManualDateInput(event, 'START')} placeholder="시작일" />
