@@ -18,6 +18,7 @@ const Container = styled.div`
   background: #ffffff;
   border: 1px solid #e8eef2;
   border-radius: 8px;
+  box-shadow: 0 4px 20px 0 rgba(92, 92, 92, 0.05);
   ${colFlex({ justify: 'start', align: 'start' })}
 `;
 
