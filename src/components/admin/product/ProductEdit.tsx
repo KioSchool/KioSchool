@@ -32,17 +32,13 @@ function ProductEdit({ productId, onDelete }: ProductEditProps) {
   };
 
   const handleEditProduct = async (formData: ProductStateType, file: File | null) => {
-    try {
-      const submitData = { ...formData, workspaceId };
+    const submitData = { ...formData, workspaceId };
 
-      await editProduct(submitData, file);
-      await fetchProducts();
-      alert('상품 정보가 수정되었습니다.');
-      closeSidebar();
-    } catch (e) {
-      console.error(e);
-      alert('상품 수정에 실패했습니다.');
-    }
+    await editProduct(submitData, file);
+
+    await fetchProducts();
+    alert('상품 정보가 수정되었습니다.');
+    closeSidebar();
   };
 
   if (!initialData) return null;

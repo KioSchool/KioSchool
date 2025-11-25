@@ -25,17 +25,12 @@ function ProductAdd() {
       return;
     }
 
-    try {
-      const submitData = { ...formData, workspaceId };
-      await addProduct(submitData, file);
-      await fetchProducts();
+    const submitData = { ...formData, workspaceId };
+    await addProduct(submitData, file);
 
-      alert('상품이 추가되었습니다.');
-      closeSidebar();
-    } catch (e) {
-      console.error(e);
-      alert('상품 추가에 실패했습니다.');
-    }
+    await fetchProducts();
+    alert('상품이 추가되었습니다.');
+    closeSidebar();
   };
 
   return <ProductForm mode="add" workspaceId={workspaceId} onSubmit={handleAddProduct} onCancel={closeSidebar} />;
