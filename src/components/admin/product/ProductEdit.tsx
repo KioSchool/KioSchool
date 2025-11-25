@@ -44,7 +44,7 @@ function ProductEdit({ productId, onDelete }: ProductEditProps) {
   if (!initialData) return null;
 
   return (
-    <ProductForm mode="edit" workspaceId={workspaceId} initialValues={initialData} onSubmit={handleEditProduct} onDelete={onDelete} onCancel={closeSidebar} />
+    <ProductForm mode="EDIT" workspaceId={workspaceId} initialValues={initialData} onSubmit={handleEditProduct} onDelete={onDelete} onCancel={closeSidebar} />
   );
 }
 

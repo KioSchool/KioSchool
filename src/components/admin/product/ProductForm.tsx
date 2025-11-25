@@ -68,7 +68,7 @@ function reducer(state: any, action: ProductActionType) {
 }
 
 interface ProductFormProps {
-  mode: 'add' | 'edit';
+  mode: 'ADD' | 'EDIT';
   workspaceId: string | undefined;
   initialValues?: ProductStateType | any;
   onSubmit: (formData: ProductStateType, file: File | null) => Promise<void>;
@@ -148,7 +148,7 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
     dispatch({ type: 'PRODUCT_IMAGE_INPUT', payload: { url: newFileURL, file: newFile } });
   };
 
-  const isEditMode = mode === 'edit';
+  const isEditMode = mode === 'EDIT';
 
   const secondaryButtonText = isEditMode ? '삭제' : '취소';
   const secondaryButtonHandler = isEditMode ? onDelete : onCancel;
@@ -167,7 +167,7 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
               dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
             }}
             width={'100%'}
-            isUseDefaultOption={mode === 'add'}
+            isUseDefaultOption={mode === 'ADD'}
           />
         </InputColContainer>
 

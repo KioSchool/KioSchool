@@ -33,7 +33,7 @@ function ProductAdd() {
     closeSidebar();
   };
 
-  return <ProductForm mode="add" workspaceId={workspaceId} onSubmit={handleAddProduct} onCancel={closeSidebar} />;
+  return <ProductForm mode="ADD" workspaceId={workspaceId} onSubmit={handleAddProduct} onCancel={closeSidebar} />;
 }
 
 export default ProductAdd;
