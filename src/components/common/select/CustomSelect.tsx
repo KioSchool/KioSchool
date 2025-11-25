@@ -15,7 +15,7 @@ const SelectTrigger = styled.div<{ isOpen: boolean }>`
   position: relative;
   padding: 0 28px 0 10px;
   height: 24px;
-  background: #fff;
+  background: ${Color.WHITE};
   border: 1px solid ${({ isOpen }) => (isOpen ? Color.KIO_ORANGE : '#e8eef2')};
   border-radius: 4px;
   cursor: pointer;
@@ -55,7 +55,7 @@ const SelectDropdown = styled.div`
   left: 0;
   right: 0;
   margin-top: 4px;
-  background: #fff;
+  background: ${Color.WHITE};
   border: 1px solid #e8eef2;
   border-radius: 4px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -69,7 +69,7 @@ const SelectOption = styled.div<{ isSelected: boolean }>`
   font-size: 12px;
   color: ${({ isSelected }) => (isSelected ? Color.KIO_ORANGE : '#464a4d')};
   cursor: pointer;
-  background: ${({ isSelected }) => (isSelected ? '#fff5f0' : '#fff')};
+  background: ${({ isSelected }) => (isSelected ? '#fff5f0' : Color.WHITE)};
   border-bottom: 1px solid #f5f5f5;
 
   &:last-child {
