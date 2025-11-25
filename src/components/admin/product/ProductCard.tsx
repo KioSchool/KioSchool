@@ -81,10 +81,8 @@ function ProductCard({ product, onClick }: ProductCardProps) {
   const handleStatusChange = (newStatus: ProductStatus) => {
     if (newStatus === 'SELLING') {
       editProductSellable(product.id, true);
-    } else if (newStatus === 'HIDDEN') {
-      editProductSellable(product.id, false);
-    } else if (newStatus === 'SOLD_OUT') {
-      // TODO: 품절 처리 로직 (product에 status 추가)
+    } else {
+      // TODO : 품절 처리 api 연동 이후 삭제되어야 하는 로직
       // 현재는 판매 불가 상태로 처리
       editProductSellable(product.id, false);
     }
