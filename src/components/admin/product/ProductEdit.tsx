@@ -36,7 +36,6 @@ function ProductEdit({ productId, onDelete }: ProductEditProps) {
 
   const handleEditProduct = async (formData: ProductStateType, file: File | null) => {
     const submitData = { ...formData, workspaceId };
-
     await editProduct(submitData, file);
 
     await fetchProducts();
