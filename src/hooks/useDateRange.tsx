@@ -56,6 +56,18 @@ function useDateRange({ startDate, endDate, setStartDate, setEndDate }: UseDateR
         type: 'SET_ALL',
         payload: formatDateRange(startDate, endDate),
       });
+
+      if (startDate.getTime() === subHours(endDate, 2).getTime()) {
+        setRangeCategory('2HOURS');
+      } else if (startDate.getTime() === subDays(endDate, 1).getTime()) {
+        setRangeCategory('1DAY');
+      } else if (startDate.getTime() === subWeeks(endDate, 1).getTime()) {
+        setRangeCategory('1WEEK');
+      } else if (startDate.getTime() === subMonths(endDate, 1).getTime()) {
+        setRangeCategory('1MONTH');
+      } else {
+        setRangeCategory('CUSTOM');
+      }
     }
   }, [startDate, endDate]);
 
