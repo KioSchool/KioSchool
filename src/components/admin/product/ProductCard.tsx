@@ -4,7 +4,7 @@ import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useParams } from 'react-router-dom';
 import { colFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import SelectWithStatus from '@components/common/select/SelectWithStatus';
+import SelectWithStatus from '@components/admin/product/SelectWithProductStatus';
 
 const sellableStyle = `
   background: ${Color.WHITE};
