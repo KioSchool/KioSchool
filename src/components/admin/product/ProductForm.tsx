@@ -9,6 +9,7 @@ import SelectWithOptions from '@components/common/select/SelectWithOptions';
 import AppImageInput from '@components/common/input/AppImageInput';
 import NewAppInput from '@components/common/input/NewAppInput';
 import NewCommonButton from '@components/common/button/NewCommonButton';
+import { MAX_PRODUCT_IMAGE_SIZE } from '@constants/data/productData';
 
 const Container = styled.div`
   height: 100%;
@@ -140,7 +141,7 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
 
     const newFile = event.target.files[0];
     if (newFile.size > 1024 * 1024 * 5) {
-      alert('상품 이미지는 5MB 이하로 업로드 가능합니다.');
+      alert(`상품 이미지는 ${MAX_PRODUCT_IMAGE_SIZE} 이하로 업로드 가능합니다.`);
       return;
     }
 

@@ -11,3 +11,5 @@ export const STATUS_OPTIONS: StatusOption[] = [
   { label: '품절', value: 'SOLD_OUT', color: '#5c5c5c' },
   { label: '숨김', value: 'HIDDEN', color: '#e8eef2' },
 ];
+
+export const MAX_PRODUCT_IMAGE_SIZE = '5MB';
