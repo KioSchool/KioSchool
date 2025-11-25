@@ -28,7 +28,7 @@ const ProductAddButtonContainer = styled.div`
 `;
 
 const ProductContainer = styled.div`
-  min-width: 1000px;
+  width: 1000px;
   max-height: 296px;
   padding: 18px 30px;
   gap: 10px;
@@ -48,6 +48,8 @@ const CategoryTitle = styled.div`
 const ProductCardsContainer = styled.div`
   gap: 8px;
   width: 100%;
+  overflow-x: auto;
+  flex-wrap: nowrap;
   ${rowFlex({ justify: 'start', align: 'center' })};
 `;
 
@@ -94,15 +96,10 @@ function AdminProduct() {
     const userInput = await confirm();
     if (!userInput) return;
 
-    try {
-      await deleteProduct(productId);
-      await fetchProducts();
-      alert('상품이 삭제되었습니다.');
-      setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE });
-    } catch (e) {
-      console.error(e);
-      alert('상품 삭제에 실패했습니다.');
-    }
+    await deleteProduct(productId);
+    await fetchProducts();
+    alert('상품이 삭제되었습니다.');
+    setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE });
   };
 
   const handleOpenEditProduct = (productId: number) => {
