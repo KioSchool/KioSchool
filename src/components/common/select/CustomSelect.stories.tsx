@@ -11,12 +11,6 @@ const meta: Meta<typeof CustomSelect> = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  argTypes: {
-    width: { control: 'text' },
-    flex: { control: 'text' },
-    highlightOnSelect: { control: 'boolean' },
-    triggerLabel: { control: 'text' },
-  },
 };
 
 export default meta;
@@ -29,92 +23,30 @@ const options = [
 ];
 
 export const Default: Story = {
-  args: {
-    value: 'option1',
-    options,
-    placeholder: 'Select an option',
-    highlightOnSelect: false,
-  },
-  render: (args) => {
-    const [value, setValue] = useState(args.value || '');
-    return (
-      <CustomSelect
-        {...args}
-        value={value}
-        onChange={(newValue) => {
-          setValue(newValue);
-          args.onChange?.(newValue);
-        }}
-      />
-    );
+  render: () => {
+    const [value, setValue] = useState('option1');
+    return <CustomSelect value={value} options={options} onChange={setValue} placeholder="Select an option" />;
   },
 };
 
 export const WithPlaceholder: Story = {
-  args: {
-    value: '',
-    options,
-    placeholder: 'Select an option',
-    width: '200px',
-    highlightOnSelect: false,
-  },
-  render: (args) => {
-    const [value, setValue] = useState(args.value || '');
-    return (
-      <CustomSelect
-        {...args}
-        value={value}
-        onChange={(newValue) => {
-          setValue(newValue);
-          args.onChange?.(newValue);
-        }}
-      />
-    );
+  render: () => {
+    const [value, setValue] = useState('');
+    return <CustomSelect value={value} options={options} onChange={setValue} placeholder="Select an option" width="200px" />;
   },
 };
 
 export const CustomWidth: Story = {
-  args: {
-    value: 'option1',
-    options,
-    width: '300px',
-    highlightOnSelect: false,
-  },
-  render: (args) => {
-    const [value, setValue] = useState(args.value || '');
-    return (
-      <CustomSelect
-        {...args}
-        value={value}
-        onChange={(newValue) => {
-          setValue(newValue);
-          args.onChange?.(newValue);
-        }}
-      />
-    );
+  render: () => {
+    const [value, setValue] = useState('option1');
+    return <CustomSelect value={value} options={options} onChange={setValue} width="300px" />;
   },
 };
 
 export const HighlightOnSelect: Story = {
-  args: {
-    value: 'option1',
-    options,
-    placeholder: 'Select an option',
-    width: '200px',
-    highlightOnSelect: true,
-  },
-  render: (args) => {
-    const [value, setValue] = useState(args.value || '');
-    return (
-      <CustomSelect
-        {...args}
-        value={value}
-        onChange={(newValue: string) => {
-          setValue(newValue);
-          args.onChange?.(newValue);
-        }}
-      />
-    );
+  render: () => {
+    const [value, setValue] = useState('option1');
+    return <CustomSelect value={value} options={options} onChange={setValue} placeholder="Select an option" width="200px" highlightOnSelect={true} />;
   },
 };
 
@@ -125,24 +57,9 @@ const statusOptions = [
 ];
 
 export const StatusFilter: Story = {
-  args: {
-    value: 'SERVED',
-    options: statusOptions,
-    width: '100px',
-    highlightOnSelect: true,
-  },
-  render: (args) => {
-    const [value, setValue] = useState(args.value || '');
-    return (
-      <CustomSelect
-        {...args}
-        value={value}
-        onChange={(newValue) => {
-          setValue(newValue);
-          args.onChange?.(newValue);
-        }}
-      />
-    );
+  render: () => {
+    const [value, setValue] = useState('SERVED');
+    return <CustomSelect value={value} options={statusOptions} onChange={setValue} width="100px" highlightOnSelect={true} />;
   },
 };
 
@@ -158,7 +75,7 @@ export const WithCustomDatePicker: Story = {
     const formattedRange = startDate && endDate ? `${format(startDate, 'yyyy-MM-dd')} ~ ${format(endDate, 'yyyy-MM-dd')}` : '날짜 선택중';
 
     return (
-      <CustomSelect width="320px" highlightOnSelect={true} triggerLabel={formattedRange}>
+      <CustomSelect width="320px" highlightOnSelect={true} triggerLabel={formattedRange} value={formattedRange}>
         <CustomDatePicker startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} />
       </CustomSelect>
     );

@@ -16,7 +16,7 @@ const SelectTrigger = styled.div<{ isOpen: boolean; isHighlight?: boolean }>`
   padding: 0 28px 0 10px;
   height: 24px;
   background: ${({ isHighlight }) => (isHighlight ? Color.KIO_ORANGE : Color.WHITE)};
-  border: 1px solid ${({ isOpen, isHighlight }) => (isHighlight ? Color.KIO_ORANGE : isOpen ? Color.KIO_ORANGE : '#e8eef2')};
+  border: 1px solid ${({ isOpen, isHighlight }) => (isHighlight || isOpen ? Color.KIO_ORANGE : '#e8eef2')};
   border-radius: 4px;
   cursor: pointer;
   font-size: 12px;
@@ -86,19 +86,19 @@ const SelectOption = styled.div<{ isSelected: boolean }>`
 `;
 
 const Label = styled.span<{ isHighlight: boolean }>`
-  font-weight: ${({ isHighlight }) => isHighlight && 700};
+  font-weight: ${({ isHighlight }) => isHighlight && 600};
 `;
 
 interface CustomSelectPropsBase {
   placeholder?: string;
   width?: string;
   flex?: string;
+  value: string;
   highlightOnSelect?: boolean;
 }
 
 type SelectOptionsProps = {
   options: { value: string; label: string }[];
-  value: string;
   onChange: (value: string) => void;
   children?: never;
   triggerLabel?: string;
@@ -106,8 +106,7 @@ type SelectOptionsProps = {
 
 type SelectChildrenProps = {
   options?: never;
-  value?: string;
-  onChange?: (value: string) => void;
+  onChange?: never;
   children: React.ReactNode;
   triggerLabel: string;
 };
@@ -133,8 +132,8 @@ function CustomSelect(props: CustomSelectProps) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const hasSelection = children ? true : value !== undefined && value !== '';
-  const selectedLabel = children ? triggerLabel : options.find((option) => option.value === value)?.label || value || placeholder;
+  const hasSelection = value !== undefined && value !== '';
+  const selectedLabel = children ? triggerLabel : options.find((option) => option.value === value)?.label || placeholder || value;
   const isHighlight = highlightOnSelect && hasSelection;
 
   return (
