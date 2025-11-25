@@ -20,11 +20,14 @@ function ProductEdit({ productId, onDelete }: ProductEditProps) {
 
   useEffect(() => {
     fetchCategories();
-    (async () => {
+
+    const loadProductData = async () => {
       if (!productId) return;
       const data = await fetchProduct(productId);
       setInitialData(data);
-    })();
+    };
+
+    loadProductData();
   }, [productId]);
 
   const closeSidebar = () => {
