@@ -1,9 +1,8 @@
-import { useState, useEffect, useReducer, Dispatch } from 'react';
-import { setHours, setMinutes, subHours, subDays, subWeeks, subMonths } from 'date-fns';
+import { useState, useReducer, Dispatch, useEffect } from 'react';
+import { setHours, setMinutes, subHours, subDays, subWeeks, subMonths, startOfDay, endOfDay, isSameDay } from 'date-fns';
 import { isRangeCategory } from '@@types/guard';
 import { InputState, InputAction, RangeCategory } from '@@types/datePicker';
-import { parseDateInput } from '@utils/formatDate';
-import { isStartAfterEnd, adjustDateRange, adjustDateRangeWithZeroTime, formatDateRange } from '@utils/dateValidation';
+import { formatDateRange, isStartAfterEnd, parseDateInput } from '@utils/formatDate';
 
 const inputReducer = (state: InputState, action: InputAction): InputState => {
   switch (action.type) {
@@ -11,10 +10,6 @@ const inputReducer = (state: InputState, action: InputAction): InputState => {
       return { ...state, startDateInput: action.payload };
     case 'SET_END_DATE':
       return { ...state, endDateInput: action.payload };
-    case 'SET_START_TIME':
-      return { ...state, startTimeInput: action.payload };
-    case 'SET_END_TIME':
-      return { ...state, endTimeInput: action.payload };
     case 'SET_ALL':
       return {
         startDateInput: action.payload.startDate,
@@ -22,11 +17,6 @@ const inputReducer = (state: InputState, action: InputAction): InputState => {
         startTimeInput: action.payload.startTime,
         endTimeInput: action.payload.endTime,
       };
-    case 'RESET_TIME':
-      if (action.target === 'BOTH') {
-        return { ...state, startTimeInput: '00:00', endTimeInput: '00:00' };
-      }
-      return action.target === 'START' ? { ...state, startTimeInput: '00:00' } : { ...state, endTimeInput: '00:00' };
     default:
       return state;
   }
@@ -72,7 +62,7 @@ function useDateRange(): UseDateRangeReturn {
 
     const now = new Date();
     let newStart = now;
-    let newEnd = now;
+    const newEnd = now;
 
     switch (category) {
       case '2HOURS':
@@ -98,80 +88,62 @@ function useDateRange(): UseDateRangeReturn {
   const handleDateChange = (dates: [Date | null, Date | null]) => {
     const [start, end] = dates;
 
-    setStartDate(start);
-    setEndDate(end);
+    if (start && end && isSameDay(start, end)) {
+      setStartDate(startOfDay(start));
+      setEndDate(endOfDay(end));
+    } else {
+      setStartDate(start);
+      setEndDate(end);
+    }
 
     if (start && end) {
       setRangeCategory('CUSTOM');
     }
   };
 
-  const handleManualDateInput = (event: React.ChangeEvent<HTMLInputElement>, type: 'START' | 'END') => {
-    const val = event.target.value;
-    dispatch({ type: type === 'START' ? 'SET_START_DATE' : 'SET_END_DATE', payload: val });
-
-    const parsed = parseDateInput(val);
-    if (!parsed) return;
-
-    const newDate = setHours(setMinutes(parsed, 0), 0);
-
+  const updateDateRange = (type: 'START' | 'END', newDate: Date) => {
     if (type === 'START') {
       setStartDate(newDate);
-      dispatch({ type: 'RESET_TIME', target: 'START' });
-      setRangeCategory('CUSTOM');
 
       if (endDate && isStartAfterEnd(newDate, endDate)) {
-        setEndDate(newDate);
-        dispatch({
-          type: 'SET_ALL',
-          payload: adjustDateRangeWithZeroTime(newDate),
-        });
+        const adjustedEnd = endOfDay(newDate);
+        setEndDate(adjustedEnd);
       }
-    } else {
+    } else if (type === 'END') {
       setEndDate(newDate);
-      dispatch({ type: 'RESET_TIME', target: 'END' });
-      setRangeCategory('CUSTOM');
 
       if (startDate && isStartAfterEnd(startDate, newDate)) {
-        setStartDate(newDate);
-        dispatch({
-          type: 'SET_ALL',
-          payload: adjustDateRangeWithZeroTime(newDate),
-        });
+        const adjustedStart = startOfDay(newDate);
+        setStartDate(adjustedStart);
       }
     }
+
+    setRangeCategory('CUSTOM');
+  };
+
+  const handleManualDateInput = (event: React.ChangeEvent<HTMLInputElement>, type: 'START' | 'END') => {
+    const val = event.target.value;
+    const isStart = type === 'START';
+
+    dispatch({ type: isStart ? 'SET_START_DATE' : 'SET_END_DATE', payload: val });
+
+    const parsedDateInput = parseDateInput(val);
+    if (!parsedDateInput) return;
+
+    const newDate = isStart ? startOfDay(parsedDateInput) : endOfDay(parsedDateInput);
+    updateDateRange(type, newDate);
   };
 
   const handleTimeChange = (type: 'START' | 'END', timeStr: string) => {
     const [hours, minutes] = timeStr.split(':').map(Number);
 
-    dispatch({ type: type === 'START' ? 'SET_START_TIME' : 'SET_END_TIME', payload: timeStr });
+    const isStart = type === 'START';
+    const baseDate = isStart ? startDate : endDate;
 
-    if (type === 'START' && startDate) {
-      const newDate = setHours(setMinutes(startDate, minutes), hours);
-      setStartDate(newDate);
-
-      if (endDate && isStartAfterEnd(newDate, endDate)) {
-        setEndDate(newDate);
-        dispatch({
-          type: 'SET_ALL',
-          payload: adjustDateRange(newDate, timeStr),
-        });
-      }
-    } else if (type === 'END' && endDate) {
-      const newDate = setHours(setMinutes(endDate, minutes), hours);
-      setEndDate(newDate);
-
-      if (startDate && isStartAfterEnd(startDate, newDate)) {
-        setStartDate(newDate);
-        dispatch({
-          type: 'SET_ALL',
-          payload: adjustDateRange(newDate, timeStr),
-        });
-      }
+    if (baseDate) {
+      const newDate = setHours(setMinutes(baseDate, minutes), hours);
+      updateDateRange(type, newDate);
     }
-
-    setRangeCategory('CUSTOM');
   };
 
   return {
