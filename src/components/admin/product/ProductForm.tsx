@@ -140,8 +140,8 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
     if (!event.target.files?.length) return;
 
     const newFile = event.target.files[0];
-    if (newFile.size > 1024 * 1024 * 5) {
-      alert(`상품 이미지는 ${MAX_PRODUCT_IMAGE_SIZE} 이하로 업로드 가능합니다.`);
+    if (newFile.size > MAX_PRODUCT_IMAGE_SIZE) {
+      alert('상품 이미지는 5MB 이하로 업로드 가능합니다.');
       return;
     }
 

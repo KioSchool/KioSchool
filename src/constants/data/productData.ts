@@ -12,4 +12,4 @@ export const STATUS_OPTIONS: StatusOption[] = [
   { label: '숨김', value: 'HIDDEN', color: '#e8eef2' },
 ];
 
-export const MAX_PRODUCT_IMAGE_SIZE = '5MB';
+export const MAX_PRODUCT_IMAGE_SIZE = 1024 * 1024 * 5;
