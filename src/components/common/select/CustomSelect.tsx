@@ -6,6 +6,7 @@ import { rowFlex } from '@styles/flexStyles';
 
 const SelectContainer = styled.div<{ width?: string; flex?: string }>`
   position: relative;
+  font-family: 'LINE Seed Sans KR', sans-serif;
   width: ${({ width }) => width || '100%'};
   flex: ${({ flex, width }) => flex || (width ? 'none' : 1)};
 `;

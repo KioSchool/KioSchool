@@ -38,6 +38,7 @@ const DateInput = styled.input`
   color: #464a4d;
   line-height: normal;
   outline: none;
+  font-family: 'LINE Seed Sans KR', sans-serif;
 
   &:focus {
     border-color: ${Color.KIO_ORANGE};
