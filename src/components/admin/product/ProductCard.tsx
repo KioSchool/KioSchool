@@ -72,6 +72,7 @@ function ProductCard({ product, onClick }: ProductCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { editProductSellable } = useAdminProducts(workspaceId);
 
+  // TODO : 품절 처리 api 연동 이후 삭제되어야 하는 로직
   const getCurrentStatus = (): ProductStatus => {
     if (product.isSellable) return 'SELLING';
     return 'HIDDEN';
