@@ -53,9 +53,6 @@ const SelectDropdownContainer = styled.div`
   width: 100%;
   margin-top: 4px;
   position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
   z-index: 10;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
@@ -93,8 +90,6 @@ const Label = styled.span<{ isHighlight: boolean }>`
 `;
 
 interface CustomSelectPropsBase {
-  value?: string;
-  onChange?: (value: string) => void;
   placeholder?: string;
   width?: string;
   flex?: string;
@@ -103,12 +98,16 @@ interface CustomSelectPropsBase {
 
 type SelectOptionsProps = {
   options: { value: string; label: string }[];
+  value: string;
+  onChange: (value: string) => void;
   children?: never;
-  triggerLabel?: never;
+  triggerLabel?: string;
 };
 
 type SelectChildrenProps = {
   options?: never;
+  value?: string;
+  onChange?: (value: string) => void;
   children: React.ReactNode;
   triggerLabel: string;
 };

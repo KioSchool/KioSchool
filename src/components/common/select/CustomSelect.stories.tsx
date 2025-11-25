@@ -36,7 +36,7 @@ export const Default: Story = {
     highlightOnSelect: false,
   },
   render: (args) => {
-    const [value, setValue] = useState(args.value);
+    const [value, setValue] = useState(args.value || '');
     return (
       <CustomSelect
         {...args}
@@ -59,7 +59,7 @@ export const WithPlaceholder: Story = {
     highlightOnSelect: false,
   },
   render: (args) => {
-    const [value, setValue] = useState(args.value);
+    const [value, setValue] = useState(args.value || '');
     return (
       <CustomSelect
         {...args}
@@ -81,7 +81,7 @@ export const CustomWidth: Story = {
     highlightOnSelect: false,
   },
   render: (args) => {
-    const [value, setValue] = useState(args.value);
+    const [value, setValue] = useState(args.value || '');
     return (
       <CustomSelect
         {...args}
@@ -104,7 +104,7 @@ export const HighlightOnSelect: Story = {
     highlightOnSelect: true,
   },
   render: (args) => {
-    const [value, setValue] = useState(args.value);
+    const [value, setValue] = useState(args.value || '');
     return (
       <CustomSelect
         {...args}
@@ -132,7 +132,7 @@ export const StatusFilter: Story = {
     highlightOnSelect: true,
   },
   render: (args) => {
-    const [value, setValue] = useState(args.value);
+    const [value, setValue] = useState(args.value || '');
     return (
       <CustomSelect
         {...args}
