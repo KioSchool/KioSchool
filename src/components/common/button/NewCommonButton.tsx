@@ -2,6 +2,7 @@
 import { css } from '@emotion/react';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
+import { ReactNode } from 'react';
 
 type ButtonSize = 'xs' | 'sm' | 'md';
 type ButtonColor = 'kio_orange' | 'blue_gray';
@@ -10,6 +11,8 @@ export interface CustomButtonSize {
   width?: number;
   height?: number;
   font?: number;
+  borderRadius?: number;
+  padding?: number;
 }
 
 export interface CustomColorTheme {
@@ -27,6 +30,8 @@ const sizeStyles = (size: ButtonSize, customSize: CustomButtonSize | undefined) 
       width: ${customSize.width ?? 150}px;
       height: ${customSize.height ?? 35}px;
       font-size: ${customSize.font ?? 13}px;
+      border-radius: ${customSize.borderRadius ?? 40}px;
+      padding: ${customSize.padding ?? 14}px;
     `;
   }
 
@@ -102,6 +107,7 @@ const StyledButton = styled.button<NewCommonButtonProps>`
   cursor: pointer;
   padding: 0 14px;
   font-weight: 700;
+  gap: ${({ gap }) => gap ?? 4}px;
   ${rowFlex({ justify: 'center', align: 'center' })}
 
   ${({ size = 'md', customSize }) => sizeStyles(size, customSize)}
@@ -121,10 +127,17 @@ interface NewCommonButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElem
   customSize?: CustomButtonSize;
   color?: ButtonColor;
   customColors?: CustomColorTheme;
+  icon?: ReactNode;
+  gap?: number;
 }
 
-function NewCommonButton(props: NewCommonButtonProps) {
-  return <StyledButton {...props} />;
+function NewCommonButton({ icon, gap, children, ...props }: NewCommonButtonProps) {
+  return (
+    <StyledButton gap={gap} {...props}>
+      {children}
+      {icon && icon}
+    </StyledButton>
+  );
 }
 
 export default NewCommonButton;

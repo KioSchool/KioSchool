@@ -2,14 +2,17 @@ import styled from '@emotion/styled';
 import { Workspace } from '@@types/index';
 import { rowFlex } from '@styles/flexStyles';
 import AddWorkspaceModalButton from './modal/AddWorkspaceModalButton';
+import { Color } from '@resources/colors';
 
 const AddWorkspaceContainer = styled.form`
   cursor: pointer;
-  width: 321px;
-  height: 332px;
-  border-radius: 25px;
-  background: #eeecec;
-  ${rowFlex({ justify: 'center', align: 'center' })}
+  width: 380px;
+  height: 350px;
+  border: 1px solid #e8eef2;
+  border-radius: 16px;
+  background: ${Color.WHITE};
+  box-shadow: 0px 4px 20px rgba(92, 92, 92, 0.25);
+  ${rowFlex({ justify: 'center', align: 'center' })};
 `;
 
 interface Props {
