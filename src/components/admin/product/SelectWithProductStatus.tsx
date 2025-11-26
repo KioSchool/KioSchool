@@ -1,4 +1,4 @@
-﻿import { useState, useRef } from 'react';
+﻿import { useState, useRef, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { ItemBaseStyle } from '@styles/selectItemStyles';
 import { colFlex } from '@styles/flexStyles';
@@ -72,6 +72,26 @@ function SelectWithProductStatus({ currentStatus, onStatusChange }: SelectWithPr
   const [coords, setCoords] = useState({ top: 0, left: 0, width: 0 });
 
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    const handleScroll = () => {
+      if (isOpen) setIsOpen(false);
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('scroll', handleScroll, true);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('scroll', handleScroll, true);
+    };
+  }, [isOpen]);
 
   const toggleDropdown = () => {
     if (!isOpen && containerRef.current) {
