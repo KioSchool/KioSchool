@@ -1,10 +1,11 @@
-﻿import { useState, useRef, useEffect } from 'react';
+﻿import { useState, useRef } from 'react';
 import styled from '@emotion/styled';
 import { ItemBaseStyle } from '@styles/selectItemStyles';
 import { colFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { STATUS_OPTIONS } from '@constants/data/productData';
 import { ProductStatus } from '@@types/index';
+import { createPortal } from 'react-dom';
 
 const Container = styled.div`
   position: relative;
@@ -22,15 +23,14 @@ const SelectorButton = styled.button<{ isOpen: boolean }>`
 
 const DropdownList = styled.div`
   position: absolute;
-  top: 28px;
-  left: 0;
-  width: 100%;
   background-color: ${Color.WHITE};
   border: 1px solid #e8eef2;
   border-radius: 6px;
   box-sizing: border-box;
-  z-index: 10;
+  z-index: 9999;
   overflow: hidden;
+  font-size: 12px;
+  color: #464a4d;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
@@ -62,24 +62,28 @@ const Label = styled.span`
   white-space: nowrap;
 `;
 
-interface SelectWithStatusProps {
+interface SelectWithProductStatusProps {
   currentStatus: ProductStatus;
   onStatusChange: (status: ProductStatus) => void;
 }
 
-function SelectWithStatus({ currentStatus, onStatusChange }: SelectWithStatusProps) {
+function SelectWithProductStatus({ currentStatus, onStatusChange }: SelectWithProductStatusProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [coords, setCoords] = useState({ top: 0, left: 0, width: 0 });
+
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  const toggleDropdown = () => {
+    if (!isOpen && containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      setCoords({
+        top: rect.bottom + window.scrollY + 4,
+        left: rect.left + window.scrollX,
+        width: rect.width,
+      });
+    }
+    setIsOpen(!isOpen);
+  };
 
   const currentOption = STATUS_OPTIONS.find((opt) => opt.value === currentStatus) || STATUS_OPTIONS[0];
 
@@ -90,23 +94,25 @@ function SelectWithStatus({ currentStatus, onStatusChange }: SelectWithStatusPro
 
   return (
     <Container ref={containerRef}>
-      <SelectorButton onClick={() => setIsOpen(!isOpen)} isOpen={isOpen}>
+      <SelectorButton onClick={toggleDropdown} isOpen={isOpen}>
         <Dot color={currentOption.color} />
         <Label>{currentOption.label}</Label>
       </SelectorButton>
 
-      {isOpen && (
-        <DropdownList>
-          {STATUS_OPTIONS.map((option) => (
-            <OptionItem key={option.value} onClick={() => handleSelect(option.value)}>
-              <Dot color={option.color} />
-              <Label>{option.label}</Label>
-            </OptionItem>
-          ))}
-        </DropdownList>
-      )}
+      {isOpen &&
+        createPortal(
+          <DropdownList style={{ top: coords.top, left: coords.left, width: coords.width }}>
+            {STATUS_OPTIONS.map((option) => (
+              <OptionItem key={option.value} onClick={() => handleSelect(option.value)}>
+                <Dot color={option.color} />
+                <Label>{option.label}</Label>
+              </OptionItem>
+            ))}
+          </DropdownList>,
+          document.body,
+        )}
     </Container>
   );
 }
 
-export default SelectWithStatus;
+export default SelectWithProductStatus;
