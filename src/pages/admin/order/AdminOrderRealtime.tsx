@@ -12,6 +12,7 @@ import { adminOrdersAtom } from 'src/jotai/admin/atoms';
 import RightSidebarModal from '@components/common/modal/RightSidebarModal';
 import OrderByProductList from '@components/admin/order/realtime/OrderByProductList';
 import styled from '@emotion/styled';
+import { useWakeLock } from '@hooks/useWakeLock';
 
 const ListContainer = styled.div`
   width: 100%;
@@ -20,6 +21,8 @@ const ListContainer = styled.div`
 `;
 
 function AdminOrderRealtime() {
+  useWakeLock();
+
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchTodayOrders } = useAdminOrder(workspaceId);
   const { fetchProducts } = useAdminProducts(workspaceId);
