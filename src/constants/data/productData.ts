@@ -13,3 +13,5 @@ export const STATUS_OPTIONS: StatusOption[] = [
 ];
 
 export const MAX_PRODUCT_IMAGE_SIZE = 1024 * 1024 * 5;
+
+export const DROPDOWN_EVENT_KEY = 'admin-product-selector-dropdown';
