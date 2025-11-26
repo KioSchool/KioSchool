@@ -1,22 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-type WakeLockType = 'screen';
-
 export interface WakeLockSentinel extends EventTarget {
   released: boolean;
   type: WakeLockType;
   release: () => Promise<void>;
-  onrelease: ((this: WakeLockSentinel, ev: Event) => any) | null;
-}
-
-export interface WakeLock {
-  request: (type: WakeLockType) => Promise<WakeLockSentinel>;
-}
-
-declare global {
-  interface Navigator {
-    wakeLock: WakeLock;
-  }
+  onrelease: ((this: WakeLockSentinel, ev: Event) => void) | null;
 }
 
 export const useWakeLock = () => {
