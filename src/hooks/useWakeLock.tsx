@@ -6,6 +6,7 @@ export interface WakeLockSentinel extends EventTarget {
   released: boolean;
   type: WakeLockType;
   release: () => Promise<void>;
+  onrelease: ((this: WakeLockSentinel, ev: Event) => any) | null;
 }
 
 export interface WakeLock {
@@ -28,11 +29,15 @@ export const useWakeLock = () => {
       return;
     }
 
+    if (wakeLockRef.current !== null) {
+      return;
+    }
+
     try {
       const lock = await navigator.wakeLock.request('screen');
-      lock.addEventListener('release', () => {
+      lock.onrelease = () => {
         setIsLocked(false);
-      });
+      };
 
       wakeLockRef.current = lock;
       setIsLocked(true);
@@ -42,27 +47,32 @@ export const useWakeLock = () => {
   }, []);
 
   const releaseLock = useCallback(async () => {
-    if (wakeLockRef.current) {
-      await wakeLockRef.current.release();
-      wakeLockRef.current = null;
-      setIsLocked(false);
+    const lock = wakeLockRef.current;
+    if (lock) {
+      try {
+        lock.onrelease = null;
+        await lock.release();
+      } catch (err) {
+        console.error('Wake Lock release failed:', err);
+      } finally {
+        wakeLockRef.current = null;
+        setIsLocked(false);
+      }
     }
   }, []);
 
   useEffect(() => {
     requestLock();
 
-    const handleVisibilityChange = () => {
+    document.onvisibilitychange = () => {
       if (document.visibilityState === 'visible') {
         requestLock();
       }
     };
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-
     return () => {
       releaseLock();
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.onvisibilitychange = null;
     };
   }, [requestLock, releaseLock]);
 
