@@ -28,6 +28,7 @@ export const ADMIN_ROUTES = {
   ORDER_TABLE: '/admin/workspace/:workspaceId/order/table',
   ORDER_TABLE_HISTORY: '/admin/workspace/:workspaceId/order/table/:tableNumber',
   ORDER_TABLE_MANAGE: '/admin/workspace/:workspaceId/order/table/manage',
+  TABLE_ORDER: '/admin/workspace/:workspaceId/table-order',
 
   PRODUCTS: '/admin/workspace/:workspaceId/products',
   PRODUCTS_CATEGORIES: '/admin/workspace/:workspaceId/products/categories',
