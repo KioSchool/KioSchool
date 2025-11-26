@@ -29,7 +29,7 @@ const ProductAddButtonContainer = styled.div`
 
 const ProductContainer = styled.div`
   width: 1000px;
-  max-height: 296px;
+  height: 276x;
   padding: 18px 30px;
   gap: 10px;
   border: 1px solid #e8eef2;
@@ -49,7 +49,16 @@ const ProductCardsContainer = styled.div`
   gap: 8px;
   width: 100%;
   overflow-x: auto;
+  padding-bottom: 150px; // Select 메뉴가 열릴 공간 확보 (메뉴 높이만큼)
+  margin-bottom: -150px; // 확보한 공간만큼 마진을 당겨서 레이아웃이 붕 뜨지 않게 보정
+
+  // 스크롤바가 나타나면 다음 영역을 침범하기에 나타낼 수 없음
+  &::-webkit-scrollbar {
+    height: 0px;
+  }
+
   flex-wrap: nowrap;
+  flex-shrink: 0;
   ${rowFlex({ justify: 'start', align: 'center' })};
 `;
 
