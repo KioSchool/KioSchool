@@ -2,25 +2,25 @@ import { useState, useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { RiArrowDownSLine } from '@remixicon/react';
-import { rowFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const SelectContainer = styled.div<{ width?: string; flex?: string }>`
   position: relative;
   font-family: 'LINE Seed Sans KR', sans-serif;
-  width: ${({ width }) => width || '100%'};
+  width: ${({ width }) => width || 'auto'};
   flex: ${({ flex, width }) => flex || (width ? 'none' : 1)};
 `;
 
-const SelectTrigger = styled.div<{ isOpen: boolean }>`
+const SelectTrigger = styled.div<{ isOpen: boolean; isHighlight?: boolean }>`
   position: relative;
   padding: 0 28px 0 10px;
   height: 24px;
-  background: ${Color.WHITE};
-  border: 1px solid ${({ isOpen }) => (isOpen ? Color.KIO_ORANGE : '#e8eef2')};
+  background: ${({ isHighlight }) => (isHighlight ? Color.KIO_ORANGE : Color.WHITE)};
+  border: 1px solid ${({ isOpen, isHighlight }) => (isHighlight || isOpen ? Color.KIO_ORANGE : '#e8eef2')};
   border-radius: 4px;
   cursor: pointer;
   font-size: 12px;
-  color: #464a4d;
+  color: ${({ isHighlight }) => (isHighlight ? Color.WHITE : '#464a4d')};
   line-height: normal;
   user-select: none;
   transition: border-color 0.2s;
@@ -49,17 +49,20 @@ const ArrowIcon = styled.div`
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
-const SelectDropdown = styled.div`
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
+const SelectDropdownContainer = styled.div`
+  width: 100%;
   margin-top: 4px;
+  position: absolute;
+  z-index: 10;
+  ${colFlex({ justify: 'center', align: 'center' })}
+`;
+
+const SelectDropdown = styled.div`
+  width: 100%;
   background: ${Color.WHITE};
   border: 1px solid #e8eef2;
   border-radius: 4px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 10;
   max-height: 200px;
   overflow-y: auto;
 `;
@@ -82,17 +85,40 @@ const SelectOption = styled.div<{ isSelected: boolean }>`
   }
 `;
 
-interface CustomSelectProps {
-  value: string;
-  options: { value: string; label: string }[];
-  onChange: (value: string) => void;
+const Label = styled.span<{ isHighlight: boolean }>`
+  font-weight: ${({ isHighlight }) => isHighlight && 600};
+`;
+
+interface CustomSelectPropsBase {
   placeholder?: string;
   width?: string;
   flex?: string;
+  value: string;
+  highlightOnSelect?: boolean;
 }
 
-// TODO: 이후 PR에서 확장성을 고려하여 수정될 컴포넌트
-function CustomSelect({ value, options, onChange, placeholder, width, flex }: CustomSelectProps) {
+type SelectOptionsProps = {
+  options: { value: string; label: string }[];
+  onChange: (value: string) => void;
+  children?: never;
+  triggerLabel?: string;
+};
+
+type SelectChildrenProps = {
+  options?: never;
+  onChange?: never;
+  children: React.ReactNode;
+  triggerLabel: string;
+};
+
+type CustomSelectProps = CustomSelectPropsBase & (SelectOptionsProps | SelectChildrenProps);
+
+function CustomSelect(props: CustomSelectProps) {
+  const { value, onChange, placeholder, width, flex, highlightOnSelect = false } = props;
+  const options = props.options ?? [];
+  const children = props.children;
+  const triggerLabel = props.triggerLabel;
+
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -106,31 +132,39 @@ function CustomSelect({ value, options, onChange, placeholder, width, flex }: Cu
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const selectedLabel = options.find((option) => option.value === value)?.label || placeholder || value;
+  const hasSelection = value !== undefined && value !== '';
+  const selectedLabel = children ? triggerLabel : options.find((option) => option.value === value)?.label || placeholder || value;
+  const isHighlight = highlightOnSelect && hasSelection;
 
   return (
     <SelectContainer ref={containerRef} width={width} flex={flex}>
-      <SelectTrigger isOpen={isOpen} onClick={() => setIsOpen(!isOpen)}>
-        <span>{selectedLabel}</span>
+      <SelectTrigger isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} isHighlight={isHighlight}>
+        <Label isHighlight={isHighlight}>{selectedLabel}</Label>
         <ArrowIcon>
-          <RiArrowDownSLine size={20} color="#888" />
+          <RiArrowDownSLine size={20} color={isHighlight ? Color.WHITE : '#888'} />
         </ArrowIcon>
       </SelectTrigger>
       {isOpen && (
-        <SelectDropdown>
-          {options.map((option) => (
-            <SelectOption
-              key={option.value}
-              isSelected={option.value === value}
-              onClick={() => {
-                onChange(option.value);
-                setIsOpen(false);
-              }}
-            >
-              {option.label}
-            </SelectOption>
-          ))}
-        </SelectDropdown>
+        <SelectDropdownContainer>
+          {children ? (
+            children
+          ) : (
+            <SelectDropdown>
+              {options.map((option) => (
+                <SelectOption
+                  key={option.value}
+                  isSelected={option.value === value}
+                  onClick={() => {
+                    onChange?.(option.value);
+                    setIsOpen(false);
+                  }}
+                >
+                  {option.label}
+                </SelectOption>
+              ))}
+            </SelectDropdown>
+          )}
+        </SelectDropdownContainer>
       )}
     </SelectContainer>
   );

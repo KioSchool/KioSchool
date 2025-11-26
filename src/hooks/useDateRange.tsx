@@ -1,4 +1,4 @@
-import { useState, useReducer, Dispatch, useEffect } from 'react';
+import { useState, useReducer, Dispatch, useEffect, SetStateAction } from 'react';
 import { setHours, setMinutes, subHours, subDays, subWeeks, subMonths, startOfDay, endOfDay, isSameDay } from 'date-fns';
 import { isRangeCategory } from '@@types/guard';
 import { InputState, InputAction, RangeCategory } from '@@types/datePicker';
@@ -33,10 +33,14 @@ interface UseDateRangeReturn {
   handleManualDateInput: (event: React.ChangeEvent<HTMLInputElement>, type: 'START' | 'END') => void;
   handleTimeChange: (type: 'START' | 'END', timeStr: string) => void;
 }
+interface UseDateRangeParams {
+  startDate: Date | null;
+  endDate: Date | null;
+  setStartDate: Dispatch<SetStateAction<Date | null>>;
+  setEndDate: Dispatch<SetStateAction<Date | null>>;
+}
 
-function useDateRange(): UseDateRangeReturn {
-  const [startDate, setStartDate] = useState<Date | null>(subHours(new Date(), 2));
-  const [endDate, setEndDate] = useState<Date | null>(new Date());
+function useDateRange({ startDate, endDate, setStartDate, setEndDate }: UseDateRangeParams): UseDateRangeReturn {
   const [rangeCategory, setRangeCategory] = useState<RangeCategory>('2HOURS');
 
   const [inputState, dispatch] = useReducer(inputReducer, {
@@ -52,6 +56,18 @@ function useDateRange(): UseDateRangeReturn {
         type: 'SET_ALL',
         payload: formatDateRange(startDate, endDate),
       });
+
+      if (startDate.getTime() === subHours(endDate, 2).getTime()) {
+        setRangeCategory('2HOURS');
+      } else if (startDate.getTime() === subDays(endDate, 1).getTime()) {
+        setRangeCategory('1DAY');
+      } else if (startDate.getTime() === subWeeks(endDate, 1).getTime()) {
+        setRangeCategory('1WEEK');
+      } else if (startDate.getTime() === subMonths(endDate, 1).getTime()) {
+        setRangeCategory('1MONTH');
+      } else {
+        setRangeCategory('CUSTOM');
+      }
     }
   }, [startDate, endDate]);
 
