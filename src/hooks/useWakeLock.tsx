@@ -64,15 +64,17 @@ export const useWakeLock = () => {
   useEffect(() => {
     requestLock();
 
-    document.onvisibilitychange = () => {
+    const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
         requestLock();
       }
     };
 
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
     return () => {
       releaseLock();
-      document.onvisibilitychange = null;
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [requestLock, releaseLock]);
 
