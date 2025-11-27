@@ -15,7 +15,6 @@ const ListWrapper = styled.div`
   width: 100%;
   max-height: 360px;
   overflow-y: auto;
-  padding: 0 20px;
   gap: 18px;
   box-sizing: border-box;
   scrollbar-gutter: stable;
@@ -23,8 +22,7 @@ const ListWrapper = styled.div`
 `;
 
 const FixedItemWrapper = styled.div`
-  padding-left: 62px;
-  padding-top: 9px;
+  padding-top: 18px;
   ${colFlex({ align: 'center' })}
 `;
 
