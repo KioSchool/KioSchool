@@ -41,7 +41,7 @@ const InputRow = styled.div`
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
-const StyledInput = styled.input`
+const CategoryInput = styled.input`
   flex: 1;
   border: none;
   border-bottom: 1px solid #e8eef2;
@@ -94,7 +94,7 @@ function AdminProductCategories() {
         <CategoriesInputContainer className={'categories-input-container'}>
           <SectionTitle>등록할 카테고리명</SectionTitle>
           <InputRow>
-            <StyledInput ref={categoryInputRef} type="text" placeholder="카테고리 이름을 입력해주세요" />
+            <CategoryInput ref={categoryInputRef} type="text" placeholder="카테고리 이름을 입력해주세요" />
             <NewCommonButton onClick={addCategoryHandler} size="sm">
               등록
             </NewCommonButton>
