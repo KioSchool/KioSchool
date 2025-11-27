@@ -8,19 +8,19 @@ import { defaultCategoryNotice } from '@constants/data/categoryData';
 
 const CategoryItemContainer = styled.div`
   position: relative;
-  width: 650px;
-  ${rowFlex({ justify: 'center', align: 'center' })}
+  width: 668px;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const CategoryContentsContainer = styled.div`
   box-sizing: border-box;
   padding: 15px 30px;
-  width: 600px;
+  width: 630px;
   height: 55px;
   background-color: ${Color.WHITE};
-  border-radius: 51px;
+  border-radius: 16px;
   border: 1px solid rgba(201, 201, 201, 0.5);
-  margin: 10px 0;
+  box-shadow: 0px 4px 20px rgba(92, 92, 92, 0.05);
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
@@ -35,8 +35,8 @@ const DefaultCategoryNotice = styled.label`
 `;
 
 const DeleteIcon = styled(RiDeleteBinFill)`
-  position: absolute;
-  left: -10px;
+  width: 18px;
+  height: 18px;
   color: #b9b9b9;
   ${expandButtonStyle}
 `;
