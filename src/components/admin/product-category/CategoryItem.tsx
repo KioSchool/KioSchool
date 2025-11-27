@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { RiMenuLine, RiDeleteBinFill } from '@remixicon/react';
 import { rowFlex } from '@styles/flexStyles';
-import { expandButtonStyle } from '@styles/buttonStyles';
 import { defaultCategoryNotice } from '@constants/data/categoryData';
 
 const CategoryItemContainer = styled.div`
@@ -34,11 +33,14 @@ const DefaultCategoryNotice = styled.label`
   color: #8d8d8d;
 `;
 
-const DeleteIcon = styled(RiDeleteBinFill)`
+const DeleteIcon = styled(RiDeleteBinFill)<{ $isHidden: boolean }>`
   width: 18px;
   height: 18px;
   color: #b9b9b9;
-  ${expandButtonStyle}
+  cursor: pointer;
+  opacity: ${({ $isHidden }) => ($isHidden ? 0 : 1)};
+  visibility: ${({ $isHidden }) => ($isHidden ? 'hidden' : 'visible')};
+  pointer-events: ${({ $isHidden }) => ($isHidden ? 'none' : 'auto')};
 `;
 
 const GripIcon = styled(RiMenuLine)`
@@ -61,7 +63,8 @@ interface CategoryItemProps {
 function CategoryItem({ category, isDefault, deleteHandler }: CategoryItemProps) {
   return (
     <CategoryItemContainer>
-      {!isDefault && <DeleteIcon onClick={deleteHandler} />}
+      <DeleteIcon onClick={deleteHandler} $isHidden={isDefault} />
+
       <CategoryContentsContainer>
         <CategoryName>{category.name}</CategoryName>
         <DragHandle>
