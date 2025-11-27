@@ -74,14 +74,25 @@ function SelectWithProductStatus({ currentStatus, onStatusChange }: SelectWithPr
   const containerRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const updateDropdownPosition = () => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      setCoords({
+        top: rect.bottom + window.scrollY + 4,
+        left: rect.left + window.scrollX,
+        width: rect.width,
+      });
+    }
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node) &&
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      const target = event.target as Node;
+
+      const isOutsideContainer = containerRef.current && !containerRef.current.contains(target);
+      const isOutsideDropdown = dropdownRef.current && !dropdownRef.current.contains(target);
+
+      if (isOutsideContainer && isOutsideDropdown) {
         setIsOpen(false);
       }
     };
@@ -112,15 +123,7 @@ function SelectWithProductStatus({ currentStatus, onStatusChange }: SelectWithPr
 
     if (!isOpen) {
       window.dispatchEvent(new Event(DROPDOWN_EVENT_KEY));
-
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        setCoords({
-          top: rect.bottom + window.scrollY + 4,
-          left: rect.left + window.scrollX,
-          width: rect.width,
-        });
-      }
+      updateDropdownPosition();
     }
     setIsOpen(!isOpen);
   };
