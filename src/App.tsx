@@ -71,10 +71,12 @@ function App() {
         <Route path={USER_ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
         <Route path={USER_ROUTES.INFO} element={<Info />} />
         <Route path={USER_ROUTES.EMAIL_DOMAINS} element={<UserEmailDomain />} />
+
         <Route path={ADMIN_ROUTES.HOME} element={<AdminHome />} />
         <Route path={ADMIN_ROUTES.MY_INFO} element={<AdminMyInfo />} />
         <Route path={ADMIN_ROUTES.REGISTER_ACCOUNT} element={<AdminAccount />} />
         <Route path={ADMIN_ROUTES.WORKSPACE} element={<AdminWorkspace />} />
+
         <Route path={ADMIN_ROUTES.WORKSPACE_EDIT} element={<AdminWorkspaceEdit />} />
         <Route path={ADMIN_ROUTES.ORDER_REALTIME} element={<AdminOrderRealtime />} />
         <Route path={ADMIN_ROUTES.ORDER_STATISTICS} element={<AdminOrderStatistics />} />
@@ -84,17 +86,20 @@ function App() {
         <Route path={ADMIN_ROUTES.ORDER_TABLE_MANAGE} element={<AdminOrderTableManage />} />
         <Route path={ADMIN_ROUTES.PRODUCTS} element={<AdminProduct />} />
         <Route path={ADMIN_ROUTES.PRODUCTS_CATEGORIES} element={<AdminProductCategories />} />
+
         <Route path={SUPER_ADMIN_ROUTES.HOME} element={<SuperAdminHome />} />
         <Route path={SUPER_ADMIN_ROUTES.WORKSPACE} element={<SuperAdminWorkspace />} />
         <Route path={SUPER_ADMIN_ROUTES.MANAGE} element={<SuperAdminManage />} />
         <Route path={SUPER_ADMIN_ROUTES.USER} element={<SuperAdminUser />} />
         <Route path={SUPER_ADMIN_ROUTES.EMAIL} element={<SuperAdminEmailDomainList />} />
         <Route path={SUPER_ADMIN_ROUTES.BANK} element={<SuperAdminBank />} />
+
         <Route path={ORDER_ROUTES.ORDER} element={<Order />} />
         <Route path={ORDER_ROUTES.ORDER_BASKET} element={<OrderBasket />} />
         <Route path={ORDER_ROUTES.ORDER_PAY} element={<OrderPay />} />
         <Route path={ORDER_ROUTES.ORDER_WAIT} element={<OrderWait />} />
         <Route path={ORDER_ROUTES.ORDER_COMPLETE} element={<OrderComplete />} />
+
         <Route path={TEST_ROUTES.SENTRY_TEST} element={<SentryTestPage />} />
       </SentryRoutes>
       <Global styles={globalStyles} />
