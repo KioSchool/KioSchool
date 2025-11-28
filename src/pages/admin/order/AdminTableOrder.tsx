@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom';
-import { useAdminTableOrderLogic } from '@hooks/admin/useAdminTableOrderLogic';
 import CustomSelect from '@components/common/select/CustomSelect';
 import CustomDatePicker from '@components/common/date-picker/CustomDatePicker';
 import styled from '@emotion/styled';
@@ -8,6 +7,7 @@ import { Color } from '@resources/colors';
 import { RiRefreshLine } from '@remixicon/react';
 import AppContainer from '@components/common/container/AppContainer';
 import OrderSessionCard from '@components/admin/order/table/OrderSessionCard';
+import { useAdminTableOrder } from '@hooks/admin/useAdminTableOrder';
 
 const FilterContainer = styled.div`
   width: 100%;
@@ -36,7 +36,7 @@ const ResetButton = styled.div`
 
 const FallbackContainer = styled.div`
   width: 100%;
-  height: 400px;
+  height: 500px;
   border: 1px solid #e8eef2;
   border-radius: 10px;
   font-size: 1.2rem;
@@ -53,7 +53,7 @@ const SessionListContainer = styled.div`
 function AdminTableOrder() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { isLoading, sessions, tableSessionFilters, setTableSessionFilters, handleReset, tableOptions, statusOptions, sortOptions } =
-    useAdminTableOrderLogic(workspaceId);
+    useAdminTableOrder(workspaceId);
 
   const { startDate, endDate, tableNumber, serveStatus, sortOrder } = tableSessionFilters;
   const { setStartDate, setEndDate, setTableNumber, setServeStatus, setSortOrder } = setTableSessionFilters;
@@ -87,13 +87,13 @@ function AdminTableOrder() {
               return (
                 <OrderSessionCard
                   key={data.id}
-                  orderSessionId={data.id}
                   sessionStartDate={new Date(data.createdAt)}
                   sessionEndDate={data.endAt ? new Date(data.endAt) : new Date(data.expectedEndAt)}
                   endAt={data.endAt}
                   tableNumber={data.tableNumber}
                   serveStatus={serveStatus}
                   sessionTotalPrice={sessionTotalPrice}
+                  orders={data.orders}
                 />
               );
             })

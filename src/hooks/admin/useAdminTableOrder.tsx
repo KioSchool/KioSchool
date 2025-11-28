@@ -6,7 +6,9 @@ import { Table, TableOrderSession } from '@@types/index';
 import { subHours } from 'date-fns';
 import { dateConverter } from '@utils/FormatDate';
 
-export const useAdminTableOrderLogic = (workspaceId: string | undefined) => {
+const LOADING_DELAY_MS = 300;
+
+export const useAdminTableOrder = (workspaceId: string | undefined) => {
   const { fetchTableOrderSessions } = useAdminOrder(workspaceId);
   const { fetchWorkspaceTables } = useAdminWorkspace();
 
@@ -29,7 +31,10 @@ export const useAdminTableOrderLogic = (workspaceId: string | undefined) => {
 
   useEffect(() => {
     if (startDate && endDate) {
-      setIsLoading(true);
+      const timer = setTimeout(() => {
+        setIsLoading(true);
+      }, LOADING_DELAY_MS);
+
       const start = dateConverter(startDate);
       const end = dateConverter(endDate);
       const tableNo = tableNumber === 'ALL' ? undefined : Number(tableNumber);
@@ -39,7 +44,10 @@ export const useAdminTableOrderLogic = (workspaceId: string | undefined) => {
           setSessionData(res.data);
         })
         .catch(console.error)
-        .finally(() => setIsLoading(false));
+        .finally(() => {
+          clearTimeout(timer);
+          setIsLoading(false);
+        });
     }
   }, [startDate, endDate, tableNumber]);
 

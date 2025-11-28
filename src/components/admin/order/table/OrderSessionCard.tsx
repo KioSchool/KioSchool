@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Order } from '@@types/index';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
@@ -13,6 +14,7 @@ const Container = styled.div<{ isOpen: boolean }>`
   border: ${({ isOpen }) => (isOpen ? '1px solid #e8eef2' : 'none')};
   border-radius: ${({ isOpen }) => (isOpen ? '0 0 15px 15px' : '0')};
   overflow: hidden;
+  user-select: none;
   ${colFlex({ align: 'center' })}
 `;
 
@@ -81,7 +83,6 @@ const Label = styled.span`
 `;
 
 interface OrderSessionCardProps {
-  orderSessionId: number;
   sessionStartDate: Date;
   sessionEndDate: Date;
   endAt: string | null;
@@ -89,9 +90,10 @@ interface OrderSessionCardProps {
   totalPrice?: number;
   serveStatus: string;
   sessionTotalPrice: number;
+  orders: Order[];
 }
 
-function OrderSessionCard({ orderSessionId, sessionStartDate, sessionEndDate, endAt, tableNumber, serveStatus, sessionTotalPrice }: OrderSessionCardProps) {
+function OrderSessionCard({ sessionStartDate, sessionEndDate, endAt, tableNumber, serveStatus, sessionTotalPrice, orders }: OrderSessionCardProps) {
   const [isOpenOrderSessionDetailCard, setIsOpenOrderSessionDetailCard] = useState(false);
 
   const isActive = !endAt;
@@ -122,7 +124,7 @@ function OrderSessionCard({ orderSessionId, sessionStartDate, sessionEndDate, en
       {isOpenOrderSessionDetailCard && (
         <>
           <DetailListWrapper>
-            <OrderSessionDetailCardList orderSessionId={orderSessionId} serveStatus={serveStatus} />
+            <OrderSessionDetailCardList orderSessionData={orders} serveStatus={serveStatus} />
           </DetailListWrapper>
           <BottomPadding />
         </>
