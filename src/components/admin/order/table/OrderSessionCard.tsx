@@ -45,10 +45,6 @@ const TimeText = styled.span`
 
 const MetaRow = styled.div`
   gap: 6px;
-  font-size: 12px;
-  font-weight: 400;
-  color: #464a4d;
-  line-height: normal;
   ${rowFlex({ align: 'flex-start' })}
 `;
 
@@ -76,6 +72,12 @@ const BottomPadding = styled.div`
   width: 100%;
   height: 11px;
   background: #fcfcfc;
+`;
+
+const Label = styled.span`
+  font-size: 12px;
+  font-weight: 400;
+  color: #464a4d;
 `;
 
 interface OrderSessionCardProps {
@@ -106,13 +108,13 @@ function OrderSessionCard({ orderSessionId, sessionStartDate, sessionEndDate, en
             <TimeText>{timeRange}</TimeText>
           </TimeRow>
           <MetaRow>
-            <span>{dateStr}</span>
-            <span>·</span>
-            <span>{duration}</span>
-            <span>·</span>
-            <span>테이블 {tableNumber}</span>
-            <span>·</span>
-            <span>{sessionTotalPrice.toLocaleString()}원</span>
+            <Label>{dateStr}</Label>
+            <Label>·</Label>
+            <Label>{duration}</Label>
+            <Label>·</Label>
+            <Label>테이블 {tableNumber}</Label>
+            <Label>·</Label>
+            <Label>{sessionTotalPrice.toLocaleString()}원</Label>
           </MetaRow>
         </InfoContainer>
         <StatusBadge isActive={isActive}>{isActive ? '사용중' : '사용완료'}</StatusBadge>
