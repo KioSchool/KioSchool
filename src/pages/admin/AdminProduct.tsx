@@ -50,6 +50,7 @@ const ProductCardsContainer = styled.div`
   width: 100%;
   overflow-x: auto;
   flex-wrap: nowrap;
+  padding-bottom: 4px;
   ${rowFlex({ justify: 'start', align: 'center' })};
 `;
 

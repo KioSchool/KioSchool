@@ -4,7 +4,7 @@ import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useParams } from 'react-router-dom';
 import { colFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import SelectWithStatus from '@components/admin/product/SelectWithProductStatus';
+import SelectWithProductStatus from '@components/admin/product/SelectWithProductStatus';
 
 const sellableStyle = `
   background: ${Color.WHITE};
@@ -99,7 +99,7 @@ function ProductCard({ product, onClick }: ProductCardProps) {
       </ContentContainer>
 
       <SelectorWrapper onClick={(e) => e.stopPropagation()}>
-        <SelectWithStatus currentStatus={getCurrentStatus()} onStatusChange={handleStatusChange} />
+        <SelectWithProductStatus currentStatus={getCurrentStatus()} onStatusChange={handleStatusChange} />
       </SelectorWrapper>
     </Container>
   );
