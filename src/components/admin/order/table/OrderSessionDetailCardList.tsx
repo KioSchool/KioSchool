@@ -16,12 +16,12 @@ const FallbackContainer = styled.div`
   color: #888;
 `;
 
-interface Props {
+interface OrderSessionDetailCardListProps {
   orderSessionId: number;
   serveStatus: string;
 }
 
-function OrderSessionDetailCardList({ orderSessionId, serveStatus }: Props) {
+function OrderSessionDetailCardList({ orderSessionId, serveStatus }: OrderSessionDetailCardListProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchOrderSession } = useAdminOrder(workspaceId);
   const [orderSessionData, setOrderSessionData] = useState<Order[]>([]);
