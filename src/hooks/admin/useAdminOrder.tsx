@@ -1,5 +1,5 @@
 import useApi from '@hooks/useApi';
-import { Order, OrderSession, OrderStatus, PaginationResponse } from '@@types/index';
+import { Order, OrderStatus, PaginationResponse, TableOrderSession } from '@@types/index';
 import { defaultPaginationValue } from '@@types/defaultValues';
 import { useSetAtom } from 'jotai';
 import { adminOrdersAtom } from 'src/jotai/admin/atoms';
@@ -85,7 +85,7 @@ function useAdminOrder(workspaceId: string | undefined) {
   };
 
   const fetchTableOrderSessions = (props: { startDate: string; endDate: string; tableNumber?: number }) => {
-    return adminApi.get<OrderSession[]>('/orders/table', { params: { ...props, workspaceId } });
+    return adminApi.get<TableOrderSession[]>('/orders/table', { params: { ...props, workspaceId } });
   };
 
   return {

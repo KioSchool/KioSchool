@@ -3,7 +3,7 @@ import { TABLE_ORDER_SORT_OPTIONS, TABLE_ORDER_STATUS_OPTIONS } from '@constants
 import { useParams } from 'react-router-dom';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
-import { OrderSession, Table } from '@@types/index';
+import { Table, TableOrderSession } from '@@types/index';
 import CustomSelect from '@components/common/select/CustomSelect';
 import CustomDatePicker from '@components/common/date-picker/CustomDatePicker';
 import styled from '@emotion/styled';
@@ -61,7 +61,7 @@ function AdminTableOrder() {
   const { fetchTableOrderSessions } = useAdminOrder(workspaceId);
   const { fetchWorkspaceTables } = useAdminWorkspace();
 
-  const [sessionData, setSessionData] = useState<OrderSession[]>([]);
+  const [sessionData, setSessionData] = useState<TableOrderSession[]>([]);
   const [tables, setTables] = useState<Table[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -136,17 +136,23 @@ function AdminTableOrder() {
           {isLoading ? (
             <FallbackContainer>데이터를 불러오는 중입니다...</FallbackContainer>
           ) : filteredData.length > 0 ? (
-            filteredData.map((data) => (
-              <OrderSessionCard
-                key={data.id}
-                orderSessionId={data.id}
-                sessionStartDate={new Date(data.createdAt)}
-                sessionEndDate={data.endAt ? new Date(data.endAt) : new Date(data.expectedEndAt)}
-                endAt={data.endAt}
-                tableNumber={data.tableNumber}
-                serveStatus={serveStatus}
-              />
-            ))
+            filteredData.map((data) => {
+              const sessionTotalPrice = data.orders.reduce((acc, order) => {
+                return acc + order.totalPrice;
+              }, 0);
+              return (
+                <OrderSessionCard
+                  key={data.id}
+                  orderSessionId={data.id}
+                  sessionStartDate={new Date(data.createdAt)}
+                  sessionEndDate={data.endAt ? new Date(data.endAt) : new Date(data.expectedEndAt)}
+                  endAt={data.endAt}
+                  tableNumber={data.tableNumber}
+                  serveStatus={serveStatus}
+                  sessionTotalPrice={sessionTotalPrice}
+                />
+              );
+            })
           ) : (
             <FallbackContainer>조회된 주문 내역이 없습니다.</FallbackContainer>
           )}

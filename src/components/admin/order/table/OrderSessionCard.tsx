@@ -86,9 +86,10 @@ interface OrderSessionCardProps {
   tableNumber: number;
   totalPrice?: number;
   serveStatus: string;
+  sessionTotalPrice: number;
 }
 
-function OrderSessionCard({ orderSessionId, sessionStartDate, sessionEndDate, endAt, tableNumber, serveStatus }: OrderSessionCardProps) {
+function OrderSessionCard({ orderSessionId, sessionStartDate, sessionEndDate, endAt, tableNumber, serveStatus, sessionTotalPrice }: OrderSessionCardProps) {
   const [isOpenOrderSessionDetailCard, setIsOpenOrderSessionDetailCard] = useState(false);
 
   const isActive = !endAt;
@@ -110,6 +111,8 @@ function OrderSessionCard({ orderSessionId, sessionStartDate, sessionEndDate, en
             <span>{duration}</span>
             <span>·</span>
             <span>테이블 {tableNumber}</span>
+            <span>·</span>
+            <span>{sessionTotalPrice.toLocaleString()}원</span>
           </MetaRow>
         </InfoContainer>
         <StatusBadge isActive={isActive}>{isActive ? '사용중' : '사용완료'}</StatusBadge>
