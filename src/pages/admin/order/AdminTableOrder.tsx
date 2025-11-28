@@ -1,15 +1,9 @@
-import { useEffect, useState } from 'react';
-import { TABLE_ORDER_SORT_OPTIONS, TABLE_ORDER_STATUS_OPTIONS } from '@constants/data/adminOrderData';
 import { useParams } from 'react-router-dom';
-import useAdminOrder from '@hooks/admin/useAdminOrder';
-import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
-import { Table, TableOrderSession } from '@@types/index';
+import { useAdminTableOrderLogic } from '@hooks/admin/useAdminTableOrderLogic';
 import CustomSelect from '@components/common/select/CustomSelect';
 import CustomDatePicker from '@components/common/date-picker/CustomDatePicker';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { subHours } from 'date-fns';
-import { dateConverter } from '@utils/FormatDate';
 import { Color } from '@resources/colors';
 import { RiRefreshLine } from '@remixicon/react';
 import AppContainer from '@components/common/container/AppContainer';
@@ -58,64 +52,13 @@ const SessionListContainer = styled.div`
 
 function AdminTableOrder() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchTableOrderSessions } = useAdminOrder(workspaceId);
-  const { fetchWorkspaceTables } = useAdminWorkspace();
+  const { isLoading, sessions, tableSessionFilters, setTableSessionFilters, handleReset, tableOptions, statusOptions, sortOptions } =
+    useAdminTableOrderLogic(workspaceId);
 
-  const [sessionData, setSessionData] = useState<TableOrderSession[]>([]);
-  const [tables, setTables] = useState<Table[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const [startDate, setStartDate] = useState<Date | null>(subHours(new Date(), 2));
-  const [endDate, setEndDate] = useState<Date | null>(new Date());
-  const [tableNumber, setTableNumber] = useState<string>('ALL');
-  const [serveStatus, setServeStatus] = useState<string>('ALL');
-  const [sortOrder, setSortOrder] = useState<string>('LATEST');
-
-  useEffect(() => {
-    fetchWorkspaceTables(workspaceId).then((res) => setTables(res.data));
-  }, [workspaceId]);
-
-  useEffect(() => {
-    if (startDate && endDate) {
-      setIsLoading(true);
-      const start = dateConverter(startDate);
-      const end = dateConverter(endDate);
-      const tableNo = tableNumber === 'ALL' ? undefined : Number(tableNumber);
-
-      fetchTableOrderSessions({ startDate: start, endDate: end, tableNumber: tableNo })
-        .then((res) => {
-          setSessionData(res.data);
-        })
-        .catch(console.error)
-        .finally(() => setIsLoading(false));
-    }
-  }, [startDate, endDate, tableNumber]);
-
-  const getFilteredAndSortedData = () => {
-    let data = [...sessionData];
-
-    if (sortOrder === 'LATEST') {
-      data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-    } else {
-      data.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
-    }
-
-    return data;
-  };
-
-  const filteredData = getFilteredAndSortedData();
-
-  const tableOptions = [{ value: 'ALL', label: '전체 테이블' }, ...tables.map((t) => ({ value: String(t.tableNumber), label: `${t.tableNumber}번 테이블` }))];
+  const { startDate, endDate, tableNumber, serveStatus, sortOrder } = tableSessionFilters;
+  const { setStartDate, setEndDate, setTableNumber, setServeStatus, setSortOrder } = setTableSessionFilters;
 
   const dateRangeLabel = startDate && endDate ? `${startDate.toLocaleDateString()} ~ ${endDate.toLocaleDateString()}` : '날짜 선택';
-
-  const handleReset = () => {
-    setStartDate(subHours(new Date(), 2));
-    setEndDate(new Date());
-    setTableNumber('ALL');
-    setServeStatus('ALL');
-    setSortOrder('LATEST');
-  };
 
   return (
     <AppContainer useFlex={colFlex({ justify: 'start' })}>
@@ -125,18 +68,19 @@ function AdminTableOrder() {
             <RiRefreshLine size={14} />
             초기화
           </ResetButton>
-          <CustomSelect value={sortOrder} options={TABLE_ORDER_SORT_OPTIONS} onChange={setSortOrder} highlightOnSelect={true} width="120px" />
+          <CustomSelect value={sortOrder} options={sortOptions} onChange={setSortOrder} highlightOnSelect={true} width="120px" />
           <CustomSelect value={dateRangeLabel} triggerLabel={dateRangeLabel} highlightOnSelect={true} width="250px">
             <CustomDatePicker startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} />
           </CustomSelect>
-          <CustomSelect value={serveStatus} options={TABLE_ORDER_STATUS_OPTIONS} onChange={setServeStatus} highlightOnSelect={true} width="120px" />
+          <CustomSelect value={serveStatus} options={statusOptions} onChange={setServeStatus} highlightOnSelect={true} width="120px" />
           <CustomSelect value={tableNumber} options={tableOptions} onChange={setTableNumber} highlightOnSelect={true} width="150px" />
         </FilterContainer>
+
         <SessionListContainer>
           {isLoading ? (
             <FallbackContainer>데이터를 불러오는 중입니다...</FallbackContainer>
-          ) : filteredData.length > 0 ? (
-            filteredData.map((data) => {
+          ) : sessions.length > 0 ? (
+            sessions.map((data) => {
               const sessionTotalPrice = data.orders.reduce((acc, order) => {
                 return acc + order.totalPrice;
               }, 0);
