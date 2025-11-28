@@ -3,24 +3,23 @@ import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { RiMenuLine, RiDeleteBinFill } from '@remixicon/react';
 import { rowFlex } from '@styles/flexStyles';
-import { expandButtonStyle } from '@styles/buttonStyles';
 import { defaultCategoryNotice } from '@constants/data/categoryData';
 
 const CategoryItemContainer = styled.div`
   position: relative;
-  width: 650px;
-  ${rowFlex({ justify: 'center', align: 'center' })}
+  width: 668px;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const CategoryContentsContainer = styled.div`
   box-sizing: border-box;
   padding: 15px 30px;
-  width: 600px;
+  width: 630px;
   height: 55px;
   background-color: ${Color.WHITE};
-  border-radius: 51px;
+  border-radius: 16px;
   border: 1px solid rgba(201, 201, 201, 0.5);
-  margin: 10px 0;
+  box-shadow: 0px 4px 20px rgba(92, 92, 92, 0.05);
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
@@ -34,11 +33,14 @@ const DefaultCategoryNotice = styled.label`
   color: #8d8d8d;
 `;
 
-const DeleteIcon = styled(RiDeleteBinFill)`
-  position: absolute;
-  left: -10px;
+const DeleteIcon = styled(RiDeleteBinFill)<{ $isHidden: boolean }>`
+  width: 18px;
+  height: 18px;
   color: #b9b9b9;
-  ${expandButtonStyle}
+  cursor: pointer;
+  opacity: ${({ $isHidden }) => ($isHidden ? 0 : 1)};
+  visibility: ${({ $isHidden }) => ($isHidden ? 'hidden' : 'visible')};
+  pointer-events: ${({ $isHidden }) => ($isHidden ? 'none' : 'auto')};
 `;
 
 const GripIcon = styled(RiMenuLine)`
@@ -61,7 +63,8 @@ interface CategoryItemProps {
 function CategoryItem({ category, isDefault, deleteHandler }: CategoryItemProps) {
   return (
     <CategoryItemContainer>
-      {!isDefault && <DeleteIcon onClick={deleteHandler} />}
+      <DeleteIcon onClick={deleteHandler} $isHidden={isDefault} />
+
       <CategoryContentsContainer>
         <CategoryName>{category.name}</CategoryName>
         <DragHandle>

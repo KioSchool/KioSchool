@@ -15,13 +15,14 @@ const ListWrapper = styled.div`
   width: 100%;
   max-height: 360px;
   overflow-y: auto;
-  ${colFlex({ align: 'center' })}
-  padding: 0 20px;
+  gap: 18px;
   box-sizing: border-box;
   scrollbar-gutter: stable;
+  ${colFlex({ align: 'center' })}
 `;
 
 const FixedItemWrapper = styled.div`
+  padding-top: 18px;
   ${colFlex({ align: 'center' })}
 `;
 
