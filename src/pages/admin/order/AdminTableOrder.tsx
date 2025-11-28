@@ -56,7 +56,7 @@ const SessionListContainer = styled.div`
   ${colFlex({ align: 'flex-start' })}
 `;
 
-const AdminTableOrder = () => {
+function AdminTableOrder() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchTableOrderSessions } = useAdminOrder(workspaceId);
   const { fetchWorkspaceTables } = useAdminWorkspace();
@@ -154,6 +154,6 @@ const AdminTableOrder = () => {
       </>
     </AppContainer>
   );
-};
+}
 
 export default AdminTableOrder;

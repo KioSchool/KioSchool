@@ -88,7 +88,7 @@ interface OrderSessionCardProps {
   serveStatus: string;
 }
 
-const OrderSessionCard = ({ orderSessionId, sessionStartDate, sessionEndDate, endAt, tableNumber, serveStatus }: OrderSessionCardProps) => {
+function OrderSessionCard({ orderSessionId, sessionStartDate, sessionEndDate, endAt, tableNumber, serveStatus }: OrderSessionCardProps) {
   const [isOpenOrderSessionDetailCard, setIsOpenOrderSessionDetailCard] = useState(false);
 
   const isActive = !endAt;
@@ -124,6 +124,6 @@ const OrderSessionCard = ({ orderSessionId, sessionStartDate, sessionEndDate, en
       )}
     </Container>
   );
-};
+}
 
 export default OrderSessionCard;

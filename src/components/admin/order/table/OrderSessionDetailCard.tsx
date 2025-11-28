@@ -75,7 +75,7 @@ const getProductSummary = (products: Order['orderProducts']) => {
   return `${products[0].productName} 외 ${products.length - 1}건`;
 };
 
-const OrderSessionDetailCard = (props: Order) => {
+function OrderSessionDetailCard(props: Order) {
   const createdDate = new Date(props.createdAt);
   const productSummary = getProductSummary(props.orderProducts);
   const statusLabel = getStatusLabel(props.status);
@@ -96,6 +96,6 @@ const OrderSessionDetailCard = (props: Order) => {
       <StatusBadge>{statusLabel}</StatusBadge>
     </Container>
   );
-};
+}
 
 export default OrderSessionDetailCard;

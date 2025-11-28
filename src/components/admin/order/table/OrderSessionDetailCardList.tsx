@@ -21,7 +21,7 @@ interface Props {
   serveStatus: string;
 }
 
-const OrderSessionDetailCardList = ({ orderSessionId, serveStatus }: Props) => {
+function OrderSessionDetailCardList({ orderSessionId, serveStatus }: Props) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchOrderSession } = useAdminOrder(workspaceId);
   const [orderSessionData, setOrderSessionData] = useState<Order[]>([]);
@@ -46,6 +46,6 @@ const OrderSessionDetailCardList = ({ orderSessionId, serveStatus }: Props) => {
       ))}
     </Container>
   );
-};
+}
 
 export default OrderSessionDetailCardList;
