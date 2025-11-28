@@ -61,7 +61,7 @@ function AdminTableOrder() {
   const dateRangeLabel = startDate && endDate ? `${startDate.toLocaleDateString()} ~ ${endDate.toLocaleDateString()}` : '날짜 선택';
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'start' })}>
+    <AppContainer useFlex={colFlex({ justify: 'start' })} customWidth={'1000px'}>
       <>
         <FilterContainer>
           <ResetButton onClick={handleReset}>
