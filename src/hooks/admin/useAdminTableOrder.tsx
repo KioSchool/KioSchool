@@ -41,15 +41,11 @@ export const useAdminTableOrder = (workspaceId: string | undefined) => {
   }, [startDate, endDate, tableNumber]);
 
   const sortedSessions = useMemo(() => {
-    let data = [...sessionData];
-
-    if (sortOrder === 'LATEST') {
-      data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-    } else {
-      data.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
-    }
-
-    return data;
+    return [...sessionData].sort((a, b) => {
+      const timeA = new Date(a.createdAt).getTime();
+      const timeB = new Date(b.createdAt).getTime();
+      return sortOrder === 'LATEST' ? timeB - timeA : timeA - timeB;
+    });
   }, [sessionData, sortOrder]);
 
   const tableOptions = useMemo(

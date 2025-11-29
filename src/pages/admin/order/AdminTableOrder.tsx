@@ -85,7 +85,7 @@ function AdminTableOrder() {
                 <OrderSessionCard
                   key={data.id}
                   sessionStartDate={new Date(data.createdAt)}
-                  sessionEndDate={data.endAt ? new Date(data.endAt) : new Date(data.expectedEndAt)}
+                  sessionEndDate={new Date(data.endAt || data.expectedEndAt)}
                   endAt={data.endAt}
                   tableNumber={data.tableNumber}
                   orderStatus={orderStatus}
