@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import { Order, OrderStatus } from '@@types/index';
+import { Order } from '@@types/index';
 import { format } from 'date-fns';
+import { orderStatusConverter } from '@utils/orderStatusConverter';
 
 const Container = styled.div`
   width: 100%;
@@ -54,43 +55,28 @@ const Label = styled.span`
   color: #464a4d;
 `;
 
-const getStatusLabel = (status: OrderStatus) => {
-  switch (status) {
-    case OrderStatus.PAID:
-      return '결제완료';
-    case OrderStatus.SERVED:
-      return '서빙완료';
-    case OrderStatus.NOT_PAID:
-      return '미결제';
-    case OrderStatus.CANCELLED:
-      return '취소됨';
-    default:
-      return '결제완료';
-  }
-};
-
 const getProductSummary = (products: Order['orderProducts']) => {
   if (products.length === 0) return '';
   if (products.length === 1) return products[0].productName;
   return `${products[0].productName} 외 ${products.length - 1}건`;
 };
 
-function OrderSessionDetailCard(props: Order) {
-  const createdDate = new Date(props.createdAt);
-  const productSummary = getProductSummary(props.orderProducts);
-  const statusLabel = getStatusLabel(props.status);
+function OrderSessionDetailCard(order: Order) {
+  const createdDate = new Date(order.createdAt);
+  const productSummary = getProductSummary(order.orderProducts);
+  const statusLabel = orderStatusConverter(order.status);
 
   return (
     <Container>
       <InfoContainer>
-        <OrderNumber>주문번호 {props.orderNumber}</OrderNumber>
+        <OrderNumber>주문번호 {order.orderNumber}</OrderNumber>
         <ProductSummary>{productSummary}</ProductSummary>
         <MetaRow>
           <Label>{format(createdDate, 'yyyy.MM.dd HH:mm')}</Label>
           <Label>·</Label>
-          <Label>{props.customerName}</Label>
+          <Label>{order.customerName}</Label>
           <Label>·</Label>
-          <Label>{props.totalPrice.toLocaleString()}원</Label>
+          <Label>{order.totalPrice.toLocaleString()}원</Label>
         </MetaRow>
       </InfoContainer>
       <StatusBadge>{statusLabel}</StatusBadge>

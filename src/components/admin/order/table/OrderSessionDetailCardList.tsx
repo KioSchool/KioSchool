@@ -19,23 +19,18 @@ interface OrderSessionDetailCardListProps {
 }
 
 function OrderSessionDetailCardList({ orderSessionData, serveStatus }: OrderSessionDetailCardListProps) {
-  const filteredData = orderSessionData.filter((order) => {
-    if (serveStatus === 'ALL') return true;
-    return order.status === serveStatus;
-  });
+  const filteredData = orderSessionData.filter((order) => serveStatus === 'ALL' || order.status === serveStatus);
 
   if (filteredData.length === 0) {
-    return <FallbackContainer>해당 세션의 주문이 없습니다.</FallbackContainer>;
+    return <FallbackContainer>해당 세션에 주문이 없습니다.</FallbackContainer>;
   }
 
   return (
-    <>
-      <Container>
-        {filteredData.map((data) => (
-          <OrderSessionDetailCard key={data.id} {...data} />
-        ))}
-      </Container>
-    </>
+    <Container>
+      {filteredData.map((data) => (
+        <OrderSessionDetailCard key={data.id} {...data} />
+      ))}
+    </Container>
   );
 }
 
