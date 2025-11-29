@@ -31,6 +31,10 @@ export const adminNavData: AdminNavCategory[] = [
         path: '/order/table',
         defaultQuery: { tableNo: '1' },
       },
+      {
+        name: '테이블 주문 조회',
+        path: '/table-order',
+      },
     ],
   },
   {

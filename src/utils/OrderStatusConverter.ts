@@ -1,6 +1,6 @@
 import { OrderStatus } from '@@types/index';
 
-export const orderStatusConverter = (status: OrderStatus) => {
+export const getOrderStatusLabel = (status: OrderStatus) => {
   switch (status) {
     case OrderStatus.PAID:
       return '결제 완료';

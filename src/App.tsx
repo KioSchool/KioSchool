@@ -37,6 +37,7 @@ import useServerHealth from '@hooks/useServerHealth';
 import ServerErrorFallback from '@components/common/fallback/ServerErrorFallback';
 import OrderWait from '@pages/user/order/OrderWait';
 import AdminOrderTableManage from '@pages/admin/table/AdminOrderTableManage';
+import AdminTableOrder from '@pages/admin/order/AdminTableOrder';
 import SentryTestPage from '@components/common/test/SentryTestPage';
 import { SentryRoutes } from 'src';
 import { USER_ROUTES, ORDER_ROUTES, ADMIN_ROUTES, SUPER_ADMIN_ROUTES, TEST_ROUTES } from '@constants/routes';
@@ -74,16 +75,15 @@ function App() {
         <Route path={ADMIN_ROUTES.HOME} element={<AdminHome />} />
         <Route path={ADMIN_ROUTES.MY_INFO} element={<AdminMyInfo />} />
         <Route path={ADMIN_ROUTES.REGISTER_ACCOUNT} element={<AdminAccount />} />
-
         <Route path={ADMIN_ROUTES.WORKSPACE} element={<AdminWorkspace />} />
-        <Route path={ADMIN_ROUTES.WORKSPACE_EDIT} element={<AdminWorkspaceEdit />} />
 
+        <Route path={ADMIN_ROUTES.WORKSPACE_EDIT} element={<AdminWorkspaceEdit />} />
         <Route path={ADMIN_ROUTES.ORDER_REALTIME} element={<AdminOrderRealtime />} />
         <Route path={ADMIN_ROUTES.ORDER_STATISTICS} element={<AdminOrderStatistics />} />
         <Route path={ADMIN_ROUTES.ORDER_TABLE} element={<AdminOrderTable />} />
+        <Route path={ADMIN_ROUTES.TABLE_ORDER} element={<AdminTableOrder />} />
         <Route path={ADMIN_ROUTES.ORDER_TABLE_HISTORY} element={<AdminOrderTableHistory />} />
         <Route path={ADMIN_ROUTES.ORDER_TABLE_MANAGE} element={<AdminOrderTableManage />} />
-
         <Route path={ADMIN_ROUTES.PRODUCTS} element={<AdminProduct />} />
         <Route path={ADMIN_ROUTES.PRODUCTS_CATEGORIES} element={<AdminProductCategories />} />
 

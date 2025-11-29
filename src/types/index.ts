@@ -35,6 +35,10 @@ export interface OrderSession {
   updatedAt: string;
 }
 
+export interface TableOrderSession extends OrderSession {
+  orders: Array<Order>;
+}
+
 export interface OrderProduct extends OrderProductBase {
   productName: string;
   isServed: boolean;
