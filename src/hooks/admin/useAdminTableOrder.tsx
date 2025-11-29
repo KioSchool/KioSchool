@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { TABLE_ORDER_SORT_OPTIONS, TABLE_ORDER_STATUS_OPTIONS } from '@constants/data/adminOrderData';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
-import { Table, TableOrderSession } from '@@types/index';
+import { OrderStatus, Table, TableOrderSession } from '@@types/index';
 import { subHours } from 'date-fns';
 import { dateConverter } from '@utils/FormatDate';
 
@@ -20,7 +20,7 @@ export const useAdminTableOrder = (workspaceId: string | undefined) => {
   const [endDate, setEndDate] = useState<Date | null>(new Date());
 
   const [tableNumber, setTableNumber] = useState<string>('ALL');
-  const [serveStatus, setServeStatus] = useState<string>('ALL');
+  const [serveStatus, setServeStatus] = useState<OrderStatus | 'ALL'>('ALL');
   const [sortOrder, setSortOrder] = useState<string>('LATEST');
 
   useEffect(() => {
