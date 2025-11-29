@@ -89,17 +89,17 @@ const Label = styled.span<{ isHighlight: boolean }>`
   font-weight: ${({ isHighlight }) => isHighlight && 600};
 `;
 
-interface CustomSelectPropsBase {
+interface CustomSelectPropsBase<T> {
   placeholder?: string;
   width?: string;
   flex?: string;
-  value: string;
+  value: T;
   highlightOnSelect?: boolean;
 }
 
-type SelectOptionsProps = {
-  options: { value: string; label: string }[];
-  onChange: (value: string) => void;
+type SelectOptionsProps<T> = {
+  options: { value: T; label: string }[];
+  onChange: (value: T) => void;
   children?: never;
   triggerLabel?: string;
 };
@@ -111,9 +111,9 @@ type SelectChildrenProps = {
   triggerLabel: string;
 };
 
-type CustomSelectProps = CustomSelectPropsBase & (SelectOptionsProps | SelectChildrenProps);
+type CustomSelectProps<T> = CustomSelectPropsBase<T> & (SelectOptionsProps<T> | SelectChildrenProps);
 
-function CustomSelect(props: CustomSelectProps) {
+function CustomSelect<T extends string>(props: CustomSelectProps<T>) {
   const { value, onChange, placeholder, width, flex, highlightOnSelect = false } = props;
   const options = props.options ?? [];
   const children = props.children;
