@@ -38,6 +38,11 @@ const TimeRow = styled.div`
   ${rowFlex({ align: 'center', justify: 'center' })}
 `;
 
+const TimeIcon = styled(RiTimeFill)`
+  color: #464a4d;
+  size: 16px;
+`;
+
 const TimeText = styled.span`
   font-size: 16px;
   font-weight: 700;
@@ -106,7 +111,7 @@ function OrderSessionCard({ sessionStartDate, sessionEndDate, endAt, tableNumber
       <HeaderContainer isOpen={isOpenOrderSessionDetailCard} onClick={() => setIsOpenOrderSessionDetailCard(!isOpenOrderSessionDetailCard)}>
         <InfoContainer>
           <TimeRow>
-            <RiTimeFill size={16} color="#464a4d" />
+            <TimeIcon />
             <TimeText>{timeRange}</TimeText>
           </TimeRow>
           <MetaRow>
