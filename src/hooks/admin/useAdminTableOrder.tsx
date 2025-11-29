@@ -6,21 +6,18 @@ import { OrderStatus, Table, TableOrderSession } from '@@types/index';
 import { subHours } from 'date-fns';
 import { dateConverter } from '@utils/FormatDate';
 
-const LOADING_DELAY_MS = 300;
-
 export const useAdminTableOrder = (workspaceId: string | undefined) => {
   const { fetchTableOrderSessions } = useAdminOrder(workspaceId);
   const { fetchWorkspaceTables } = useAdminWorkspace();
 
   const [sessionData, setSessionData] = useState<TableOrderSession[]>([]);
   const [tables, setTables] = useState<Table[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
 
   const [startDate, setStartDate] = useState<Date | null>(subHours(new Date(), 2));
   const [endDate, setEndDate] = useState<Date | null>(new Date());
 
   const [tableNumber, setTableNumber] = useState<string>('ALL');
-  const [serveStatus, setServeStatus] = useState<OrderStatus | 'ALL'>('ALL');
+  const [orderStatus, setOrderStatus] = useState<OrderStatus | 'ALL'>('ALL');
   const [sortOrder, setSortOrder] = useState<string>('LATEST');
 
   useEffect(() => {
@@ -31,10 +28,6 @@ export const useAdminTableOrder = (workspaceId: string | undefined) => {
 
   useEffect(() => {
     if (startDate && endDate) {
-      const timer = setTimeout(() => {
-        setIsLoading(true);
-      }, LOADING_DELAY_MS);
-
       const start = dateConverter(startDate);
       const end = dateConverter(endDate);
       const tableNo = tableNumber === 'ALL' ? undefined : Number(tableNumber);
@@ -43,11 +36,7 @@ export const useAdminTableOrder = (workspaceId: string | undefined) => {
         .then((res) => {
           setSessionData(res.data);
         })
-        .catch(console.error)
-        .finally(() => {
-          clearTimeout(timer);
-          setIsLoading(false);
-        });
+        .catch(console.error);
     }
   }, [startDate, endDate, tableNumber]);
 
@@ -72,26 +61,25 @@ export const useAdminTableOrder = (workspaceId: string | undefined) => {
     setStartDate(subHours(new Date(), 2));
     setEndDate(new Date());
     setTableNumber('ALL');
-    setServeStatus('ALL');
+    setOrderStatus('ALL');
     setSortOrder('LATEST');
   };
 
   return {
     tables,
-    isLoading,
     sessions: sortedSessions,
     tableSessionFilters: {
       startDate,
       endDate,
       tableNumber,
-      serveStatus,
+      orderStatus,
       sortOrder,
     },
     setTableSessionFilters: {
       setStartDate,
       setEndDate,
       setTableNumber,
-      setServeStatus,
+      setOrderStatus,
       setSortOrder,
     },
     handleReset,

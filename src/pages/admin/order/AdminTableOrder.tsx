@@ -52,11 +52,10 @@ const SessionListContainer = styled.div`
 
 function AdminTableOrder() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { isLoading, sessions, tableSessionFilters, setTableSessionFilters, handleReset, tableOptions, statusOptions, sortOptions } =
-    useAdminTableOrder(workspaceId);
+  const { sessions, tableSessionFilters, setTableSessionFilters, handleReset, tableOptions, statusOptions, sortOptions } = useAdminTableOrder(workspaceId);
 
-  const { startDate, endDate, tableNumber, serveStatus, sortOrder } = tableSessionFilters;
-  const { setStartDate, setEndDate, setTableNumber, setServeStatus, setSortOrder } = setTableSessionFilters;
+  const { startDate, endDate, tableNumber, orderStatus, sortOrder } = tableSessionFilters;
+  const { setStartDate, setEndDate, setTableNumber, setOrderStatus, setSortOrder } = setTableSessionFilters;
 
   const dateRangeLabel = startDate && endDate ? `${startDate.toLocaleDateString()} ~ ${endDate.toLocaleDateString()}` : '날짜 선택';
 
@@ -72,14 +71,12 @@ function AdminTableOrder() {
           <CustomSelect value={dateRangeLabel} triggerLabel={dateRangeLabel} highlightOnSelect={true} width="250px">
             <CustomDatePicker startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} />
           </CustomSelect>
-          <CustomSelect value={serveStatus} options={statusOptions} onChange={setServeStatus} highlightOnSelect={true} width="120px" />
+          <CustomSelect value={orderStatus} options={statusOptions} onChange={setOrderStatus} highlightOnSelect={true} width="120px" />
           <CustomSelect value={tableNumber} options={tableOptions} onChange={setTableNumber} highlightOnSelect={true} width="150px" />
         </FilterContainer>
 
         <SessionListContainer>
-          {isLoading ? (
-            <FallbackContainer>데이터를 불러오는 중입니다...</FallbackContainer>
-          ) : sessions.length > 0 ? (
+          {sessions.length > 0 ? (
             sessions.map((data) => {
               const sessionTotalPrice = data.orders.reduce((acc, order) => {
                 return acc + order.totalPrice;
@@ -91,7 +88,7 @@ function AdminTableOrder() {
                   sessionEndDate={data.endAt ? new Date(data.endAt) : new Date(data.expectedEndAt)}
                   endAt={data.endAt}
                   tableNumber={data.tableNumber}
-                  serveStatus={serveStatus}
+                  orderStatus={orderStatus}
                   sessionTotalPrice={sessionTotalPrice}
                   orders={data.orders}
                 />
