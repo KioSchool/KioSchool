@@ -5,7 +5,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import { RiArrowUpSLine } from '@remixicon/react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import { orderStatusConverter } from '@utils/orderStatusConverter';
+import { getOrderStatusLabel } from '@utils/orderStatusConverter';
 
 interface ToggleOrderCardProps {
   order: Order;
@@ -81,7 +81,7 @@ function ToggleOrderCard({ order }: ToggleOrderCardProps) {
       <RightContainer className={'right-container'}>
         <OrderInfoContainer className={'order-info-container'}>
           <AppLabel size={16}>
-            {order.customerName} | {order.totalPrice.toLocaleString()}원 | {orderStatusConverter(order.status)}
+            {order.customerName} | {order.totalPrice.toLocaleString()}원 | {getOrderStatusLabel(order.status)}
           </AppLabel>
           {!isClosed && <AppLabel size={16}>{dateConverter(order.createdAt)}</AppLabel>}
         </OrderInfoContainer>

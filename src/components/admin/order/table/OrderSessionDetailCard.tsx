@@ -3,7 +3,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { Order, OrderProduct } from '@@types/index';
 import { format } from 'date-fns';
-import { orderStatusConverter } from '@utils/orderStatusConverter';
+import { getOrderStatusLabel } from '@utils/orderStatusConverter';
 
 const Container = styled.div`
   width: 100%;
@@ -64,7 +64,7 @@ const getProductSummary = (orderProducts: OrderProduct[]) => {
 function OrderSessionDetailCard(order: Order) {
   const createdDate = new Date(order.createdAt);
   const productSummary = getProductSummary(order.orderProducts);
-  const statusLabel = orderStatusConverter(order.status);
+  const statusLabel = getOrderStatusLabel(order.status);
 
   return (
     <Container>
