@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import { Order } from '@@types/index';
+import { Order, OrderProduct } from '@@types/index';
 import { format } from 'date-fns';
 import { orderStatusConverter } from '@utils/orderStatusConverter';
 
@@ -55,10 +55,10 @@ const Label = styled.span`
   color: #464a4d;
 `;
 
-const getProductSummary = (products: Order['orderProducts']) => {
-  if (products.length === 0) return '';
-  if (products.length === 1) return products[0].productName;
-  return `${products[0].productName} 외 ${products.length - 1}건`;
+const getProductSummary = (orderProducts: OrderProduct[]) => {
+  if (orderProducts.length === 0) return '';
+  if (orderProducts.length === 1) return orderProducts[0].productName;
+  return `${orderProducts[0].productName} 외 ${orderProducts.length - 1}건`;
 };
 
 function OrderSessionDetailCard(order: Order) {
