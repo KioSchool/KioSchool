@@ -27,10 +27,10 @@ const Input = styled.input`
   }
 `;
 
-const IconSearch = styled(RiSearchLine)<{ isActive: boolean }>`
+const IconSearch = styled(RiSearchLine)<{ $isActive: boolean }>`
   width: 20px;
   height: 20px;
-  color: ${({ isActive }) => (isActive ? Color.KIO_ORANGE : '#d1d5d8')};
+  color: ${({ $isActive }) => ($isActive ? Color.KIO_ORANGE : '#d1d5d8')};
   transition: color 0.2s ease;
 `;
 
@@ -45,7 +45,7 @@ function SearchInput({ value, onChange, placeholder = '검색어를 입력해주
 
   return (
     <Container>
-      <IconSearch isActive={hasValue} />
+      <IconSearch $isActive={hasValue} />
       <Input type="text" value={value} onChange={onChange} placeholder={placeholder} />
     </Container>
   );
