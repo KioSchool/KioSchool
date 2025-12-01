@@ -18,6 +18,7 @@ export const useAdminTotalOrder = (workspaceId: string | undefined) => {
   const [tableNumber, setTableNumber] = useState<string>('ALL');
   const [orderStatus, setOrderStatus] = useState<OrderStatus | 'ALL'>('ALL');
   const [sortOrder, setSortOrder] = useState<string>('LATEST');
+  const [searchKeyword, setSearchKeyword] = useState<string>('');
 
   useEffect(() => {
     if (workspaceId) {
@@ -44,13 +45,19 @@ export const useAdminTotalOrder = (workspaceId: string | undefined) => {
     }
   }, [startDate, endDate, tableNumber, orderStatus, workspaceId]);
 
-  const sortedOrders = useMemo(() => {
-    return [...orders].sort((a, b) => {
+  const filteredAndSortedOrders = useMemo(() => {
+    let result = [...orders];
+
+    if (searchKeyword.trim() !== '') {
+      result = result.filter((order) => String(order.orderNumber).includes(searchKeyword) || order.customerName.includes(searchKeyword));
+    }
+
+    return result.sort((a, b) => {
       const timeA = new Date(a.createdAt).getTime();
       const timeB = new Date(b.createdAt).getTime();
       return sortOrder === 'LATEST' ? timeB - timeA : timeA - timeB;
     });
-  }, [orders, sortOrder]);
+  }, [orders, sortOrder, searchKeyword]);
 
   const tableOptions = useMemo(
     () => [{ value: 'ALL', label: '전체 테이블' }, ...tables.map((table) => ({ value: String(table.tableNumber), label: `${table.tableNumber}번 테이블` }))],
@@ -63,17 +70,19 @@ export const useAdminTotalOrder = (workspaceId: string | undefined) => {
     setTableNumber('ALL');
     setOrderStatus('ALL');
     setSortOrder('LATEST');
+    setSearchKeyword('');
   };
 
   return {
     tables,
-    orders: sortedOrders,
+    orders: filteredAndSortedOrders,
     totalFilters: {
       startDate,
       endDate,
       tableNumber,
       orderStatus,
       sortOrder,
+      searchKeyword,
     },
     setTotalFilters: {
       setStartDate,
@@ -81,6 +90,7 @@ export const useAdminTotalOrder = (workspaceId: string | undefined) => {
       setTableNumber,
       setOrderStatus,
       setSortOrder,
+      setSearchKeyword,
     },
     handleReset,
     tableOptions,

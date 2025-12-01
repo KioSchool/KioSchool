@@ -7,6 +7,7 @@ import { Color } from '@resources/colors';
 import { RiRefreshLine } from '@remixicon/react';
 import AppContainer from '@components/common/container/AppContainer';
 import OrderSessionDetailCard from '@components/admin/order/table/OrderSessionDetailCard';
+import SearchInput from '@components/common/input/SearchInput';
 import { useAdminTotalOrder } from '@hooks/admin/useAdminTotalOrder';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useEffect } from 'react';
@@ -39,8 +40,6 @@ const ResetButton = styled.div`
 const FallbackContainer = styled.div`
   width: 100%;
   height: 500px;
-  border: 1px solid #e8eef2;
-  border-radius: 10px;
   font-size: 1.2rem;
   color: ${Color.GREY};
   ${colFlex({ justify: 'center', align: 'center' })};
@@ -48,8 +47,7 @@ const FallbackContainer = styled.div`
 
 const OrderListContainer = styled.div`
   width: 100%;
-  border: 1px solid #e8eef2;
-  border-bottom: none;
+  border-top: 1px solid #e8eef2;
   overflow: hidden;
   ${colFlex({ align: 'stretch' })}
 `;
@@ -65,8 +63,8 @@ function AdminTotalOrder() {
     }
   }, [workspaceId]);
 
-  const { startDate, endDate, tableNumber, orderStatus, sortOrder } = totalFilters;
-  const { setStartDate, setEndDate, setTableNumber, setOrderStatus, setSortOrder } = setTotalFilters;
+  const { startDate, endDate, tableNumber, orderStatus, sortOrder, searchKeyword } = totalFilters;
+  const { setStartDate, setEndDate, setTableNumber, setOrderStatus, setSortOrder, setSearchKeyword } = setTotalFilters;
 
   const dateRangeLabel = startDate && endDate ? `${startDate.toLocaleDateString()} ~ ${endDate.toLocaleDateString()}` : '날짜 선택';
 
@@ -85,7 +83,7 @@ function AdminTotalOrder() {
           <CustomSelect value={orderStatus} options={statusOptions} onChange={setOrderStatus} highlightOnSelect={true} width="120px" />
           <CustomSelect value={tableNumber} options={tableOptions} onChange={setTableNumber} highlightOnSelect={true} width="150px" />
         </FilterContainer>
-
+        <SearchInput value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} placeholder="주문번호나 주문자명을 입력해주세요." />
         {orders.length > 0 ? (
           <OrderListContainer>
             {orders.map((order) => (
