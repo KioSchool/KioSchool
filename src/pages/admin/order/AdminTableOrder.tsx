@@ -7,7 +7,8 @@ import { Color } from '@resources/colors';
 import { RiRefreshLine } from '@remixicon/react';
 import AppContainer from '@components/common/container/AppContainer';
 import OrderSessionCard from '@components/admin/order/table/OrderSessionCard';
-import { useAdminTableOrder } from '@hooks/admin/useAdminTableOrder';
+import useAdminFetchOrder from '@hooks/admin/useAdminFetchOrders';
+import { TableOrderSession } from '@@types/index';
 
 const FilterContainer = styled.div`
   width: 100%;
@@ -52,10 +53,18 @@ const SessionListContainer = styled.div`
 
 function AdminTableOrder() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { sessions, tableSessionFilters, setTableSessionFilters, handleReset, tableOptions, statusOptions, sortOptions } = useAdminTableOrder(workspaceId);
+  const {
+    data: sessions,
+    filters,
+    setFilters,
+    handleReset,
+    sortOptions,
+    tableOptions,
+    statusOptions,
+  } = useAdminFetchOrder<TableOrderSession>(workspaceId, 'SESSION');
 
-  const { startDate, endDate, tableNumber, orderStatus, sortOrder } = tableSessionFilters;
-  const { setStartDate, setEndDate, setTableNumber, setOrderStatus, setSortOrder } = setTableSessionFilters;
+  const { startDate, endDate, tableNumber, orderStatus, sortOrder } = filters;
+  const { setStartDate, setEndDate, setTableNumber, setOrderStatus, setSortOrder } = setFilters;
 
   const dateRangeLabel = startDate && endDate ? `${startDate.toLocaleDateString()} ~ ${endDate.toLocaleDateString()}` : '날짜 선택';
 

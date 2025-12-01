@@ -8,9 +8,10 @@ import { RiRefreshLine } from '@remixicon/react';
 import AppContainer from '@components/common/container/AppContainer';
 import OrderSessionDetailCard from '@components/admin/order/table/OrderSessionDetailCard';
 import SearchInput from '@components/common/input/SearchInput';
-import { useAdminTotalOrder } from '@hooks/admin/useAdminTotalOrder';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useEffect } from 'react';
+import useAdminFetchOrder from '@hooks/admin/useAdminFetchOrders';
+import { Order } from '@@types/index';
 
 const FilterContainer = styled.div`
   width: 100%;
@@ -54,7 +55,7 @@ const OrderListContainer = styled.div`
 
 function AdminTotalOrder() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { orders, totalFilters, setTotalFilters, handleReset, tableOptions, statusOptions, sortOptions } = useAdminTotalOrder(workspaceId);
+  const { data: orders, filters, setFilters, handleReset, sortOptions, tableOptions, statusOptions } = useAdminFetchOrder<Order>(workspaceId, 'TOTAL');
   const { fetchProducts } = useAdminProducts(workspaceId);
 
   useEffect(() => {
@@ -63,8 +64,8 @@ function AdminTotalOrder() {
     }
   }, [workspaceId]);
 
-  const { startDate, endDate, tableNumber, orderStatus, sortOrder, searchKeyword } = totalFilters;
-  const { setStartDate, setEndDate, setTableNumber, setOrderStatus, setSortOrder, setSearchKeyword } = setTotalFilters;
+  const { startDate, endDate, tableNumber, orderStatus, sortOrder, searchKeyword } = filters;
+  const { setStartDate, setEndDate, setTableNumber, setOrderStatus, setSortOrder, setSearchKeyword } = setFilters;
 
   const dateRangeLabel = startDate && endDate ? `${startDate.toLocaleDateString()} ~ ${endDate.toLocaleDateString()}` : '날짜 선택';
 
