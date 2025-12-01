@@ -8,6 +8,8 @@ import { RiRefreshLine } from '@remixicon/react';
 import AppContainer from '@components/common/container/AppContainer';
 import OrderSessionDetailCard from '@components/admin/order/table/OrderSessionDetailCard';
 import { useAdminTotalOrder } from '@hooks/admin/useAdminTotalOrder';
+import useAdminProducts from '@hooks/admin/useAdminProducts';
+import { useEffect } from 'react';
 
 const FilterContainer = styled.div`
   width: 100%;
@@ -47,7 +49,7 @@ const FallbackContainer = styled.div`
 const OrderListContainer = styled.div`
   width: 100%;
   border: 1px solid #e8eef2;
-  border-radius: 10px;
+  border-bottom: none;
   overflow: hidden;
   ${colFlex({ align: 'stretch' })}
 `;
@@ -55,6 +57,13 @@ const OrderListContainer = styled.div`
 function AdminTotalOrder() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { orders, totalFilters, setTotalFilters, handleReset, tableOptions, statusOptions, sortOptions } = useAdminTotalOrder(workspaceId);
+  const { fetchProducts } = useAdminProducts(workspaceId);
+
+  useEffect(() => {
+    if (workspaceId) {
+      fetchProducts();
+    }
+  }, [workspaceId]);
 
   const { startDate, endDate, tableNumber, orderStatus, sortOrder } = totalFilters;
   const { setStartDate, setEndDate, setTableNumber, setOrderStatus, setSortOrder } = setTotalFilters;
