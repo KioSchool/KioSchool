@@ -5,7 +5,7 @@ export interface AdminNavItem {
 }
 
 export interface AdminNavCategory {
-  category: '주문' | '상품' | '주점' | '홈';
+  category: '주문' | '실시간' | '상품' | '주점' | '홈';
   items: AdminNavItem[];
 }
 
@@ -20,7 +20,7 @@ export const adminNavData: AdminNavCategory[] = [
     ],
   },
   {
-    category: '주문',
+    category: '실시간',
     items: [
       {
         name: '실시간 주문 조회',
@@ -31,9 +31,18 @@ export const adminNavData: AdminNavCategory[] = [
         path: '/order/table',
         defaultQuery: { tableNo: '1' },
       },
+    ],
+  },
+  {
+    category: '주문',
+    items: [
       {
         name: '테이블 주문 조회',
         path: '/table-order',
+      },
+      {
+        name: '전체 주문 조회',
+        path: '/total-order',
       },
     ],
   },
