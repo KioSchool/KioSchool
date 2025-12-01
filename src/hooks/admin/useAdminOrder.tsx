@@ -14,9 +14,15 @@ function useAdminOrder(workspaceId: string | undefined) {
     });
   };
 
-  const fetchOrders = (props: { startDate: string; endDate: string; status?: OrderStatus }) => {
-    adminApi.get<Order[]>('/orders', { params: { ...props, workspaceId } }).then((response) => {
+  const fetchOrders = (props: { startDate: string; endDate: string; status?: OrderStatus | 'ALL'; tableNumber?: number | string }) => {
+    const params: any = { ...props, workspaceId };
+
+    if (params.status === 'ALL') delete params.status;
+    if (params.tableNumber === 'ALL' || !params.tableNumber) delete params.tableNumber;
+
+    return adminApi.get<Order[]>('/orders', { params }).then((response) => {
       setOrders(response.data);
+      return response;
     });
   };
 
