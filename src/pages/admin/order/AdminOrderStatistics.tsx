@@ -12,7 +12,7 @@ import TotalOrder from '@components/admin/order/statistic/TotalOrder';
 import ProductStatistics from '@components/admin/order/statistic/ProductStatistics';
 import OrderPriceStatistics from '@components/admin/order/statistic/OrderPriceStatistics';
 import dayjs from 'dayjs';
-import { dateConverter } from '@utils/formatDate';
+import { dateConverter } from '@utils/FormatDate';
 import { adminOrdersAtom } from 'src/jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
 
@@ -84,7 +84,7 @@ function AdminOrderStatistics() {
   const [endDate, setEndDate] = useState(new Date());
   const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('all');
 
-  const status = showServedOrder ? OrderStatus.SERVED : undefined;
+  const statuses = showServedOrder ? [OrderStatus.SERVED] : undefined;
   const parsedStartDate = dateConverter(startDate);
   const parsedEndDate = dateConverter(endDate);
 
@@ -92,7 +92,7 @@ function AdminOrderStatistics() {
     fetchOrders({
       startDate: parsedStartDate,
       endDate: parsedEndDate,
-      status,
+      statuses,
     });
   }, [startDate, endDate, showServedOrder]);
 
@@ -112,7 +112,7 @@ function AdminOrderStatistics() {
     {
       key: 'byPrice',
       label: '시간대별 매출',
-      render: <OrderPriceStatistics startDate={parsedStartDate} endDate={parsedEndDate} status={status} />,
+      render: <OrderPriceStatistics startDate={parsedStartDate} endDate={parsedEndDate} status={showServedOrder ? OrderStatus.SERVED : undefined} />,
     },
   ];
 

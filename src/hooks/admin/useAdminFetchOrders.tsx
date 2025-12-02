@@ -37,6 +37,8 @@ function useAdminFetchOrder<T extends OrderData>(workspaceId: string | undefined
     const end = dateConverter(endDate);
     const tableNo = tableNumber === 'ALL' ? undefined : Number(tableNumber);
 
+    const statusParams = orderStatuses.length > 0 ? orderStatuses : undefined;
+
     const fetchData = async () => {
       try {
         if (type === 'SESSION') {
@@ -51,7 +53,7 @@ function useAdminFetchOrder<T extends OrderData>(workspaceId: string | undefined
             startDate: start,
             endDate: end,
             tableNumber: tableNo,
-            statuses: orderStatuses,
+            statuses: statusParams,
           });
           setData(res.data as T[]);
         }

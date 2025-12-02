@@ -14,24 +14,13 @@ function useAdminOrder(workspaceId: string | undefined) {
     });
   };
 
-  const fetchOrders = (props: { startDate: string; endDate: string; statuses?: OrderStatus[]; tableNumber?: number | string }) => {
-    const params: FetchOrdersParams = {
-      workspaceId: Number(workspaceId),
-      startDate: props.startDate,
-      endDate: props.endDate,
-    };
-
-    if (props.tableNumber && props.tableNumber !== 'ALL') {
-      params.tableNumber = Number(props.tableNumber);
-    }
-
-    if (props.statuses && props.statuses.length > 0) {
-      params.statuses = props.statuses;
-    }
-
+  const fetchOrders = (params: Omit<FetchOrdersParams, 'workspaceId'>) => {
     return adminApi
       .get<Order[]>('/orders', {
-        params,
+        params: {
+          ...params,
+          workspaceId: workspaceId,
+        },
       })
       .then((response) => {
         setOrders(response.data);
