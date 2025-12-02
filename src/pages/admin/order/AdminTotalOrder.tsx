@@ -10,8 +10,8 @@ import OrderSessionDetailCard from '@components/admin/order/table/OrderSessionDe
 import SearchInput from '@components/common/input/SearchInput';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useEffect } from 'react';
-import useAdminFetchOrder from '@hooks/admin/useAdminFetchOrders';
-import { Order, OrderStatus } from '@@types/index';
+import { OrderStatus } from '@@types/index';
+import { useAdminFetchTotalOrder } from '@hooks/admin/useAdminFetchTotalOrder';
 
 const FilterContainer = styled.div`
   width: 100%;
@@ -55,7 +55,7 @@ const OrderListContainer = styled.div`
 
 function AdminTotalOrder() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { data: orders, filters, setFilters, handleReset, sortOptions, tableOptions, statusOptions } = useAdminFetchOrder<Order>(workspaceId, 'TOTAL');
+  const { data: orders, filters, setFilters, handleReset, sortOptions, tableOptions, statusOptions } = useAdminFetchTotalOrder(workspaceId);
   const { fetchProducts } = useAdminProducts(workspaceId);
 
   useEffect(() => {

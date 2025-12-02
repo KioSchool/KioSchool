@@ -7,8 +7,8 @@ import { Color } from '@resources/colors';
 import { RiRefreshLine } from '@remixicon/react';
 import AppContainer from '@components/common/container/AppContainer';
 import OrderSessionCard from '@components/admin/order/table/OrderSessionCard';
-import useAdminFetchOrder from '@hooks/admin/useAdminFetchOrders';
-import { OrderStatus, TableOrderSession } from '@@types/index';
+import { OrderStatus } from '@@types/index';
+import { useAdminFetchTableOrder } from '@hooks/admin/useAdminFetchTableOrder';
 
 const FilterContainer = styled.div`
   width: 100%;
@@ -53,15 +53,7 @@ const SessionListContainer = styled.div`
 
 function AdminTableOrder() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const {
-    data: sessions,
-    filters,
-    setFilters,
-    handleReset,
-    sortOptions,
-    tableOptions,
-    statusOptions,
-  } = useAdminFetchOrder<TableOrderSession>(workspaceId, 'SESSION');
+  const { data: sessions, filters, setFilters, handleReset, sortOptions, tableOptions, statusOptions } = useAdminFetchTableOrder(workspaceId);
 
   const { startDate, endDate, tableNumber, orderStatuses, sortOrder } = filters;
   const { setStartDate, setEndDate, setTableNumber, setOrderStatuses, setSortOrder } = setFilters;
