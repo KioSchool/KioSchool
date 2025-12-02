@@ -94,7 +94,7 @@ function OrderSessionDetailCard(order: Order) {
         </InfoContainer>
         <StatusBadge>{statusLabel}</StatusBadge>
       </ProductContainer>
-      <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
+      <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} readOnly={true} />
     </Container>
   );
 }

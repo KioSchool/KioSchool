@@ -4,7 +4,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
-import { adminProductsAtom } from 'src/jotai/admin/atoms';
+import { adminProductsAtom, orderModalReadOnlyAtom } from 'src/jotai/admin/atoms';
 import _ from 'lodash';
 import OrderModalProductList from './OrderModalProductsList';
 
@@ -53,6 +53,8 @@ function OrderModalMainContents({ order }: OrderModalMainContentsProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { updateOrderProductCount } = useAdminOrder(workspaceId);
 
+  const readOnly = useAtomValue(orderModalReadOnlyAtom);
+
   const products = useAtomValue(adminProductsAtom);
   const productMap: Record<number, Product> = _.keyBy(products, 'id');
 
@@ -60,10 +62,12 @@ function OrderModalMainContents({ order }: OrderModalMainContentsProps) {
   const isAllServed = order.orderProducts.every((orderProduct) => orderProduct.isServed);
 
   const handleIncrease = (orderProduct: OrderProduct) => {
+    if (readOnly) return;
     if (!orderProduct.isServed) updateOrderProductCount(orderProduct.id, orderProduct.servedCount + 1);
   };
 
   const handleDecrease = (orderProduct: OrderProduct) => {
+    if (readOnly) return;
     if (orderProduct.servedCount > 0) updateOrderProductCount(orderProduct.id, orderProduct.servedCount - 1);
   };
 

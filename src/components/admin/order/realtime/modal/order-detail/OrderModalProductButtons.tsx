@@ -3,6 +3,8 @@ import { css } from '@emotion/react';
 import { RiAddLine, RiSubtractLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
+import { orderModalReadOnlyAtom } from 'src/jotai/admin/atoms';
+import { useAtomValue } from 'jotai';
 
 const ButtonContainer = styled.div`
   gap: 4px;
@@ -57,18 +59,26 @@ interface OrderModalProductButtonsProps {
 }
 
 function OrderModalProductButtons({ servedCount, quantity, isServed, onIncrease, onDecrease }: OrderModalProductButtonsProps) {
-  const isDecreaseDisabled = servedCount === 0;
-  const isIncreaseDisabled = isServed || servedCount >= quantity;
+  const readOnly = useAtomValue(orderModalReadOnlyAtom);
+
+  const isDecreaseDisabled = readOnly || servedCount === 0;
+  const isIncreaseDisabled = readOnly || isServed || servedCount >= quantity;
 
   return (
     <ButtonContainer>
-      <IconWrapper onClick={onDecrease} disabled={isDecreaseDisabled}>
-        <MinusIcon disabled={isDecreaseDisabled} />
-      </IconWrapper>
+      {!readOnly && (
+        <IconWrapper onClick={!readOnly ? onDecrease : undefined} disabled={isDecreaseDisabled}>
+          <MinusIcon disabled={isDecreaseDisabled} />
+        </IconWrapper>
+      )}
+
       <QuantityLabel>{`${servedCount} / ${quantity}`}</QuantityLabel>
-      <IconWrapper onClick={onIncrease} disabled={isIncreaseDisabled}>
-        <PlusIcon disabled={isIncreaseDisabled} />
-      </IconWrapper>
+
+      {!readOnly && (
+        <IconWrapper onClick={!readOnly ? onIncrease : undefined} disabled={isIncreaseDisabled}>
+          <PlusIcon disabled={isIncreaseDisabled} />
+        </IconWrapper>
+      )}
     </ButtonContainer>
   );
 }

@@ -8,6 +8,8 @@ import OrderModalHeaderContents from '@components/admin/order/realtime/modal/ord
 import { createPortal } from 'react-dom';
 import { useEffect } from 'react';
 import useModal from '@hooks/useModal';
+import { orderModalReadOnlyAtom } from 'src/jotai/admin/atoms';
+import { useSetAtom } from 'jotai';
 
 const DetailModalContainer = styled.div``;
 
@@ -37,14 +39,17 @@ const ModalContainer = styled.div`
   ${colFlex({ justify: 'center' })}
 `;
 
-interface Props {
+interface OrderDetailModalProps {
   order: Order;
   isModalOpen: boolean;
   closeModal: () => void;
+  readOnly?: boolean;
 }
 
-function OrderDetailModal({ order, isModalOpen, closeModal }: Props) {
+function OrderDetailModal({ order, isModalOpen, closeModal, readOnly = false }: OrderDetailModalProps) {
   const { modalKey } = useModal();
+
+  const setReadOnly = useSetAtom(orderModalReadOnlyAtom);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -54,12 +59,14 @@ function OrderDetailModal({ order, isModalOpen, closeModal }: Props) {
     };
 
     window.addEventListener('keydown', handleKeyDown);
+    setReadOnly(readOnly);
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'auto';
+      setReadOnly(false);
     };
-  }, []);
+  }, [readOnly, setReadOnly]);
 
   if (!isModalOpen) {
     return null;
