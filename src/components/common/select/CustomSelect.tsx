@@ -52,7 +52,6 @@ const ArrowIcon = styled.div`
 
 const SelectDropdownContainer = styled.div`
   width: 100%;
-  min-width: max-content;
   margin-top: 4px;
   position: absolute;
   left: 0;
@@ -130,11 +129,7 @@ type SelectChildrenProps = {
 type CustomSelectProps<T> = CustomSelectPropsBase & (SingleSelectProps<T> | MultiSelectProps<T> | SelectChildrenProps);
 
 function CustomSelect<T extends string>(props: CustomSelectProps<T>) {
-  const { placeholder, width, flex, highlightOnSelect = false, isMulti } = props;
-  const options = props.options ?? [];
-  const children = props.children;
-  const triggerLabel = props.triggerLabel;
-  const rawValue = props.value;
+  const { placeholder, width, flex, highlightOnSelect = false, options = [], children, triggerLabel } = props;
 
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -152,33 +147,32 @@ function CustomSelect<T extends string>(props: CustomSelectProps<T>) {
   const selectedLabel = useMemo(() => {
     if (children) return triggerLabel;
 
-    if (isMulti && Array.isArray(rawValue)) {
-      const targetValues = rawValue.length === 0 ? options.map((opt) => opt.value) : rawValue;
-
+    if (props.isMulti) {
+      const currentValues = props.value;
+      const targetValues = currentValues.length === 0 ? options.map((opt) => opt.value) : currentValues;
       const labels = targetValues.map((val) => options.find((opt) => opt.value === val)?.label).filter(Boolean);
 
       return labels.length > 0 ? labels.join(', ') : placeholder;
     }
 
-    const foundOption = options.find((option) => option.value === rawValue);
-    return foundOption?.label || placeholder || rawValue;
-  }, [children, triggerLabel, isMulti, rawValue, options, placeholder]);
+    const foundOption = options.find((option) => option.value === props.value);
+    return foundOption?.label || placeholder || props.value;
+  }, [children, triggerLabel, props, options, placeholder]);
 
   const isHighlight = useMemo(() => {
     if (!highlightOnSelect) return false;
 
-    if (isMulti && Array.isArray(rawValue)) {
+    if (props.isMulti) {
       return true;
     }
 
-    return rawValue !== undefined && rawValue !== '';
-  }, [highlightOnSelect, isMulti, rawValue]);
+    return props.value !== undefined && props.value !== '';
+  }, [highlightOnSelect, props]);
 
   const handleOptionClick = (optionValue: T) => {
-    if (!props.onChange) return;
-
-    if (isMulti) {
-      const currentValues = (rawValue as T[]) || [];
+    if (props.children || !props.onChange) return;
+    if (props.isMulti) {
+      const currentValues = props.value;
       const isSelected = currentValues.includes(optionValue);
       let newValues;
 
@@ -188,18 +182,20 @@ function CustomSelect<T extends string>(props: CustomSelectProps<T>) {
         newValues = [...currentValues, optionValue];
       }
 
-      (props.onChange as (val: T[]) => void)(newValues);
+      props.onChange(newValues);
     } else {
-      (props.onChange as (val: T) => void)(optionValue);
+      props.onChange(optionValue);
       setIsOpen(false);
     }
   };
 
   const isOptionSelected = (optionValue: T) => {
-    if (isMulti && Array.isArray(rawValue)) {
-      return rawValue.includes(optionValue);
+    if (props.isMulti) {
+      const currentValues = props.value;
+      if (currentValues.length === 0) return true;
+      return currentValues.includes(optionValue);
     }
-    return rawValue === optionValue;
+    return props.value === optionValue;
   };
 
   return (
