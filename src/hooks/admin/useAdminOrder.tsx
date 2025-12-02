@@ -1,5 +1,5 @@
 import useApi from '@hooks/useApi';
-import { Order, OrderStatus, PaginationResponse, TableOrderSession } from '@@types/index';
+import { FetchOrdersParams, Order, OrderStatus, PaginationResponse, TableOrderSession } from '@@types/index';
 import { defaultPaginationValue } from '@@types/defaultValues';
 import { useSetAtom } from 'jotai';
 import { adminOrdersAtom } from 'src/jotai/admin/atoms';
@@ -14,16 +14,29 @@ function useAdminOrder(workspaceId: string | undefined) {
     });
   };
 
-  const fetchOrders = (props: { startDate: string; endDate: string; status?: OrderStatus | 'ALL'; tableNumber?: number | string }) => {
-    const params: any = { ...props, workspaceId };
+  const fetchOrders = (props: { startDate: string; endDate: string; statuses?: OrderStatus[]; tableNumber?: number | string }) => {
+    const params: FetchOrdersParams = {
+      workspaceId: Number(workspaceId),
+      startDate: props.startDate,
+      endDate: props.endDate,
+    };
 
-    if (params.status === 'ALL') delete params.status;
-    if (params.tableNumber === 'ALL' || !params.tableNumber) delete params.tableNumber;
+    if (props.tableNumber && props.tableNumber !== 'ALL') {
+      params.tableNumber = Number(props.tableNumber);
+    }
 
-    return adminApi.get<Order[]>('/orders', { params }).then((response) => {
-      setOrders(response.data);
-      return response;
-    });
+    if (props.statuses && props.statuses.length > 0) {
+      params.statuses = props.statuses;
+    }
+
+    return adminApi
+      .get<Order[]>('/orders', {
+        params,
+      })
+      .then((response) => {
+        setOrders(response.data);
+        return response;
+      });
   };
 
   const fetchRealTimeOrders = () => {
