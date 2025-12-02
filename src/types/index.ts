@@ -231,3 +231,11 @@ interface CloseSidebarOptions {
 }
 
 export type ExternalRightSidebarOptions = OpenSidebarOptions | CloseSidebarOptions;
+
+export interface FetchOrdersParams {
+  workspaceId: number;
+  startDate: string;
+  endDate: string;
+  tableNumber?: number;
+  statuses?: OrderStatus[];
+}
