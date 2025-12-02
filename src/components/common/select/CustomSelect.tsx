@@ -168,14 +168,11 @@ function CustomSelect<T extends string>(props: CustomSelectProps<T>) {
     if (!highlightOnSelect) return false;
 
     if (isMulti && Array.isArray(rawValue)) {
-      const isFullSelection = rawValue.length === options.length;
-      const isEmptySelection = rawValue.length === 0;
-
-      return !isEmptySelection && !isFullSelection;
+      return true;
     }
 
     return rawValue !== undefined && rawValue !== '';
-  }, [highlightOnSelect, isMulti, rawValue, options.length]);
+  }, [highlightOnSelect, isMulti, rawValue]);
 
   const handleOptionClick = (optionValue: T) => {
     if (!props.onChange) return;
