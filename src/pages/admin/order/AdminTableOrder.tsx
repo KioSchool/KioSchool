@@ -8,7 +8,7 @@ import { RiRefreshLine } from '@remixicon/react';
 import AppContainer from '@components/common/container/AppContainer';
 import OrderSessionCard from '@components/admin/order/table/OrderSessionCard';
 import useAdminFetchOrder from '@hooks/admin/useAdminFetchOrders';
-import { TableOrderSession } from '@@types/index';
+import { OrderStatus, TableOrderSession } from '@@types/index';
 
 const FilterContainer = styled.div`
   width: 100%;
@@ -63,8 +63,8 @@ function AdminTableOrder() {
     statusOptions,
   } = useAdminFetchOrder<TableOrderSession>(workspaceId, 'SESSION');
 
-  const { startDate, endDate, tableNumber, orderStatus, sortOrder } = filters;
-  const { setStartDate, setEndDate, setTableNumber, setOrderStatus, setSortOrder } = setFilters;
+  const { startDate, endDate, tableNumber, orderStatuses, sortOrder } = filters;
+  const { setStartDate, setEndDate, setTableNumber, setOrderStatuses, setSortOrder } = setFilters;
 
   const dateRangeLabel = startDate && endDate ? `${startDate.toLocaleDateString()} ~ ${endDate.toLocaleDateString()}` : '날짜 선택';
 
@@ -80,7 +80,15 @@ function AdminTableOrder() {
           <CustomSelect value={dateRangeLabel} triggerLabel={dateRangeLabel} highlightOnSelect={true} width="250px">
             <CustomDatePicker startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} />
           </CustomSelect>
-          <CustomSelect value={orderStatus} options={statusOptions} onChange={setOrderStatus} highlightOnSelect={true} width="120px" />
+          <CustomSelect<OrderStatus>
+            isMulti={true}
+            value={orderStatuses}
+            onChange={setOrderStatuses}
+            options={statusOptions}
+            highlightOnSelect={true}
+            width="120px"
+            placeholder="전체"
+          />
           <CustomSelect value={tableNumber} options={tableOptions} onChange={setTableNumber} highlightOnSelect={true} width="150px" />
         </FilterContainer>
 
@@ -97,7 +105,7 @@ function AdminTableOrder() {
                   sessionEndDate={new Date(data.endAt || data.expectedEndAt)}
                   endAt={data.endAt}
                   tableNumber={data.tableNumber}
-                  orderStatus={orderStatus}
+                  orderStatuses={orderStatuses}
                   sessionTotalPrice={sessionTotalPrice}
                   orders={data.orders}
                 />

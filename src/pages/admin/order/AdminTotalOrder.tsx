@@ -11,7 +11,7 @@ import SearchInput from '@components/common/input/SearchInput';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useEffect } from 'react';
 import useAdminFetchOrder from '@hooks/admin/useAdminFetchOrders';
-import { Order } from '@@types/index';
+import { Order, OrderStatus } from '@@types/index';
 
 const FilterContainer = styled.div`
   width: 100%;
@@ -64,8 +64,8 @@ function AdminTotalOrder() {
     }
   }, [workspaceId]);
 
-  const { startDate, endDate, tableNumber, orderStatus, sortOrder, searchKeyword } = filters;
-  const { setStartDate, setEndDate, setTableNumber, setOrderStatus, setSortOrder, setSearchKeyword } = setFilters;
+  const { startDate, endDate, tableNumber, orderStatuses, sortOrder, searchKeyword } = filters;
+  const { setStartDate, setEndDate, setTableNumber, setOrderStatuses, setSortOrder, setSearchKeyword } = setFilters;
 
   const dateRangeLabel = startDate && endDate ? `${startDate.toLocaleDateString()} ~ ${endDate.toLocaleDateString()}` : '날짜 선택';
 
@@ -81,7 +81,15 @@ function AdminTotalOrder() {
           <CustomSelect value={dateRangeLabel} triggerLabel={dateRangeLabel} highlightOnSelect={true} width="250px">
             <CustomDatePicker startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} />
           </CustomSelect>
-          <CustomSelect value={orderStatus} options={statusOptions} onChange={setOrderStatus} highlightOnSelect={true} width="120px" />
+          <CustomSelect<OrderStatus>
+            isMulti={true}
+            value={orderStatuses}
+            onChange={setOrderStatuses}
+            options={statusOptions}
+            highlightOnSelect={true}
+            width="120px"
+            placeholder="전체"
+          />
           <CustomSelect value={tableNumber} options={tableOptions} onChange={setTableNumber} highlightOnSelect={true} width="150px" />
         </FilterContainer>
         <SearchInput value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} placeholder="주문번호나 주문자명을 입력해주세요." />

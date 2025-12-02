@@ -15,11 +15,15 @@ const FallbackContainer = styled.div`
 
 interface OrderSessionDetailCardListProps {
   orderSessionData: Order[];
-  orderStatus: string;
+  orderStatuses: string[];
 }
 
-function OrderSessionDetailCardList({ orderSessionData, orderStatus }: OrderSessionDetailCardListProps) {
-  const filteredData = orderSessionData.filter((order) => orderStatus === 'ALL' || order.status === orderStatus);
+function OrderSessionDetailCardList({ orderSessionData, orderStatuses }: OrderSessionDetailCardListProps) {
+  const filteredData = orderSessionData.filter((order) => {
+    if (orderStatuses.length === 0) return true;
+
+    return orderStatuses.includes(order.status);
+  });
 
   if (filteredData.length === 0) {
     return <FallbackContainer>해당 세션에 주문이 없습니다.</FallbackContainer>;

@@ -19,7 +19,8 @@ function useAdminFetchOrder<T extends OrderData>(workspaceId: string | undefined
   const [startDate, setStartDate] = useState<Date | null>(subHours(new Date(), 2));
   const [endDate, setEndDate] = useState<Date | null>(new Date());
   const [tableNumber, setTableNumber] = useState<string>('ALL');
-  const [orderStatus, setOrderStatus] = useState<OrderStatus | 'ALL'>('ALL');
+  const [orderStatuses, setOrderStatuses] = useState<OrderStatus[]>([]);
+
   const [sortOrder, setSortOrder] = useState<string>('LATEST');
   const [searchKeyword, setSearchKeyword] = useState<string>('');
 
@@ -50,7 +51,7 @@ function useAdminFetchOrder<T extends OrderData>(workspaceId: string | undefined
             startDate: start,
             endDate: end,
             tableNumber: tableNo,
-            status: orderStatus,
+            statuses: orderStatuses,
           });
           setData(res.data as T[]);
         }
@@ -60,7 +61,7 @@ function useAdminFetchOrder<T extends OrderData>(workspaceId: string | undefined
     };
 
     fetchData();
-  }, [startDate, endDate, tableNumber, orderStatus, workspaceId, type]);
+  }, [startDate, endDate, tableNumber, orderStatuses, workspaceId, type]);
 
   const processedData = useMemo(() => {
     let result = [...data];
@@ -94,7 +95,7 @@ function useAdminFetchOrder<T extends OrderData>(workspaceId: string | undefined
     setStartDate(subHours(new Date(), 2));
     setEndDate(new Date());
     setTableNumber('ALL');
-    setOrderStatus('ALL');
+    setOrderStatuses([]);
     setSortOrder('LATEST');
     setSearchKeyword('');
   }, []);
@@ -109,7 +110,7 @@ function useAdminFetchOrder<T extends OrderData>(workspaceId: string | undefined
       startDate,
       endDate,
       tableNumber,
-      orderStatus,
+      orderStatuses,
       sortOrder,
       searchKeyword,
     },
@@ -117,7 +118,7 @@ function useAdminFetchOrder<T extends OrderData>(workspaceId: string | undefined
       setStartDate,
       setEndDate,
       setTableNumber,
-      setOrderStatus,
+      setOrderStatuses,
       setSortOrder,
       setSearchKeyword,
     },
