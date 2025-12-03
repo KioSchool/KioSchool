@@ -28,6 +28,7 @@ function useAdminOrder(workspaceId: string | undefined) {
         params: {
           ...params,
           workspaceId: workspaceId,
+          statuses: params.statuses?.join(','),
         },
       })
       .then((response) => {
