@@ -1,11 +1,12 @@
 import { Order } from '@@types/index';
-import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import { RiCloseLargeLine, RiArrowRightSLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { formatDate } from '@utils/formatDate';
+import { formatDate } from '@utils/FormatDate';
+import { useAtomValue } from 'jotai';
 import { createSearchParams, useNavigate, useParams } from 'react-router-dom';
+import { orderModalReadOnlyAtom } from 'src/jotai/admin/atoms';
 
 const ModalHeader = styled.div`
   padding: 20px 30px 12px 30px;
@@ -32,6 +33,16 @@ const ModalTableDescription = styled.div`
   ${rowFlex({ align: 'center' })}
 `;
 
+const MainLabel = styled.div`
+  font-size: 16px;
+  font-weight: 800;
+`;
+
+const DescriptionLabel = styled.div`
+  font-size: 14px;
+  font-weight: 400;
+`;
+
 const CloseIcon = styled(RiCloseLargeLine)`
   width: 16px;
   height: 16px;
@@ -53,6 +64,8 @@ function OrderModalHeaderContents({ onClose, order }: OrderModalHeaderContentsPr
   const navigate = useNavigate();
   const { workspaceId } = useParams<{ workspaceId: string }>();
 
+  const readOnly = useAtomValue(orderModalReadOnlyAtom);
+
   const handleNavigateToTable = () => {
     onClose();
     navigate({
@@ -66,16 +79,14 @@ function OrderModalHeaderContents({ onClose, order }: OrderModalHeaderContentsPr
   return (
     <ModalHeader>
       <ModalHeaderTitle>
-        <AppLabel size={16} style={{ fontWeight: 800 }}>
-          {`주문 번호  ${order.orderNumber}`}
-        </AppLabel>
+        <MainLabel>{`주문 번호  ${order.orderNumber}`}</MainLabel>
         <CloseIcon onClick={onClose} />
       </ModalHeaderTitle>
       <ModalDescription>
-        <AppLabel size={14}>{`${formatDate(order.createdAt)} · ${order.customerName}`}</AppLabel>
+        <DescriptionLabel>{`${formatDate(order.createdAt)} · ${order.customerName}`}</DescriptionLabel>
         <ModalTableDescription>
-          <AppLabel size={14}>{`테이블 ${order.tableNumber}`}</AppLabel>
-          <ArrowRightIcon onClick={handleNavigateToTable} />
+          <DescriptionLabel>{`테이블 ${order.tableNumber}`}</DescriptionLabel>
+          {!readOnly && <ArrowRightIcon onClick={handleNavigateToTable} />}
         </ModalTableDescription>
       </ModalDescription>
     </ModalHeader>

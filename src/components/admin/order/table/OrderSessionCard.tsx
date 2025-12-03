@@ -93,12 +93,12 @@ interface OrderSessionCardProps {
   endAt: string | null;
   tableNumber: number;
   totalPrice?: number;
-  orderStatus: string;
+  orderStatuses: string[];
   sessionTotalPrice: number;
   orders: Order[];
 }
 
-function OrderSessionCard({ sessionStartDate, sessionEndDate, endAt, tableNumber, orderStatus, sessionTotalPrice, orders }: OrderSessionCardProps) {
+function OrderSessionCard({ sessionStartDate, sessionEndDate, endAt, tableNumber, orderStatuses, sessionTotalPrice, orders }: OrderSessionCardProps) {
   const [isOpenOrderSessionDetailCard, setIsOpenOrderSessionDetailCard] = useState(false);
 
   const isActive = !endAt;
@@ -129,7 +129,7 @@ function OrderSessionCard({ sessionStartDate, sessionEndDate, endAt, tableNumber
       {isOpenOrderSessionDetailCard && (
         <>
           <DetailListWrapper>
-            <OrderSessionDetailCardList orderSessionData={orders} orderStatus={orderStatus} />
+            <OrderSessionDetailCardList orderSessionData={orders} orderStatuses={orderStatuses} />
           </DetailListWrapper>
           <BottomPadding />
         </>

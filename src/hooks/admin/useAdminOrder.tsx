@@ -4,6 +4,14 @@ import { defaultPaginationValue } from '@@types/defaultValues';
 import { useSetAtom } from 'jotai';
 import { adminOrdersAtom } from 'src/jotai/admin/atoms';
 
+interface FetchOrdersParams {
+  workspaceId: number;
+  startDate: string;
+  endDate: string;
+  tableNumber?: number;
+  statuses?: OrderStatus[];
+}
+
 function useAdminOrder(workspaceId: string | undefined) {
   const { adminApi } = useApi();
   const setOrders = useSetAtom(adminOrdersAtom);
@@ -14,10 +22,19 @@ function useAdminOrder(workspaceId: string | undefined) {
     });
   };
 
-  const fetchOrders = (props: { startDate: string; endDate: string; status?: OrderStatus }) => {
-    adminApi.get<Order[]>('/orders', { params: { ...props, workspaceId } }).then((response) => {
-      setOrders(response.data);
-    });
+  const fetchOrders = (params: Omit<FetchOrdersParams, 'workspaceId'>) => {
+    return adminApi
+      .get<Order[]>('/orders', {
+        params: {
+          ...params,
+          workspaceId: workspaceId,
+          statuses: params.statuses?.join(','),
+        },
+      })
+      .then((response) => {
+        setOrders(response.data);
+        return response;
+      });
   };
 
   const fetchRealTimeOrders = () => {

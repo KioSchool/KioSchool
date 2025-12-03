@@ -55,3 +55,5 @@ export const adminUserTossAccountAtom = atom((get) => {
 export const adminSideNavIsOpenAtom = atom(false);
 
 export const externalSidebarAtom = atom<ExternalRightSidebarOptions>({ action: RIGHT_SIDEBAR_ACTION.CLOSE });
+
+export const orderModalReadOnlyAtom = atom(false);

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { RiArrowDownSLine } from '@remixicon/react';
@@ -7,8 +7,10 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 const SelectContainer = styled.div<{ width?: string; flex?: string }>`
   position: relative;
   font-family: 'LINE Seed Sans KR', sans-serif;
-  width: ${({ width }) => width || 'auto'};
-  flex: ${({ flex, width }) => flex || (width ? 'none' : 1)};
+  min-width: ${({ width }) => width || 'auto'};
+  width: fit-content;
+  max-width: 100%;
+  flex: ${({ flex }) => flex || 'none'};
 `;
 
 const SelectTrigger = styled.div<{ isOpen: boolean; isHighlight?: boolean }>`
@@ -24,6 +26,7 @@ const SelectTrigger = styled.div<{ isOpen: boolean; isHighlight?: boolean }>`
   line-height: normal;
   user-select: none;
   transition: border-color 0.2s;
+  white-space: nowrap;
   ${rowFlex({ justify: 'center', align: 'center' })}
 
   &:hover {
@@ -33,9 +36,7 @@ const SelectTrigger = styled.div<{ isOpen: boolean; isHighlight?: boolean }>`
   & > span {
     flex: 1;
     text-align: left;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    margin-right: 4px;
   }
 `;
 
@@ -53,6 +54,7 @@ const SelectDropdownContainer = styled.div`
   width: 100%;
   margin-top: 4px;
   position: absolute;
+  left: 0;
   z-index: 10;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
@@ -74,6 +76,7 @@ const SelectOption = styled.div<{ isSelected: boolean }>`
   cursor: pointer;
   background: ${({ isSelected }) => (isSelected ? '#fff5f0' : Color.WHITE)};
   border-bottom: 1px solid #f5f5f5;
+  white-space: nowrap;
 
   &:last-child {
     border-bottom: none;
@@ -89,35 +92,44 @@ const Label = styled.span<{ isHighlight: boolean }>`
   font-weight: ${({ isHighlight }) => isHighlight && 600};
 `;
 
-interface CustomSelectPropsBase<T> {
+interface CustomSelectPropsBase {
   placeholder?: string;
   width?: string;
   flex?: string;
-  value: T;
   highlightOnSelect?: boolean;
 }
 
-type SelectOptionsProps<T> = {
+interface SelectOptionsBaseProps<T> {
   options: { value: T; label: string }[];
-  onChange: (value: T) => void;
   children?: never;
   triggerLabel?: string;
-};
+}
+
+interface SingleSelectProps<T> extends SelectOptionsBaseProps<T> {
+  isMulti?: false;
+  value: T;
+  onChange: (value: T) => void;
+}
+
+interface MultiSelectProps<T> extends SelectOptionsBaseProps<T> {
+  isMulti: true;
+  value: T[];
+  onChange: (value: T[]) => void;
+}
 
 type SelectChildrenProps = {
   options?: never;
   onChange?: never;
+  isMulti?: never;
+  value: string;
   children: React.ReactNode;
   triggerLabel: string;
 };
 
-type CustomSelectProps<T> = CustomSelectPropsBase<T> & (SelectOptionsProps<T> | SelectChildrenProps);
+type CustomSelectProps<T> = CustomSelectPropsBase & (SingleSelectProps<T> | MultiSelectProps<T> | SelectChildrenProps);
 
 function CustomSelect<T extends string>(props: CustomSelectProps<T>) {
-  const { value, onChange, placeholder, width, flex, highlightOnSelect = false } = props;
-  const options = props.options ?? [];
-  const children = props.children;
-  const triggerLabel = props.triggerLabel;
+  const { placeholder, width, flex, highlightOnSelect = false, options = [], children, triggerLabel } = props;
 
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -132,9 +144,65 @@ function CustomSelect<T extends string>(props: CustomSelectProps<T>) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const hasSelection = value !== undefined && value !== '';
-  const selectedLabel = children ? triggerLabel : options.find((option) => option.value === value)?.label || placeholder || value;
-  const isHighlight = highlightOnSelect && hasSelection;
+  const selectedLabel = useMemo(() => {
+    if (children) return triggerLabel;
+
+    if (props.isMulti) {
+      const currentValues = props.value;
+      const targetValues = currentValues.length === 0 ? options.map((opt) => opt.value) : currentValues;
+      const labels = targetValues.map((val) => options.find((opt) => opt.value === val)?.label).filter(Boolean);
+
+      return labels.length > 0 ? labels.join(', ') : placeholder;
+    }
+
+    const foundOption = options.find((option) => option.value === props.value);
+    return foundOption?.label || placeholder || props.value;
+  }, [children, triggerLabel, props, options, placeholder]);
+
+  const isHighlight = useMemo(() => {
+    if (!highlightOnSelect) {
+      return false;
+    }
+
+    if (props.isMulti) {
+      return true;
+    }
+
+    return !!props.value;
+  }, [highlightOnSelect, props]);
+
+  const handleOptionClick = (optionValue: T) => {
+    if (props.children || !props.onChange) return;
+    if (props.isMulti) {
+      const currentValues = props.value;
+      const isSelected = currentValues.includes(optionValue);
+      let newValues;
+
+      if (isSelected) {
+        newValues = currentValues.filter((v) => v !== optionValue);
+      } else {
+        newValues = [...currentValues, optionValue];
+      }
+
+      props.onChange(newValues);
+    } else {
+      props.onChange(optionValue);
+      setIsOpen(false);
+    }
+  };
+
+  const isOptionSelected = (optionValue: T) => {
+    if (!props.isMulti) {
+      return props.value === optionValue;
+    }
+
+    const currentValues = props.value;
+    if (currentValues.length === 0) {
+      return true;
+    }
+
+    return currentValues.includes(optionValue);
+  };
 
   return (
     <SelectContainer ref={containerRef} width={width} flex={flex}>
@@ -151,14 +219,7 @@ function CustomSelect<T extends string>(props: CustomSelectProps<T>) {
           ) : (
             <SelectDropdown>
               {options.map((option) => (
-                <SelectOption
-                  key={option.value}
-                  isSelected={option.value === value}
-                  onClick={() => {
-                    onChange?.(option.value);
-                    setIsOpen(false);
-                  }}
-                >
+                <SelectOption key={option.value} isSelected={isOptionSelected(option.value)} onClick={() => handleOptionClick(option.value)}>
                   {option.label}
                 </SelectOption>
               ))}

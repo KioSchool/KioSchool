@@ -6,9 +6,12 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { RiRefreshLine } from '@remixicon/react';
 import AppContainer from '@components/common/container/AppContainer';
-import OrderSessionCard from '@components/admin/order/table/OrderSessionCard';
+import OrderSessionDetailCard from '@components/admin/order/table/OrderSessionDetailCard';
+import SearchInput from '@components/common/input/SearchInput';
+import useAdminProducts from '@hooks/admin/useAdminProducts';
+import { useEffect } from 'react';
 import { OrderStatus } from '@@types/index';
-import { useAdminFetchTableOrder } from '@hooks/admin/useAdminFetchTableOrder';
+import { useAdminFetchTotalOrder } from '@hooks/admin/useAdminFetchTotalOrder';
 
 const FilterContainer = styled.div`
   width: 100%;
@@ -38,25 +41,31 @@ const ResetButton = styled.div`
 const FallbackContainer = styled.div`
   width: 100%;
   height: 500px;
-  border: 1px solid #e8eef2;
-  border-radius: 10px;
   font-size: 1.2rem;
   color: ${Color.GREY};
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
-const SessionListContainer = styled.div`
+const OrderListContainer = styled.div`
   width: 100%;
-  gap: 16px;
-  ${colFlex({ align: 'flex-start' })}
+  border-top: 1px solid #e8eef2;
+  overflow: hidden;
+  ${colFlex({ align: 'stretch' })}
 `;
 
-function AdminTableOrder() {
+function AdminTotalOrder() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { data: sessions, filters, setFilters, handleReset, sortOptions, tableOptions, statusOptions } = useAdminFetchTableOrder(workspaceId);
+  const { data: orders, filters, setFilters, handleReset, sortOptions, tableOptions, statusOptions } = useAdminFetchTotalOrder(workspaceId);
+  const { fetchProducts } = useAdminProducts(workspaceId);
 
-  const { startDate, endDate, tableNumber, orderStatuses, sortOrder } = filters;
-  const { setStartDate, setEndDate, setTableNumber, setOrderStatuses, setSortOrder } = setFilters;
+  useEffect(() => {
+    if (workspaceId) {
+      fetchProducts();
+    }
+  }, [workspaceId]);
+
+  const { startDate, endDate, tableNumber, orderStatuses, sortOrder, searchKeyword } = filters;
+  const { setStartDate, setEndDate, setTableNumber, setOrderStatuses, setSortOrder, setSearchKeyword } = setFilters;
 
   const dateRangeLabel = startDate && endDate ? `${startDate.toLocaleDateString()} ~ ${endDate.toLocaleDateString()}` : '날짜 선택';
 
@@ -83,33 +92,19 @@ function AdminTableOrder() {
           />
           <CustomSelect value={tableNumber} options={tableOptions} onChange={setTableNumber} highlightOnSelect={true} width="150px" />
         </FilterContainer>
-
-        <SessionListContainer>
-          {sessions.length > 0 ? (
-            sessions.map((data) => {
-              const sessionTotalPrice = data.orders.reduce((acc, order) => {
-                return acc + order.totalPrice;
-              }, 0);
-              return (
-                <OrderSessionCard
-                  key={data.id}
-                  sessionStartDate={new Date(data.createdAt)}
-                  sessionEndDate={new Date(data.endAt || data.expectedEndAt)}
-                  endAt={data.endAt}
-                  tableNumber={data.tableNumber}
-                  orderStatuses={orderStatuses}
-                  sessionTotalPrice={sessionTotalPrice}
-                  orders={data.orders}
-                />
-              );
-            })
-          ) : (
-            <FallbackContainer>조회된 주문 내역이 없습니다.</FallbackContainer>
-          )}
-        </SessionListContainer>
+        <SearchInput value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} placeholder="주문번호나 주문자명을 입력해주세요." />
+        {orders.length > 0 ? (
+          <OrderListContainer>
+            {orders.map((order) => (
+              <OrderSessionDetailCard key={order.id} {...order} />
+            ))}
+          </OrderListContainer>
+        ) : (
+          <FallbackContainer>조회된 주문 내역이 없습니다.</FallbackContainer>
+        )}
       </>
     </AppContainer>
   );
 }
 
-export default AdminTableOrder;
+export default AdminTotalOrder;
