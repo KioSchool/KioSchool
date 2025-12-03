@@ -160,13 +160,15 @@ function CustomSelect<T extends string>(props: CustomSelectProps<T>) {
   }, [children, triggerLabel, props, options, placeholder]);
 
   const isHighlight = useMemo(() => {
-    if (!highlightOnSelect) return false;
+    if (!highlightOnSelect) {
+      return false;
+    }
 
     if (props.isMulti) {
       return true;
     }
 
-    return props.value !== undefined && props.value !== '';
+    return !!props.value;
   }, [highlightOnSelect, props]);
 
   const handleOptionClick = (optionValue: T) => {
@@ -190,12 +192,16 @@ function CustomSelect<T extends string>(props: CustomSelectProps<T>) {
   };
 
   const isOptionSelected = (optionValue: T) => {
-    if (props.isMulti) {
-      const currentValues = props.value;
-      if (currentValues.length === 0) return true;
-      return currentValues.includes(optionValue);
+    if (!props.isMulti) {
+      return props.value === optionValue;
     }
-    return props.value === optionValue;
+
+    const currentValues = props.value;
+    if (currentValues.length === 0) {
+      return true;
+    }
+
+    return currentValues.includes(optionValue);
   };
 
   return (
