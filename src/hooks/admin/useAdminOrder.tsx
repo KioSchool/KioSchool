@@ -1,8 +1,16 @@
 import useApi from '@hooks/useApi';
-import { FetchOrdersParams, Order, OrderStatus, PaginationResponse, TableOrderSession } from '@@types/index';
+import { Order, OrderStatus, PaginationResponse, TableOrderSession } from '@@types/index';
 import { defaultPaginationValue } from '@@types/defaultValues';
 import { useSetAtom } from 'jotai';
 import { adminOrdersAtom } from 'src/jotai/admin/atoms';
+
+interface FetchOrdersParams {
+  workspaceId: number;
+  startDate: string;
+  endDate: string;
+  tableNumber?: number;
+  statuses?: OrderStatus[];
+}
 
 function useAdminOrder(workspaceId: string | undefined) {
   const { adminApi } = useApi();
