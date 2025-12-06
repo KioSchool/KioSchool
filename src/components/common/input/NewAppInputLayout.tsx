@@ -5,30 +5,6 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { RiShareBoxLine } from '@remixicon/react';
 import NewCommonButton, { ButtonColor, ButtonSize, CustomButtonSize } from '@components/common/button/NewCommonButton';
 
-export interface InputButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  size?: ButtonSize;
-  color?: ButtonColor;
-  customSize?: CustomButtonSize;
-  text: string;
-}
-
-export interface BaseInputLayoutProps {
-  width?: number | string;
-  label?: string;
-  buttonProps?: InputButtonProps;
-  linkProps?: {
-    text: string;
-    url: string;
-  };
-  enterHandler?: () => void;
-  children: ReactNode;
-  className?: string;
-}
-
-interface ContainerProps {
-  width?: number | string;
-}
-
 const Container = styled.div<ContainerProps>`
   width: ${({ width }) => {
     if (typeof width === 'number') {
@@ -75,7 +51,31 @@ const LinkText = styled.span`
   font-weight: 500;
 `;
 
-const NewAppInputLayout = ({ width, label, buttonProps, linkProps, enterHandler, children, className }: BaseInputLayoutProps) => {
+export interface InputButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  size?: ButtonSize;
+  color?: ButtonColor;
+  customSize?: CustomButtonSize;
+  text: string;
+}
+
+export interface BaseInputLayoutProps {
+  width?: number | string;
+  label?: string;
+  buttonProps?: InputButtonProps;
+  linkProps?: {
+    text: string;
+    url: string;
+  };
+  enterHandler?: () => void;
+  children: ReactNode;
+  className?: string;
+}
+
+interface ContainerProps {
+  width?: number | string;
+}
+
+function NewAppInputLayout({ width, label, buttonProps, linkProps, enterHandler, children, className }: BaseInputLayoutProps) {
   return (
     <Container width={width} className={className}>
       <HeaderContainer>
@@ -102,6 +102,6 @@ const NewAppInputLayout = ({ width, label, buttonProps, linkProps, enterHandler,
       {children}
     </Container>
   );
-};
+}
 
 export default NewAppInputLayout;
