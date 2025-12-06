@@ -57,8 +57,9 @@ const LinkContainer = styled.a`
   max-width: 250px;
   margin-left: 10px;
   text-decoration: none;
-  ${rowFlex({ justify: 'center', align: 'center' })};
   cursor: pointer;
+  ${rowFlex({ justify: 'center', align: 'center' })};
+
   &:hover > * {
     color: ${Color.KIO_ORANGE};
   }
