@@ -10,6 +10,7 @@ import AppImageInput from '@components/common/input/AppImageInput';
 import NewAppInput from '@components/common/input/NewAppInput';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { MAX_PRODUCT_IMAGE_SIZE } from '@constants/data/productData';
+import NewAppTextarea from '@components/common/input/NewAppTextarea';
 
 const Container = styled.div`
   height: 100%;
@@ -201,10 +202,10 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
 
         <InputColContainer>
           <InputLabel>상품 설명</InputLabel>
-          <NewAppInput
+          <NewAppTextarea
             placeholder={'최대 30자까지 가능합니다.'}
             value={state.description}
-            onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
               dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: event.target?.value });
             }}
             width={'100%'}
