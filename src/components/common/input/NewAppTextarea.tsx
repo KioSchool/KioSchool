@@ -1,62 +1,11 @@
 ﻿import { ForwardedRef, forwardRef } from 'react';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import { colFlex, rowFlex } from '@styles/flexStyles';
-import NewRoundedButton, { CustomButtonSize } from '../button/NewRoundedButton';
-import { RiShareBoxLine } from '@remixicon/react';
+import NewAppInputLayout, { BaseInputLayoutProps } from './NewAppInputLayout';
 
-interface ContainerProps {
-  width?: number | string;
-}
-
-const Container = styled.div<ContainerProps>`
-  width: ${({ width }) => {
-    if (typeof width === 'number') {
-      return `${width}px`;
-    }
-    return width || '500px';
-  }};
-  gap: 6px;
-  ${colFlex({ justify: 'center', align: 'center' })};
-`;
-
-const HeaderContainer = styled.div`
-  width: 100%;
-  ${rowFlex({ align: 'center' })};
-`;
-
-const InputLabel = styled.span`
-  color: ${Color.GREY};
-  font-size: 20px;
-  font-weight: 500;
-  padding-left: 10px;
-`;
-
-const LinkContainer = styled.a`
-  gap: 3px;
-  max-width: 250px;
-  margin-left: 10px;
-  text-decoration: none;
-  ${rowFlex({ justify: 'center', align: 'center' })};
-  cursor: pointer;
-  &:hover > * {
-    color: ${Color.KIO_ORANGE};
-  }
-`;
-
-const LinkIcon = styled(RiShareBoxLine)`
-  color: #939393;
-`;
-
-const LinkText = styled.span`
-  color: #939393;
-  font-size: 13px;
-  font-weight: 500;
-`;
-
-const StyledTextarea = styled.textarea<NewAppTextareaProps>`
+const StyledTextarea = styled.textarea<{ height?: number }>`
   border: none;
-  border-radius: 24px;
+  border-radius: 28px;
   box-sizing: border-box;
   width: 100%;
   height: ${({ height }) => (height ? `${height}px` : '120px')};
@@ -64,7 +13,6 @@ const StyledTextarea = styled.textarea<NewAppTextareaProps>`
   resize: none;
   line-height: 1.5;
   font-family: inherit;
-
   border: 1px solid rgba(201, 201, 201, 0.5);
 
   &:focus {
@@ -77,63 +25,42 @@ const StyledTextarea = styled.textarea<NewAppTextareaProps>`
   }
 
   &::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
   }
+
   &::-webkit-scrollbar-thumb {
     background-color: #e0e0e0;
-    border-radius: 4px;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+    margin-block: 14px;
   }
 `;
 
-export interface InputButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  size?: CustomButtonSize;
-  text: string;
-}
-
-export interface NewAppTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  enterHandler?: () => void;
-  width?: number | string;
+export interface NewAppTextareaProps
+  extends Omit<BaseInputLayoutProps, 'children'>,
+    Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'width' | 'height'> {
   height?: number;
-  label?: string;
-  buttonProps?: InputButtonProps;
-  linkProps?: {
-    text: string;
-    url: string;
-  };
 }
 
 const NewAppTextarea = forwardRef<HTMLTextAreaElement, NewAppTextareaProps>((props: NewAppTextareaProps, ref: ForwardedRef<HTMLTextAreaElement>) => {
+  const { width, label, buttonProps, linkProps, enterHandler, height, ...textareaProps } = props;
+
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey && props.enterHandler) {
+    if (e.key === 'Enter' && !e.shiftKey && enterHandler) {
       e.preventDefault();
-      props.enterHandler();
+      enterHandler();
     }
   };
 
   return (
-    <Container width={props.width}>
-      <HeaderContainer>
-        {props.label && <InputLabel>{props.label}</InputLabel>}
-        {props.linkProps && (
-          <LinkContainer href={props.linkProps.url} target="_blank" rel="noopener noreferrer">
-            <LinkIcon size={16} />
-            <LinkText>{props.linkProps.text}</LinkText>
-          </LinkContainer>
-        )}
-        {props.buttonProps && (
-          <NewRoundedButton
-            {...props.buttonProps}
-            size={'xs'}
-            customSize={props.buttonProps.size}
-            onClick={props.enterHandler}
-            style={{ marginLeft: 'auto', marginRight: '10px' }}
-          >
-            {props.buttonProps.text}
-          </NewRoundedButton>
-        )}
-      </HeaderContainer>
-      <StyledTextarea id={'textarea-id'} {...props} ref={ref} onKeyDown={onKeyDown} />
-    </Container>
+    <NewAppInputLayout width={width} label={label} buttonProps={buttonProps} linkProps={linkProps} enterHandler={enterHandler}>
+      <StyledTextarea id={'textarea-id'} {...textareaProps} height={height} ref={ref} onKeyDown={onKeyDown} />
+    </NewAppInputLayout>
   );
 });
 
