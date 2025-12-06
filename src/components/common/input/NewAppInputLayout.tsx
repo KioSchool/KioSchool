@@ -3,7 +3,8 @@ import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { RiShareBoxLine } from '@remixicon/react';
-import NewCommonButton, { ButtonColor, ButtonSize, CustomButtonSize } from '@components/common/button/NewCommonButton';
+import NewCommonButton, { CustomButtonSize } from '@components/common/button/NewCommonButton';
+import { ButtonColor, ButtonSize } from '@@types/index';
 
 const Container = styled.div<ContainerProps>`
   width: ${({ width }) => {

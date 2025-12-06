@@ -231,3 +231,6 @@ interface CloseSidebarOptions {
 }
 
 export type ExternalRightSidebarOptions = OpenSidebarOptions | CloseSidebarOptions;
+
+export type ButtonSize = 'xs' | 'sm' | 'md';
+export type ButtonColor = 'kio_orange' | 'blue_gray';

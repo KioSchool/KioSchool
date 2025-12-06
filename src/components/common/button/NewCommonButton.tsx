@@ -3,9 +3,7 @@ import { css } from '@emotion/react';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 import { ReactNode } from 'react';
-
-export type ButtonSize = 'xs' | 'sm' | 'md';
-export type ButtonColor = 'kio_orange' | 'blue_gray';
+import { ButtonColor, ButtonSize } from '@@types/index';
 
 export interface CustomButtonSize {
   width?: number;
