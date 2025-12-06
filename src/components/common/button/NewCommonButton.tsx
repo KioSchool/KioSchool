@@ -4,8 +4,8 @@ import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 import { ReactNode } from 'react';
 
-type ButtonSize = 'xs' | 'sm' | 'md';
-type ButtonColor = 'kio_orange' | 'blue_gray';
+export type ButtonSize = 'xs' | 'sm' | 'md';
+export type ButtonColor = 'kio_orange' | 'blue_gray';
 
 export interface CustomButtonSize {
   width?: number;
