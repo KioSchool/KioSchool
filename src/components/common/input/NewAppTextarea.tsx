@@ -47,7 +47,7 @@ export interface NewAppTextareaProps
   height?: number;
 }
 
-const NewAppTextarea = forwardRef<HTMLTextAreaElement, NewAppTextareaProps>((props: NewAppTextareaProps, ref: ForwardedRef<HTMLTextAreaElement>) => {
+function NewAppTextareaBase(props: NewAppTextareaProps, ref: ForwardedRef<HTMLTextAreaElement>) {
   const { width, label, buttonProps, linkProps, enterHandler, height, ...textareaProps } = props;
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -62,6 +62,8 @@ const NewAppTextarea = forwardRef<HTMLTextAreaElement, NewAppTextareaProps>((pro
       <StyledTextarea id={'textarea-id'} {...textareaProps} height={height} ref={ref} onKeyDown={onKeyDown} />
     </NewAppInputLayout>
   );
-});
+}
+
+const NewAppTextarea = forwardRef(NewAppTextareaBase);
 
 export default NewAppTextarea;

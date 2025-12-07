@@ -26,7 +26,7 @@ export interface NewAppInputProps extends Omit<BaseInputLayoutProps, 'children'>
   height?: number;
 }
 
-const NewAppInput = forwardRef<HTMLInputElement, NewAppInputProps>((props: NewAppInputProps, ref: ForwardedRef<HTMLInputElement>) => {
+function NewAppInputBase(props: NewAppInputProps, ref: ForwardedRef<HTMLInputElement>) {
   const { width, label, buttonProps, linkProps, enterHandler, height, ...inputProps } = props;
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -40,6 +40,8 @@ const NewAppInput = forwardRef<HTMLInputElement, NewAppInputProps>((props: NewAp
       <StyledInput id={'input-id'} {...inputProps} height={height} ref={ref} onKeyDown={onKeyDown} />
     </NewAppInputLayout>
   );
-});
+}
+
+const NewAppInput = forwardRef(NewAppInputBase);
 
 export default NewAppInput;
