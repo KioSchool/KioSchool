@@ -17,6 +17,7 @@ const NavContainer = styled.div<{ useBackground: boolean }>`
   width: 100%;
   flex-wrap: wrap;
   top: 0;
+  left: 0;
   position: fixed;
   padding: 20px 40px;
   box-sizing: border-box;
