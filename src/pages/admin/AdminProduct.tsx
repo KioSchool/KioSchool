@@ -28,8 +28,8 @@ const ProductAddButtonContainer = styled.div`
 `;
 
 const ProductContainer = styled.div`
-  width: 1000px;
-  max-height: 296px;
+  box-sizing: border-box;
+  width: 100%;
   padding: 18px 30px;
   gap: 10px;
   border: 1px solid #e8eef2;
@@ -114,7 +114,7 @@ function AdminProduct() {
   };
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} customWidth={'100%'}>
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })}>
       <Container>
         <ProductAddButtonContainer>
           <NewCommonButton size="sm" onClick={handleOpenAddProduct}>
