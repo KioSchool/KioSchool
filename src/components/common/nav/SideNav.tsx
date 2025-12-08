@@ -3,16 +3,17 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { adminNavData } from '@constants/data/adminNavData';
 import { Color } from '@resources/colors';
+import { SIDE_NAV_WIDTH } from '@constants/layout';
 
 const SideNavContainer = styled.nav<{ isOpen: boolean }>`
   position: fixed;
   top: 65px;
   left: 0;
   height: calc(100vh - 65px);
-  width: 220px;
+  width: ${SIDE_NAV_WIDTH}px;
   background: white;
   box-sizing: border-box;
-  padding: 20px 10px 0 40px;
+  padding: 20px 10px 0 20px;
   gap: 20px;
   z-index: 1011;
   transform: translateX(${(props) => (props.isOpen ? '0' : '-100%')});
@@ -29,7 +30,7 @@ const NavCategory = styled.div`
 const CategoryTitle = styled.h2`
   margin: 10px 0;
   color: #464a4d;
-  font-size: 18px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 700;
 `;
@@ -39,7 +40,7 @@ const SideNavLink = styled(Link, {
 })<{ isActive: boolean }>`
   text-decoration: none;
   color: #464a4d;
-  font-size: 16px;
+  font-size: 14px;
   font-style: normal;
   font-weight: ${(props) => (props.isActive ? 700 : 400)};
   cursor: pointer;
