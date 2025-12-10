@@ -14,7 +14,7 @@ const unSellableStyle = `
   background: rgba(255, 255, 255, 0.7);
 `;
 
-const Container = styled.div<{ isSellable: boolean | null }>`
+const Container = styled.div<{ status: ProductStatus }>`
   width: 180px;
   height: 228px;
   flex-shrink: 0;
@@ -22,7 +22,7 @@ const Container = styled.div<{ isSellable: boolean | null }>`
   border-radius: 16px;
   border: 1px solid #e8eef2;
   box-sizing: border-box;
-  ${(props) => (props.isSellable ? sellableStyle : unSellableStyle)}
+  ${(props) => (props.status === 'SELLING' ? sellableStyle : unSellableStyle)}
   ${colFlex({ justify: 'space-between', align: 'center' })}
 `;
 
@@ -70,36 +70,26 @@ interface ProductCardProps {
 
 function ProductCard({ product, onClick }: ProductCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { editProductSellable } = useAdminProducts(workspaceId);
-
-  // TODO : 품절 처리 api 연동 이후 삭제되어야 하는 로직
-  const getCurrentStatus = (): ProductStatus => {
-    if (product.isSellable) return 'SELLING';
-    return 'HIDDEN';
-  };
+  const { editProductStatus } = useAdminProducts(workspaceId);
 
   const handleStatusChange = (newStatus: ProductStatus) => {
-    if (newStatus === 'SELLING') {
-      editProductSellable(product.id, true);
-    } else {
-      // TODO : 품절 처리 api 연동 이후 삭제되어야 하는 로직
-      // 현재는 판매 불가 상태로 처리
-      editProductSellable(product.id, false);
-    }
+    editProductStatus(product.id, newStatus);
   };
 
+  const isSellable = product.status === ProductStatus.SELLING;
+
   return (
-    <Container isSellable={product.isSellable} className={'product-card-container'}>
+    <Container status={product.status} className={'product-card-container'}>
       <ContentContainer onClick={onClick} className={'content-container'}>
-        <TextContainer isSellable={product.isSellable} className={'text-container'}>
+        <TextContainer isSellable={isSellable} className={'text-container'}>
           <Title>{product.name}</Title>
           <Price>{product.price.toLocaleString()}원</Price>
         </TextContainer>
-        <Image isSellable={product.isSellable} src={product.imageUrl} alt={product.name} />
+        <Image isSellable={isSellable} src={product.imageUrl} alt={product.name} />
       </ContentContainer>
 
       <SelectorWrapper onClick={(e) => e.stopPropagation()}>
-        <SelectWithProductStatus currentStatus={getCurrentStatus()} onStatusChange={handleStatusChange} />
+        <SelectWithProductStatus currentStatus={product.status} onStatusChange={handleStatusChange} />
       </SelectorWrapper>
     </Container>
   );
