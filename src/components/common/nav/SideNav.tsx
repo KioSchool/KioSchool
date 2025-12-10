@@ -13,7 +13,7 @@ const SideNavContainer = styled.nav<{ isOpen: boolean }>`
   width: ${SIDE_NAV_WIDTH}px;
   background: white;
   box-sizing: border-box;
-  padding: 20px 10px 0 20px;
+  padding: 20px 10px 0 40px;
   gap: 20px;
   z-index: 1011;
   transform: translateX(${(props) => (props.isOpen ? '0' : '-100%')});
