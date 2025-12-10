@@ -1,12 +1,48 @@
-import { Product } from '@@types/index';
+import { Product, ProductStatus } from '@@types/index';
 import styled from '@emotion/styled';
-import AppLabel from '@components/common/label/AppLabel';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { RiAddLine, RiSubtractLine } from '@remixicon/react';
 import { css } from '@emotion/react';
 import { userOrderBasketAtom } from 'src/jotai/user/atoms';
 import { useSetAtom } from 'jotai';
+
+const ProductName = styled.div<{ isSoldOut: boolean }>`
+  font-size: 18px;
+  color: ${({ isSoldOut }) => (isSoldOut ? '#D1D5D8' : Color.BLACK)};
+  line-height: 1.4;
+`;
+
+const ProductDescription = styled.div<{ isSoldOut: boolean }>`
+  font-size: 13px;
+  color: ${({ isSoldOut }) => (isSoldOut ? '#D1D5D8' : Color.BLACK)};
+  line-height: 1.4;
+`;
+
+const ProductPrice = styled.div<{ isSoldOut: boolean }>`
+  font-size: 18px;
+  font-weight: 500;
+  color: ${({ isSoldOut }) => (isSoldOut ? '#D1D5D8' : Color.BLACK)};
+  line-height: 1.4;
+`;
+
+const SoldOutOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 90px;
+  height: 90px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 10;
+  ${rowFlex({ justify: 'center', align: 'center' })}
+`;
+
+const SoldOutText = styled.span`
+  font-size: 18px;
+  font-weight: 700;
+  color: ${Color.WHITE};
+`;
 
 const Container = styled.div`
   width: auto;
@@ -89,10 +125,13 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product, quantity }: ProductCardProps) {
+  const isSoldOut = product.status === ProductStatus.SOLD_OUT;
   const isOpened = quantity > 0;
   const setOrderBasket = useSetAtom(userOrderBasketAtom);
 
   const handleAddProduct = () => {
+    if (isSoldOut) return;
+
     setOrderBasket((prev) => {
       const existingItem = prev.find((basketProduct) => basketProduct.productId === product.id);
 
@@ -129,23 +168,24 @@ function ProductCard({ product, quantity }: ProductCardProps) {
   return (
     <Container className="product-card-container">
       <LabelContainer className="label-container">
-        <AppLabel color={Color.BLACK} size={18}>
-          {product.name}
-        </AppLabel>
-        <AppLabel color={Color.BLACK} size={13}>
-          {product.description}
-        </AppLabel>
-        <AppLabel color={Color.BLACK} size={18}>
-          {product.price.toLocaleString()}원
-        </AppLabel>
+        <ProductName isSoldOut={isSoldOut}>{product.name}</ProductName>
+        <ProductDescription isSoldOut={isSoldOut}>{product.description}</ProductDescription>
+        <ProductPrice isSoldOut={isSoldOut}>{product.price.toLocaleString()}원</ProductPrice>
       </LabelContainer>
       <Contents className="image-container">
         <StyledImage src={product.imageUrl} alt={product.name} />
-        <ButtonContainer isOpened={isOpened}>
-          <RemoveButton onClick={handleRemoveProduct} isOpened={isOpened} />
-          <QuantityLabel isOpened={isOpened}>{quantity}</QuantityLabel>
-          <AddButton onClick={handleAddProduct} isOpened={isOpened} />
-        </ButtonContainer>
+        {isSoldOut && (
+          <SoldOutOverlay>
+            <SoldOutText>품절</SoldOutText>
+          </SoldOutOverlay>
+        )}
+        {!isSoldOut && (
+          <ButtonContainer isOpened={isOpened}>
+            <RemoveButton onClick={handleRemoveProduct} isOpened={isOpened} />
+            <QuantityLabel isOpened={isOpened}>{quantity}</QuantityLabel>
+            <AddButton onClick={handleAddProduct} isOpened={isOpened} />
+          </ButtonContainer>
+        )}
       </Contents>
     </Container>
   );

@@ -55,7 +55,7 @@ function Order() {
   const workspace = useAtomValue(userWorkspaceAtom);
   const isShowNotice = workspace.notice.length > 0;
   const rawProductCategories = useAtomValue(userCategoriesAtom);
-  const sellableProducts = workspace.products.filter((it) => it.isSellable);
+  const sellableProducts = workspace.products.filter((it) => it.status === 'SELLING');
 
   const productsByCategoryId = _.groupBy<Product>(sellableProducts, (product) => product.productCategory?.id);
 

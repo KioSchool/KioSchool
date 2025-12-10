@@ -1,4 +1,4 @@
-import { Product } from '@@types/index';
+import { Product, ProductStatus } from '@@types/index';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import AppLabel from '@components/common/label/AppLabel';
 import OrderFooter from '@components/user/order/OrderFooter';
@@ -44,8 +44,8 @@ const PlaceHolder = styled.div`
 function OrderProductContent() {
   const workspace = useAtomValue(userWorkspaceAtom);
   const rawProductCategories = useAtomValue(userCategoriesAtom);
-  const sellableProducts = workspace.products.filter((it) => it.isSellable);
-  const productsByCategoryId = _.groupBy<Product>(sellableProducts, (product) => product.productCategory?.id);
+  const productsToShow = workspace.products.filter((it) => it.status !== ProductStatus.HIDDEN);
+  const productsByCategoryId = _.groupBy<Product>(productsToShow, (product) => product.productCategory?.id);
 
   const productsWithCategory = rawProductCategories.map((category) => ({
     category,
