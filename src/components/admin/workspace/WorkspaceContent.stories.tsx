@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { BrowserRouter } from 'react-router-dom';
 import WorkspaceContent from './WorkspaceContent';
-import { Workspace, UserRole, Product } from '@@types/index';
+import { Workspace, UserRole, Product, ProductStatus } from '@@types/index';
 import { defaultWorkspaceSetting } from '@@types/defaultValues';
 import { adminWorkspacesAtom } from 'src/jotai/admin/atoms';
 import { Provider } from 'jotai';
@@ -49,7 +49,7 @@ const createMockProducts = (count: number): Product[] => {
       name: `메뉴 ${index + 1}`,
       description: `메뉴 ${index + 1}에 대한 설명입니다`,
       price: 10000 + index * 1000,
-      isSellable: true,
+      status: ProductStatus.SELLING,
       imageUrl: 'https://via.placeholder.com/150',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
