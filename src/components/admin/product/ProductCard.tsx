@@ -70,36 +70,26 @@ interface ProductCardProps {
 
 function ProductCard({ product, onClick }: ProductCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { editProductSellable } = useAdminProducts(workspaceId);
-
-  // TODO : 품절 처리 api 연동 이후 삭제되어야 하는 로직
-  const getCurrentStatus = (): ProductStatus => {
-    if (product.isSellable) return 'SELLING';
-    return 'HIDDEN';
-  };
+  const { editProductStatus } = useAdminProducts(workspaceId);
 
   const handleStatusChange = (newStatus: ProductStatus) => {
-    if (newStatus === 'SELLING') {
-      editProductSellable(product.id, true);
-    } else {
-      // TODO : 품절 처리 api 연동 이후 삭제되어야 하는 로직
-      // 현재는 판매 불가 상태로 처리
-      editProductSellable(product.id, false);
-    }
+    editProductStatus(product.id, newStatus);
   };
 
+  const isSellable = product.status === ProductStatus.SELLING;
+
   return (
-    <Container isSellable={product.isSellable} className={'product-card-container'}>
+    <Container isSellable={isSellable} className={'product-card-container'}>
       <ContentContainer onClick={onClick} className={'content-container'}>
-        <TextContainer isSellable={product.isSellable} className={'text-container'}>
+        <TextContainer isSellable={isSellable} className={'text-container'}>
           <Title>{product.name}</Title>
           <Price>{product.price.toLocaleString()}원</Price>
         </TextContainer>
-        <Image isSellable={product.isSellable} src={product.imageUrl} alt={product.name} />
+        <Image isSellable={isSellable} src={product.imageUrl} alt={product.name} />
       </ContentContainer>
 
       <SelectorWrapper onClick={(e) => e.stopPropagation()}>
-        <SelectWithProductStatus currentStatus={getCurrentStatus()} onStatusChange={handleStatusChange} />
+        <SelectWithProductStatus currentStatus={product.status} onStatusChange={handleStatusChange} />
       </SelectorWrapper>
     </Container>
   );

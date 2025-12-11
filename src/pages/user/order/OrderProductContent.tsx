@@ -1,6 +1,5 @@
-import { Product } from '@@types/index';
+import { Product, ProductStatus } from '@@types/index';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
-import AppLabel from '@components/common/label/AppLabel';
 import OrderFooter from '@components/user/order/OrderFooter';
 import ProductCard from '@components/user/product/ProductCard';
 import styled from '@emotion/styled';
@@ -29,6 +28,13 @@ const CategoryProduct = styled(Element, {
   border-bottom: 7px solid ${({ isLastElement }) => (isLastElement ? 'transparent' : Color.LIGHT_GREY)};
 `;
 
+const CategoryTitle = styled.div`
+  font-size: 22px;
+  font-weight: 700;
+  color: ${Color.BLACK};
+  padding: 10px 0;
+`;
+
 const ProductContainer = styled.div`
   width: 100%;
 `;
@@ -44,8 +50,8 @@ const PlaceHolder = styled.div`
 function OrderProductContent() {
   const workspace = useAtomValue(userWorkspaceAtom);
   const rawProductCategories = useAtomValue(userCategoriesAtom);
-  const sellableProducts = workspace.products.filter((it) => it.isSellable);
-  const productsByCategoryId = _.groupBy<Product>(sellableProducts, (product) => product.productCategory?.id);
+  const productsToShow = workspace.products.filter((it) => it.status !== ProductStatus.HIDDEN);
+  const productsByCategoryId = _.groupBy<Product>(productsToShow, (product) => product.productCategory?.id);
 
   const productsWithCategory = rawProductCategories.map((category) => ({
     category,
@@ -75,9 +81,7 @@ function OrderProductContent() {
 
           return (
             <CategoryProduct isLastElement={false} name={`category_${category.id}`} key={`product_category_${category.id}`}>
-              <AppLabel color={Color.BLACK} size={22} style={{ padding: '10px 0' }}>
-                {category.name}
-              </AppLabel>
+              <CategoryTitle>{category.name}</CategoryTitle>
               {products.map((product, productIndex) => {
                 const productInBasket = orderBasket.find((item) => item.productId === product.id);
                 const quantity = productInBasket?.quantity || 0;
@@ -96,9 +100,7 @@ function OrderProductContent() {
 
         {defaultProducts && (
           <CategoryProduct isLastElement={true} name="category_default" key="product_category_default">
-            <AppLabel color={Color.BLACK} size={22} style={{ padding: '10px 0' }}>
-              기본메뉴
-            </AppLabel>
+            <CategoryTitle>기본메뉴</CategoryTitle>
             {defaultProducts.map((product, productIndex) => {
               const productInBasket = orderBasket.find((item) => item.productId === product.id);
               const quantity = productInBasket?.quantity || 0;

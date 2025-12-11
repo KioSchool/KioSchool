@@ -49,13 +49,17 @@ export interface OrderProduct extends OrderProductBase {
   updatedAt: string;
 }
 
-export type ProductStatus = 'SELLING' | 'SOLD_OUT' | 'HIDDEN';
+export enum ProductStatus {
+  SELLING = 'SELLING',
+  SOLD_OUT = 'SOLD_OUT',
+  HIDDEN = 'HIDDEN',
+}
 
 export interface Product {
   name: string;
   description: string;
   price: number;
-  isSellable: boolean | null;
+  status: ProductStatus;
   imageUrl: string;
   id: number;
   createdAt: string;

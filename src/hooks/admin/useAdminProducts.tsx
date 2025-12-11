@@ -1,5 +1,5 @@
 import useApi from '@hooks/useApi';
-import { Product, ProductCategory } from '@@types/index';
+import { Product, ProductCategory, ProductStatus } from '@@types/index';
 import { useNavigate } from 'react-router-dom';
 import { adminCategoriesAtom, adminProductsAtom } from 'src/jotai/admin/atoms';
 import { useSetAtom } from 'jotai';
@@ -63,12 +63,12 @@ function useAdminProducts(workspaceId: string | undefined | null) {
       .catch((error) => console.error('Failed to add product: ', error));
   };
 
-  const editProductSellable = (productId: number, isSellable: boolean) => {
+  const editProductStatus = (productId: number, status: ProductStatus) => {
     adminApi
-      .put('/product/sellable', {
+      .put('/product/status', {
         workspaceId,
         productId,
-        isSellable,
+        status,
       })
       .then(() => {
         fetchProducts();
@@ -141,7 +141,7 @@ function useAdminProducts(workspaceId: string | undefined | null) {
     deleteProduct,
     fetchProduct,
     editProduct,
-    editProductSellable,
+    editProductStatus,
     reorderCategories,
     deleteCategory,
   };
