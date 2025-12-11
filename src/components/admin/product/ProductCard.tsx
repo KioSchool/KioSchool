@@ -22,7 +22,7 @@ const Container = styled.div<{ status: ProductStatus }>`
   border-radius: 16px;
   border: 1px solid #e8eef2;
   box-sizing: border-box;
-  ${(props) => (props.status === 'SELLING' ? sellableStyle : unSellableStyle)}
+  ${(props) => (props.status === ProductStatus.SELLING ? sellableStyle : unSellableStyle)}
   ${colFlex({ justify: 'space-between', align: 'center' })}
 `;
 
