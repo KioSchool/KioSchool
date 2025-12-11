@@ -130,8 +130,6 @@ function ProductCard({ product, quantity }: ProductCardProps) {
   const setOrderBasket = useSetAtom(userOrderBasketAtom);
 
   const handleAddProduct = () => {
-    if (isSoldOut) return;
-
     setOrderBasket((prev) => {
       const existingItem = prev.find((basketProduct) => basketProduct.productId === product.id);
 
