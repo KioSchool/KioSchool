@@ -14,7 +14,7 @@ const unSellableStyle = `
   background: rgba(255, 255, 255, 0.7);
 `;
 
-const Container = styled.div<{ status: ProductStatus }>`
+const Container = styled.div<{ isSellable: boolean | null }>`
   width: 180px;
   height: 228px;
   flex-shrink: 0;
@@ -22,7 +22,7 @@ const Container = styled.div<{ status: ProductStatus }>`
   border-radius: 16px;
   border: 1px solid #e8eef2;
   box-sizing: border-box;
-  ${(props) => (props.status === ProductStatus.SELLING ? sellableStyle : unSellableStyle)}
+  ${(props) => (props.isSellable ? sellableStyle : unSellableStyle)}
   ${colFlex({ justify: 'space-between', align: 'center' })}
 `;
 
@@ -79,7 +79,7 @@ function ProductCard({ product, onClick }: ProductCardProps) {
   const isSellable = product.status === ProductStatus.SELLING;
 
   return (
-    <Container status={product.status} className={'product-card-container'}>
+    <Container isSellable={isSellable} className={'product-card-container'}>
       <ContentContainer onClick={onClick} className={'content-container'}>
         <TextContainer isSellable={isSellable} className={'text-container'}>
           <Title>{product.name}</Title>
