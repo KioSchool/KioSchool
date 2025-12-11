@@ -40,7 +40,7 @@ function AdminWorkspace() {
   }, []);
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} customWidth={'100vw'}>
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })}>
       <>
         <ContentContainer>
           <PreviewContainer width={300} height={600} />

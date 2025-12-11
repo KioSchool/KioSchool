@@ -6,8 +6,9 @@ import { Color } from '@resources/colors';
 import { RiArrowRightSLine } from '@remixicon/react';
 import useModal from '@hooks/useModal';
 import RightSidebarModalOpenButton from './RightSidebarModalOpenButton';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { externalSidebarAtom } from 'src/jotai/admin/atoms';
+import { layoutScaleAtom } from 'src/jotai/atoms';
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
 import { Location } from 'react-router-dom';
 
@@ -31,13 +32,13 @@ const AttachedCloseButton = styled.button`
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
-const SidebarContainer = styled.div<{ isOpen: boolean }>`
+const SidebarContainer = styled.div<{ isOpen: boolean; scale: number }>`
   position: fixed;
-  top: 65px;
+  top: calc(65px / ${(props) => props.scale});
   right: 0;
   width: 300px;
   z-index: 1010;
-  height: calc(100vh - 65px);
+  height: calc((100vh - 65px) / ${(props) => props.scale});
   background-color: ${Color.WHITE};
   border-left: 1px solid #e8eef2;
   box-shadow: -4px 0 12px rgba(0, 0, 0, 0.05);
@@ -108,6 +109,7 @@ function RightSidebarModal({ title, subtitle, useOpenButton = true, children, us
   const { isModalOpen, openModal, closeModal } = useModal();
   const [externalSidebar, setExternalSidebar] = useAtom(externalSidebarAtom);
   const { action, location: externalLocation } = externalSidebar;
+  const scale = useAtomValue(layoutScaleAtom);
 
   const isControlled = useExternalControl !== undefined;
 
@@ -137,7 +139,7 @@ function RightSidebarModal({ title, subtitle, useOpenButton = true, children, us
     <Container>
       {!isControlled && useOpenButton && <RightSidebarModalOpenButton openModal={openModal} />}
 
-      <SidebarContainer isOpen={isOpen}>
+      <SidebarContainer isOpen={isOpen} scale={scale}>
         {isOpen && (
           <AttachedCloseButton onClick={handleClose}>
             <CloseButton />
