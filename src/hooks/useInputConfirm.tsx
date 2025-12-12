@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import { useRef, useState } from 'react';
-import AppButton from '@components/common/button/AppButton';
 import { Color } from '@resources/colors';
-import AppInput from '@components/common/input/AppInput';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { RiCloseLargeLine } from '@remixicon/react';
+import NewCommonButton from '@components/common/button/NewCommonButton';
+import NewAppInput from '@components/common/input/NewAppInput';
 
 const Container = styled.div`
   z-index: 1002;
@@ -125,14 +125,19 @@ function useInputConfirm({ title, description, submitText, inputSlots = [] }: In
                 <AppLabel size={15} color={Color.WHITE}>
                   {slot.label}
                 </AppLabel>
-                <AppInput ref={(el) => (inputRefs.current[index] = el)} type="text" placeholder={slot.placeholder} style={{ width: '100%' }} />
+                <NewAppInput
+                  ref={(el: HTMLInputElement | null) => (inputRefs.current[index] = el)}
+                  type="text"
+                  placeholder={slot.placeholder}
+                  style={{ width: '100%' }}
+                />
               </InputContainer>
             ))}
           </SubmitContainer>
           <ButtonContainer className="button-container">
-            <AppButton style={{ width: '100%' }} onClick={handleConfirm}>
+            <NewCommonButton style={{ width: '100%' }} onClick={handleConfirm}>
               {submitText}
-            </AppButton>
+            </NewCommonButton>
           </ButtonContainer>
         </SubContainer>
       </Container>
