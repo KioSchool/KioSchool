@@ -1,5 +1,5 @@
 import { EmailDomain } from '@@types/index';
-import RoundedAppButton from '@components/common/button/RoundedAppButton';
+import NewCommonButton from '@components/common/button/NewCommonButton';
 import styled from '@emotion/styled';
 import useSuperAdminEmail from '@hooks/super-admin/useSuperAdminEmail';
 import { Color } from '@resources/colors';
@@ -54,9 +54,9 @@ function SuperAdminEmailDomainContent({ name, domain, id }: EmailDomain) {
         <SubLabelContainer className={'sub-label-container'}>{domain}</SubLabelContainer>
       </LabelContainer>
       <ButtonContainer>
-        <RoundedAppButton style={{ background: '#AEAEAE' }} onClick={onDeleteHandler}>
+        <NewCommonButton size="xs" customColors={{ background: '#AEAEAE' }} onClick={onDeleteHandler}>
           삭제하기
-        </RoundedAppButton>
+        </NewCommonButton>
       </ButtonContainer>
     </Container>
   );

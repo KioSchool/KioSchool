@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { rowFlex } from '@styles/flexStyles';
-import RoundedAppButton from '@components/common/button/RoundedAppButton';
+import NewCommonButton from '@components/common/button/NewCommonButton';
 import useInputConfirm from '@hooks/useInputConfirm';
 import useSuperAdminBank from '@hooks/super-admin/useSuperAdminBank';
 
@@ -37,7 +37,9 @@ function SuperAdminBankTitleNavBarChildren() {
   return (
     <>
       <ButtonContainer className={'button-container'}>
-        <RoundedAppButton onClick={handleAddBank}>은행 추가하기</RoundedAppButton>
+        <NewCommonButton customSize={{ width: 130, font: 16 }} onClick={handleAddBank}>
+          은행 추가하기
+        </NewCommonButton>
       </ButtonContainer>
       <InputConfirmModal />
     </>
