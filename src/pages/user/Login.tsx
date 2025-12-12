@@ -6,7 +6,7 @@ import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import NewAppInput from '@components/common/input/NewAppInput';
 import LinkLabel from '@components/common/label/LinkLabel';
-import NewRoundedButton from '@components/common/button/NewRoundedButton';
+import NewCommonButton from '@components/common/button/NewCommonButton';
 import { Color } from '@resources/colors';
 import { USER_ROUTES } from '@constants/routes';
 
@@ -61,7 +61,7 @@ function Login() {
           placeholder={'비밀번호를 입력해주세요.'}
         />
         <ErrorContainer>{errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}</ErrorContainer>
-        <NewRoundedButton onClick={handleSubmit}>로그인</NewRoundedButton>
+        <NewCommonButton onClick={handleSubmit}>로그인</NewCommonButton>
         <LinkContainer className={'button-container'}>
           <LinkLabel text={'비밀번호 찾기'} href={USER_ROUTES.RESET_PASSWORD} />
           <LinkLabel text={'회원가입 하기'} href={USER_ROUTES.REGISTER} />
