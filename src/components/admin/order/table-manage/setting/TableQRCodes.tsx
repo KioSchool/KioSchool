@@ -1,4 +1,4 @@
-import RoundedAppButton from '@components/common/button/RoundedAppButton';
+import NewCommonButton from '@components/common/button/NewCommonButton';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
@@ -132,11 +132,15 @@ function TableQRCodes() {
       </Header>
       <Content>
         <Section>
-          <RoundedAppButton onClick={downloadAllQrCode}>전체 다운로드</RoundedAppButton>
+          <NewCommonButton size="sm" onClick={downloadAllQrCode}>
+            전체 다운로드
+          </NewCommonButton>
         </Section>
         <Divider />
         <Section>
-          <RoundedAppButton onClick={downloadPreviewQrCode}>미리보기 다운로드</RoundedAppButton>
+          <NewCommonButton size="sm" onClick={downloadPreviewQrCode}>
+            미리보기 다운로드
+          </NewCommonButton>
         </Section>
       </Content>
 

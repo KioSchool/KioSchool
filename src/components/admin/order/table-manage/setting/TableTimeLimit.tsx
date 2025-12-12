@@ -1,5 +1,5 @@
 import { Checkbox } from '@mui/material';
-import RoundedAppButton from '@components/common/button/RoundedAppButton';
+import NewCommonButton from '@components/common/button/NewCommonButton';
 import styled from '@emotion/styled';
 import { RiAddFill, RiSubtractFill } from '@remixicon/react';
 import { Color } from '@resources/colors';
@@ -142,9 +142,9 @@ function TableTimeLimit() {
           <Input type="text" disabled={!isTimeLimited} value={formatTime(timeLimitMinutes)} readOnly />
           <PlusButton disabled={!isTimeLimited} onClick={handlePlusClick} />
         </InputContainer>
-        <RoundedAppButton size={'130px'} fontSize={'16px'} onClick={handleConfirm}>
+        <NewCommonButton customSize={{ width: 130, font: 16 }} onClick={handleConfirm}>
           저장
-        </RoundedAppButton>
+        </NewCommonButton>
       </Content>
     </Container>
   );
