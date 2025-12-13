@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import { useNavigate } from 'react-router-dom';
-import RoundedAppButton from '@components/common/button/RoundedAppButton';
+import NewCommonButton from '@components/common/button/NewCommonButton';
 import { tabletMediaQuery } from '@styles/globalStyles';
 import { isMobile } from 'react-device-detect';
 import { USER_ROUTES } from '@constants/routes';
@@ -63,7 +63,9 @@ function InfoMainDescription() {
     <Container>
       {!isMobile && (
         <ButtonContainer>
-          <RoundedAppButton onClick={onClickSignIn}>SIGN IN</RoundedAppButton>
+          <NewCommonButton size="xs" onClick={onClickSignIn}>
+            SIGN IN
+          </NewCommonButton>
         </ButtonContainer>
       )}
       <TextContainer>

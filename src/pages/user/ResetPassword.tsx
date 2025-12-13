@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import useAuthentication from '@hooks/useAuthentication';
 import { colFlex } from '@styles/flexStyles';
 import NewAppInput from '@components/common/input/NewAppInput';
-import NewRoundedButton from '@components/common/button/NewRoundedButton';
+import NewCommonButton from '@components/common/button/NewCommonButton';
 import LinkLabel from '@components/common/label/LinkLabel';
 import { Color } from '@resources/colors';
 import { USER_ROUTES } from '@constants/routes';
@@ -51,9 +51,9 @@ function ResetPassword() {
         <>
           <NewAppInput placeholder={'아이디를 입력해주세요'} ref={idInputRef} label={'아이디'} />
           <NewAppInput placeholder={'이메일을 입력해주세요'} ref={emailInputRef} label={'이메일'} />
-          <NewRoundedButton customSize={{ height: 45, width: 350 }} onClick={sendResetPasswordLinkHandler} style={{ marginTop: '50px' }}>
+          <NewCommonButton customSize={{ height: 45, width: 350, font: 20 }} onClick={sendResetPasswordLinkHandler} style={{ marginTop: '50px' }}>
             비밀번호 재설정 링크 전송하기
-          </NewRoundedButton>
+          </NewCommonButton>
 
           <LinkLabel text={'로그인하기'} href={USER_ROUTES.LOGIN} />
         </>
@@ -138,7 +138,7 @@ function ResetPassword() {
           required
         />
         <ErrorContainer>{errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}</ErrorContainer>
-        <NewRoundedButton onClick={resetPasswordHandler}>비밀번호 재설정</NewRoundedButton>
+        <NewCommonButton onClick={resetPasswordHandler}>비밀번호 재설정</NewCommonButton>
       </>
     </AppContainer>
   );

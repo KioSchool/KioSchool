@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useRef } from 'react';
 import { colFlex } from '@styles/flexStyles';
 import NewAppInput from '@components/common/input/NewAppInput';
-import NewRoundedButton from '@components/common/button/NewRoundedButton';
+import NewCommonButton from '@components/common/button/NewCommonButton';
 import usePopup from '@hooks/usePopup';
 
 const Container = styled.div`
@@ -72,7 +72,7 @@ function PopupContent1() {
       <Title>{title}</Title>
       <Description>{description}</Description>
       <NewAppInput type="text" placeholder="010-1234-5678" ref={inputRef} />
-      <NewRoundedButton onClick={submitHandler}>제출하기</NewRoundedButton>
+      <NewCommonButton onClick={submitHandler}>제출하기</NewCommonButton>
     </Container>
   );
 }
