@@ -84,7 +84,12 @@ function AdminOrderTable() {
           {selectedTable ? (
             <TableDetail>
               <DetailHeader>
-                <TableElapsedTimer orderSession={selectedTable.orderSession} />
+                <TableElapsedTimer
+                  orderSession={selectedTable.orderSession}
+                  workspaceId={workspaceId}
+                  tableNumber={selectedTable.tableNumber}
+                  refetchTable={fetchTables}
+                />
                 <TableSessionControler
                   workspaceId={workspaceId}
                   orderSessionId={selectedTable.orderSession?.id}

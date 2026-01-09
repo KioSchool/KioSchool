@@ -45,16 +45,7 @@ interface TableSessionControlerProps {
 }
 
 function TableSessionControler({ tables, workspaceId, orderSessionId, currentExpectedEndAt, tableNumber, refetchTable }: TableSessionControlerProps) {
-  const {
-    selectedTimeLimit,
-    handleDecrement,
-    handleIncrement,
-    handleTimeChange,
-    handleDecreaseTime,
-    handleIncreaseTime,
-    handleEndSession,
-    handleStartSession,
-  } = useTableSession({
+  const { selectedTimeLimit, handleDecrement, handleIncrement, handleTimeChange, handleDecreaseTime, handleIncreaseTime } = useTableSession({
     workspaceId,
     currentExpectedEndAt,
     orderSessionId,
@@ -79,14 +70,7 @@ function TableSessionControler({ tables, workspaceId, orderSessionId, currentExp
           handleTimeChange={handleTimeChange}
           disabled={isDisabledSession}
         />
-        <TableTimeButtons
-          handleDecreaseTime={handleDecreaseTime}
-          handleIncreaseTime={handleIncreaseTime}
-          handleEndSession={handleEndSession}
-          handleStartSession={handleStartSession}
-          orderSessionId={orderSessionId}
-          disabled={isDisabledSession}
-        />
+        <TableTimeButtons handleDecreaseTime={handleDecreaseTime} handleIncreaseTime={handleIncreaseTime} disabled={isDisabledSession} />
       </Content>
     </Container>
   );

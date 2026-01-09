@@ -5,6 +5,8 @@ import { Color } from '@resources/colors';
 import useFormattedTime from '@hooks/useFormattedTime';
 import { formatKoreanTime } from '@utils/formatDate';
 import { OrderSession } from '@@types/index';
+import ToggleButton from '@components/common/toggle/ToggleButton';
+import { useTableSession } from '@hooks/admin/useTableSession';
 
 const Container = styled.div`
   border: 1px solid #ececec;
@@ -24,6 +26,13 @@ const Header = styled.div`
   font-weight: 600;
   width: 100%;
   border-bottom: 1px solid #ececec;
+  ${colFlex({ justify: 'center', align: 'center' })};
+`;
+
+const ToggleContainer = styled.div`
+  width: 100%;
+  padding: 0 10px 15px 10px;
+  box-sizing: border-box;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
@@ -48,13 +57,25 @@ const formatMinutesToTime = (minutes: number): string => {
 
 interface TableUsageTimeProps {
   orderSession: OrderSession | null;
+  workspaceId?: string;
+  tableNumber?: number;
+  refetchTable: () => void;
 }
 
-function TableElapsedTimer({ orderSession }: TableUsageTimeProps) {
+function TableElapsedTimer({ orderSession, workspaceId, tableNumber, refetchTable }: TableUsageTimeProps) {
   const elapsedMinutes = useFormattedTime<number>({
     date: orderSession?.createdAt,
     formatter: () => getMinutesDifference(orderSession?.createdAt),
   });
+
+  const { handleStartSession, handleEndSession } = useTableSession({
+    workspaceId,
+    currentExpectedEndAt: orderSession?.expectedEndAt,
+    orderSessionId: orderSession?.id,
+    tableNumber,
+    refetchTable,
+  });
+
   const isTableSessionActive = !!orderSession;
   const isSessionLimitActive = !!orderSession?.expectedEndAt;
   const maxMinutes =
@@ -104,6 +125,20 @@ function TableElapsedTimer({ orderSession }: TableUsageTimeProps) {
           },
         }}
       />
+      <ToggleContainer>
+        <ToggleButton
+          checked={isTableSessionActive}
+          onChange={(checked) => {
+            if (checked) {
+              handleStartSession();
+            } else {
+              handleEndSession();
+            }
+          }}
+          onText="사용중"
+          offText="사용종료"
+        />
+      </ToggleContainer>
     </Container>
   );
 }
