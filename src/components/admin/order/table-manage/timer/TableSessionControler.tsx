@@ -7,6 +7,7 @@ import { useTableSession } from '@hooks/admin/useTableSession';
 import { useAtomValue } from 'jotai';
 import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
 import NumberInput from '@components/common/input/NumberInput';
+import { formatMinutesToTime } from '@utils/FormatDate';
 
 const Container = styled.div`
   border: 1px solid #ececec;
@@ -56,7 +57,7 @@ interface TableSessionControlerProps {
 }
 
 function TableSessionControler({ tables, workspaceId, orderSessionId, currentExpectedEndAt, tableNumber, refetchTable }: TableSessionControlerProps) {
-  const { selectedTimeLimit, handleDecrement, handleIncrement, handleTimeChange, handleDecreaseTime, handleIncreaseTime } = useTableSession({
+  const { selectedTimeLimit, setTimeLimit, handleDecrement, handleIncrement, handleDecreaseTime, handleIncreaseTime } = useTableSession({
     workspaceId,
     currentExpectedEndAt,
     orderSessionId,
@@ -67,10 +68,17 @@ function TableSessionControler({ tables, workspaceId, orderSessionId, currentExp
   const workspace = useAtomValue(adminWorkspaceAtom);
   const nowTable = tables.find((table) => table.tableNumber === tableNumber);
   const setting = workspace?.workspaceSetting;
-  const defaultSessionTimeLimit = String(setting.orderSessionTimeLimitMinutes);
+  const defaultSessionTimeLimit = setting.orderSessionTimeLimitMinutes;
   const isDisabledSession = !nowTable?.orderSession || !setting.useOrderSessionTimeLimit;
 
-  const displayValue = isDisabledSession ? `${defaultSessionTimeLimit}분` : `${selectedTimeLimit}분`;
+  const currentMinutes = isDisabledSession ? defaultSessionTimeLimit : Number(selectedTimeLimit);
+  const displayValue = formatMinutesToTime(currentMinutes);
+
+  const handleValueChange = (value: number) => {
+    if (isDisabledSession) return;
+
+    setTimeLimit(value);
+  };
 
   return (
     <Container>
@@ -79,7 +87,7 @@ function TableSessionControler({ tables, workspaceId, orderSessionId, currentExp
         <TimeInputWrapper>
           <NumberInput
             value={displayValue}
-            onChange={handleTimeChange}
+            onValueChange={handleValueChange}
             onIncrement={handleIncrement}
             onDecrement={handleDecrement}
             disabled={isDisabledSession}

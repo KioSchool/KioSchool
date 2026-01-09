@@ -2,6 +2,8 @@ import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { RiAddFill, RiSubtractFill } from '@remixicon/react';
 import { rowFlex } from '@styles/flexStyles';
+import { useState } from 'react';
+import { extractNumbers, parseTimeStringToMinutes } from '@utils/FormatDate';
 
 const InputContainer = styled.div<{ disabled?: boolean; maxWidth?: string }>`
   box-sizing: border-box;
@@ -60,6 +62,7 @@ const PlusButton = styled(RiAddFill)<{ disabled?: boolean }>`
 interface NumberInputProps {
   value: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onValueChange?: (numericValue: number) => void;
   onIncrement?: () => void;
   onDecrement?: () => void;
   disabled?: boolean;
@@ -68,11 +71,65 @@ interface NumberInputProps {
   className?: string;
 }
 
-function NumberInput({ value, onChange, onIncrement, onDecrement, disabled = false, readOnly = false, maxWidth, className }: NumberInputProps) {
+function NumberInput({ value, onChange, onValueChange, onIncrement, onDecrement, disabled = false, readOnly = false, maxWidth, className }: NumberInputProps) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [internalValue, setInternalValue] = useState('');
+
+  const handleFocus = () => {
+    if (readOnly || disabled || !onValueChange) return;
+
+    setIsEditing(true);
+
+    // "시간" 또는 "분"이 포함되어 있으면 시간 형식으로 파싱, 아니면 숫자만 추출
+    const isTimeFormat = value.includes('시간') || value.includes('분');
+    const numericValue = isTimeFormat ? String(parseTimeStringToMinutes(value)) : extractNumbers(value);
+
+    setInternalValue(numericValue);
+  };
+
+  const handleBlur = () => {
+    if (readOnly || disabled || !onValueChange) return;
+
+    setIsEditing(false);
+    const numericValue = Number(internalValue) || 0;
+
+    if (onValueChange) {
+      onValueChange(numericValue);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (readOnly || disabled || !onValueChange) return;
+
+    const numericOnly = extractNumbers(e.target.value);
+    setInternalValue(numericOnly);
+
+    if (onChange) {
+      onChange(e);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.currentTarget.blur();
+    }
+  };
+
+  const displayValue = isEditing ? internalValue : value;
+
   return (
     <InputContainer disabled={disabled} maxWidth={maxWidth} className={className}>
       {onDecrement && <MinusButton disabled={disabled} onClick={disabled ? undefined : onDecrement} />}
-      <Input type="text" value={value} onChange={onChange} disabled={disabled} readOnly={readOnly} />
+      <Input
+        type="text"
+        value={displayValue}
+        onChange={handleChange}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        onKeyDown={handleKeyDown}
+        disabled={disabled}
+        readOnly={readOnly || !onValueChange}
+      />
       {onIncrement && <PlusButton disabled={disabled} onClick={disabled ? undefined : onIncrement} />}
     </InputContainer>
   );

@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import ToggleButton from '@components/common/toggle/ToggleButton';
 import NumberInput from '@components/common/input/NumberInput';
+import { formatMinutesToTime } from '@utils/FormatDate';
 
 const SectionLabel = styled.div`
   font-size: 14px;
@@ -42,10 +43,10 @@ function TableTimeSetting({ isTimeLimited, timeLimitMinutes, onTimeLimitedChange
     onMinutesChange(timeLimitMinutes + 1);
   };
 
-  const formatTime = (mins: number) => {
-    const hours = Math.floor(mins / 60);
-    const remainingMins = mins % 60;
-    return hours > 0 ? `${hours}시간 ${remainingMins > 0 ? `${remainingMins}분` : ''}` : `${mins}분`;
+  const handleValueChange = (value: number) => {
+    if (!isTimeLimited) return;
+
+    onMinutesChange(Math.max(1, value));
   };
 
   return (
@@ -56,7 +57,13 @@ function TableTimeSetting({ isTimeLimited, timeLimitMinutes, onTimeLimitedChange
       <Divider />
 
       <SectionLabel>테이블 시간</SectionLabel>
-      <NumberInput value={formatTime(timeLimitMinutes)} onIncrement={handleTimePlus} onDecrement={handleTimeMinus} disabled={!isTimeLimited} />
+      <NumberInput
+        value={formatMinutesToTime(timeLimitMinutes)}
+        onValueChange={handleValueChange}
+        onIncrement={handleTimePlus}
+        onDecrement={handleTimeMinus}
+        disabled={!isTimeLimited}
+      />
     </Container>
   );
 }

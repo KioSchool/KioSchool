@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import useAdminTable from '@hooks/admin/useAdminTable';
-import { dateConverter } from '@utils/formatDate';
+import { dateConverter } from '@utils/FormatDate';
 
 const SESSION_STORAGE_KEY = 'selectedTimeLimit';
 const DEFAULT_TIME_LIMIT = 10;
@@ -166,8 +166,13 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
     });
   };
 
+  const setTimeLimit = (value: number) => {
+    setSelectedTimeLimit(String(value));
+  };
+
   return {
     selectedTimeLimit,
+    setTimeLimit,
     handleDecrement,
     handleIncrement,
     handleTimeChange,

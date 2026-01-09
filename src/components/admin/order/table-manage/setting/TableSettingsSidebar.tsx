@@ -65,6 +65,10 @@ function TableSettingsSidebar() {
     setTableCount(tableCount + 1);
   };
 
+  const handleTableCountChange = (value: number) => {
+    setTableCount(Math.max(1, value));
+  };
+
   const handleSave = async () => {
     if (tableCount < 1) {
       alert('테이블 수는 1 이상이어야 합니다.');
@@ -91,7 +95,7 @@ function TableSettingsSidebar() {
         <Divider />
 
         <SectionLabel>테이블 개수</SectionLabel>
-        <NumberInput value={`${tableCount}개`} onIncrement={handleTableCountPlus} onDecrement={handleTableCountMinus} readOnly />
+        <NumberInput value={`${tableCount}개`} onValueChange={handleTableCountChange} onIncrement={handleTableCountPlus} onDecrement={handleTableCountMinus} />
 
         <Divider />
 
