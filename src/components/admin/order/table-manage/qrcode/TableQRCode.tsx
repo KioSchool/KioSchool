@@ -45,20 +45,20 @@ const Content = styled.div`
 `;
 
 const Button = styled.button`
-  background: ${Color.KIO_ORANGE};
-  color: ${Color.WHITE};
+  background: #e8eef2;
+  color: #464a4d;
   border: none;
   border-radius: 40px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
-  padding: 10px 8px;
-  width: 90%;
-  height: 30px;
+  padding: 0;
+  width: 50%;
+  height: 32px;
   ${rowFlex({ justify: 'center', align: 'center' })}
 
   &:hover {
-    background: #ff9d50;
+    background: #d9e3e8;
   }
 `;
 
