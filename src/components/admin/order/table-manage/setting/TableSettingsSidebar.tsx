@@ -1,15 +1,14 @@
 import styled from '@emotion/styled';
-import { Color } from '@resources/colors';
 import { useAtomValue } from 'jotai';
 import { useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import NewCommonButton from '@components/common/button/NewCommonButton';
-import { RiAddFill, RiSubtractFill } from '@remixicon/react';
-import { rowFlex, colFlex } from '@styles/flexStyles';
+import { colFlex } from '@styles/flexStyles';
 import TableTimeSetting from './TableTimeSetting';
 import TableQRDownload from './TableQRDownload';
+import NumberInput from '@components/common/input/NumberInput';
 
 const Container = styled.div`
   width: 100%;
@@ -31,60 +30,6 @@ const Divider = styled.div`
   height: 1px;
   margin: 6px 0;
   background-color: #e8eef2;
-`;
-
-const InputContainer = styled.div<{ disabled?: boolean }>`
-  box-sizing: border-box;
-  padding: 2px 4px;
-  border-radius: 45px;
-  background-color: ${({ disabled }) => (disabled ? '#e8eef2' : '#ffffff')};
-  border: 1px solid #e8eef2;
-  height: 28px;
-  width: 100%;
-  max-width: 250px;
-  ::selection {
-    background: none;
-  }
-
-  ${rowFlex({ justify: 'space-between', align: 'center' })};
-`;
-
-const Input = styled.input<{ disabled?: boolean }>`
-  min-width: 50px;
-  text-align: center;
-  background: none;
-  border: none;
-  font-size: 13px;
-  color: ${({ disabled }) => (disabled ? '#d1d5d8' : '#464a4d')};
-
-  &:focus {
-    outline: none;
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-  }
-`;
-
-const MinusButton = styled(RiSubtractFill)<{ disabled?: boolean }>`
-  width: 18px;
-  height: 18px;
-  color: ${({ disabled }) => (disabled ? '#d1d5d8' : Color.KIO_ORANGE)};
-  background-color: ${({ disabled }) => (disabled ? '#e8eef2' : Color.WHITE)};
-  border: ${({ disabled }) => (disabled ? 'none' : `1px solid ${Color.KIO_ORANGE}`)};
-  border-radius: 50%;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-  flex-shrink: 0;
-`;
-
-const PlusButton = styled(RiAddFill)<{ disabled?: boolean }>`
-  width: 18px;
-  height: 18px;
-  color: ${({ disabled }) => (disabled ? '#d1d5d8' : Color.WHITE)};
-  background-color: ${({ disabled }) => (disabled ? '#e8eef2' : Color.KIO_ORANGE)};
-  border-radius: 50%;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-  flex-shrink: 0;
 `;
 
 const SaveButton = styled(NewCommonButton)`
@@ -146,11 +91,7 @@ function TableSettingsSidebar() {
         <Divider />
 
         <SectionLabel>테이블 개수</SectionLabel>
-        <InputContainer>
-          <MinusButton onClick={handleTableCountMinus} />
-          <Input type="text" value={`${tableCount}개`} readOnly />
-          <PlusButton onClick={handleTableCountPlus} />
-        </InputContainer>
+        <NumberInput value={`${tableCount}개`} onIncrement={handleTableCountPlus} onDecrement={handleTableCountMinus} readOnly />
 
         <Divider />
 
