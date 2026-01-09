@@ -21,7 +21,7 @@ const Header = styled.div`
   height: 40px;
   padding: 5px 10px;
   color: ${Color.GREY};
-  background-color: ${Color.LIGHT_GREY};
+  background-color: #f0f5f8;
   font-size: 15px;
   font-weight: 600;
   width: 100%;

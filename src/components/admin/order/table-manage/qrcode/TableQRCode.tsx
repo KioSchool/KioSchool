@@ -19,7 +19,7 @@ const Header = styled.div`
   width: 100%;
   height: 40px;
   padding: 5px 10px;
-  background-color: ${Color.LIGHT_GREY};
+  background-color: #f0f5f8;
   border-bottom: 1px solid #ececec;
   ${rowFlex({ justify: 'center', align: 'center' })};
 `;

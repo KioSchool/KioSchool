@@ -21,7 +21,7 @@ const Header = styled.div`
   grid-template-columns: 1fr 2fr 1fr;
   padding: 5px 10px;
   font-weight: bold;
-  background-color: ${Color.LIGHT_GREY};
+  background-color: #f0f5f8;
   text-align: center;
   border-bottom: 1px solid #ececec;
   height: 40px;
