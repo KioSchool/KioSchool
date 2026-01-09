@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import { colFlex } from '@styles/flexStyles';
-import TableTimeControler from './TableTimeControler';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import TableTimeButtons from './TableTimeButtons';
 import { Table } from '@@types/index';
 import { useTableSession } from '@hooks/admin/useTableSession';
 import { useAtomValue } from 'jotai';
 import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
+import NumberInput from '@components/common/input/NumberInput';
 
 const Container = styled.div`
   border: 1px solid #ececec;
@@ -29,10 +29,21 @@ const Header = styled.div`
 `;
 
 const Content = styled.div`
-  width: 90%;
-  flex: 1;
-  gap: 5px;
+  width: 161px;
+  padding: 50px 0 30px 0;
+  gap: 29px;
+  ${colFlex({ justify: 'start', align: 'center' })};
+`;
+
+const TimeInputWrapper = styled.div`
+  width: 100%;
   ${colFlex({ justify: 'center', align: 'center' })};
+`;
+
+const ButtonsWrapper = styled.div`
+  width: 100%;
+  gap: 7px;
+  ${rowFlex({ justify: 'space-between', align: 'center' })};
 `;
 
 interface TableSessionControlerProps {
@@ -59,18 +70,24 @@ function TableSessionControler({ tables, workspaceId, orderSessionId, currentExp
   const defaultSessionTimeLimit = String(setting.orderSessionTimeLimitMinutes);
   const isDisabledSession = !nowTable?.orderSession || !setting.useOrderSessionTimeLimit;
 
+  const displayValue = isDisabledSession ? `${defaultSessionTimeLimit}분` : `${selectedTimeLimit}분`;
+
   return (
     <Container>
-      <Header>상태 변경</Header>
+      <Header>잔여시간</Header>
       <Content>
-        <TableTimeControler
-          timeLimit={isDisabledSession ? defaultSessionTimeLimit : selectedTimeLimit}
-          handleDecrement={handleDecrement}
-          handleIncrement={handleIncrement}
-          handleTimeChange={handleTimeChange}
-          disabled={isDisabledSession}
-        />
-        <TableTimeButtons handleDecreaseTime={handleDecreaseTime} handleIncreaseTime={handleIncreaseTime} disabled={isDisabledSession} />
+        <TimeInputWrapper>
+          <NumberInput
+            value={displayValue}
+            onChange={handleTimeChange}
+            onIncrement={handleIncrement}
+            onDecrement={handleDecrement}
+            disabled={isDisabledSession}
+          />
+        </TimeInputWrapper>
+        <ButtonsWrapper>
+          <TableTimeButtons handleDecreaseTime={handleDecreaseTime} handleIncreaseTime={handleIncreaseTime} disabled={isDisabledSession} />
+        </ButtonsWrapper>
       </Content>
     </Container>
   );

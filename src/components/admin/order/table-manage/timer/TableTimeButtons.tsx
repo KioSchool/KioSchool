@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
@@ -9,27 +8,24 @@ const Container = styled.div`
 `;
 
 const Button = styled.button`
-  background: ${Color.KIO_ORANGE};
-  color: ${Color.WHITE};
+  background: #e8eef2;
+  color: #464a4d;
   border: none;
   border-radius: 40px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
-  padding: 8px;
-  width: 81px;
-  height: 30px;
+  width: 77px;
+  height: 32px;
   ${rowFlex({ justify: 'center', align: 'center' })}
 
   &:hover {
-    background: ${({ disabled }) => (disabled ? Color.LIGHT_GREY : '#ff9d50')};
+    background: ${({ disabled }) => (disabled ? '#e8eef2' : '#d9e3e8')};
   }
 
   &:disabled {
     cursor: not-allowed;
     opacity: 0.5;
-    background: ${Color.LIGHT_GREY};
-    color: ${Color.GREY};
   }
 `;
 
@@ -43,10 +39,10 @@ function TableTimeButtons({ handleDecreaseTime, handleIncreaseTime, disabled }: 
   return (
     <Container>
       <Button disabled={disabled} onClick={handleDecreaseTime}>
-        감소
+        차감
       </Button>
       <Button disabled={disabled} onClick={handleIncreaseTime}>
-        증가
+        추가
       </Button>
     </Container>
   );
