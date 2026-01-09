@@ -36,7 +36,6 @@ import useNetworkStatusNotifier from '@hooks/useNetworkStatusNotifier';
 import useServerHealth from '@hooks/useServerHealth';
 import ServerErrorFallback from '@components/common/fallback/ServerErrorFallback';
 import OrderWait from '@pages/user/order/OrderWait';
-import AdminOrderTableManage from '@pages/admin/table/AdminOrderTableManage';
 import AdminTableOrder from '@pages/admin/order/AdminTableOrder';
 import AdminTotalOrder from '@pages/admin/order/AdminTotalOrder';
 import SentryTestPage from '@components/common/test/SentryTestPage';
@@ -85,7 +84,6 @@ function App() {
         <Route path={ADMIN_ROUTES.TABLE_ORDER} element={<AdminTableOrder />} />
         <Route path={ADMIN_ROUTES.TOTAL_ORDER} element={<AdminTotalOrder />} />
         <Route path={ADMIN_ROUTES.ORDER_TABLE_HISTORY} element={<AdminOrderTableHistory />} />
-        <Route path={ADMIN_ROUTES.ORDER_TABLE_MANAGE} element={<AdminOrderTableManage />} />
         <Route path={ADMIN_ROUTES.PRODUCTS} element={<AdminProduct />} />
         <Route path={ADMIN_ROUTES.PRODUCTS_CATEGORIES} element={<AdminProductCategories />} />
 

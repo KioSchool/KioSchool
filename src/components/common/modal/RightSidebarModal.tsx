@@ -43,7 +43,7 @@ const SidebarContainer = styled.div<{ isOpen: boolean; scale: number }>`
   border-left: 1px solid #e8eef2;
   box-shadow: -4px 0 12px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
-  padding: 46px 10px 0 41px;
+  padding: 46px 20px 0 41px;
   gap: 15px;
   transform: translateX(${(props) => (props.isOpen ? '0' : '100%')});
   transition: transform 0.3s ease-in-out;

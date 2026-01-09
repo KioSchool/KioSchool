@@ -4,13 +4,17 @@ import AdminTableOrderList from '@components/admin/order/table-manage/list/Admin
 import TableQRCode from '@components/admin/order/table-manage/qrcode/TableQRCode';
 import TableElapsedTimer from '@components/admin/order/table-manage/timer/TableElapsedTimer';
 import TableSessionControler from '@components/admin/order/table-manage/timer/TableSessionControler';
+import TableSettingsSidebar from '@components/admin/order/table-manage/setting/TableSettingsSidebar';
 import AppContainer from '@components/common/container/AppContainer';
+import RightSidebarModal from '@components/common/modal/RightSidebarModal';
 import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
+import { useAtomValue } from 'jotai';
+import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
 
 const Container = styled.div`
   width: 100%;
@@ -52,6 +56,7 @@ function AdminOrderTable() {
   const [searchParams] = useSearchParams();
   const tableNo = searchParams.get('tableNo');
   const { fetchWorkspaceTables } = useAdminWorkspace();
+  const workspace = useAtomValue(adminWorkspaceAtom);
 
   const [tables, setTables] = useState<Table[]>([]);
 
@@ -69,34 +74,39 @@ function AdminOrderTable() {
 
   useEffect(() => {
     fetchTables();
-  }, []);
+  }, [workspace.tableCount]);
 
   return (
     <AppContainer useFlex={colFlex({ justify: 'center' })}>
-      <Container>
-        <AdminTableList tables={tables} />
-        {selectedTable ? (
-          <TableDetail>
-            <DetailHeader>
-              <TableElapsedTimer orderSession={selectedTable.orderSession} />
-              <TableSessionControler
-                workspaceId={workspaceId}
-                orderSessionId={selectedTable.orderSession?.id}
-                currentExpectedEndAt={selectedTable.orderSession?.expectedEndAt}
-                tableNumber={selectedTable.tableNumber}
-                refetchTable={fetchTables}
-                tables={tables}
-              />
-              <TableQRCode workspaceId={workspaceId} selectedTable={selectedTable} />
-            </DetailHeader>
-            <AdminTableOrderList workspaceId={Number(workspaceId)} orderSessionId={selectedTable.orderSession?.id || 0} />
-          </TableDetail>
-        ) : (
-          <FallbackContainer>
-            <FallbackText>테이블을 선택하여 상세 정보를 확인하세요.</FallbackText>
-          </FallbackContainer>
-        )}
-      </Container>
+      <>
+        <Container>
+          <AdminTableList tables={tables} />
+          {selectedTable ? (
+            <TableDetail>
+              <DetailHeader>
+                <TableElapsedTimer orderSession={selectedTable.orderSession} />
+                <TableSessionControler
+                  workspaceId={workspaceId}
+                  orderSessionId={selectedTable.orderSession?.id}
+                  currentExpectedEndAt={selectedTable.orderSession?.expectedEndAt}
+                  tableNumber={selectedTable.tableNumber}
+                  refetchTable={fetchTables}
+                  tables={tables}
+                />
+                <TableQRCode workspaceId={workspaceId} selectedTable={selectedTable} />
+              </DetailHeader>
+              <AdminTableOrderList workspaceId={Number(workspaceId)} orderSessionId={selectedTable.orderSession?.id || 0} />
+            </TableDetail>
+          ) : (
+            <FallbackContainer>
+              <FallbackText>테이블을 선택하여 상세 정보를 확인하세요.</FallbackText>
+            </FallbackContainer>
+          )}
+        </Container>
+        <RightSidebarModal title="테이블 설정" subtitle="모든 테이블에 즉시 적용됩니다." useOpenButton={true}>
+          <TableSettingsSidebar />
+        </RightSidebarModal>
+      </>
     </AppContainer>
   );
 }
