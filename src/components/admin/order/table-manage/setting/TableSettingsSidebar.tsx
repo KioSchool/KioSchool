@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useAtomValue } from 'jotai';
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
@@ -49,13 +49,10 @@ function TableSettingsSidebar() {
   const [isTimeLimited, setIsTimeLimited] = useState(workspace.workspaceSetting?.useOrderSessionTimeLimit ?? false);
   const [timeLimitMinutes, setTimeLimitMinutes] = useState(workspace.workspaceSetting?.orderSessionTimeLimitMinutes ?? 60);
 
-  const isDirty = useMemo(() => {
-    return (
-      tableCount !== workspace.tableCount ||
-      isTimeLimited !== workspace.workspaceSetting?.useOrderSessionTimeLimit ||
-      timeLimitMinutes !== workspace.workspaceSetting?.orderSessionTimeLimitMinutes
-    );
-  }, [tableCount, isTimeLimited, timeLimitMinutes, workspace]);
+  const isDirty =
+    tableCount !== workspace.tableCount ||
+    isTimeLimited !== workspace.workspaceSetting?.useOrderSessionTimeLimit ||
+    timeLimitMinutes !== workspace.workspaceSetting?.orderSessionTimeLimitMinutes;
 
   const handleTableCountMinus = () => {
     setTableCount(Math.max(1, tableCount - 1));
