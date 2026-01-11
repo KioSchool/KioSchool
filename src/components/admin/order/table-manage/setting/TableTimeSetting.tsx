@@ -58,8 +58,9 @@ function TableTimeSetting({ isTimeLimited, timeLimitMinutes, onTimeLimitedChange
 
       <SectionLabel>테이블 시간</SectionLabel>
       <NumberInput
-        value={formatMinutesToTime(timeLimitMinutes)}
-        onValueChange={handleValueChange}
+        value={timeLimitMinutes}
+        formatter={formatMinutesToTime}
+        onChange={handleValueChange}
         onIncrement={handleTimePlus}
         onDecrement={handleTimeMinus}
         disabled={!isTimeLimited}

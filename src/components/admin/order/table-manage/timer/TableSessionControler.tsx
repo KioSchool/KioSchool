@@ -72,7 +72,6 @@ function TableSessionControler({ tables, workspaceId, orderSessionId, currentExp
   const isDisabledSession = !nowTable?.orderSession || !setting?.useOrderSessionTimeLimit;
 
   const currentMinutes = isDisabledSession ? defaultSessionTimeLimit : Number(selectedTimeLimit);
-  const displayValue = formatMinutesToTime(currentMinutes);
 
   const handleValueChange = (value: number) => {
     if (isDisabledSession) return;
@@ -86,8 +85,9 @@ function TableSessionControler({ tables, workspaceId, orderSessionId, currentExp
       <Content>
         <TimeInputWrapper>
           <NumberInput
-            value={displayValue}
-            onValueChange={handleValueChange}
+            value={currentMinutes}
+            formatter={formatMinutesToTime}
+            onChange={handleValueChange}
             onIncrement={handleIncrement}
             onDecrement={handleDecrement}
             disabled={isDisabledSession}

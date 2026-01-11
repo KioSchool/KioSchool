@@ -96,7 +96,13 @@ function TableSettingsSidebar() {
         <Divider />
 
         <SectionLabel>테이블 개수</SectionLabel>
-        <NumberInput value={`${tableCount}개`} onValueChange={handleTableCountChange} onIncrement={handleTableCountPlus} onDecrement={handleTableCountMinus} />
+        <NumberInput
+          value={tableCount}
+          formatter={(v) => `${v}개`}
+          onChange={handleTableCountChange}
+          onIncrement={handleTableCountPlus}
+          onDecrement={handleTableCountMinus}
+        />
 
         <Divider />
 
@@ -106,7 +112,7 @@ function TableSettingsSidebar() {
           onTimeLimitedChange={setIsTimeLimited}
           onMinutesChange={setTimeLimitMinutes}
         />
-        <SaveButton size="xs" onClick={handleSave} disabled={!isDirty}>
+        <SaveButton size={'xs'} onClick={handleSave} disabled={!isDirty}>
           적용
         </SaveButton>
       </Container>

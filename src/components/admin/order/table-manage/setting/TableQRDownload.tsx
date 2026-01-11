@@ -84,12 +84,12 @@ function TableQRDownload({ workspaceId, workspaceName, tableCount }: TableQRDown
     <>
       <Container>
         <SectionLabel>전체 QR</SectionLabel>
-        <DownloadButton size="xs" onClick={downloadAllQrCode}>
+        <DownloadButton size={'xs'} onClick={downloadAllQrCode}>
           다운로드
         </DownloadButton>
 
         <SectionLabel>미리보기 QR</SectionLabel>
-        <DownloadButton size="xs" onClick={downloadPreviewQrCode}>
+        <DownloadButton size={'xs'} onClick={downloadPreviewQrCode}>
           다운로드
         </DownloadButton>
       </Container>
