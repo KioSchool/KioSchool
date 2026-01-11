@@ -45,9 +45,9 @@ function TableSettingsSidebar() {
   const workspace = useAtomValue(adminWorkspaceAtom);
   const { updateWorkspaceTableCount, updateWorkspaceOrderSetting } = useAdminWorkspace();
 
-  const [tableCount, setTableCount] = useState(workspace.tableCount);
-  const [isTimeLimited, setIsTimeLimited] = useState(workspace.workspaceSetting?.useOrderSessionTimeLimit);
-  const [timeLimitMinutes, setTimeLimitMinutes] = useState(workspace.workspaceSetting?.orderSessionTimeLimitMinutes);
+  const [tableCount, setTableCount] = useState(workspace.tableCount || 1);
+  const [isTimeLimited, setIsTimeLimited] = useState(workspace.workspaceSetting?.useOrderSessionTimeLimit ?? false);
+  const [timeLimitMinutes, setTimeLimitMinutes] = useState(workspace.workspaceSetting?.orderSessionTimeLimitMinutes ?? 60);
 
   const isDirty = useMemo(() => {
     return (
@@ -75,7 +75,7 @@ function TableSettingsSidebar() {
       return;
     }
 
-    if (isTimeLimited && timeLimitMinutes < 1) {
+    if (isTimeLimited && (timeLimitMinutes === undefined || timeLimitMinutes < 1)) {
       alert('시간 제한은 1분 이상이어야 합니다.');
       return;
     }
@@ -83,6 +83,7 @@ function TableSettingsSidebar() {
     try {
       await Promise.all([updateWorkspaceTableCount(workspaceId, tableCount), updateWorkspaceOrderSetting(workspaceId, isTimeLimited, timeLimitMinutes)]);
     } catch (error) {
+      console.error('설정 저장 실패:', error);
       alert('설정 저장에 실패했습니다. 다시 시도해주세요.');
     }
   };

@@ -68,8 +68,8 @@ function TableSessionControler({ tables, workspaceId, orderSessionId, currentExp
   const workspace = useAtomValue(adminWorkspaceAtom);
   const nowTable = tables.find((table) => table.tableNumber === tableNumber);
   const setting = workspace?.workspaceSetting;
-  const defaultSessionTimeLimit = setting.orderSessionTimeLimitMinutes;
-  const isDisabledSession = !nowTable?.orderSession || !setting.useOrderSessionTimeLimit;
+  const defaultSessionTimeLimit = setting?.orderSessionTimeLimitMinutes ?? 60;
+  const isDisabledSession = !nowTable?.orderSession || !setting?.useOrderSessionTimeLimit;
 
   const currentMinutes = isDisabledSession ? defaultSessionTimeLimit : Number(selectedTimeLimit);
   const displayValue = formatMinutesToTime(currentMinutes);

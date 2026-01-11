@@ -62,23 +62,20 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
   });
 
   useEffect(() => {
-    const existingValue = sessionStorage.getItem(SESSION_STORAGE_KEY);
-
-    if (!existingValue) {
-      sessionStorage.setItem(SESSION_STORAGE_KEY, selectedTimeLimit);
-    }
-  }, []);
-
-  useEffect(() => {
     sessionStorage.setItem(SESSION_STORAGE_KEY, selectedTimeLimit);
   }, [selectedTimeLimit]);
 
   const { updateSessionEndTime, finishTableSession, startTableSession } = useAdminTable(workspaceId);
 
-  const handleApiAndRefetch = (apiCall: Promise<any>) => {
-    apiCall.then((res) => {
-      if (res) refetchTable();
-    });
+  const handleApiAndRefetch = (apiCall: Promise<unknown>) => {
+    apiCall
+      .then((res) => {
+        if (res) refetchTable();
+      })
+      .catch((error) => {
+        console.error('API 호출 실패:', error);
+        alert('작업을 처리하는 중 오류가 발생했습니다.');
+      });
   };
 
   const handleDecreaseTime = () => {
