@@ -32,20 +32,14 @@ interface TableTimeSettingProps {
 
 function TableTimeSetting({ isTimeLimited, timeLimitMinutes, onTimeLimitedChange, onMinutesChange }: TableTimeSettingProps) {
   const handleTimeMinus = () => {
-    if (!isTimeLimited) return;
-
     onMinutesChange(Math.max(1, timeLimitMinutes - 1));
   };
 
   const handleTimePlus = () => {
-    if (!isTimeLimited) return;
-
     onMinutesChange(timeLimitMinutes + 1);
   };
 
   const handleValueChange = (value: number) => {
-    if (!isTimeLimited) return;
-
     onMinutesChange(Math.max(1, value));
   };
 
