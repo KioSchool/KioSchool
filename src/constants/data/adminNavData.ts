@@ -70,10 +70,6 @@ export const adminNavData: AdminNavCategory[] = [
         name: '주점 정보 관리',
         path: '/edit',
       },
-      {
-        name: '테이블 관리',
-        path: '/order/table/manage',
-      },
     ],
   },
 ];

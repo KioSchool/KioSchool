@@ -25,7 +25,7 @@ const Header = styled.div`
   height: 40px;
   padding: 5px 10px;
   color: ${Color.GREY};
-  background-color: ${Color.LIGHT_GREY};
+  background-color: #f0f5f8;
   font-size: 15px;
   font-weight: 600;
   border-bottom: 1px solid #ececec;
@@ -65,7 +65,7 @@ const OrderHeader = styled.div`
   display: grid;
   grid-template-columns: 0.5fr 1.2fr 1.8fr 1fr 1fr 1fr 0.5fr;
   padding: 10px;
-  background-color: ${Color.LIGHT_GREY};
+  background-color: #f0f5f8;
   border-bottom: 1px solid #ececec;
   text-align: center;
   font-size: 15px;

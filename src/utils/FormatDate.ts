@@ -104,3 +104,47 @@ export const calculateDuration = (start: Date, end: Date) => {
   }
   return `${minutes}분`;
 };
+
+/**
+ * 분을 "시간 분" 형식으로 포맷팅
+ * @param minutes 분
+ * @returns 포맷팅된 문자열 (예: "90" -> "1시간 30분", "45" -> "45분")
+ */
+export const formatMinutesToTime = (minutes: number): string => {
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+
+  if (hours > 0) {
+    if (remainingMinutes > 0) {
+      return `${hours}시간 ${remainingMinutes}분`;
+    }
+    return `${hours}시간`;
+  }
+
+  return `${minutes}분`;
+};
+
+/**
+ * 문자열에서 숫자만 추출
+ * @param value 입력 문자열
+ * @returns 숫자만 포함된 문자열
+ */
+export const extractNumbers = (value: string): string => {
+  return value.replace(/[^0-9]/g, '');
+};
+
+/**
+ * "시간 분" 형식의 문자열을 분으로 변환
+ * @param timeString 시간 문자열 (예: "1시간 30분", "2시간", "45분")
+ * @returns 총 분 수 (예: 90, 120, 45)
+ */
+export const parseTimeStringToMinutes = (timeString: string): number => {
+  // "시간"과 "분"을 기준으로 파싱
+  const hourMatch = timeString.match(/(\d+)시간/);
+  const minuteMatch = timeString.match(/(\d+)분/);
+
+  const hours = hourMatch ? parseInt(hourMatch[1], 10) : 0;
+  const minutes = minuteMatch ? parseInt(minuteMatch[1], 10) : 0;
+
+  return hours * 60 + minutes;
+};

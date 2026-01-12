@@ -27,7 +27,6 @@ export const ADMIN_ROUTES = {
   ORDER_STATISTICS: '/admin/workspace/:workspaceId/order/statistics',
   ORDER_TABLE: '/admin/workspace/:workspaceId/order/table',
   ORDER_TABLE_HISTORY: '/admin/workspace/:workspaceId/order/table/:tableNumber',
-  ORDER_TABLE_MANAGE: '/admin/workspace/:workspaceId/order/table/manage',
   TABLE_ORDER: '/admin/workspace/:workspaceId/table-order',
   TOTAL_ORDER: '/admin/workspace/:workspaceId/total-order',
 
@@ -49,7 +48,5 @@ export const TEST_ROUTES = {
 } as const;
 
 export const getAdminWorkspacePath = (workspaceId: string | number) => `/admin/workspace/${workspaceId}`;
-
-export const getAdminOrderTableManagePath = (workspaceId: string | number) => `/admin/workspace/${workspaceId}/order/table/manage`;
 
 export const getAdminProductsPath = (workspaceId: string | number) => `/admin/workspace/${workspaceId}/products`;
