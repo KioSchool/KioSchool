@@ -86,34 +86,32 @@ function TableSettingsSidebar() {
   };
 
   return (
-    <>
-      <Container>
-        <TableQRDownload workspaceId={workspaceId} workspaceName={workspace.name} tableCount={workspace.tableCount} />
+    <Container>
+      <TableQRDownload workspaceId={workspaceId} workspaceName={workspace.name} tableCount={workspace.tableCount} />
 
-        <Divider />
+      <Divider />
 
-        <SectionLabel>테이블 개수</SectionLabel>
-        <NumberInput
-          value={tableCount}
-          formatter={(v) => `${v}개`}
-          onChange={handleTableCountChange}
-          onIncrement={handleTableCountPlus}
-          onDecrement={handleTableCountMinus}
-        />
+      <SectionLabel>테이블 개수</SectionLabel>
+      <NumberInput
+        value={tableCount}
+        formatter={(v) => `${v}개`}
+        onChange={handleTableCountChange}
+        onIncrement={handleTableCountPlus}
+        onDecrement={handleTableCountMinus}
+      />
 
-        <Divider />
+      <Divider />
 
-        <TableTimeSetting
-          isTimeLimited={isTimeLimited}
-          timeLimitMinutes={timeLimitMinutes}
-          onTimeLimitedChange={setIsTimeLimited}
-          onMinutesChange={setTimeLimitMinutes}
-        />
-        <SaveButton size={'xs'} onClick={handleSave} disabled={!isDirty}>
-          적용
-        </SaveButton>
-      </Container>
-    </>
+      <TableTimeSetting
+        isTimeLimited={isTimeLimited}
+        timeLimitMinutes={timeLimitMinutes}
+        onTimeLimitedChange={setIsTimeLimited}
+        onMinutesChange={setTimeLimitMinutes}
+      />
+      <SaveButton size={'xs'} onClick={handleSave} disabled={!isDirty}>
+        적용
+      </SaveButton>
+    </Container>
   );
 }
 
