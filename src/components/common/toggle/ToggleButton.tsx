@@ -41,12 +41,11 @@ interface ToggleButtonProps {
   onChange: (checked: boolean) => void;
   onText?: string;
   offText?: string;
-  className?: string;
 }
 
-function ToggleButton({ checked, onChange, onText = 'ON', offText = 'OFF', className }: ToggleButtonProps) {
+function ToggleButton({ checked, onChange, onText = 'ON', offText = 'OFF' }: ToggleButtonProps) {
   return (
-    <Container className={className} onClick={() => onChange(!checked)}>
+    <Container onClick={() => onChange(!checked)}>
       <ToggleBackground />
       <ToggleSlider checked={checked}>
         <ToggleText checked={checked}>{checked ? onText : offText}</ToggleText>

@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useRef } from 'react';
 import QRCode from 'qrcode';
 import { QRCodeCanvas } from 'qrcode.react';
-import { getQRCodeCanvases, calculateGridMetrics, createOutputCanvas, initCanvasContext, drawQRTiles, triggerDownload } from '@utils/qrCode';
+import { downloadQRGrid } from '@utils/qrCode';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { colFlex } from '@styles/flexStyles';
 
@@ -38,26 +38,7 @@ function TableQRDownload({ workspaceId, workspaceName, tableCount }: TableQRDown
   const baseUrl = location.origin;
 
   const downloadAllQrCode = () => {
-    const container = QRCodeContainerRef.current;
-    if (!container) {
-      return alert('다운로드 오류가 발생했습니다!');
-    }
-
-    const qrCanvases = getQRCodeCanvases(container);
-    if (!qrCanvases.length) {
-      return alert('QR 코드가 없습니다!');
-    }
-
-    const scale = 3;
-    const metrics = calculateGridMetrics(qrCanvases.length);
-    const outputCanvas = createOutputCanvas(metrics.canvasWidth * scale, metrics.canvasHeight * scale);
-    const ctx = outputCanvas.getContext('2d')!;
-
-    ctx.scale(scale, scale);
-
-    initCanvasContext(ctx, metrics.canvasWidth, metrics.canvasHeight);
-    drawQRTiles(ctx, qrCanvases, metrics);
-    triggerDownload(outputCanvas, `${workspaceName}-모든-QR코드.png`);
+    downloadQRGrid(QRCodeContainerRef.current, `${workspaceName}-모든-QR코드.png`);
   };
 
   const downloadPreviewQrCode = () => {

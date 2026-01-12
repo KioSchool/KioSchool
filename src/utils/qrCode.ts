@@ -78,3 +78,27 @@ export function triggerDownload(canvas: HTMLCanvasElement, fileName: string) {
     URL.revokeObjectURL(url);
   });
 }
+
+export function downloadQRGrid(container: HTMLDivElement | null, fileName: string) {
+  if (!container) {
+    return alert('다운로드 오류가 발생했습니다!');
+  }
+
+  const qrCanvases = getQRCodeCanvases(container);
+  if (!qrCanvases.length) {
+    return alert('QR 코드가 없습니다!');
+  }
+
+  const scale = 3;
+  const metrics = calculateGridMetrics(qrCanvases.length);
+  const outputCanvas = createOutputCanvas(metrics.canvasWidth * scale, metrics.canvasHeight * scale);
+  const ctx = outputCanvas.getContext('2d');
+
+  if (!ctx) return;
+
+  ctx.scale(scale, scale);
+
+  initCanvasContext(ctx, metrics.canvasWidth, metrics.canvasHeight);
+  drawQRTiles(ctx, qrCanvases, metrics);
+  triggerDownload(outputCanvas, fileName);
+}
