@@ -12,6 +12,8 @@ import WorkspaceRouteButtons from '@components/admin/workspace/WorkspaceRouteBut
 import AppFaqButton from '@components/common/button/AppFaqButton';
 import AppPopup from '@components/common/popup/AppPopup';
 import { tabletMediaQuery } from '@styles/globalStyles';
+import { useSetAtom } from 'jotai';
+import { adminSideNavIsOpenAtom } from '@jotai/admin/atoms';
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -34,9 +36,11 @@ const RouteContainer = styled.div`
 function AdminWorkspace() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchWorkspace } = useAdminWorkspace();
+  const setSideNavIsOpen = useSetAtom(adminSideNavIsOpenAtom);
 
   useEffect(() => {
     fetchWorkspace(workspaceId);
+    setSideNavIsOpen(true);
   }, []);
 
   return (
