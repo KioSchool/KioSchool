@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import CategoryDragAndDropContent from '@components/admin/product-category/CategoryDragAndDropContent';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import { adminCategoriesAtom } from 'src/jotai/admin/atoms';
+import { adminCategoriesAtom } from '@jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 

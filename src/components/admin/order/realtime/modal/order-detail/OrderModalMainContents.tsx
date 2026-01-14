@@ -4,7 +4,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
-import { adminProductsAtom, orderModalReadOnlyAtom } from 'src/jotai/admin/atoms';
+import { adminProductsAtom, orderModalReadOnlyAtom } from '@jotai/admin/atoms';
 import _ from 'lodash';
 import OrderModalProductList from './OrderModalProductsList';
 

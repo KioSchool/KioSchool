@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import NewAppInput from '@components/common/input/NewAppInput';
-import { adminBanksAtom, externalSidebarAtom } from 'src/jotai/admin/atoms';
+import { adminBanksAtom, externalSidebarAtom } from '@jotai/admin/atoms';
 import { useAtomValue, useSetAtom } from 'jotai';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';

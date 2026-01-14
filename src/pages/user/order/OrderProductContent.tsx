@@ -8,7 +8,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
 import _ from 'lodash';
 import { Element } from 'react-scroll';
-import { userCategoriesAtom, userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
+import { userCategoriesAtom, userOrderBasketAtom, userWorkspaceAtom } from '@jotai/user/atoms';
 
 const MainContent = styled.div`
   width: 100%;

@@ -28,6 +28,9 @@
       ],
       "@utils/*": [
         "src/utils/*"
+      ],
+      "@jotai/*": [
+        "src/jotai/*"
       ]
     }
   }

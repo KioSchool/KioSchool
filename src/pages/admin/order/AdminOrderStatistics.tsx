@@ -13,7 +13,7 @@ import ProductStatistics from '@components/admin/order/statistic/ProductStatisti
 import OrderPriceStatistics from '@components/admin/order/statistic/OrderPriceStatistics';
 import dayjs from 'dayjs';
 import { dateConverter } from '@utils/FormatDate';
-import { adminOrdersAtom } from 'src/jotai/admin/atoms';
+import { adminOrdersAtom } from '@jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
 
 type CategoryKey = 'all' | 'byProduct' | 'byPrice';

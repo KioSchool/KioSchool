@@ -8,7 +8,7 @@ import AppContainer from '@components/common/container/AppContainer';
 import { OrderStatus } from '@@types/index';
 import TitledOrderStatusList from '@components/admin/order/realtime/TitledOrderStatusList';
 import { useAtomValue } from 'jotai';
-import { adminOrdersAtom } from 'src/jotai/admin/atoms';
+import { adminOrdersAtom } from '@jotai/admin/atoms';
 import RightSidebarModal from '@components/common/modal/RightSidebarModal';
 import OrderByProductList from '@components/admin/order/realtime/OrderByProductList';
 import styled from '@emotion/styled';

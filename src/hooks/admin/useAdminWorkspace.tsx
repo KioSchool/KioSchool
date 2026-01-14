@@ -1,7 +1,7 @@
 import useApi from '@hooks/useApi';
 import { Workspace } from '@@types/index';
 import { useNavigate } from 'react-router-dom';
-import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
+import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { useSetAtom } from 'jotai';
 import { getAdminWorkspacePath } from '@constants/routes';
 

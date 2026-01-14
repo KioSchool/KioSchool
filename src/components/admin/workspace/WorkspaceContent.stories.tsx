@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import WorkspaceContent from './WorkspaceContent';
 import { Workspace, UserRole, Product, ProductStatus } from '@@types/index';
 import { defaultWorkspaceSetting } from '@@types/defaultValues';
-import { adminWorkspacesAtom } from 'src/jotai/admin/atoms';
+import { adminWorkspacesAtom } from '@jotai/admin/atoms';
 import { Provider } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
 

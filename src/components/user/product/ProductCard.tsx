@@ -4,7 +4,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { RiAddLine, RiSubtractLine } from '@remixicon/react';
 import { css } from '@emotion/react';
-import { userOrderBasketAtom } from 'src/jotai/user/atoms';
+import { userOrderBasketAtom } from '@jotai/user/atoms';
 import { useSetAtom } from 'jotai';
 
 const ProductName = styled.div<{ isSoldOut: boolean }>`

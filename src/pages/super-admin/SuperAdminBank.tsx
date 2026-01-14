@@ -7,7 +7,7 @@ import { useSearchParams } from 'react-router-dom';
 import PaginationSearchContents from '@components/common/pagination/PaginationSearchContents';
 import useSuperAdminBank from '@hooks/super-admin/useSuperAdminBank';
 import SuperAdminBankContent from '@components/super-admin/bank/SuperAdminBankContent';
-import { superAdminBankPaginationResponseAtom } from 'src/jotai/super-admin/atoms';
+import { superAdminBankPaginationResponseAtom } from '@jotai/super-admin/atoms';
 import { useAtomValue } from 'jotai';
 
 function SuperAdminBank() {

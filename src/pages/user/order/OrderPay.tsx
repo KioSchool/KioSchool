@@ -9,7 +9,7 @@ import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import OrderPayRadio from '@components/user/order/OrderPayRadio';
 import OrderPayDescription from '@components/user/order/OrderPayDescription';
 import { HttpStatusCode } from 'axios';
-import { userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
+import { userOrderBasketAtom, userWorkspaceAtom } from '@jotai/user/atoms';
 import { useAtom, useAtomValue } from 'jotai';
 import NewAppInput from '@components/common/input/NewAppInput';
 import { Color } from '@resources/colors';

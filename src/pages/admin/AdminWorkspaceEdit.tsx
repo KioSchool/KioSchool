@@ -8,7 +8,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { WorkspaceImage } from '@@types/index';
 import { extractImageIdsAndFiles, initWorkspaceImages, removeAndPushNull } from '@utils/workspaceEdit';
 import WorkspaceImageInput from '@components/admin/workspace/WorkspaceImageInput';
-import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
+import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
 import { css } from '@emotion/react';
 import NewCommonButton from '@components/common/button/NewCommonButton';

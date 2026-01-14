@@ -5,7 +5,7 @@ import AddWorkspace from '@components/common/workspace/AddWorkspace';
 import WorkspaceContent from '@components/admin/workspace/WorkspaceContent';
 import { rowFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
-import { adminUserAtom, adminWorkspacesAtom } from 'src/jotai/admin/atoms';
+import { adminUserAtom, adminWorkspacesAtom } from '@jotai/admin/atoms';
 import AppFaqButton from '@components/common/button/AppFaqButton';
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@constants/routes';

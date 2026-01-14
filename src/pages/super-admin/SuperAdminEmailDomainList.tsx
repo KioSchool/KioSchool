@@ -7,7 +7,7 @@ import { useSearchParams } from 'react-router-dom';
 import PaginationSearchContents from '@components/common/pagination/PaginationSearchContents';
 import useSuperAdminEmail from '@hooks/super-admin/useSuperAdminEmail';
 import SuperAdminEmailDomainContent from '@components/super-admin/email/SuperAdminEmailDomainContent';
-import { superAdminEmailDomainPaginationResponseAtom } from 'src/jotai/super-admin/atoms';
+import { superAdminEmailDomainPaginationResponseAtom } from '@jotai/super-admin/atoms';
 import { useAtomValue } from 'jotai';
 
 function SuperAdminEmailDomainList() {

@@ -1,7 +1,7 @@
 import { PaginationResponse, EmailDomain } from '@@types/index';
 import useApi from '@hooks/useApi';
 import { useSetAtom } from 'jotai';
-import { superAdminEmailDomainPaginationResponseAtom } from 'src/jotai/super-admin/atoms';
+import { superAdminEmailDomainPaginationResponseAtom } from '@jotai/super-admin/atoms';
 
 interface FetchAllEmailDomainParamsType {
   page: number;

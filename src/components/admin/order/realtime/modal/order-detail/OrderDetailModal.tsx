@@ -8,7 +8,7 @@ import OrderModalHeaderContents from '@components/admin/order/realtime/modal/ord
 import { createPortal } from 'react-dom';
 import { useEffect } from 'react';
 import useModal from '@hooks/useModal';
-import { orderModalReadOnlyAtom } from 'src/jotai/admin/atoms';
+import { orderModalReadOnlyAtom } from '@jotai/admin/atoms';
 import { useSetAtom } from 'jotai';
 
 const DetailModalContainer = styled.div``;

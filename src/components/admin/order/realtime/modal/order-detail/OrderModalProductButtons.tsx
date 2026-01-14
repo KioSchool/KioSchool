@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import { RiAddLine, RiSubtractLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
-import { orderModalReadOnlyAtom } from 'src/jotai/admin/atoms';
+import { orderModalReadOnlyAtom } from '@jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
 
 const ButtonContainer = styled.div`

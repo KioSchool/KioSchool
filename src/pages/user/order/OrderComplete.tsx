@@ -8,7 +8,7 @@ import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import OrderStatusBar from '@components/user/order/OrderStatusBar';
 import useRefresh from '@hooks/useRefresh';
 import OrderButton from '@components/user/order/OrderButton';
-import { userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
+import { userOrderBasketAtom, userWorkspaceAtom } from '@jotai/user/atoms';
 import { useAtomValue } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
 import useBlockPopState from '@hooks/useBlockPopState';

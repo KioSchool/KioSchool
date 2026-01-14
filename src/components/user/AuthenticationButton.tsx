@@ -1,7 +1,7 @@
 import useAuthentication from '@hooks/useAuthentication';
 import { NavLinkItem } from '@components/common/nav/NavBar';
 import { useAtomValue } from 'jotai';
-import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
+import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { USER_ROUTES, getAdminWorkspacePath } from '@constants/routes';
 
 function AuthenticationButton() {
