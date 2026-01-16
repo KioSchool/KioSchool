@@ -2,7 +2,7 @@ import useApi from '@hooks/useApi';
 import { Order, OrderStatus, PaginationResponse, TableOrderSession } from '@@types/index';
 import { defaultPaginationValue } from '@@types/defaultValues';
 import { useSetAtom } from 'jotai';
-import { adminOrdersAtom } from 'src/jotai/admin/atoms';
+import { adminOrdersAtom } from '@jotai/admin/atoms';
 
 interface FetchOrdersParams {
   workspaceId: number;

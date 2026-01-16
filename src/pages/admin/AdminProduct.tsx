@@ -4,7 +4,7 @@ import useAdminProducts from '@hooks/admin/useAdminProducts';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { adminCategoriesAtom, adminProductsAtom, externalSidebarAtom } from 'src/jotai/admin/atoms';
+import { adminCategoriesAtom, adminProductsAtom, externalSidebarAtom } from '@jotai/admin/atoms';
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
 import useConfirm from '@hooks/useConfirm';
 import AppContainer from '@components/common/container/AppContainer';

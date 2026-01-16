@@ -3,7 +3,7 @@ import { User, Workspace } from '@@types/index';
 import { useNavigate } from 'react-router-dom';
 import useAuthentication from '@hooks/useAuthentication';
 import { useSetAtom } from 'jotai';
-import { adminUserAtom, adminBanksAtom, adminWorkspacesAtom } from 'src/jotai/admin/atoms';
+import { adminUserAtom, adminBanksAtom, adminWorkspacesAtom } from '@jotai/admin/atoms';
 import { USER_ROUTES } from '@constants/routes';
 
 function useAdminUser() {

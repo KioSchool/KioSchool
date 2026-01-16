@@ -1,6 +1,6 @@
 import useApi from '@hooks/useApi';
 import { Account, Workspace } from '@@types/index';
-import { userWorkspaceAtom } from 'src/jotai/user/atoms';
+import { userWorkspaceAtom } from '@jotai/user/atoms';
 import { useSetAtom } from 'jotai';
 
 function useWorkspace() {

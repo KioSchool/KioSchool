@@ -5,7 +5,7 @@ import TableTimeButtons from './TableTimeButtons';
 import { Table } from '@@types/index';
 import { useTableSession } from '@hooks/admin/useTableSession';
 import { useAtomValue } from 'jotai';
-import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
+import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import NumberInput from '@components/common/input/NumberInput';
 import { formatMinutesToTime } from '@utils/FormatDate';
 

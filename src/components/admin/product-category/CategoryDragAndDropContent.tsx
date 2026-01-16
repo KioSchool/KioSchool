@@ -1,7 +1,7 @@
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { adminCategoriesAtom } from 'src/jotai/admin/atoms';
+import { adminCategoriesAtom } from '@jotai/admin/atoms';
 import { useAtom } from 'jotai';
 import { defaultCategory } from '@constants/data/categoryData';
 import CategoryItem from '@components/admin/product-category/CategoryItem';

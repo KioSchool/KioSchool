@@ -7,7 +7,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import { Color } from '@resources/colors';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
-import { userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
+import { userOrderBasketAtom, userWorkspaceAtom } from '@jotai/user/atoms';
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect, useMemo } from 'react';
 import useOrder from '@hooks/user/useOrder';

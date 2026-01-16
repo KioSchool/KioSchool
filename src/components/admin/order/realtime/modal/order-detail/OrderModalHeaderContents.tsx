@@ -6,7 +6,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { formatDate } from '@utils/FormatDate';
 import { useAtomValue } from 'jotai';
 import { createSearchParams, useNavigate, useParams } from 'react-router-dom';
-import { orderModalReadOnlyAtom } from 'src/jotai/admin/atoms';
+import { orderModalReadOnlyAtom } from '@jotai/admin/atoms';
 
 const ModalHeader = styled.div`
   padding: 20px 30px 12px 30px;

@@ -8,7 +8,7 @@ import { RiMenuFill } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import SideNav from './SideNav';
 import { useAtom } from 'jotai';
-import { adminSideNavIsOpenAtom } from 'src/jotai/admin/atoms';
+import { adminSideNavIsOpenAtom } from '@jotai/admin/atoms';
 import { URLS } from '@constants/urls';
 import { USER_ROUTES, ADMIN_ROUTES } from '@constants/routes';
 

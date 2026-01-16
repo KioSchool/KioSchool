@@ -3,7 +3,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import styled from '@emotion/styled';
 import _ from 'lodash';
 import { useAtomValue } from 'jotai';
-import { adminProductsAtom } from 'src/jotai/admin/atoms';
+import { adminProductsAtom } from '@jotai/admin/atoms';
 import defaultProductImage from '@resources/image/defaultWorkspaceImage.png';
 
 const ProductContainer = styled.div`

@@ -14,7 +14,7 @@ import { colFlex } from '@styles/flexStyles';
 import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
-import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
+import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 
 const Container = styled.div`
   width: 100%;

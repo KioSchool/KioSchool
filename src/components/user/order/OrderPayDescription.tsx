@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import { userOrderBasketAtom } from 'src/jotai/user/atoms';
+import { userOrderBasketAtom } from '@jotai/user/atoms';
 import { useAtomValue } from 'jotai';
 
 const Container = styled.div`

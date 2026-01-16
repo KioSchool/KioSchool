@@ -5,7 +5,7 @@ import { RiCameraFill } from '@remixicon/react';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { adminUserAccountAtom, externalSidebarAtom } from 'src/jotai/admin/atoms';
+import { adminUserAccountAtom, externalSidebarAtom } from '@jotai/admin/atoms';
 import { useAtomValue, useSetAtom } from 'jotai';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';

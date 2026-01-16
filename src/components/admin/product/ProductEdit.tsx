@@ -1,7 +1,7 @@
 ﻿import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSetAtom } from 'jotai';
-import { externalSidebarAtom } from 'src/jotai/admin/atoms';
+import { externalSidebarAtom } from '@jotai/admin/atoms';
 import { ProductStateType, RIGHT_SIDEBAR_ACTION } from '@@types/index';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import ProductForm from './ProductForm';

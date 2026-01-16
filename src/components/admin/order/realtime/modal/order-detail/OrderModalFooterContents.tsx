@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { rowFlex } from '@styles/flexStyles';
 import { useParams } from 'react-router-dom';
-import { orderModalReadOnlyAtom } from 'src/jotai/admin/atoms';
+import { orderModalReadOnlyAtom } from '@jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 

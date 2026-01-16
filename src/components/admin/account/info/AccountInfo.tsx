@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
-import { adminUserAccountAtom, externalSidebarAtom } from 'src/jotai/admin/atoms';
+import { adminUserAccountAtom, externalSidebarAtom } from '@jotai/admin/atoms';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { ACCOUNT_INFO, ACCOUNT_MODAL } from '@constants/data/accountData';
 import RegisterAccountInfoContainer from './RegisterAccountInfoContainer';

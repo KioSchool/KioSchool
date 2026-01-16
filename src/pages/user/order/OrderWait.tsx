@@ -3,7 +3,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
-import { userWorkspaceAtom } from 'src/jotai/user/atoms';
+import { userWorkspaceAtom } from '@jotai/user/atoms';
 import OrderAccountInfo from '@components/user/order/OrderAccountInfo';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import { Color } from '@resources/colors';

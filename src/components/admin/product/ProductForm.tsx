@@ -2,7 +2,7 @@
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
-import { adminCategoriesAtom } from 'src/jotai/admin/atoms';
+import { adminCategoriesAtom } from '@jotai/admin/atoms';
 import { ProductActionType, ProductStateType } from '@@types/index';
 import { defaultProductEditValue } from '@@types/defaultValues';
 import SelectWithOptions from '@components/common/select/SelectWithOptions';

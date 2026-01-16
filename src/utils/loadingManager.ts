@@ -1,5 +1,5 @@
 import { getDefaultStore } from 'jotai';
-import { loadingCountAtom } from 'src/jotai/atoms';
+import { loadingCountAtom } from '@jotai/atoms';
 
 class LoadingManager {
   private store = getDefaultStore();

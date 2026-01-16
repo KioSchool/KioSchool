@@ -14,7 +14,7 @@ import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import WorkspaceNotice from '@components/user/order/WorkspaceNotice';
 import OrderProductContent from './OrderProductContent';
 import { useAtomValue } from 'jotai';
-import { userCategoriesAtom, userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
+import { userCategoriesAtom, userOrderBasketAtom, userWorkspaceAtom } from '@jotai/user/atoms';
 
 const Container = styled.div`
   width: 100%;

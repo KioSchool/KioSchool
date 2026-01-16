@@ -5,7 +5,7 @@ import { Workspace, UserRole, Product, ProductStatus } from '@@types/index';
 import { defaultWorkspaceSetting } from '@@types/defaultValues';
 import { Provider } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
-import { adminWorkspacesAtom } from 'src/jotai/admin/atoms';
+import { adminWorkspacesAtom } from '@jotai/admin/atoms';
 
 const HydrateAtoms = ({ initialValues, children }: { initialValues: any; children: React.ReactNode }) => {
   useHydrateAtoms(initialValues);
