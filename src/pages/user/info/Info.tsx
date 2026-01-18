@@ -1,6 +1,6 @@
+import InfoPC from '@pages/user/info/InfoPC';
+import InfoMobile from '@pages/user/info/InfoMobile';
 import { isMobile } from 'react-device-detect';
-import InfoMobile from './InfoMobile';
-import InfoPC from './InfoPc';
 
 function Info() {
   return isMobile ? <InfoMobile /> : <InfoPC />;
