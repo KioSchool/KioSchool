@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { RiCloseLargeLine, RiArrowRightSLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { formatDate } from '@utils/FormatDate';
+import { formatDate } from '@utils/formatDate';
 import { useAtomValue } from 'jotai';
 import { createSearchParams, useNavigate, useParams } from 'react-router-dom';
 import { orderModalReadOnlyAtom } from '@jotai/admin/atoms';

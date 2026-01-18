@@ -5,7 +5,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import OrderSessionDetailCardList from './OrderSessionDetailCardList';
 import { RiTimeFill } from '@remixicon/react';
-import { formatDate, calculateDuration } from '@utils/FormatDate';
+import { formatDate, calculateDuration } from '@utils/formatDate';
 import { format } from 'date-fns/format';
 
 const Container = styled.div<{ isOpen: boolean }>`

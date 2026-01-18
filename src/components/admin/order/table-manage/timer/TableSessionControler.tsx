@@ -7,7 +7,7 @@ import { useTableSession } from '@hooks/admin/useTableSession';
 import { useAtomValue } from 'jotai';
 import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import NumberInput from '@components/common/input/NumberInput';
-import { formatMinutesToTime } from '@utils/FormatDate';
+import { formatMinutesToTime } from '@utils/formatDate';
 
 const Container = styled.div`
   border: 1px solid #ececec;

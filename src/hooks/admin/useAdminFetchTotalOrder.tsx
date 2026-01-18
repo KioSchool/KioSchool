@@ -1,7 +1,7 @@
 ﻿import { useState, useEffect, useMemo, useCallback } from 'react';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { Order } from '@@types/index';
-import { dateConverter } from '@utils/FormatDate';
+import { dateConverter } from '@utils/formatDate';
 import { useAdminFetchOrderBase } from './useAdminFetchOrderBase';
 
 export const useAdminFetchTotalOrder = (workspaceId: string | undefined) => {

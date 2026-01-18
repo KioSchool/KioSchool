@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import ToggleButton from '@components/common/toggle/ToggleButton';
 import NumberInput from '@components/common/input/NumberInput';
-import { formatMinutesToTime } from '@utils/FormatDate';
+import { formatMinutesToTime } from '@utils/formatDate';
 
 const SectionLabel = styled.div`
   font-size: 14px;

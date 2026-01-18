@@ -1,7 +1,7 @@
 ﻿import { useState, useEffect, useMemo } from 'react';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { TableOrderSession } from '@@types/index';
-import { dateConverter } from '@utils/FormatDate';
+import { dateConverter } from '@utils/formatDate';
 import { useAdminFetchOrderBase } from './useAdminFetchOrderBase';
 
 export const useAdminFetchTableOrder = (workspaceId: string | undefined) => {
