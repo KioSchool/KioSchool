@@ -8,7 +8,7 @@ import { Color } from '@resources/colors';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { useNavigate } from 'react-router-dom';
 import { getAdminWorkspacePath } from '@constants/routes';
-import { formatDate } from '@utils/FormatDate';
+import { formatDate } from '@utils/formatDate';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 
 const Container = styled.div`

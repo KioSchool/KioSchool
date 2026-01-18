@@ -12,7 +12,7 @@ import TotalOrder from '@components/admin/order/statistic/TotalOrder';
 import ProductStatistics from '@components/admin/order/statistic/ProductStatistics';
 import OrderPriceStatistics from '@components/admin/order/statistic/OrderPriceStatistics';
 import dayjs from 'dayjs';
-import { dateConverter } from '@utils/FormatDate';
+import { dateConverter } from '@utils/formatDate';
 import { adminOrdersAtom } from '@jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
 

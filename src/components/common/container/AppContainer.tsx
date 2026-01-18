@@ -26,17 +26,23 @@ export const MainContainer = styled.div<{ backgroundColor?: string; sideNavOffse
 export const SubContainer = styled.div<{
   customWidth?: string;
   customGap?: string;
+  customHeight?: string;
   useTitle?: boolean;
+  useFlex?: SerializedStyles;
 }>`
   max-width: ${(props) => props.customWidth || `${DEFAULT_LAYOUT_WIDTH}px`};
   width: 100%;
+  height: ${(props) => props.customHeight || 'auto'};
+  gap: ${(props) => props.customGap || '0'};
   box-sizing: border-box;
   flex-grow: 1;
   padding-top: ${(props) => (props.useTitle ? '90px' : '0')};
-  ${colFlex({
-    justify: 'flex-start',
-    align: 'center',
-  })}
+  ${(props) =>
+    props.useFlex ||
+    colFlex({
+      justify: 'flex-start',
+      align: 'center',
+    })}
 `;
 
 const TitleContainer = styled.div`

@@ -8,3 +8,4 @@ export const Color = {
   GREEN: '#0CAF60',
   RED: '#FF5A5A',
 } as const;
+export type ColorType = typeof Color[keyof typeof Color];
