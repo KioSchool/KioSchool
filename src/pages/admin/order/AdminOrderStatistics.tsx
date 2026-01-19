@@ -1,27 +1,28 @@
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import 'react-datepicker/dist/react-datepicker.css';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
+import { useAtomValue } from 'jotai';
+import { RiRefreshLine } from '@remixicon/react';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { OrderStatus } from '@@types/index';
 import { tabletMediaQuery } from '@styles/globalStyles';
 import { Color } from '@resources/colors';
-import TotalOrder from '@components/admin/order/statistic/TotalOrder';
+import CustomSelect from '@components/common/select/CustomSelect';
+import CustomDatePicker from '@components/common/date-picker/CustomDatePicker';
 import ProductStatistics from '@components/admin/order/statistic/ProductStatistics';
 import OrderPriceStatistics from '@components/admin/order/statistic/OrderPriceStatistics';
-import dayjs from 'dayjs';
 import { dateConverter } from '@utils/formatDate';
+import { useAdminFetchOrderBase } from '@hooks/admin/useAdminFetchOrderBase';
 import { adminOrdersAtom } from '@jotai/admin/atoms';
-import { useAtomValue } from 'jotai';
 
 type CategoryKey = 'byProduct' | 'byPrice';
 
 interface Category {
   key: CategoryKey;
   label: string;
-  render: React.ReactNode;
+  render: ReactNode;
 }
 
 const Container = styled.div`
@@ -36,14 +37,39 @@ const Container = styled.div`
   }
 `;
 
+const FilterContainer = styled.div`
+  width: 100%;
+  gap: 10px;
+  padding-bottom: 20px;
+  ${rowFlex({ align: 'center' })};
+`;
+
+const ResetButton = styled.div`
+  padding: 0 10px;
+  height: 35px;
+  background: ${Color.WHITE};
+  border: 1px solid #e8eef2;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #464a4d;
+  gap: 4px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
+
+  &:hover {
+    border-color: ${Color.KIO_ORANGE};
+    color: ${Color.KIO_ORANGE};
+  }
+`;
+
 const HeaderContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
   height: 45px;
-  ${rowFlex({ justify: 'space-between', align: 'center' })};
   padding: 0 20px;
   border-radius: 7px 7px 0 0;
   background: ${Color.KIO_ORANGE};
+  ${rowFlex({ justify: 'space-between', align: 'center' })};
 `;
 
 const HeaderLabel = styled.p`
@@ -75,26 +101,26 @@ function AdminOrderStatistics() {
   const { fetchOrders } = useAdminOrder(workspaceId);
   const orders = useAtomValue(adminOrdersAtom);
 
-  // TODO: 사용하지 않는 상태 변수 정리
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [showServedOrder, setShowServedOrder] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [startDate, setStartDate] = useState<Date>(() => dayjs().subtract(1, 'day').toDate());
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [endDate, setEndDate] = useState(new Date());
+  const { baseFilters, setBaseFilters, resetBaseFilters, statusOptions } = useAdminFetchOrderBase(workspaceId);
+  const { startDate, endDate, orderStatuses } = baseFilters;
+  const { setStartDate, setEndDate, setOrderStatuses } = setBaseFilters;
+
   const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('byProduct');
 
-  const statuses = showServedOrder ? [OrderStatus.SERVED] : undefined;
   const parsedStartDate = dateConverter(startDate);
   const parsedEndDate = dateConverter(endDate);
 
+  const dateRangeLabel = startDate && endDate ? `${startDate.toLocaleDateString()} ~ ${endDate.toLocaleDateString()}` : '날짜 선택';
+
   useEffect(() => {
+    if (!parsedStartDate || !parsedEndDate) return;
+
     fetchOrders({
       startDate: parsedStartDate,
       endDate: parsedEndDate,
-      statuses,
+      statuses: orderStatuses,
     });
-  }, [startDate, endDate, showServedOrder]);
+  }, [parsedStartDate, parsedEndDate, orderStatuses, workspaceId]);
 
   const totalOrderPrice = orders.reduce((sum, order) => sum + order.totalPrice, 0).toLocaleString();
 
@@ -107,13 +133,40 @@ function AdminOrderStatistics() {
     {
       key: 'byPrice',
       label: '시간대별 매출',
-      render: <OrderPriceStatistics startDate={parsedStartDate} endDate={parsedEndDate} status={showServedOrder ? OrderStatus.SERVED : undefined} />,
+      render: (
+        <OrderPriceStatistics
+          startDate={parsedStartDate}
+          endDate={parsedEndDate}
+          status={orderStatuses && orderStatuses.length > 0 ? orderStatuses[0] : undefined}
+        />
+      ),
     },
   ];
 
   return (
     <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })}>
       <Container>
+        <FilterContainer>
+          <ResetButton onClick={resetBaseFilters}>
+            <RiRefreshLine size={14} />
+            초기화
+          </ResetButton>
+
+          <CustomSelect value={dateRangeLabel} triggerLabel={dateRangeLabel} highlightOnSelect={true} width="250px">
+            <CustomDatePicker startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} />
+          </CustomSelect>
+
+          <CustomSelect<OrderStatus>
+            isMulti={true}
+            value={orderStatuses}
+            onChange={setOrderStatuses}
+            options={statusOptions}
+            highlightOnSelect={true}
+            width="150px"
+            placeholder="상태 전체"
+          />
+        </FilterContainer>
+
         <HeaderContainer>
           <HeaderLabel>총 매출액</HeaderLabel>
           <HeaderLabel>{totalOrderPrice} 원</HeaderLabel>
