@@ -16,7 +16,7 @@ import { dateConverter } from '@utils/formatDate';
 import { adminOrdersAtom } from '@jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
 
-type CategoryKey = 'all' | 'byProduct' | 'byPrice';
+type CategoryKey = 'byProduct' | 'byPrice';
 
 interface Category {
   key: CategoryKey;
@@ -54,7 +54,7 @@ const HeaderLabel = styled.p`
 
 const CategoryContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 8px;
   width: 100%;
   padding: 0 10px;
@@ -82,7 +82,7 @@ function AdminOrderStatistics() {
   const [startDate, setStartDate] = useState<Date>(() => dayjs().subtract(1, 'day').toDate());
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [endDate, setEndDate] = useState(new Date());
-  const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('all');
+  const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('byProduct');
 
   const statuses = showServedOrder ? [OrderStatus.SERVED] : undefined;
   const parsedStartDate = dateConverter(startDate);
@@ -99,11 +99,6 @@ function AdminOrderStatistics() {
   const totalOrderPrice = orders.reduce((sum, order) => sum + order.totalPrice, 0).toLocaleString();
 
   const categories: Category[] = [
-    {
-      key: 'all',
-      label: '전체 주문 조회',
-      render: <TotalOrder orders={orders} />,
-    },
     {
       key: 'byProduct',
       label: '상품별 판매량',
