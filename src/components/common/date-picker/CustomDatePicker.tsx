@@ -57,10 +57,10 @@ const CalendarWrapper = styled.div`
 `;
 
 interface CustomDatePickerProps {
-  startDate: Date | null;
-  endDate: Date | null;
-  setStartDate: Dispatch<SetStateAction<Date | null>>;
-  setEndDate: Dispatch<SetStateAction<Date | null>>;
+  startDate: Date;
+  endDate: Date;
+  setStartDate: Dispatch<SetStateAction<Date>>;
+  setEndDate: Dispatch<SetStateAction<Date>>;
 }
 
 const CustomDatePicker = ({ startDate, endDate, setStartDate, setEndDate }: CustomDatePickerProps) => {

@@ -29,15 +29,15 @@ interface UseDateRangeReturn {
   inputState: InputState;
   dispatch: Dispatch<InputAction>;
   handleRangeCategoryChange: (category: string) => void;
-  handleDateChange: (dates: [Date | null, Date | null]) => void;
+  handleDateChange: (dates: [Date, Date]) => void;
   handleManualDateInput: (event: React.ChangeEvent<HTMLInputElement>, type: 'START' | 'END') => void;
   handleTimeChange: (type: 'START' | 'END', timeStr: string) => void;
 }
 interface UseDateRangeParams {
-  startDate: Date | null;
-  endDate: Date | null;
-  setStartDate: Dispatch<SetStateAction<Date | null>>;
-  setEndDate: Dispatch<SetStateAction<Date | null>>;
+  startDate: Date;
+  endDate: Date;
+  setStartDate: Dispatch<SetStateAction<Date>>;
+  setEndDate: Dispatch<SetStateAction<Date>>;
 }
 
 function useDateRange({ startDate, endDate, setStartDate, setEndDate }: UseDateRangeParams): UseDateRangeReturn {
@@ -109,7 +109,7 @@ function useDateRange({ startDate, endDate, setStartDate, setEndDate }: UseDateR
    * 달력에서 날짜 선택 시 호출되는 핸들러
    * 시작일과 종료일이 같은 경우, 시작일은 00:00:00, 종료일은 23:59:59로 설정합니다.
    */
-  const handleDateChange = (dates: [Date | null, Date | null]) => {
+  const handleDateChange = (dates: [Date, Date]) => {
     const [start, end] = dates;
 
     if (start && end && isSameDay(start, end)) {
