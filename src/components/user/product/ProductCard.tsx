@@ -2,6 +2,7 @@ import { Product, ProductStatus } from '@@types/index';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
+import { match } from 'ts-pattern';
 import { RiAddLine, RiSubtractLine } from '@remixicon/react';
 import { css } from '@emotion/react';
 import { userOrderBasketAtom } from '@jotai/user/atoms';
@@ -172,18 +173,19 @@ function ProductCard({ product, quantity }: ProductCardProps) {
       </LabelContainer>
       <Contents className="image-container">
         <StyledImage src={product.imageUrl} alt={product.name} />
-        {isSoldOut && (
-          <SoldOutOverlay>
-            <SoldOutText>품절</SoldOutText>
-          </SoldOutOverlay>
-        )}
-        {!isSoldOut && (
-          <ButtonContainer isOpened={isOpened}>
-            <RemoveButton onClick={handleRemoveProduct} isOpened={isOpened} />
-            <QuantityLabel isOpened={isOpened}>{quantity}</QuantityLabel>
-            <AddButton onClick={handleAddProduct} isOpened={isOpened} />
-          </ButtonContainer>
-        )}
+        {match(product.status)
+          .with(ProductStatus.SOLD_OUT, () => (
+            <SoldOutOverlay>
+              <SoldOutText>품절</SoldOutText>
+            </SoldOutOverlay>
+          ))
+          .otherwise(() => (
+            <ButtonContainer isOpened={isOpened}>
+              <RemoveButton onClick={handleRemoveProduct} isOpened={isOpened} />
+              <QuantityLabel isOpened={isOpened}>{quantity}</QuantityLabel>
+              <AddButton onClick={handleAddProduct} isOpened={isOpened} />
+            </ButtonContainer>
+          ))}
       </Contents>
     </Container>
   );

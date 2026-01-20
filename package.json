@@ -50,7 +50,8 @@
     "react-toastify": "^11.0.5",
     "recharts": "2.15.3",
     "sockjs-client": "^1.6.1",
-    "styled-components": "^6.1.19"
+    "styled-components": "^6.1.19",
+    "ts-pattern": "^5.9.0"
   },
   "scripts": {
     "start": "vite --host",

@@ -6,6 +6,7 @@ import NotPaidOrderCard from './NotPaidOrderCard';
 import PaidOrderCard from './PaidOrderCard';
 import ServedOrderCard from './ServedOrderCard';
 import { areOrdersEquivalent } from '@utils/memoCompareFunction';
+import { match } from 'ts-pattern';
 import { RiInformationFill } from '@remixicon/react';
 import AppTooltip from '@components/common/tooltip/AppToolTip';
 
@@ -73,16 +74,11 @@ const arePropsEqual = (prevProps: OrderStatusListProps, nextProps: OrderStatusLi
 };
 
 const getOrderContainerHeight = (status: OrderStatus) => {
-  switch (status) {
-    case OrderStatus.NOT_PAID:
-      return 110;
-    case OrderStatus.PAID:
-      return 260;
-    case OrderStatus.SERVED:
-      return 74;
-    default:
-      return 200;
-  }
+  return match(status)
+    .with(OrderStatus.NOT_PAID, () => 110)
+    .with(OrderStatus.PAID, () => 260)
+    .with(OrderStatus.SERVED, () => 74)
+    .otherwise(() => 200);
 };
 
 interface OrderStatusListProps {
@@ -96,15 +92,14 @@ function TitledOrderStatusList({ orders, orderStatus, title, description }: Orde
   let orderListContent: React.ReactNode;
 
   if (orders.length > 0) {
-    orderListContent = orders.map((order) => {
-      if (order.status === OrderStatus.NOT_PAID) {
-        return <NotPaidOrderCard key={order.id} order={order} />;
-      } else if (order.status === OrderStatus.PAID) {
-        return <PaidOrderCard key={order.id} order={order} />;
-      } else if (order.status === OrderStatus.SERVED) {
-        return <ServedOrderCard key={order.id} order={order} />;
-      }
-    });
+    orderListContent = orders.map((order) =>
+      match(order.status)
+        .with(OrderStatus.NOT_PAID, () => <NotPaidOrderCard key={order.id} order={order} />)
+        .with(OrderStatus.PAID, () => <PaidOrderCard key={order.id} order={order} />)
+        .with(OrderStatus.SERVED, () => <ServedOrderCard key={order.id} order={order} />)
+        .with(OrderStatus.CANCELLED, () => null)
+        .exhaustive(),
+    );
   } else {
     orderListContent = (
       <EmptyListMessageContainer>
