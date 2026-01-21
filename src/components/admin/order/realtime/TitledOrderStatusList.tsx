@@ -6,6 +6,7 @@ import NotPaidOrderCard from './NotPaidOrderCard';
 import PaidOrderCard from './PaidOrderCard';
 import ServedOrderCard from './ServedOrderCard';
 import { areOrdersEquivalent } from '@utils/memoCompareFunction';
+import { match } from 'ts-pattern';
 import { RiInformationFill } from '@remixicon/react';
 import AppTooltip from '@components/common/tooltip/AppToolTip';
 
@@ -96,15 +97,14 @@ function TitledOrderStatusList({ orders, orderStatus, title, description }: Orde
   let orderListContent: React.ReactNode;
 
   if (orders.length > 0) {
-    orderListContent = orders.map((order) => {
-      if (order.status === OrderStatus.NOT_PAID) {
-        return <NotPaidOrderCard key={order.id} order={order} />;
-      } else if (order.status === OrderStatus.PAID) {
-        return <PaidOrderCard key={order.id} order={order} />;
-      } else if (order.status === OrderStatus.SERVED) {
-        return <ServedOrderCard key={order.id} order={order} />;
-      }
-    });
+    orderListContent = orders.map((order) =>
+      match(order.status)
+        .with(OrderStatus.NOT_PAID, () => <NotPaidOrderCard key={order.id} order={order} />)
+        .with(OrderStatus.PAID, () => <PaidOrderCard key={order.id} order={order} />)
+        .with(OrderStatus.SERVED, () => <ServedOrderCard key={order.id} order={order} />)
+        .with(OrderStatus.CANCELLED, () => null)
+        .exhaustive(),
+    );
   } else {
     orderListContent = (
       <EmptyListMessageContainer>
