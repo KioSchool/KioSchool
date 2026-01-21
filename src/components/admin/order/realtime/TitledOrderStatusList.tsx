@@ -74,11 +74,16 @@ const arePropsEqual = (prevProps: OrderStatusListProps, nextProps: OrderStatusLi
 };
 
 const getOrderContainerHeight = (status: OrderStatus) => {
-  return match(status)
-    .with(OrderStatus.NOT_PAID, () => 110)
-    .with(OrderStatus.PAID, () => 260)
-    .with(OrderStatus.SERVED, () => 74)
-    .otherwise(() => 200);
+  switch (status) {
+    case OrderStatus.NOT_PAID:
+      return 110;
+    case OrderStatus.PAID:
+      return 260;
+    case OrderStatus.SERVED:
+      return 74;
+    default:
+      return 200;
+  }
 };
 
 interface OrderStatusListProps {
