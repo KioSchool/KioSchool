@@ -8,8 +8,8 @@ export const useAdminFetchOrderBase = (workspaceId: string | undefined) => {
   const { fetchWorkspaceTables } = useAdminWorkspace();
 
   const [tables, setTables] = useState<Table[]>([]);
-  const [startDate, setStartDate] = useState<Date>(subHours(new Date(), 2));
-  const [endDate, setEndDate] = useState<Date>(new Date());
+  const [startDate, setStartDate] = useState<Date | null>(subHours(new Date(), 2));
+  const [endDate, setEndDate] = useState<Date | null>(new Date());
   const [tableNumber, setTableNumber] = useState<string>('ALL');
   const [sortOrder, setSortOrder] = useState<string>('LATEST');
   const [orderStatuses, setOrderStatuses] = useState<OrderStatus[]>([]);
