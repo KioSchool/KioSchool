@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
@@ -18,12 +18,6 @@ import { useAdminFetchOrderBase } from '@hooks/admin/useAdminFetchOrderBase';
 import { adminOrdersAtom } from '@jotai/admin/atoms';
 
 type CategoryKey = 'byProduct' | 'byPrice';
-
-interface Category {
-  key: CategoryKey;
-  label: string;
-  render: ReactNode;
-}
 
 const Container = styled.div`
   width: 100%;
@@ -83,7 +77,7 @@ const CategoryContainer = styled.div`
   grid-template-columns: repeat(2, 1fr);
   gap: 8px;
   width: 100%;
-  padding: 0 10px;
+  padding: 0 10px 30px 10px;
   box-sizing: border-box;
   border-bottom: 1px solid ${Color.LIGHT_GREY};
 `;
@@ -110,7 +104,8 @@ function AdminOrderStatistics() {
   const parsedStartDate = dateConverter(startDate);
   const parsedEndDate = dateConverter(endDate);
 
-  const dateRangeLabel = startDate && endDate ? `${startDate.toLocaleDateString()} ~ ${endDate.toLocaleDateString()}` : '날짜 선택';
+  const isDateSelected = !!(parsedStartDate && parsedEndDate);
+  const dateRangeLabel = isDateSelected ? `${startDate!.toLocaleDateString()} ~ ${endDate!.toLocaleDateString()}` : '날짜 선택';
 
   useEffect(() => {
     if (!parsedStartDate || !parsedEndDate) return;
@@ -124,24 +119,17 @@ function AdminOrderStatistics() {
 
   const totalOrderPrice = orders.reduce((sum, order) => sum + order.totalPrice, 0).toLocaleString();
 
-  const categories: Category[] = [
-    {
-      key: 'byProduct',
-      label: '상품별 판매량',
-      render: <ProductStatistics orders={orders} />,
-    },
-    {
-      key: 'byPrice',
-      label: '시간대별 매출',
-      render: (
-        <OrderPriceStatistics
-          startDate={parsedStartDate}
-          endDate={parsedEndDate}
-          status={orderStatuses && orderStatuses.length > 0 ? orderStatuses[0] : undefined}
-        />
-      ),
-    },
-  ];
+  const primaryStatus = orderStatuses?.[0];
+
+  const renderCategoryContent = () => {
+    if (selectedCategory === 'byProduct') {
+      return <ProductStatistics orders={orders} />;
+    }
+
+    if (selectedCategory === 'byPrice') {
+      return <OrderPriceStatistics startDate={parsedStartDate!} endDate={parsedEndDate!} status={primaryStatus} />;
+    }
+  };
 
   return (
     <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })}>
@@ -173,14 +161,15 @@ function AdminOrderStatistics() {
         </HeaderContainer>
 
         <CategoryContainer>
-          {categories.map(({ key, label }) => (
-            <CategoryLink key={key} isSelected={selectedCategory === key} onClick={() => setSelectedCategory(key)}>
-              {label}
-            </CategoryLink>
-          ))}
+          <CategoryLink isSelected={selectedCategory === 'byProduct'} onClick={() => setSelectedCategory('byProduct')}>
+            상품별 판매량
+          </CategoryLink>
+          <CategoryLink isSelected={selectedCategory === 'byPrice'} onClick={() => setSelectedCategory('byPrice')}>
+            시간대별 매출
+          </CategoryLink>
         </CategoryContainer>
 
-        {categories.find((category) => category.key === selectedCategory)?.render}
+        {renderCategoryContent()}
       </Container>
     </AppContainer>
   );
