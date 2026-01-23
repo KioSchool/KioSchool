@@ -23,7 +23,9 @@ export const extractMinFromDate = (date: string | undefined) => {
   return Math.floor((currentTime.getTime() - createdAtDate.getTime()) / (1000 * 60));
 };
 
-export const dateConverter = (date: Date) => {
+export const dateConverter = (date: Date | null): string => {
+  if (!date || !isValid(date)) return '';
+
   const zonedDate = toZonedTime(date, 'Asia/Seoul');
   return format(zonedDate, "yyyy-MM-dd'T'HH:mm:ss.SSS");
 };

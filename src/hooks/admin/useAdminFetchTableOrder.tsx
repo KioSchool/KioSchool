@@ -18,13 +18,15 @@ export const useAdminFetchTableOrder = (workspaceId: string | undefined) => {
     const end = dateConverter(endDate);
     const tableNo = tableNumber === 'ALL' ? undefined : Number(tableNumber);
 
-    fetchTableOrderSessions({
-      startDate: start,
-      endDate: end,
-      tableNumber: tableNo,
-    })
-      .then((res) => setSessions(res.data))
-      .catch(console.error);
+    if (start && end) {
+      fetchTableOrderSessions({
+        startDate: start,
+        endDate: end,
+        tableNumber: tableNo,
+      })
+        .then((res) => setSessions(res.data))
+        .catch(console.error);
+    }
   }, [startDate, endDate, tableNumber, workspaceId]);
 
   const sortedSessions = useMemo(() => {
