@@ -36,7 +36,7 @@
     "http-status-codes": "^2.3.0",
     "jotai": "^2.12.5",
     "jsqr": "^1.4.0",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "qrcode": "^1.5.4",
     "qrcode.react": "^4.1.0",
     "react": "^18.2.0",
