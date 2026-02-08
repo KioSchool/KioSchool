@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
 import DashboardCard from './DashboardCard';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useMemo, ChangeEvent, useRef } from 'react';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { useParams } from 'react-router-dom';
 import _ from 'lodash';
+import { match } from 'ts-pattern';
 
 const MemoTextArea = styled.textarea`
   width: 100%;
@@ -38,16 +39,17 @@ interface MemoCardProps {
 }
 
 function MemoCard({ initialMemo }: MemoCardProps) {
-  const { workspaceId } = useParams<{ workspaceId: string }>();
+  const { workspaceId: workspaceIdStr } = useParams<{ workspaceId: string }>();
+  const workspaceId = useMemo(() => (workspaceIdStr ? _.toNumber(workspaceIdStr) : undefined), [workspaceIdStr]);
+
   const { updateWorkspaceMemo } = useAdminWorkspace();
   const [memo, setMemo] = useState(initialMemo);
   const [isSaving, setIsSaving] = useState(false);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debouncedSave = useCallback(
-    _.debounce((workspaceId: string, newMemo: string) => {
+  const debouncedSave = useRef(
+    _.debounce(async (id: number, newMemo: string) => {
       setIsSaving(true);
-      updateWorkspaceMemo(workspaceId, newMemo)
+      updateWorkspaceMemo(id, newMemo)
         .then(() => {
           setIsSaving(false);
         })
@@ -55,29 +57,33 @@ function MemoCard({ initialMemo }: MemoCardProps) {
           setIsSaving(false);
         });
     }, 1000),
-    [],
-  );
+  ).current;
+
+  useEffect(() => {
+    return () => debouncedSave.cancel();
+  }, [debouncedSave]);
 
   useEffect(() => {
     setMemo(initialMemo);
   }, [initialMemo]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value;
     setMemo(newValue);
-    if (workspaceId) {
+
+    if (_.isNumber(workspaceId) && !_.isNaN(workspaceId)) {
       debouncedSave(workspaceId, newValue);
     }
   };
 
   return (
     <DashboardCard title="메모" height={120}>
-      <MemoTextArea 
-        value={memo} 
-        onChange={handleChange} 
-        placeholder="오후 주방3 근무자 결근, 테이블 30번 교수님 테이블, 20번 테이블 🐶진상"
-      />
-      <SaveStatus>{isSaving ? '저장 중...' : ''}</SaveStatus>
+      <MemoTextArea value={memo} onChange={handleChange} placeholder="메모를 입력하세요..." />
+      <SaveStatus>
+        {match(isSaving)
+          .with(true, () => '저장 중...')
+          .otherwise(() => '')}
+      </SaveStatus>
     </DashboardCard>
   );
 }

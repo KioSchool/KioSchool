@@ -97,8 +97,10 @@ function useAdminWorkspace() {
 
   const fetchWorkspaceTables = (workspaceId: string | undefined | null) => adminApi.get(`/workspace/tables`, { params: { workspaceId } });
 
-  const updateWorkspaceMemo = (workspaceId: number | string | undefined, memo: string) => {
-    return adminApi.put<Workspace>('/workspace/memo', { workspaceId, memo });
+  const updateWorkspaceMemo = (workspaceId: number, memo: string) => {
+    return adminApi.put<Workspace>('/workspace/memo', { workspaceId, memo }).then((res) => {
+      setAdminWorkspace(res.data);
+    });
   };
 
   return {
