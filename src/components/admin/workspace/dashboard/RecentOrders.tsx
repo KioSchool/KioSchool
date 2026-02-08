@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@constants/routes';
 import { useAtomValue } from 'jotai';
 import { adminDashboardAtom } from '@jotai/admin/atoms';
+import { Color } from '@resources/colors';
+
 const OrderList = styled.div`
   width: 100%;
   gap: 8px;
@@ -23,6 +25,10 @@ const ActionButton = styled.button`
   border: none;
   cursor: pointer;
   padding: 0;
+
+  &:hover {
+    color: ${Color.KIO_ORANGE};
+  }
 `;
 
 function RecentOrders() {
