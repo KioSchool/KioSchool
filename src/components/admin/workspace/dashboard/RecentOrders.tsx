@@ -2,13 +2,12 @@ import styled from '@emotion/styled';
 import { match } from 'ts-pattern';
 import DashboardCard from './DashboardCard';
 import { rowFlex } from '@styles/flexStyles';
-import { EmptyText } from '@styles/dashboardStyles';
+import { ActionButton, EmptyText } from '@styles/dashboardStyles';
 import RecentOrderCard from './RecentOrderCard';
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@constants/routes';
 import { useAtomValue } from 'jotai';
 import { adminDashboardAtom } from '@jotai/admin/atoms';
-import { Color } from '@resources/colors';
 
 const OrderList = styled.div`
   width: 100%;
@@ -16,19 +15,6 @@ const OrderList = styled.div`
   overflow-x: auto;
   padding-bottom: 8px;
   ${rowFlex({ justify: 'flex-start' })}
-`;
-
-const ActionButton = styled.button`
-  font-size: 10px;
-  color: #464a4d;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-
-  &:hover {
-    color: ${Color.KIO_ORANGE};
-  }
 `;
 
 function RecentOrders() {
