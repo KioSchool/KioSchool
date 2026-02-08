@@ -5,7 +5,6 @@ import styled from '@emotion/styled';
 import { adminDashboardAtom } from '@jotai/admin/atoms';
 import useAdminDashboard from '@hooks/admin/useAdminDashboard';
 import { rowFlex, colFlex } from '@styles/flexStyles';
-import { EmptyText } from '@styles/dashboardStyles';
 import StatCard from './StatCard';
 import RecentOrders from './RecentOrders';
 import NoticeBanner from './NoticeBanner';
