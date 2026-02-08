@@ -1,8 +1,9 @@
-import { TopSellingProduct } from '@@types/index';
 import styled from '@emotion/styled';
 import DashboardCard from './DashboardCard';
 import { rowFlex, colFlex } from '@styles/flexStyles';
 import { getRankBackgroundColor } from '@styles/dashboardStyles';
+import { useAtomValue } from 'jotai';
+import { adminDashboardAtom } from '@jotai/admin/atoms';
 
 const ListWrapper = styled.div`
   width: 100%;
@@ -44,15 +45,13 @@ const ValueText = styled.div`
   text-align: right;
 `;
 
-interface TopSellingListProps {
-  products: TopSellingProduct[];
-}
+function TopSellingList() {
+  const { topSellingProducts } = useAtomValue(adminDashboardAtom);
 
-function TopSellingList({ products }: TopSellingListProps) {
   return (
     <DashboardCard title="인기 순위 TOP5" width={302} height={272} showDivider={false}>
       <ListWrapper>
-        {products.map((item, index) => (
+        {topSellingProducts.map((item, index) => (
           <ItemWrapper key={item.product.id}>
             <RankInfo>
               <RankCircle rank={index + 1}>{index + 1}</RankCircle>
@@ -61,7 +60,7 @@ function TopSellingList({ products }: TopSellingListProps) {
             <ValueText>{`${item.totalQuantity}개`}</ValueText>
           </ItemWrapper>
         ))}
-        {products.length === 0 && <ProductName>데이터가 없습니다.</ProductName>}
+        {topSellingProducts.length === 0 && <ProductName>데이터가 없습니다.</ProductName>}
       </ListWrapper>
     </DashboardCard>
   );

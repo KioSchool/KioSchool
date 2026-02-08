@@ -34,13 +34,11 @@ const BottomRow = styled.div`
 function AdminDashboard() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchDashboard } = useAdminDashboard();
-  const dashboardData = useAtomValue(adminDashboardAtom);
+  const { workspace, stats } = useAtomValue(adminDashboardAtom);
 
   useEffect(() => {
     fetchDashboard(workspaceId);
   }, [workspaceId]);
-
-  const { workspace, stats, topSellingProducts, recentOrders, outOfStockProducts } = dashboardData;
 
   const usageRate = workspace.totalTables > 0 ? Math.round((workspace.occupiedTables / workspace.totalTables) * 100) : 0;
   const businessStartDate = getBusinessStartDate(new Date());
@@ -51,7 +49,7 @@ function AdminDashboard() {
     <DashboardContainer>
       <NoticeBanner />
 
-      <RecentOrders orders={recentOrders} />
+      <RecentOrders />
 
       <StatCardsWrapper>
         <StatCard
@@ -67,8 +65,8 @@ function AdminDashboard() {
       </StatCardsWrapper>
 
       <BottomRow>
-        <OutOfStockList products={outOfStockProducts} />
-        <TopSellingList products={topSellingProducts} />
+        <OutOfStockList />
+        <TopSellingList />
       </BottomRow>
 
       <MemoCard initialMemo={workspace.memo} />

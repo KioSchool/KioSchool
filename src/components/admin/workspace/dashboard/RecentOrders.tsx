@@ -1,4 +1,3 @@
-import { Order } from '@@types/index';
 import styled from '@emotion/styled';
 import { match } from 'ts-pattern';
 import DashboardCard from './DashboardCard';
@@ -7,6 +6,8 @@ import { EmptyText } from '@styles/dashboardStyles';
 import RecentOrderCard from './RecentOrderCard';
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@constants/routes';
+import { useAtomValue } from 'jotai';
+import { adminDashboardAtom } from '@jotai/admin/atoms';
 const OrderList = styled.div`
   width: 100%;
   gap: 8px;
@@ -24,12 +25,9 @@ const ActionButton = styled.button`
   padding: 0;
 `;
 
-interface RecentOrdersProps {
-  orders: Order[];
-}
-
-function RecentOrders({ orders }: RecentOrdersProps) {
+function RecentOrders() {
   const navigate = useNavigate();
+  const { recentOrders } = useAtomValue(adminDashboardAtom);
 
   const handleNavigate = () => {
     navigate(ADMIN_ROUTES.ORDER_REALTIME);
@@ -39,11 +37,11 @@ function RecentOrders({ orders }: RecentOrdersProps) {
 
   return (
     <DashboardCard title="최근 주문 내역" height={160} rightAction={rightAction}>
-      {match(orders.length)
+      {match(recentOrders.length)
         .with(0, () => <EmptyText>현재 표시할 주문 내역이 없습니다.</EmptyText>)
         .otherwise(() => (
           <OrderList>
-            {orders.map((order) => (
+            {recentOrders.map((order) => (
               <RecentOrderCard key={order.id} order={order} />
             ))}
           </OrderList>
