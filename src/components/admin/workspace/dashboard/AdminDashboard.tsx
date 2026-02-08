@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
+import { format } from 'date-fns';
 import styled from '@emotion/styled';
 import { adminDashboardAtom } from '@jotai/admin/atoms';
 import useAdminDashboard from '@hooks/admin/useAdminDashboard';
@@ -42,8 +43,9 @@ function AdminDashboard() {
   const { workspace, stats, topSellingProducts, recentOrders, outOfStockProducts } = dashboardData;
 
   const usageRate = workspace.totalTables > 0 ? Math.round((workspace.occupiedTables / workspace.totalTables) * 100) : 0;
-  const currentDate = new Date().toLocaleDateString();
+  const currentDate = format(new Date(), 'yyyy. MM. dd.');
   const todayTotalSales = (stats.totalSales / 10000).toLocaleString();
+  const avgSales = (stats.averageOrderAmount / 10000).toLocaleString();
 
   return (
     <DashboardContainer>
@@ -61,7 +63,7 @@ function AdminDashboard() {
         <StatCard title="오늘의 주문" value={`${stats.totalOrderCount}건`} description={`${currentDate} 0:00~`} />
         {/* todo: API에 없는 description 필드들은 어떻게? */}
         <StatCard title="오늘의 매출" value={`${todayTotalSales}만원`} description="전일 대비 --%" />
-        <StatCard title="대기 주문" value={`${stats.averageOrderAmount}건`} description="평균 준비시간 --분" />
+        <StatCard title="평균 주문 당 매출" value={`${avgSales}만원`} description="평균 준비시간 --분" />
       </StatCardsWrapper>
 
       <BottomRow>
