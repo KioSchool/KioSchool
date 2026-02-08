@@ -1,5 +1,5 @@
-import { defaultBanksValue, defaultUserValue, defaultWorkspaceValue } from '@@types/defaultValues';
-import { Bank, ExternalRightSidebarOptions, Order, Product, ProductCategory, RIGHT_SIDEBAR_ACTION, User, Workspace } from '@@types/index';
+import { defaultBanksValue, defaultDashboardValue, defaultUserValue, defaultWorkspaceValue } from '@@types/defaultValues';
+import { Bank, DashboardResponse, ExternalRightSidebarOptions, Order, Product, ProductCategory, RIGHT_SIDEBAR_ACTION, User, Workspace } from '@@types/index';
 import { atom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 
@@ -9,6 +9,7 @@ export const adminProductsAtom = atom<Product[]>([]);
 export const adminCategoriesAtom = atom<ProductCategory[]>([]);
 export const adminBanksAtom = atom<Bank[]>(defaultBanksValue);
 
+export const adminDashboardAtom = atom<DashboardResponse>(defaultDashboardValue);
 export const adminWorkspaceAtom = atomWithStorage<Workspace>('adminWorkspace', defaultWorkspaceValue, undefined, {
   getOnInit: true,
 });
