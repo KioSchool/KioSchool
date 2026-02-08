@@ -97,7 +97,18 @@ function useAdminWorkspace() {
 
   const fetchWorkspaceTables = (workspaceId: string | undefined | null) => adminApi.get(`/workspace/tables`, { params: { workspaceId } });
 
-  return { fetchWorkspace, updateWorkspaceTableCount, updateWorkspaceOrderSetting, updateWorkspaceInfoAndImage, fetchWorkspaceTables };
+  const updateWorkspaceMemo = (workspaceId: number | string | undefined, memo: string) => {
+    return adminApi.put<Workspace>('/workspace/memo', { workspaceId, memo });
+  };
+
+  return {
+    fetchWorkspace,
+    updateWorkspaceTableCount,
+    updateWorkspaceOrderSetting,
+    updateWorkspaceInfoAndImage,
+    fetchWorkspaceTables,
+    updateWorkspaceMemo,
+  };
 }
 
 export default useAdminWorkspace;
