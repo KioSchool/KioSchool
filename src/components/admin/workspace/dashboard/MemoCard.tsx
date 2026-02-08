@@ -39,12 +39,16 @@ function MemoCard({ initialMemo }: MemoCardProps) {
 
   const debouncedSave = useRef(
     _.debounce(async (id: number, newMemo: string) => {
-      updateWorkspaceMemo(id, newMemo);
+      try {
+        await updateWorkspaceMemo(id, newMemo);
+      } catch (error) {
+        console.error('Error saving memos', error);
+      }
     }, 1000),
-  ).current;
+  );
 
   useEffect(() => {
-    return () => debouncedSave.cancel();
+    return () => debouncedSave.current.cancel();
   }, [debouncedSave]);
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -52,7 +56,7 @@ function MemoCard({ initialMemo }: MemoCardProps) {
     setMemo(newValue);
 
     if (_.isNumber(workspaceId) && !_.isNaN(workspaceId)) {
-      debouncedSave(workspaceId, newValue);
+      debouncedSave.current(workspaceId, newValue);
     }
   };
 
