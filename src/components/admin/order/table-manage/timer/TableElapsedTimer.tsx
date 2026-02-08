@@ -5,14 +5,20 @@ import { Color } from '@resources/colors';
 import useFormattedTime from '@hooks/useFormattedTime';
 import { formatKoreanTime } from '@utils/formatDate';
 import { OrderSession } from '@@types/index';
-import ToggleButton from '@components/common/toggle/ToggleButton';
 import { useTableSession } from '@hooks/admin/useTableSession';
+import NewCommonButton from '@components/common/button/NewCommonButton';
 
 const Container = styled.div`
   border: 1px solid #ececec;
   border-radius: 10px;
-  overflow: hidden;
+  height: 100%;
   ${colFlex({ justify: 'start', align: 'center' })}
+`;
+
+const Content = styled.div`
+  flex: 1;
+  padding-bottom: 15px;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const Header = styled.div`
@@ -26,13 +32,6 @@ const Header = styled.div`
   font-weight: 600;
   width: 100%;
   border-bottom: 1px solid #ececec;
-  ${colFlex({ justify: 'center', align: 'center' })};
-`;
-
-const ToggleContainer = styled.div`
-  width: 100%;
-  padding: 0 10px 15px 10px;
-  box-sizing: border-box;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
@@ -68,7 +67,7 @@ function TableElapsedTimer({ orderSession, workspaceId, tableNumber, refetchTabl
     formatter: () => getMinutesDifference(orderSession?.createdAt),
   });
 
-  const { handleStartSession, handleEndSession } = useTableSession({
+  const { handleEndSession } = useTableSession({
     workspaceId,
     currentExpectedEndAt: orderSession?.expectedEndAt,
     orderSessionId: orderSession?.id,
@@ -85,60 +84,51 @@ function TableElapsedTimer({ orderSession, workspaceId, tableNumber, refetchTabl
   return (
     <Container>
       <Header>사용시간</Header>
-      <Gauge
-        width={180}
-        height={140}
-        value={gaugeValue}
-        valueMin={0}
-        valueMax={maxMinutes}
-        startAngle={-90}
-        endAngle={90}
-        cornerRadius="50%"
-        text={({ value }) => {
-          if (!isTableSessionActive) {
-            return '테이블 사용 종료됨';
-          }
-
-          if (!isSessionLimitActive) {
-            return '시간제한 없음';
-          }
-
-          const formattedStartTime = orderSession.createdAt && formatKoreanTime(orderSession.createdAt);
-          const startTime = formattedStartTime ? `${formattedStartTime}부터` : '시작시간 없음';
-          const currentMinutes = value || 0;
-          const formattedCurrent = formatMinutesToTime(currentMinutes);
-          const formattedMax = formatMinutesToTime(maxMinutes);
-          return `${startTime} \n${formattedCurrent} / ${formattedMax}`;
-        }}
-        sx={{
-          [`& .${gaugeClasses.valueText}`]: {
-            fontSize: 11,
-            fontWeight: 500,
-            transform: 'translateY(-10px)',
-            textAlign: 'center',
-          },
-          [`& .${gaugeClasses.valueArc}`]: {
-            fill: isTableSessionActive ? Color.KIO_ORANGE : Color.LIGHT_GREY,
-          },
-          [`& .${gaugeClasses.referenceArc}`]: {
-            fill: Color.LIGHT_GREY,
-          },
-        }}
-      />
-      <ToggleContainer>
-        <ToggleButton
-          checked={isTableSessionActive}
-          onChange={(checked) => {
-            if (checked) {
-              handleStartSession();
-            } else {
-              handleEndSession();
+      <Content>
+        <Gauge
+          width={180}
+          height={140}
+          value={gaugeValue}
+          valueMin={0}
+          valueMax={maxMinutes}
+          startAngle={-90}
+          endAngle={90}
+          cornerRadius="50%"
+          text={({ value }) => {
+            if (!isTableSessionActive) {
+              return '테이블 사용 종료됨';
             }
+
+            if (!isSessionLimitActive) {
+              return '시간제한 없음';
+            }
+
+            const formattedStartTime = orderSession.createdAt && formatKoreanTime(orderSession.createdAt);
+            const startTime = formattedStartTime ? `${formattedStartTime}부터` : '시작시간 없음';
+            const currentMinutes = value || 0;
+            const formattedCurrent = formatMinutesToTime(currentMinutes);
+            const formattedMax = formatMinutesToTime(maxMinutes);
+            return `${startTime} \n${formattedCurrent} / ${formattedMax}`;
           }}
-          onText="사용중"
-          offText="사용종료"
+          sx={{
+            [`& .${gaugeClasses.valueText}`]: {
+              fontSize: 11,
+              fontWeight: 500,
+              transform: 'translateY(-10px)',
+              textAlign: 'center',
+            },
+            [`& .${gaugeClasses.valueArc}`]: {
+              fill: isTableSessionActive ? Color.KIO_ORANGE : Color.LIGHT_GREY,
+            },
+            [`& .${gaugeClasses.referenceArc}`]: {
+              fill: Color.LIGHT_GREY,
+            },
+          }}
         />
-      </ToggleContainer>
+        <NewCommonButton size={'xs'} onClick={handleEndSession}>
+          사용 종료
+        </NewCommonButton>
+      </Content>
     </Container>
   );
 }
