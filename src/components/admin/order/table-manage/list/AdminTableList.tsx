@@ -4,15 +4,38 @@ import { Color } from '@resources/colors';
 import TableListItem from './TableListItem';
 import { useState } from 'react';
 import { RiExpandUpDownFill, RiArrowDropDownFill, RiArrowDropUpFill } from '@remixicon/react';
-import { rowFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const ListContainer = styled.div`
   height: 600px;
-  display: flex;
-  flex-direction: column;
+  gap: 10px;
+  ${colFlex()};
+`;
+
+const StatusBar = styled.div`
+  border: 1px solid ${Color.KIO_ORANGE};
+  border-radius: 10px;
+  height: 47px;
+  padding: 0 20px;
+  font-weight: 600;
+  flex-shrink: 0;
+  ${rowFlex({ justify: 'space-between', align: 'center' })};
+`;
+
+const StatusLabel = styled.span`
+  font-size: 15px;
+`;
+
+const StatusCount = styled.span`
+  font-size: 15px;
+`;
+
+const ListWrapper = styled.div`
   border: 1px solid #ececec;
   border-radius: 10px;
   overflow: hidden;
+  flex: 1;
+  ${colFlex()};
 `;
 
 const Header = styled.div`
@@ -133,23 +156,33 @@ function AdminTableList({ tables }: TableSessionListProps) {
     setSortType((prev) => NEXT_SORT_STATE[prev] || STATUS_ASC);
   };
 
+  const usingCount = tables.filter((table) => table.orderSession !== null).length;
+
   return (
     <ListContainer>
-      <Header>
-        <HeaderText>테이블</HeaderText>
-        <HeaderText>잔여 시간</HeaderText>
-        <HeaderText clickable onClick={handleStatusClick}>
-          상태
-          {SORT_ICONS[sortType]}
-        </HeaderText>
-      </Header>
-      <ListBody>
-        {sortedTables.map((table) => {
-          const isUsing = table.orderSession !== null;
-          const expectedEndAt = table.orderSession?.expectedEndAt;
-          return <TableListItem key={table.id} expectedEndAt={expectedEndAt} isUsing={isUsing} table={table} />;
-        })}
-      </ListBody>
+      <StatusBar>
+        <StatusLabel>테이블 사용 현황</StatusLabel>
+        <StatusCount>
+          {usingCount}/{tables.length}
+        </StatusCount>
+      </StatusBar>
+      <ListWrapper>
+        <Header>
+          <HeaderText>테이블</HeaderText>
+          <HeaderText>잔여 시간</HeaderText>
+          <HeaderText clickable onClick={handleStatusClick}>
+            상태
+            {SORT_ICONS[sortType]}
+          </HeaderText>
+        </Header>
+        <ListBody>
+          {sortedTables.map((table) => {
+            const isUsing = table.orderSession !== null;
+            const expectedEndAt = table.orderSession?.expectedEndAt;
+            return <TableListItem key={table.id} expectedEndAt={expectedEndAt} isUsing={isUsing} table={table} />;
+          })}
+        </ListBody>
+      </ListWrapper>
     </ListContainer>
   );
 }
