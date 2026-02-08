@@ -93,9 +93,6 @@ function AdminOrderTable() {
           <AdminTableList tables={tables} />
           {selectedTable ? (
             <DetailWrapper>
-              {!selectedTable.orderSession && (
-                <InactiveTableView workspaceId={workspaceId} tableNumber={selectedTable.tableNumber} refetchTable={fetchTables} />
-              )}
               <TableDetail>
                 <DetailHeader>
                   <TableElapsedTimer
@@ -121,6 +118,9 @@ function AdminOrderTable() {
                 </DetailHeader>
                 <AdminTableOrderList orders={orders} onRefresh={fetchOrders} />
               </TableDetail>
+              {!selectedTable.orderSession && (
+                <InactiveTableView workspaceId={workspaceId} tableNumber={selectedTable.tableNumber} refetchTable={fetchTables} />
+              )}
             </DetailWrapper>
           ) : (
             <FallbackContainer>테이블을 선택하여 상세 정보를 확인하세요.</FallbackContainer>

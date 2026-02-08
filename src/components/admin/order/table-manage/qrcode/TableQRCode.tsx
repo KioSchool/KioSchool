@@ -4,7 +4,6 @@ import { QRCodeCanvas } from 'qrcode.react';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import QRCode from 'qrcode';
-import NewCommonButton from '@components/common/button/NewCommonButton';
 
 const Container = styled.div`
   width: 188px;
@@ -25,10 +24,27 @@ const Header = styled.div`
   ${rowFlex({ justify: 'center', align: 'center' })};
 `;
 
+const DownloadButton = styled.button`
+  background: #e8eef2;
+  color: #464a4d;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  width: 80%;
+  height: 29px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
+
+  &:hover {
+    background: #d9e3e8;
+  }
+`;
+
 const Content = styled.div`
   width: 100%;
   padding: 10px;
-  gap: 10px;
+  gap: 15px;
   flex: 1;
   box-sizing: border-box;
   ${colFlex({ justify: 'center', align: 'center' })};
@@ -71,9 +87,7 @@ function TableQRCode({ workspaceId, selectedTable }: TableQRCodeProps) {
       </Header>
       <Content>
         <QRCodeCanvas value={qrCodeUrl} size={70} bgColor="#ffffff" fgColor="#000000" level="M" />
-        <NewCommonButton size={'xs'} onClick={onClickDownloadQRCode}>
-          다운로드
-        </NewCommonButton>
+        <DownloadButton onClick={onClickDownloadQRCode}>다운로드</DownloadButton>
       </Content>
     </Container>
   );

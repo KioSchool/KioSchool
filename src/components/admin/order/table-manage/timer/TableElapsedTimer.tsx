@@ -1,12 +1,11 @@
 import styled from '@emotion/styled';
-import { colFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
 import { Color } from '@resources/colors';
 import useFormattedTime from '@hooks/useFormattedTime';
 import { formatKoreanTime } from '@utils/formatDate';
 import { OrderSession } from '@@types/index';
 import { useTableSession } from '@hooks/admin/useTableSession';
-import NewCommonButton from '@components/common/button/NewCommonButton';
 
 const Container = styled.div`
   border: 1px solid #ececec;
@@ -19,6 +18,23 @@ const Content = styled.div`
   flex: 1;
   padding-bottom: 15px;
   ${colFlex({ justify: 'center', align: 'center' })}
+`;
+
+const EndSessionButton = styled.button`
+  background: #e8eef2;
+  color: #464a4d;
+  border: none;
+  border-radius: 40px;
+  width: 220px;
+  height: 29px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  ${rowFlex({ justify: 'center', align: 'center' })};
+
+  &:hover {
+    background: #d9e3e8;
+  }
 `;
 
 const Header = styled.div`
@@ -125,9 +141,7 @@ function TableElapsedTimer({ orderSession, workspaceId, tableNumber, refetchTabl
             },
           }}
         />
-        <NewCommonButton size={'xs'} onClick={handleEndSession}>
-          사용 종료
-        </NewCommonButton>
+        <EndSessionButton onClick={handleEndSession}>사용 종료</EndSessionButton>
       </Content>
     </Container>
   );
