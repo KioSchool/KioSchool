@@ -49,7 +49,7 @@ function TopSellingList() {
   const { topSellingProducts } = useAtomValue(adminDashboardAtom);
 
   return (
-    <DashboardCard title="인기 순위 TOP5" width={302} height={272} showDivider={false}>
+    <DashboardCard title="인기 순위 TOP5" width={302} height={240} showDivider={false}>
       <ListWrapper>
         {topSellingProducts.map((item, index) => (
           <ItemWrapper key={item.product.id}>

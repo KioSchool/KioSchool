@@ -16,7 +16,6 @@ const unSellableStyle = `
 
 const Container = styled.div<{ isSellable: boolean | null }>`
   width: 180px;
-  height: 228px;
   flex-shrink: 0;
   padding: 12px;
   border-radius: 16px;
@@ -56,6 +55,7 @@ const Image = styled.img<{ isSellable: boolean | null }>`
   border-radius: 6px;
   border: 1px solid #e8eef2;
   opacity: ${(props) => (props.isSellable ? 1 : 0.4)};
+  margin-bottom: 12px;
 `;
 
 const SelectorWrapper = styled.div`
@@ -66,9 +66,10 @@ const SelectorWrapper = styled.div`
 interface ProductCardProps {
   product: Product;
   onClick?: () => void;
+  showStatusSelector?: boolean;
 }
 
-function ProductCard({ product, onClick }: ProductCardProps) {
+function ProductCard({ product, onClick, showStatusSelector = true }: ProductCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { editProductStatus } = useAdminProducts(workspaceId);
 
@@ -76,7 +77,7 @@ function ProductCard({ product, onClick }: ProductCardProps) {
     editProductStatus(product.id, newStatus);
   };
 
-  const isSellable = product.status === ProductStatus.SELLING;
+  const isSellable = showStatusSelector ? product.status === ProductStatus.SELLING : true;
 
   return (
     <Container isSellable={isSellable} className={'product-card-container'}>
@@ -88,9 +89,11 @@ function ProductCard({ product, onClick }: ProductCardProps) {
         <Image isSellable={isSellable} src={product.imageUrl} alt={product.name} />
       </ContentContainer>
 
-      <SelectorWrapper onClick={(e) => e.stopPropagation()}>
-        <SelectWithProductStatus currentStatus={product.status} onStatusChange={handleStatusChange} />
-      </SelectorWrapper>
+      {showStatusSelector && (
+        <SelectorWrapper onClick={(e) => e.stopPropagation()}>
+          <SelectWithProductStatus currentStatus={product.status} onStatusChange={handleStatusChange} />
+        </SelectorWrapper>
+      )}
     </Container>
   );
 }
