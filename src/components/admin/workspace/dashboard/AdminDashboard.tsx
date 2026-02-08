@@ -11,7 +11,7 @@ import RecentOrders from './RecentOrders';
 import NoticeBanner from './NoticeBanner';
 import OutOfStockList from './OutOfStockList';
 import TopSellingList from './TopSellingList';
-import DashboardCard from './DashboardCard';
+import MemoCard from './MemoCard';
 
 const DashboardContainer = styled.div`
   width: 800px;
@@ -29,13 +29,6 @@ const StatCardsWrapper = styled.div`
 const BottomRow = styled.div`
   width: 100%;
   ${rowFlex({ justify: 'space-between' })}
-`;
-
-const MemoText = styled.div`
-  line-height: 24px;
-  white-space: pre-wrap;
-  font-size: 12px;
-  color: #464a4d;
 `;
 
 function AdminDashboard() {
@@ -77,9 +70,7 @@ function AdminDashboard() {
         <TopSellingList products={topSellingProducts} />
       </BottomRow>
 
-      <DashboardCard title="메모" height={106}>
-        {workspace.memo ? <MemoText>{workspace.memo}</MemoText> : <EmptyText>메모가 없습니다.</EmptyText>}
-      </DashboardCard>
+      <MemoCard initialMemo={workspace.memo} />
     </DashboardContainer>
   );
 }
