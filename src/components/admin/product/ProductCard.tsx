@@ -37,8 +37,8 @@ const Price = styled.div`
   font-weight: 500;
 `;
 
-const ContentContainer = styled.div`
-  cursor: pointer;
+const ContentContainer = styled.div<{ showStatusSelector: boolean }>`
+  cursor: ${({ showStatusSelector }) => (showStatusSelector ? 'pointer' : 'default')};
   width: 100%;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
@@ -81,7 +81,7 @@ function ProductCard({ product, onClick, showStatusSelector = true }: ProductCar
 
   return (
     <Container isSellable={isSellable} className={'product-card-container'}>
-      <ContentContainer onClick={onClick} className={'content-container'}>
+      <ContentContainer onClick={onClick} className={'content-container'} showStatusSelector={showStatusSelector && !!onClick}>
         <TextContainer isSellable={isSellable} className={'text-container'}>
           <Title>{product.name}</Title>
           <Price>{product.price.toLocaleString()}원</Price>
