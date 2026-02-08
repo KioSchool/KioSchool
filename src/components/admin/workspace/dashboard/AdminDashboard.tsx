@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
-import { format } from 'date-fns';
 import styled from '@emotion/styled';
 import { adminDashboardAtom } from '@jotai/admin/atoms';
 import useAdminDashboard from '@hooks/admin/useAdminDashboard';
@@ -12,6 +11,7 @@ import NoticeBanner from './NoticeBanner';
 import OutOfStockList from './OutOfStockList';
 import TopSellingList from './TopSellingList';
 import MemoCard from './MemoCard';
+import { getBusinessStartDate } from '@utils/dashboard';
 
 const DashboardContainer = styled.div`
   width: 800px;
@@ -43,9 +43,9 @@ function AdminDashboard() {
   const { workspace, stats, topSellingProducts, recentOrders, outOfStockProducts } = dashboardData;
 
   const usageRate = workspace.totalTables > 0 ? Math.round((workspace.occupiedTables / workspace.totalTables) * 100) : 0;
-  const currentDate = format(new Date(), 'yyyy. MM. dd.');
-  const todayTotalSales = (stats.totalSales / 10000).toLocaleString();
-  const avgSales = (stats.averageOrderAmount / 10000).toLocaleString();
+  const businessStartDate = getBusinessStartDate(new Date());
+  const todayTotalSales = Math.floor(stats.totalSales / 10000).toLocaleString();
+  const avgSales = Math.floor(stats.averageOrderAmount / 10000).toLocaleString();
 
   return (
     <DashboardContainer>
@@ -60,10 +60,10 @@ function AdminDashboard() {
           description={`${usageRate}% 사용률`}
           highlightRate={usageRate}
         />
-        <StatCard title="오늘의 주문" value={`${stats.totalOrderCount}건`} description={`${currentDate} 0:00~`} />
+        <StatCard title="오늘의 주문" value={`${stats.totalOrderCount}건`} description={`${businessStartDate} 9:00~`} />
         {/* todo: API에 없는 description 필드들은 어떻게? */}
         <StatCard title="오늘의 매출" value={`${todayTotalSales}만원`} description="전일 대비 --%" />
-        <StatCard title="평균 주문 당 매출" value={`${avgSales}만원`} description="평균 준비시간 --분" />
+        <StatCard title="평균 주문 당 매출" value={`${avgSales}만원`} />
       </StatCardsWrapper>
 
       <BottomRow>

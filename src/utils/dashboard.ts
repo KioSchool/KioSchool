@@ -18,3 +18,10 @@ export const formatProductValue = (item: TopSellingProduct, sortType: TopSelling
   const revenue = item.totalQuantity * item.product.price;
   return `${revenue.toLocaleString()}원`;
 };
+
+export const getBusinessStartDate = (date: Date = new Date()) => {
+  const nineAM = setHours(setMinutes(setSeconds(setMilliseconds(new Date(date), 0), 0), 0), 9);
+  const businessDate = isBefore(date, nineAM) ? subDays(date, 1) : date;
+
+  return format(businessDate, 'yyyy. MM. dd.');
+};
