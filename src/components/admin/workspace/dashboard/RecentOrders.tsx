@@ -42,7 +42,7 @@ function RecentOrders({ orders }: RecentOrdersProps) {
         .with(0, () => <EmptyText>현재 표시할 주문 내역이 없습니다.</EmptyText>)
         .otherwise(() => (
           <OrderList>
-            {orders.slice(0, 2).map((order) => (
+            {orders.map((order) => (
               <RecentOrderCard key={order.id} order={order} />
             ))}
           </OrderList>
