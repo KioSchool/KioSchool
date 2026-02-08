@@ -49,7 +49,7 @@ const Description = styled.div`
 interface StatCardProps {
   title: string;
   value: string | number;
-  description: string;
+  description?: string;
   highlightRate?: number;
 }
 
@@ -61,7 +61,7 @@ function StatCard({ title, value, description, highlightRate }: StatCardProps) {
         .otherwise(() => null)}
       <Title>{title}</Title>
       <Value>{value}</Value>
-      <Description>{description}</Description>
+      {description && <Description>{description}</Description>}
     </Container>
   );
 }
