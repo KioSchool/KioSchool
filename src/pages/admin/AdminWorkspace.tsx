@@ -9,11 +9,12 @@ import AppFaqButton from '@components/common/button/AppFaqButton';
 import AppPopup from '@components/common/popup/AppPopup';
 import { useSetAtom } from 'jotai';
 import { adminSideNavIsOpenAtom } from '@jotai/admin/atoms';
+import AdminDashboard from '@components/admin/workspace/dashboard/AdminDashboard';
 
 const ContentContainer = styled.div`
   width: 100%;
   ${rowFlex({ justify: 'center', align: 'start' })}
-  gap: 80px;
+  gap: 40px;
 `;
 
 function AdminWorkspace() {
@@ -30,7 +31,8 @@ function AdminWorkspace() {
     <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })}>
       <>
         <ContentContainer>
-          <PreviewContainer width={300} height={600} />
+          <AdminDashboard />
+          <PreviewContainer width={300} height={680} />
         </ContentContainer>
         <AppPopup />
         <AppFaqButton />
