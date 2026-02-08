@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useMemo } from 'react';
 import { rowFlex } from '@styles/flexStyles';
 import { DASHBOARD_NOTICES } from '@constants/data/noticeData';
+import _ from 'lodash';
 
 const Container = styled.div`
   width: 800px;
@@ -27,7 +28,7 @@ const Text = styled.div`
 `;
 
 function NoticeBanner() {
-  const randomNotice = useMemo(() => DASHBOARD_NOTICES[Math.floor(Math.random() * DASHBOARD_NOTICES.length)], []);
+  const randomNotice = useMemo(() => _.sample(DASHBOARD_NOTICES), []);
 
   return (
     <Container>

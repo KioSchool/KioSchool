@@ -1,18 +1,13 @@
 import { TopSellingProduct } from '@@types/index';
+import _ from 'lodash';
 
 export type TopSellingSortType = 'QUANTITY' | 'REVENUE';
 
 export const getSortedTopSellingProducts = (products: TopSellingProduct[], sortType: TopSellingSortType) => {
-  return [...products]
-    .sort((a, b) => {
-      if (sortType === 'REVENUE') {
-        const revenueA = a.totalQuantity * a.product.price;
-        const revenueB = b.totalQuantity * b.product.price;
-        return revenueB - revenueA;
-      }
-      return b.totalQuantity - a.totalQuantity;
-    })
-    .slice(0, 5);
+  if (sortType === 'REVENUE') {
+    return _.orderBy(products, [(item) => item.totalQuantity * item.product.price], ['desc']).slice(0, 5);
+  }
+  return _.orderBy(products, ['totalQuantity'], ['desc']).slice(0, 5);
 };
 
 export const formatProductValue = (item: TopSellingProduct, sortType: TopSellingSortType) => {
