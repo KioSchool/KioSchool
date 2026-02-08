@@ -6,7 +6,8 @@ import { extractMinFromDate } from '@utils/FormatDate';
 
 const Container = styled.div`
   height: 76px;
-  width: 100%;
+  width: 180px;
+  flex-shrink: 0;
   border-radius: 16px;
   background-color: #fff;
   border: 1px solid #e8eef2;

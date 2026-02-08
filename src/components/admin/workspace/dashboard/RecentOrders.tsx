@@ -2,16 +2,17 @@ import { Order } from '@@types/index';
 import styled from '@emotion/styled';
 import { match } from 'ts-pattern';
 import DashboardCard from './DashboardCard';
-import { colFlex } from '@styles/flexStyles';
+import { rowFlex } from '@styles/flexStyles';
 import { EmptyText } from '@styles/dashboardStyles';
 import RecentOrderCard from './RecentOrderCard';
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@constants/routes';
-
 const OrderList = styled.div`
   width: 100%;
   gap: 8px;
-  ${colFlex({})};
+  overflow-x: auto;
+  padding-bottom: 8px;
+  ${rowFlex({ justify: 'flex-start' })}
 `;
 
 const ActionButton = styled.button`
@@ -37,7 +38,7 @@ function RecentOrders({ orders }: RecentOrdersProps) {
   const rightAction = <ActionButton onClick={handleNavigate}>실시간 주문 조회 페이지로 이동 {'>'}</ActionButton>;
 
   return (
-    <DashboardCard title="최근 주문 내역" height={orders.length > 0 ? 217 : 100} rightAction={rightAction}>
+    <DashboardCard title="최근 주문 내역" height={160} rightAction={rightAction}>
       {match(orders.length)
         .with(0, () => <EmptyText>현재 표시할 주문 내역이 없습니다.</EmptyText>)
         .otherwise(() => (
