@@ -1,21 +1,8 @@
-import { match } from 'ts-pattern';
 import { TopSellingProduct } from '@@types/index';
 import styled from '@emotion/styled';
 import DashboardCard from './DashboardCard';
 import { rowFlex, colFlex } from '@styles/flexStyles';
-import { useState, useMemo } from 'react';
-import { formatProductValue, getSortedTopSellingProducts, TopSellingSortType } from '@utils/dashboard';
 import { getRankBackgroundColor } from '@styles/dashboardStyles';
-
-const ActionButton = styled.button<{ disabled?: boolean }>`
-  font-size: 10px;
-  text-decoration: underline;
-  color: ${({ disabled }) => (disabled ? '#939393' : '#464a4d')};
-  background: none;
-  border: none;
-  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
-  padding: 0;
-`;
 
 const ListWrapper = styled.div`
   width: 100%;
@@ -62,34 +49,16 @@ interface TopSellingListProps {
 }
 
 function TopSellingList({ products }: TopSellingListProps) {
-  const [sortType, setSortType] = useState<TopSellingSortType>('QUANTITY');
-
-  const sortedProducts = useMemo(() => getSortedTopSellingProducts(products, sortType), [products, sortType]);
-
-  const toggleSort = () => {
-    if (products.length === 0) return;
-    setSortType((prev) => (prev === 'QUANTITY' ? 'REVENUE' : 'QUANTITY'));
-  };
-
-  const rightAction = (
-    <ActionButton onClick={toggleSort} disabled={products.length === 0}>
-      {match(sortType)
-        .with('QUANTITY', () => '매출로 보기')
-        .with('REVENUE', () => '수량으로 보기')
-        .exhaustive()}
-    </ActionButton>
-  );
-
   return (
-    <DashboardCard title="인기 순위 TOP5" width={302} height={272} showDivider={false} rightAction={rightAction}>
+    <DashboardCard title="인기 순위 TOP5" width={302} height={272} showDivider={false}>
       <ListWrapper>
-        {sortedProducts.map((item, index) => (
+        {products.map((item, index) => (
           <ItemWrapper key={item.product.id}>
             <RankInfo>
               <RankCircle rank={index + 1}>{index + 1}</RankCircle>
               <ProductName>{item.product.name}</ProductName>
             </RankInfo>
-            <ValueText>{formatProductValue(item, sortType)}</ValueText>
+            <ValueText>{`${item.totalQuantity}개`}</ValueText>
           </ItemWrapper>
         ))}
         {products.length === 0 && <ProductName>데이터가 없습니다.</ProductName>}
