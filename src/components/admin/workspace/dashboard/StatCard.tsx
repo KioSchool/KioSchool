@@ -55,7 +55,7 @@ interface StatCardProps {
 function StatCard({ title, value, description, highlightRate }: StatCardProps) {
   return (
     <Container>
-      {highlightRate && highlightRate > 0 && <BackgroundHighlight rate={highlightRate} />}
+      {highlightRate !== undefined && highlightRate > 0 ? <BackgroundHighlight rate={highlightRate} /> : null}
       <Title>{title}</Title>
       <Value>{value}</Value>
       <Description>{description}</Description>
