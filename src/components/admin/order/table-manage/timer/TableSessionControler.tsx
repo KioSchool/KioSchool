@@ -13,6 +13,7 @@ const Container = styled.div`
   border: 1px solid #ececec;
   border-radius: 10px;
   overflow: hidden;
+  height: 120px;
   ${colFlex({ justify: 'start', align: 'center' })}
 `;
 
@@ -30,21 +31,21 @@ const Header = styled.div`
 `;
 
 const Content = styled.div`
-  width: 161px;
-  padding: 50px 0 30px 0;
-  gap: 29px;
-  ${colFlex({ justify: 'start', align: 'center' })};
+  width: 100%;
+  height: 100%;
+  padding: 10px 10px;
+  box-sizing: border-box;
+  gap: 10px;
+  ${rowFlex({ justify: 'center', align: 'center' })};
 `;
 
 const TimeInputWrapper = styled.div`
-  width: 100%;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
 const ButtonsWrapper = styled.div`
-  width: 100%;
   gap: 7px;
-  ${rowFlex({ justify: 'space-between', align: 'center' })};
+  ${rowFlex({ justify: 'center', align: 'center' })};
 `;
 
 interface TableSessionControlerProps {
