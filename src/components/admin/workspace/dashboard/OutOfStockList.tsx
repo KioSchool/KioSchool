@@ -1,5 +1,6 @@
 import { Product } from '@@types/index';
 import styled from '@emotion/styled';
+import { match } from 'ts-pattern';
 import DashboardCard from './DashboardCard';
 import ProductCard from '@components/admin/product/ProductCard';
 import { rowFlex } from '@styles/flexStyles';
@@ -28,18 +29,18 @@ interface OutOfStockListProps {
 function OutOfStockList({ products }: OutOfStockListProps) {
   return (
     <DashboardCard title="품절된 상품" width={480} height={272} showDivider={false}>
-      {products.length === 0 ? (
-        <EmptyText>품절된 상품이 없습니다.</EmptyText>
-      ) : (
-        <ProductList>
-          {products.map((product) => (
-            <ScaledProductWrapper key={product.id}>
-              {/* todo: product card의 품절 상태 변경 이벤트를 dashboard에서도 가능하게? */}
-              <ProductCard product={product} />
-            </ScaledProductWrapper>
-          ))}
-        </ProductList>
-      )}
+      {match(products.length)
+        .with(0, () => <EmptyText>품절된 상품이 없습니다.</EmptyText>)
+        .otherwise(() => (
+          <ProductList>
+            {products.map((product) => (
+              <ScaledProductWrapper key={product.id}>
+                {/* todo: product card의 품절 상태 변경 이벤트를 dashboard에서도 가능하게? */}
+                <ProductCard product={product} />
+              </ScaledProductWrapper>
+            ))}
+          </ProductList>
+        ))}
     </DashboardCard>
   );
 }

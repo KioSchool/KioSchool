@@ -1,5 +1,6 @@
 import { Order } from '@@types/index';
 import styled from '@emotion/styled';
+import { match } from 'ts-pattern';
 import DashboardCard from './DashboardCard';
 import { colFlex } from '@styles/flexStyles';
 import { EmptyText } from '@styles/dashboardStyles';
@@ -37,15 +38,15 @@ function RecentOrders({ orders }: RecentOrdersProps) {
 
   return (
     <DashboardCard title="최근 주문 내역" height={orders.length > 0 ? 217 : 100} rightAction={rightAction}>
-      {orders.length === 0 ? (
-        <EmptyText>현재 표시할 주문 내역이 없습니다.</EmptyText>
-      ) : (
-        <OrderList>
-          {orders.slice(0, 2).map((order) => (
-            <RecentOrderCard key={order.id} order={order} />
-          ))}
-        </OrderList>
-      )}
+      {match(orders.length)
+        .with(0, () => <EmptyText>현재 표시할 주문 내역이 없습니다.</EmptyText>)
+        .otherwise(() => (
+          <OrderList>
+            {orders.slice(0, 2).map((order) => (
+              <RecentOrderCard key={order.id} order={order} />
+            ))}
+          </OrderList>
+        ))}
     </DashboardCard>
   );
 }

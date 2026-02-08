@@ -1,3 +1,4 @@
+import { match } from 'ts-pattern';
 import { TopSellingProduct } from '@@types/index';
 import styled from '@emotion/styled';
 import DashboardCard from './DashboardCard';
@@ -72,7 +73,10 @@ function TopSellingList({ products }: TopSellingListProps) {
 
   const rightAction = (
     <ActionButton onClick={toggleSort} disabled={products.length === 0}>
-      {sortType === 'QUANTITY' ? '매출로 보기' : '수량으로 보기'}
+      {match(sortType)
+        .with('QUANTITY', () => '매출로 보기')
+        .with('REVENUE', () => '수량으로 보기')
+        .exhaustive()}
     </ActionButton>
   );
 
