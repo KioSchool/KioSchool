@@ -12,7 +12,6 @@ const Container = styled.div`
   border: 1px solid #e8eef2;
   box-sizing: border-box;
   padding: 13px 15px;
-  cursor: pointer;
   ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
