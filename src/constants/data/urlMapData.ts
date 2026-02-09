@@ -22,7 +22,6 @@ export const ROUTES_PATH_KR_MAP = {
   [ADMIN_ROUTES.ORDER_REALTIME]: '실시간 주문 현황',
   [ADMIN_ROUTES.ORDER_STATISTICS]: '주문 통계',
   [ADMIN_ROUTES.ORDER_TABLE]: '테이블 현황',
-  [ADMIN_ROUTES.ORDER_TABLE_HISTORY]: '테이블별 주문 내역',
   [ADMIN_ROUTES.TABLE_ORDER]: '테이블 주문 조회',
   [ADMIN_ROUTES.TOTAL_ORDER]: '전체 주문 조회',
   [ADMIN_ROUTES.PRODUCTS]: '상품 관리',

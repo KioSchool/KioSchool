@@ -26,7 +26,6 @@ export const ADMIN_ROUTES = {
   ORDER_REALTIME: '/admin/workspace/:workspaceId/order/realtime',
   ORDER_STATISTICS: '/admin/workspace/:workspaceId/order/statistics',
   ORDER_TABLE: '/admin/workspace/:workspaceId/order/table',
-  ORDER_TABLE_HISTORY: '/admin/workspace/:workspaceId/order/table/:tableNumber',
   TABLE_ORDER: '/admin/workspace/:workspaceId/table-order',
   TOTAL_ORDER: '/admin/workspace/:workspaceId/total-order',
 
