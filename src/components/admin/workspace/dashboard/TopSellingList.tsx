@@ -4,6 +4,7 @@ import { rowFlex, colFlex } from '@styles/flexStyles';
 import { getRankBackgroundColor } from '@styles/dashboardStyles';
 import { useAtomValue } from 'jotai';
 import { adminDashboardAtom } from '@jotai/admin/atoms';
+import { match, P } from 'ts-pattern';
 
 const ListWrapper = styled.div`
   width: 100%;
@@ -51,16 +52,20 @@ function TopSellingList() {
   return (
     <DashboardCard title="인기 순위 TOP5" width={302} height={240} showDivider={false}>
       <ListWrapper>
-        {topSellingProducts.map((item, index) => (
-          <ItemWrapper key={item.product.id}>
-            <RankInfo>
-              <RankCircle rank={index + 1}>{index + 1}</RankCircle>
-              <ProductName>{item.product.name}</ProductName>
-            </RankInfo>
-            <ValueText>{`${item.totalQuantity}개`}</ValueText>
-          </ItemWrapper>
-        ))}
-        {topSellingProducts.length === 0 && <ProductName>데이터가 없습니다.</ProductName>}
+        {match(topSellingProducts)
+          .with([], () => <ProductName>데이터가 없습니다.</ProductName>)
+          .with(P.array(P._), (products) =>
+            products.map((item, index) => (
+              <ItemWrapper key={item.product.id}>
+                <RankInfo>
+                  <RankCircle rank={index + 1}>{index + 1}</RankCircle>
+                  <ProductName>{item.product.name}</ProductName>
+                </RankInfo>
+                <ValueText>{`${item.totalQuantity}개`}</ValueText>
+              </ItemWrapper>
+            )),
+          )
+          .otherwise(() => null)}
       </ListWrapper>
     </DashboardCard>
   );
