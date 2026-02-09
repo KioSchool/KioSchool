@@ -4,6 +4,7 @@ import { QRCodeCanvas } from 'qrcode.react';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import QRCode from 'qrcode';
+import { RiDownloadLine } from '@remixicon/react';
 
 const Container = styled.div`
   width: 188px;
@@ -15,6 +16,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.div`
+  position: relative;
   box-sizing: border-box;
   width: 100%;
   height: 40px;
@@ -24,7 +26,29 @@ const Header = styled.div`
   ${rowFlex({ justify: 'center', align: 'center' })};
 `;
 
-const DownloadButton = styled.button`
+const DownloadIcon = styled(RiDownloadLine)`
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  color: ${Color.GREY};
+  width: 20px;
+  height: 20px;
+
+  &:hover {
+    color: ${Color.KIO_ORANGE};
+  }
+`;
+
+const Content = styled.div`
+  width: 100%;
+  padding: 10px;
+  gap: 10px;
+  flex: 1;
+  box-sizing: border-box;
+  ${colFlex({ justify: 'center', align: 'center' })};
+`;
+
+const LinkButton = styled.button`
   background: #e8eef2;
   color: #464a4d;
   border: none;
@@ -32,6 +56,7 @@ const DownloadButton = styled.button`
   cursor: pointer;
   font-size: 13px;
   font-weight: 700;
+  padding: 0;
   width: 80%;
   height: 29px;
   ${rowFlex({ justify: 'center', align: 'center' })}
@@ -39,15 +64,6 @@ const DownloadButton = styled.button`
   &:hover {
     background: #d9e3e8;
   }
-`;
-
-const Content = styled.div`
-  width: 100%;
-  padding: 10px;
-  gap: 15px;
-  flex: 1;
-  box-sizing: border-box;
-  ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
 const Label = styled.span`
@@ -63,6 +79,7 @@ interface TableQRCodeProps {
 
 function TableQRCode({ workspaceId, selectedTable }: TableQRCodeProps) {
   const qrCodeUrl = `${location.origin}/order?workspaceId=${workspaceId}&tableNo=${selectedTable.tableNumber}`;
+
   const onClickDownloadQRCode = async () => {
     try {
       const dataUrl = await QRCode.toDataURL(qrCodeUrl, {
@@ -80,14 +97,19 @@ function TableQRCode({ workspaceId, selectedTable }: TableQRCodeProps) {
     }
   };
 
+  const onClickOrderLink = () => {
+    window.open(qrCodeUrl, '_blank');
+  };
+
   return (
     <Container>
       <Header>
         <Label>QR</Label>
+        <DownloadIcon onClick={onClickDownloadQRCode} />
       </Header>
       <Content>
         <QRCodeCanvas value={qrCodeUrl} size={70} bgColor="#ffffff" fgColor="#000000" level="M" />
-        <DownloadButton onClick={onClickDownloadQRCode}>다운로드</DownloadButton>
+        <LinkButton onClick={onClickOrderLink}>주문하기 링크</LinkButton>
       </Content>
     </Container>
   );
