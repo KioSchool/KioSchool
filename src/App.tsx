@@ -24,7 +24,6 @@ import SuperAdminWorkspace from '@pages/super-admin/SuperAdminWorkspace';
 import SuperAdminManage from '@pages/super-admin/SuperAdminManage';
 import SuperAdminUser from '@pages/super-admin/SuperAdminUser';
 import AdminOrderTable from '@pages/admin/table/AdminOrderTable';
-import AdminOrderTableHistory from '@pages/admin/order/AdminOrderTableHistory';
 import AdminOrderRealtime from '@pages/admin/order/AdminOrderRealtime';
 import SuperAdminEmailDomainList from '@pages/super-admin/SuperAdminEmailDomainList';
 import UserEmailDomain from '@pages/user/UserEmailDomain';
@@ -83,7 +82,6 @@ function App() {
         <Route path={ADMIN_ROUTES.ORDER_TABLE} element={<AdminOrderTable />} />
         <Route path={ADMIN_ROUTES.TABLE_ORDER} element={<AdminTableOrder />} />
         <Route path={ADMIN_ROUTES.TOTAL_ORDER} element={<AdminTotalOrder />} />
-        <Route path={ADMIN_ROUTES.ORDER_TABLE_HISTORY} element={<AdminOrderTableHistory />} />
         <Route path={ADMIN_ROUTES.PRODUCTS} element={<AdminProduct />} />
         <Route path={ADMIN_ROUTES.PRODUCTS_CATEGORIES} element={<AdminProductCategories />} />
 

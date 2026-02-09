@@ -1,6 +1,5 @@
 import useApi from '@hooks/useApi';
-import { Order, OrderStatus, PaginationResponse, TableOrderSession } from '@@types/index';
-import { defaultPaginationValue } from '@@types/defaultValues';
+import { Order, OrderStatus, TableOrderSession } from '@@types/index';
 import { useSetAtom } from 'jotai';
 import { adminOrdersAtom } from '@jotai/admin/atoms';
 
@@ -70,20 +69,6 @@ function useAdminOrder(workspaceId: string | undefined) {
     });
   };
 
-  const fetchWorkspaceTable = (tableNumber: number, page: number, size: number) => {
-    const params = { workspaceId, tableNumber, page, size };
-
-    const response = adminApi
-      .get<PaginationResponse<Order>>('/orders/table', { params })
-      .then((res) => res.data)
-      .catch((error) => {
-        console.log(error);
-        return defaultPaginationValue;
-      });
-
-    return response;
-  };
-
   const updateOrderProductCount = (orderProductId: number, servedCount: number) => {
     adminApi.put('/order/product', { workspaceId, orderProductId, servedCount }).catch((error) => {
       console.log(error);
@@ -113,7 +98,6 @@ function useAdminOrder(workspaceId: string | undefined) {
     fetchTodayOrders: fetchRealTimeOrders,
     fetchOrders,
     refundOrder,
-    fetchWorkspaceTable,
     updateOrderProductCount,
     fetchOrderHourlyPrices,
     fetchOrderSession,
