@@ -8,7 +8,7 @@ import { Color } from '@resources/colors';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { useNavigate } from 'react-router-dom';
 import { getAdminWorkspacePath } from '@constants/routes';
-import { formatDate } from '@utils/formatDate';
+import { formatDate } from '@utils/FormatDate';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 
 const Container = styled.div`
@@ -26,11 +26,9 @@ const WorkspaceContainer = styled.div`
   box-shadow: 0px 4px 20px rgba(92, 92, 92, 0.25);
   ${colFlex({ justify: 'space-between', align: 'flex-start' })}
 
-  /* TODO: 디자이너와 색상 결정 필요 */
-  /* 
   &:hover {
     background: linear-gradient(140deg, #ffe3cc -165.17%, ${Color.KIO_ORANGE} 92.63%);
-  } */
+  }
 
   &:active {
     background: ${Color.KIO_ORANGE};
@@ -126,7 +124,6 @@ function WorkspaceContent({ workspaces }: Props) {
               background: 'rgba(255, 255, 255, 0.2)',
               color: Color.WHITE,
               border: '1px solid #fff',
-              /* TODO: 디자이너와 색상 결정 필요 */
               hoverBackground: '#FFF5EB',
               hoverColor: Color.KIO_ORANGE,
             }}

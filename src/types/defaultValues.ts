@@ -1,6 +1,7 @@
 import {
   Account,
   Bank,
+  DashboardResponse,
   Order,
   OrderProduct,
   OrderProductBase,
@@ -185,4 +186,23 @@ export const defaultWorkspaceValue: Workspace = {
   id: 0,
   createdAt: '',
   updatedAt: '',
+  memo: '',
+};
+
+export const defaultDashboardValue: DashboardResponse = {
+  dashboardWorkspaceInfo: {
+    name: '',
+    notice: '',
+    memo: '',
+    occupiedTables: 0,
+    totalTables: 0,
+  },
+  stats: {
+    totalSales: 0,
+    totalOrderCount: 0,
+    averageOrderAmount: 0,
+  },
+  topSellingProducts: [],
+  recentOrders: [],
+  outOfStockProducts: [],
 };

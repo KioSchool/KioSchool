@@ -5,32 +5,16 @@ import styled from '@emotion/styled';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import PreviewContainer from '@components/common/container/PreviewContainer';
-import { Color } from '@resources/colors';
-import OrderRouteButtons from '@components/admin/workspace/OrderRouteButtons';
-import ProductRouteButtons from '@components/admin/workspace/ProductRouteButtons';
-import WorkspaceRouteButtons from '@components/admin/workspace/WorkspaceRouteButtons';
 import AppFaqButton from '@components/common/button/AppFaqButton';
 import AppPopup from '@components/common/popup/AppPopup';
-import { tabletMediaQuery } from '@styles/globalStyles';
 import { useSetAtom } from 'jotai';
 import { adminSideNavIsOpenAtom } from '@jotai/admin/atoms';
+import AdminDashboard from '@components/admin/workspace/dashboard/AdminDashboard';
 
 const ContentContainer = styled.div`
   width: 100%;
   ${rowFlex({ justify: 'center', align: 'start' })}
-  gap: 80px;
-`;
-
-const RouteContainer = styled.div`
-  width: 800px;
-  height: 80%;
-  border-radius: 10px;
-  background-color: ${Color.LIGHT_GREY};
-  ${colFlex({ justify: 'space-evenly', align: 'center' })}
-
-  ${tabletMediaQuery} {
-    width: 600px;
-  }
+  gap: 40px;
 `;
 
 function AdminWorkspace() {
@@ -47,12 +31,8 @@ function AdminWorkspace() {
     <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })}>
       <>
         <ContentContainer>
-          <PreviewContainer width={300} height={600} />
-          <RouteContainer>
-            <OrderRouteButtons />
-            <ProductRouteButtons />
-            <WorkspaceRouteButtons />
-          </RouteContainer>
+          <AdminDashboard />
+          <PreviewContainer width={300} height={680} />
         </ContentContainer>
         <AppPopup />
         <AppFaqButton />
