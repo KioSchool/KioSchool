@@ -77,7 +77,7 @@ function ProductCard({ product, onClick, showStatusSelector = true }: ProductCar
     editProductStatus(product.id, newStatus);
   };
 
-  const isSellable = showStatusSelector ? product.status === ProductStatus.SELLING : true;
+  const isSellable = showStatusSelector || product.status === ProductStatus.SELLING;
 
   return (
     <Container isSellable={isSellable} className={'product-card-container'}>
