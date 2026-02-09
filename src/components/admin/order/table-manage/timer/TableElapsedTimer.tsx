@@ -4,7 +4,7 @@ import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
 import { Color } from '@resources/colors';
 import { OrderSession } from '@@types/index';
 import { useTableSession } from '@hooks/admin/useTableSession';
-import useElapsedTimer from '@hooks/admin/useElapsedTimer';
+import useTableElapsedTimer from '@hooks/admin/useTableElapsedTimer';
 
 const Container = styled.div`
   border: 1px solid #ececec;
@@ -57,7 +57,7 @@ interface TableUsageTimeProps {
 }
 
 function TableElapsedTimer({ orderSession, workspaceId, tableNumber, refetchTable }: TableUsageTimeProps) {
-  const { isTableSessionActive, maxMinutes, gaugeValue, getGaugeText } = useElapsedTimer(orderSession);
+  const { isTableSessionActive, maxMinutes, gaugeValue, getGaugeText } = useTableElapsedTimer(orderSession);
   const { handleEndSession } = useTableSession({
     workspaceId,
     currentExpectedEndAt: orderSession?.expectedEndAt,

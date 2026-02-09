@@ -21,7 +21,7 @@ const formatMinutesToTime = (minutes: number): string => {
   return `${minutes}분`;
 };
 
-export default function useElapsedTimer(orderSession: OrderSession | null) {
+export default function useTableElapsedTimer(orderSession: OrderSession | null) {
   const elapsedMinutes = useFormattedTime<number>({
     date: orderSession?.createdAt,
     formatter: () => getMinutesDifference(orderSession?.createdAt),
