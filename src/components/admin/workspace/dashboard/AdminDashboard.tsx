@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
 import styled from '@emotion/styled';
-import { adminDashboardAtom } from '@jotai/admin/atoms';
+import { adminDashboardAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
 import useAdminDashboard from '@hooks/admin/useAdminDashboard';
 import { rowFlex, colFlex } from '@styles/flexStyles';
 import StatCard from './StatCard';
@@ -34,13 +34,17 @@ const BottomRow = styled.div`
 function AdminDashboard() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchDashboard } = useAdminDashboard();
-  const { workspace, stats } = useAtomValue(adminDashboardAtom);
+  const { dashboardWorkspaceInfo, stats } = useAtomValue(adminDashboardAtom);
+  const workspace = useAtomValue(adminWorkspaceAtom);
 
   useEffect(() => {
     fetchDashboard(workspaceId);
   }, [workspaceId]);
 
-  const usageRate = workspace.totalTables > 0 ? Math.round((workspace.occupiedTables / workspace.totalTables) * 100) : 0;
+  if (!dashboardWorkspaceInfo) return null;
+
+  const usingTable = `${dashboardWorkspaceInfo.occupiedTables}/${dashboardWorkspaceInfo.totalTables}`;
+  const usageRate = dashboardWorkspaceInfo.totalTables > 0 ? Math.round((dashboardWorkspaceInfo.occupiedTables / dashboardWorkspaceInfo.totalTables) * 100) : 0;
   const businessStartDate = getBusinessStartDate(new Date());
   const todayTotalSales = Math.floor(stats.totalSales / 10000).toLocaleString();
   const avgSales = Math.floor(stats.averageOrderAmount / 10000).toLocaleString();
@@ -52,12 +56,7 @@ function AdminDashboard() {
       <RecentOrders />
 
       <StatCardsWrapper>
-        <StatCard
-          title="사용 중인 테이블"
-          value={`${workspace.occupiedTables}/${workspace.totalTables}`}
-          description={`${usageRate}% 사용률`}
-          highlightRate={usageRate}
-        />
+        <StatCard title="사용 중인 테이블" value={usingTable} description={`${usageRate}% 사용률`} highlightRate={usageRate} />
         <StatCard title="오늘의 주문" value={`${stats.totalOrderCount}건`} description={`${businessStartDate} 9:00~`} />
         {/* todo: API에 없는 description 필드들은 어떻게? */}
         <StatCard title="오늘의 매출" value={`${todayTotalSales}만원`} description="전일 대비 --%" />

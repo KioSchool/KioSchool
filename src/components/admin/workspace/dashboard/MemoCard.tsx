@@ -37,10 +37,6 @@ function MemoCard({ initialMemo }: MemoCardProps) {
   const { updateWorkspaceMemo } = useAdminWorkspace();
   const [memo, setMemo] = useState(initialMemo);
 
-  useEffect(() => {
-    setMemo(initialMemo);
-  }, [initialMemo]);
-
   const debouncedSave = useRef(
     _.debounce(async (id: number, newMemo: string) => {
       try {
