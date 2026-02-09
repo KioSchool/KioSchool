@@ -7,6 +7,8 @@ import QRCode from 'qrcode';
 import { RiDownloadLine } from '@remixicon/react';
 
 const Container = styled.div`
+  width: 188px;
+  height: 188px;
   border: 1px solid #ececec;
   border-radius: 10px;
   overflow: hidden;
@@ -39,12 +41,14 @@ const DownloadIcon = styled(RiDownloadLine)`
 
 const Content = styled.div`
   width: 100%;
-  padding: 20px;
-  gap: 25px;
+  padding: 10px;
+  gap: 10px;
+  flex: 1;
+  box-sizing: border-box;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
-const Button = styled.button`
+const LinkButton = styled.button`
   background: #e8eef2;
   color: #464a4d;
   border: none;
@@ -53,8 +57,8 @@ const Button = styled.button`
   font-size: 13px;
   font-weight: 700;
   padding: 0;
-  width: 50%;
-  height: 32px;
+  width: 80%;
+  height: 29px;
   ${rowFlex({ justify: 'center', align: 'center' })}
 
   &:hover {
@@ -75,8 +79,6 @@ interface TableQRCodeProps {
 
 function TableQRCode({ workspaceId, selectedTable }: TableQRCodeProps) {
   const qrCodeUrl = `${location.origin}/order?workspaceId=${workspaceId}&tableNo=${selectedTable.tableNumber}`;
-  const baseUrl = location.origin;
-  const previewUrl = `${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${selectedTable.tableNumber}`;
 
   const onClickDownloadQRCode = async () => {
     try {
@@ -96,18 +98,18 @@ function TableQRCode({ workspaceId, selectedTable }: TableQRCodeProps) {
   };
 
   const onClickOrderLink = () => {
-    window.open(previewUrl, '_blank');
+    window.open(qrCodeUrl, '_blank');
   };
 
   return (
     <Container>
       <Header>
-        <Label>QR 코드</Label>
+        <Label>QR</Label>
         <DownloadIcon onClick={onClickDownloadQRCode} />
       </Header>
       <Content>
-        <QRCodeCanvas value={qrCodeUrl} size={80} bgColor="#ffffff" fgColor="#000000" level="M" />
-        <Button onClick={onClickOrderLink}>주문하기 링크</Button>
+        <QRCodeCanvas value={qrCodeUrl} size={70} bgColor="#ffffff" fgColor="#000000" level="M" />
+        <LinkButton onClick={onClickOrderLink}>주문하기 링크</LinkButton>
       </Content>
     </Container>
   );
