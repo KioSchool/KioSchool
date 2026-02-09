@@ -186,10 +186,11 @@ export const defaultWorkspaceValue: Workspace = {
   id: 0,
   createdAt: '',
   updatedAt: '',
+  memo: '',
 };
 
 export const defaultDashboardValue: DashboardResponse = {
-  workspace: {
+  dashboardWorkspaceInfo: {
     name: '',
     notice: '',
     memo: '',

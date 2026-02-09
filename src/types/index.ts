@@ -107,6 +107,7 @@ export interface Workspace {
   id: number;
   createdAt: string;
   updatedAt: string;
+  memo: string;
 }
 
 export interface WorkspaceImage {
@@ -239,7 +240,7 @@ export type ExternalRightSidebarOptions = OpenSidebarOptions | CloseSidebarOptio
 export type ButtonSize = 'xs' | 'sm' | 'md';
 export type ButtonColor = 'kio_orange' | 'blue_gray';
 
-export interface DashboardWorkspaceInfo {
+export interface DashboardWorkspace {
   name: string;
   notice: string;
   memo: string;
@@ -259,7 +260,7 @@ export interface TopSellingProduct {
 }
 
 export interface DashboardResponse {
-  workspace: DashboardWorkspaceInfo;
+  dashboardWorkspaceInfo: DashboardWorkspace;
   stats: DashboardStats;
   topSellingProducts: TopSellingProduct[];
   recentOrders: Order[];
