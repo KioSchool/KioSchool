@@ -59,7 +59,7 @@ function AdminDashboard() {
         <StatCard title="사용 중인 테이블" value={usingTable} description={`${usageRate}% 사용률`} highlightRate={usageRate} />
         <StatCard title="오늘의 주문" value={`${stats.totalOrderCount}건`} description={`${businessStartDate} 9:00~`} />
         {/* todo: API에 없는 description 필드들은 어떻게? */}
-        <StatCard title="오늘의 매출" value={`${todayTotalSales}만원`} description="전일 대비 --%" />
+        <StatCard title="오늘의 매출" value={`${todayTotalSales}만원`} />
         <StatCard title="평균 주문 당 매출" value={`${avgSales}만원`} />
       </StatCardsWrapper>
 
