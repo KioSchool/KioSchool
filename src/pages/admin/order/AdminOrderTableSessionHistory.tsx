@@ -51,7 +51,7 @@ const SessionListContainer = styled.div`
   ${colFlex({ align: 'flex-start' })}
 `;
 
-function AdminTableOrder() {
+function AdminOrderTableSessionHistory() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { data: sessions, filters, setFilters, handleReset, sortOptions, tableOptions, statusOptions } = useAdminFetchTableOrder(workspaceId);
 
@@ -112,4 +112,4 @@ function AdminTableOrder() {
   );
 }
 
-export default AdminTableOrder;
+export default AdminOrderTableSessionHistory;
