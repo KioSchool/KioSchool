@@ -28,7 +28,7 @@ export const adminNavData: AdminNavCategory[] = [
       },
       {
         name: '실시간 테이블 관리',
-        path: '/order/table',
+        path: '/table/realtime',
         defaultQuery: { tableNo: '1' },
       },
     ],

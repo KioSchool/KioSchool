@@ -65,7 +65,7 @@ const FallbackContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
-function AdminOrderTable() {
+function AdminTableRealtime() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const [searchParams] = useSearchParams();
   const tableNo = searchParams.get('tableNo');
@@ -134,4 +134,4 @@ function AdminOrderTable() {
   );
 }
 
-export default AdminOrderTable;
+export default AdminTableRealtime;
