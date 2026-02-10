@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { Order } from '@@types/index';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import useFormattedTime from '@hooks/useFormattedTime';
-import { extractMinFromDate } from '@utils/FormatDate';
+import { extractMinFromDate } from '@utils/formatDate';
 
 const Container = styled.div`
   height: 76px;
