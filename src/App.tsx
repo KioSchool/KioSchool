@@ -23,7 +23,6 @@ import SuperAdminHome from '@pages/super-admin/SuperAdminHome';
 import SuperAdminWorkspace from '@pages/super-admin/SuperAdminWorkspace';
 import SuperAdminManage from '@pages/super-admin/SuperAdminManage';
 import SuperAdminUser from '@pages/super-admin/SuperAdminUser';
-import AdminOrderTable from '@pages/admin/table/AdminOrderTable';
 import AdminOrderRealtime from '@pages/admin/order/AdminOrderRealtime';
 import SuperAdminEmailDomainList from '@pages/super-admin/SuperAdminEmailDomainList';
 import UserEmailDomain from '@pages/user/UserEmailDomain';
@@ -35,11 +34,12 @@ import useNetworkStatusNotifier from '@hooks/useNetworkStatusNotifier';
 import useServerHealth from '@hooks/useServerHealth';
 import ServerErrorFallback from '@components/common/fallback/ServerErrorFallback';
 import OrderWait from '@pages/user/order/OrderWait';
-import AdminTableOrder from '@pages/admin/order/AdminTableOrder';
 import AdminTotalOrder from '@pages/admin/order/AdminTotalOrder';
 import SentryTestPage from '@components/common/test/SentryTestPage';
 import { SentryRoutes } from 'src';
 import { USER_ROUTES, ORDER_ROUTES, ADMIN_ROUTES, SUPER_ADMIN_ROUTES, TEST_ROUTES } from '@constants/routes';
+import AdminOrderTableSessionHistory from '@pages/admin/order/AdminOrderTableSessionHistory';
+import AdminTableRealtime from '@pages/admin/table/AdminTableRealtime';
 
 function App() {
   useNetworkStatusNotifier();
@@ -79,8 +79,8 @@ function App() {
         <Route path={ADMIN_ROUTES.WORKSPACE_EDIT} element={<AdminWorkspaceEdit />} />
         <Route path={ADMIN_ROUTES.ORDER_REALTIME} element={<AdminOrderRealtime />} />
         <Route path={ADMIN_ROUTES.ORDER_STATISTICS} element={<AdminOrderStatistics />} />
-        <Route path={ADMIN_ROUTES.ORDER_TABLE} element={<AdminOrderTable />} />
-        <Route path={ADMIN_ROUTES.TABLE_ORDER} element={<AdminTableOrder />} />
+        <Route path={ADMIN_ROUTES.TABLE_REALTIME} element={<AdminTableRealtime />} />
+        <Route path={ADMIN_ROUTES.TABLE_ORDER} element={<AdminOrderTableSessionHistory />} />
         <Route path={ADMIN_ROUTES.TOTAL_ORDER} element={<AdminTotalOrder />} />
         <Route path={ADMIN_ROUTES.PRODUCTS} element={<AdminProduct />} />
         <Route path={ADMIN_ROUTES.PRODUCTS_CATEGORIES} element={<AdminProductCategories />} />
