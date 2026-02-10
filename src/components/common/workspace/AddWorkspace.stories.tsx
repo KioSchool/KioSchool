@@ -96,6 +96,7 @@ const createMockWorkspace = (id: number, name: string, description: string, prod
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
+  memo: '',
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 });
