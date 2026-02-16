@@ -1,4 +1,4 @@
-import InfoPC from '@pages/user/info/InfoPC';
+import InfoPC from '@pages/user/info/infoPc';
 import InfoMobile from '@pages/user/info/InfoMobile';
 import { isMobile } from 'react-device-detect';
 
