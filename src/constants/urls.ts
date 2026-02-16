@@ -1,18 +1,14 @@
-const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT;
-const IS_DEVELOPMENT = ENVIRONMENT === 'development';
-
-const API_BASE_URL = 'https://api.kio-school.com';
-const WS_PROTOCOL = IS_DEVELOPMENT ? 'http' : 'wss';
-const WS_HOST = IS_DEVELOPMENT ? 'localhost:8080' : 'api.kio-school.com';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const WS_URL = import.meta.env.VITE_WS_URL;
 
 export const URLS = {
   API: {
-    USER: IS_DEVELOPMENT ? '/api' : API_BASE_URL,
-    ADMIN: IS_DEVELOPMENT ? '/api/admin' : `${API_BASE_URL}/admin`,
-    SUPER_ADMIN: IS_DEVELOPMENT ? '/api/super-admin' : `${API_BASE_URL}/super-admin`,
+    USER: API_BASE_URL,
+    ADMIN: `${API_BASE_URL}/admin`,
+    SUPER_ADMIN: `${API_BASE_URL}/super-admin`,
   },
 
-  WS: `${WS_PROTOCOL}://${WS_HOST}${IS_DEVELOPMENT ? '/api' : ''}/ws`,
+  WS: WS_URL,
 
   EXTERNAL: {
     NOTION_FAQ: 'https://ji-in.notion.site/FAQ-09eb07eac4a34ab4aa883727994e0b08?pvs=4',
