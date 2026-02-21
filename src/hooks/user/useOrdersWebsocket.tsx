@@ -2,11 +2,11 @@ import * as StompJs from '@stomp/stompjs';
 import kioSchoolOrderAlarm from '@resources/audio/kioSchoolOrderAlarm.mp3';
 import { Order, OrderWebsocket } from '@@types/index';
 import { useSetAtom } from 'jotai';
-import { adminOrdersAtom } from '../../jotai/admin/atoms';
+import { adminOrdersAtom } from '@jotai/admin/atoms';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import SockJS from 'sockjs-client/dist/sockjs';
 import { URLS } from '@constants/urls';
-import useIdleTimeout from '../common/useIdleTimeout';
+import useIdleTimeout from '@hooks/common/useIdleTimeout';
 
 function playOrderCreateAudio() {
   const audio = new Audio(kioSchoolOrderAlarm);
