@@ -6,7 +6,7 @@ interface UseIdleTimeoutProps {
   onTimeout: () => void;
 }
 
-export const useIdleTimeout = ({ timeoutMs, onTimeout }: UseIdleTimeoutProps) => {
+const useIdleTimeout = ({ timeoutMs, onTimeout }: UseIdleTimeoutProps) => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleTimeout = useCallback(() => {
