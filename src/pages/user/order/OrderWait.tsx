@@ -16,6 +16,7 @@ import { keyframes } from '@emotion/react';
 import useWorkspace from '@hooks/user/useWorkspace';
 import useTossPopup from '@hooks/user/useTossPopup';
 import { ORDER_ROUTES } from '@constants/routes';
+import { isOverOneDay } from '@utils/formatDate';
 
 const Container = styled.div`
   width: 100%;
@@ -156,6 +157,8 @@ function OrderWait() {
   useBlockPopState();
 
   useEffect(() => {
+    let intervalId: NodeJS.Timeout | null = null;
+
     const pollOrder = async () => {
       if (!orderId) {
         alert('주문 ID가 없습니다. 초기 화면으로 돌아갑니다.');
@@ -171,14 +174,22 @@ function OrderWait() {
 
       const orderData = await fetchOrder(orderId);
       setCurrentOrder(orderData);
+
+      if (intervalId && isOverOneDay(orderData.createdAt)) {
+        clearInterval(intervalId);
+      }
     };
 
     pollOrder();
     fetchWorkspace(workspaceId);
 
-    const intervalId = setInterval(pollOrder, fetchIntervalTime);
+    intervalId = setInterval(pollOrder, fetchIntervalTime);
 
-    return () => clearInterval(intervalId);
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
   }, [orderId]);
 
   const currentOrderStatus = currentOrder?.status;
