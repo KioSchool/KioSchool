@@ -2,6 +2,8 @@ import { format, isValid } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
 import dayjs from 'dayjs';
 
+const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
+
 export const formatDate = (date: string) => {
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
@@ -21,6 +23,13 @@ export const extractMinFromDate = (date: string | undefined) => {
   const createdAtDate = new Date(date.replace(' ', 'T'));
   const currentTime = new Date();
   return Math.floor((currentTime.getTime() - createdAtDate.getTime()) / (1000 * 60));
+};
+
+export const isOverOneDay = (dateString: string | undefined): boolean => {
+  if (!dateString) return false;
+  const createdAtDate = new Date(dateString.replace(' ', 'T'));
+  const currentTime = new Date();
+  return currentTime.getTime() - createdAtDate.getTime() >= ONE_DAY_IN_MS;
 };
 
 export const dateConverter = (date: Date | null): string => {
