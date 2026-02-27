@@ -1,8 +1,6 @@
-import { format, isValid } from 'date-fns';
+import { format, isBefore, isValid, subDays } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
 import dayjs from 'dayjs';
-
-const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
 
 export const formatDate = (date: string) => {
   const options: Intl.DateTimeFormatOptions = {
@@ -27,9 +25,11 @@ export const extractMinFromDate = (date: string | undefined) => {
 
 export const isOverOneDay = (dateString: string | undefined): boolean => {
   if (!dateString) return false;
+
   const createdAtDate = new Date(dateString.replace(' ', 'T'));
-  const currentTime = new Date();
-  return currentTime.getTime() - createdAtDate.getTime() >= ONE_DAY_IN_MS;
+  const oneDayAgo = subDays(new Date(), 1);
+
+  return isBefore(createdAtDate, oneDayAgo);
 };
 
 export const dateConverter = (date: Date | null): string => {
