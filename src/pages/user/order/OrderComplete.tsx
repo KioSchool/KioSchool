@@ -16,6 +16,7 @@ import { defaultUserOrderValue } from '@@types/defaultValues';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import { Order, OrderStatus } from '@@types/index';
 import { ORDER_ROUTES } from '@constants/routes';
+import { isOverOneDay } from '@utils/formatDate';
 
 const Container = styled.div`
   width: 100%;
@@ -143,7 +144,7 @@ function OrderComplete() {
       const orderData = await fetchOrder(orderId);
       setOrder(orderData);
 
-      if (intervalId && (orderData.status === OrderStatus.SERVED || orderData.status === OrderStatus.CANCELLED)) {
+      if (intervalId && (orderData.status === OrderStatus.SERVED || orderData.status === OrderStatus.CANCELLED || isOverOneDay(orderData.createdAt))) {
         clearInterval(intervalId);
       }
     };
