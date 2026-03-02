@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import { BrowserRouter, useLocation, useNavigationType, createRoutesFromChildren, matchRoutes, Routes } from 'react-router-dom';
+import { BrowserRouter, createRoutesFromChildren, matchRoutes, Routes, useLocation, useNavigationType } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
 import * as Sentry from '@sentry/react';
 import React from 'react';
@@ -9,6 +9,25 @@ import SentryErrorFallback from './components/common/fallback/SentryErrorFallbac
 import { URLS } from '@constants/urls';
 
 const environment = import.meta.env.VITE_ENVIRONMENT;
+const gaId = import.meta.env.VITE_GA_ID;
+
+if (gaId) {
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+  document.head.appendChild(script);
+
+  // @ts-ignore
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    // @ts-ignore
+    window.dataLayer.push(arguments);
+  }
+  // @ts-ignore
+  gtag('js', new Date());
+  // @ts-ignore
+  gtag('config', gaId);
+}
 
 Sentry.init({
   dsn: URLS.SENTRY_DSN,
