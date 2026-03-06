@@ -1,6 +1,5 @@
 import { format, isBefore, isValid, subDays } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
-import dayjs from 'dayjs';
 
 export const formatDate = (date: string) => {
   const options: Intl.DateTimeFormatOptions = {
@@ -84,13 +83,6 @@ export const parseDateInput = (input: string): Date | null => {
 
   const date = new Date(year, month, day);
   return isValid(date) ? date : null;
-};
-
-/**
- * 두 날짜를 비교하여 시작일이 종료일보다 늦은지 확인
- */
-export const isStartAfterEnd = (start: Date, end: Date): boolean => {
-  return dayjs(start).isAfter(dayjs(end));
 };
 
 /**
