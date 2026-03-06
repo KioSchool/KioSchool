@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Cookies } from 'react-cookie';
-import dayjs from 'dayjs';
+import { addDays, startOfDay } from 'date-fns';
 import useApi from '@hooks/useApi';
 
 function usePopup() {
@@ -37,7 +37,7 @@ function usePopup() {
 
   const closePopupForDay = (popupId: number) => {
     const cookies = new Cookies();
-    const expireDate = dayjs().add(1, 'day').startOf('day').toDate();
+    const expireDate = startOfDay(addDays(new Date(), 1));
     cookies.set(`close_popup_${popupId}`, 'true', { path: '/', expires: expireDate });
     closePopup();
   };
