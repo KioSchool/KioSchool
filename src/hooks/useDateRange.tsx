@@ -1,8 +1,8 @@
 import { useState, useReducer, Dispatch, useEffect, SetStateAction } from 'react';
-import { setHours, setMinutes, subHours, subDays, subWeeks, subMonths, startOfDay, endOfDay, isSameDay } from 'date-fns';
+import { setHours, setMinutes, subHours, subDays, subWeeks, subMonths, startOfDay, endOfDay, isAfter, isSameDay } from 'date-fns';
 import { isRangeCategory } from '@@types/guard';
 import { InputState, InputAction, RangeCategory } from '@@types/datePicker';
-import { formatDateRange, isStartAfterEnd, parseDateInput } from '@utils/formatDate';
+import { formatDateRange, parseDateInput } from '@utils/formatDate';
 
 const inputReducer = (state: InputState, action: InputAction): InputState => {
   switch (action.type) {
@@ -134,14 +134,14 @@ function useDateRange({ startDate, endDate, setStartDate, setEndDate }: UseDateR
     if (type === 'START') {
       setStartDate(newDate);
 
-      if (endDate && isStartAfterEnd(newDate, endDate)) {
+      if (endDate && isAfter(newDate, endDate)) {
         const adjustedEnd = endOfDay(newDate);
         setEndDate(adjustedEnd);
       }
     } else if (type === 'END') {
       setEndDate(newDate);
 
-      if (startDate && isStartAfterEnd(startDate, newDate)) {
+      if (startDate && isAfter(startDate, newDate)) {
         const adjustedStart = startOfDay(newDate);
         setStartDate(adjustedStart);
       }
