@@ -56,14 +56,42 @@ const CalendarWrapper = styled.div`
   ${datePickerStyles}
 `;
 
-interface CustomDatePickerProps {
+interface SingleDatePickerProps {
+  mode: 'single';
+  selectedDate: Date | null;
+  onDateChange: (date: Date) => void;
+}
+
+interface RangeDatePickerProps {
+  mode?: 'range';
   startDate: Date | null;
   endDate: Date | null;
   setStartDate: Dispatch<SetStateAction<Date | null>>;
   setEndDate: Dispatch<SetStateAction<Date | null>>;
 }
 
-const CustomDatePicker = ({ startDate, endDate, setStartDate, setEndDate }: CustomDatePickerProps) => {
+type CustomDatePickerProps = SingleDatePickerProps | RangeDatePickerProps;
+
+function SingleDatePicker({ selectedDate, onDateChange }: SingleDatePickerProps) {
+  return (
+    <Container>
+      <CalendarWrapper>
+        <DatePicker
+          selected={selectedDate}
+          onChange={(date: Date | null) => {
+            if (date) onDateChange(date);
+          }}
+          inline
+          renderCustomHeader={CustomDatePickerHeader}
+          locale={ko}
+          dateFormat="yyyy년 MM월 dd일"
+        />
+      </CalendarWrapper>
+    </Container>
+  );
+}
+
+function RangeDatePicker({ startDate, endDate, setStartDate, setEndDate }: RangeDatePickerProps) {
   const { rangeCategory, inputState, handleRangeCategoryChange, handleDateChange, handleManualDateInput, handleTimeChange } = useDateRange({
     startDate,
     endDate,
@@ -102,6 +130,14 @@ const CustomDatePicker = ({ startDate, endDate, setStartDate, setEndDate }: Cust
       )}
     </Container>
   );
+}
+
+const CustomDatePicker = (props: CustomDatePickerProps) => {
+  if (props.mode === 'single') {
+    return <SingleDatePicker {...props} />;
+  }
+
+  return <RangeDatePicker {...props} />;
 };
 
 export default CustomDatePicker;

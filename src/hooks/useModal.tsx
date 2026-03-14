@@ -1,22 +1,27 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+
+export const MODAL_ROOT_KEY = 'modal-root';
 
 function useModal() {
-  const modalKey = 'modal-root';
   const [isModalOpen, setModalOpen] = useState(false);
 
-  const openModal = () => {
+  const openModal = useCallback(() => {
     setModalOpen(true);
-    // 모달창 open 시 배경 스크롤 금지 코드
     document.body.style.overflow = 'hidden';
-  };
+  }, []);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setModalOpen(false);
-    // 모달창 close 시 배경 스크롤 금지 해제 코드
     document.body.style.overflow = 'auto';
-  };
+  }, []);
 
-  return { isModalOpen, openModal, closeModal, modalKey };
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
+
+  return { isModalOpen, openModal, closeModal, modalKey: MODAL_ROOT_KEY };
 }
 
 export default useModal;
