@@ -35,8 +35,12 @@ export interface OrderSession {
   updatedAt: string;
 }
 
-export interface TableOrderSession extends OrderSession {
+export interface OrderSessionWithOrder extends OrderSession {
   orders: Array<Order>;
+  usageTime: number;
+  totalOrderPrice: number;
+  orderCount: number;
+  isGhostSession: boolean;
 }
 
 export interface OrderProduct extends OrderProductBase {

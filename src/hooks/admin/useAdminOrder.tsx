@@ -1,5 +1,5 @@
 import useApi from '@hooks/useApi';
-import { Order, OrderStatus, TableOrderSession } from '@@types/index';
+import { Order, OrderStatus, OrderSessionWithOrder } from '@@types/index';
 import { useSetAtom } from 'jotai';
 import { adminOrdersAtom } from '@jotai/admin/atoms';
 
@@ -86,8 +86,8 @@ function useAdminOrder(workspaceId: string | undefined) {
     return adminApi.get<Order[]>('/order/session', { params: { workspaceId, orderSessionId } });
   };
 
-  const fetchTableOrderSessions = (props: { startDate: string; endDate: string; tableNumber?: number }) => {
-    return adminApi.get<TableOrderSession[]>('/orders/table', { params: { ...props, workspaceId } });
+  const fetchOrderSessions = (props: { targetDate: string; tableNumber?: number; includeGhost?: boolean }) => {
+    return adminApi.get<OrderSessionWithOrder[]>('/orders/sessions', { params: { ...props, workspaceId } });
   };
 
   return {
@@ -101,7 +101,7 @@ function useAdminOrder(workspaceId: string | undefined) {
     updateOrderProductCount,
     fetchOrderHourlyPrices,
     fetchOrderSession,
-    fetchTableOrderSessions,
+    fetchOrderSessions,
   };
 }
 
