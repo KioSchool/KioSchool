@@ -10,6 +10,7 @@ import SessionOrderCard from './SessionOrderCard';
 const ModalBody = styled.div`
   flex: 1 1 auto;
   min-height: 0;
+  height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
 `;
@@ -28,10 +29,11 @@ const OrderList = styled.div`
 `;
 
 const EmptyOrders = styled.div`
-  padding: 60px 0;
+  flex: 1;
+  height: 100%;
   font-size: 14px;
   color: ${timelineColors.TEXT_SECONDARY};
-  text-align: center;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 interface SessionModalMainContentsProps {

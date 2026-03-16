@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
-import { OrderSessionWithOrder, OrderStatus } from '@@types/index';
+import { OrderSessionWithOrder } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { RiCloseLargeLine } from '@remixicon/react';
-import { format } from 'date-fns';
+import { differenceInMinutes, format } from 'date-fns';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { formatMinutesToTime } from '@utils/formatDate';
-import { getSessionDurationMinutes } from '@utils/sessionUtils';
-import { timelineColors } from './timelineConstants';
+import { timelineColors, SESSION_MESSAGES } from './timelineConstants';
+import { match } from 'ts-pattern';
 
 const ModalHeader = styled.div`
   padding: 20px 30px 0 30px;
@@ -42,13 +42,13 @@ const DescriptionLabel = styled.div`
   padding-top: 4px;
 `;
 
-const StatusBadge = styled.span<{ isActive: boolean }>`
+const StatusBadge = styled.span<{ variant: 'active' | 'ghost' | 'completed' }>`
   font-size: 11px;
   font-weight: 600;
   padding: 2px 8px;
   border-radius: 4px;
-  color: ${({ isActive }) => (isActive ? Color.KIO_ORANGE : timelineColors.TEXT_SECONDARY)};
-  background: ${({ isActive }) => (isActive ? '#fff0e5' : '#f0f0f0')};
+  color: ${({ variant }) => (variant === 'active' ? Color.KIO_ORANGE : variant === 'ghost' ? timelineColors.GHOST_TEXT : timelineColors.TEXT_SECONDARY)};
+  background: ${({ variant }) => (variant === 'active' ? '#fff0e5' : variant === 'ghost' ? timelineColors.GHOST_BG : '#f0f0f0')};
 `;
 
 const SummaryStrip = styled.div`
@@ -81,6 +81,40 @@ const SummaryLabel = styled.span`
   line-height: 1.4;
 `;
 
+const ActiveSessionInfo = styled.div`
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px 0;
+  border-top: 1px solid ${timelineColors.BORDER_CARD};
+  border-bottom: 1px solid ${timelineColors.BORDER_CARD};
+  gap: 4px;
+  ${colFlex({ align: 'center' })}
+`;
+
+const ElapsedTime = styled.span`
+  font-size: 16px;
+  font-weight: 700;
+  color: ${timelineColors.TEXT_PRIMARY};
+`;
+
+const GuideMessage = styled.span`
+  font-size: 13px;
+  color: ${timelineColors.TEXT_SECONDARY};
+`;
+
+const GhostInfoMessage = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: ${timelineColors.GHOST_TEXT};
+  text-align: center;
+  background: ${timelineColors.GHOST_BG};
+  border: 1px solid ${timelineColors.GHOST_BORDER};
+  border-radius: 6px;
+`;
+
 interface SessionModalHeaderContentsProps {
   session: OrderSessionWithOrder;
   currentTime: Date;
@@ -90,47 +124,58 @@ interface SessionModalHeaderContentsProps {
 function SessionModalHeaderContents({ session, currentTime, onClose }: SessionModalHeaderContentsProps) {
   const start = new Date(session.createdAt);
   const end = session.endAt ? new Date(session.endAt) : currentTime;
-  const durationMinutes = getSessionDurationMinutes(session, currentTime);
+  const durationMinutes = session.usageTime;
   const isActive = !session.endAt;
+  const isGhost = session.isGhostSession;
   const totalPrice = session.totalOrderPrice;
-  const customerNames = [...new Set(session.orders.map((o) => o.customerName))];
-  const paidOrderCount = session.orders.filter((o) => o.status === OrderStatus.PAID || o.status === OrderStatus.SERVED).length;
+  const customerNameLabel = session.customerName || '주문자 없음';
+  const elapsedMinutes = differenceInMinutes(currentTime, start);
 
-  const getCustomerNameLabel = () => {
-    if (customerNames.length === 0) return '주문자 없음';
-    if (customerNames.length > 2) return `${customerNames[0]} 외 ${customerNames.length - 1}명`;
-    return customerNames.join(', ');
+  const getBadge = () => {
+    if (isGhost) return { variant: 'ghost' as const, label: SESSION_MESSAGES.GHOST_BADGE_LABEL };
+    if (isActive) return { variant: 'active' as const, label: '이용중' };
+    return { variant: 'completed' as const, label: '사용완료' };
   };
+  const badge = getBadge();
 
   return (
     <ModalHeader>
       <ModalHeaderTitle>
         <MainLabel id="session-modal-title">
           {`테이블 ${session.tableNumber}`}
-          <StatusBadge isActive={isActive}>{isActive ? '이용중' : '사용완료'}</StatusBadge>
+          <StatusBadge variant={badge.variant}>{badge.label}</StatusBadge>
         </MainLabel>
         <CloseIcon onClick={onClose} />
       </ModalHeaderTitle>
       <DescriptionLabel>
-        {format(start, 'yyyy.MM.dd')} · {format(start, 'HH:mm')} – {session.endAt ? format(end, 'HH:mm') : '진행중'} · {getCustomerNameLabel()}
+        {format(start, 'yyyy.MM.dd')} · {format(start, 'HH:mm')} – {session.endAt ? format(end, 'HH:mm') : '진행중'}
+        {!isActive && !isGhost && ' · ' + customerNameLabel}
       </DescriptionLabel>
 
-      <SummaryStrip>
-        <SummaryItem>
-          <SummaryValue>{formatMinutesToTime(durationMinutes)}</SummaryValue>
-          <SummaryLabel>이용 시간</SummaryLabel>
-        </SummaryItem>
-        <SummaryItem>
-          <SummaryValue>
-            {paidOrderCount}/{session.orders.length}건
-          </SummaryValue>
-          <SummaryLabel>결제 완료</SummaryLabel>
-        </SummaryItem>
-        <SummaryItem isLast>
-          <SummaryValue>{totalPrice.toLocaleString()}원</SummaryValue>
-          <SummaryLabel>총 매출</SummaryLabel>
-        </SummaryItem>
-      </SummaryStrip>
+      {match({ isActive, isGhost })
+        .with({ isActive: true }, () => (
+          <ActiveSessionInfo>
+            <ElapsedTime>⏱ 경과 {formatMinutesToTime(elapsedMinutes)}</ElapsedTime>
+            <GuideMessage>{SESSION_MESSAGES.ACTIVE_GUIDE}</GuideMessage>
+          </ActiveSessionInfo>
+        ))
+        .with({ isGhost: true }, () => <GhostInfoMessage>{SESSION_MESSAGES.GHOST_DESCRIPTION}</GhostInfoMessage>)
+        .otherwise(() => (
+          <SummaryStrip>
+            <SummaryItem>
+              <SummaryValue>{formatMinutesToTime(durationMinutes)}</SummaryValue>
+              <SummaryLabel>이용 시간</SummaryLabel>
+            </SummaryItem>
+            <SummaryItem>
+              <SummaryValue>{session.orders.length}건</SummaryValue>
+              <SummaryLabel>주문 건수</SummaryLabel>
+            </SummaryItem>
+            <SummaryItem isLast>
+              <SummaryValue>{totalPrice.toLocaleString()}원</SummaryValue>
+              <SummaryLabel>총 매출</SummaryLabel>
+            </SummaryItem>
+          </SummaryStrip>
+        ))}
     </ModalHeader>
   );
 }

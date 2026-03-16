@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
-import { timelineColors } from './timelineConstants';
+import { timelineColors, SESSION_MESSAGES } from './timelineConstants';
+import { match } from 'ts-pattern';
 
 const ModalFooter = styled.div`
   padding: 14px 30px;
@@ -23,15 +24,30 @@ const FooterValue = styled.span`
   color: ${Color.KIO_ORANGE};
 `;
 
+const FooterGuideMessage = styled.span`
+  font-size: 14px;
+  font-weight: 500;
+  color: ${timelineColors.TEXT_SECONDARY};
+`;
+
 interface SessionModalFooterContentsProps {
   totalPrice: number;
+  isActive: boolean;
+  isGhost: boolean;
 }
 
-function SessionModalFooterContents({ totalPrice }: SessionModalFooterContentsProps) {
+function SessionModalFooterContents({ totalPrice, isActive, isGhost }: SessionModalFooterContentsProps) {
   return (
     <ModalFooter>
-      <FooterLabel>총 매출</FooterLabel>
-      <FooterValue>{totalPrice.toLocaleString()}원</FooterValue>
+      {match({ isActive, isGhost })
+        .with({ isActive: true }, () => <FooterGuideMessage>{SESSION_MESSAGES.ACTIVE_GUIDE}</FooterGuideMessage>)
+        .with({ isGhost: true }, () => <FooterGuideMessage>{SESSION_MESSAGES.GHOST_DESCRIPTION}</FooterGuideMessage>)
+        .otherwise(() => (
+          <>
+            <FooterLabel>총 매출</FooterLabel>
+            <FooterValue>{totalPrice.toLocaleString()}원</FooterValue>
+          </>
+        ))}
     </ModalFooter>
   );
 }
