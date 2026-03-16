@@ -38,7 +38,7 @@ import AdminTotalOrder from '@pages/admin/order/AdminTotalOrder';
 import SentryTestPage from '@components/common/test/SentryTestPage';
 import { SentryRoutes } from 'src';
 import { USER_ROUTES, ORDER_ROUTES, ADMIN_ROUTES, SUPER_ADMIN_ROUTES, TEST_ROUTES } from '@constants/routes';
-import AdminOrderTableSessionTimeline from '@pages/admin/order/AdminOrderTableSessionTimeline';
+import AdminOrderTimeline from '@pages/admin/order/AdminOrderTimeline';
 import AdminTableRealtime from '@pages/admin/table/AdminTableRealtime';
 
 function App() {
@@ -80,7 +80,7 @@ function App() {
         <Route path={ADMIN_ROUTES.ORDER_REALTIME} element={<AdminOrderRealtime />} />
         <Route path={ADMIN_ROUTES.ORDER_STATISTICS} element={<AdminOrderStatistics />} />
         <Route path={ADMIN_ROUTES.TABLE_REALTIME} element={<AdminTableRealtime />} />
-        <Route path={ADMIN_ROUTES.TABLE_ORDER} element={<AdminOrderTableSessionTimeline />} />
+        <Route path={ADMIN_ROUTES.ORDER_TIMELINE} element={<AdminOrderTimeline />} />
         <Route path={ADMIN_ROUTES.TOTAL_ORDER} element={<AdminTotalOrder />} />
         <Route path={ADMIN_ROUTES.PRODUCTS} element={<AdminProduct />} />
         <Route path={ADMIN_ROUTES.PRODUCTS_CATEGORIES} element={<AdminProductCategories />} />

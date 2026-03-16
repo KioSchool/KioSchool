@@ -59,7 +59,7 @@ const StatCardRow = styled.div`
   }
 `;
 
-function AdminOrderTableSessionTimeline() {
+function AdminOrderTimeline() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { selectedDate, setSelectedDate, filters, setFilters, filteredSessions, summaryStats, priceRange, currentTime, isLoading, tableCount, manualRefetch } =
     useAdminFetchTableSessionTimeline(workspaceId);
@@ -96,13 +96,13 @@ function AdminOrderTableSessionTimeline() {
               <CustomDatePicker mode="single" selectedDate={selectedDate} onDateChange={setSelectedDate} />
             </CustomSelect>
             <CustomCheckbox
-              checked={filters.showLongSessionsOnly}
-              onChange={(checked) => setFilters((prev) => ({ ...prev, showLongSessionsOnly: checked }))}
+              checked={filters.showValidSessionsOnly}
+              onChange={(checked) => setFilters((prev) => ({ ...prev, showValidSessionsOnly: checked }))}
               label="30분 이상 세션만 보기"
             />
             <CustomCheckbox
-              checked={filters.ordersOnly}
-              onChange={(checked) => setFilters((prev) => ({ ...prev, ordersOnly: checked }))}
+              checked={filters.hasOrders}
+              onChange={(checked) => setFilters((prev) => ({ ...prev, hasOrders: checked }))}
               label="주문 내역 존재 세션만 보기"
             />
           </FilterLeft>
@@ -136,4 +136,4 @@ function AdminOrderTableSessionTimeline() {
   );
 }
 
-export default AdminOrderTableSessionTimeline;
+export default AdminOrderTimeline;
