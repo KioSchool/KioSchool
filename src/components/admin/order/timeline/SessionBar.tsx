@@ -9,7 +9,7 @@ import { TIMELINE_HOURS, timelineColors } from './timelineConstants';
 
 const MIN_BAR_WIDTH_FOR_TEXT = 6;
 
-const Bar = styled.div<{ left: number; width: number; backgroundColor: string }>`
+const Bar = styled.div<{ left: number; width: number; backgroundColor: string; backgroundImage?: string }>`
   position: absolute;
   top: 5px;
   bottom: 5px;
@@ -21,6 +21,7 @@ const Bar = styled.div<{ left: number; width: number; backgroundColor: string }>
   overflow: hidden;
   transition: filter 0.15s;
   background-color: ${({ backgroundColor }) => backgroundColor};
+  background-image: ${({ backgroundImage }) => backgroundImage || 'none'};
 
   &:hover {
     filter: brightness(0.92);
@@ -105,10 +106,10 @@ function SessionBar({ session, dayStart, currentTime, minPrice, maxPrice, onSess
   const isGhost = session.isGhostSession;
 
   const durationMinutes = differenceInMinutes(clippedEnd, clippedStart);
-  const barStyle = getSessionBarStyle(totalPrice, isGhost, minPrice, maxPrice);
-  const showText = width >= MIN_BAR_WIDTH_FOR_TEXT && !isGhost;
+  const barStyle = getSessionBarStyle(totalPrice, isGhost, orderCount, minPrice, maxPrice);
+  const showText = width >= MIN_BAR_WIDTH_FOR_TEXT;
 
-  const customerNames = showText ? [...new Set(session.orders.map((order) => order.customerName))] : [];
+  const customerNames = showText && orderCount > 0 ? [...new Set(session.orders.map((order) => order.customerName))] : [];
 
   return (
     <Bar
@@ -118,6 +119,7 @@ function SessionBar({ session, dayStart, currentTime, minPrice, maxPrice, onSess
       left={left}
       width={width}
       backgroundColor={barStyle.backgroundColor}
+      backgroundImage={barStyle.backgroundImage}
       onClick={() => onSessionClick(session)}
     >
       {showText && (
