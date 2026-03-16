@@ -1,4 +1,5 @@
 import { memo, useMemo } from 'react';
+import groupBy from 'lodash/groupBy';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { OrderSessionWithOrder } from '@@types/index';
@@ -104,17 +105,7 @@ interface TimelineGridProps {
 function TimelineGrid({ sessions, tableCount, selectedDate, currentTime, minPrice, maxPrice, isLoading, onSessionClick }: TimelineGridProps) {
   const dayStart = useMemo(() => addHours(startOfDay(toZonedTime(selectedDate, 'Asia/Seoul')), TIMELINE_START_HOUR), [selectedDate]);
 
-  const sessionsByTable = useMemo(() => {
-    const map = new Map<number, OrderSessionWithOrder[]>();
-    sessions.forEach((session) => {
-      if (!map.has(session.tableNumber)) {
-        map.set(session.tableNumber, []);
-      }
-
-      map.get(session.tableNumber)!.push(session);
-    });
-    return map;
-  }, [sessions]);
+  const sessionsByTable = useMemo(() => groupBy(sessions, 'tableNumber'), [sessions]);
 
   if (tableCount === 0) {
     return <EmptyMessage>워크스페이스에 테이블이 없습니다</EmptyMessage>;
@@ -124,7 +115,7 @@ function TimelineGrid({ sessions, tableCount, selectedDate, currentTime, minPric
     return <EmptyMessage>세션 데이터를 불러오는 중...</EmptyMessage>;
   }
 
-  const tableNumbers = Array.from({ length: tableCount }, (_, i) => i + 1);
+  const tableNumbers = Array.from({ length: tableCount }, (__, i) => i + 1);
 
   return (
     <ScrollContainer>
@@ -140,7 +131,7 @@ function TimelineGrid({ sessions, tableCount, selectedDate, currentTime, minPric
         </TableColumn>
         <TrackColumn>
           {tableNumbers.map((tableNo) => {
-            const tableSessions = sessionsByTable.get(tableNo) || [];
+            const tableSessions = sessionsByTable[tableNo] || [];
             return (
               <TrackRow key={tableNo}>
                 {tableSessions.map((session) => (

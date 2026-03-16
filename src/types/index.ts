@@ -41,6 +41,7 @@ export interface OrderSessionWithOrder extends OrderSession {
   totalOrderPrice: number;
   orderCount: number;
   isGhostSession: boolean;
+  customerName: string;
 }
 
 export interface OrderProduct extends OrderProductBase {

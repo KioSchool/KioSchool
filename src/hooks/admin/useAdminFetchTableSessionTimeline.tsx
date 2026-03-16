@@ -2,17 +2,15 @@ import { useState, useEffect, useMemo } from 'react';
 import { format } from 'date-fns';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { OrderSessionWithOrder } from '@@types/index';
-import { getSessionDurationMinutes } from '@utils/sessionUtils';
-import { MIN_LONG_SESSION_MINUTES } from '@components/admin/order/timeline/timelineConstants';
+import { MIN_VALID_SESSION_MINUTES } from '@components/admin/order/timeline/timelineConstants';
 import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
 
 const POLLING_INTERVAL = 5 * 60 * 1000;
 
 interface SessionFilters {
-  showLongSessionsOnly: boolean;
-  ordersOnly: boolean;
-  includeGhost: boolean;
+  showValidSessionsOnly: boolean;
+  hasOrders: boolean;
 }
 
 interface SummaryStats {
@@ -31,11 +29,9 @@ export const useAdminFetchTableSessionTimeline = (workspaceId: string | undefine
   const [currentTime, setCurrentTime] = useState<Date>(new Date());
   const [isLoading, setIsLoading] = useState(false);
   const [filters, setFilters] = useState<SessionFilters>({
-    showLongSessionsOnly: false,
-    ordersOnly: false,
-    includeGhost: false,
+    showValidSessionsOnly: false,
+    hasOrders: true,
   });
-
   const [fetchTrigger, setFetchTrigger] = useState(0);
 
   useEffect(() => {
@@ -44,7 +40,7 @@ export const useAdminFetchTableSessionTimeline = (workspaceId: string | undefine
 
     const fetchData = () => {
       setIsLoading(true);
-      fetchOrderSessions({ targetDate: format(selectedDate, 'yyyy-MM-dd'), includeGhost: filters.includeGhost })
+      fetchOrderSessions({ targetDate: format(selectedDate, 'yyyy-MM-dd'), includeGhost: true })
         .then((res) => {
           if (!isStale) {
             setSessions(res.data);
@@ -67,18 +63,18 @@ export const useAdminFetchTableSessionTimeline = (workspaceId: string | undefine
       isStale = true;
       if (intervalId) clearInterval(intervalId);
     };
-  }, [workspaceId, selectedDate, filters.includeGhost, fetchTrigger]);
+  }, [workspaceId, selectedDate, fetchTrigger]);
 
   const filteredSessions = useMemo(() => {
     return sessions.filter((session) => {
-      const isShortSession = getSessionDurationMinutes(session, currentTime) < MIN_LONG_SESSION_MINUTES;
-      const hasNoOrders = session.orders.length === 0;
+      const isValidSession = session.usageTime >= MIN_VALID_SESSION_MINUTES;
+      const hasOrders = session.orders.length > 0;
 
-      if (filters.showLongSessionsOnly && isShortSession) return false;
-      if (filters.ordersOnly && hasNoOrders) return false;
+      if (filters.showValidSessionsOnly && !isValidSession) return false;
+      if (filters.hasOrders && !hasOrders) return false;
       return true;
     });
-  }, [sessions, filters, currentTime]);
+  }, [sessions, filters]);
 
   const summaryStats = useMemo((): SummaryStats => {
     const totalOrderCount = filteredSessions.reduce((sum, session) => sum + session.orders.length, 0);
@@ -87,20 +83,18 @@ export const useAdminFetchTableSessionTimeline = (workspaceId: string | undefine
     const tableCount = workspace.tableCount || 1;
     const tableTurnoverRate = filteredSessions.length / tableCount;
 
-    const totalDuration = filteredSessions.reduce((sum, session) => sum + getSessionDurationMinutes(session, currentTime), 0);
+    const totalDuration = filteredSessions.reduce((sum, session) => sum + session.usageTime, 0);
     const averageDurationMinutes = filteredSessions.length > 0 ? Math.round(totalDuration / filteredSessions.length) : 0;
 
     return { totalOrderCount, totalRevenue, tableTurnoverRate, averageDurationMinutes };
-  }, [filteredSessions, workspace.tableCount, currentTime]);
+  }, [filteredSessions, workspace.tableCount]);
 
   const priceRange = useMemo(() => {
-    const sessionsWithOrders = filteredSessions.filter((session) => !session.isGhostSession && session.totalOrderPrice > 0);
-
-    if (sessionsWithOrders.length === 0) return { min: 0, max: 0 };
+    if (filteredSessions.length === 0) return { min: 0, max: 0 };
 
     let min = Infinity;
     let max = -Infinity;
-    for (const session of sessionsWithOrders) {
+    for (const session of filteredSessions) {
       const price = session.totalOrderPrice;
       if (price < min) min = price;
       if (price > max) max = price;

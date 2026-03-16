@@ -86,7 +86,7 @@ function useAdminOrder(workspaceId: string | undefined) {
     return adminApi.get<Order[]>('/order/session', { params: { workspaceId, orderSessionId } });
   };
 
-  const fetchOrderSessions = (props: { targetDate: string; tableNumber?: number; includeGhost?: boolean }) => {
+  const fetchOrderSessions = (props: { targetDate: string; includeGhost?: boolean }) => {
     return adminApi.get<OrderSessionWithOrder[]>('/orders/sessions', { params: { ...props, workspaceId } });
   };
 
