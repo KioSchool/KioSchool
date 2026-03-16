@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-export const MODAL_ROOT_KEY = 'modal-root';
+export const MODAL_ROOT_KEY = 'kioschool-modal-root';
 
 function useModal() {
   const [isModalOpen, setModalOpen] = useState(false);
