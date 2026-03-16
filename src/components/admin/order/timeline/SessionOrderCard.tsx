@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { Order, OrderStatus, Product } from '@@types/index';
+import { getOrderStatusLabel } from '@utils/orderStatusConverter';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { formatDate } from '@utils/formatDate';
@@ -58,13 +59,6 @@ const StatusBadge = styled.span<{ status: OrderStatus }>`
     return '#f0f0f0';
   }};
 `;
-
-const STATUS_LABEL: Record<OrderStatus, string> = {
-  [OrderStatus.PAID]: '결제완료',
-  [OrderStatus.SERVED]: '서빙완료',
-  [OrderStatus.CANCELLED]: '취소됨',
-  [OrderStatus.NOT_PAID]: '미결제',
-};
 
 const ProductListContainer = styled.div`
   border-top: 1px solid ${timelineColors.BORDER_CARD};
@@ -136,7 +130,7 @@ function SessionOrderCard({ order, productMap }: SessionOrderCardProps) {
             {formatDate(order.createdAt)} · {order.customerName}
           </OrderSubLabel>
         </HeaderLeft>
-        <StatusBadge status={order.status}>{STATUS_LABEL[order.status]}</StatusBadge>
+        <StatusBadge status={order.status}>{getOrderStatusLabel(order.status)}</StatusBadge>
       </Header>
       <ProductListContainer>
         {order.orderProducts.map((orderProduct) => {
