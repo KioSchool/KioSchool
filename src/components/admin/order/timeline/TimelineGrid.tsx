@@ -7,7 +7,7 @@ import { startOfDay, addHours } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
 import SessionBar from './SessionBar';
 import TimeAxis from './TimeAxis';
-import { TIMELINE_START_HOUR, TIMELINE_HOURS, timelineColors } from './timelineConstants';
+import { TIMELINE_START_HOUR, TIMELINE_HOURS, TIMELINE_COLORS } from './timelineConstants';
 
 const ScrollContainer = styled.div`
   width: 100%;
@@ -15,7 +15,6 @@ const ScrollContainer = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
-  border-left: 1px solid ${timelineColors.BORDER};
 `;
 
 const StickyHeader = styled.div`
@@ -29,8 +28,8 @@ const TableHeaderCell = styled.div`
   width: 60px;
   min-width: 60px;
   height: 32px;
-  background: ${timelineColors.HEADER_BG};
-  border: 1px solid ${timelineColors.BORDER};
+  background: ${TIMELINE_COLORS.HEADER_BG};
+  border: 1px solid ${TIMELINE_COLORS.BORDER};
   box-sizing: border-box;
   font-size: 12px;
   font-weight: 700;
@@ -51,8 +50,8 @@ const TableColumn = styled.div`
 
 const TableCell = styled.div`
   height: 50px;
-  border-bottom: 1px solid ${timelineColors.BORDER};
-  border-left: 1px solid ${timelineColors.BORDER};
+  border-bottom: 1px solid ${TIMELINE_COLORS.BORDER};
+  border-left: 1px solid ${TIMELINE_COLORS.BORDER};
   box-sizing: border-box;
   font-size: 12px;
   font-weight: 700;
@@ -70,14 +69,14 @@ const TrackColumn = styled.div`
 const TrackRow = styled.div`
   height: 50px;
   position: relative;
-  border-bottom: 1px solid ${timelineColors.BORDER};
-  border-right: 1px solid ${timelineColors.BORDER};
+  border-bottom: 1px solid ${TIMELINE_COLORS.BORDER};
+  border-right: 1px solid ${TIMELINE_COLORS.BORDER};
   box-sizing: border-box;
   background-color: white;
   background-image: repeating-linear-gradient(
     to right,
-    ${timelineColors.BORDER} 0px,
-    ${timelineColors.BORDER} 1px,
+    ${TIMELINE_COLORS.BORDER} 0px,
+    ${TIMELINE_COLORS.BORDER} 1px,
     transparent 1px,
     transparent calc(100% / ${TIMELINE_HOURS * 2})
   );
@@ -87,7 +86,7 @@ const EmptyMessage = styled.div`
   width: 100%;
   height: 200px;
   font-size: 14px;
-  color: ${timelineColors.TEXT_SECONDARY};
+  color: ${TIMELINE_COLORS.TEXT_SECONDARY};
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 

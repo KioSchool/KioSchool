@@ -68,7 +68,7 @@ export const useAdminFetchTableSessionTimeline = (workspaceId: string | undefine
   const filteredSessions = useMemo(() => {
     return sessions.filter((session) => {
       const isValidSession = session.usageTime >= MIN_VALID_SESSION_MINUTES;
-      const hasOrders = session.orders.length > 0;
+      const hasOrders = session.orderCount > 0;
 
       if (filters.showValidSessionsOnly && !isValidSession) return false;
       if (filters.hasOrders && !hasOrders) return false;
@@ -77,7 +77,7 @@ export const useAdminFetchTableSessionTimeline = (workspaceId: string | undefine
   }, [sessions, filters]);
 
   const summaryStats = useMemo((): SummaryStats => {
-    const totalOrderCount = filteredSessions.reduce((sum, session) => sum + session.orders.length, 0);
+    const totalOrderCount = filteredSessions.reduce((sum, session) => sum + session.orderCount, 0);
     const totalRevenue = filteredSessions.reduce((sum, session) => sum + session.totalOrderPrice, 0);
 
     const tableCount = workspace.tableCount || 1;
@@ -90,11 +90,12 @@ export const useAdminFetchTableSessionTimeline = (workspaceId: string | undefine
   }, [filteredSessions, workspace.tableCount]);
 
   const priceRange = useMemo(() => {
-    if (filteredSessions.length === 0) return { min: 0, max: 0 };
+    const sessionsWithOrders = filteredSessions.filter((session) => session.orderCount > 0);
+    if (sessionsWithOrders.length === 0) return { min: 0, max: 0 };
 
     let min = Infinity;
     let max = -Infinity;
-    for (const session of filteredSessions) {
+    for (const session of sessionsWithOrders) {
       const price = session.totalOrderPrice;
       if (price < min) min = price;
       if (price > max) max = price;

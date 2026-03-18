@@ -6,12 +6,12 @@ import { RiCloseLargeLine } from '@remixicon/react';
 import { differenceInMinutes, format } from 'date-fns';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { formatMinutesToTime } from '@utils/formatDate';
-import { timelineColors, SESSION_MESSAGES } from './timelineConstants';
+import { TIMELINE_COLORS, SESSION_MESSAGES } from './timelineConstants';
 import { match } from 'ts-pattern';
 
 const ModalHeader = styled.div`
   padding: 20px 30px 0 30px;
-  color: ${timelineColors.TEXT_PRIMARY};
+  color: ${TIMELINE_COLORS.TEXT_PRIMARY};
   flex-shrink: 0;
   ${colFlex({ align: 'start' })}
 `;
@@ -38,7 +38,7 @@ const CloseIcon = styled(RiCloseLargeLine)`
 const DescriptionLabel = styled.div`
   font-size: 14px;
   font-weight: 400;
-  color: ${timelineColors.TEXT_SECONDARY};
+  color: ${TIMELINE_COLORS.TEXT_SECONDARY};
   padding-top: 4px;
 `;
 
@@ -47,16 +47,16 @@ const StatusBadge = styled.span<{ variant: 'active' | 'ghost' | 'completed' }>`
   font-weight: 600;
   padding: 2px 8px;
   border-radius: 4px;
-  color: ${({ variant }) => (variant === 'active' ? Color.KIO_ORANGE : variant === 'ghost' ? timelineColors.GHOST_TEXT : timelineColors.TEXT_SECONDARY)};
-  background: ${({ variant }) => (variant === 'active' ? '#fff0e5' : variant === 'ghost' ? timelineColors.GHOST_BG : '#f0f0f0')};
+  color: ${({ variant }) => (variant === 'active' ? Color.KIO_ORANGE : variant === 'ghost' ? TIMELINE_COLORS.GHOST_TEXT : TIMELINE_COLORS.TEXT_SECONDARY)};
+  background: ${({ variant }) => (variant === 'active' ? '#fff0e5' : variant === 'ghost' ? TIMELINE_COLORS.GHOST_BG : '#f0f0f0')};
 `;
 
 const SummaryStrip = styled.div`
   width: 100%;
   margin-top: 16px;
   padding: 12px 0;
-  border-top: 1px solid ${timelineColors.BORDER_CARD};
-  border-bottom: 1px solid ${timelineColors.BORDER_CARD};
+  border-top: 1px solid ${TIMELINE_COLORS.BORDER_CARD};
+  border-bottom: 1px solid ${TIMELINE_COLORS.BORDER_CARD};
   gap: 0;
   ${rowFlex({ align: 'center' })}
 `;
@@ -64,20 +64,20 @@ const SummaryStrip = styled.div`
 const SummaryItem = styled.div<{ isLast?: boolean }>`
   flex: 1;
   padding: 0 16px;
-  border-right: ${({ isLast }) => (isLast ? 'none' : '1px solid ' + timelineColors.BORDER_CARD)};
+  border-right: ${({ isLast }) => (isLast ? 'none' : '1px solid ' + TIMELINE_COLORS.BORDER_CARD)};
   ${colFlex({ align: 'center' })}
 `;
 
 const SummaryValue = styled.span`
   font-size: 16px;
   font-weight: 700;
-  color: ${timelineColors.TEXT_PRIMARY};
+  color: ${TIMELINE_COLORS.TEXT_PRIMARY};
   line-height: 1.4;
 `;
 
 const SummaryLabel = styled.span`
   font-size: 11px;
-  color: ${timelineColors.TEXT_SECONDARY};
+  color: ${TIMELINE_COLORS.TEXT_SECONDARY};
   line-height: 1.4;
 `;
 
@@ -85,8 +85,8 @@ const ActiveSessionInfo = styled.div`
   width: 100%;
   margin-top: 16px;
   padding: 12px 0;
-  border-top: 1px solid ${timelineColors.BORDER_CARD};
-  border-bottom: 1px solid ${timelineColors.BORDER_CARD};
+  border-top: 1px solid ${TIMELINE_COLORS.BORDER_CARD};
+  border-bottom: 1px solid ${TIMELINE_COLORS.BORDER_CARD};
   gap: 4px;
   ${colFlex({ align: 'center' })}
 `;
@@ -94,12 +94,12 @@ const ActiveSessionInfo = styled.div`
 const ElapsedTime = styled.span`
   font-size: 16px;
   font-weight: 700;
-  color: ${timelineColors.TEXT_PRIMARY};
+  color: ${TIMELINE_COLORS.TEXT_PRIMARY};
 `;
 
 const GuideMessage = styled.span`
   font-size: 13px;
-  color: ${timelineColors.TEXT_SECONDARY};
+  color: ${TIMELINE_COLORS.TEXT_SECONDARY};
 `;
 
 const GhostInfoMessage = styled.div`
@@ -108,10 +108,10 @@ const GhostInfoMessage = styled.div`
   margin-top: 16px;
   padding: 12px 16px;
   font-size: 13px;
-  color: ${timelineColors.GHOST_TEXT};
+  color: ${TIMELINE_COLORS.GHOST_TEXT};
   text-align: center;
-  background: ${timelineColors.GHOST_BG};
-  border: 1px solid ${timelineColors.GHOST_BORDER};
+  background: ${TIMELINE_COLORS.GHOST_BG};
+  border: 1px solid ${TIMELINE_COLORS.GHOST_BORDER};
   border-radius: 6px;
 `;
 
@@ -123,7 +123,6 @@ interface SessionModalHeaderContentsProps {
 
 function SessionModalHeaderContents({ session, currentTime, onClose }: SessionModalHeaderContentsProps) {
   const start = new Date(session.createdAt);
-  const end = session.endAt ? new Date(session.endAt) : currentTime;
   const durationMinutes = session.usageTime;
   const isActive = !session.endAt;
   const isGhost = session.isGhostSession;
@@ -148,7 +147,7 @@ function SessionModalHeaderContents({ session, currentTime, onClose }: SessionMo
         <CloseIcon onClick={onClose} />
       </ModalHeaderTitle>
       <DescriptionLabel>
-        {format(start, 'yyyy.MM.dd')} · {format(start, 'HH:mm')} – {session.endAt ? format(end, 'HH:mm') : '진행중'}
+        {format(start, 'yyyy.MM.dd')} · {format(start, 'HH:mm')} – {session.endAt ? format(new Date(session.endAt), 'HH:mm') : '진행중'}
         {!isActive && !isGhost && ' · ' + customerNameLabel}
       </DescriptionLabel>
 
@@ -167,7 +166,7 @@ function SessionModalHeaderContents({ session, currentTime, onClose }: SessionMo
               <SummaryLabel>이용 시간</SummaryLabel>
             </SummaryItem>
             <SummaryItem>
-              <SummaryValue>{session.orders.length}건</SummaryValue>
+              <SummaryValue>{session.orderCount}건</SummaryValue>
               <SummaryLabel>주문 건수</SummaryLabel>
             </SummaryItem>
             <SummaryItem isLast>
