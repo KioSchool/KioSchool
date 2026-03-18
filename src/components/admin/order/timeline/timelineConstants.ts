@@ -3,7 +3,7 @@ export const TIMELINE_HOURS = 24;
 
 export const MIN_VALID_SESSION_MINUTES = 30;
 
-export const timelineColors = {
+export const TIMELINE_COLORS = {
   TEXT_PRIMARY: '#464a4d',
   TEXT_SECONDARY: '#939393',
   BORDER: '#eaeaea',

@@ -1,21 +1,21 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
-import { timelineColors, SESSION_MESSAGES } from './timelineConstants';
+import { TIMELINE_COLORS, SESSION_MESSAGES } from './timelineConstants';
 import { match } from 'ts-pattern';
 
 const ModalFooter = styled.div`
   padding: 14px 30px;
-  border-top: 1px solid ${timelineColors.BORDER_CARD};
+  border-top: 1px solid ${TIMELINE_COLORS.BORDER_CARD};
   flex-shrink: 0;
-  background: ${timelineColors.BACKGROUND_LIGHT};
+  background: ${TIMELINE_COLORS.BACKGROUND_LIGHT};
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const FooterLabel = styled.span`
   font-size: 14px;
   font-weight: 700;
-  color: ${timelineColors.TEXT_PRIMARY};
+  color: ${TIMELINE_COLORS.TEXT_PRIMARY};
 `;
 
 const FooterValue = styled.span`
@@ -27,7 +27,7 @@ const FooterValue = styled.span`
 const FooterGuideMessage = styled.span`
   font-size: 14px;
   font-weight: 500;
-  color: ${timelineColors.TEXT_SECONDARY};
+  color: ${TIMELINE_COLORS.TEXT_SECONDARY};
 `;
 
 interface SessionModalFooterContentsProps {

@@ -5,7 +5,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { getSessionBarStyle } from './sessionBarStyle';
 import { formatMinutesToTime } from '@utils/formatDate';
 import { differenceInMinutes } from 'date-fns';
-import { TIMELINE_HOURS, timelineColors } from './timelineConstants';
+import { TIMELINE_HOURS, TIMELINE_COLORS } from './timelineConstants';
 
 const MIN_BAR_WIDTH_FOR_TEXT = 6;
 
@@ -63,7 +63,7 @@ const Tooltip = styled.div`
   bottom: calc(100% + 6px);
   left: 50%;
   transform: translateX(-50%);
-  background: ${timelineColors.TEXT_PRIMARY};
+  background: ${TIMELINE_COLORS.TEXT_PRIMARY};
   color: #ffffff;
   font-size: 11px;
   padding: 6px 10px;

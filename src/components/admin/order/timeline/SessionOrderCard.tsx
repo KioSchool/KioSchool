@@ -4,12 +4,12 @@ import { getOrderStatusLabel } from '@utils/orderStatusConverter';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { formatDate } from '@utils/formatDate';
-import { timelineColors } from './timelineConstants';
+import { TIMELINE_COLORS } from './timelineConstants';
 import defaultProductImage from '@resources/image/defaultWorkspaceImage.png';
 
 const Card = styled.div`
   width: 100%;
-  border: 1px solid ${timelineColors.BORDER_CARD};
+  border: 1px solid ${TIMELINE_COLORS.BORDER_CARD};
   border-radius: 10px;
   background: ${Color.WHITE};
   overflow: hidden;
@@ -32,12 +32,12 @@ const HeaderLeft = styled.div`
 const OrderNumberLabel = styled.span`
   font-size: 14px;
   font-weight: 700;
-  color: ${timelineColors.TEXT_PRIMARY};
+  color: ${TIMELINE_COLORS.TEXT_PRIMARY};
 `;
 
 const OrderSubLabel = styled.span`
   font-size: 12px;
-  color: ${timelineColors.TEXT_SECONDARY};
+  color: ${TIMELINE_COLORS.TEXT_SECONDARY};
 `;
 
 const StatusBadge = styled.span<{ status: OrderStatus }>`
@@ -50,7 +50,7 @@ const StatusBadge = styled.span<{ status: OrderStatus }>`
     if (status === OrderStatus.PAID) return Color.KIO_ORANGE;
     if (status === OrderStatus.SERVED) return Color.GREEN;
     if (status === OrderStatus.CANCELLED) return Color.RED;
-    return timelineColors.TEXT_SECONDARY;
+    return TIMELINE_COLORS.TEXT_SECONDARY;
   }};
   background: ${({ status }) => {
     if (status === OrderStatus.PAID) return '#fff0e5';
@@ -61,7 +61,7 @@ const StatusBadge = styled.span<{ status: OrderStatus }>`
 `;
 
 const ProductListContainer = styled.div`
-  border-top: 1px solid ${timelineColors.BORDER_CARD};
+  border-top: 1px solid ${TIMELINE_COLORS.BORDER_CARD};
   padding: 10px 16px;
   gap: 8px;
   ${colFlex()}
@@ -76,7 +76,7 @@ const ProductImage = styled.img`
   width: 44px;
   height: 44px;
   border-radius: 8px;
-  border: 1px solid ${timelineColors.BORDER_CARD};
+  border: 1px solid ${TIMELINE_COLORS.BORDER_CARD};
   object-fit: cover;
   background-color: ${Color.LIGHT_GREY};
   flex-shrink: 0;
@@ -91,13 +91,13 @@ const ProductInfo = styled.div`
 const ProductName = styled.span`
   font-size: 13px;
   font-weight: 600;
-  color: ${timelineColors.TEXT_PRIMARY};
+  color: ${TIMELINE_COLORS.TEXT_PRIMARY};
 `;
 
 const ProductDetail = styled.span`
   font-size: 12px;
   font-weight: 600;
-  color: ${timelineColors.TEXT_SECONDARY};
+  color: ${TIMELINE_COLORS.TEXT_SECONDARY};
   flex-shrink: 0;
 `;
 

@@ -4,7 +4,7 @@ import { OrderSessionWithOrder, Product } from '@@types/index';
 import { colFlex } from '@styles/flexStyles';
 import { adminProductsAtom } from '@jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
-import { timelineColors } from './timelineConstants';
+import { TIMELINE_COLORS } from './timelineConstants';
 import SessionOrderCard from './SessionOrderCard';
 
 const ModalBody = styled.div`
@@ -19,7 +19,7 @@ const SectionTitle = styled.div`
   padding: 16px 30px 8px;
   font-size: 16px;
   font-weight: 700;
-  color: ${timelineColors.TEXT_PRIMARY};
+  color: ${TIMELINE_COLORS.TEXT_PRIMARY};
 `;
 
 const OrderList = styled.div`
@@ -32,7 +32,7 @@ const EmptyOrders = styled.div`
   flex: 1;
   height: 100%;
   font-size: 14px;
-  color: ${timelineColors.TEXT_SECONDARY};
+  color: ${TIMELINE_COLORS.TEXT_SECONDARY};
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 

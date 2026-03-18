@@ -5,7 +5,7 @@ import { OrderSessionWithOrder } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { MODAL_ROOT_KEY } from '@hooks/useModal';
-import { timelineColors } from './timelineConstants';
+import { TIMELINE_COLORS } from './timelineConstants';
 import SessionModalHeaderContents from './SessionModalHeaderContents';
 import SessionModalMainContents from './SessionModalMainContents';
 import SessionModalFooterContents from './SessionModalFooterContents';
@@ -28,7 +28,7 @@ const ModalContainer = styled.div`
   transform: translate(-50%, -50%);
   background-color: ${Color.WHITE};
   border-radius: 10px;
-  border: 1px solid ${timelineColors.BORDER_CARD};
+  border: 1px solid ${TIMELINE_COLORS.BORDER_CARD};
   width: 520px;
   max-width: 90vw;
   height: 70vh;

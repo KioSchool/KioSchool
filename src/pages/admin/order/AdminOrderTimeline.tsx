@@ -15,7 +15,7 @@ import useAdminProducts from '@hooks/admin/useAdminProducts';
 import useModal from '@hooks/useModal';
 import { OrderSessionWithOrder } from '@@types/index';
 import { formatMinutesToTime } from '@utils/formatDate';
-import { timelineColors } from '@components/admin/order/timeline/timelineConstants';
+import { TIMELINE_COLORS } from '@components/admin/order/timeline/timelineConstants';
 import { RiRefreshLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 
@@ -37,13 +37,13 @@ const UpdateInfo = styled.div`
 
 const UpdateLabel = styled.span`
   font-size: 12px;
-  color: ${timelineColors.TEXT_PRIMARY};
+  color: ${TIMELINE_COLORS.TEXT_PRIMARY};
 `;
 
 const RefreshIcon = styled(RiRefreshLine)`
   width: 16px;
   height: 16px;
-  color: ${timelineColors.TEXT_PRIMARY};
+  color: ${TIMELINE_COLORS.TEXT_PRIMARY};
   ${expandButtonStyle}
 `;
 

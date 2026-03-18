@@ -1,4 +1,4 @@
-import { timelineColors } from './timelineConstants';
+import { TIMELINE_COLORS } from './timelineConstants';
 
 export interface SessionBarStyle {
   backgroundColor: string;
@@ -7,9 +7,9 @@ export interface SessionBarStyle {
 }
 
 const GHOST_STYLE: SessionBarStyle = {
-  backgroundColor: timelineColors.GHOST_BG,
-  textColor: timelineColors.GHOST_TEXT,
-  backgroundImage: `repeating-linear-gradient(-45deg, transparent, transparent 4px, ${timelineColors.GHOST_STRIPE} 4px, ${timelineColors.GHOST_STRIPE} 8px)`,
+  backgroundColor: TIMELINE_COLORS.GHOST_BG,
+  textColor: TIMELINE_COLORS.GHOST_TEXT,
+  backgroundImage: `repeating-linear-gradient(-45deg, transparent, transparent 4px, ${TIMELINE_COLORS.GHOST_STRIPE} 4px, ${TIMELINE_COLORS.GHOST_STRIPE} 8px)`,
 };
 
 const EMPTY_SESSION_STYLE: SessionBarStyle = { backgroundColor: '#d5dbe0', textColor: '#8c9196' };
