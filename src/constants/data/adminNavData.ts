@@ -36,11 +36,10 @@ export const adminNavData: AdminNavCategory[] = [
   {
     category: '주문',
     items: [
-      // TODO: 나중에 필요하면 다시 살리기
-      // {
-      //   name: '테이블 주문 조회',
-      //   path: '/table-order',
-      // },
+      {
+        name: '주문 타임라인 조회',
+        path: '/order-timeline',
+      },
       {
         name: '전체 주문 조회',
         path: '/total-order',
