@@ -43,36 +43,6 @@ const StatCardRow = styled.div`
   }
 `;
 
-const ComparisonContainer = styled.div`
-  width: 100%;
-  gap: 12px;
-  ${rowFlex()}
-`;
-
-const ComparisonCard = styled.div`
-  flex: 1;
-  padding: 14px 21px;
-  box-shadow: 0px 4px 20px rgba(92, 92, 92, 0.05);
-  border-radius: 16px;
-  background-color: #fff;
-  border: 1px solid #eaeaea;
-  box-sizing: border-box;
-  gap: 4px;
-  ${colFlex({ align: 'start' })}
-`;
-
-const ComparisonTitle = styled.div`
-  font-size: 14px;
-  color: #464a4d;
-  font-weight: 700;
-`;
-
-const ComparisonValue = styled.div<{ isPositive: boolean }>`
-  font-size: 22px;
-  font-weight: 700;
-  color: ${({ isPositive }) => (isPositive ? Color.GREEN : Color.RED)};
-`;
-
 const SectionTitle = styled.div`
   width: 100%;
   font-size: 18px;
@@ -105,35 +75,54 @@ function AdminOrderStatistics() {
         {statistics && (
           <>
             <StatCardRow>
-              <StatCard title="총 매출액" value={statistics.totalRevenue.toLocaleString()} unit="원" />
-              <StatCard title="총 판매량" value={statistics.totalSalesVolume} unit="개" />
-              <StatCard title="총 주문 건수" value={statistics.totalOrders} unit="건" />
+              <StatCard
+                title="총 주문 건수"
+                value={statistics.totalOrders.toLocaleString()}
+                description={`총 판매된 상품 수량은 ${statistics.totalSalesVolume}개입니다.`}
+                descriptionHighlight={`${statistics.totalSalesVolume}개`}
+                highlightRate={statistics.totalOrders}
+                unit="건"
+              />
+              <StatCard
+                title="총 매출액"
+                value={statistics.totalRevenue.toLocaleString()}
+                description={`평균 주문 금액은 ${statistics.averageOrderAmount.toLocaleString()}원입니다.`}
+                descriptionHighlight={`${statistics.averageOrderAmount.toLocaleString()}원`}
+                highlightRate={statistics.totalRevenue}
+                unit="원"
+              />
+              <StatCard
+                title="전일 대비 주문 증감률"
+                value={
+                  statistics.previousDayComparison
+                    ? `${statistics.previousDayComparison.revenueGrowthRate >= 0 ? '+' : ''}${statistics.previousDayComparison.revenueGrowthRate.toFixed(1)}`
+                    : '-'
+                }
+                description={
+                  statistics.previousDayComparison
+                    ? `전일 대비 주문 ${statistics.previousDayComparison.orderCountDifference >= 0 ? '+' : ''}${
+                        statistics.previousDayComparison.orderCountDifference
+                      }건`
+                    : '비교 데이터가 없습니다.'
+                }
+                descriptionHighlight={
+                  statistics.previousDayComparison
+                    ? `${statistics.previousDayComparison.orderCountDifference >= 0 ? '+' : ''}${statistics.previousDayComparison.orderCountDifference}건`
+                    : undefined
+                }
+                highlightRate={statistics.previousDayComparison ? Math.abs(statistics.previousDayComparison.revenueGrowthRate) : 0}
+                valueColor={statistics.previousDayComparison ? (statistics.previousDayComparison.revenueGrowthRate >= 0 ? Color.RED : Color.BLUE) : undefined}
+                unit="%"
+              />
+              <StatCard
+                title="테이블 회전율"
+                value={statistics.tableTurnoverRate.toFixed(1)}
+                description={`평균 테이블 이용 시간 ${formatMinutesToTime(statistics.averageStayTimeMinutes)}입니다.`}
+                descriptionHighlight={formatMinutesToTime(statistics.averageStayTimeMinutes)}
+                highlightRate={statistics.tableTurnoverRate}
+                unit="회전"
+              />
             </StatCardRow>
-
-            <StatCardRow>
-              <StatCard title="평균 주문 금액" value={statistics.averageOrderAmount.toLocaleString()} unit="원" />
-              <StatCard title="테이블 회전율" value={statistics.tableTurnoverRate.toFixed(1)} unit="회전" />
-              <StatCard title="평균 체류 시간" value={formatMinutesToTime(statistics.averageStayTimeMinutes)} />
-            </StatCardRow>
-
-            {statistics.previousDayComparison && (
-              <ComparisonContainer>
-                <ComparisonCard>
-                  <ComparisonTitle>전일 대비 매출 증감률</ComparisonTitle>
-                  <ComparisonValue isPositive={statistics.previousDayComparison.revenueGrowthRate >= 0}>
-                    {statistics.previousDayComparison.revenueGrowthRate >= 0 ? '+' : ''}
-                    {statistics.previousDayComparison.revenueGrowthRate.toFixed(1)}%
-                  </ComparisonValue>
-                </ComparisonCard>
-                <ComparisonCard>
-                  <ComparisonTitle>전일 대비 주문 건수 차이</ComparisonTitle>
-                  <ComparisonValue isPositive={statistics.previousDayComparison.orderCountDifference >= 0}>
-                    {statistics.previousDayComparison.orderCountDifference >= 0 ? '+' : ''}
-                    {statistics.previousDayComparison.orderCountDifference}건
-                  </ComparisonValue>
-                </ComparisonCard>
-              </ComparisonContainer>
-            )}
 
             <SectionTitle>시간대별 매출</SectionTitle>
             <HourlySalesChart salesByHour={statistics.salesByHour} />

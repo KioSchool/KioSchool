@@ -94,7 +94,7 @@ function PopularProductsSection({ popularProducts }: PopularProductsSectionProps
   const items: PopularProductItem[] = popularProducts[selectedTab];
 
   return (
-    <DashboardCard title="인기 상품" showDivider={false}>
+    <DashboardCard title="상품별 순위 TOP10" showDivider={false}>
       <TabContainer>
         {tabConfig.map((tab) => (
           <Tab key={tab.key} isSelected={selectedTab === tab.key} onClick={() => setSelectedTab(tab.key)}>
