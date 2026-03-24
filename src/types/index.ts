@@ -222,7 +222,7 @@ export const RIGHT_SIDEBAR_ACTION = {
   CLOSE: 'CLOSE',
 } as const;
 
-export type RightSidebarAction = (typeof RIGHT_SIDEBAR_ACTION)[keyof typeof RIGHT_SIDEBAR_ACTION];
+export type RightSidebarAction = typeof RIGHT_SIDEBAR_ACTION[keyof typeof RIGHT_SIDEBAR_ACTION];
 
 interface OpenSidebarOptions {
   action: typeof RIGHT_SIDEBAR_ACTION.OPEN;
@@ -304,7 +304,7 @@ export interface DailyStatistics {
   averageOrdersPerTable: number;
   tableTurnoverRate: number;
   averageStayTimeMinutes: number;
-  previousDayComparison: PreviousDayComparison;
+  previousDayComparison: PreviousDayComparison | null;
   salesByHour: HourlySales[];
   popularProducts: PopularProducts;
   isRealTime: boolean;
