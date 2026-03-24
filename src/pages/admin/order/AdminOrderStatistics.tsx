@@ -6,6 +6,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import CustomSelect from '@components/common/select/CustomSelect';
 import CustomDatePicker from '@components/common/date-picker/CustomDatePicker';
 import StatCard from '@components/common/card/StatCard';
+import ContentCard from '@components/common/card/ContentCard';
 import HourlySalesChart from '@components/admin/order/statistic/HourlySalesChart';
 import PopularProductsSection from '@components/admin/order/statistic/PopularProductsSection';
 import { useAdminFetchDailyStatistics } from '@hooks/admin/useAdminFetchDailyStatistics';
@@ -43,11 +44,15 @@ const StatCardRow = styled.div`
   }
 `;
 
-const SectionTitle = styled.div`
+const SectionRow = styled.div`
   width: 100%;
-  font-size: 18px;
-  font-weight: 700;
-  color: #464a4d;
+  gap: 12px;
+  ${rowFlex()}
+
+  & > * {
+    flex: 1;
+    min-width: 0;
+  }
 `;
 
 function AdminOrderStatistics() {
@@ -124,10 +129,12 @@ function AdminOrderStatistics() {
               />
             </StatCardRow>
 
-            <SectionTitle>시간대별 매출</SectionTitle>
-            <HourlySalesChart salesByHour={statistics.salesByHour} />
-
-            <PopularProductsSection popularProducts={statistics.popularProducts} />
+            <SectionRow>
+              <ContentCard title="시간대별 추이" showDivider={false}>
+                <HourlySalesChart salesByHour={statistics.salesByHour} />
+              </ContentCard>
+              <PopularProductsSection popularProducts={statistics.popularProducts} />
+            </SectionRow>
           </>
         )}
       </Container>
