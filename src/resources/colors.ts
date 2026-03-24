@@ -7,5 +7,6 @@ export const Color = {
   LIGHT_GREY: '#f7f7f7',
   GREEN: '#0CAF60',
   RED: '#FF5A5A',
+  BLUE: '#46ADFF',
 } as const;
 export type ColorType = typeof Color[keyof typeof Color];
