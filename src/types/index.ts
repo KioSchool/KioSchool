@@ -222,7 +222,7 @@ export const RIGHT_SIDEBAR_ACTION = {
   CLOSE: 'CLOSE',
 } as const;
 
-export type RightSidebarAction = typeof RIGHT_SIDEBAR_ACTION[keyof typeof RIGHT_SIDEBAR_ACTION];
+export type RightSidebarAction = (typeof RIGHT_SIDEBAR_ACTION)[keyof typeof RIGHT_SIDEBAR_ACTION];
 
 interface OpenSidebarOptions {
   action: typeof RIGHT_SIDEBAR_ACTION.OPEN;
@@ -270,4 +270,43 @@ export interface DashboardResponse {
   topSellingProducts: TopSellingProduct[];
   recentOrders: Order[];
   outOfStockProducts: Product[];
+}
+
+export interface PreviousDayComparison {
+  revenueGrowthRate: number;
+  orderCountDifference: number;
+}
+
+export interface HourlySales {
+  hour: number;
+  orderCount: number;
+  revenue: number;
+}
+
+export interface PopularProductItem {
+  productId: number;
+  name: string;
+  value: number;
+}
+
+export interface PopularProducts {
+  byQuantity: PopularProductItem[];
+  byReorderRate: PopularProductItem[];
+  byRevenue: PopularProductItem[];
+}
+
+export interface DailyStatistics {
+  referenceDate: string;
+  totalSalesVolume: number;
+  totalRevenue: number;
+  averageOrderAmount: number;
+  totalOrders: number;
+  averageOrdersPerTable: number;
+  tableTurnoverRate: number;
+  averageStayTimeMinutes: number;
+  previousDayComparison: PreviousDayComparison;
+  salesByHour: HourlySales[];
+  popularProducts: PopularProducts;
+  isRealTime: boolean;
+  lastUpdated: string;
 }
