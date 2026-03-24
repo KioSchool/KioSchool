@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import { match, P } from 'ts-pattern';
-import { PopularProducts, PopularProductItem } from '@@types/index';
-import { colFlex, rowFlex } from '@styles/flexStyles';
-import { getRankBackgroundColor } from '@styles/dashboardStyles';
+import { PopularProducts } from '@@types/index';
+import { rowFlex } from '@styles/flexStyles';
 import ContentCard from '@components/common/card/ContentCard';
+import RankedList, { RankedItem } from '@components/common/list/RankedList';
 
 type TabKey = 'byQuantity' | 'byRevenue' | 'byReorderRate';
 
@@ -27,51 +26,6 @@ const Tab = styled.div<{ isSelected: boolean }>`
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
-const ListWrapper = styled.div`
-  width: 100%;
-  padding-top: 12px;
-  gap: 14px;
-  ${colFlex()}
-`;
-
-const ItemWrapper = styled.div`
-  width: 100%;
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
-`;
-
-const RankInfo = styled.div`
-  gap: 8px;
-  ${rowFlex({ align: 'center' })}
-`;
-
-const RankCircle = styled.div<{ rank: number }>`
-  width: 23px;
-  height: 23px;
-  border-radius: 50%;
-  font-size: 12px;
-  font-weight: 700;
-  color: ${({ rank }) => (rank <= 2 ? '#fff' : '#464a4d')};
-  background-color: ${({ rank }) => getRankBackgroundColor(rank)};
-  border: ${({ rank }) => (rank > 3 ? '1px solid #eaeaea' : 'none')};
-  ${rowFlex({ justify: 'center', align: 'center' })}
-`;
-
-const ProductName = styled.div`
-  font-size: 14px;
-  color: #5b5e65;
-`;
-
-const ValueText = styled.div`
-  font-size: 14px;
-  color: #5b5e65;
-  text-align: right;
-`;
-
-const EmptyText = styled.div`
-  color: #939393;
-  font-size: 12px;
-`;
-
 const tabConfig: { key: TabKey; label: string; unit: string }[] = [
   { key: 'byQuantity', label: '판매량', unit: '개' },
   { key: 'byRevenue', label: '판매액', unit: '원' },
@@ -91,7 +45,11 @@ function PopularProductsSection({ popularProducts }: PopularProductsSectionProps
   const [selectedTab, setSelectedTab] = useState<TabKey>('byQuantity');
 
   const currentConfig = tabConfig.find((tab) => tab.key === selectedTab)!;
-  const items: PopularProductItem[] = popularProducts[selectedTab];
+  const items: RankedItem[] = popularProducts[selectedTab].map((item) => ({
+    id: item.productId,
+    name: item.name,
+    value: formatValue(item.value, currentConfig.unit),
+  }));
 
   return (
     <ContentCard title="상품별 순위 TOP10" showDivider={false}>
@@ -102,22 +60,7 @@ function PopularProductsSection({ popularProducts }: PopularProductsSectionProps
           </Tab>
         ))}
       </TabContainer>
-      <ListWrapper>
-        {match(items)
-          .with([], () => <EmptyText>데이터가 없습니다.</EmptyText>)
-          .with(P.array(P._), (products) =>
-            products.map((item, index) => (
-              <ItemWrapper key={item.productId}>
-                <RankInfo>
-                  <RankCircle rank={index + 1}>{index + 1}</RankCircle>
-                  <ProductName>{item.name}</ProductName>
-                </RankInfo>
-                <ValueText>{formatValue(item.value, currentConfig.unit)}</ValueText>
-              </ItemWrapper>
-            )),
-          )
-          .otherwise(() => null)}
-      </ListWrapper>
+      <RankedList items={items} />
     </ContentCard>
   );
 }
