@@ -3,8 +3,9 @@ import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
-  height: 123px;
-  width: 193px;
+  min-height: 123px;
+  min-width: 193px;
+  flex: 1;
   box-shadow: 0px 4px 20px rgba(92, 92, 92, 0.05);
   border-radius: 16px;
   background-color: #fff;
