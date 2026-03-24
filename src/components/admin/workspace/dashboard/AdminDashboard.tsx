@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { adminDashboardAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
 import useAdminDashboard from '@hooks/admin/useAdminDashboard';
 import { rowFlex, colFlex } from '@styles/flexStyles';
-import StatCard from './StatCard';
+import StatCard from '@components/common/card/StatCard';
 import RecentOrders from './RecentOrders';
 import NoticeBanner from './NoticeBanner';
 import OutOfStockList from './OutOfStockList';

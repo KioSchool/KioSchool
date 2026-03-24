@@ -7,7 +7,7 @@ import AppContainer from '@components/common/container/AppContainer';
 import CustomSelect from '@components/common/select/CustomSelect';
 import CustomDatePicker from '@components/common/date-picker/CustomDatePicker';
 import CustomCheckbox from '@components/common/checkbox/CustomCheckbox';
-import StatCard from '@components/admin/workspace/dashboard/StatCard';
+import StatCard from '@components/common/card/StatCard';
 import TimelineGrid from '@components/admin/order/timeline/TimelineGrid';
 import SessionDetailModal from '@components/admin/order/timeline/SessionDetailModal';
 import { useAdminFetchTableSessionTimeline } from '@hooks/admin/useAdminFetchTableSessionTimeline';
