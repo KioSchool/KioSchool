@@ -1,175 +1,144 @@
-import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
-import { useAtomValue } from 'jotai';
-import { RiRefreshLine } from '@remixicon/react';
+import { format } from 'date-fns';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { OrderStatus } from '@@types/index';
-import { tabletMediaQuery } from '@styles/globalStyles';
-import { Color } from '@resources/colors';
 import CustomSelect from '@components/common/select/CustomSelect';
 import CustomDatePicker from '@components/common/date-picker/CustomDatePicker';
-import ProductStatistics from '@components/admin/order/statistic/ProductStatistics';
-import OrderPriceStatistics from '@components/admin/order/statistic/OrderPriceStatistics';
-import { dateConverter } from '@utils/formatDate';
-import { useAdminFetchOrderBase } from '@hooks/admin/useAdminFetchOrderBase';
-import { adminOrdersAtom } from '@jotai/admin/atoms';
-
-type CategoryKey = 'byProduct' | 'byPrice';
+import StatCard from '@components/common/card/StatCard';
+import HourlySalesChart from '@components/admin/order/statistic/HourlySalesChart';
+import PopularProductsSection from '@components/admin/order/statistic/PopularProductsSection';
+import { useAdminFetchDailyStatistics } from '@hooks/admin/useAdminFetchDailyStatistics';
+import { formatMinutesToTime } from '@utils/formatDate';
+import { Color } from '@resources/colors';
 
 const Container = styled.div`
   width: 100%;
   flex: 1;
-  gap: 10px;
+  gap: 20px;
   padding-top: 25px;
   ${colFlex({ align: 'center' })}
-
-  ${tabletMediaQuery} {
-    width: 80%;
-  }
 `;
 
 const FilterContainer = styled.div`
   width: 100%;
   gap: 10px;
-  padding-bottom: 20px;
-  ${rowFlex({ align: 'center' })};
-`;
-
-const ResetButton = styled.div`
-  padding: 0 10px;
-  height: 35px;
-  background: ${Color.WHITE};
-  border: 1px solid #e8eef2;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 12px;
-  color: #464a4d;
-  gap: 4px;
-  ${rowFlex({ justify: 'center', align: 'center' })}
-
-  &:hover {
-    border-color: ${Color.KIO_ORANGE};
-    color: ${Color.KIO_ORANGE};
-  }
-`;
-
-const HeaderContainer = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  height: 45px;
-  padding: 0 20px;
-  border-radius: 7px 7px 0 0;
-  background: ${Color.KIO_ORANGE};
+  padding-bottom: 10px;
   ${rowFlex({ justify: 'space-between', align: 'center' })};
 `;
 
-const HeaderLabel = styled.p`
-  color: ${Color.WHITE};
-  font-size: 20px;
+const UpdateLabel = styled.span`
+  font-size: 12px;
+  color: #939393;
+`;
+
+const StatCardRow = styled.div`
+  width: 100%;
+  gap: 12px;
+  ${rowFlex()}
+
+  & > * {
+    flex: 1;
+    width: auto;
+  }
+`;
+
+const ComparisonContainer = styled.div`
+  width: 100%;
+  gap: 12px;
+  ${rowFlex()}
+`;
+
+const ComparisonCard = styled.div`
+  flex: 1;
+  padding: 14px 21px;
+  box-shadow: 0px 4px 20px rgba(92, 92, 92, 0.05);
+  border-radius: 16px;
+  background-color: #fff;
+  border: 1px solid #eaeaea;
+  box-sizing: border-box;
+  gap: 4px;
+  ${colFlex({ align: 'start' })}
+`;
+
+const ComparisonTitle = styled.div`
+  font-size: 14px;
+  color: #464a4d;
   font-weight: 700;
 `;
 
-const CategoryContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-  width: 100%;
-  padding: 0 10px 30px 10px;
-  box-sizing: border-box;
-  border-bottom: 1px solid ${Color.LIGHT_GREY};
+const ComparisonValue = styled.div<{ isPositive: boolean }>`
+  font-size: 22px;
+  font-weight: 700;
+  color: ${({ isPositive }) => (isPositive ? Color.GREEN : Color.RED)};
 `;
 
-const CategoryLink = styled.div<{ isSelected: boolean }>`
-  padding: 10px;
-  border-bottom: 3px solid ${({ isSelected }) => (isSelected ? Color.BLACK : 'transparent')};
-  font-weight: ${({ isSelected }) => (isSelected ? 600 : 400)};
-  cursor: pointer;
-  ${rowFlex({ justify: 'center', align: 'center' })}
+const SectionTitle = styled.div`
+  width: 100%;
+  font-size: 18px;
+  font-weight: 700;
+  color: #464a4d;
 `;
 
 function AdminOrderStatistics() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchOrders } = useAdminOrder(workspaceId);
-  const orders = useAtomValue(adminOrdersAtom);
+  const { selectedDate, setSelectedDate, statistics, isLoading } = useAdminFetchDailyStatistics(workspaceId);
 
-  const { baseFilters, setBaseFilters, resetBaseFilters, statusOptions } = useAdminFetchOrderBase(workspaceId);
-  const { startDate, endDate, orderStatuses } = baseFilters;
-  const { setStartDate, setEndDate, setOrderStatuses } = setBaseFilters;
-
-  const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('byProduct');
-
-  const parsedStartDate = dateConverter(startDate);
-  const parsedEndDate = dateConverter(endDate);
-
-  const isDateSelected = !!(parsedStartDate && parsedEndDate);
-  const dateRangeLabel = isDateSelected ? `${startDate!.toLocaleDateString()} ~ ${endDate!.toLocaleDateString()}` : '날짜 선택';
-
-  useEffect(() => {
-    if (!parsedStartDate || !parsedEndDate) return;
-
-    fetchOrders({
-      startDate: parsedStartDate,
-      endDate: parsedEndDate,
-      statuses: orderStatuses,
-    });
-  }, [parsedStartDate, parsedEndDate, orderStatuses, workspaceId]);
-
-  const totalOrderPrice = orders.reduce((sum, order) => sum + order.totalPrice, 0).toLocaleString();
-
-  const primaryStatus = orderStatuses?.[0];
-
-  const renderCategoryContent = () => {
-    if (selectedCategory === 'byProduct') {
-      return <ProductStatistics orders={orders} />;
-    }
-
-    if (selectedCategory === 'byPrice') {
-      return <OrderPriceStatistics startDate={parsedStartDate!} endDate={parsedEndDate!} status={primaryStatus} />;
-    }
-  };
+  const dateLabel = format(selectedDate, 'yyyy년 MM월 dd일');
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })}>
+    <AppContainer useFlex={colFlex({ justify: 'start' })} customWidth={'1200px'}>
       <Container>
         <FilterContainer>
-          <ResetButton onClick={resetBaseFilters}>
-            <RiRefreshLine size={14} />
-            초기화
-          </ResetButton>
-
-          <CustomSelect value={dateRangeLabel} triggerLabel={dateRangeLabel} highlightOnSelect={true} width="250px">
-            <CustomDatePicker startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} />
+          <CustomSelect value={dateLabel} triggerLabel={dateLabel} highlightOnSelect={true} width="160px">
+            <CustomDatePicker mode="single" selectedDate={selectedDate} onDateChange={setSelectedDate} />
           </CustomSelect>
-
-          <CustomSelect<OrderStatus>
-            isMulti={true}
-            value={orderStatuses}
-            onChange={setOrderStatuses}
-            options={statusOptions}
-            highlightOnSelect={true}
-            width="150px"
-            placeholder="상태 전체"
-          />
+          {statistics?.lastUpdated && (
+            <UpdateLabel>
+              {statistics.isRealTime ? '실시간' : '최종 업데이트'} {format(new Date(statistics.lastUpdated), 'HH:mm')}
+            </UpdateLabel>
+          )}
         </FilterContainer>
 
-        <HeaderContainer>
-          <HeaderLabel>총 매출액</HeaderLabel>
-          <HeaderLabel>{totalOrderPrice} 원</HeaderLabel>
-        </HeaderContainer>
+        {isLoading && !statistics && <UpdateLabel>로딩 중...</UpdateLabel>}
 
-        <CategoryContainer>
-          <CategoryLink isSelected={selectedCategory === 'byProduct'} onClick={() => setSelectedCategory('byProduct')}>
-            상품별 판매량
-          </CategoryLink>
-          <CategoryLink isSelected={selectedCategory === 'byPrice'} onClick={() => setSelectedCategory('byPrice')}>
-            시간대별 매출
-          </CategoryLink>
-        </CategoryContainer>
+        {statistics && (
+          <>
+            <StatCardRow>
+              <StatCard title="총 매출액" value={statistics.totalRevenue.toLocaleString()} unit="원" />
+              <StatCard title="총 판매량" value={statistics.totalSalesVolume} unit="개" />
+              <StatCard title="총 주문 건수" value={statistics.totalOrders} unit="건" />
+            </StatCardRow>
 
-        {renderCategoryContent()}
+            <StatCardRow>
+              <StatCard title="평균 주문 금액" value={statistics.averageOrderAmount.toLocaleString()} unit="원" />
+              <StatCard title="테이블 회전율" value={statistics.tableTurnoverRate.toFixed(1)} unit="회전" />
+              <StatCard title="평균 체류 시간" value={formatMinutesToTime(statistics.averageStayTimeMinutes)} />
+            </StatCardRow>
+
+            <ComparisonContainer>
+              <ComparisonCard>
+                <ComparisonTitle>전일 대비 매출 증감률</ComparisonTitle>
+                <ComparisonValue isPositive={statistics.previousDayComparison.revenueGrowthRate >= 0}>
+                  {statistics.previousDayComparison.revenueGrowthRate >= 0 ? '+' : ''}
+                  {statistics.previousDayComparison.revenueGrowthRate.toFixed(1)}%
+                </ComparisonValue>
+              </ComparisonCard>
+              <ComparisonCard>
+                <ComparisonTitle>전일 대비 주문 건수 차이</ComparisonTitle>
+                <ComparisonValue isPositive={statistics.previousDayComparison.orderCountDifference >= 0}>
+                  {statistics.previousDayComparison.orderCountDifference >= 0 ? '+' : ''}
+                  {statistics.previousDayComparison.orderCountDifference}건
+                </ComparisonValue>
+              </ComparisonCard>
+            </ComparisonContainer>
+
+            <SectionTitle>시간대별 매출</SectionTitle>
+            <HourlySalesChart salesByHour={statistics.salesByHour} />
+
+            <PopularProductsSection popularProducts={statistics.popularProducts} />
+          </>
+        )}
       </Container>
     </AppContainer>
   );
