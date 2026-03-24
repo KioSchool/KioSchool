@@ -4,9 +4,9 @@ import { match, P } from 'ts-pattern';
 import { PopularProducts, PopularProductItem } from '@@types/index';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { getRankBackgroundColor } from '@styles/dashboardStyles';
-import DashboardCard from '@components/admin/workspace/dashboard/DashboardCard';
+import ContentCard from '@components/common/card/ContentCard';
 
-type TabKey = 'byQuantity' | 'byReorderRate' | 'byRevenue';
+type TabKey = 'byQuantity' | 'byRevenue' | 'byReorderRate';
 
 const TabContainer = styled.div`
   display: grid;
@@ -73,9 +73,9 @@ const EmptyText = styled.div`
 `;
 
 const tabConfig: { key: TabKey; label: string; unit: string }[] = [
-  { key: 'byQuantity', label: '판매량순', unit: '개' },
-  { key: 'byReorderRate', label: '재주문율순', unit: '%' },
-  { key: 'byRevenue', label: '매출순', unit: '원' },
+  { key: 'byQuantity', label: '판매량', unit: '개' },
+  { key: 'byRevenue', label: '판매액', unit: '원' },
+  { key: 'byReorderRate', label: '재주문율', unit: '%' },
 ];
 
 const formatValue = (value: number, unit: string) => {
@@ -94,7 +94,7 @@ function PopularProductsSection({ popularProducts }: PopularProductsSectionProps
   const items: PopularProductItem[] = popularProducts[selectedTab];
 
   return (
-    <DashboardCard title="상품별 순위 TOP10" showDivider={false}>
+    <ContentCard title="상품별 순위 TOP10" showDivider={false}>
       <TabContainer>
         {tabConfig.map((tab) => (
           <Tab key={tab.key} isSelected={selectedTab === tab.key} onClick={() => setSelectedTab(tab.key)}>
@@ -118,7 +118,7 @@ function PopularProductsSection({ popularProducts }: PopularProductsSectionProps
           )
           .otherwise(() => null)}
       </ListWrapper>
-    </DashboardCard>
+    </ContentCard>
   );
 }
 

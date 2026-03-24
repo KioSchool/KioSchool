@@ -36,7 +36,7 @@ const ContentWrapper = styled.div`
   flex: 1;
 `;
 
-interface DashboardCardProps {
+interface ContentCardProps {
   title: string;
   children: ReactNode;
   width?: number;
@@ -45,7 +45,7 @@ interface DashboardCardProps {
   rightAction?: ReactNode;
 }
 
-function DashboardCard({ title, children, width, height, showDivider = true, rightAction }: DashboardCardProps) {
+function ContentCard({ title, children, width, height, showDivider = true, rightAction }: ContentCardProps) {
   return (
     <Container width={width} height={height}>
       <TitleRow>
@@ -58,4 +58,4 @@ function DashboardCard({ title, children, width, height, showDivider = true, rig
   );
 }
 
-export default DashboardCard;
+export default ContentCard;

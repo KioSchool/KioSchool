@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { match } from 'ts-pattern';
-import DashboardCard from './DashboardCard';
+import ContentCard from '@components/common/card/ContentCard';
 import ProductCard from '@components/admin/product/ProductCard';
 import { rowFlex } from '@styles/flexStyles';
 import { ActionButton, EmptyText } from '@styles/dashboardStyles';
@@ -32,7 +32,7 @@ function OutOfStockList() {
 
   const rightAction = <ActionButton onClick={handleNavigate}>상품 관리 페이지로 이동 {'>'}</ActionButton>;
   return (
-    <DashboardCard title="품절된 상품" width={480} height={240} rightAction={rightAction} showDivider={false}>
+    <ContentCard title="품절된 상품" width={480} height={240} rightAction={rightAction} showDivider={false}>
       {match(outOfStockProducts.length)
         .with(0, () => <EmptyText>품절된 상품이 없습니다.</EmptyText>)
         .otherwise(() => (
@@ -44,7 +44,7 @@ function OutOfStockList() {
             ))}
           </ProductList>
         ))}
-    </DashboardCard>
+    </ContentCard>
   );
 }
 

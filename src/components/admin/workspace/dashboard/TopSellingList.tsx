@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import DashboardCard from './DashboardCard';
+import ContentCard from '@components/common/card/ContentCard';
 import { rowFlex, colFlex } from '@styles/flexStyles';
 import { getRankBackgroundColor } from '@styles/dashboardStyles';
 import { useAtomValue } from 'jotai';
@@ -50,7 +50,7 @@ function TopSellingList() {
   const { topSellingProducts } = useAtomValue(adminDashboardAtom);
 
   return (
-    <DashboardCard title="인기 순위 TOP5" width={302} height={240} showDivider={false}>
+    <ContentCard title="인기 순위 TOP5" width={302} height={240} showDivider={false}>
       <ListWrapper>
         {match(topSellingProducts)
           .with([], () => <ProductName>데이터가 없습니다.</ProductName>)
@@ -67,7 +67,7 @@ function TopSellingList() {
           )
           .otherwise(() => null)}
       </ListWrapper>
-    </DashboardCard>
+    </ContentCard>
   );
 }
 
