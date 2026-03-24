@@ -93,7 +93,7 @@ function AdminOrderStatistics() {
           <CustomSelect value={dateLabel} triggerLabel={dateLabel} highlightOnSelect={true} width="160px">
             <CustomDatePicker mode="single" selectedDate={selectedDate} onDateChange={setSelectedDate} />
           </CustomSelect>
-          {statistics?.lastUpdated && (
+          {statistics?.lastUpdated && !isNaN(new Date(statistics.lastUpdated).getTime()) && (
             <UpdateLabel>
               {statistics.isRealTime ? '실시간' : '최종 업데이트'} {format(new Date(statistics.lastUpdated), 'HH:mm')}
             </UpdateLabel>
@@ -116,22 +116,24 @@ function AdminOrderStatistics() {
               <StatCard title="평균 체류 시간" value={formatMinutesToTime(statistics.averageStayTimeMinutes)} />
             </StatCardRow>
 
-            <ComparisonContainer>
-              <ComparisonCard>
-                <ComparisonTitle>전일 대비 매출 증감률</ComparisonTitle>
-                <ComparisonValue isPositive={statistics.previousDayComparison.revenueGrowthRate >= 0}>
-                  {statistics.previousDayComparison.revenueGrowthRate >= 0 ? '+' : ''}
-                  {statistics.previousDayComparison.revenueGrowthRate.toFixed(1)}%
-                </ComparisonValue>
-              </ComparisonCard>
-              <ComparisonCard>
-                <ComparisonTitle>전일 대비 주문 건수 차이</ComparisonTitle>
-                <ComparisonValue isPositive={statistics.previousDayComparison.orderCountDifference >= 0}>
-                  {statistics.previousDayComparison.orderCountDifference >= 0 ? '+' : ''}
-                  {statistics.previousDayComparison.orderCountDifference}건
-                </ComparisonValue>
-              </ComparisonCard>
-            </ComparisonContainer>
+            {statistics.previousDayComparison && (
+              <ComparisonContainer>
+                <ComparisonCard>
+                  <ComparisonTitle>전일 대비 매출 증감률</ComparisonTitle>
+                  <ComparisonValue isPositive={statistics.previousDayComparison.revenueGrowthRate >= 0}>
+                    {statistics.previousDayComparison.revenueGrowthRate >= 0 ? '+' : ''}
+                    {statistics.previousDayComparison.revenueGrowthRate.toFixed(1)}%
+                  </ComparisonValue>
+                </ComparisonCard>
+                <ComparisonCard>
+                  <ComparisonTitle>전일 대비 주문 건수 차이</ComparisonTitle>
+                  <ComparisonValue isPositive={statistics.previousDayComparison.orderCountDifference >= 0}>
+                    {statistics.previousDayComparison.orderCountDifference >= 0 ? '+' : ''}
+                    {statistics.previousDayComparison.orderCountDifference}건
+                  </ComparisonValue>
+                </ComparisonCard>
+              </ComparisonContainer>
+            )}
 
             <SectionTitle>시간대별 매출</SectionTitle>
             <HourlySalesChart salesByHour={statistics.salesByHour} />
