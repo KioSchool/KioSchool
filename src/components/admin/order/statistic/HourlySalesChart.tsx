@@ -1,26 +1,52 @@
 import styled from '@emotion/styled';
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Bar, Line, ComposedChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { HourlySales } from '@@types/index';
 import { Color } from '@resources/colors';
-import { colFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
-const Container = styled.div`
+const ChartContainer = styled.div`
   width: 100%;
   height: 400px;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  padding: 12px;
+  box-sizing: border-box;
 `;
 
 const FallbackContainer = styled.div`
   width: 100%;
   height: 400px;
-  ${colFlex({ justify: 'center', align: 'center' })};
-  font-size: 20px;
-  color: ${Color.GREY};
-  font-weight: 600;
+  padding-top: 12px;
+  font-size: 12px;
+  color: #939393;
+  font-weight: 500;
+  ${colFlex({ justify: 'start', align: 'start' })};
+`;
+
+const Legend = styled.div`
+  gap: 12px;
+  padding-top: 12px;
+  font-size: 12px;
+  color: #000;
+  ${rowFlex({ align: 'center' })};
+`;
+
+const LegendItem = styled.div`
+  gap: 6px;
+  ${rowFlex({ align: 'center' })};
+`;
+
+const LegendLine = styled.div<{ color: string }>`
+  width: 17px;
+  height: 0;
+  border-top: 2px solid ${({ color }) => color};
 `;
 
 const XAxisFormatter = (hour: number) => `${hour}시`;
 
-const YAxisFormatter = (value: number) => (value >= 10000 ? `${(value / 10000).toFixed(0)}만원` : `${value.toLocaleString()}원`);
+const RevenueYAxisFormatter = (value: number) => (value >= 10000 ? `${(value / 10000).toFixed(0)}만원` : `${value.toLocaleString()}원`);
+
+const OrderCountYAxisFormatter = (value: number) => `${value}건`;
 
 interface HourlySalesChartProps {
   salesByHour: HourlySales[];
@@ -34,23 +60,37 @@ function HourlySalesChart({ salesByHour }: HourlySalesChartProps) {
   }
 
   return (
-    <Container>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={salesByHour} margin={{ top: 5, right: 30, left: 60, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="hour" tickFormatter={XAxisFormatter} />
-          <YAxis tickFormatter={YAxisFormatter} />
-          <Tooltip
-            labelFormatter={(hour) => `${hour}시`}
-            formatter={(value: number, name: string) => {
-              if (name === 'revenue') return [`${value.toLocaleString()}원`, '매출'];
-              return [`${value}건`, '주문 건수'];
-            }}
-          />
-          <Bar dataKey="revenue" name="revenue" fill={Color.KIO_ORANGE} barSize={20} />
-        </BarChart>
-      </ResponsiveContainer>
-    </Container>
+    <>
+      <ChartContainer>
+        <ResponsiveContainer width="100%" height="100%">
+          <ComposedChart data={salesByHour} margin={{ top: 5, right: 60, left: 60, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="hour" tickFormatter={XAxisFormatter} />
+            <YAxis yAxisId="revenue" tickFormatter={RevenueYAxisFormatter} />
+            <YAxis yAxisId="orderCount" orientation="right" tickFormatter={OrderCountYAxisFormatter} />
+            <Tooltip
+              labelFormatter={(hour) => `${hour}시`}
+              formatter={(value: number, name: string) => {
+                if (name === 'revenue') return [`${value.toLocaleString()}원`, '매출액'];
+                return [`${value}건`, '주문 건수'];
+              }}
+            />
+            <Bar yAxisId="revenue" dataKey="revenue" name="revenue" fill={Color.KIO_ORANGE} barSize={20} />
+            <Line yAxisId="orderCount" dataKey="orderCount" name="orderCount" stroke={Color.GREEN} strokeWidth={2} dot={false} />
+          </ComposedChart>
+        </ResponsiveContainer>
+      </ChartContainer>
+      <Legend>
+        <LegendItem>
+          <LegendLine color={Color.KIO_ORANGE} />
+          <span>시간대별 매출액</span>
+        </LegendItem>
+        <LegendItem>
+          <LegendLine color={Color.GREEN} />
+          <span>시간대별 주문 건수</span>
+        </LegendItem>
+      </Legend>
+    </>
   );
 }
 
