@@ -41,6 +41,10 @@ const Value = styled.b`
   color: #464a4d;
 `;
 
+const Unit = styled.span`
+  font-size: 22px;
+`;
+
 const Description = styled.div`
   line-height: 15px;
   font-size: 14px;
@@ -50,18 +54,22 @@ const Description = styled.div`
 interface StatCardProps {
   title: string;
   value: string | number;
+  unit?: string;
   description?: string;
   highlightRate?: number;
 }
 
-function StatCard({ title, value, description, highlightRate }: StatCardProps) {
+function StatCard({ title, value, unit, description, highlightRate }: StatCardProps) {
   return (
     <Container>
       {match(highlightRate)
         .with(P.number.gt(0), (rate) => <BackgroundHighlight rate={rate} />)
         .otherwise(() => null)}
       <Title>{title}</Title>
-      <Value>{value}</Value>
+      <Value>
+        {value}
+        {unit && <Unit>{unit}</Unit>}
+      </Value>
       {description && <Description>{description}</Description>}
     </Container>
   );
