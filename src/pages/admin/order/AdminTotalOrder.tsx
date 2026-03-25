@@ -12,6 +12,7 @@ import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useEffect } from 'react';
 import { OrderStatus } from '@@types/index';
 import { useAdminFetchTotalOrder } from '@hooks/admin/useAdminFetchTotalOrder';
+import StatCard from '@components/common/card/StatCard';
 
 const FilterContainer = styled.div`
   width: 100%;
@@ -53,9 +54,27 @@ const OrderListContainer = styled.div`
   ${colFlex({ align: 'stretch' })}
 `;
 
+const StatCardsWrapper = styled.div`
+  width: 100%;
+  padding: 16px 0;
+  flex-wrap: wrap;
+  gap: 10px 9px;
+  ${rowFlex({ justify: 'flex-start' })}
+`;
+
 function AdminTotalOrder() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { data: orders, filters, setFilters, handleReset, sortOptions, tableOptions, statusOptions } = useAdminFetchTotalOrder(workspaceId);
+  const {
+    data: orders,
+    totalCount,
+    totalRevenue,
+    filters,
+    setFilters,
+    handleReset,
+    sortOptions,
+    tableOptions,
+    statusOptions,
+  } = useAdminFetchTotalOrder(workspaceId);
   const { fetchProducts } = useAdminProducts(workspaceId);
 
   useEffect(() => {
@@ -93,6 +112,10 @@ function AdminTotalOrder() {
           <CustomSelect value={tableNumber} options={tableOptions} onChange={setTableNumber} highlightOnSelect={true} width="150px" />
         </FilterContainer>
         <SearchInput value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} placeholder="주문번호나 주문자명을 입력해주세요." />
+        <StatCardsWrapper>
+          <StatCard title="총 주문 건 수" value={totalCount.toLocaleString()} unit="건" height={100} />
+          <StatCard title="총 매출액" value={totalRevenue.toLocaleString()} unit="원" height={100} />
+        </StatCardsWrapper>
         {orders.length > 0 ? (
           <OrderListContainer>
             {orders.map((order) => (

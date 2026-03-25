@@ -7,7 +7,7 @@ import AppContainer from '@components/common/container/AppContainer';
 import CustomSelect from '@components/common/select/CustomSelect';
 import CustomDatePicker from '@components/common/date-picker/CustomDatePicker';
 import CustomCheckbox from '@components/common/checkbox/CustomCheckbox';
-import StatCard from '@components/admin/workspace/dashboard/StatCard';
+import StatCard from '@components/common/card/StatCard';
 import TimelineGrid from '@components/admin/order/timeline/TimelineGrid';
 import SessionDetailModal from '@components/admin/order/timeline/SessionDetailModal';
 import { useAdminFetchTableSessionTimeline } from '@hooks/admin/useAdminFetchTableSessionTimeline';
@@ -113,10 +113,10 @@ function AdminOrderTimeline() {
         </FilterContainer>
 
         <StatCardRow>
-          <StatCard title="총 주문 건 수" value={`${summaryStats.totalOrderCount}건`} />
-          <StatCard title="총 매출액" value={`${summaryStats.totalRevenue.toLocaleString()}원`} />
-          <StatCard title="테이블 회전율" value={`${summaryStats.tableTurnoverRate.toFixed(1)}회전`} />
-          <StatCard title="테이블 이용 시간" value={formatMinutesToTime(summaryStats.averageDurationMinutes)} />
+          <StatCard title="총 주문 건 수" value={summaryStats.totalOrderCount} unit="건" height={100} />
+          <StatCard title="총 매출액" value={summaryStats.totalRevenue.toLocaleString()} unit="원" height={100} />
+          <StatCard title="테이블 회전율" value={summaryStats.tableTurnoverRate.toFixed(1)} unit="회전" height={100} />
+          <StatCard title="테이블 이용 시간" value={formatMinutesToTime(summaryStats.averageDurationMinutes)} height={100} />
         </StatCardRow>
 
         <TimelineGrid

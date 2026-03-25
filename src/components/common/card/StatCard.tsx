@@ -2,9 +2,10 @@ import { P, match } from 'ts-pattern';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 
-const Container = styled.div`
-  height: 123px;
-  width: 193px;
+const Container = styled.div<{ height?: number }>`
+  min-height: ${({ height }) => height ?? 123}px;
+  min-width: 193px;
+  flex: 1;
   box-shadow: 0px 4px 20px rgba(92, 92, 92, 0.05);
   border-radius: 16px;
   background-color: #fff;
@@ -40,6 +41,10 @@ const Value = styled.b`
   color: #464a4d;
 `;
 
+const Unit = styled.span`
+  font-size: 22px;
+`;
+
 const Description = styled.div`
   line-height: 15px;
   font-size: 14px;
@@ -49,18 +54,23 @@ const Description = styled.div`
 interface StatCardProps {
   title: string;
   value: string | number;
+  unit?: string;
   description?: string;
   highlightRate?: number;
+  height?: number;
 }
 
-function StatCard({ title, value, description, highlightRate }: StatCardProps) {
+function StatCard({ title, value, unit, description, highlightRate, height }: StatCardProps) {
   return (
-    <Container>
+    <Container height={height}>
       {match(highlightRate)
         .with(P.number.gt(0), (rate) => <BackgroundHighlight rate={rate} />)
         .otherwise(() => null)}
       <Title>{title}</Title>
-      <Value>{value}</Value>
+      <Value>
+        {value}
+        {unit && <Unit>{unit}</Unit>}
+      </Value>
       {description && <Description>{description}</Description>}
     </Container>
   );

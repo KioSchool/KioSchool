@@ -31,18 +31,22 @@ export const useAdminFetchTotalOrder = (workspaceId: string | undefined) => {
       .catch(console.error);
   }, [startDate, endDate, tableNumber, orderStatuses, workspaceId]);
 
-  const processedOrders = useMemo(() => {
+  const { processedOrders, totalCount, totalRevenue } = useMemo(() => {
     let result = [...orders];
 
     if (searchKeyword.trim() !== '') {
       result = result.filter((order) => String(order.orderNumber).includes(searchKeyword) || order.customerName.includes(searchKeyword));
     }
 
-    return result.sort((a, b) => {
+    result.sort((a, b) => {
       const timeA = new Date(a.createdAt).getTime();
       const timeB = new Date(b.createdAt).getTime();
       return sortOrder === 'LATEST' ? timeB - timeA : timeA - timeB;
     });
+
+    const revenue = result.reduce((sum, order) => sum + order.totalPrice, 0);
+
+    return { processedOrders: result, totalCount: result.length, totalRevenue: revenue };
   }, [orders, sortOrder, searchKeyword]);
 
   const handleReset = useCallback(() => {
@@ -52,6 +56,8 @@ export const useAdminFetchTotalOrder = (workspaceId: string | undefined) => {
 
   return {
     data: processedOrders,
+    totalCount,
+    totalRevenue,
     tableOptions,
     sortOptions,
     statusOptions,
