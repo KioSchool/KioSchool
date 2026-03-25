@@ -49,6 +49,8 @@ const LegendSquare = styled.div<{ color: string }>`
   background-color: ${({ color }) => color};
 `;
 
+const LegendTitle = styled.span``;
+
 const XAxisFormatter = (hour: number) => `${hour}시`;
 
 const RevenueYAxisFormatter = (value: number) => (value >= 10000 ? `${(value / 10000).toFixed(0)}만원` : `${value.toLocaleString()}원`);
@@ -90,11 +92,11 @@ function HourlySalesChart({ salesByHour }: HourlySalesChartProps) {
       <Legend>
         <LegendItem>
           <LegendSquare color={Color.KIO_ORANGE} />
-          <span>시간대별 매출액</span>
+          <LegendTitle>시간대별 매출액</LegendTitle>
         </LegendItem>
         <LegendItem>
           <LegendLine color={Color.GREEN} />
-          <span>시간대별 주문 건수</span>
+          <LegendTitle>시간대별 주문 건수</LegendTitle>
         </LegendItem>
       </Legend>
     </>
