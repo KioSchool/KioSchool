@@ -2,8 +2,8 @@ import { P, match } from 'ts-pattern';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 
-const Container = styled.div`
-  min-height: 123px;
+const Container = styled.div<{ height?: number }>`
+  min-height: ${({ height }) => height ?? 123}px;
   min-width: 193px;
   flex: 1;
   box-shadow: 0px 4px 20px rgba(92, 92, 92, 0.05);
@@ -57,11 +57,12 @@ interface StatCardProps {
   unit?: string;
   description?: string;
   highlightRate?: number;
+  height?: number;
 }
 
-function StatCard({ title, value, unit, description, highlightRate }: StatCardProps) {
+function StatCard({ title, value, unit, description, highlightRate, height }: StatCardProps) {
   return (
-    <Container>
+    <Container height={height}>
       {match(highlightRate)
         .with(P.number.gt(0), (rate) => <BackgroundHighlight rate={rate} />)
         .otherwise(() => null)}

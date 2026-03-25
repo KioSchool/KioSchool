@@ -113,8 +113,8 @@ function AdminTotalOrder() {
         </FilterContainer>
         <SearchInput value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} placeholder="주문번호나 주문자명을 입력해주세요." />
         <StatCardsWrapper>
-          <StatCard title="총 주문 건 수" value={totalCount.toLocaleString()} unit="건" />
-          <StatCard title="총 매출액" value={totalRevenue.toLocaleString()} unit="원" />
+          <StatCard title="총 주문 건 수" value={totalCount.toLocaleString()} unit="건" height={100} />
+          <StatCard title="총 매출액" value={totalRevenue.toLocaleString()} unit="원" height={100} />
         </StatCardsWrapper>
         {orders.length > 0 ? (
           <OrderListContainer>
