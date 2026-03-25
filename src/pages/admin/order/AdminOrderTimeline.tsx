@@ -113,10 +113,10 @@ function AdminOrderTimeline() {
         </FilterContainer>
 
         <StatCardRow>
-          <StatCard title="총 주문 건 수" value={summaryStats.totalOrderCount} unit="건" />
-          <StatCard title="총 매출액" value={summaryStats.totalRevenue.toLocaleString()} unit="원" />
-          <StatCard title="테이블 회전율" value={summaryStats.tableTurnoverRate.toFixed(1)} unit="회전" />
-          <StatCard title="테이블 이용 시간" value={formatMinutesToTime(summaryStats.averageDurationMinutes).replace(/분$/, '')} unit="분" />
+          <StatCard title="총 주문 건 수" value={summaryStats.totalOrderCount} unit="건" height={100} />
+          <StatCard title="총 매출액" value={summaryStats.totalRevenue.toLocaleString()} unit="원" height={100} />
+          <StatCard title="테이블 회전율" value={summaryStats.tableTurnoverRate.toFixed(1)} unit="회전" height={100} />
+          <StatCard title="테이블 이용 시간" value={formatMinutesToTime(summaryStats.averageDurationMinutes)} height={100} />
         </StatCardRow>
 
         <TimelineGrid
