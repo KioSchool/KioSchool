@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Link, useLocation, useParams } from 'react-router-dom';
-import { colFlex, rowFlex } from '@styles/flexStyles';
+import { colFlex } from '@styles/flexStyles';
 import { adminNavData } from '@constants/data/adminNavData';
 import { Color } from '@resources/colors';
 import { SIDE_NAV_WIDTH } from '@constants/layout';
@@ -27,28 +27,62 @@ const NavCategory = styled.div`
   ${colFlex()}
 `;
 
-const CategoryTitle = styled.h2`
-  margin: 10px 0;
+const CategoryTitle = styled.div`
   color: #464a4d;
-  font-size: 16px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 700;
 `;
 
-const SideNavLink = styled(Link, {
+const NavItem = styled('li', {
   shouldForwardProp: (prop) => prop !== 'isActive',
 })<{ isActive: boolean }>`
-  text-decoration: none;
+  position: relative;
+  list-style: none;
+  margin-left: 24px;
   color: #464a4d;
-  font-size: 14px;
-  font-style: normal;
+  font-size: 16px;
   font-weight: ${(props) => (props.isActive ? 700 : 400)};
+  line-height: 1.8;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: -14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: currentColor;
+  }
   cursor: pointer;
-  ${rowFlex()}
 
   &:hover {
     color: ${Color.KIO_ORANGE};
   }
+
+  ${(props) =>
+    props.isActive &&
+    `
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -64px;
+      width: ${SIDE_NAV_WIDTH}px;
+      height: 100%;
+      background-color: #fff0e5;
+      z-index: -1;
+    }
+  `}
+`;
+
+const SideNavLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
 `;
 
 interface SideNavProps {
@@ -81,9 +115,9 @@ function SideNav({ isOpen }: SideNavProps) {
         <NavCategory key={categoryData.category}>
           <CategoryTitle>{categoryData.category}</CategoryTitle>
           {categoryData.items.map((item) => (
-            <SideNavLink key={item.path} to={buildNavPath(item.path, item.defaultQuery)} isActive={isActiveLink(item.path)}>
-              {item.name}
-            </SideNavLink>
+            <NavItem key={item.path} isActive={isActiveLink(item.path)}>
+              <SideNavLink to={buildNavPath(item.path, item.defaultQuery)}>{item.name}</SideNavLink>
+            </NavItem>
           ))}
         </NavCategory>
       ))}
