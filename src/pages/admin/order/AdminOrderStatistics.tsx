@@ -77,6 +77,13 @@ function AdminOrderStatistics() {
   const dateLabel = format(selectedDate, 'yyyy년 MM월 dd일');
   const comparison = statistics?.previousDayComparison;
 
+  const orderDiff = Math.abs(comparison?.orderCountDifference ?? 0);
+  const orderDiffDirection = (comparison?.orderCountDifference ?? 0) >= 0 ? '증가' : '감소';
+  const comparisonValue = comparison ? formatWithSign(comparison.revenueGrowthRate, (v) => v.toFixed(1)) : '-';
+  const comparisonDescription = comparison ? `전일 대비 ${orderDiff}건의 주문이 ${orderDiffDirection}했습니다.` : '비교 데이터가 없습니다.';
+  const comparisonHighlight = comparison ? `${orderDiff}건` : undefined;
+  const comparisonColor = comparison ? getComparisonColor(comparison.revenueGrowthRate) : undefined;
+
   return (
     <AppContainer useFlex={colFlex({ justify: 'start' })} customWidth={'1200px'}>
       <Container>
@@ -92,46 +99,46 @@ function AdminOrderStatistics() {
         {isLoading && !statistics && <UpdateLabel>로딩 중...</UpdateLabel>}
 
         {statistics && (
-          <>
-            <StatCardRow>
-              <StatCard
-                title="총 주문 건수"
-                value={statistics.totalOrders.toLocaleString()}
-                description={`총 판매된 상품 수량은 ${statistics.totalSalesVolume}개입니다.`}
-                descriptionHighlight={`${statistics.totalSalesVolume}개`}
-                unit="건"
-              />
-              <StatCard
-                title="총 매출액"
-                value={statistics.totalRevenue.toLocaleString()}
-                description={`평균 주문 금액은 ${statistics.averageOrderAmount.toLocaleString()}원입니다.`}
-                descriptionHighlight={`${statistics.averageOrderAmount.toLocaleString()}원`}
-                unit="원"
-              />
-              <StatCard
-                title="전일 대비 주문 증감률"
-                value={comparison ? formatWithSign(comparison.revenueGrowthRate, (v) => v.toFixed(1)) : '-'}
-                description={comparison ? `전일 대비 주문 ${formatWithSign(comparison.orderCountDifference)}건` : '비교 데이터가 없습니다.'}
-                descriptionHighlight={comparison ? `${formatWithSign(comparison.orderCountDifference)}건` : undefined}
-                valueColor={comparison ? getComparisonColor(comparison.revenueGrowthRate) : undefined}
-                unit="%"
-              />
-              <StatCard
-                title="테이블 회전율"
-                value={statistics.tableTurnoverRate.toFixed(1)}
-                description={`평균 테이블 이용 시간 ${formatMinutesToTime(statistics.averageStayTimeMinutes)}입니다.`}
-                descriptionHighlight={formatMinutesToTime(statistics.averageStayTimeMinutes)}
-                unit="회전"
-              />
-            </StatCardRow>
+          <StatCardRow>
+            <StatCard
+              title="총 주문 건수"
+              value={statistics.totalOrders.toLocaleString()}
+              description={`총 판매된 상품 수량은 ${statistics.totalSalesVolume}개입니다.`}
+              descriptionHighlight={`${statistics.totalSalesVolume}개`}
+              unit="건"
+            />
+            <StatCard
+              title="총 매출액"
+              value={statistics.totalRevenue.toLocaleString()}
+              description={`평균 주문 금액은 ${statistics.averageOrderAmount.toLocaleString()}원입니다.`}
+              descriptionHighlight={`${statistics.averageOrderAmount.toLocaleString()}원`}
+              unit="원"
+            />
+            <StatCard
+              title="전일 대비 주문 증감률"
+              value={comparisonValue}
+              description={comparisonDescription}
+              descriptionHighlight={comparisonHighlight}
+              valueColor={comparisonColor}
+              unit="%"
+            />
+            <StatCard
+              title="테이블 회전율"
+              value={statistics.tableTurnoverRate.toFixed(1)}
+              description={`평균 테이블 이용 시간은 ${formatMinutesToTime(statistics.averageStayTimeMinutes)}입니다.`}
+              descriptionHighlight={formatMinutesToTime(statistics.averageStayTimeMinutes)}
+              unit="회전"
+            />
+          </StatCardRow>
+        )}
 
-            <SectionRow>
-              <ContentCard title="시간대별 추이" showDivider={false}>
-                <HourlySalesChart salesByHour={statistics.salesByHour} />
-              </ContentCard>
-              <PopularProductsSection popularProducts={statistics.popularProducts} />
-            </SectionRow>
-          </>
+        {statistics && (
+          <SectionRow>
+            <ContentCard title="시간대별 추이" showDivider={false}>
+              <HourlySalesChart salesByHour={statistics.salesByHour} />
+            </ContentCard>
+            <PopularProductsSection popularProducts={statistics.popularProducts} />
+          </SectionRow>
         )}
       </Container>
     </AppContainer>
