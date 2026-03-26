@@ -51,11 +51,11 @@ const LegendSquare = styled.div<{ color: string }>`
 
 const LegendTitle = styled.span``;
 
-const XAxisFormatter = (hour: number) => `${hour}시`;
+const xAxisFormatter = (hour: number) => `${hour}시`;
 
-const RevenueYAxisFormatter = (value: number) => (value >= 10000 ? `${(value / 10000).toFixed(0)}만원` : `${value.toLocaleString()}원`);
+const revenueYAxisFormatter = (value: number) => (value >= 10000 ? `${(value / 10000).toFixed(0)}만원` : `${value.toLocaleString()}원`);
 
-const OrderCountYAxisFormatter = (value: number) => `${value}건`;
+const orderCountYAxisFormatter = (value: number) => `${value}건`;
 
 interface HourlySalesChartProps {
   salesByHour: HourlySales[];
@@ -74,9 +74,9 @@ function HourlySalesChart({ salesByHour }: HourlySalesChartProps) {
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={salesByHour} margin={{ top: 5, right: 60, left: 60, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="hour" tickFormatter={XAxisFormatter} />
-            <YAxis yAxisId="revenue" tickFormatter={RevenueYAxisFormatter} />
-            <YAxis yAxisId="orderCount" orientation="right" tickFormatter={OrderCountYAxisFormatter} />
+            <XAxis dataKey="hour" tickFormatter={xAxisFormatter} />
+            <YAxis yAxisId="revenue" tickFormatter={revenueYAxisFormatter} />
+            <YAxis yAxisId="orderCount" orientation="right" tickFormatter={orderCountYAxisFormatter} />
             <Tooltip
               labelFormatter={(hour) => `${hour}시`}
               formatter={(value: number, name: string) => {
