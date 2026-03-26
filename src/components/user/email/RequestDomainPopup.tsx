@@ -31,8 +31,8 @@ const ContentContainer = styled.div`
   background: ${Color.WHITE};
   box-shadow: 3px 3px 10px 0 rgba(0, 0, 0, 0.05);
   gap: 24px;
-  ${colFlex({ justify: 'center', align: 'center' })};
   position: relative;
+  ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
 const CloseButtonIcon = styled(RiCloseCircleFill)`
@@ -110,16 +110,16 @@ function RequestDomainPopup({ onClose }: RequestDomainPopupProps) {
       <SubContainer>
         <ContentContainer>
           <CloseButtonIcon onClick={onClose} />
-          <Title>학교 도메인 추가 요청</Title>
+          <Title>학교 이메일 도메인 추가 요청</Title>
           <Description>
-            찾으시는 학교나 도메인이 없으신가요?{'\n'}
+            찾으시는 학교가 없으신가요?{'\n'}
             아래 정보를 입력해주시면 빠르게 추가해드리겠습니다.
           </Description>
 
-          <NewAppInput label="학교 이름" placeholder="예: 한국대학교" ref={schoolNameRef} width="100%" />
+          <NewAppInput label="학교 이름" placeholder="예: 건국대학교" ref={schoolNameRef} width="100%" />
 
           <NewAppInput
-            label="학교 이메일 (또는 도메인)"
+            label="학교 이메일 도메인(또는 본인 이메일)"
             placeholder="예: username@korea.ac.kr"
             ref={domainRef}
             width="100%"
