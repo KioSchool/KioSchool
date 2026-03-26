@@ -52,7 +52,7 @@ function PopularProductsSection({ popularProducts }: PopularProductsSectionProps
   }));
 
   return (
-    <ContentCard title="상품별 순위 TOP10" showDivider={false}>
+    <ContentCard title="상품별 순위 TOP5" showDivider={false}>
       <TabContainer>
         {tabConfig.map((tab) => (
           <Tab key={tab.key} isSelected={selectedTab === tab.key} onClick={() => setSelectedTab(tab.key)}>
