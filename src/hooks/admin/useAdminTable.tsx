@@ -15,16 +15,13 @@ function useAdminTable(workspaceId: string | undefined) {
       });
   };
 
-  const finishTableSession = async (orderSessionId: number, tableNumber: number) => {
-    return adminApi
-      .post('/order/session/end', {
-        workspaceId,
-        tableNumber,
-        orderSessionId,
-      })
-      .catch((error) => {
-        console.error('Error finishing table session:', error);
-      });
+  const finishTableSession = async (orderSessionId: number, tableNumber: number, isGhost?: boolean) => {
+    return adminApi.post('/order/session/end', {
+      workspaceId,
+      tableNumber,
+      orderSessionId,
+      isGhost,
+    });
   };
 
   const startTableSession = async (tableNumber: number) => {
