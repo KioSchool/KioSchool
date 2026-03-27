@@ -31,6 +31,7 @@ const DropdownList = styled.div`
   overflow: hidden;
   font-size: 12px;
   color: #464a4d;
+  box-shadow: 0 4px 20px 0 rgba(92, 92, 92, 0.1);
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
