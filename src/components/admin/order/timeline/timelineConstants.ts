@@ -1,4 +1,4 @@
-import { ActiveGhostType } from '@@types/index';
+import { GhostType } from '@@types/index';
 
 export const TIMELINE_START_HOUR = 9;
 export const TIMELINE_HOURS = 24;
@@ -18,10 +18,11 @@ export const TIMELINE_COLORS = {
   GHOST_STRIPE: 'rgba(149,133,176,0.25)',
 } as const;
 
-export const GHOST_MESSAGES: Record<ActiveGhostType, { badge: string; description: string }> = {
+export const GHOST_MESSAGES: Record<GhostType, { badge: string; description: string }> = {
+  NONE: { badge: '', description: '' },
   USER: {
     badge: '수동 종료 세션',
-    description: '관리자에 의해 종료된 세션입니다',
+    description: '운영진에 의해 종료된 세션입니다',
   },
   BATCH: {
     badge: '자동 종료 세션',

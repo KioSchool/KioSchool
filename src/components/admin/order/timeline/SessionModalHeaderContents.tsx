@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { OrderSessionWithOrder, ActiveGhostType } from '@@types/index';
+import { OrderSessionWithOrder } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { RiCloseLargeLine } from '@remixicon/react';
@@ -131,7 +131,7 @@ function SessionModalHeaderContents({ session, currentTime, onClose }: SessionMo
   const elapsedMinutes = differenceInMinutes(currentTime, start);
 
   const getBadge = () => {
-    if (isGhost) return { variant: 'ghost' as const, label: GHOST_MESSAGES[session.ghostType as ActiveGhostType].badge };
+    if (isGhost) return { variant: 'ghost' as const, label: GHOST_MESSAGES[session.ghostType].badge };
     if (isActive) return { variant: 'active' as const, label: '이용중' };
     return { variant: 'completed' as const, label: '사용완료' };
   };
@@ -158,7 +158,7 @@ function SessionModalHeaderContents({ session, currentTime, onClose }: SessionMo
             <GuideMessage>{SESSION_MESSAGES.ACTIVE_GUIDE}</GuideMessage>
           </ActiveSessionInfo>
         ))
-        .with({ isGhost: true }, () => <GhostInfoMessage>{GHOST_MESSAGES[session.ghostType as ActiveGhostType].description}</GhostInfoMessage>)
+        .with({ isGhost: true }, () => <GhostInfoMessage>{GHOST_MESSAGES[session.ghostType].description}</GhostInfoMessage>)
         .otherwise(() => (
           <SummaryStrip>
             <SummaryItem>

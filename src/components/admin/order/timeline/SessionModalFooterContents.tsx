@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
-import { GhostType, ActiveGhostType } from '@@types/index';
+import { GhostType } from '@@types/index';
 import { TIMELINE_COLORS, SESSION_MESSAGES, GHOST_MESSAGES } from './timelineConstants';
 import { match } from 'ts-pattern';
 
@@ -44,7 +44,7 @@ function SessionModalFooterContents({ totalPrice, isActive, ghostType }: Session
     <ModalFooter>
       {match({ isActive, isGhost })
         .with({ isActive: true }, () => <FooterGuideMessage>{SESSION_MESSAGES.ACTIVE_GUIDE}</FooterGuideMessage>)
-        .with({ isGhost: true }, () => <FooterGuideMessage>{GHOST_MESSAGES[ghostType as ActiveGhostType].description}</FooterGuideMessage>)
+        .with({ isGhost: true }, () => <FooterGuideMessage>{GHOST_MESSAGES[ghostType].description}</FooterGuideMessage>)
         .otherwise(() => (
           <>
             <FooterLabel>총 매출</FooterLabel>

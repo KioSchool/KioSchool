@@ -1,4 +1,3 @@
-import { GhostType } from '@@types/index';
 import { TIMELINE_COLORS } from './timelineConstants';
 
 export interface SessionBarStyle {
@@ -25,8 +24,8 @@ const COLOR_LEVELS: SessionBarStyle[] = [
 
 // 매출 금액을 min~max 범위에서 0~1 비율로 정규화한 뒤,
 // 비율에 따라 5단계 색상 레벨(연한 주황 → 진한 주황) 중 하나를 선택한다.
-export function getSessionBarStyle(totalPrice: number, ghostType: GhostType, orderCount: number, minPrice: number, maxPrice: number): SessionBarStyle {
-  if (ghostType !== 'NONE') return GHOST_STYLE;
+export function getSessionBarStyle(totalPrice: number, isGhost: boolean, orderCount: number, minPrice: number, maxPrice: number): SessionBarStyle {
+  if (isGhost) return GHOST_STYLE;
   if (orderCount === 0) return EMPTY_SESSION_STYLE;
   if (minPrice === maxPrice) return COLOR_LEVELS[COLOR_LEVELS.length - 1];
 

@@ -105,7 +105,7 @@ function SessionBar({ session, dayStart, currentTime, minPrice, maxPrice, onSess
   const orderCount = session.orderCount;
 
   const durationMinutes = differenceInMinutes(clippedEnd, clippedStart);
-  const barStyle = getSessionBarStyle(totalPrice, session.ghostType, orderCount, minPrice, maxPrice);
+  const barStyle = getSessionBarStyle(totalPrice, session.ghostType !== 'NONE', orderCount, minPrice, maxPrice);
   const showText = width >= MIN_BAR_WIDTH_FOR_TEXT;
 
   const customerNames = showText && orderCount > 0 ? [...new Set(session.orders.map((order) => order.customerName))] : [];
