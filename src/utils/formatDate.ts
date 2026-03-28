@@ -114,8 +114,9 @@ export const calculateDuration = (start: Date, end: Date) => {
  * @returns 포맷팅된 문자열 (예: "90" -> "1시간 30분", "45" -> "45분")
  */
 export const formatMinutesToTime = (minutes: number): string => {
-  const hours = Math.floor(minutes / 60);
-  const remainingMinutes = minutes % 60;
+  const rounded = Math.round(minutes);
+  const hours = Math.floor(rounded / 60);
+  const remainingMinutes = rounded % 60;
 
   if (hours > 0) {
     if (remainingMinutes > 0) {
@@ -124,7 +125,7 @@ export const formatMinutesToTime = (minutes: number): string => {
     return `${hours}시간`;
   }
 
-  return `${minutes}분`;
+  return `${rounded}분`;
 };
 
 /**

@@ -75,13 +75,6 @@ function useAdminOrder(workspaceId: string | undefined) {
     });
   };
 
-  const fetchOrderHourlyPrices = (props: { startDate: string; endDate: string; status?: OrderStatus }) => {
-    const response = adminApi.get('/orders/hourly/price', { params: { ...props, workspaceId } }).catch((error) => {
-      console.log(error);
-    });
-    return response;
-  };
-
   const fetchOrderSession = (orderSessionId: number) => {
     return adminApi.get<Order[]>('/order/session', { params: { workspaceId, orderSessionId } });
   };
@@ -99,7 +92,6 @@ function useAdminOrder(workspaceId: string | undefined) {
     fetchOrders,
     refundOrder,
     updateOrderProductCount,
-    fetchOrderHourlyPrices,
     fetchOrderSession,
     fetchOrderSessions,
   };

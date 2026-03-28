@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { match } from 'ts-pattern';
-import DashboardCard from './DashboardCard';
+import ContentCard from '@components/common/card/ContentCard';
 import { rowFlex } from '@styles/flexStyles';
 import { ActionButton, EmptyText } from '@styles/dashboardStyles';
 import RecentOrderCard from './RecentOrderCard';
@@ -28,7 +28,7 @@ function RecentOrders() {
   const rightAction = <ActionButton onClick={handleNavigate}>실시간 주문 조회 페이지로 이동 {'>'}</ActionButton>;
 
   return (
-    <DashboardCard title="최근 주문 내역" height={144} rightAction={rightAction}>
+    <ContentCard title="최근 주문 내역" height={144} rightAction={rightAction}>
       {match(recentOrders.length)
         .with(0, () => <EmptyText>현재 표시할 주문 내역이 없습니다.</EmptyText>)
         .otherwise(() => (
@@ -38,7 +38,7 @@ function RecentOrders() {
             ))}
           </OrderList>
         ))}
-    </DashboardCard>
+    </ContentCard>
   );
 }
 

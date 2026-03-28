@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import DashboardCard from './DashboardCard';
+import ContentCard from '@components/common/card/ContentCard';
 import { useState, useEffect, useMemo, ChangeEvent, useRef } from 'react';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { useParams } from 'react-router-dom';
@@ -61,9 +61,9 @@ function MemoCard({ initialMemo }: MemoCardProps) {
   };
 
   return (
-    <DashboardCard title="메모" height={120}>
+    <ContentCard title="메모" height={120}>
       <MemoTextArea value={memo} onChange={handleChange} placeholder="메모를 입력하세요..." />
-    </DashboardCard>
+    </ContentCard>
   );
 }
 
