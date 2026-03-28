@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { getRankBackgroundColor } from '@styles/dashboardStyles';
+import { formatRankedValue } from '@utils/rankedValueFormatter';
 
 const ListWrapper = styled.div`
   width: 100%;
@@ -71,7 +72,7 @@ function RankedList({ items, emptyText = '데이터가 없습니다.' }: RankedL
             <RankCircle rank={index + 1}>{index + 1}</RankCircle>
             <Name>{item.name}</Name>
           </RankInfo>
-          <Value>{item.value}</Value>
+          <Value>{formatRankedValue(item.value)}</Value>
         </ItemWrapper>
       ))}
     </ListWrapper>
