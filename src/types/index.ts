@@ -26,10 +26,17 @@ export interface OrderWebsocket {
   data: Order;
 }
 
+export type GhostType = 'NONE' | 'USER' | 'BATCH';
+export type ActiveGhostType = Exclude<GhostType, 'NONE'>;
+
 export interface OrderSession {
   expectedEndAt: string;
   endAt: string | null;
   tableNumber: number;
+  usageTime: number;
+  totalOrderPrice: number;
+  orderCount: number;
+  ghostType: GhostType;
   id: number;
   createdAt: string;
   updatedAt: string;
@@ -37,10 +44,6 @@ export interface OrderSession {
 
 export interface OrderSessionWithOrder extends OrderSession {
   orders: Array<Order>;
-  usageTime: number;
-  totalOrderPrice: number;
-  orderCount: number;
-  isGhostSession: boolean;
   customerName: string;
 }
 

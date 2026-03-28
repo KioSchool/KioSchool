@@ -75,7 +75,7 @@ function SessionDetailModal({ session, currentTime, isModalOpen, closeModal }: S
       <ModalContainer role="dialog" aria-modal="true" aria-labelledby="session-modal-title">
         <SessionModalHeaderContents session={session} currentTime={currentTime} onClose={closeModal} />
         <SessionModalMainContents session={session} />
-        <SessionModalFooterContents totalPrice={totalPrice} isActive={!session.endAt} isGhost={session.isGhostSession} />
+        <SessionModalFooterContents totalPrice={totalPrice} isActive={!session.endAt} ghostType={session.ghostType} />
       </ModalContainer>
     </>,
     portalRoot,
