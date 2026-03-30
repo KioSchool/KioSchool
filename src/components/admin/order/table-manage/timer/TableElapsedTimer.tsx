@@ -58,7 +58,7 @@ interface TableUsageTimeProps {
 
 function TableElapsedTimer({ orderSession, workspaceId, tableNumber, refetchTable }: TableUsageTimeProps) {
   const { isTableSessionActive, maxMinutes, gaugeValue, getGaugeText } = useTableElapsedTimer(orderSession);
-  const { handleEndSession } = useTableSession({
+  const { handleEndSession, EmptySessionConfirmModal } = useTableSession({
     workspaceId,
     currentExpectedEndAt: orderSession?.expectedEndAt,
     orderSessionId: orderSession?.id,
@@ -67,37 +67,40 @@ function TableElapsedTimer({ orderSession, workspaceId, tableNumber, refetchTabl
   });
 
   return (
-    <Container>
-      <Header>사용시간</Header>
-      <Content>
-        <Gauge
-          width={180}
-          height={140}
-          value={gaugeValue}
-          valueMin={0}
-          valueMax={maxMinutes}
-          startAngle={-90}
-          endAngle={90}
-          cornerRadius="50%"
-          text={({ value }) => getGaugeText(value)}
-          sx={{
-            [`& .${gaugeClasses.valueText}`]: {
-              fontSize: 11,
-              fontWeight: 500,
-              transform: 'translateY(-10px)',
-              textAlign: 'center',
-            },
-            [`& .${gaugeClasses.valueArc}`]: {
-              fill: isTableSessionActive ? Color.KIO_ORANGE : Color.LIGHT_GREY,
-            },
-            [`& .${gaugeClasses.referenceArc}`]: {
-              fill: Color.LIGHT_GREY,
-            },
-          }}
-        />
-        <EndSessionButton onClick={handleEndSession}>사용 종료</EndSessionButton>
-      </Content>
-    </Container>
+    <>
+      <Container>
+        <Header>사용시간</Header>
+        <Content>
+          <Gauge
+            width={180}
+            height={140}
+            value={gaugeValue}
+            valueMin={0}
+            valueMax={maxMinutes}
+            startAngle={-90}
+            endAngle={90}
+            cornerRadius="50%"
+            text={({ value }) => getGaugeText(value)}
+            sx={{
+              [`& .${gaugeClasses.valueText}`]: {
+                fontSize: 11,
+                fontWeight: 500,
+                transform: 'translateY(-10px)',
+                textAlign: 'center',
+              },
+              [`& .${gaugeClasses.valueArc}`]: {
+                fill: isTableSessionActive ? Color.KIO_ORANGE : Color.LIGHT_GREY,
+              },
+              [`& .${gaugeClasses.referenceArc}`]: {
+                fill: Color.LIGHT_GREY,
+              },
+            }}
+          />
+          <EndSessionButton onClick={handleEndSession}>사용 종료</EndSessionButton>
+        </Content>
+      </Container>
+      <EmptySessionConfirmModal />
+    </>
   );
 }
 

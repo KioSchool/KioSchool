@@ -1,6 +1,15 @@
 import { useEffect, useState } from 'react';
+import { AxiosError } from 'axios';
 import useAdminTable from '@hooks/admin/useAdminTable';
+import useConfirm from '@hooks/useConfirm';
 import { dateConverter } from '@utils/formatDate';
+
+const EMPTY_SESSION_ERROR_MESSAGE = '주문 내역이 없는 세션';
+
+function isEmptyOrderSessionError(error: unknown): boolean {
+  const axiosError = error as AxiosError<{ message?: string }>;
+  return axiosError.response?.status === 400 && !!axiosError.response?.data?.message?.includes(EMPTY_SESSION_ERROR_MESSAGE);
+}
 
 const SESSION_STORAGE_KEY = 'selectedTimeLimit';
 const DEFAULT_TIME_LIMIT = 10;
@@ -66,6 +75,12 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
   }, [selectedTimeLimit]);
 
   const { updateSessionEndTime, finishTableSession, startTableSession } = useAdminTable(workspaceId);
+  const { ConfirmModal: EmptySessionConfirmModal, confirm: confirmEmptySession } = useConfirm({
+    title: '주문 내역이 없는 세션입니다.',
+    description: '주문 타임라인에 저장하시겠습니까?',
+    okText: '저장',
+    cancelText: '취소',
+  });
 
   const handleApiAndRefetch = (apiCall: Promise<unknown>) => {
     apiCall
@@ -126,9 +141,20 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
     handleApiAndRefetch(updateSessionEndTime(orderSessionId, newEndDateString));
   };
 
+  const endSessionWithEmptyCheck = async (sessionId: number, table: number) => {
+    try {
+      return await finishTableSession(sessionId, table);
+    } catch (error) {
+      if (!isEmptyOrderSessionError(error)) throw error;
+
+      const isGhost = !Boolean(await confirmEmptySession());
+      return finishTableSession(sessionId, table, isGhost);
+    }
+  };
+
   const handleEndSession = () => {
     if (!orderSessionId || !tableNumber) return;
-    handleApiAndRefetch(finishTableSession(orderSessionId, tableNumber));
+    handleApiAndRefetch(endSessionWithEmptyCheck(orderSessionId, tableNumber));
   };
 
   const handleStartSession = () => {
@@ -177,5 +203,6 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
     handleIncreaseTime,
     handleEndSession,
     handleStartSession,
+    EmptySessionConfirmModal,
   };
 }

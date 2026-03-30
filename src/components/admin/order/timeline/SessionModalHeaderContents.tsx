@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
-import { OrderSessionWithOrder } from '@@types/index';
+import { GHOST_TYPE, OrderSessionWithOrder } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { RiCloseLargeLine } from '@remixicon/react';
 import { differenceInMinutes, format } from 'date-fns';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { formatMinutesToTime } from '@utils/formatDate';
-import { TIMELINE_COLORS, SESSION_MESSAGES } from './timelineConstants';
+import { TIMELINE_COLORS, SESSION_MESSAGES, GHOST_MESSAGES } from './timelineConstants';
 import { match } from 'ts-pattern';
 
 const ModalHeader = styled.div`
@@ -125,13 +125,13 @@ function SessionModalHeaderContents({ session, currentTime, onClose }: SessionMo
   const start = new Date(session.createdAt);
   const durationMinutes = session.usageTime;
   const isActive = !session.endAt;
-  const isGhost = session.isGhostSession;
+  const isGhost = session.ghostType !== GHOST_TYPE.NONE;
   const totalPrice = session.totalOrderPrice;
   const customerNameLabel = session.customerName || '주문자 없음';
   const elapsedMinutes = differenceInMinutes(currentTime, start);
 
   const getBadge = () => {
-    if (isGhost) return { variant: 'ghost' as const, label: SESSION_MESSAGES.GHOST_BADGE_LABEL };
+    if (isGhost) return { variant: 'ghost' as const, label: GHOST_MESSAGES[session.ghostType].badge };
     if (isActive) return { variant: 'active' as const, label: '이용중' };
     return { variant: 'completed' as const, label: '사용완료' };
   };
@@ -158,7 +158,7 @@ function SessionModalHeaderContents({ session, currentTime, onClose }: SessionMo
             <GuideMessage>{SESSION_MESSAGES.ACTIVE_GUIDE}</GuideMessage>
           </ActiveSessionInfo>
         ))
-        .with({ isGhost: true }, () => <GhostInfoMessage>{SESSION_MESSAGES.GHOST_DESCRIPTION}</GhostInfoMessage>)
+        .with({ isGhost: true }, () => <GhostInfoMessage>{GHOST_MESSAGES[session.ghostType].description}</GhostInfoMessage>)
         .otherwise(() => (
           <SummaryStrip>
             <SummaryItem>

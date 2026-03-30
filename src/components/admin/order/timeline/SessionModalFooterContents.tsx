@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
-import { TIMELINE_COLORS, SESSION_MESSAGES } from './timelineConstants';
+import { GHOST_TYPE, GhostType } from '@@types/index';
+import { TIMELINE_COLORS, SESSION_MESSAGES, GHOST_MESSAGES } from './timelineConstants';
 import { match } from 'ts-pattern';
 
 const ModalFooter = styled.div`
@@ -33,15 +34,17 @@ const FooterGuideMessage = styled.span`
 interface SessionModalFooterContentsProps {
   totalPrice: number;
   isActive: boolean;
-  isGhost: boolean;
+  ghostType: GhostType;
 }
 
-function SessionModalFooterContents({ totalPrice, isActive, isGhost }: SessionModalFooterContentsProps) {
+function SessionModalFooterContents({ totalPrice, isActive, ghostType }: SessionModalFooterContentsProps) {
+  const isGhost = ghostType !== GHOST_TYPE.NONE;
+
   return (
     <ModalFooter>
       {match({ isActive, isGhost })
         .with({ isActive: true }, () => <FooterGuideMessage>{SESSION_MESSAGES.ACTIVE_GUIDE}</FooterGuideMessage>)
-        .with({ isGhost: true }, () => <FooterGuideMessage>{SESSION_MESSAGES.GHOST_DESCRIPTION}</FooterGuideMessage>)
+        .with({ isGhost: true }, () => <FooterGuideMessage>{GHOST_MESSAGES[ghostType].description}</FooterGuideMessage>)
         .otherwise(() => (
           <>
             <FooterLabel>총 매출</FooterLabel>

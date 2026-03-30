@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import styled from '@emotion/styled';
-import { OrderSessionWithOrder } from '@@types/index';
+import { OrderSessionWithOrder, GHOST_TYPE } from '@@types/index';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { getSessionBarStyle } from './sessionBarStyle';
 import { formatMinutesToTime } from '@utils/formatDate';
@@ -103,10 +103,9 @@ function SessionBar({ session, dayStart, currentTime, minPrice, maxPrice, onSess
 
   const totalPrice = session.totalOrderPrice;
   const orderCount = session.orderCount;
-  const isGhost = session.isGhostSession;
 
   const durationMinutes = differenceInMinutes(clippedEnd, clippedStart);
-  const barStyle = getSessionBarStyle(totalPrice, isGhost, orderCount, minPrice, maxPrice);
+  const barStyle = getSessionBarStyle(totalPrice, session.ghostType !== GHOST_TYPE.NONE, orderCount, minPrice, maxPrice);
   const showText = width >= MIN_BAR_WIDTH_FOR_TEXT;
 
   const customerNames = showText && orderCount > 0 ? [...new Set(session.orders.map((order) => order.customerName))] : [];

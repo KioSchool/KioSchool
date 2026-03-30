@@ -1,3 +1,5 @@
+import { GhostType } from '@@types/index';
+
 export const TIMELINE_START_HOUR = 9;
 export const TIMELINE_HOURS = 24;
 
@@ -16,8 +18,18 @@ export const TIMELINE_COLORS = {
   GHOST_STRIPE: 'rgba(149,133,176,0.25)',
 } as const;
 
+export const GHOST_MESSAGES: Record<GhostType, { badge: string; description: string }> = {
+  NONE: { badge: '', description: '' },
+  USER: {
+    badge: '수동 종료 세션',
+    description: '운영진에 의해 종료된 세션입니다',
+  },
+  BATCH: {
+    badge: '자동 종료 세션',
+    description: '시스템에 의해 자동 종료된 세션입니다',
+  },
+};
+
 export const SESSION_MESSAGES = {
-  GHOST_DESCRIPTION: '유의미하지 않은 세션으로 분류되었습니다',
-  GHOST_BADGE_LABEL: '유의미하지 않은 세션',
   ACTIVE_GUIDE: '세션이 종료되면 집계가 가능해요',
 } as const;

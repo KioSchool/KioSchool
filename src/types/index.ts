@@ -26,10 +26,21 @@ export interface OrderWebsocket {
   data: Order;
 }
 
+export const GHOST_TYPE = {
+  NONE: 'NONE',
+  USER: 'USER',
+  BATCH: 'BATCH',
+} as const;
+export type GhostType = typeof GHOST_TYPE[keyof typeof GHOST_TYPE];
+
 export interface OrderSession {
   expectedEndAt: string;
   endAt: string | null;
   tableNumber: number;
+  usageTime: number;
+  totalOrderPrice: number;
+  orderCount: number;
+  ghostType: GhostType;
   id: number;
   createdAt: string;
   updatedAt: string;
@@ -37,10 +48,6 @@ export interface OrderSession {
 
 export interface OrderSessionWithOrder extends OrderSession {
   orders: Array<Order>;
-  usageTime: number;
-  totalOrderPrice: number;
-  orderCount: number;
-  isGhostSession: boolean;
   customerName: string;
 }
 
