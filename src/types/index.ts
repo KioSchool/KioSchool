@@ -26,8 +26,12 @@ export interface OrderWebsocket {
   data: Order;
 }
 
-export type GhostType = 'NONE' | 'USER' | 'BATCH';
-export type ActiveGhostType = Exclude<GhostType, 'NONE'>;
+export const GHOST_TYPE = {
+  NONE: 'NONE',
+  USER: 'USER',
+  BATCH: 'BATCH',
+} as const;
+export type GhostType = typeof GHOST_TYPE[keyof typeof GHOST_TYPE];
 
 export interface OrderSession {
   expectedEndAt: string;

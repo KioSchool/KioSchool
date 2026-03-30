@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
-import { GhostType } from '@@types/index';
+import { GHOST_TYPE, GhostType } from '@@types/index';
 import { TIMELINE_COLORS, SESSION_MESSAGES, GHOST_MESSAGES } from './timelineConstants';
 import { match } from 'ts-pattern';
 
@@ -38,7 +38,7 @@ interface SessionModalFooterContentsProps {
 }
 
 function SessionModalFooterContents({ totalPrice, isActive, ghostType }: SessionModalFooterContentsProps) {
-  const isGhost = ghostType !== 'NONE';
+  const isGhost = ghostType !== GHOST_TYPE.NONE;
 
   return (
     <ModalFooter>

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { OrderSessionWithOrder } from '@@types/index';
+import { GHOST_TYPE, OrderSessionWithOrder } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { RiCloseLargeLine } from '@remixicon/react';
@@ -125,7 +125,7 @@ function SessionModalHeaderContents({ session, currentTime, onClose }: SessionMo
   const start = new Date(session.createdAt);
   const durationMinutes = session.usageTime;
   const isActive = !session.endAt;
-  const isGhost = session.ghostType !== 'NONE';
+  const isGhost = session.ghostType !== GHOST_TYPE.NONE;
   const totalPrice = session.totalOrderPrice;
   const customerNameLabel = session.customerName || '주문자 없음';
   const elapsedMinutes = differenceInMinutes(currentTime, start);
