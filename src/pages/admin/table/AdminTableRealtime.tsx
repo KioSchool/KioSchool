@@ -19,6 +19,7 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { adminWorkspaceAtom, externalSidebarAtom } from '@jotai/admin/atoms';
 import { RIGHT_SIDEBAR_ACTION, Table } from '@@types/index';
 import NewCommonButton from '@components/common/button/NewCommonButton';
+import { RiSettings3Fill } from '@remixicon/react';
 
 const Container = styled.div`
   width: 100%;
@@ -55,6 +56,11 @@ const RightColumn = styled.div`
 const TopCards = styled.div`
   ${rowFlex({ justify: 'space-between' })};
   gap: 5px;
+`;
+
+const SettingIcon = styled(RiSettings3Fill)`
+  margin-right: 10px;
+  color: ${Color.WHITE};
 `;
 
 const SettingsButtonContainer = styled.div`
@@ -110,6 +116,7 @@ function AdminTableRealtime() {
       <>
         <SettingsButtonContainer>
           <NewCommonButton size="sm" onClick={handleOpenSettings}>
+            <SettingIcon />
             테이블 설정
           </NewCommonButton>
         </SettingsButtonContainer>
