@@ -32,11 +32,6 @@ const tabConfig: { key: TabKey; label: string; unit: string }[] = [
   { key: 'byReorderRate', label: '재주문율', unit: '%' },
 ];
 
-const formatValue = (value: number, unit: string) => {
-  if (unit === '원') return `${value.toLocaleString()}${unit}`;
-  return `${value}${unit}`;
-};
-
 interface PopularProductsSectionProps {
   popularProducts: PopularProducts;
 }
@@ -48,7 +43,8 @@ function PopularProductsSection({ popularProducts }: PopularProductsSectionProps
   const items: RankedItem[] = popularProducts[selectedTab].map((item) => ({
     id: item.productId,
     name: item.name,
-    value: formatValue(item.value, currentConfig.unit),
+    value: item.value,
+    unit: currentConfig.unit,
   }));
 
   return (

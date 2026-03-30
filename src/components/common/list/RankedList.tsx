@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { getRankBackgroundColor } from '@styles/dashboardStyles';
-import { formatRankedValue } from '@utils/rankedValueFormatter';
 
 const ListWrapper = styled.div`
   width: 100%;
@@ -51,13 +50,20 @@ const EmptyText = styled.div`
 export interface RankedItem {
   id: number | string;
   name: string;
-  value: string;
+  value: number;
+  unit: string;
 }
 
 interface RankedListProps {
   items: RankedItem[];
   emptyText?: string;
 }
+
+const formatRankedValue = (value: number, unit: string) => {
+  const formattedNumber = Number.isInteger(value) ? value.toLocaleString() : Number(value.toFixed(2)).toLocaleString();
+
+  return `${formattedNumber}${unit}`;
+};
 
 function RankedList({ items, emptyText = '데이터가 없습니다.' }: RankedListProps) {
   if (items.length === 0) {
@@ -72,7 +78,7 @@ function RankedList({ items, emptyText = '데이터가 없습니다.' }: RankedL
             <RankCircle rank={index + 1}>{index + 1}</RankCircle>
             <Name>{item.name}</Name>
           </RankInfo>
-          <Value>{formatRankedValue(item.value)}</Value>
+          <Value>{formatRankedValue(item.value, item.unit)}</Value>
         </ItemWrapper>
       ))}
     </ListWrapper>

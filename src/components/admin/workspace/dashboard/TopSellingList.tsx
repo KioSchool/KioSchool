@@ -9,7 +9,8 @@ function TopSellingList() {
   const items: RankedItem[] = topSellingProducts.map((item) => ({
     id: item.product.id,
     name: item.product.name,
-    value: `${item.totalQuantity}개`,
+    value: item.totalQuantity,
+    unit: '개',
   }));
 
   return (
