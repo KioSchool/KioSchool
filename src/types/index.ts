@@ -278,3 +278,42 @@ export interface DashboardResponse {
   recentOrders: Order[];
   outOfStockProducts: Product[];
 }
+
+export interface PreviousDayComparison {
+  revenueGrowthRate: number;
+  orderCountDifference: number;
+}
+
+export interface HourlySales {
+  hour: number;
+  orderCount: number;
+  revenue: number;
+}
+
+export interface PopularProductItem {
+  productId: number;
+  name: string;
+  value: number;
+}
+
+export interface PopularProducts {
+  byQuantity: PopularProductItem[];
+  byReorderRate: PopularProductItem[];
+  byRevenue: PopularProductItem[];
+}
+
+export interface DailyStatistics {
+  referenceDate: string;
+  totalSalesVolume: number;
+  totalRevenue: number;
+  averageOrderAmount: number;
+  totalOrders: number;
+  averageOrdersPerTable: number;
+  tableTurnoverRate: number;
+  averageStayTimeMinutes: number;
+  previousDayComparison: PreviousDayComparison | null;
+  salesByHour: HourlySales[];
+  popularProducts: PopularProducts;
+  isRealTime: boolean;
+  lastUpdated: string;
+}
