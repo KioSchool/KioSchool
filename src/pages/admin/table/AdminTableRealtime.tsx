@@ -1,4 +1,3 @@
-import { Table } from '@@types/index';
 import AdminTableList from '@components/admin/order/table-manage/list/AdminTableList';
 import AdminTableOrderList from '@components/admin/order/table-manage/list/AdminTableOrderList';
 import TableQRCode from '@components/admin/order/table-manage/qrcode/TableQRCode';
@@ -15,9 +14,12 @@ import useTableOrders from '@hooks/admin/useTableOrders';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useEffect, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
-import { useAtomValue } from 'jotai';
-import { adminWorkspaceAtom } from '@jotai/admin/atoms';
+import { useParams, useSearchParams, useLocation } from 'react-router-dom';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { adminWorkspaceAtom, externalSidebarAtom } from '@jotai/admin/atoms';
+import { RIGHT_SIDEBAR_ACTION, Table } from '@@types/index';
+import NewCommonButton from '@components/common/button/NewCommonButton';
+import { RiSettings3Fill } from '@remixicon/react';
 
 const Container = styled.div`
   width: 100%;
@@ -56,6 +58,17 @@ const TopCards = styled.div`
   gap: 5px;
 `;
 
+const SettingIcon = styled(RiSettings3Fill)`
+  margin-left: 10px;
+  color: ${Color.WHITE};
+`;
+
+const SettingsButtonContainer = styled.div`
+  width: 1000px;
+  padding-bottom: 24px;
+  ${colFlex({ align: 'end' })}
+`;
+
 const FallbackContainer = styled.div`
   height: 600px;
   border: 1px solid #ececec;
@@ -72,6 +85,9 @@ function AdminTableRealtime() {
   const { fetchWorkspaceTables } = useAdminWorkspace();
   const workspace = useAtomValue(adminWorkspaceAtom);
 
+  const location = useLocation();
+  const setExternalSidebar = useSetAtom(externalSidebarAtom);
+
   const [tables, setTables] = useState<Table[]>([]);
   const selectedTable = tables.find((t) => t.tableNumber === Number(tableNo));
   const { orders, totalOrderAmount, fetchOrders } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
@@ -86,9 +102,23 @@ function AdminTableRealtime() {
     fetchTables();
   }, [workspace.tableCount]);
 
+  const handleOpenSettings = () => {
+    setExternalSidebar({
+      location,
+      title: '테이블 설정',
+      action: RIGHT_SIDEBAR_ACTION.OPEN,
+      content: <TableSettingsSidebar />,
+    });
+  };
+
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })}>
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })}>
       <>
+        <SettingsButtonContainer>
+          <NewCommonButton size="sm" icon={<SettingIcon />} onClick={handleOpenSettings}>
+            테이블 설정
+          </NewCommonButton>
+        </SettingsButtonContainer>
         <Container>
           <AdminTableList tables={tables} />
           {selectedTable ? (
@@ -126,9 +156,7 @@ function AdminTableRealtime() {
             <FallbackContainer>테이블을 선택하여 상세 정보를 확인하세요.</FallbackContainer>
           )}
         </Container>
-        <RightSidebarModal title="테이블 설정" subtitle="모든 테이블에 즉시 적용됩니다." useOpenButton={true}>
-          <TableSettingsSidebar />
-        </RightSidebarModal>
+        <RightSidebarModal useExternalControl={{ location }} />
       </>
     </AppContainer>
   );
