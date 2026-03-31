@@ -59,7 +59,7 @@ const TopCards = styled.div`
 `;
 
 const SettingIcon = styled(RiSettings3Fill)`
-  margin-right: 10px;
+  margin-left: 10px;
   color: ${Color.WHITE};
 `;
 
@@ -115,8 +115,7 @@ function AdminTableRealtime() {
     <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })}>
       <>
         <SettingsButtonContainer>
-          <NewCommonButton size="sm" onClick={handleOpenSettings}>
-            <SettingIcon />
+          <NewCommonButton size="sm" icon={<SettingIcon />} onClick={handleOpenSettings}>
             테이블 설정
           </NewCommonButton>
         </SettingsButtonContainer>
