@@ -89,6 +89,7 @@ src/
 ```tsx
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
+import { mobileMediaQuery } from '@styles/globalStyles';
 import { Color } from '@resources/colors';
 
 // 1. Styled 컴포넌트 (함수 선언 전에 정의)
@@ -96,6 +97,10 @@ const Container = styled.div`
   color: ${Color.KIO_ORANGE};
 
   ${colFlex({ justify: 'center', align: 'center' })};
+
+  ${mobileMediaQuery} {
+    padding: 0 16px;
+  }
 `;
 
 // 2. Props 인터페이스
@@ -129,10 +134,11 @@ export default ExampleCard;
 
 **Emotion `styled`** 를 기본 스타일링 도구로 사용.
 
-- Flex 레이아웃: `colFlex()`, `rowFlex()` from `@styles/flexStyles` — 일반 CSS 속성 아래, 선택자(`&:hover` 등) 위에 배치
+- Flex 레이아웃: `colFlex()`, `rowFlex()` from `@styles/flexStyles`
 - 색상: `Color` 객체 from `@resources/colors` (`Color.KIO_ORANGE`, `Color.GREY` 등)
 - 조건부 스타일: props 기반 — `color: ${({ disabled }) => disabled ? Color.GREY : Color.KIO_ORANGE}`
 - 반응형: `mobileMediaQuery` (768px), `tabletMediaQuery` (1200px) from `@styles/globalStyles`
+- **Styled 컴포넌트 내부 배치 순서**: 일반 CSS 속성 → `colFlex`/`rowFlex` → `mediaQuery` (import해서 사용하는 것들은 맨 아래에, flex → mediaQuery 순서)
 - 폰트: LINE Seed Sans KR (글로벌 적용)
 
 ## State Management (Jotai)
