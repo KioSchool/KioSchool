@@ -43,9 +43,10 @@ const MinusIcon = styled(RiSubtractLine)<{ disabled: boolean }>`
 `;
 
 const QuantityLabel = styled.div`
-  width: 40px;
+  min-width: 40px;
   font-size: 14px;
   font-weight: 700;
+  white-space: nowrap;
   user-select: none;
   ${rowFlex({ justify: 'center' })}
 `;
