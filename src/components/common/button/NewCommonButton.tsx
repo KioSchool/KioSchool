@@ -132,8 +132,8 @@ interface NewCommonButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElem
 function NewCommonButton({ icon, gap, children, ...props }: NewCommonButtonProps) {
   return (
     <StyledButton gap={gap} {...props}>
+      {icon}
       {children}
-      {icon && icon}
     </StyledButton>
   );
 }
