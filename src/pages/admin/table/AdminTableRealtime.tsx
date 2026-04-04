@@ -59,7 +59,7 @@ const TopCards = styled.div`
 `;
 
 const SettingIcon = styled(RiSettings3Fill)`
-  margin-left: 10px;
+  margin-right: 10px;
   color: ${Color.WHITE};
 `;
 
