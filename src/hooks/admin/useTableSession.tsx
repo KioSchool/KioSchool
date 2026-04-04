@@ -77,9 +77,9 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
   const { updateSessionEndTime, finishTableSession, startTableSession } = useAdminTable(workspaceId);
   const { ConfirmModal: EmptySessionConfirmModal, confirm: confirmEmptySession } = useConfirm({
     title: '주문 내역이 없는 세션입니다.',
-    description: '주문 타임라인에 저장하시겠습니까?',
-    okText: '저장',
-    cancelText: '취소',
+    description: '주문 타임라인에 어떻게 저장하시겠습니까?',
+    okText: '유효한 세션으로 저장',
+    cancelText: '무효한 세션으로 저장',
   });
 
   const handleApiAndRefetch = (apiCall: Promise<unknown>) => {
@@ -147,7 +147,10 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
     } catch (error) {
       if (!isEmptyOrderSessionError(error)) throw error;
 
-      const isGhost = !Boolean(await confirmEmptySession());
+      const result = await confirmEmptySession();
+      if (result === null) return;
+
+      const isGhost = !Boolean(result);
       return finishTableSession(sessionId, table, isGhost);
     }
   };
