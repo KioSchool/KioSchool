@@ -75,6 +75,12 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
   }, [selectedTimeLimit]);
 
   const { updateSessionEndTime, finishTableSession, startTableSession } = useAdminTable(workspaceId);
+  const { ConfirmModal: EndSessionConfirmModal, confirm: confirmEndSession } = useConfirm({
+    title: '세션을 종료하시겠습니까?',
+    description: '종료 후 되돌릴 수 없습니다.',
+    okText: '종료',
+    cancelText: '취소',
+  });
   const { ConfirmModal: EmptySessionConfirmModal, confirm: confirmEmptySession } = useConfirm({
     title: '주문 내역이 없는 세션입니다.',
     description: '주문 타임라인에 어떻게 저장하시겠습니까?',
@@ -155,8 +161,12 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
     }
   };
 
-  const handleEndSession = () => {
+  const handleEndSession = async () => {
     if (!orderSessionId || !tableNumber) return;
+
+    const confirmed = await confirmEndSession();
+    if (confirmed === null || confirmed === false) return;
+
     handleApiAndRefetch(endSessionWithEmptyCheck(orderSessionId, tableNumber));
   };
 
@@ -206,6 +216,7 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
     handleIncreaseTime,
     handleEndSession,
     handleStartSession,
+    EndSessionConfirmModal,
     EmptySessionConfirmModal,
   };
 }

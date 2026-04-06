@@ -5,7 +5,7 @@ import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 import { formatKoreanTime } from '@utils/formatDate';
 import useModal from '@hooks/useModal';
-import OrderDetailModal from '../../realtime/modal/order-detail/OrderDetailModal';
+import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
 
 const OrderRow = styled.div`
   display: grid;

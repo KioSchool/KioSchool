@@ -76,7 +76,7 @@ export const useAdminFetchTableSessionTimeline = (workspaceId: string | undefine
       const hasOrders = session.orderCount > 0;
 
       if (filters.showValidSessionsOnly) return isValidSession;
-      if (filters.hasOrders && !hasOrders) return false;
+      if (filters.hasOrders) return hasOrders;
       return true;
     });
   }, [sessions, filters, currentTime]);
