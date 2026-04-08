@@ -8,10 +8,7 @@ import { RiCloseLargeLine } from '@remixicon/react';
 const Container = styled.div`
   z-index: 1011;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(2px);
   ${colFlex({ justify: 'center', align: 'center' })}
