@@ -165,7 +165,7 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
     if (!orderSessionId || !tableNumber) return;
 
     const confirmed = await confirmEndSession();
-    if (confirmed === null || confirmed === false) return;
+    if (!confirmed) return;
 
     handleApiAndRefetch(endSessionWithEmptyCheck(orderSessionId, tableNumber));
   };
