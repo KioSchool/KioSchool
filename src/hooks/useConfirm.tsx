@@ -3,14 +3,12 @@ import { useState } from 'react';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import NewCommonButton from '@components/common/button/NewCommonButton';
+import { RiCloseLargeLine } from '@remixicon/react';
 
 const Container = styled.div`
   z-index: 1011;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(2px);
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -20,7 +18,21 @@ const SubContainer = styled.div`
   width: 800px;
   height: 176px;
   color: ${Color.WHITE};
+  position: relative;
   ${colFlex({ justify: 'space-between', align: 'center' })}
+`;
+
+const CloseButton = styled(RiCloseLargeLine)`
+  position: absolute;
+  top: -100px;
+  right: 10px;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 const TextContainer = styled.div`
@@ -73,12 +85,18 @@ function useConfirm({ title, description, okText, cancelText }: ConfirmProps) {
     handleClose();
   };
 
+  const handleDismiss = () => {
+    promise?.resolve(null);
+    handleClose();
+  };
+
   const ConfirmModal = () => {
     if (promise === null) return null;
 
     return (
       <Container className={'confirm-container'}>
         <SubContainer className={'confirm-sub-container'}>
+          <CloseButton onClick={handleDismiss} />
           <TextContainer className={'text-container'}>
             <TitleLabel>{title}</TitleLabel>
             <DescriptionLabel>{description}</DescriptionLabel>

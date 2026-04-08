@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { format } from 'date-fns';
+import { format, differenceInMinutes } from 'date-fns';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { OrderSessionWithOrder } from '@@types/index';
 import { MIN_VALID_SESSION_MINUTES } from '@components/admin/order/timeline/timelineConstants';
@@ -7,6 +7,11 @@ import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
 
 const POLLING_INTERVAL = 5 * 60 * 1000;
+
+function getEffectiveUsageTime(session: OrderSessionWithOrder, now: Date): number {
+  if (session.endAt) return session.usageTime;
+  return differenceInMinutes(now, new Date(session.createdAt));
+}
 
 interface SessionFilters {
   showValidSessionsOnly: boolean;
@@ -67,14 +72,14 @@ export const useAdminFetchTableSessionTimeline = (workspaceId: string | undefine
 
   const filteredSessions = useMemo(() => {
     return sessions.filter((session) => {
-      const isValidSession = session.usageTime >= MIN_VALID_SESSION_MINUTES;
+      const isValidSession = getEffectiveUsageTime(session, currentTime) >= MIN_VALID_SESSION_MINUTES;
       const hasOrders = session.orderCount > 0;
 
-      if (filters.showValidSessionsOnly && !isValidSession) return false;
-      if (filters.hasOrders && !hasOrders) return false;
+      if (filters.showValidSessionsOnly) return isValidSession;
+      if (filters.hasOrders) return hasOrders;
       return true;
     });
-  }, [sessions, filters]);
+  }, [sessions, filters, currentTime]);
 
   const summaryStats = useMemo((): SummaryStats => {
     const totalOrderCount = filteredSessions.reduce((sum, session) => sum + session.orderCount, 0);
@@ -83,11 +88,11 @@ export const useAdminFetchTableSessionTimeline = (workspaceId: string | undefine
     const tableCount = workspace.tableCount || 1;
     const tableTurnoverRate = filteredSessions.length / tableCount;
 
-    const totalDuration = filteredSessions.reduce((sum, session) => sum + session.usageTime, 0);
+    const totalDuration = filteredSessions.reduce((sum, session) => sum + getEffectiveUsageTime(session, currentTime), 0);
     const averageDurationMinutes = filteredSessions.length > 0 ? Math.round(totalDuration / filteredSessions.length) : 0;
 
     return { totalOrderCount, totalRevenue, tableTurnoverRate, averageDurationMinutes };
-  }, [filteredSessions, workspace.tableCount]);
+  }, [filteredSessions, workspace.tableCount, currentTime]);
 
   const priceRange = useMemo(() => {
     const sessionsWithOrders = filteredSessions.filter((session) => session.orderCount > 0);

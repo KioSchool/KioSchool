@@ -58,7 +58,7 @@ interface TableUsageTimeProps {
 
 function TableElapsedTimer({ orderSession, workspaceId, tableNumber, refetchTable }: TableUsageTimeProps) {
   const { isTableSessionActive, maxMinutes, gaugeValue, getGaugeText } = useTableElapsedTimer(orderSession);
-  const { handleEndSession, EmptySessionConfirmModal } = useTableSession({
+  const { handleEndSession, EndSessionConfirmModal, EmptySessionConfirmModal } = useTableSession({
     workspaceId,
     currentExpectedEndAt: orderSession?.expectedEndAt,
     orderSessionId: orderSession?.id,
@@ -99,6 +99,7 @@ function TableElapsedTimer({ orderSession, workspaceId, tableNumber, refetchTabl
           <EndSessionButton onClick={handleEndSession}>사용 종료</EndSessionButton>
         </Content>
       </Container>
+      <EndSessionConfirmModal />
       <EmptySessionConfirmModal />
     </>
   );
