@@ -1,33 +1,53 @@
-import { Table } from '@@types/index';
-import styled from '@emotion/styled';
-import { Color } from '@resources/colors';
-import TableListItem from './TableListItem';
 import { useState } from 'react';
+import styled from '@emotion/styled';
 import { RiExpandUpDownFill, RiArrowDropDownFill, RiArrowDropUpFill } from '@remixicon/react';
+
+import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Table } from '@@types/index';
+
+import TableListItem from './TableListItem';
 
 const ListContainer = styled.div`
   height: 600px;
   gap: 10px;
+
   ${colFlex()};
 `;
 
-const StatusBar = styled.div`
-  border: 1px solid ${Color.KIO_ORANGE};
+const FilterBar = styled.div`
+  background-color: ${Color.LIGHT_GREY};
   border-radius: 10px;
-  height: 47px;
-  padding: 0 20px;
-  font-weight: 600;
+  padding: 4px;
+  height: 48px;
   flex-shrink: 0;
-  ${rowFlex({ justify: 'space-between', align: 'center' })};
+
+  ${rowFlex()};
 `;
 
-const StatusLabel = styled.span`
+const TabButton = styled.button<{ active: boolean; isWarning?: boolean }>`
+  flex: 1;
+  border: none;
+  border-radius: 8px;
+  background-color: ${({ active }) => (active ? Color.WHITE : 'transparent')};
+  color: ${({ active, isWarning }) => (active ? (isWarning ? Color.RED : Color.KIO_ORANGE) : Color.GREY)};
+  font-weight: ${({ active }) => (active ? 'bold' : 'normal')};
+  box-shadow: ${({ active }) => (active ? '0 2px 8px rgba(0, 0, 0, 0.1)' : 'none')};
   font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  gap: 4px;
+
+  ${rowFlex({ justify: 'center', align: 'center' })};
+
+  &:hover {
+    background-color: ${({ active }) => (active ? Color.WHITE : Color.HEAVY_GREY)};
+  }
 `;
 
-const StatusCount = styled.span`
-  font-size: 15px;
+const TabCount = styled.span<{ active: boolean; isWarning?: boolean }>`
+  font-size: 14px;
+  color: ${({ active, isWarning }) => (active ? (isWarning ? Color.RED : Color.KIO_ORANGE) : Color.GREY)};
 `;
 
 const ListWrapper = styled.div`
@@ -35,6 +55,7 @@ const ListWrapper = styled.div`
   border-radius: 10px;
   overflow: hidden;
   flex: 1;
+
   ${colFlex()};
 `;
 
@@ -134,11 +155,32 @@ interface TableSessionListProps {
   tables: Table[];
 }
 
+type FilterType = 'ALL' | 'USING' | 'EMPTY' | 'EXCEEDED';
+
 function AdminTableList({ tables }: TableSessionListProps) {
   const [sortType, setSortType] = useState<SortType>(DEFAULT);
+  const [filterType, setFilterType] = useState<FilterType>('ALL');
+
+  const usingCount = tables.filter((table) => table.orderSession !== null).length;
+  const emptyCount = tables.length - usingCount;
+  const exceededCount = tables.filter((table) => {
+    if (!table.orderSession || !table.orderSession.expectedEndAt) return false;
+    return new Date(table.orderSession.expectedEndAt).getTime() <= Date.now();
+  }).length;
 
   const getSortedTables = () => {
-    const copiedTables = [...tables];
+    let copiedTables = [...tables];
+
+    if (filterType === 'USING') {
+      copiedTables = copiedTables.filter((table) => table.orderSession !== null);
+    } else if (filterType === 'EMPTY') {
+      copiedTables = copiedTables.filter((table) => table.orderSession === null);
+    } else if (filterType === 'EXCEEDED') {
+      copiedTables = copiedTables.filter((table) => {
+        if (!table.orderSession || !table.orderSession.expectedEndAt) return false;
+        return new Date(table.orderSession.expectedEndAt).getTime() <= Date.now();
+      });
+    }
 
     switch (sortType) {
       case STATUS_ASC:
@@ -156,16 +198,25 @@ function AdminTableList({ tables }: TableSessionListProps) {
     setSortType((prev) => NEXT_SORT_STATE[prev] || STATUS_ASC);
   };
 
-  const usingCount = tables.filter((table) => table.orderSession !== null).length;
-
   return (
     <ListContainer>
-      <StatusBar>
-        <StatusLabel>테이블 사용 현황</StatusLabel>
-        <StatusCount>
-          {usingCount}/{tables.length}
-        </StatusCount>
-      </StatusBar>
+      <FilterBar>
+        <TabButton active={filterType === 'ALL'} onClick={() => setFilterType('ALL')}>
+          전체 <TabCount active={filterType === 'ALL'}>{tables.length}</TabCount>
+        </TabButton>
+        <TabButton active={filterType === 'USING'} onClick={() => setFilterType('USING')}>
+          사용중 <TabCount active={filterType === 'USING'}>{usingCount}</TabCount>
+        </TabButton>
+        <TabButton active={filterType === 'EMPTY'} onClick={() => setFilterType('EMPTY')}>
+          미사용 <TabCount active={filterType === 'EMPTY'}>{emptyCount}</TabCount>
+        </TabButton>
+        <TabButton isWarning active={filterType === 'EXCEEDED'} onClick={() => setFilterType('EXCEEDED')}>
+          초과{' '}
+          <TabCount active={filterType === 'EXCEEDED'} isWarning>
+            {exceededCount}
+          </TabCount>
+        </TabButton>
+      </FilterBar>
       <ListWrapper>
         <Header>
           <HeaderText>테이블</HeaderText>

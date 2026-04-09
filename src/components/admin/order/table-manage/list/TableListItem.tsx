@@ -1,13 +1,21 @@
-import { Table } from '@@types/index';
+import { useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
+import { keyframes } from '@emotion/react';
+
 import useFormattedTime from '@hooks/useFormattedTime';
 import { Color } from '@resources/colors';
 import { formatRemainingTime } from '@utils/formatDate';
-import { useSearchParams } from 'react-router-dom';
+import { Table } from '@@types/index';
 
 type TimeStatus = 'selected' | 'expired' | 'warning' | 'normal';
 
 const WARNING_THRESHOLD_MS = 10 * 60 * 1000;
+
+const pulse = keyframes`
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+`;
 
 const getTimeStatus = (isSelected: boolean, expectedEndAt: string | undefined, isUsing: boolean): TimeStatus => {
   if (isSelected) return 'selected';
@@ -23,7 +31,7 @@ const getTimeStatus = (isSelected: boolean, expectedEndAt: string | undefined, i
 
 const TIME_STATUS_STYLES = {
   selected: { background: Color.KIO_ORANGE, color: Color.WHITE },
-  expired: { background: '#FF8080', color: Color.WHITE },
+  expired: { background: Color.RED, color: Color.WHITE },
   warning: { background: '#FFEBEB', color: Color.GREY },
   normal: { background: 'transparent', color: Color.GREY },
 };
@@ -44,6 +52,7 @@ const Row = styled.div<{ isSelected: boolean; expectedEndAt?: string; isUsing: b
     return `
       color: ${style.color};
       background-color: ${style.background};
+      ${status === 'expired' && !isSelected ? `animation: ${pulse} 2s infinite;` : ''}
     `;
   }}
 
@@ -56,12 +65,12 @@ const Row = styled.div<{ isSelected: boolean; expectedEndAt?: string; isUsing: b
 const Text = styled.div``;
 
 const StatusTag = styled.div<{ isUsing: boolean }>`
-  color: ${({ isUsing }) => (isUsing ? '#0CAF60' : '#6A6A6A')};
+  color: ${({ isUsing }) => (isUsing ? Color.GREEN : Color.GREY)};
   font-size: 15px;
   margin-left: 10px;
   padding: 5px 10px;
   border-radius: 13px;
-  background-color: ${({ isUsing }) => (isUsing ? '#e7f7ef' : '#F5F5F5')};
+  background-color: ${({ isUsing }) => (isUsing ? '#e7f7ef' : Color.LIGHT_GREY)};
 `;
 
 interface TableSessionItemProps {
