@@ -35,6 +35,7 @@ const ProducDescription = styled.div`
 
 const ProductRightContainer = styled.div`
   gap: 10px;
+  flex-shrink: 0;
   ${rowFlex()};
 `;
 
