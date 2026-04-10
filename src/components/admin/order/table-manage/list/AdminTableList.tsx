@@ -1,3 +1,4 @@
+import { isPast } from 'date-fns';
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import { RiExpandUpDownFill, RiArrowDropDownFill, RiArrowDropUpFill } from '@remixicon/react';
@@ -165,7 +166,7 @@ function AdminTableList({ tables }: TableSessionListProps) {
   const emptyCount = tables.length - usingCount;
   const exceededCount = tables.filter((table) => {
     if (!table.orderSession || !table.orderSession.expectedEndAt) return false;
-    return new Date(table.orderSession.expectedEndAt).getTime() <= Date.now();
+    return isPast(new Date(table.orderSession.expectedEndAt));
   }).length;
 
   const getSortedTables = () => {
@@ -178,7 +179,7 @@ function AdminTableList({ tables }: TableSessionListProps) {
     } else if (filterType === 'EXCEEDED') {
       copiedTables = copiedTables.filter((table) => {
         if (!table.orderSession || !table.orderSession.expectedEndAt) return false;
-        return new Date(table.orderSession.expectedEndAt).getTime() <= Date.now();
+        return isPast(new Date(table.orderSession.expectedEndAt));
       });
     }
 
