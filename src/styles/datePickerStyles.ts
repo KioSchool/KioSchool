@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { Color } from '@resources/colors';
 import { rowFlex } from './flexStyles';
 
 export const datePickerStyles = css`
@@ -114,7 +115,7 @@ export const datePickerStyles = css`
     position: absolute;
     width: 34px;
     height: 34px;
-    background-color: #ff9142;
+    background-color: ${Color.KIO_ORANGE};
     border-radius: 50%;
     z-index: -1;
   }

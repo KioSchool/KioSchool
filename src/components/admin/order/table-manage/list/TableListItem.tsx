@@ -32,7 +32,7 @@ const getTimeStatus = (isSelected: boolean, expectedEndAt: string | undefined, i
 const TIME_STATUS_STYLES = {
   selected: { background: Color.KIO_ORANGE, color: Color.WHITE },
   expired: { background: Color.RED, color: Color.WHITE },
-  warning: { background: '#FFEBEB', color: Color.GREY },
+  warning: { background: Color.LIGHT_RED, color: Color.GREY },
   normal: { background: 'transparent', color: Color.GREY },
 };
 
