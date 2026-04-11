@@ -28,7 +28,7 @@ export const ActionButton = styled.button`
 export const getRankBackgroundColor = (rank: number): string => {
   switch (rank) {
     case 1:
-      return '#ff9142';
+      return Color.KIO_ORANGE;
     case 2:
       return '#ffc9a3';
     case 3:

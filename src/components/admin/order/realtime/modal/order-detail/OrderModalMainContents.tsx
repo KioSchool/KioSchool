@@ -1,6 +1,7 @@
 import { Order, OrderProduct, OrderStatus, Product } from '@@types/index';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
@@ -27,7 +28,7 @@ const StatusLabelContainer = styled.div<{ isServed: boolean }>`
   border-radius: 8px;
   box-sizing: border-box;
   font-size: 12px;
-  background-color: ${(props) => (props.isServed ? '#ff9142' : 'white')};
+  background-color: ${(props) => (props.isServed ? Color.KIO_ORANGE : 'white')};
   border: ${(props) => (props.isServed ? '' : '1px solid #e8eef2')};
   color: ${(props) => (props.isServed ? '#ffffff' : '#464a4d')};
   ${rowFlex({ justify: 'center', align: 'center' })}
