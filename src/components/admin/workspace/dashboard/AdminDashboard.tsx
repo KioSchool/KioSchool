@@ -6,9 +6,7 @@ import { adminDashboardAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
 import useAdminDashboard from '@hooks/admin/useAdminDashboard';
 import { rowFlex, colFlex } from '@styles/flexStyles';
 import StatCard from '@components/common/card/StatCard';
-import RecentOrders from './RecentOrders';
 import NoticeBanner from './NoticeBanner';
-import OutOfStockList from './OutOfStockList';
 import TopSellingList from './TopSellingList';
 import MemoCard from './MemoCard';
 import { getBusinessStartDate } from '@utils/dashboard';
@@ -53,8 +51,6 @@ function AdminDashboard() {
     <DashboardContainer>
       <NoticeBanner />
 
-      <RecentOrders />
-
       <StatCardsWrapper>
         <StatCard title="사용 중인 테이블" value={usingTable} description={`${usageRate}% 사용률`} highlightRate={usageRate} />
         <StatCard title="오늘의 주문" value={stats.totalOrderCount} unit="건" description={`${businessStartDate} 9:00~`} />
@@ -64,7 +60,6 @@ function AdminDashboard() {
       </StatCardsWrapper>
 
       <BottomRow>
-        <OutOfStockList />
         <TopSellingList />
       </BottomRow>
 
