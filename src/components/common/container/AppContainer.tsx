@@ -112,7 +112,7 @@ function AppContainer({ children, useFlex, backgroundColor, useTitle = true, use
   const title = isAdminHome ? '키오스쿨' : workspace.name;
   const label = isAdminHome ? `${workspace.owner.name}님 환영합니다.` : getPageTitle(location.pathname);
 
-  const useNavBackground = location.pathname !== '/';
+  const useNavBackground = true;
   const sideNavOffset = isAdminWorkspace && isSideNavOpen ? SIDE_NAV_WIDTH : 0;
   const scale = calculateLayoutScale(windowWidth, customWidth, sideNavOffset);
 
