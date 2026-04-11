@@ -11,7 +11,6 @@ import OrderPayDescription from '@components/user/order/OrderPayDescription';
 import { HttpStatusCode } from 'axios';
 import { userOrderBasketAtom, userWorkspaceAtom } from '@jotai/user/atoms';
 import { useAtom, useAtomValue } from 'jotai';
-import { Color } from '@resources/colors';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import usePreventRefresh from '@hooks/usePreventRefresh';
 import useTossPopup from '@hooks/user/useTossPopup';
@@ -163,12 +162,7 @@ function OrderPay() {
       <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
       <SubContainer className={'order-pay-sub-container'}>
         <ContentsContainer>
-          <OrderPayRadio 
-            isTossAvailable={isTossAvailable} 
-            isTossPay={isTossPay} 
-            setIsTossPay={setIsTossPay} 
-            customerNameRef={customerNameRef} 
-          />
+          <OrderPayRadio isTossAvailable={isTossAvailable} isTossPay={isTossPay} setIsTossPay={setIsTossPay} customerNameRef={customerNameRef} />
           <HorizontalDivider />
           <OrderPayDescription />
         </ContentsContainer>

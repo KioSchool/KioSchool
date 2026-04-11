@@ -99,13 +99,14 @@ function OrderPayRadio({ isTossAvailable, isTossPay, setIsTossPay, customerNameR
           </OptionContainer>
         </PaymentOptions>
       </SectionContainer>
-      
+
       <SectionContainer>
         <GroupLabel>송금자명 입력</GroupLabel>
         <FormContainer>
           <NewAppInput ref={customerNameRef} placeholder={'예: 홍길동'} width={'100%'} height={36} />
           <FormHelperText>
-            주문 내역과 송금 내역을 정확하게 확인하기 위해<br />
+            주문 내역과 송금 내역을 정확하게 확인하기 위해
+            <br />
             실제로 송금하시는 분의 이름을 적어주세요.
           </FormHelperText>
         </FormContainer>

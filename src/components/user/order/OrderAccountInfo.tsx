@@ -116,9 +116,7 @@ function OrderAccountInfo() {
           <Key>예금주명</Key>
           <Value>{accountInfo?.accountHolder}</Value>
         </InfoRow>
-        <CopyButton onClick={copyAccountInfo}>
-          계좌 복사하기
-        </CopyButton>
+        <CopyButton onClick={copyAccountInfo}>계좌 복사하기</CopyButton>
       </AccountInfo>
     </Container>
   );
