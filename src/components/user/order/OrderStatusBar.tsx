@@ -80,7 +80,7 @@ const CancelText = styled.div`
   color: ${Color.KIO_ORANGE};
 `;
 
-const stepLabels = ['주문확인', '조리중', '서빙완료'];
+const stepLabels = ['입금 대기중', '조리중', '서빙완료'];
 const statusMap = {
   [OrderStatus.NOT_PAID]: 0,
   [OrderStatus.PAID]: 1,

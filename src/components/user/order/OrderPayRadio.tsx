@@ -1,13 +1,27 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import NewAppInput from '@components/common/input/NewAppInput';
+import React from 'react';
 
 const OrderPayRadioContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
   padding: 0 10px;
+  gap: 16px;
+  ${colFlex({ justify: 'center', align: 'start' })}
+`;
+
+const SectionContainer = styled.div`
+  width: 100%;
   gap: 8px;
   ${colFlex({ justify: 'center', align: 'start' })}
+`;
+
+const GroupLabel = styled.div`
+  font-size: 14px;
+  font-weight: 600;
+  color: ${Color.BLACK};
 `;
 
 const PaymentOptions = styled.fieldset`
@@ -37,41 +51,65 @@ const Radio = styled.input`
   }
 `;
 
-const GroupLabel = styled.div`
-  font-size: 14px;
-  font-weight: 600;
-  color: ${Color.BLACK};
-`;
-
 const OptionLabel = styled.label`
   font-size: 13px;
   font-weight: 400;
   color: ${Color.GREY};
 `;
 
+const FormContainer = styled.div`
+  width: 100%;
+  background-color: ${Color.LIGHT_GREY};
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 4px;
+  box-sizing: border-box;
+`;
+
+const FormHelperText = styled.div`
+  font-size: 11px;
+  color: ${Color.GREY};
+  margin-top: 6px;
+  line-height: 1.4;
+`;
+
 interface OrderPayRadioProps {
   isTossAvailable: boolean;
   isTossPay: boolean;
   setIsTossPay: (value: boolean) => void;
+  customerNameRef: React.RefObject<HTMLInputElement>;
 }
 
-function OrderPayRadio({ isTossAvailable, isTossPay, setIsTossPay }: OrderPayRadioProps) {
+function OrderPayRadio({ isTossAvailable, isTossPay, setIsTossPay, customerNameRef }: OrderPayRadioProps) {
   return (
     <OrderPayRadioContainer>
-      <GroupLabel>결제수단</GroupLabel>
-      <PaymentOptions name="paymentMethod">
-        {isTossAvailable && (
-          <OptionContainer>
-            <Radio type={'radio'} id="tossPay" checked={isTossPay} onChange={() => setIsTossPay(true)} />
-            <OptionLabel htmlFor="tossPay">토스페이</OptionLabel>
-          </OptionContainer>
-        )}
+      <SectionContainer>
+        <GroupLabel>송금수단</GroupLabel>
+        <PaymentOptions name="paymentMethod">
+          {isTossAvailable && (
+            <OptionContainer>
+              <Radio type={'radio'} id="tossPay" checked={isTossPay} onChange={() => setIsTossPay(true)} />
+              <OptionLabel htmlFor="tossPay">토스 송금</OptionLabel>
+            </OptionContainer>
+          )}
 
-        <OptionContainer>
-          <Radio type={'radio'} id="bankTransfer" checked={!isTossPay} onChange={() => setIsTossPay(false)} />
-          <OptionLabel htmlFor="bankTransfer">계좌이체</OptionLabel>
-        </OptionContainer>
-      </PaymentOptions>
+          <OptionContainer>
+            <Radio type={'radio'} id="bankTransfer" checked={!isTossPay} onChange={() => setIsTossPay(false)} />
+            <OptionLabel htmlFor="bankTransfer">계좌이체</OptionLabel>
+          </OptionContainer>
+        </PaymentOptions>
+      </SectionContainer>
+      
+      <SectionContainer>
+        <GroupLabel>송금자명 입력</GroupLabel>
+        <FormContainer>
+          <NewAppInput ref={customerNameRef} placeholder={'예: 홍길동'} width={'100%'} height={36} />
+          <FormHelperText>
+            주문 내역과 송금 내역을 정확하게 확인하기 위해<br />
+            실제로 송금하시는 분의 이름을 적어주세요.
+          </FormHelperText>
+        </FormContainer>
+      </SectionContainer>
     </OrderPayRadioContainer>
   );
 }

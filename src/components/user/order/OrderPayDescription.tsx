@@ -46,14 +46,17 @@ function OrderPayDescription() {
   return (
     <Container>
       <OrderInfoContainer>
-        <Label>결제 금액</Label>
+        <Label>송금하실 금액</Label>
         <Label>{totalPrice.toLocaleString()}원</Label>
       </OrderInfoContainer>
       <OrderInfoContainer>
         <Label>상품 수량</Label>
         <Label>{totalCount}개</Label>
       </OrderInfoContainer>
-      <Description>결제하기 버튼을 누른 후 송금을 꼭 완료해주셔야 주문 내역 페이지로 이동합니다.</Description>
+      <Description>
+        아래 버튼을 눌러 주문을 접수한 후, <br />
+        송금을 꼭 완료해주셔야 확인이 진행됩니다.
+      </Description>
     </Container>
   );
 }
