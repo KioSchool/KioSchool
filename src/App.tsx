@@ -18,7 +18,6 @@ import AdminOrderStatistics from '@pages/admin/order/AdminOrderStatistics';
 import AdminMyInfo from '@pages/admin/AdminMyInfo';
 import AdminProductCategories from '@pages/admin/AdminProductCategories';
 import ResetPassword from '@pages/user/ResetPassword';
-import Info from '@pages/user/info/Info';
 import SuperAdminHome from '@pages/super-admin/SuperAdminHome';
 import SuperAdminWorkspace from '@pages/super-admin/SuperAdminWorkspace';
 import SuperAdminManage from '@pages/super-admin/SuperAdminManage';
@@ -40,6 +39,7 @@ import { SentryRoutes } from 'src';
 import { USER_ROUTES, ORDER_ROUTES, ADMIN_ROUTES, SUPER_ADMIN_ROUTES, TEST_ROUTES } from '@constants/routes';
 import AdminOrderTimeline from '@pages/admin/order/AdminOrderTimeline';
 import AdminTableRealtime from '@pages/admin/table/AdminTableRealtime';
+import Info from '@pages/user/info/Info';
 
 function App() {
   useNetworkStatusNotifier();
