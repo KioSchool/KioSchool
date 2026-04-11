@@ -1,17 +1,14 @@
 import useAuthentication from '@hooks/useAuthentication';
 import { NavLinkItem } from '@components/common/nav/NavBar';
-import { useAtomValue } from 'jotai';
-import { adminWorkspaceAtom } from '@jotai/admin/atoms';
-import { USER_ROUTES, getAdminWorkspacePath } from '@constants/routes';
+import { ADMIN_ROUTES, USER_ROUTES } from '@constants/routes';
 
 function AuthenticationButton() {
   const { isLoggedIn } = useAuthentication();
-  const workspace = useAtomValue(adminWorkspaceAtom);
 
   return (
     <>
       {isLoggedIn() ? (
-        <NavLinkItem to={getAdminWorkspacePath(workspace.id)} className={'nav-link-item'}>
+        <NavLinkItem to={ADMIN_ROUTES.HOME} className={'nav-link-item'}>
           내 주점
         </NavLinkItem>
       ) : (
