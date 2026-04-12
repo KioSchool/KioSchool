@@ -4,12 +4,13 @@ import { useAtomValue } from 'jotai';
 import styled from '@emotion/styled';
 import { adminDashboardAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
 import useAdminDashboard from '@hooks/admin/useAdminDashboard';
-import { rowFlex, colFlex } from '@styles/flexStyles';
+import { colFlex } from '@styles/flexStyles';
 import StatCard from '@components/common/card/StatCard';
 import NoticeBanner from './NoticeBanner';
 import TopSellingList from './TopSellingList';
 import MemoCard from './MemoCard';
 import { getBusinessStartDate } from '@utils/dashboard';
+import NotionGuideSection from './NotionGuideSection';
 
 const DashboardContainer = styled.div`
   width: 800px;
@@ -18,15 +19,18 @@ const DashboardContainer = styled.div`
   ${colFlex()};
 `;
 
-const StatCardsWrapper = styled.div`
-  flex-wrap: wrap;
-  gap: 10px 9px;
-  ${rowFlex({ justify: 'flex-start' })}
+const MainRow = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 12px;
 `;
 
-const BottomRow = styled.div`
+const StatCardsWrapper = styled.div`
   width: 100%;
-  ${rowFlex({ justify: 'space-between' })}
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 9px;
 `;
 
 function AdminDashboard() {
@@ -51,19 +55,18 @@ function AdminDashboard() {
     <DashboardContainer>
       <NoticeBanner />
 
-      <StatCardsWrapper>
-        <StatCard title="사용 중인 테이블" value={usingTable} description={`${usageRate}% 사용률`} highlightRate={usageRate} />
-        <StatCard title="오늘의 주문" value={stats.totalOrderCount} unit="건" description={`${businessStartDate} 9:00~`} />
-        {/* todo: API에 없는 description 필드들은 어떻게? */}
-        <StatCard title="오늘의 매출" value={todayTotalSales} unit="만원" />
-        <StatCard title="평균 주문 당 매출" value={avgSales} unit="만원" />
-      </StatCardsWrapper>
-
-      <BottomRow>
+      <MainRow>
+        <StatCardsWrapper>
+          <StatCard title="사용 중인 테이블" value={usingTable} description={`${usageRate}% 사용률`} highlightRate={usageRate} />
+          <StatCard title="오늘의 주문" value={stats.totalOrderCount} unit="건" description={`${businessStartDate} 9:00~`} />
+          <StatCard title="오늘의 매출" value={todayTotalSales} unit="만원" />
+          <StatCard title="평균 주문 당 매출" value={avgSales} unit="만원" />
+        </StatCardsWrapper>
         <TopSellingList />
-      </BottomRow>
+      </MainRow>
 
       <MemoCard initialMemo={workspace.memo} />
+      <NotionGuideSection />
     </DashboardContainer>
   );
 }
