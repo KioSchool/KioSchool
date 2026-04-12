@@ -37,15 +37,15 @@ const AccountInfo = styled.div`
 
 const CopyButton = styled.button`
   width: 100%;
-  height: 48px;
-  font-size: 15px;
-  font-weight: 600;
-  background: ${Color.KIO_ORANGE};
-  border: none;
+  height: 40px;
+  font-size: 13px;
+  font-weight: 500;
+  background: ${Color.WHITE};
+  border: 1px solid ${Color.KIO_ORANGE};
   border-radius: 8px;
-  color: ${Color.WHITE};
+  color: ${Color.KIO_ORANGE};
   cursor: pointer;
-  margin-top: 8px;
+  margin-top: 4px;
   ${rowFlex({ justify: 'center', align: 'center' })}
   &:active {
     opacity: 0.8;
