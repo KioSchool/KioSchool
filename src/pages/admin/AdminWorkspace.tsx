@@ -32,7 +32,7 @@ function AdminWorkspace() {
       <>
         <ContentContainer>
           <AdminDashboard />
-          <PreviewContainer width={300} height={680} />
+          <PreviewContainer width={300} height={640} />
         </ContentContainer>
         <AppPopup />
         <AppFaqButton />

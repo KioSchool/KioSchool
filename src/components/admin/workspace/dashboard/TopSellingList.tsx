@@ -14,7 +14,7 @@ function TopSellingList() {
   }));
 
   return (
-    <ContentCard title="인기 순위 TOP5" width={302} height={240} showDivider={false}>
+    <ContentCard title="인기 순위 TOP5" height={260} showDivider={false}>
       <RankedList items={items} />
     </ContentCard>
   );
