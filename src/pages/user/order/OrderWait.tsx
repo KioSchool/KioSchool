@@ -4,7 +4,9 @@ import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
 import { userWorkspaceAtom } from '@jotai/user/atoms';
-import OrderAccountInfo from '@components/user/order/OrderAccountInfo';
+import OrderAccountInfo from '@components/user/order/orderWait/OrderAccountInfo';
+import OrderWaitTipBanner from '@components/user/order/orderWait/OrderWaitTipBanner';
+import OrderWaitStepGuide from '@components/user/order/orderWait/OrderWaitStepGuide';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import { Color } from '@resources/colors';
 import { useEffect, useState } from 'react';
@@ -17,6 +19,7 @@ import useWorkspace from '@hooks/user/useWorkspace';
 import useTossPopup from '@hooks/user/useTossPopup';
 import { ORDER_ROUTES } from '@constants/routes';
 import { isOverOneDay } from '@utils/formatDate';
+import { TOSS_TIPS, BANK_TRANSFER_TIPS } from '@constants/data/orderWaitData';
 
 const Container = styled.div`
   width: 100%;
@@ -27,22 +30,9 @@ const Container = styled.div`
 const SubContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
-  padding: 20px 20px 0 20px;
+  padding: 20px 20px 80px 20px;
+  gap: 24px;
   ${colFlex({ justify: 'center', align: 'center' })}
-  padding-bottom: 30px;
-`;
-
-const HeaderBanner = styled.div`
-  width: 100%;
-  background-color: #fff3e0;
-  padding: 12px 20px;
-  box-sizing: border-box;
-  text-align: center;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1.4;
-  word-break: keep-all;
-  color: ${Color.KIO_ORANGE};
 `;
 
 const ContentsContainer = styled.div`
@@ -67,34 +57,8 @@ const Label = styled.div`
   font-weight: 600;
 `;
 
-const DescriptionContainer = styled.div`
-  box-sizing: border-box;
-  border-radius: 10px;
-  width: 100%;
-  font-size: 13px;
-  font-weight: 500;
-  color: #898989;
-  text-align: center;
-  box-sizing: border-box;
-  background: ${Color.LIGHT_GREY};
-  padding: 20px 24px;
-  word-break: keep-all;
-  white-space: pre-wrap;
-  gap: 12px;
-  line-height: 1.5;
-  ${colFlex({ justify: 'center', align: 'center' })}
-`;
-
-const RetryButton = styled.button`
-  width: 145px;
-  height: 30px;
-  font-size: 12px;
-  background: ${Color.WHITE};
-  border: 0.5px solid #939393;
-  border-radius: 45px;
-  padding: 0 10px;
-  color: ${Color.BLACK};
-  ${rowFlex({ justify: 'center', align: 'center' })}
+const PriceLabel = styled(Label)`
+  color: ${Color.KIO_ORANGE};
 `;
 
 const loadingDots = keyframes`
@@ -144,6 +108,8 @@ function OrderWait() {
 
   const account = workspace.owner.account;
   const tossAccountUrl = account?.tossAccountUrl;
+
+  const tips = isTossPay ? TOSS_TIPS : BANK_TRANSFER_TIPS;
 
   const fetchIntervalTime = 5000;
   const { fetchOrder } = useOrder();
@@ -206,10 +172,6 @@ function OrderWait() {
     }
   }, [currentOrderStatus]);
 
-  const waitingText = isTossPay
-    ? '현재 결제 확인 중입니다.\n\n토스 앱이 자동으로 열리지 않았다면 재시도 해보시거나, 위 계좌로 직접 송금해주세요. 송금이 완료되면 창을 닫지 말고 잠시만 기다려주세요.\n\n확인이 완료되면 자동으로 주문 내역 페이지로 이동합니다.'
-    : '접수된 주문건의 조리가 시작되기 위하여 위 계좌번호로 송금을 완료해주셔야 합니다.\n\n은행 앱을 켜서 계좌를 복사하여 송금을 완료하시고 잠시만 기다려주세요.\n\n입금 확인이 완료되면 자동으로 주문 내역 페이지로 이동합니다.';
-
   const handleTossRetry = () => {
     openTossPopupSync({
       tossAccountUrl,
@@ -220,7 +182,7 @@ function OrderWait() {
 
   return (
     <Container className={'order-wait-container'}>
-      <HeaderBanner>운영진이 실시간으로 송금 내역을 직접 확인하고 있습니다</HeaderBanner>
+      <OrderWaitTipBanner tips={tips} />
       <OrderStickyNavBar useLeftArrow={false} showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
       <SubContainer className={'order-wait-sub-container'}>
         <ContentsContainer>
@@ -228,13 +190,10 @@ function OrderWait() {
           <HorizontalDivider />
           <OrderInfoContainer>
             <Label>송금하실 금액</Label>
-            <Label style={{ color: Color.KIO_ORANGE }}>{totalPrice.toLocaleString()}원</Label>
+            <PriceLabel>{totalPrice.toLocaleString()}원</PriceLabel>
           </OrderInfoContainer>
           <HorizontalDivider />
-          <DescriptionContainer>
-            {waitingText}
-            {isTossPay && <RetryButton onClick={handleTossRetry}>토스 앱 다시 열기</RetryButton>}
-          </DescriptionContainer>
+          <OrderWaitStepGuide isTossPay={isTossPay} onTossRetry={handleTossRetry} />
         </ContentsContainer>
       </SubContainer>
       <PollingStatusContainer>
