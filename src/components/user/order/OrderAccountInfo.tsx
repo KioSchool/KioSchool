@@ -31,34 +31,43 @@ const AccountInfo = styled.div`
   font-size: 13px;
   font-weight: 500;
   box-sizing: border-box;
-  gap: 8px;
+  gap: 12px;
   ${colFlex({ justify: 'center' })}
 `;
 
 const CopyButton = styled.button`
-  height: 20px;
-  font-size: 11px;
-  background: ${Color.WHITE};
-  border: 1px solid ${Color.GREY};
-  border-radius: 20px;
-  padding: 0 10px;
-  color: ${Color.BLACK};
+  width: 100%;
+  height: 48px;
+  font-size: 15px;
+  font-weight: 600;
+  background: ${Color.KIO_ORANGE};
+  border: none;
+  border-radius: 8px;
+  color: ${Color.WHITE};
+  cursor: pointer;
+  margin-top: 8px;
   ${rowFlex({ justify: 'center', align: 'center' })}
+  &:active {
+    opacity: 0.8;
+  }
 `;
 
 const InfoRow = styled.div`
   width: 100%;
   gap: 5px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const Key = styled.div`
+  color: ${Color.GREY};
   ${rowFlex({ justify: 'end', align: 'center' })}
 `;
 
 const Value = styled.div`
+  font-weight: 600;
+  color: ${Color.BLACK};
   ${rowFlex({ justify: 'start', align: 'center' })}
 `;
 
@@ -92,8 +101,7 @@ function OrderAccountInfo() {
   return (
     <Container>
       <TitleContainer>
-        <TitleLabel>계좌 정보</TitleLabel>
-        <CopyButton onClick={copyAccountInfo}>계좌 복사하기</CopyButton>
+        <TitleLabel>입금하실 계좌 정보</TitleLabel>
       </TitleContainer>
       <AccountInfo>
         <InfoRow>
@@ -108,6 +116,7 @@ function OrderAccountInfo() {
           <Key>예금주명</Key>
           <Value>{accountInfo?.accountHolder}</Value>
         </InfoRow>
+        <CopyButton onClick={copyAccountInfo}>계좌 복사하기</CopyButton>
       </AccountInfo>
     </Container>
   );

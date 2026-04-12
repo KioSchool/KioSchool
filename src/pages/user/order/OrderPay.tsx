@@ -11,8 +11,6 @@ import OrderPayDescription from '@components/user/order/OrderPayDescription';
 import { HttpStatusCode } from 'axios';
 import { userOrderBasketAtom, userWorkspaceAtom } from '@jotai/user/atoms';
 import { useAtom, useAtomValue } from 'jotai';
-import NewAppInput from '@components/common/input/NewAppInput';
-import { Color } from '@resources/colors';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import usePreventRefresh from '@hooks/usePreventRefresh';
 import useTossPopup from '@hooks/user/useTossPopup';
@@ -38,20 +36,6 @@ const ContentsContainer = styled.div`
   border-radius: 9px;
   border: 0.5px solid #939393;
   ${colFlex({ justify: 'center', align: 'start' })}
-`;
-
-const InputContainer = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  padding: 0 10px;
-  gap: 10px;
-  ${colFlex({ justify: 'center', align: 'start' })}
-`;
-
-const InputLabel = styled.div`
-  font-size: 14px;
-  font-weight: 600;
-  color: ${Color.BLACK};
 `;
 
 function OrderPay() {
@@ -143,6 +127,7 @@ function OrderPay() {
             orderId: res.data.id.toString(),
             workspaceId: workspaceId || '',
             tableNo: tableNo || '',
+            tossPay: 'false',
           }).toString(),
         });
       })
@@ -158,7 +143,7 @@ function OrderPay() {
     const customerName = customerNameRef.current?.value;
 
     if (!customerName) {
-      alert('입금자명을 입력해주세요.');
+      alert('송금자명을 입력해주세요.');
       return;
     }
 
@@ -177,12 +162,7 @@ function OrderPay() {
       <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
       <SubContainer className={'order-pay-sub-container'}>
         <ContentsContainer>
-          <InputContainer>
-            <InputLabel>입금자명</InputLabel>
-            <NewAppInput ref={customerNameRef} placeholder={'입금자명을 입력해주세요.'} width={'100%'} height={33} />
-          </InputContainer>
-          <HorizontalDivider />
-          <OrderPayRadio isTossAvailable={isTossAvailable} isTossPay={isTossPay} setIsTossPay={setIsTossPay} />
+          <OrderPayRadio isTossAvailable={isTossAvailable} isTossPay={isTossPay} setIsTossPay={setIsTossPay} customerNameRef={customerNameRef} />
           <HorizontalDivider />
           <OrderPayDescription />
         </ContentsContainer>
@@ -190,7 +170,7 @@ function OrderPay() {
       <OrderButton
         showButton={orderBasket.length > 0}
         disabled={isSubmitting}
-        buttonLabel={isSubmitting ? '주문 처리 중...' : `${totalAmount.toLocaleString()}원 · ${isTossPay ? 'Toss로' : '계좌로'} 결제하기`}
+        buttonLabel={isSubmitting ? '주문 진행 중...' : `${totalAmount.toLocaleString()}원 · ${isTossPay ? '토스로 송금' : '계좌로 송금'}`}
         onClick={payOrder}
       />
     </Container>
