@@ -13,3 +13,15 @@ export const BANK_TRANSFER_TIPS = [
   '확인 완료 시 자동으로 주문 내역 페이지로 이동합니다',
   '이 화면을 닫지 말고 잠시만 기다려주세요',
 ] as const;
+
+export const TOSS_STEPS = [
+  '토스 앱에서 송금을 완료해주세요',
+  '앱이 열리지 않으면 아래 버튼으로 재시도해주세요',
+  '확인되면 자동으로 주문 내역 페이지로 이동합니다',
+] as const;
+
+export const BANK_TRANSFER_STEPS = [
+  '위 계좌번호를 복사하고 은행 앱에서 송금해주세요',
+  '송금 후 이 화면에서 잠시만 기다려주세요',
+  '확인되면 자동으로 주문 내역 페이지로 이동합니다',
+] as const;

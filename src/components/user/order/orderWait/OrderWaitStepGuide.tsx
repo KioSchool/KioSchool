@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { TOSS_STEPS, BANK_TRANSFER_STEPS } from '@constants/data/orderWaitData';
 
 const StepList = styled.ol`
   width: 100%;
@@ -59,34 +60,16 @@ interface OrderWaitStepGuideProps {
 }
 
 function OrderWaitStepGuide({ isTossPay, onTossRetry }: OrderWaitStepGuideProps) {
+  const steps = isTossPay ? TOSS_STEPS : BANK_TRANSFER_STEPS;
+
   return (
     <>
       <StepList>
-        {isTossPay ? (
-          <>
-            <StepItem>
-              <StepText>토스 앱에서 송금을 완료해주세요</StepText>
-            </StepItem>
-            <StepItem>
-              <StepText>앱이 열리지 않으면 아래 버튼으로 재시도해주세요</StepText>
-            </StepItem>
-            <StepItem>
-              <StepText>확인되면 자동으로 주문 내역 페이지로 이동합니다</StepText>
-            </StepItem>
-          </>
-        ) : (
-          <>
-            <StepItem>
-              <StepText>위 계좌번호를 복사하고 은행 앱에서 송금해주세요</StepText>
-            </StepItem>
-            <StepItem>
-              <StepText>송금 후 이 화면에서 잠시만 기다려주세요</StepText>
-            </StepItem>
-            <StepItem>
-              <StepText>확인되면 자동으로 주문 내역 페이지로 이동합니다</StepText>
-            </StepItem>
-          </>
-        )}
+        {steps.map((step) => (
+          <StepItem key={step}>
+            <StepText>{step}</StepText>
+          </StepItem>
+        ))}
       </StepList>
       {isTossPay && <RetryButton onClick={onTossRetry}>토스 앱 다시 열기</RetryButton>}
     </>
