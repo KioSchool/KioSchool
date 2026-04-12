@@ -54,13 +54,11 @@ const GuideButton = styled.a`
 `;
 
 function NotionGuideSection() {
-  const questionText = '더 궁금한 정보가 있으신가요?';
-
   return (
     <GuideSection>
       <GuideSectionText>
         <RiQuestionFill size={14} />
-        <GuideSectionQuestionText>{questionText}</GuideSectionQuestionText>
+        <GuideSectionQuestionText>더 궁금한 정보가 있으신가요?</GuideSectionQuestionText>
       </GuideSectionText>
       <GuideButton href={URLS.EXTERNAL.NOTION_FAQ} target="_blank" rel="noopener noreferrer">
         <RiArrowRightLine size={14} />
