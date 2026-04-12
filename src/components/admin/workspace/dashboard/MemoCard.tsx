@@ -61,7 +61,7 @@ function MemoCard({ initialMemo }: MemoCardProps) {
   };
 
   return (
-    <ContentCard title="메모" height={120}>
+    <ContentCard title="메모" height={200}>
       <MemoTextArea value={memo} onChange={handleChange} placeholder="메모를 입력하세요..." />
     </ContentCard>
   );
