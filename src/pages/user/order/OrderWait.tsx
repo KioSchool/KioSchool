@@ -58,6 +58,8 @@ const Label = styled.div`
 `;
 
 const PriceLabel = styled(Label)`
+  font-size: 18px;
+  font-weight: 700;
   color: ${Color.KIO_ORANGE};
 `;
 
