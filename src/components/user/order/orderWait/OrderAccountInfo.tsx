@@ -6,6 +6,7 @@ import useWorkspace from '@hooks/user/useWorkspace';
 import { useSearchParams } from 'react-router-dom';
 import { Account } from '@@types/index';
 import { defaultAccountValue } from '@@types/defaultValues';
+import NewCommonButton from '@components/common/button/NewCommonButton';
 
 const Container = styled.div`
   box-sizing: border-box;
@@ -33,23 +34,6 @@ const AccountInfo = styled.div`
   box-sizing: border-box;
   gap: 12px;
   ${colFlex({ justify: 'center' })}
-`;
-
-const CopyButton = styled.button`
-  width: 100%;
-  height: 48px;
-  font-size: 15px;
-  font-weight: 600;
-  background: ${Color.KIO_ORANGE};
-  border: none;
-  border-radius: 8px;
-  color: ${Color.WHITE};
-  cursor: pointer;
-  margin-top: 8px;
-  ${rowFlex({ justify: 'center', align: 'center' })}
-  &:active {
-    opacity: 0.8;
-  }
 `;
 
 const InfoRow = styled.div`
@@ -116,8 +100,10 @@ function OrderAccountInfo() {
           <Key>예금주명</Key>
           <Value>{accountInfo?.accountHolder}</Value>
         </InfoRow>
-        <CopyButton onClick={copyAccountInfo}>계좌 복사하기</CopyButton>
       </AccountInfo>
+      <NewCommonButton size="xs" onClick={copyAccountInfo}>
+        계좌 정보 복사하기
+      </NewCommonButton>
     </Container>
   );
 }
