@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
+import { eyebrowTypography, headingTypography, subheadingTypography } from '@styles/landingTypography';
 import { Color } from '@resources/colors';
 import StepIcon from './StepIcon';
 import MobileTimeline from './MobileTimeline';
@@ -21,24 +22,13 @@ const Container = styled.div`
 `;
 
 const SectionLabel = styled.span`
-  font-size: 12px;
-  font-weight: 600;
-  color: ${Color.KIO_ORANGE};
-  letter-spacing: 0.06em;
   margin-bottom: 12px;
+  ${eyebrowTypography};
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 40px;
-  font-weight: 700;
-  color: #3c3530;
-  letter-spacing: -0.03em;
-  line-height: 1.35;
   text-align: center;
-
-  ${mobileMediaQuery} {
-    font-size: 28px;
-  }
+  ${headingTypography};
 `;
 
 const Accent = styled.span`
@@ -46,16 +36,9 @@ const Accent = styled.span`
 `;
 
 const SectionSubtitle = styled.p`
-  font-size: 18px;
-  color: #6b7684;
-  letter-spacing: -0.01em;
   margin-top: 12px;
   text-align: center;
-  line-height: 1.6;
-
-  ${mobileMediaQuery} {
-    font-size: 15px;
-  }
+  ${subheadingTypography};
 `;
 
 const HeaderWrapper = styled(motion.div)`
@@ -131,7 +114,7 @@ const STEPS = [
   {
     number: 1,
     title: '회원가입',
-    description: '이메일 하나면 충분해요. 1분이면 가입이 완료돼요.',
+    description: '이메일 하나면 충분해요. 1 분이면 가입이 완료돼요.',
   },
   {
     number: 2,

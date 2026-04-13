@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { motion, AnimatePresence } from 'framer-motion';
 import { colFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
-import { Color } from '@resources/colors';
+import { bodyTypography, eyebrowTypography, headingTypography } from '@styles/landingTypography';
 
 const Container = styled.div`
   width: 100%;
@@ -17,23 +17,13 @@ const Container = styled.div`
 `;
 
 const SectionLabel = styled.span`
-  font-size: 13px;
-  font-weight: 600;
-  color: ${Color.KIO_ORANGE};
-  letter-spacing: 0.04em;
   margin-bottom: 8px;
+  ${eyebrowTypography};
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 36px;
-  font-weight: 700;
-  color: #191f28;
-  letter-spacing: -0.02em;
   text-align: center;
-
-  ${mobileMediaQuery} {
-    font-size: 28px;
-  }
+  ${headingTypography};
 `;
 
 const FaqList = styled.div`
@@ -78,11 +68,9 @@ const Chevron = styled.span<{ open: boolean }>`
 `;
 
 const AnswerText = styled(motion.div)`
-  font-size: 14px;
-  color: #6b7684;
-  line-height: 1.7;
   padding-bottom: 24px;
   overflow: hidden;
+  ${bodyTypography};
 `;
 
 const FAQ_DATA = [

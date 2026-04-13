@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
+import { eyebrowTypography, headingTypography } from '@styles/landingTypography';
 import { Color } from '@resources/colors';
 import CountUpNumber from './CountUpNumber';
 
@@ -20,24 +21,14 @@ const Container = styled.div`
 `;
 
 const SectionLabel = styled.span`
-  font-size: 12px;
-  font-weight: 600;
-  color: ${Color.KIO_ORANGE};
-  letter-spacing: 0.06em;
   margin-bottom: 12px;
+  ${eyebrowTypography};
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 40px;
-  font-weight: 700;
-  color: ${Color.WHITE};
-  letter-spacing: -0.03em;
-  line-height: 1.35;
   text-align: center;
-
-  ${mobileMediaQuery} {
-    font-size: 28px;
-  }
+  ${headingTypography};
+  color: ${Color.WHITE};
 `;
 
 const HeaderWrapper = styled(motion.div)`

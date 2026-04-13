@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
+import { captionTypography, headingTypography, subheadingTypography } from '@styles/landingTypography';
 import { ADMIN_ROUTES, USER_ROUTES } from '@constants/routes';
 import useAuthentication from '@hooks/useAuthentication';
 import useMouseGlow, { MouseGlow } from './useMouseGlow';
@@ -32,16 +33,8 @@ const ContentWrapper = styled.div`
 `;
 
 const Title = styled.h2`
-  font-size: 40px;
-  font-weight: 700;
-  color: #3c3530;
   text-align: center;
-  letter-spacing: -0.03em;
-  line-height: 1.35;
-
-  ${mobileMediaQuery} {
-    font-size: 28px;
-  }
+  ${headingTypography};
 `;
 
 const TypewriterLine = styled.div`
@@ -65,16 +58,9 @@ const TypewriterLine = styled.div`
 `;
 
 const Subtitle = styled.p`
-  font-size: 18px;
-  color: #6b7684;
-  letter-spacing: -0.01em;
-  line-height: 1.6;
   margin-top: 16px;
   text-align: center;
-
-  ${mobileMediaQuery} {
-    font-size: 15px;
-  }
+  ${subheadingTypography};
 `;
 
 const CtaButton = styled(Link)`
@@ -142,10 +128,9 @@ const SecondaryButton = styled(Link)`
 `;
 
 const Reassurance = styled.p`
-  font-size: 14px;
-  color: #adb1ba;
   margin-top: 16px;
   text-align: center;
+  ${captionTypography};
 `;
 
 function CtaSection() {
@@ -197,7 +182,7 @@ function CtaSection() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.4, ease: 'easeOut', delay: 0.1 }}
         >
-          <Subtitle>가입부터 주점 운영까지, 3분이면 준비 끝</Subtitle>
+          <Subtitle>가입부터 주점 운영까지, 3 분이면 준비 끝</Subtitle>
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 8 }}

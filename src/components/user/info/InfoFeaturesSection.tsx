@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
+import { bodyTypography, captionTypography, eyebrowTypography, headingTypography } from '@styles/landingTypography';
 import { Color } from '@resources/colors';
 import FeatureVisualContent from './FeatureVisualContent';
 
@@ -17,30 +18,19 @@ const Container = styled.div`
 `;
 
 const SectionLabel = styled.span`
-  font-size: 13px;
-  font-weight: 600;
-  color: ${Color.KIO_ORANGE};
-  letter-spacing: 0.04em;
   margin-bottom: 8px;
+  ${eyebrowTypography};
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 36px;
-  font-weight: 700;
-  color: #191f28;
-  letter-spacing: -0.02em;
   text-align: center;
-
-  ${mobileMediaQuery} {
-    font-size: 28px;
-  }
+  ${headingTypography};
 `;
 
 const SectionSubtitle = styled.p`
-  font-size: 14px;
-  color: #8b95a1;
   margin-top: 8px;
   text-align: center;
+  ${captionTypography};
 `;
 
 const FeatureList = styled.div`
@@ -91,10 +81,8 @@ const FeatureTitle = styled.h3`
 `;
 
 const FeatureDescription = styled.p`
-  font-size: 15px;
-  color: #6b7684;
-  line-height: 1.7;
   margin-top: 12px;
+  ${bodyTypography};
 `;
 
 const FeatureVisual = styled.div`

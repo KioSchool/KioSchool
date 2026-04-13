@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { RiMailLine } from '@remixicon/react';
-import { colFlex } from '@styles/flexStyles';
+import { RiInstagramLine } from '@remixicon/react';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
+import { captionTypography, headingTypography, subheadingTypography } from '@styles/landingTypography';
 import { Color } from '@resources/colors';
 import { ADMIN_ROUTES } from '@constants/routes';
 
@@ -31,23 +32,14 @@ const CtaDivider = styled.div`
 `;
 
 const Title = styled.h2`
-  font-size: 36px;
-  font-weight: 700;
-  color: #191f28;
   text-align: center;
-  letter-spacing: -0.02em;
-  line-height: 1.4;
-
-  ${mobileMediaQuery} {
-    font-size: 28px;
-  }
+  ${headingTypography};
 `;
 
 const Subtitle = styled.p`
-  font-size: 17px;
-  color: #8b95a1;
   margin-top: 16px;
   text-align: center;
+  ${subheadingTypography};
 `;
 
 const CtaButton = styled(Link)`
@@ -72,26 +64,30 @@ const CtaButton = styled(Link)`
 `;
 
 const Reassurance = styled.p`
-  font-size: 14px;
-  color: #adb1ba;
   margin-top: 16px;
   text-align: center;
+  ${captionTypography};
 `;
 
-const ContactLink = styled.a`
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: 48px;
-  font-size: 13px;
-  color: #8b95a1;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  cursor: pointer;
-  transition: color 0.15s ease;
+const SocialLinks = styled.div`
+  margin-top: 56px;
+  gap: 12px;
+  ${rowFlex({ justify: 'center', align: 'center' })};
+`;
+
+const SocialIconLink = styled.a`
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #f2f4f6;
+  color: #6b7684;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+  ${colFlex({ justify: 'center', align: 'center' })};
 
   &:hover {
-    color: #6b7684;
+    background: ${Color.KIO_ORANGE};
+    color: ${Color.WHITE};
   }
 `;
 
@@ -106,13 +102,14 @@ function InfoCtaSection() {
       >
         <CtaDivider />
         <Title>다음 축제, 키오스쿨과 함께하세요</Title>
-        <Subtitle>가입부터 주점 운영까지, 3분이면 준비 끝</Subtitle>
+        <Subtitle>가입부터 주점 운영까지, 3 분이면 준비 끝</Subtitle>
         <CtaButton to={ADMIN_ROUTES.HOME}>무료로 시작하기</CtaButton>
         <Reassurance>별도 비용 없이 시작할 수 있어요</Reassurance>
-        <ContactLink href="mailto:contact@kioschool.com">
-          <RiMailLine size={14} />
-          궁금한 점이 있다면 문의하기
-        </ContactLink>
+        <SocialLinks>
+          <SocialIconLink href="https://www.instagram.com/kioschool/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <RiInstagramLine size={20} />
+          </SocialIconLink>
+        </SocialLinks>
       </ContentWrapper>
     </Container>
   );

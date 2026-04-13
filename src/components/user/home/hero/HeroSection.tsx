@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
+import { displayHeadingTypography, subheadingTypography } from '@styles/landingTypography';
 import { Color } from '@resources/colors';
 import { ADMIN_ROUTES, USER_ROUTES } from '@constants/routes';
 import useAuthentication from '@hooks/useAuthentication';
@@ -36,16 +37,8 @@ const ContentWrapper = styled(motion.div)`
 `;
 
 const MainCopy = styled.h1`
-  font-size: 64px;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1.3;
-  color: #3c3530;
   text-align: center;
-
-  ${mobileMediaQuery} {
-    font-size: 36px;
-  }
+  ${displayHeadingTypography};
 `;
 
 const OrangeText = styled.span`
@@ -53,17 +46,9 @@ const OrangeText = styled.span`
 `;
 
 const SubCopy = styled.p`
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 1.6;
-  color: #6b7684;
-  letter-spacing: -0.01em;
   margin-top: 20px;
   text-align: center;
-
-  ${mobileMediaQuery} {
-    font-size: 15px;
-  }
+  ${subheadingTypography};
 `;
 
 const KioHighlight = styled.span`
@@ -191,7 +176,7 @@ function HeroSection() {
           이 대신할게요
         </SubCopy>
         <CtaRow>
-          <CtaButton to={ADMIN_ROUTES.HOME}>{isLoggedIn() ? '어드민 홈으로' : '지금 시작하기'}</CtaButton>
+          <CtaButton to={ADMIN_ROUTES.HOME}>{isLoggedIn() ? '어드민 홈으로' : '무료로 시작하기'}</CtaButton>
           <SecondaryButton to={USER_ROUTES.INFO}>서비스 알아보기</SecondaryButton>
         </CtaRow>
       </ContentWrapper>

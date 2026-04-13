@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
+import { captionTypography, eyebrowTypography, headingTypography } from '@styles/landingTypography';
 import { Color } from '@resources/colors';
 
 const Container = styled.div`
@@ -16,23 +17,13 @@ const Container = styled.div`
 `;
 
 const SectionLabel = styled.span`
-  font-size: 13px;
-  font-weight: 600;
-  color: ${Color.KIO_ORANGE};
-  letter-spacing: 0.04em;
   margin-bottom: 8px;
+  ${eyebrowTypography};
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 36px;
-  font-weight: 700;
-  color: #191f28;
-  letter-spacing: -0.02em;
   text-align: center;
-
-  ${mobileMediaQuery} {
-    font-size: 28px;
-  }
+  ${headingTypography};
 `;
 
 const TeamGrid = styled.div`
@@ -78,10 +69,8 @@ const MemberRole = styled.span`
 `;
 
 const MemberBio = styled.span`
-  font-size: 12px;
-  color: #8b95a1;
   margin-top: 6px;
-  line-height: 1.5;
+  ${captionTypography};
 `;
 
 const PROFILE_COLORS = ['#FF9142', '#46ADFF', '#0CAF60', '#9D78FF', '#FF5A5A'];

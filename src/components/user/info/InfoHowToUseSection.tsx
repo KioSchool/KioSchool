@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { colFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
+import { bodyTypography, eyebrowTypography, headingTypography } from '@styles/landingTypography';
 import { Color } from '@resources/colors';
 
 const Container = styled.div`
@@ -16,23 +17,13 @@ const Container = styled.div`
 `;
 
 const SectionLabel = styled.span`
-  font-size: 13px;
-  font-weight: 600;
-  color: ${Color.KIO_ORANGE};
-  letter-spacing: 0.04em;
   margin-bottom: 8px;
+  ${eyebrowTypography};
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 36px;
-  font-weight: 700;
-  color: #191f28;
-  letter-spacing: -0.02em;
   text-align: center;
-
-  ${mobileMediaQuery} {
-    font-size: 28px;
-  }
+  ${headingTypography};
 `;
 
 const Timeline = styled.div`
@@ -85,17 +76,15 @@ const StepTitle = styled.h3`
 `;
 
 const StepDescription = styled.p`
-  font-size: 14px;
-  color: #6b7684;
-  line-height: 1.7;
   margin-top: 6px;
+  ${bodyTypography};
 `;
 
 const STEPS = [
   {
     number: 1,
     title: '회원가입',
-    description: '이메일 하나면 충분합니다. 1분이면 가입이 완료됩니다.',
+    description: '이메일 하나면 충분합니다. 1 분이면 가입이 완료됩니다.',
   },
   {
     number: 2,

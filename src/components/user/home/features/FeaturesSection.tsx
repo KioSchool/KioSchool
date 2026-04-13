@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
+import { eyebrowTypography, headingTypography, subheadingTypography } from '@styles/landingTypography';
 import { Color } from '@resources/colors';
 import FeatureCard from './FeatureCard';
 
@@ -43,34 +44,17 @@ const LeftPanel = styled.div`
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 40px;
-  font-weight: 700;
-  color: #3c3530;
-  letter-spacing: -0.03em;
-  line-height: 1.4;
-
-  ${mobileMediaQuery} {
-    font-size: 24px;
-  }
+  margin-top: 8px;
+  ${headingTypography};
 `;
 
 const SectionSubtitle = styled.p`
-  font-size: 18px;
-  color: #6b7684;
-  letter-spacing: -0.01em;
-  line-height: 1.6;
   margin-top: 16px;
-
-  ${mobileMediaQuery} {
-    font-size: 15px;
-  }
+  ${subheadingTypography};
 `;
 
 const SectionLabel = styled.span`
-  font-size: 12px;
-  font-weight: 600;
-  color: ${Color.KIO_ORANGE};
-  letter-spacing: 0.06em;
+  ${eyebrowTypography};
 `;
 
 const Accent = styled.span`

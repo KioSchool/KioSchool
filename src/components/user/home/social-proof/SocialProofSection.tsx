@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
+import { headingTypography, subheadingTypography } from '@styles/landingTypography';
 import { Color } from '@resources/colors';
 import CountUpNumber from '@components/user/home/CountUpNumber';
 import ReviewChat from './ReviewChat';
@@ -21,31 +22,15 @@ const Container = styled.div`
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 40px;
-  font-weight: 700;
-  color: #3c3530;
-  letter-spacing: -0.03em;
-  line-height: 1.35;
   text-align: center;
   margin: 0;
-
-  ${mobileMediaQuery} {
-    font-size: 28px;
-  }
+  ${headingTypography};
 `;
 
 const SectionSubtitle = styled.p`
-  font-size: 18px;
-  font-weight: 400;
-  color: #6b7684;
-  letter-spacing: -0.01em;
   text-align: center;
   margin: 12px 0 0;
-  line-height: 1.6;
-
-  ${mobileMediaQuery} {
-    font-size: 15px;
-  }
+  ${subheadingTypography};
 `;
 
 const UniversityBadgeRow = styled.div`
@@ -102,17 +87,17 @@ const ReviewsGrid = styled.div`
 const UNIVERSITIES = ['건국대', '세종대', '홍익대', '경희대', '서울대', '한양대', '성균관대', '중앙대'];
 
 const METRICS = [
-  { value: 1200, suffix: '명+', label: '누적 이용자' },
-  { value: 15000, suffix: '건+', label: '누적 주문' },
-  { value: 30, suffix: '개+', label: '사용 주점' },
-  { value: 3000, suffix: '만원+', label: '누적 매출' },
+  { value: 1200, suffix: ' 명+', label: '누적 이용자' },
+  { value: 15000, suffix: ' 건+', label: '누적 주문' },
+  { value: 30, suffix: ' 개+', label: '사용 주점' },
+  { value: 3000, suffix: ' 만원+', label: '누적 매출' },
 ];
 
 const REVIEWS = [
-  { name: '건국대 주점 운영자', text: 'QR 코드로 주문하니 직원을 기다릴 필요가 없어 편리했어요.', event: '2025 봄 축제', time: '2주 전' },
-  { name: '세종대 축제 참가자', text: '직관적인 인터페이스 덕분에 처음 사용해도 어렵지 않았어요.', event: '2025 봄 축제', time: '3주 전' },
-  { name: '홍익대 주점 운영자', text: '주문을 실시간으로 확인할 수 있어 운영이 한결 수월해졌어요.', event: '2024 가을 축제', time: '6개월 전' },
-  { name: '경희대 축제 기획단', text: '정산 작업이 10분이면 끝났어요. 예전엔 하루 종일 걸렸는데.', event: '2024 가을 축제', time: '5개월 전' },
+  { name: '건국대 주점 운영자', text: 'QR 코드로 주문하니 직원을 기다릴 필요가 없어 편리했어요.', event: '2025 봄 축제', time: '2 주 전' },
+  { name: '세종대 축제 참가자', text: '직관적인 인터페이스 덕분에 처음 사용해도 어렵지 않았어요.', event: '2025 봄 축제', time: '3 주 전' },
+  { name: '홍익대 주점 운영자', text: '주문을 실시간으로 확인할 수 있어 운영이 한결 수월해졌어요.', event: '2024 가을 축제', time: '6 개월 전' },
+  { name: '경희대 축제 기획단', text: '정산 작업이 10 분이면 끝났어요. 예전엔 하루 종일 걸렸는데.', event: '2024 가을 축제', time: '5 개월 전' },
 ];
 
 function SocialProofSection() {
