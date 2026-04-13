@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
-import { colFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { bodyTypography, eyebrowTypography, headingTypography } from '@styles/landingTypography';
 import { Color } from '@resources/colors';
@@ -30,53 +30,53 @@ const Timeline = styled.div`
   max-width: 520px;
   width: 100%;
   margin-top: 56px;
-  position: relative;
-`;
-
-const TimelineLine = styled.div`
-  position: absolute;
-  left: 15px;
-  top: 8px;
-  bottom: 8px;
-  width: 2px;
-  background: #e5e8eb;
+  ${colFlex({})};
 `;
 
 const TimelineItem = styled.div`
-  display: flex;
-  gap: 24px;
-  position: relative;
-
-  &:not(:last-child) {
-    padding-bottom: 40px;
-  }
+  gap: 20px;
+  ${rowFlex({ align: 'stretch' })};
 `;
 
-const NumberCircle = styled.div`
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: ${Color.KIO_ORANGE};
-  color: ${Color.WHITE};
-  font-size: 13px;
-  font-weight: 700;
+const NodeColumn = styled.div`
   flex-shrink: 0;
-  z-index: 1;
+  ${colFlex({ align: 'center' })};
+`;
+
+const NumberCircle = styled.div<{ isLast: boolean }>`
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: ${({ isLast }) => (isLast ? Color.KIO_ORANGE : Color.WHITE)};
+  border: 2px solid ${({ isLast }) => (isLast ? Color.KIO_ORANGE : '#e5e8eb')};
+  color: ${({ isLast }) => (isLast ? Color.WHITE : '#3C3530')};
+  font-size: 16px;
+  font-weight: 800;
+  flex-shrink: 0;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
+const Connector = styled.div`
+  width: 2px;
+  flex: 1;
+  min-height: 40px;
+  background: #e5e8eb;
+`;
+
 const StepContent = styled.div`
-  padding-top: 4px;
+  padding-bottom: 32px;
+  ${colFlex({})};
 `;
 
 const StepTitle = styled.h3`
   font-size: 18px;
   font-weight: 700;
-  color: #191f28;
+  color: #3c3530;
+  letter-spacing: -0.02em;
 `;
 
 const StepDescription = styled.p`
-  margin-top: 6px;
+  margin-top: 4px;
   ${bodyTypography};
 `;
 
@@ -117,7 +117,6 @@ function InfoHowToUseSection() {
         <SectionTitle>이렇게 시작하세요</SectionTitle>
       </motion.div>
       <Timeline>
-        <TimelineLine />
         {STEPS.map((step, index) => (
           <motion.div
             key={step.number}
@@ -127,7 +126,10 @@ function InfoHowToUseSection() {
             transition={{ duration: 0.5, delay: index * 0.1, ease: 'easeOut' }}
           >
             <TimelineItem>
-              <NumberCircle>{step.number}</NumberCircle>
+              <NodeColumn>
+                <NumberCircle isLast={index === STEPS.length - 1}>{step.number}</NumberCircle>
+                {index < STEPS.length - 1 && <Connector />}
+              </NodeColumn>
               <StepContent>
                 <StepTitle>{step.title}</StepTitle>
                 <StepDescription>{step.description}</StepDescription>
