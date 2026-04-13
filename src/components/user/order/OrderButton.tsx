@@ -8,7 +8,8 @@ const Container = styled.div`
   bottom: 50px;
   width: 100vw;
   height: 50px;
-  ${rowFlex({ justify: 'center', align: 'center' })}
+  z-index: 11;
+  ${rowFlex({ justify: 'center', align: 'center' })};
 `;
 
 const OrderButtonSubContainer = styled.div`
