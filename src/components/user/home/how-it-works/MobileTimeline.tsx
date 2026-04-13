@@ -16,7 +16,7 @@ const Container = styled.div`
 
 const Step = styled.div`
   gap: 20px;
-  ${rowFlex({ align: 'flex-start' })};
+  ${rowFlex({ align: 'stretch' })};
 `;
 
 const NodeColumn = styled.div`
@@ -39,7 +39,8 @@ const NodeCircle = styled.div<{ step: number }>`
 
 const Connector = styled.div`
   width: 2px;
-  height: 40px;
+  flex: 1;
+  min-height: 40px;
   background: #e5e8eb;
 `;
 
