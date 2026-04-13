@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
-import { RiComputerLine } from '@remixicon/react';
-import { colFlex } from '@styles/flexStyles';
+import { RiComputerLine, RiShareLine } from '@remixicon/react';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { USER_ROUTES } from '@constants/routes';
 
@@ -41,9 +41,14 @@ const Description = styled.p`
   word-break: keep-all;
 `;
 
-const HomeLink = styled(Link)`
+const ActionRow = styled.div`
   margin-top: 36px;
-  padding: 14px 36px;
+  gap: 10px;
+  ${rowFlex({ justify: 'center', align: 'center' })};
+`;
+
+const HomeLink = styled(Link)`
+  padding: 14px 32px;
   background: ${Color.KIO_ORANGE};
   color: ${Color.WHITE};
   font-size: 15px;
@@ -62,7 +67,43 @@ const HomeLink = styled(Link)`
   }
 `;
 
+const ShareButton = styled.button`
+  padding: 14px 24px;
+  gap: 6px;
+  background: ${Color.WHITE};
+  color: #6b7684;
+  font-size: 15px;
+  font-weight: 600;
+  border: 1px solid #e5e8eb;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  ${rowFlex({ justify: 'center', align: 'center' })};
+
+  &:hover {
+    background: #f8f9fa;
+    color: #3c3530;
+  }
+
+  &:active {
+    background: #f2f4f6;
+    transition: 0ms;
+  }
+`;
+
 function MobileFallback() {
+  const handleShare = async () => {
+    if (!navigator.share) {
+      alert('이 브라우저는 Web Share API를 지원하지 않습니다. 다른 브라우저를 사용해주세요.');
+      return;
+    }
+
+    await navigator.share({
+      title: '키오스쿨',
+      url: window.location.href,
+    });
+  };
+
   return (
     <Container>
       <IconWrapper>
@@ -73,7 +114,13 @@ function MobileFallback() {
         해당 페이지는 PC 환경에 최적화되어 있습니다.
         <br />더 나은 경험을 위해 PC에서 접속해주세요.
       </Description>
-      <HomeLink to={USER_ROUTES.HOME}>홈으로 돌아가기</HomeLink>
+      <ActionRow>
+        <HomeLink to={USER_ROUTES.HOME}>홈으로 돌아가기</HomeLink>
+        <ShareButton type="button" onClick={handleShare}>
+          <RiShareLine size={16} />
+          링크 공유
+        </ShareButton>
+      </ActionRow>
     </Container>
   );
 }
