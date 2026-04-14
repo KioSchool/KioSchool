@@ -114,7 +114,7 @@ const STEPS = [
   {
     number: 1,
     title: '회원가입',
-    description: '이메일 하나면 충분해요. 1 분이면 가입이 완료돼요.',
+    description: '이메일 하나면 충분해요. 1분이면 가입이 완료돼요.',
   },
   {
     number: 2,

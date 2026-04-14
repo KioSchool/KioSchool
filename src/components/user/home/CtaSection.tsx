@@ -182,7 +182,7 @@ function CtaSection() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.4, ease: 'easeOut', delay: 0.1 }}
         >
-          <Subtitle>가입부터 주점 운영까지, 3 분이면 준비 끝</Subtitle>
+          <Subtitle>가입부터 주점 운영까지, 3분이면 준비 끝</Subtitle>
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 8 }}

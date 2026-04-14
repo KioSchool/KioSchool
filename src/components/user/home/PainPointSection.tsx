@@ -75,9 +75,9 @@ const SourceNote = styled.p`
 `;
 
 const PAIN_CARDS = [
-  { value: 73, suffix: '%', label: '수기 주문 시 오류 발생률' },
-  { value: 2, suffix: 'h+', label: '엑셀 정산 소요 시간' },
-  { value: 40, suffix: '%', label: '축제를 즐기지 못한 운영진' },
+  { value: 73, suffix: ' %', label: '수기 주문 시 오류 발생률' },
+  { value: 2, suffix: ' h+', label: '엑셀 정산 소요 시간' },
+  { value: 40, suffix: ' %', label: '축제를 즐기지 못한 운영진' },
 ];
 
 function PainPointSection() {

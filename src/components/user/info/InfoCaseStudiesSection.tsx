@@ -98,7 +98,7 @@ const MetricLabel = styled.span`
 const CASES = [
   {
     label: '건국대학교 2025 축제',
-    title: '3 일간 1,200 건 주문 처리',
+    title: '3일간 1,200건 주문 처리',
     quote: 'QR 코드로 주문하니 직원을 기다릴 필요가 없어 편리했어요. 주문 누락도 없었고요.',
     metrics: [
       { value: '1,200', label: '주문' },
@@ -107,11 +107,11 @@ const CASES = [
   },
   {
     label: '세종대학교 2025 축제',
-    title: '정산 시간 90 % 단축',
-    quote: '정산 작업이 10 분이면 끝났어요. 예전엔 하루 종일 걸렸는데.',
+    title: '정산 시간 90% 단축',
+    quote: '정산 작업이 10분이면 끝났어요. 예전엔 하루 종일 걸렸는데.',
     metrics: [
-      { value: '90 %', label: '시간 절약' },
-      { value: '10 분', label: '정산 소요' },
+      { value: '90%', label: '시간 절약' },
+      { value: '10분', label: '정산 소요' },
     ],
   },
   {
@@ -119,7 +119,7 @@ const CASES = [
     title: '실시간 주문으로 서빙 실수 제로',
     quote: '주문을 실시간으로 확인할 수 있어 운영이 한결 수월해졌어요.',
     metrics: [
-      { value: '0 건', label: '서빙 실수' },
+      { value: '0건', label: '서빙 실수' },
       { value: '8', label: '테이블' },
     ],
   },
@@ -129,7 +129,7 @@ const CASES = [
     quote: '직관적인 인터페이스 덕분에 처음 사용해도 어렵지 않았어요.',
     metrics: [
       { value: '800+', label: '이용자' },
-      { value: '3 일', label: '운영 기간' },
+      { value: '3일', label: '운영 기간' },
     ],
   },
 ];

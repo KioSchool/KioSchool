@@ -105,7 +105,7 @@ function InfoCtaSection() {
       >
         <CtaDivider />
         <Title>다음 축제, 키오스쿨과 함께하세요</Title>
-        <Subtitle>가입부터 주점 운영까지, 3 분이면 준비 끝</Subtitle>
+        <Subtitle>가입부터 주점 운영까지, 3분이면 준비 끝</Subtitle>
         <CtaButton to={ADMIN_ROUTES.HOME}>{isLoggedIn() ? '어드민 홈으로' : '무료로 시작하기'}</CtaButton>
         <Reassurance>별도 비용 없이 시작할 수 있어요</Reassurance>
         <SocialLinks>

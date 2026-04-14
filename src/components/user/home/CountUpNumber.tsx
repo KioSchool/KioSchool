@@ -71,8 +71,7 @@ function CountUpNumber({ value, suffix, label, size = 'default', numberColor = '
   return (
     <Container ref={ref}>
       <NumberRow large={isLarge} numberColor={numberColor}>
-        <motion.span>{rounded}</motion.span>
-        <Suffix large={isLarge}>{suffix}</Suffix>
+        <motion.span>{rounded}</motion.span> <Suffix large={isLarge}>{suffix}</Suffix>
       </NumberRow>
       {label && <Label>{label}</Label>}
     </Container>
