@@ -83,6 +83,9 @@ const SideNavLink = styled(Link)`
   color: inherit;
   font: inherit;
   cursor: pointer;
+  display: block;
+  width: 100%;
+  height: 100%;
 `;
 
 interface SideNavProps {
