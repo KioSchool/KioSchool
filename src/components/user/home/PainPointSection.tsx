@@ -75,9 +75,9 @@ const SourceNote = styled.p`
 `;
 
 const PAIN_CARDS = [
-  { value: 73, suffix: ' %', label: '수기 주문 시 오류 발생률' },
-  { value: 2, suffix: ' h+', label: '엑셀 정산 소요 시간' },
-  { value: 40, suffix: ' %', label: '축제를 즐기지 못한 운영진' },
+  { value: 5, suffix: ' 명+', label: '수기 운영 시 필요한 추가 인력' },
+  { value: 2, suffix: ' h+', label: '수기 정산 소요 시간' },
+  { value: 10, suffix: ' 건+', label: '하루 평균 주문 누락' },
 ];
 
 function PainPointSection() {
@@ -108,7 +108,7 @@ function PainPointSection() {
           </NumberMotionWrapper>
         ))}
       </NumberGrid>
-      <SourceNote>2023 건국대학교 컴퓨터공학부 축제 주점 운영 데이터 참고</SourceNote>
+      <SourceNote>키오스쿨 사용자 인터뷰 기반</SourceNote>
     </Container>
   );
 }

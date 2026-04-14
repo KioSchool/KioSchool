@@ -40,7 +40,7 @@ const DashboardMockup = styled.div`
   background: ${Color.WHITE};
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.04);
   overflow: hidden;
-  ${colFlex({})};
+  ${colFlex()};
 
   ${mobileMediaQuery} {
     width: 180px;
@@ -67,6 +67,7 @@ const PlaceholderText = styled.span`
   color: #adb1ba;
 `;
 
+// TODO 목업 이미지 — 실제 스크린샷으로 교체 필요
 const HERO_PHONE_IMAGE = '';
 const HERO_DASHBOARD_IMAGE = '';
 

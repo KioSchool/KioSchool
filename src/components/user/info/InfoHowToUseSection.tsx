@@ -84,12 +84,12 @@ const STEPS = [
   {
     number: 1,
     title: '회원가입',
-    description: '이메일 하나면 충분합니다. 1분이면 가입이 완료됩니다.',
+    description: '학교 이메일 하나면 충분합니다. 1 분이면 가입이 완료됩니다.',
   },
   {
     number: 2,
-    title: '워크스페이스 개설',
-    description: '주점 이름을 정하고 워크스페이스를 만드세요. 주점의 운영 공간이 바로 생성됩니다.',
+    title: '주점 개설',
+    description: '주점 운영 공간을 간편하게 만드세요. 주점 이름만 정하면 바로 생성됩니다.',
   },
   {
     number: 3,
@@ -99,7 +99,7 @@ const STEPS = [
   {
     number: 4,
     title: '축제 시작',
-    description: 'QR 코드를 테이블에 붙이면 준비 끝. 손님이 스캔하면 주문이 바로 들어옵니다.',
+    description: 'QR 코드를 테이블에 붙이면 준비 끝. 스캔하면 주문이 바로 들어옵니다.',
   },
 ];
 

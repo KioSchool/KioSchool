@@ -87,17 +87,29 @@ const ReviewsGrid = styled.div`
 const UNIVERSITIES = ['건국대', '세종대', '홍익대', '경희대', '서울대', '한양대', '성균관대', '중앙대'];
 
 const METRICS = [
-  { value: 1200, suffix: ' 명+', label: '누적 이용자' },
-  { value: 15000, suffix: ' 건+', label: '누적 주문' },
-  { value: 30, suffix: ' 개+', label: '사용 주점' },
-  { value: 3000, suffix: ' 만원+', label: '누적 매출' },
+  { value: 5000, suffix: ' 명+', label: '누적 이용자' },
+  { value: 10000, suffix: ' 건+', label: '누적 주문' },
+  { value: 50, suffix: ' 개+', label: '사용 주점' },
+  { value: 6000, suffix: ' 만원+', label: '누적 매출' },
 ];
 
 const REVIEWS = [
-  { name: '건국대 주점 운영자', text: 'QR 코드로 주문하니 직원을 기다릴 필요가 없어 편리했어요.', event: '2025 봄 축제', time: '2주 전' },
-  { name: '세종대 축제 참가자', text: '직관적인 인터페이스 덕분에 처음 사용해도 어렵지 않았어요.', event: '2025 봄 축제', time: '3주 전' },
-  { name: '홍익대 주점 운영자', text: '주문을 실시간으로 확인할 수 있어 운영이 한결 수월해졌어요.', event: '2024 가을 축제', time: '6개월 전' },
-  { name: '경희대 축제 기획단', text: '정산 작업이 10분이면 끝났어요. 예전엔 하루 종일 걸렸는데.', event: '2024 가을 축제', time: '5개월 전' },
+  {
+    name: '하우스파티 운영팀',
+    text: '예상보다 손님이 훨씬 많아 밀렸을 때, 키오스쿨 덕분에 운영이 가능했어요. 주문 실수도 확실히 줄었습니다.',
+    event: '건국대학교 축제',
+  },
+  {
+    name: '생명과학대학 학생회',
+    text: '카운터와 주방이 떨어져 있어도 동시에 주문 현황을 확인할 수 있었어요. 인력 업무가 확실히 줄었습니다.',
+    event: '건국대학교 축제',
+  },
+  { name: '사회환경공학부 학생회', text: '돈 관리와 주문 관리가 동시에 개선됐어요. 테이블을 28 개에서 45 개로 늘릴 수 있었습니다.', event: '건국대학교 축제' },
+  {
+    name: '미래에너지공학과 학생회',
+    text: '실시간 주문 조회가 정말 편리했어요. 종이로 관리할 때보다 훨씬 안정적으로 운영할 수 있었습니다.',
+    event: '건국대학교 축제',
+  },
 ];
 
 function SocialProofSection() {
@@ -127,7 +139,7 @@ function SocialProofSection() {
       </NumberGrid>
       <ReviewsGrid>
         {REVIEWS.map((review, index) => (
-          <ReviewChat key={review.name} name={review.name} text={review.text} index={index} event={review.event} time={review.time} />
+          <ReviewChat key={review.name} name={review.name} text={review.text} index={index} event={review.event} />
         ))}
       </ReviewsGrid>
     </Container>

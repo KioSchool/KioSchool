@@ -73,20 +73,14 @@ const EventLabel = styled.span`
   color: #adb1ba;
 `;
 
-const Timestamp = styled.span`
-  font-size: 10px;
-  color: #adb1ba;
-`;
-
 interface ReviewChatProps {
   name: string;
   text: string;
   index: number;
   event: string;
-  time: string;
 }
 
-function ReviewChat({ name, text, index, event, time }: ReviewChatProps) {
+function ReviewChat({ name, text, index, event }: ReviewChatProps) {
   const initial = name.charAt(0);
 
   return (
@@ -105,7 +99,6 @@ function ReviewChat({ name, text, index, event, time }: ReviewChatProps) {
           </NameGroup>
         </Header>
         <Text>{text}</Text>
-        <Timestamp>{time}</Timestamp>
       </Card>
     </motion.div>
   );

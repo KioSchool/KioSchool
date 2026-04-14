@@ -91,7 +91,6 @@ interface MobileNavProps {
 function MobileNav({ isOpen, onClose }: MobileNavProps) {
   return (
     <>
-      <Overlay isOpen={isOpen} onClick={onClose} />
       <Menu isOpen={isOpen}>
         <MenuHeader>
           <CloseButton onClick={onClose}>
@@ -114,6 +113,7 @@ function MobileNav({ isOpen, onClose }: MobileNavProps) {
           마이페이지
         </NavLink>
       </Menu>
+      <Overlay isOpen={isOpen} onClick={onClose} />
     </>
   );
 }

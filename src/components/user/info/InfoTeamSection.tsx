@@ -29,8 +29,8 @@ const SectionTitle = styled.h2`
 const TeamGrid = styled.div`
   margin-top: 48px;
   gap: 32px;
-  ${rowFlex({ justify: 'center' })};
   flex-wrap: wrap;
+  ${rowFlex({ justify: 'center' })};
 
   ${mobileMediaQuery} {
     gap: 24px;
@@ -75,7 +75,7 @@ const MemberBio = styled.span`
 
 const PROFILE_COLORS = ['#FF9142', '#46ADFF', '#0CAF60', '#9D78FF', '#FF5A5A'];
 
-// 팀원 데이터 — 실제 데이터로 교체 필요
+// TODO 팀원 데이터 — 실제 데이터로 교체 필요
 const TEAM_MEMBERS = [
   { name: '멤버 2', role: 'Backend', bio: '안정적인 서비스를 설계합니다' },
   { name: '멤버 1', role: 'Frontend', bio: '사용자 경험을 만듭니다' },

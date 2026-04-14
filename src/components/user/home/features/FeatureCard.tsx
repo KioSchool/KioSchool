@@ -70,6 +70,7 @@ const PlaceholderText = styled.span`
   color: #adb1ba;
 `;
 
+// TODO 기능 프리뷰 이미지 — 실제 스크린샷으로 교체 필요
 const FEATURE_META: Record<FeatureIconType, { image: string; label: string }> = {
   qr: { image: '', label: 'QR 주문 화면' },
   realtime: { image: '', label: '실시간 주문 관리' },
