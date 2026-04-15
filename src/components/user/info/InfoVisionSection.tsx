@@ -61,10 +61,14 @@ function InfoVisionSection() {
           <br />
           수기 주문, 수동 정산, 부족한 인력.
           <br />
-          축제를 준비하는 학생들이 정작 축제를 즐기지 못하는 문제를 해결하고 싶었습니다.
+          축제를 준비하는 학생들이
+          <br />
+          정작 축제를 즐기지 못하는 문제를 해결하고 싶었습니다.
         </Paragraph>
         <Divider />
-        <Paragraph style={{ marginTop: 0 }}>기술로 운영의 부담을 줄이고, 축제 본연의 즐거움에 집중할 수 있는 환경을 만들어갑니다.</Paragraph>
+        <Paragraph style={{ marginTop: 0 }}>
+          기술로 운영의 부담을 줄이고, <br /> 축제 본연의 즐거움에 집중할 수 있는 환경을 만들어갑니다.
+        </Paragraph>
       </motion.div>
     </Container>
   );

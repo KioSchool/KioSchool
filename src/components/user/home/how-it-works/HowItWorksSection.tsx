@@ -98,6 +98,7 @@ const StepTitle = styled.h3`
   letter-spacing: -0.02em;
   margin-top: 8px;
   text-align: center;
+  white-space: pre-line;
 `;
 
 const StepDescription = styled.p`
@@ -108,13 +109,14 @@ const StepDescription = styled.p`
   margin-top: 8px;
   max-width: 260px;
   text-align: center;
+  white-space: pre-line;
 `;
 
 const STEPS = [
   {
     number: 1,
     title: '회원가입',
-    description: '이메일 하나면 충분해요. 1분이면 가입이 완료돼요.',
+    description: '이메일 하나면 충분해요.\n1분이면 가입이 완료돼요.',
   },
   {
     number: 2,
@@ -124,7 +126,7 @@ const STEPS = [
   {
     number: 3,
     title: '축제 시작',
-    description: 'QR 코드를 테이블에 붙이면 준비 끝. 손님이 스캔하면 주문이 바로 들어와요.',
+    description: 'QR 코드를 테이블에 붙이면 준비 끝.\n손님이 스캔하면 주문이 바로 들어와요.',
   },
 ];
 

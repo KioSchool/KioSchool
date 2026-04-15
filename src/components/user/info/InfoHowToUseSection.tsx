@@ -94,7 +94,7 @@ const STEPS = [
   {
     number: 3,
     title: '메뉴 및 테이블 등록',
-    description: '메뉴와 가격을 등록하고, 테이블 수를 입력하면 QR 코드가 자동으로 만들어집니다.',
+    description: '메뉴와 가격을 등록하고, 테이블 수를 입력하면 \nQR 코드가 자동으로 만들어집니다.',
   },
   {
     number: 4,

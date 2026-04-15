@@ -57,6 +57,7 @@ export const bodyTypography = css`
   font-weight: 400;
   color: #6b7684;
   line-height: 1.7;
+  white-space: pre-line;
 `;
 
 export const captionTypography = css`

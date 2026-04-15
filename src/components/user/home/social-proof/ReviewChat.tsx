@@ -58,6 +58,7 @@ const Text = styled.p`
   color: #78706a;
   line-height: 1.6;
   margin: 0;
+  white-space: pre-line;
 
   ${mobileMediaQuery} {
     font-size: 14px;

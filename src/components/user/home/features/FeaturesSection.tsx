@@ -75,22 +75,22 @@ const FEATURES = [
   {
     iconType: 'qr' as const,
     title: 'QR 주문',
-    description: '손님이 테이블에서 QR을 스캔하면 메뉴를 보고 바로 주문해요. 키오스크 장비도, 주문을 받으러 다닐 필요도 없어요.',
+    description: '손님이 테이블에서 QR을 스캔하면 메뉴를 보고 바로 주문해요. \n키오스크 장비도, 주문을 받으러 다닐 필요도 없어요.',
   },
   {
     iconType: 'realtime' as const,
     title: '실시간 주문 관리',
-    description: '주문이 들어오면 운영자 화면에 바로 표시돼요. 주문 상태를 실시간으로 관리하고, 놓치는 주문 없이 서빙할 수 있어요.',
+    description: '주문이 들어오면 운영자 화면에 바로 표시돼요. \n주문 상태를 실시간으로 관리하고, 놓치는 주문 없이 서빙할 수 있어요.',
   },
   {
     iconType: 'settlement' as const,
     title: '자동 정산',
-    description: '테이블별, 메뉴별 매출이 자동으로 집계돼요. 축제가 끝나면 클릭 한 번으로 정산 결과를 확인할 수 있어요.',
+    description: '테이블별, 메뉴별 매출이 자동으로 집계돼요. \n축제가 끝나면 클릭 한 번으로 정산 결과를 확인할 수 있어요.',
   },
   {
     iconType: 'table' as const,
     title: '테이블 관리',
-    description: '테이블 수만 입력하면 QR 코드가 자동 생성돼요. 출력해서 테이블에 붙이기만 하면 바로 운영을 시작할 수 있어요.',
+    description: '테이블 수만 입력하면 QR 코드가 자동 생성돼요. \n출력해서 테이블에 붙이기만 하면 바로 운영을 시작할 수 있어요.',
   },
 ];
 

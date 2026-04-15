@@ -54,6 +54,7 @@ const StepTitle = styled.h3`
   font-weight: 700;
   color: #3c3530;
   letter-spacing: -0.02em;
+  white-space: pre-line;
 `;
 
 const StepDescription = styled.p`
@@ -62,6 +63,7 @@ const StepDescription = styled.p`
   letter-spacing: -0.01em;
   line-height: 1.65;
   margin-top: 4px;
+  white-space: pre-line;
 `;
 
 interface StepData {

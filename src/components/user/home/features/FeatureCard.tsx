@@ -44,6 +44,7 @@ const Description = styled.p`
   letter-spacing: -0.01em;
   margin-top: 8px;
   line-height: 1.65;
+  white-space: pre-line;
 `;
 
 interface FeatureCardProps {
