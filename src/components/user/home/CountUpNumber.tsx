@@ -53,13 +53,14 @@ interface CountUpNumberProps {
   label: string;
   size?: 'default' | 'large';
   numberColor?: string;
+  format?: (latest: number) => string;
 }
 
-function CountUpNumber({ value, suffix, label, size = 'default', numberColor = '#3C3530' }: CountUpNumberProps) {
+function CountUpNumber({ value, suffix, label, size = 'default', numberColor = '#3C3530', format }: CountUpNumberProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const motionValue = useMotionValue(0);
-  const rounded = useTransform(motionValue, (latest) => Math.round(latest).toLocaleString());
+  const rounded = useTransform(motionValue, (latest) => (format ? format(latest) : latest.toLocaleString()));
   const isLarge = size === 'large';
 
   useEffect(() => {

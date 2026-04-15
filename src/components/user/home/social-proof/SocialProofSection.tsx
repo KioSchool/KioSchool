@@ -84,13 +84,23 @@ const ReviewsGrid = styled.div`
   }
 `;
 
-const UNIVERSITIES = ['건국대', '세종대', '홍익대', '경희대', '서울대', '한양대', '성균관대', '중앙대'];
+const UNIVERSITIES = ['건국대', '세종대', '홍익대', '경희대', '서울대', '한양대', '성균관대', '중앙대', '가천대', '충남대', '제주대'];
+
+function formatKoreanRevenue(latestManwon: number): string {
+  const total = Math.max(0, Math.round(latestManwon / 1000) * 1000);
+  if (total === 0) return '0';
+  const eok = Math.floor(total / 10000);
+  const cheonman = Math.floor((total % 10000) / 1000);
+  if (eok === 0) return `${cheonman}천만`;
+  if (cheonman === 0) return `${eok}억`;
+  return `${eok}억 ${cheonman}천만`;
+}
 
 const METRICS = [
-  { value: 5000, suffix: ' 명+', label: '누적 이용자' },
-  { value: 10000, suffix: ' 건+', label: '누적 주문' },
-  { value: 50, suffix: ' 개+', label: '사용 주점' },
-  { value: 6000, suffix: ' 만원+', label: '누적 매출' },
+  { value: 10000, suffix: ' 명+', label: '누적 이용자' },
+  { value: 11000, suffix: ' 건+', label: '누적 주문' },
+  { value: 40, suffix: ' 개+', label: '사용 주점' },
+  { value: 14000, suffix: ' 원+', label: '주점 누적 매출', format: formatKoreanRevenue },
 ];
 
 const REVIEWS = [
@@ -133,7 +143,7 @@ function SocialProofSection() {
       <NumberGrid>
         {METRICS.map((metric) => (
           <NumberItem key={metric.label}>
-            <CountUpNumber value={metric.value} suffix={metric.suffix} label={metric.label} />
+            <CountUpNumber value={metric.value} suffix={metric.suffix} label={metric.label} format={'format' in metric ? metric.format : undefined} />
           </NumberItem>
         ))}
       </NumberGrid>
