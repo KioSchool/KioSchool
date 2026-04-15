@@ -57,6 +57,14 @@ const KioHighlight = styled.span`
   text-shadow: var(--kio-shadow, none);
 `;
 
+const MobileOnlyBreak = styled.br`
+  display: none;
+
+  ${mobileMediaQuery} {
+    display: block;
+  }
+`;
+
 const CtaRow = styled.div`
   margin-top: 36px;
   gap: 12px;
@@ -156,7 +164,8 @@ function HeroSection() {
 
       <ContentWrapper initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4, ease: 'easeOut' }}>
         <MainCopy>
-          축제는 <OrangeText>즐기라고</OrangeText> 있는 거니까
+          축제는 <OrangeText>즐기라고</OrangeText>
+          <MobileOnlyBreak /> 있는 거니까
         </MainCopy>
         <SubCopy>
           QR 주문, 실시간 주문 관리, 자동 정산까지
