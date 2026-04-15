@@ -60,7 +60,7 @@ const NumberGrid = styled.div`
   ${mobileMediaQuery} {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 32px;
+    gap: 24px 16px;
   }
 `;
 
