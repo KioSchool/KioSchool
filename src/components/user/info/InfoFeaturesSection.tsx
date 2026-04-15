@@ -91,6 +91,7 @@ const FeatureVisual = styled.div`
   border-radius: 20px;
   background: #f8f9fa;
   flex-shrink: 0;
+  overflow: hidden;
   ${colFlex({ justify: 'center', align: 'center' })};
 
   ${mobileMediaQuery} {
@@ -156,7 +157,7 @@ function InfoFeaturesSection() {
                 <FeatureDescription>{feature.description}</FeatureDescription>
               </FeatureText>
               <FeatureVisual>
-                <FeatureVisualContent number={feature.number} />
+                <FeatureVisualContent number={feature.number} title={feature.title} />
               </FeatureVisual>
             </FeatureRow>
           </motion.div>

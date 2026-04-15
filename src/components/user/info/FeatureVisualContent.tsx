@@ -1,143 +1,76 @@
 import styled from '@emotion/styled';
 import { match } from 'ts-pattern';
-import { colFlex, rowFlex } from '@styles/flexStyles';
+import { rowFlex } from '@styles/flexStyles';
+import { mobileMediaQuery } from '@styles/globalStyles';
 import { Color } from '@resources/colors';
+import autoSettlementImage from '@resources/image/hero/auto-settlement.webp';
+import phoneImage from '@resources/image/hero/phone.webp';
+import qrCodeImage from '@resources/image/hero/qr-code.webp';
+import realtimeOrderImage from '@resources/image/hero/realtime-order.webp';
+import tableManagementImage from '@resources/image/hero/table-management.webp';
 
-const QrVisual = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 4px;
-  width: 60px;
-  height: 60px;
-  padding: 6px;
-  border: 3px solid ${Color.KIO_ORANGE};
-  border-radius: 10px;
-
-  span {
-    border-radius: 2px;
-    background: ${Color.KIO_ORANGE};
-  }
-
-  span:nth-of-type(5) {
-    background: transparent;
-  }
+const SinglePreviewImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 `;
 
-const DashboardVisual = styled.div`
-  width: 200px;
+const QrFlow = styled.div`
+  width: 100%;
+  height: 100%;
   padding: 12px;
-  background: ${Color.WHITE};
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  gap: 6px;
-  ${colFlex({})};
+  box-sizing: border-box;
+  gap: 16px;
+  ${rowFlex({ justify: 'center', align: 'center' })};
+
+  ${mobileMediaQuery} {
+    padding: 10px;
+    gap: 12px;
+  }
 `;
 
-const DashboardRow = styled.div<{ active?: boolean }>`
-  padding: 8px 10px;
-  border-radius: 8px;
-  background: ${({ active }) => (active ? 'rgba(255, 145, 66, 0.04)' : '#f8f9fa')};
-  ${rowFlex({ justify: 'space-between', align: 'center' })};
+const PhoneFlowImage = styled.img`
+  height: 100%;
+  width: auto;
+  object-fit: contain;
 `;
 
-const DashboardLabel = styled.span`
-  font-size: 10px;
-  font-weight: 600;
-  color: #191f28;
+const QrFlowImage = styled.img`
+  height: 65%;
+  width: auto;
+  object-fit: contain;
 `;
 
-const DashboardStatus = styled.span<{ color: string }>`
-  font-size: 9px;
-  font-weight: 600;
-  color: ${({ color }) => color};
-`;
+const ArrowIcon = styled.svg`
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
 
-const BarChartVisual = styled.div`
-  height: 80px;
-  padding: 0 8px;
-  gap: 10px;
-  ${rowFlex({ justify: 'center', align: 'flex-end' })};
-`;
-
-const VisualBar = styled.div<{ h: number; active?: boolean }>`
-  width: 28px;
-  height: ${({ h }) => h}px;
-  border-radius: 6px 6px 0 0;
-  background: ${({ active }) => (active ? Color.KIO_ORANGE : '#e5e8eb')};
-`;
-
-const TableVisual = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  width: 160px;
-`;
-
-const TableCell = styled.div<{ active?: boolean }>`
-  padding: 8px;
-  border-radius: 8px;
-  background: ${({ active }) => (active ? 'rgba(255, 145, 66, 0.08)' : Color.WHITE)};
-  border: 1.5px solid ${({ active }) => (active ? Color.KIO_ORANGE : '#e5e8eb')};
-  text-align: center;
-  font-size: 9px;
-  font-weight: 600;
-  color: ${({ active }) => (active ? Color.KIO_ORANGE : '#8b95a1')};
+  ${mobileMediaQuery} {
+    width: 20px;
+    height: 20px;
+  }
 `;
 
 interface FeatureVisualContentProps {
   number: string;
+  title: string;
 }
 
-function FeatureVisualContent({ number }: FeatureVisualContentProps) {
+function FeatureVisualContent({ number, title }: FeatureVisualContentProps) {
   return match(number)
     .with('01', () => (
-      <QrVisual>
-        <span />
-        <span />
-        <span />
-        <span />
-        <span />
-        <span />
-        <span />
-        <span />
-        <span />
-      </QrVisual>
+      <QrFlow>
+        <QrFlowImage src={qrCodeImage} alt="QR 코드" />
+        <ArrowIcon viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6" stroke={Color.KIO_ORANGE} strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+        </ArrowIcon>
+        <PhoneFlowImage src={phoneImage} alt="QR 주문 화면" />
+      </QrFlow>
     ))
-    .with('02', () => (
-      <DashboardVisual>
-        <DashboardRow active>
-          <DashboardLabel>테이블 3</DashboardLabel>
-          <DashboardStatus color={Color.KIO_ORANGE}>신규</DashboardStatus>
-        </DashboardRow>
-        <DashboardRow active>
-          <DashboardLabel>테이블 7</DashboardLabel>
-          <DashboardStatus color={Color.KIO_ORANGE}>신규</DashboardStatus>
-        </DashboardRow>
-        <DashboardRow>
-          <DashboardLabel>테이블 1</DashboardLabel>
-          <DashboardStatus color={Color.GREEN}>완료</DashboardStatus>
-        </DashboardRow>
-      </DashboardVisual>
-    ))
-    .with('03', () => (
-      <BarChartVisual>
-        <VisualBar h={30} />
-        <VisualBar h={48} active />
-        <VisualBar h={42} active />
-        <VisualBar h={64} active />
-        <VisualBar h={56} active />
-      </BarChartVisual>
-    ))
-    .otherwise(() => (
-      <TableVisual>
-        <TableCell active>T1</TableCell>
-        <TableCell active>T2</TableCell>
-        <TableCell active>T3</TableCell>
-        <TableCell active>T4</TableCell>
-        <TableCell>T5</TableCell>
-        <TableCell>T6</TableCell>
-      </TableVisual>
-    ));
+    .with('02', () => <SinglePreviewImage src={realtimeOrderImage} alt={title} />)
+    .with('03', () => <SinglePreviewImage src={autoSettlementImage} alt={title} />)
+    .otherwise(() => <SinglePreviewImage src={tableManagementImage} alt={title} />);
 }
 
 export default FeatureVisualContent;
