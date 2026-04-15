@@ -106,7 +106,10 @@ function FeaturesSection() {
               <br />
               이렇게 <Accent>바뀌어요</Accent>
             </SectionTitle>
-            <SectionSubtitle>주점 운영에 필요한 기능을 모두 제공해요. 복잡한 건 키오스쿨이 할게요.</SectionSubtitle>
+            <SectionSubtitle>
+              주점 운영에 필요한 기능을 모두 제공해요. <br />
+              복잡한 건 키오스쿨이 할게요.
+            </SectionSubtitle>
           </motion.div>
         </LeftPanel>
         <RightPanel>
