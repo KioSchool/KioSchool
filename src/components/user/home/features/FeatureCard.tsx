@@ -4,6 +4,7 @@ import { colFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { Color } from '@resources/colors';
 import FeatureIcon, { FeatureIconType } from './FeatureIcon';
+import FeaturePreview from './FeaturePreview';
 
 const Card = styled(motion.div)`
   background: ${Color.WHITE};
@@ -45,39 +46,6 @@ const Description = styled.p`
   line-height: 1.65;
 `;
 
-const PreviewArea = styled.div`
-  width: 100%;
-  height: 240px;
-  margin-top: 20px;
-  border-radius: 16px;
-  overflow: hidden;
-  background: #f8f9fa;
-  ${colFlex({ justify: 'center', align: 'center' })};
-
-  ${mobileMediaQuery} {
-    height: 180px;
-  }
-`;
-
-const PreviewImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`;
-
-const PlaceholderText = styled.span`
-  font-size: 13px;
-  color: #adb1ba;
-`;
-
-// TODO 기능 프리뷰 이미지 — 실제 스크린샷으로 교체 필요
-const FEATURE_META: Record<FeatureIconType, { image: string; label: string }> = {
-  qr: { image: '', label: 'QR 주문 화면' },
-  realtime: { image: '', label: '실시간 주문 관리' },
-  settlement: { image: '', label: '정산 화면' },
-  table: { image: '', label: '테이블 관리' },
-};
-
 interface FeatureCardProps {
   title: string;
   description: string;
@@ -86,8 +54,6 @@ interface FeatureCardProps {
 }
 
 function FeatureCard({ title, description, iconType, delay }: FeatureCardProps) {
-  const { image, label } = FEATURE_META[iconType];
-
   return (
     <Card
       initial={{ opacity: 0, x: 24 }}
@@ -98,7 +64,7 @@ function FeatureCard({ title, description, iconType, delay }: FeatureCardProps) 
       <FeatureIcon iconType={iconType} />
       <Title>{title}</Title>
       <Description>{description}</Description>
-      <PreviewArea>{image ? <PreviewImage src={image} alt={label} /> : <PlaceholderText>{label}</PlaceholderText>}</PreviewArea>
+      <FeaturePreview iconType={iconType} label={title} />
     </Card>
   );
 }
