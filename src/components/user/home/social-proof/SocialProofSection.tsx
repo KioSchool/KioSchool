@@ -84,6 +84,14 @@ const ReviewsGrid = styled.div`
   }
 `;
 
+const MobileOnlyBreak = styled.br`
+  display: none;
+
+  ${mobileMediaQuery} {
+    display: block;
+  }
+`;
+
 const UNIVERSITIES = ['건국대', '세종대', '홍익대', '경희대', '서울대', '한양대', '성균관대', '중앙대', '가천대', '충남대', '제주대'];
 
 function formatKoreanRevenue(latestManwon: number): string {
@@ -125,7 +133,10 @@ const REVIEWS = [
 function SocialProofSection() {
   return (
     <Container>
-      <SectionTitle>이미 많은 축제에서 사용하고 있어요</SectionTitle>
+      <SectionTitle>
+        이미 많은 축제에서 <MobileOnlyBreak />
+        사용하고 있어요
+      </SectionTitle>
       <SectionSubtitle>전국 대학교에서 키오스쿨로 축제를 운영하고 있어요</SectionSubtitle>
       <UniversityBadgeRow>
         {UNIVERSITIES.map((name, index) => (
