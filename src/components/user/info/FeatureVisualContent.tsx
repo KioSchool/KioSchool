@@ -13,18 +13,17 @@ const SinglePreviewImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 `;
 
 const QrFlow = styled.div`
   width: 100%;
   height: 100%;
-  padding: 12px;
-  box-sizing: border-box;
   gap: 16px;
   ${rowFlex({ justify: 'center', align: 'center' })};
 
   ${mobileMediaQuery} {
-    padding: 10px;
     gap: 12px;
   }
 `;
@@ -33,12 +32,16 @@ const PhoneFlowImage = styled.img`
   height: 100%;
   width: auto;
   object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 `;
 
 const QrFlowImage = styled.img`
   height: 65%;
   width: auto;
   object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 `;
 
 const ArrowIcon = styled.svg`

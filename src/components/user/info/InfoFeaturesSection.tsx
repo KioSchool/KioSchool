@@ -88,10 +88,7 @@ const FeatureDescription = styled.p`
 const FeatureVisual = styled.div`
   width: 320px;
   height: 200px;
-  border-radius: 20px;
-  background: #f8f9fa;
   flex-shrink: 0;
-  overflow: hidden;
   ${colFlex({ justify: 'center', align: 'center' })};
 
   ${mobileMediaQuery} {
