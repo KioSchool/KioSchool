@@ -1,3 +1,4 @@
+import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { colFlex, rowFlex } from '@styles/flexStyles';
@@ -6,6 +7,16 @@ import { headingTypography, subheadingTypography } from '@styles/landingTypograp
 import { Color } from '@resources/colors';
 import CountUpNumber from '@components/user/home/CountUpNumber';
 import ReviewChat from './ReviewChat';
+
+const scrollUniversities = keyframes`
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+`;
 
 const Container = styled.div`
   width: 100%;
@@ -33,16 +44,61 @@ const SectionSubtitle = styled.p`
   ${subheadingTypography};
 `;
 
-const UniversityBadgeRow = styled.div`
+const UniversityCarousel = styled(motion.div)`
+  width: 100%;
   max-width: 800px;
   margin-top: 48px;
   margin-bottom: 48px;
-  gap: 8px;
-  flex-wrap: wrap;
-  ${rowFlex({ justify: 'center', align: 'center' })};
+  overflow: hidden;
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 72px;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  &::before {
+    left: 0;
+    background: linear-gradient(90deg, ${Color.WHITE} 0%, rgba(255, 255, 255, 0) 100%);
+  }
+
+  &::after {
+    right: 0;
+    background: linear-gradient(270deg, ${Color.WHITE} 0%, rgba(255, 255, 255, 0) 100%);
+  }
+
+  ${mobileMediaQuery} {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    max-width: 280px;
+
+    &::before,
+    &::after {
+      width: 32px;
+    }
+  }
 `;
 
-const UniversityBadge = styled(motion.span)`
+const UniversityTrack = styled.div`
+  width: max-content;
+  gap: 8px;
+  animation: ${scrollUniversities} 24s linear infinite;
+  will-change: transform;
+  ${rowFlex({ align: 'center' })};
+
+  ${mobileMediaQuery} {
+    animation-duration: 20s;
+  }
+`;
+
+const UniversityBadge = styled.span`
+  flex-shrink: 0;
   font-size: 13px;
   font-weight: 500;
   color: #6b6560;
@@ -92,7 +148,27 @@ const MobileOnlyBreak = styled.br`
   }
 `;
 
-const UNIVERSITIES = ['건국대', '세종대', '홍익대', '경희대', '서울대', '한양대', '성균관대', '중앙대', '가천대', '충남대', '제주대'];
+const UNIVERSITIES = [
+  '한양대',
+  '제주대',
+  '국민대',
+  '가천대',
+  '한국기술교육대',
+  '세종대',
+  '경희대',
+  '강남대',
+  '건국대',
+  '광운대',
+  '홍익대',
+  '고려대',
+  '동국대',
+  '서강대',
+  '경북대',
+  '숙명여대',
+  '충남대',
+];
+
+const UNIVERSITY_CAROUSEL_ITEMS = [...UNIVERSITIES, ...UNIVERSITIES];
 
 function formatKoreanRevenue(latestManwon: number): string {
   const total = Math.max(0, Math.round(latestManwon / 1000) * 1000);
@@ -138,19 +214,18 @@ function SocialProofSection() {
         사용하고 있어요
       </SectionTitle>
       <SectionSubtitle>전국 대학교에서 키오스쿨로 축제를 운영하고 있어요</SectionSubtitle>
-      <UniversityBadgeRow>
-        {UNIVERSITIES.map((name, index) => (
-          <UniversityBadge
-            key={name}
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.05, ease: 'easeOut' }}
-          >
-            {name}
-          </UniversityBadge>
-        ))}
-      </UniversityBadgeRow>
+      <UniversityCarousel
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+      >
+        <UniversityTrack>
+          {UNIVERSITY_CAROUSEL_ITEMS.map((name, index) => (
+            <UniversityBadge key={`${name}-${index}`}>{name}</UniversityBadge>
+          ))}
+        </UniversityTrack>
+      </UniversityCarousel>
       <NumberGrid>
         {METRICS.map((metric) => (
           <NumberItem key={metric.label}>
