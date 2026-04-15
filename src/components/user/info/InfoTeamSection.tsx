@@ -4,6 +4,10 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { captionTypography, eyebrowTypography, headingTypography } from '@styles/landingTypography';
 import { Color } from '@resources/colors';
+import ahyoung from '@resources/image/info/ahyoung.jpg';
+import jiwon from '@resources/image/info/jiwon.jpg';
+import sungjong from '@resources/image/info/sungjong.jpg';
+import jin from '@resources/image/info/jin.jpg';
 
 const Container = styled.div`
   width: 100%;
@@ -43,16 +47,19 @@ const MemberCard = styled.div`
   ${colFlex({ align: 'center' })};
 `;
 
-const ProfileCircle = styled.div<{ bgColor: string }>`
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: ${({ bgColor }) => bgColor};
-  font-size: 24px;
-  font-weight: 700;
-  color: ${Color.WHITE};
+const ProfileCircle = styled.div`
+  width: 128px;
+  height: 128px;
+  border-radius: 30%;
   margin-bottom: 16px;
+  overflow: hidden;
   ${colFlex({ justify: 'center', align: 'center' })};
+`;
+
+const ProfileImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 const MemberName = styled.span`
@@ -73,14 +80,11 @@ const MemberBio = styled.span`
   ${captionTypography};
 `;
 
-const PROFILE_COLORS = ['#FF9142', '#46ADFF', '#0CAF60', '#9D78FF', '#FF5A5A'];
-
-// TODO 팀원 데이터 — 실제 데이터로 교체 필요
 const TEAM_MEMBERS = [
-  { name: '멤버 2', role: 'Backend', bio: '안정적인 서비스를 설계합니다' },
-  { name: '멤버 1', role: 'Frontend', bio: '사용자 경험을 만듭니다' },
-  { name: '멤버 4', role: 'Frontend', bio: '사용자 경험을 만듭니다' },
-  { name: '멤버 3', role: 'Design', bio: '직관적인 인터페이스를 그립니다' },
+  { name: '박지인', role: 'Backend', bio: '안정적인 서비스를 설계합니다', image: jin },
+  { name: '정지원', role: 'Frontend', bio: '사용자 경험을 개선합니다', image: jiwon },
+  { name: '이성종', role: 'Frontend', bio: '사용자 경험을 개선합니다', image: sungjong },
+  { name: '서아영', role: 'Design', bio: '화면의 복잡함을 덜어냅니다', image: ahyoung },
 ];
 
 function InfoTeamSection() {
@@ -106,7 +110,9 @@ function InfoTeamSection() {
             transition={{ duration: 0.5, delay: index * 0.1, ease: 'easeOut' }}
           >
             <MemberCard>
-              <ProfileCircle bgColor={PROFILE_COLORS[index % PROFILE_COLORS.length]}>{member.name.charAt(0)}</ProfileCircle>
+              <ProfileCircle>
+                <ProfileImage src={member.image} alt={`${member.name} 프로필`} />
+              </ProfileCircle>
               <MemberName>{member.name}</MemberName>
               <MemberRole>{member.role}</MemberRole>
               <MemberBio>{member.bio}</MemberBio>
