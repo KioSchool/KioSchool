@@ -70,21 +70,18 @@ const Reassurance = styled.p`
   ${captionTypography};
 `;
 
-const SocialLinks = styled.div`
+const ContactLink = styled.a`
   margin-top: 56px;
-  gap: 12px;
-  ${rowFlex({ justify: 'center', align: 'center' })};
-`;
-
-const SocialIconLink = styled.a`
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
+  padding: 10px 20px;
   background: #f2f4f6;
-  color: #6b7684;
+  color: #3c3530;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 999px;
   text-decoration: none;
+  gap: 8px;
   transition: background 0.2s ease, color 0.2s ease;
-  ${colFlex({ justify: 'center', align: 'center' })};
+  ${rowFlex({ justify: 'center', align: 'center' })};
 
   &:hover {
     background: ${Color.KIO_ORANGE};
@@ -108,11 +105,10 @@ function InfoCtaSection() {
         <Subtitle>가입부터 주점 운영까지, 3분이면 준비 끝</Subtitle>
         <CtaButton to={ADMIN_ROUTES.HOME}>{isLoggedIn() ? '어드민 홈으로' : '무료로 시작하기'}</CtaButton>
         <Reassurance>별도 비용 없이 시작할 수 있어요</Reassurance>
-        <SocialLinks>
-          <SocialIconLink href="https://www.instagram.com/kioschool/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-            <RiInstagramLine size={20} />
-          </SocialIconLink>
-        </SocialLinks>
+        <ContactLink href="https://www.instagram.com/kioschool/" target="_blank" rel="noopener noreferrer">
+          <RiInstagramLine size={16} />
+          키오스쿨 문의하기
+        </ContactLink>
       </ContentWrapper>
     </Container>
   );
