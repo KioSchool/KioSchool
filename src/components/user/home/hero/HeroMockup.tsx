@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { Color } from '@resources/colors';
+import dashboardImage from '@resources/image/hero/dashboard.webp';
+import phoneImage from '@resources/image/hero/phone.webp';
 
 const MockupArea = styled(motion.div)`
   position: relative;
@@ -52,45 +54,17 @@ const DashboardMockup = styled.div`
 const MockupImage = styled.img`
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 `;
-
-const MockupPlaceholder = styled.div`
-  width: 100%;
-  height: 100%;
-  background: #f2f4f6;
-  ${colFlex({ justify: 'center', align: 'center' })};
-`;
-
-const PlaceholderText = styled.span`
-  font-size: 13px;
-  color: #adb1ba;
-`;
-
-// TODO 목업 이미지 — 실제 스크린샷으로 교체 필요
-const HERO_PHONE_IMAGE = '';
-const HERO_DASHBOARD_IMAGE = '';
 
 function HeroMockup() {
   return (
     <MockupArea initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ type: 'spring', stiffness: 80, damping: 20, delay: 0.2 }}>
       <PhoneMockup>
-        {HERO_PHONE_IMAGE ? (
-          <MockupImage src={HERO_PHONE_IMAGE} alt="QR 주문 화면" />
-        ) : (
-          <MockupPlaceholder>
-            <PlaceholderText>QR 주문 화면</PlaceholderText>
-          </MockupPlaceholder>
-        )}
+        <MockupImage src={phoneImage} alt="QR 주문 화면" />
       </PhoneMockup>
       <DashboardMockup>
-        {HERO_DASHBOARD_IMAGE ? (
-          <MockupImage src={HERO_DASHBOARD_IMAGE} alt="주문 관리 대시보드" />
-        ) : (
-          <MockupPlaceholder>
-            <PlaceholderText>주문 관리 대시보드</PlaceholderText>
-          </MockupPlaceholder>
-        )}
+        <MockupImage src={dashboardImage} alt="주문 관리 대시보드" />
       </DashboardMockup>
     </MockupArea>
   );
