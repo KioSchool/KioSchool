@@ -1,4 +1,6 @@
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { useCookies } from 'react-cookie';
 import useAdminUser from '@hooks/admin/useAdminUser';
 import AppContainer from '@components/common/container/AppContainer';
 import AddWorkspace from '@components/common/workspace/AddWorkspace';
@@ -7,8 +9,11 @@ import { rowFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
 import { adminUserAtom, adminWorkspacesAtom } from '@jotai/admin/atoms';
 import AppFaqButton from '@components/common/button/AppFaqButton';
+import KioSchoolGuideYoutubeContent, { KIOSCHOOL_GUIDE_YOUTUBE_TOAST_COOKIE } from '@components/admin/home/KioSchoolGuideYoutubeContent';
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@constants/routes';
+
+const YOUTUBE_TOAST_ID = 'youtube-guide-toast';
 
 function AdminHome() {
   const navigate = useNavigate();
@@ -16,6 +21,7 @@ function AdminHome() {
   const workspaces = useAtomValue(adminWorkspacesAtom);
   const user = useAtomValue(adminUserAtom);
   const addWorkspaceNumber = 3 - workspaces.length;
+  const [cookies] = useCookies([KIOSCHOOL_GUIDE_YOUTUBE_TOAST_COOKIE]);
 
   useEffect(() => {
     fetchWorkspaces();
@@ -26,6 +32,24 @@ function AdminHome() {
       }
     });
   }, []);
+
+  useEffect(() => {
+    if (!cookies[KIOSCHOOL_GUIDE_YOUTUBE_TOAST_COOKIE]) {
+      toast(<KioSchoolGuideYoutubeContent onDismiss={() => toast.dismiss(YOUTUBE_TOAST_ID)} />, {
+        toastId: YOUTUBE_TOAST_ID,
+        position: 'top-right',
+        autoClose: false,
+        hideProgressBar: true,
+        closeOnClick: false,
+        draggable: true,
+        closeButton: true,
+      });
+    }
+
+    return () => {
+      toast.dismiss(YOUTUBE_TOAST_ID);
+    };
+  }, [cookies]);
 
   return (
     <AppContainer useFlex={rowFlex({ justify: 'center', align: 'center' })} customGap={'30px'}>

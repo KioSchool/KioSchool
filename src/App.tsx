@@ -18,7 +18,6 @@ import AdminOrderStatistics from '@pages/admin/order/AdminOrderStatistics';
 import AdminMyInfo from '@pages/admin/AdminMyInfo';
 import AdminProductCategories from '@pages/admin/AdminProductCategories';
 import ResetPassword from '@pages/user/ResetPassword';
-import Info from '@pages/user/info/Info';
 import SuperAdminHome from '@pages/super-admin/SuperAdminHome';
 import SuperAdminWorkspace from '@pages/super-admin/SuperAdminWorkspace';
 import SuperAdminManage from '@pages/super-admin/SuperAdminManage';
@@ -29,9 +28,9 @@ import UserEmailDomain from '@pages/user/UserEmailDomain';
 import AdminWorkspaceEdit from '@pages/admin/AdminWorkspaceEdit';
 import SuperAdminBank from '@pages/super-admin/SuperAdminBank';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import useNetworkStatusNotifier from '@hooks/useNetworkStatusNotifier';
 import useServerHealth from '@hooks/useServerHealth';
+import useScrollToTop from '@hooks/useScrollToTop';
 import ServerErrorFallback from '@components/common/fallback/ServerErrorFallback';
 import OrderWait from '@pages/user/order/OrderWait';
 import AdminTotalOrder from '@pages/admin/order/AdminTotalOrder';
@@ -40,9 +39,12 @@ import { SentryRoutes } from 'src';
 import { USER_ROUTES, ORDER_ROUTES, ADMIN_ROUTES, SUPER_ADMIN_ROUTES, TEST_ROUTES } from '@constants/routes';
 import AdminOrderTimeline from '@pages/admin/order/AdminOrderTimeline';
 import AdminTableRealtime from '@pages/admin/table/AdminTableRealtime';
+import Info from '@pages/user/info/Info';
+import PcOnlyLayout from '@components/common/layout/PcOnlyLayout';
 
 function App() {
   useNetworkStatusNotifier();
+  useScrollToTop();
   const { isServerHealthy, isChecking, error, manualRetry } = useServerHealth();
 
   if (!isServerHealthy && !isChecking) {
@@ -65,40 +67,42 @@ function App() {
       />
       <SentryRoutes>
         <Route path={USER_ROUTES.HOME} element={<Home />} />
-        <Route path={USER_ROUTES.LOGIN} element={<Login />} />
-        <Route path={USER_ROUTES.REGISTER} element={<Register />} />
-        <Route path={USER_ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
         <Route path={USER_ROUTES.INFO} element={<Info />} />
-        <Route path={USER_ROUTES.EMAIL_DOMAINS} element={<UserEmailDomain />} />
 
-        <Route path={ADMIN_ROUTES.HOME} element={<AdminHome />} />
-        <Route path={ADMIN_ROUTES.MY_INFO} element={<AdminMyInfo />} />
-        <Route path={ADMIN_ROUTES.REGISTER_ACCOUNT} element={<AdminAccount />} />
-        <Route path={ADMIN_ROUTES.WORKSPACE} element={<AdminWorkspace />} />
+        <Route element={<PcOnlyLayout />}>
+          <Route path={USER_ROUTES.LOGIN} element={<Login />} />
+          <Route path={USER_ROUTES.REGISTER} element={<Register />} />
+          <Route path={USER_ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
+          <Route path={USER_ROUTES.EMAIL_DOMAINS} element={<UserEmailDomain />} />
 
-        <Route path={ADMIN_ROUTES.WORKSPACE_EDIT} element={<AdminWorkspaceEdit />} />
-        <Route path={ADMIN_ROUTES.ORDER_REALTIME} element={<AdminOrderRealtime />} />
-        <Route path={ADMIN_ROUTES.ORDER_STATISTICS} element={<AdminOrderStatistics />} />
-        <Route path={ADMIN_ROUTES.TABLE_REALTIME} element={<AdminTableRealtime />} />
-        <Route path={ADMIN_ROUTES.ORDER_TIMELINE} element={<AdminOrderTimeline />} />
-        <Route path={ADMIN_ROUTES.TOTAL_ORDER} element={<AdminTotalOrder />} />
-        <Route path={ADMIN_ROUTES.PRODUCTS} element={<AdminProduct />} />
-        <Route path={ADMIN_ROUTES.PRODUCTS_CATEGORIES} element={<AdminProductCategories />} />
+          <Route path={ADMIN_ROUTES.HOME} element={<AdminHome />} />
+          <Route path={ADMIN_ROUTES.MY_INFO} element={<AdminMyInfo />} />
+          <Route path={ADMIN_ROUTES.REGISTER_ACCOUNT} element={<AdminAccount />} />
+          <Route path={ADMIN_ROUTES.WORKSPACE} element={<AdminWorkspace />} />
+          <Route path={ADMIN_ROUTES.WORKSPACE_EDIT} element={<AdminWorkspaceEdit />} />
+          <Route path={ADMIN_ROUTES.ORDER_REALTIME} element={<AdminOrderRealtime />} />
+          <Route path={ADMIN_ROUTES.ORDER_STATISTICS} element={<AdminOrderStatistics />} />
+          <Route path={ADMIN_ROUTES.TABLE_REALTIME} element={<AdminTableRealtime />} />
+          <Route path={ADMIN_ROUTES.ORDER_TIMELINE} element={<AdminOrderTimeline />} />
+          <Route path={ADMIN_ROUTES.TOTAL_ORDER} element={<AdminTotalOrder />} />
+          <Route path={ADMIN_ROUTES.PRODUCTS} element={<AdminProduct />} />
+          <Route path={ADMIN_ROUTES.PRODUCTS_CATEGORIES} element={<AdminProductCategories />} />
 
-        <Route path={SUPER_ADMIN_ROUTES.HOME} element={<SuperAdminHome />} />
-        <Route path={SUPER_ADMIN_ROUTES.WORKSPACE} element={<SuperAdminWorkspace />} />
-        <Route path={SUPER_ADMIN_ROUTES.MANAGE} element={<SuperAdminManage />} />
-        <Route path={SUPER_ADMIN_ROUTES.USER} element={<SuperAdminUser />} />
-        <Route path={SUPER_ADMIN_ROUTES.EMAIL} element={<SuperAdminEmailDomainList />} />
-        <Route path={SUPER_ADMIN_ROUTES.BANK} element={<SuperAdminBank />} />
+          <Route path={SUPER_ADMIN_ROUTES.HOME} element={<SuperAdminHome />} />
+          <Route path={SUPER_ADMIN_ROUTES.WORKSPACE} element={<SuperAdminWorkspace />} />
+          <Route path={SUPER_ADMIN_ROUTES.MANAGE} element={<SuperAdminManage />} />
+          <Route path={SUPER_ADMIN_ROUTES.USER} element={<SuperAdminUser />} />
+          <Route path={SUPER_ADMIN_ROUTES.EMAIL} element={<SuperAdminEmailDomainList />} />
+          <Route path={SUPER_ADMIN_ROUTES.BANK} element={<SuperAdminBank />} />
 
-        <Route path={ORDER_ROUTES.ORDER} element={<Order />} />
-        <Route path={ORDER_ROUTES.ORDER_BASKET} element={<OrderBasket />} />
-        <Route path={ORDER_ROUTES.ORDER_PAY} element={<OrderPay />} />
-        <Route path={ORDER_ROUTES.ORDER_WAIT} element={<OrderWait />} />
-        <Route path={ORDER_ROUTES.ORDER_COMPLETE} element={<OrderComplete />} />
+          <Route path={ORDER_ROUTES.ORDER} element={<Order />} />
+          <Route path={ORDER_ROUTES.ORDER_BASKET} element={<OrderBasket />} />
+          <Route path={ORDER_ROUTES.ORDER_PAY} element={<OrderPay />} />
+          <Route path={ORDER_ROUTES.ORDER_WAIT} element={<OrderWait />} />
+          <Route path={ORDER_ROUTES.ORDER_COMPLETE} element={<OrderComplete />} />
 
-        <Route path={TEST_ROUTES.SENTRY_TEST} element={<SentryTestPage />} />
+          <Route path={TEST_ROUTES.SENTRY_TEST} element={<SentryTestPage />} />
+        </Route>
       </SentryRoutes>
       <Global styles={globalStyles} />
       <LoadingModal />

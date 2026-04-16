@@ -10,7 +10,7 @@ export const CardContainer = styled.div<{ height: number }>`
     align: 'start',
   })}
   background-color: ${Color.WHITE};
-  width: 150px;
+  min-width: 150px;
   height: ${(props) => props.height}px;
   border-radius: 16px;
   border: 1px solid #e8eef2;
