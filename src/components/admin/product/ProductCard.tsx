@@ -14,14 +14,15 @@ const unSellableStyle = `
   background: rgba(255, 255, 255, 0.7);
 `;
 
-const Container = styled.div<{ isSellable: boolean | null }>`
+const Container = styled.div<{ isSellable: boolean | null; isActive?: boolean }>`
   width: 180px;
   flex-shrink: 0;
   padding: 12px;
   border-radius: 16px;
-  border: 1px solid #e8eef2;
+  border: ${(props) => (props.isActive ? `2px solid ${Color.KIO_ORANGE}` : '1px solid #e8eef2')};
+  background: ${(props) => (props.isActive ? `rgba(245, 122, 61, 0.05)` : props.isSellable ? Color.WHITE : 'rgba(255, 255, 255, 0.7)')};
   box-sizing: border-box;
-  ${(props) => (props.isSellable ? sellableStyle : unSellableStyle)}
+  transition: all 0.2s ease-in-out;
   ${colFlex({ justify: 'space-between', align: 'center' })}
 `;
 
@@ -67,9 +68,10 @@ interface ProductCardProps {
   product: Product;
   onClick?: () => void;
   showStatusSelector?: boolean;
+  isActive?: boolean;
 }
 
-function ProductCard({ product, onClick, showStatusSelector = true }: ProductCardProps) {
+function ProductCard({ product, onClick, showStatusSelector = true, isActive = false }: ProductCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { editProductStatus } = useAdminProducts(workspaceId);
 
@@ -80,7 +82,7 @@ function ProductCard({ product, onClick, showStatusSelector = true }: ProductCar
   const isSellable = showStatusSelector || product.status === ProductStatus.SELLING;
 
   return (
-    <Container isSellable={isSellable} className={'product-card-container'}>
+    <Container isSellable={isSellable} isActive={isActive} className={'product-card-container'}>
       <ContentContainer onClick={onClick} className={'content-container'} showStatusSelector={showStatusSelector && !!onClick}>
         <TextContainer isSellable={isSellable} className={'text-container'}>
           <Title>{product.name}</Title>

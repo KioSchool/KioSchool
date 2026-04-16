@@ -170,6 +170,7 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
             }}
             width={'100%'}
             isUseDefaultOption={mode === 'ADD'}
+            variant="rectangular"
           />
         </InputColContainer>
 
@@ -182,6 +183,7 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
               dispatch({ type: 'PRODUCT_NAME_INPUT', payload: event.target?.value });
             }}
             width={'100%'}
+            variant="rectangular"
           />
         </InputColContainer>
 
@@ -193,6 +195,7 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
               dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: event.target?.value });
             }}
             width={'100%'}
+            variant="rectangular"
           />
         </InputColContainer>
 
@@ -209,6 +212,7 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
               dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: event.target?.value });
             }}
             width={'100%'}
+            variant="rectangular"
           />
         </InputColContainer>
       </InputContainer>

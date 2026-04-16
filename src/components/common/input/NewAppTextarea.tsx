@@ -3,13 +3,13 @@ import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import NewAppInputLayout, { BaseInputLayoutProps } from './NewAppInputLayout';
 
-const StyledTextarea = styled.textarea<{ height?: number }>`
+const StyledTextarea = styled.textarea<{ height?: number; variant?: 'pill' | 'rectangular' }>`
   border: none;
-  border-radius: 28px;
+  border-radius: ${({ variant }) => (variant === 'rectangular' ? '8px' : '28px')};
   box-sizing: border-box;
   width: 100%;
   height: ${({ height }) => (height ? `${height}px` : '120px')};
-  padding: 20px 30px;
+  padding: ${({ variant }) => (variant === 'rectangular' ? '16px' : '20px 30px')};
   resize: none;
   line-height: 1.5;
   font-family: inherit;
@@ -45,10 +45,11 @@ export interface NewAppTextareaProps
   extends Omit<BaseInputLayoutProps, 'children'>,
     Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'width' | 'height'> {
   height?: number;
+  variant?: 'pill' | 'rectangular';
 }
 
 function NewAppTextareaBase(props: NewAppTextareaProps, ref: ForwardedRef<HTMLTextAreaElement>) {
-  const { width, label, buttonProps, linkProps, enterHandler, height, ...textareaProps } = props;
+  const { width, label, buttonProps, linkProps, enterHandler, height, variant = 'pill', ...textareaProps } = props;
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey && enterHandler) {
@@ -59,7 +60,7 @@ function NewAppTextareaBase(props: NewAppTextareaProps, ref: ForwardedRef<HTMLTe
 
   return (
     <NewAppInputLayout width={width} label={label} buttonProps={buttonProps} linkProps={linkProps} enterHandler={enterHandler}>
-      <StyledTextarea id={'textarea-id'} {...textareaProps} height={height} ref={ref} onKeyDown={onKeyDown} />
+      <StyledTextarea id={'textarea-id'} {...textareaProps} height={height} variant={variant} ref={ref} onKeyDown={onKeyDown} />
     </NewAppInputLayout>
   );
 }

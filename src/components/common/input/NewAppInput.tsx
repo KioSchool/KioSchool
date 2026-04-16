@@ -3,13 +3,13 @@ import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import NewAppInputLayout, { BaseInputLayoutProps } from './NewAppInputLayout';
 
-const StyledInput = styled.input<{ height?: number }>`
+const StyledInput = styled.input<{ height?: number; variant?: 'pill' | 'rectangular' }>`
   border: none;
-  border-radius: 45px;
+  border-radius: ${({ variant }) => (variant === 'rectangular' ? '8px' : '45px')};
   box-sizing: border-box;
   width: 100%;
   height: ${({ height }) => (height ? `${height}px` : '50px')};
-  padding: 0 40px;
+  padding: ${({ variant }) => (variant === 'rectangular' ? '0 16px' : '0 40px')};
   border: 1px solid rgba(201, 201, 201, 0.5);
 
   &:focus {
@@ -24,10 +24,11 @@ const StyledInput = styled.input<{ height?: number }>`
 
 export interface NewAppInputProps extends Omit<BaseInputLayoutProps, 'children'>, Omit<React.InputHTMLAttributes<HTMLInputElement>, 'width' | 'height'> {
   height?: number;
+  variant?: 'pill' | 'rectangular';
 }
 
 function NewAppInputBase(props: NewAppInputProps, ref: ForwardedRef<HTMLInputElement>) {
-  const { width, label, buttonProps, linkProps, enterHandler, height, ...inputProps } = props;
+  const { width, label, buttonProps, linkProps, enterHandler, height, variant = 'pill', ...inputProps } = props;
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -37,7 +38,7 @@ function NewAppInputBase(props: NewAppInputProps, ref: ForwardedRef<HTMLInputEle
 
   return (
     <NewAppInputLayout width={width} label={label} buttonProps={buttonProps} linkProps={linkProps} enterHandler={enterHandler}>
-      <StyledInput id={'input-id'} {...inputProps} height={height} ref={ref} onKeyDown={onKeyDown} />
+      <StyledInput id={'input-id'} {...inputProps} height={height} variant={variant} ref={ref} onKeyDown={onKeyDown} />
     </NewAppInputLayout>
   );
 }

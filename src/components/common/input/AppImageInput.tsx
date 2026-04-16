@@ -49,6 +49,39 @@ const Image = styled.img<{ width?: number; height?: number }>`
   box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.25) inset;
   object-fit: fill;
   cursor: pointer;
+  display: block;
+`;
+
+const ImageWrapper = styled.div<{ width?: number; height?: number }>`
+  position: relative;
+  width: ${(props) => (props.width ? `${props.width}px` : '500px')};
+  height: ${(props) => (props.height ? `${props.height}px` : '500px')};
+  cursor: pointer;
+
+  &:hover {
+    .overlay {
+      opacity: 1;
+    }
+  }
+`;
+
+const Overlay = styled.div<{ width?: number; height?: number }>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: ${(props) => (props.width ? `${props.width}px` : '500px')};
+  height: ${(props) => (props.height ? `${props.height}px` : '500px')};
+  border-radius: 30px;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.2s;
+  ${rowFlex({ justify: 'center', align: 'center' })};
+  
+  svg {
+    color: white;
+    width: 32px;
+    height: 32px;
+  }
 `;
 
 interface ProductImageInputProps {
@@ -90,7 +123,12 @@ function AppImageInput({ file, title, url, onImageChange, width, height }: Produ
         <ImageInput type="file" accept="image/*" onChange={onImageChange} className={'image-input'} ref={inputRef} />
       </ImageLabelContainer>
       {file || url ? (
-        <Image src={getImageUrl()} alt="" width={width} height={height} className={'image'} onClick={uploadImage} />
+        <ImageWrapper width={width} height={height} onClick={uploadImage}>
+          <Image src={getImageUrl()} alt="" width={width} height={height} className={'image'} />
+          <Overlay className={'overlay'} width={width} height={height}>
+            <RiCameraFill />
+          </Overlay>
+        </ImageWrapper>
       ) : (
         <UploadImageWrapper className={'upload-image-wrapper'} width={width} height={height} onClick={uploadImage}>
           <UploadImage />

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import styled from '@emotion/styled';
@@ -22,7 +22,7 @@ const Container = styled.div`
 `;
 
 const ProductAddButtonContainer = styled.div`
-  width: 1000px;
+  width: 100%;
   padding-bottom: 24px;
   ${colFlex({ align: 'end' })}
 `;
@@ -46,12 +46,12 @@ const CategoryTitle = styled.div`
 `;
 
 const ProductCardsContainer = styled.div`
-  gap: 8px;
+  gap: 16px;
   width: 100%;
-  overflow-x: auto;
-  flex-wrap: nowrap;
   padding-bottom: 4px;
-  ${rowFlex({ justify: 'start', align: 'center' })};
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  align-items: start;
 `;
 
 const EmptyContainer = styled.div`
@@ -63,12 +63,14 @@ const EmptyContainer = styled.div`
 function AdminProduct() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const location = useLocation();
-  const { fetchProducts, fetchCategories, deleteProduct } = useAdminProducts(workspaceId); // [추가] deleteProduct 가져오기
+  const { fetchProducts, fetchCategories, deleteProduct } = useAdminProducts(workspaceId);
   const products = useAtomValue(adminProductsAtom);
   const rawCategories = useAtomValue(adminCategoriesAtom);
   const categories = [...rawCategories, { id: null, name: '기본메뉴' }];
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
 
   const setExternalSidebar = useSetAtom(externalSidebarAtom);
+  const externalSidebar = useAtomValue(externalSidebarAtom);
 
   //TODO : useConfirm hook 수정 여부
   const { ConfirmModal, confirm } = useConfirm({
@@ -83,7 +85,14 @@ function AdminProduct() {
     fetchCategories();
   }, []);
 
+  useEffect(() => {
+    if (externalSidebar.action === RIGHT_SIDEBAR_ACTION.CLOSE) {
+      setSelectedProductId(null);
+    }
+  }, [externalSidebar.action]);
+
   const handleOpenAddProduct = () => {
+    setSelectedProductId(null);
     setExternalSidebar({
       location: location,
       title: '상품 추가',
@@ -104,6 +113,7 @@ function AdminProduct() {
   };
 
   const handleOpenEditProduct = (productId: number) => {
+    setSelectedProductId(productId);
     setExternalSidebar({
       location: location,
       title: '상품 편집',
@@ -128,7 +138,12 @@ function AdminProduct() {
               {products
                 .filter((product) => (product.productCategory?.id || null) === category.id)
                 .map((product) => (
-                  <ProductCard key={product.id} product={product} onClick={() => handleOpenEditProduct(product.id)} />
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    onClick={() => handleOpenEditProduct(product.id)}
+                    isActive={selectedProductId === product.id}
+                  />
                 ))}
               {products.filter((product) => (product.productCategory?.id || null) === category.id).length === 0 && (
                 <EmptyContainer className={'product-empty-container'}>등록된 상품이 없습니다.</EmptyContainer>

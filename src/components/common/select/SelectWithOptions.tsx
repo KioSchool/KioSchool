@@ -7,13 +7,13 @@ interface Option {
   id: number | string;
 }
 
-const Container = styled.select<{ width?: string }>`
+const Container = styled.select<{ width?: string; variant?: 'pill' | 'rectangular' }>`
   border: none;
-  border-radius: 45px;
+  border-radius: ${({ variant }) => (variant === 'rectangular' ? '8px' : '45px')};
   box-sizing: border-box;
   width: ${({ width }) => (width ? width : '100%')};
   height: 50px;
-  padding: 0 40px;
+  padding: ${({ variant }) => (variant === 'rectangular' ? '0 16px' : '0 40px')};
 
   border: 1px solid rgba(201, 201, 201, 0.5);
   cursor: pointer;
@@ -44,9 +44,10 @@ export interface SelectWithOptionsProps extends SelectHTMLAttributes<HTMLSelectE
   options: Option[];
   isUseDefaultOption?: boolean;
   width?: string;
+  variant?: 'pill' | 'rectangular';
 }
 
-function SelectWithOptions({ options, isUseDefaultOption = true, width, ...otherProps }: SelectWithOptionsProps) {
+function SelectWithOptions({ options, isUseDefaultOption = true, width, variant = 'pill', ...otherProps }: SelectWithOptionsProps) {
   const defaultOption = { name: '기본메뉴', id: 'null' };
   const allOptions = isUseDefaultOption ? [defaultOption, ...options] : [...options];
 
@@ -55,7 +56,7 @@ function SelectWithOptions({ options, isUseDefaultOption = true, width, ...other
   const defaultValueProp = useDefaultOption ? { defaultValue: allOptions[0].id } : {};
 
   return (
-    <Container {...defaultValueProp} {...otherProps} width={width} required>
+    <Container {...defaultValueProp} {...otherProps} width={width} required variant={variant}>
       {allOptions.map((item) => (
         <option key={item.id} value={item.id}>
           {item.name}
