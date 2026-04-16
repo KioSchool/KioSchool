@@ -4,10 +4,10 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { captionTypography, eyebrowTypography, headingTypography } from '@styles/landingTypography';
 import { Color } from '@resources/colors';
-import ahyoung from '@resources/image/info/ahyoung.jpg';
-import jiwon from '@resources/image/info/jiwon.jpg';
-import sungjong from '@resources/image/info/sungjong.jpg';
-import jin from '@resources/image/info/jin.jpg';
+import ahyoung from '@resources/image/info/ahyoung.webp';
+import jiwon from '@resources/image/info/jiwon.webp';
+import sungjong from '@resources/image/info/sungjong.webp';
+import jin from '@resources/image/info/jin.webp';
 
 const Container = styled.div`
   width: 100%;
