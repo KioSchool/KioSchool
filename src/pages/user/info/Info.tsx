@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import { MotionConfig } from 'framer-motion';
 import AppContainer from '@components/common/container/AppContainer';
-import AppFaqButton from '@components/common/button/AppFaqButton';
 import { colFlex } from '@styles/flexStyles';
 import InfoFeaturesSection from '@components/user/info/InfoFeaturesSection';
 import InfoHowToUseSection from '@components/user/info/InfoHowToUseSection';
@@ -38,7 +37,6 @@ function Info() {
           </>
         </AppContainer>
       </LandingWrapper>
-      <AppFaqButton />
     </MotionConfig>
   );
 }

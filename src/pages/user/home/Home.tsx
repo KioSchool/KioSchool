@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import { MotionConfig } from 'framer-motion';
 import AppContainer from '@components/common/container/AppContainer';
-import AppFaqButton from '@components/common/button/AppFaqButton';
 import { colFlex } from '@styles/flexStyles';
 import HeroSection from '@components/user/home/hero/HeroSection';
 import PainPointSection from '@components/user/home/PainPointSection';
@@ -36,7 +35,6 @@ function Home() {
           </>
         </AppContainer>
       </LandingWrapper>
-      <AppFaqButton />
     </MotionConfig>
   );
 }

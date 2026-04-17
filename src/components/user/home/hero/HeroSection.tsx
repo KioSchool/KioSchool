@@ -71,8 +71,8 @@ const CtaRow = styled.div`
   ${rowFlex({ justify: 'center', align: 'center' })};
 
   ${mobileMediaQuery} {
-    gap: 10px;
-    ${colFlex({ justify: 'center', align: 'center' })};
+    gap: 8px;
+    ${rowFlex({ justify: 'center', align: 'center' })};
   }
 `;
 
@@ -98,8 +98,9 @@ const CtaButton = styled(Link)`
   }
 
   ${mobileMediaQuery} {
-    padding: 16px 36px;
-    font-size: 16px;
+    padding: 14px 20px;
+    font-size: 14px;
+    white-space: nowrap;
   }
 `;
 
@@ -125,8 +126,9 @@ const SecondaryButton = styled(Link)`
   }
 
   ${mobileMediaQuery} {
-    padding: 16px 36px;
-    font-size: 16px;
+    padding: 14px 20px;
+    font-size: 14px;
+    white-space: nowrap;
   }
 `;
 

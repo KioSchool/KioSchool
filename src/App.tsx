@@ -36,7 +36,7 @@ import OrderWait from '@pages/user/order/OrderWait';
 import AdminTotalOrder from '@pages/admin/order/AdminTotalOrder';
 import SentryTestPage from '@components/common/test/SentryTestPage';
 import { SentryRoutes } from 'src';
-import { USER_ROUTES, ORDER_ROUTES, ADMIN_ROUTES, SUPER_ADMIN_ROUTES, TEST_ROUTES } from '@constants/routes';
+import { ADMIN_ROUTES, ORDER_ROUTES, SUPER_ADMIN_ROUTES, TEST_ROUTES, USER_ROUTES } from '@constants/routes';
 import AdminOrderTimeline from '@pages/admin/order/AdminOrderTimeline';
 import AdminTableRealtime from '@pages/admin/table/AdminTableRealtime';
 import Info from '@pages/user/info/Info';
@@ -69,6 +69,12 @@ function App() {
         <Route path={USER_ROUTES.HOME} element={<Home />} />
         <Route path={USER_ROUTES.INFO} element={<Info />} />
 
+        <Route path={ORDER_ROUTES.ORDER} element={<Order />} />
+        <Route path={ORDER_ROUTES.ORDER_BASKET} element={<OrderBasket />} />
+        <Route path={ORDER_ROUTES.ORDER_PAY} element={<OrderPay />} />
+        <Route path={ORDER_ROUTES.ORDER_WAIT} element={<OrderWait />} />
+        <Route path={ORDER_ROUTES.ORDER_COMPLETE} element={<OrderComplete />} />
+
         <Route element={<PcOnlyLayout />}>
           <Route path={USER_ROUTES.LOGIN} element={<Login />} />
           <Route path={USER_ROUTES.REGISTER} element={<Register />} />
@@ -94,12 +100,6 @@ function App() {
           <Route path={SUPER_ADMIN_ROUTES.USER} element={<SuperAdminUser />} />
           <Route path={SUPER_ADMIN_ROUTES.EMAIL} element={<SuperAdminEmailDomainList />} />
           <Route path={SUPER_ADMIN_ROUTES.BANK} element={<SuperAdminBank />} />
-
-          <Route path={ORDER_ROUTES.ORDER} element={<Order />} />
-          <Route path={ORDER_ROUTES.ORDER_BASKET} element={<OrderBasket />} />
-          <Route path={ORDER_ROUTES.ORDER_PAY} element={<OrderPay />} />
-          <Route path={ORDER_ROUTES.ORDER_WAIT} element={<OrderWait />} />
-          <Route path={ORDER_ROUTES.ORDER_COMPLETE} element={<OrderComplete />} />
 
           <Route path={TEST_ROUTES.SENTRY_TEST} element={<SentryTestPage />} />
         </Route>

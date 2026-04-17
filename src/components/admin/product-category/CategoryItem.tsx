@@ -33,7 +33,9 @@ const DefaultCategoryNotice = styled.label`
   color: #8d8d8d;
 `;
 
-const DeleteIcon = styled(RiDeleteBinFill)<{ $isHidden: boolean }>`
+const DeleteIcon = styled(RiDeleteBinFill, {
+  shouldForwardProp: (prop) => prop !== '$isHidden',
+})<{ $isHidden: boolean }>`
   width: 18px;
   height: 18px;
   color: #b9b9b9;

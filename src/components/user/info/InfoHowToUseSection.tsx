@@ -99,7 +99,7 @@ const STEPS = [
   {
     number: 4,
     title: '축제 시작',
-    description: 'QR 코드를 테이블에 붙이면 준비 끝. 스캔하면 주문이 바로 들어옵니다.',
+    description: 'QR 코드를 테이블에 붙이면 준비 끝.\n손님이 QR코드를 스캔하면 주문이 바로 들어옵니다.',
   },
 ];
 
