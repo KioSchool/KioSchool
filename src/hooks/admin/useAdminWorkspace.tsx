@@ -31,11 +31,8 @@ function useAdminWorkspace() {
       .post<Workspace>('/workspace/table-count', { workspaceId, tableCount })
       .then((res) => {
         setAdminWorkspace(res.data);
-        return res.data;
       })
-      .catch((error) => {
-        throw error;
-      });
+      .catch(() => Promise.reject());
   };
 
   const updateWorkspaceOrderSetting = (workspaceId: string | undefined | null, useOrderSessionTimeLimit: boolean, orderSessionTimeLimitMinutes: number) => {
@@ -47,25 +44,17 @@ function useAdminWorkspace() {
       })
       .then((res) => {
         setAdminWorkspace(res.data);
-        return res.data;
       })
-      .catch((error) => {
-        throw error;
-      });
+      .catch(() => Promise.reject());
   };
 
   const updateWorkspaceInfo = (workspaceId: number, name: string, description: string, notice?: string) => {
-    return adminApi
-      .put<Workspace>('/workspace/info', {
-        workspaceId,
-        name,
-        description,
-        notice,
-      })
-      .then((res) => {
-        setAdminWorkspace(res.data);
-        return res.data;
-      });
+    return adminApi.put<Workspace>('/workspace/info', {
+      workspaceId,
+      name,
+      description,
+      notice,
+    });
   };
 
   const createFormData = (parameter: any, files: Array<File | null>) => {
@@ -84,10 +73,7 @@ function useAdminWorkspace() {
   const updateWorkspaceImage = (workspaceId: number, imageIds: Array<number | null>, imageFiles: Array<File | null>) => {
     const data = createFormData({ workspaceId, imageIds }, imageFiles);
 
-    return adminApi.put<Workspace>('/workspace/image', data).then((res) => {
-      setAdminWorkspace(res.data);
-      return res.data;
-    });
+    return adminApi.put<Workspace>('/workspace/image', data);
   };
 
   const updateWorkspaceInfoAndImage = (
@@ -101,15 +87,13 @@ function useAdminWorkspace() {
     const updateWorkspaceInfoResult = updateWorkspaceInfo(workspaceId, name, description, notice);
     const updateWorkspaceImageResult = updateWorkspaceImage(workspaceId, imageIds, imageFiles);
 
-    return Promise.all([updateWorkspaceInfoResult, updateWorkspaceImageResult])
-      .then(([, imageResponse]) => {
-        setAdminWorkspace(imageResponse);
+    Promise.all([updateWorkspaceInfoResult, updateWorkspaceImageResult])
+      .then(([infoResponse]) => {
+        setAdminWorkspace(infoResponse.data);
         navigate(getAdminWorkspacePath(workspaceId));
-        return imageResponse;
       })
       .catch((error) => {
         console.error(error.response.data.message);
-        throw error;
       });
   };
 
@@ -118,7 +102,6 @@ function useAdminWorkspace() {
   const updateWorkspaceMemo = (workspaceId: number, memo: string) => {
     return adminApi.put<Workspace>('/workspace/memo', { workspaceId, memo }).then((res) => {
       setAdminWorkspace(res.data);
-      return res.data;
     });
   };
 

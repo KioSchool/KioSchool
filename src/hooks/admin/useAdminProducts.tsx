@@ -12,7 +12,7 @@ function useAdminProducts(workspaceId: string | undefined | null) {
   const setProductCategories = useSetAtom(adminCategoriesAtom);
 
   const fetchProducts = () => {
-    return adminApi
+    adminApi
       .get<Product[]>('/products', {
         params: {
           workspaceId: workspaceId,
@@ -20,7 +20,6 @@ function useAdminProducts(workspaceId: string | undefined | null) {
       })
       .then((res) => {
         setProducts(res.data);
-        return res.data;
       });
   };
 
@@ -45,31 +44,23 @@ function useAdminProducts(workspaceId: string | undefined | null) {
   const addProduct = (product: any, file: File) => {
     const data = createFormData(product, file);
 
-    return adminApi
+    adminApi
       .post('/product', data)
-      .then((res) => {
+      .then(() => {
         navigate(getAdminProductsPath(product.workspaceId));
-        return res.data;
       })
-      .catch((error) => {
-        console.error('Failed to add product: ', error);
-        throw error;
-      });
+      .catch((error) => console.error('Failed to add product: ', error));
   };
 
   const editProduct = (parameter: any, file: File | null) => {
     const data = createFormData(parameter, file);
 
-    return adminApi
+    adminApi
       .put('/product', data)
-      .then((res) => {
+      .then(() => {
         navigate(getAdminProductsPath(parameter.workspaceId));
-        return res.data;
       })
-      .catch((error) => {
-        console.error('Failed to add product: ', error);
-        throw error;
-      });
+      .catch((error) => console.error('Failed to add product: ', error));
   };
 
   const editProductStatus = (productId: number, status: ProductStatus) => {
@@ -104,7 +95,7 @@ function useAdminProducts(workspaceId: string | undefined | null) {
   };
 
   const fetchCategories = () => {
-    return adminApi
+    adminApi
       .get<ProductCategory[]>('/product-categories', {
         params: {
           workspaceId: workspaceId,
@@ -112,33 +103,29 @@ function useAdminProducts(workspaceId: string | undefined | null) {
       })
       .then((res) => {
         setProductCategories(res.data);
-        return res.data;
       })
       .catch((error) => {
         console.error('Failed to fetch products categories : ', error);
-        throw error;
       });
   };
 
   const addCategory = (name: string) => {
-    return adminApi
+    adminApi
       .post('/product-category', { name, workspaceId })
       .then(() => fetchCategories())
       .catch((error) => {
         console.error('Failed to add products categories : ', error);
-        throw error;
       });
   };
 
   const reorderCategories = (productCategoryIds: number[]) => {
-    return adminApi
+    adminApi
       .post('/product-categories/sort', { workspaceId, productCategoryIds })
       .then(() => {
         navigate(getAdminProductsPath(workspaceId!));
       })
       .catch((error) => {
         console.error('Failed to reorder products categories : ', error);
-        throw error;
       });
   };
 
