@@ -76,7 +76,7 @@ function AdminWorkspaceOnboarding({ workspaceId, workspace, onRefreshStatus }: A
           <OnboardingProgress workspace={workspace} currentStep={currentStep} />
         </ProgressContainer>
         <NewCommonButton type="button" size="xs" icon={<RiRefreshLine size={16} />} gap={6} color="blue_gray" onClick={onRefreshStatus}>
-          상태 다시 확인
+          최신 상태 확인
         </NewCommonButton>
       </ActionsRow>
       <OnboardingStepList workspace={workspace} workspaceId={workspaceId} currentStep={currentStep} />

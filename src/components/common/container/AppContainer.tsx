@@ -109,7 +109,7 @@ function AppContainer({ children, useFlex, backgroundColor, useTitle = true, use
 
   const isAdminWorkspace = location.pathname.startsWith('/admin/workspace/');
   const isAdminHome = location.pathname === '/admin';
-  const title = isAdminHome ? '키오스쿨' : workspace.name || '주점 온보딩';
+  const title = isAdminHome ? '키오스쿨' : workspace.name;
   const label = isAdminHome ? `${workspace.owner.name}님 환영합니다.` : getPageTitle(location.pathname);
 
   const useNavBackground = true;
