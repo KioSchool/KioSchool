@@ -5,6 +5,10 @@ import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { useSetAtom } from 'jotai';
 import { getAdminWorkspacePath } from '@constants/routes';
 
+interface UpdateWorkspaceInfoAndImageOptions {
+  navigate?: boolean;
+}
+
 function useAdminWorkspace() {
   const { adminApi } = useApi();
   const setAdminWorkspace = useSetAtom(adminWorkspaceAtom);
@@ -12,15 +16,17 @@ function useAdminWorkspace() {
   const navigate = useNavigate();
 
   const fetchWorkspace = (workspaceId: string | undefined | null) => {
-    if (!workspaceId) return;
+    if (!workspaceId) return Promise.resolve(undefined);
 
-    adminApi
+    return adminApi
       .get<Workspace>('/workspace', { params: { workspaceId } })
       .then((res) => {
         setAdminWorkspace(res.data);
+        return res.data;
       })
       .catch((error) => {
         console.error(error.response.data.message);
+        return Promise.reject(error);
       });
   };
 
@@ -29,8 +35,9 @@ function useAdminWorkspace() {
       .post<Workspace>('/workspace/table-count', { workspaceId, tableCount })
       .then((res) => {
         setAdminWorkspace(res.data);
+        return res.data;
       })
-      .catch(() => Promise.reject());
+      .catch((error) => Promise.reject(error));
   };
 
   const updateWorkspaceOrderSetting = (workspaceId: string | undefined | null, useOrderSessionTimeLimit: boolean, orderSessionTimeLimitMinutes: number) => {
@@ -42,17 +49,23 @@ function useAdminWorkspace() {
       })
       .then((res) => {
         setAdminWorkspace(res.data);
+        return res.data;
       })
-      .catch(() => Promise.reject());
+      .catch((error) => Promise.reject(error));
   };
 
   const updateWorkspaceInfo = (workspaceId: number, name: string, description: string, notice?: string) => {
-    return adminApi.put<Workspace>('/workspace/info', {
-      workspaceId,
-      name,
-      description,
-      notice,
-    });
+    return adminApi
+      .put<Workspace>('/workspace/info', {
+        workspaceId,
+        name,
+        description,
+        notice,
+      })
+      .then((res) => {
+        setAdminWorkspace(res.data);
+        return res.data;
+      });
   };
 
   const createFormData = (parameter: any, files: Array<File | null>) => {
@@ -71,7 +84,10 @@ function useAdminWorkspace() {
   const updateWorkspaceImage = (workspaceId: number, imageIds: Array<number | null>, imageFiles: Array<File | null>) => {
     const data = createFormData({ workspaceId, imageIds }, imageFiles);
 
-    return adminApi.put<Workspace>('/workspace/image', data);
+    return adminApi.put<Workspace>('/workspace/image', data).then((res) => {
+      setAdminWorkspace(res.data);
+      return res.data;
+    });
   };
 
   const updateWorkspaceInfoAndImage = (
@@ -81,17 +97,24 @@ function useAdminWorkspace() {
     notice: string | undefined,
     imageIds: Array<number | null>,
     imageFiles: Array<File | null>,
+    options: UpdateWorkspaceInfoAndImageOptions = {},
   ) => {
     const updateWorkspaceInfoResult = updateWorkspaceInfo(workspaceId, name, description, notice);
     const updateWorkspaceImageResult = updateWorkspaceImage(workspaceId, imageIds, imageFiles);
 
-    Promise.all([updateWorkspaceInfoResult, updateWorkspaceImageResult])
-      .then(([infoResponse]) => {
-        setAdminWorkspace(infoResponse.data);
-        navigate(getAdminWorkspacePath(workspaceId));
+    return Promise.all([updateWorkspaceInfoResult, updateWorkspaceImageResult])
+      .then(([, imageResponse]) => {
+        setAdminWorkspace(imageResponse);
+
+        if (options.navigate ?? true) {
+          navigate(getAdminWorkspacePath(workspaceId));
+        }
+
+        return imageResponse;
       })
       .catch((error) => {
         console.error(error.response.data.message);
+        return Promise.reject(error);
       });
   };
 
@@ -100,6 +123,7 @@ function useAdminWorkspace() {
   const updateWorkspaceMemo = (workspaceId: number, memo: string) => {
     return adminApi.put<Workspace>('/workspace/memo', { workspaceId, memo }).then((res) => {
       setAdminWorkspace(res.data);
+      return res.data;
     });
   };
 

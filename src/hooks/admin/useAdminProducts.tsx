@@ -5,6 +5,10 @@ import { adminCategoriesAtom, adminProductsAtom } from '@jotai/admin/atoms';
 import { useSetAtom } from 'jotai';
 import { getAdminProductsPath } from '@constants/routes';
 
+interface ProductMutationOptions {
+  navigate?: boolean;
+}
+
 function useAdminProducts(workspaceId: string | undefined | null) {
   const { adminApi } = useApi();
   const navigate = useNavigate();
@@ -12,7 +16,7 @@ function useAdminProducts(workspaceId: string | undefined | null) {
   const setProductCategories = useSetAtom(adminCategoriesAtom);
 
   const fetchProducts = () => {
-    adminApi
+    return adminApi
       .get<Product[]>('/products', {
         params: {
           workspaceId: workspaceId,
@@ -20,6 +24,7 @@ function useAdminProducts(workspaceId: string | undefined | null) {
       })
       .then((res) => {
         setProducts(res.data);
+        return res.data;
       });
   };
 
@@ -41,26 +46,40 @@ function useAdminProducts(workspaceId: string | undefined | null) {
     return data;
   };
 
-  const addProduct = (product: any, file: File) => {
+  const addProduct = (product: any, file: File, options: ProductMutationOptions = {}) => {
     const data = createFormData(product, file);
 
-    adminApi
+    return adminApi
       .post('/product', data)
-      .then(() => {
-        navigate(getAdminProductsPath(product.workspaceId));
+      .then((res) => {
+        if (options.navigate ?? true) {
+          navigate(getAdminProductsPath(product.workspaceId));
+        }
+
+        return res.data;
       })
-      .catch((error) => console.error('Failed to add product: ', error));
+      .catch((error) => {
+        console.error('Failed to add product: ', error);
+        return Promise.reject(error);
+      });
   };
 
-  const editProduct = (parameter: any, file: File | null) => {
+  const editProduct = (parameter: any, file: File | null, options: ProductMutationOptions = {}) => {
     const data = createFormData(parameter, file);
 
-    adminApi
+    return adminApi
       .put('/product', data)
-      .then(() => {
-        navigate(getAdminProductsPath(parameter.workspaceId));
+      .then((res) => {
+        if (options.navigate ?? true) {
+          navigate(getAdminProductsPath(parameter.workspaceId));
+        }
+
+        return res.data;
       })
-      .catch((error) => console.error('Failed to add product: ', error));
+      .catch((error) => {
+        console.error('Failed to add product: ', error);
+        return Promise.reject(error);
+      });
   };
 
   const editProductStatus = (productId: number, status: ProductStatus) => {
@@ -95,7 +114,7 @@ function useAdminProducts(workspaceId: string | undefined | null) {
   };
 
   const fetchCategories = () => {
-    adminApi
+    return adminApi
       .get<ProductCategory[]>('/product-categories', {
         params: {
           workspaceId: workspaceId,
@@ -103,29 +122,33 @@ function useAdminProducts(workspaceId: string | undefined | null) {
       })
       .then((res) => {
         setProductCategories(res.data);
+        return res.data;
       })
       .catch((error) => {
         console.error('Failed to fetch products categories : ', error);
+        return Promise.reject(error);
       });
   };
 
   const addCategory = (name: string) => {
-    adminApi
+    return adminApi
       .post('/product-category', { name, workspaceId })
       .then(() => fetchCategories())
       .catch((error) => {
         console.error('Failed to add products categories : ', error);
+        return Promise.reject(error);
       });
   };
 
   const reorderCategories = (productCategoryIds: number[]) => {
-    adminApi
+    return adminApi
       .post('/product-categories/sort', { workspaceId, productCategoryIds })
       .then(() => {
         navigate(getAdminProductsPath(workspaceId!));
       })
       .catch((error) => {
         console.error('Failed to reorder products categories : ', error);
+        return Promise.reject(error);
       });
   };
 
