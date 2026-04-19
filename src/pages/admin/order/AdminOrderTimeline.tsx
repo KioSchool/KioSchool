@@ -12,6 +12,7 @@ import TimelineGrid from '@components/admin/order/timeline/TimelineGrid';
 import SessionDetailModal from '@components/admin/order/timeline/SessionDetailModal';
 import { useAdminFetchTableSessionTimeline } from '@hooks/admin/useAdminFetchTableSessionTimeline';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
+import useWorkspaceOnboardingGuard from '@hooks/admin/useWorkspaceOnboardingGuard';
 import useModal from '@hooks/useModal';
 import { OrderSessionWithOrder } from '@@types/index';
 import { formatMinutesToTime } from '@utils/formatDate';
@@ -60,6 +61,8 @@ const StatCardRow = styled.div`
 `;
 
 function AdminOrderTimeline() {
+  useWorkspaceOnboardingGuard();
+
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { selectedDate, setSelectedDate, filters, setFilters, filteredSessions, summaryStats, priceRange, currentTime, isLoading, tableCount, manualRefetch } =
     useAdminFetchTableSessionTimeline(workspaceId);

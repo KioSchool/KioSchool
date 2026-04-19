@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
+import useWorkspaceOnboardingGuard from '@hooks/admin/useWorkspaceOnboardingGuard';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { WorkspaceImage } from '@@types/index';
@@ -86,6 +87,8 @@ const NoticeInput = styled.textarea`
 `;
 
 function AdminWorkspaceEdit() {
+  useWorkspaceOnboardingGuard();
+
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { updateWorkspaceInfoAndImage } = useAdminWorkspace();
   const workspace = useAtomValue(adminWorkspaceAtom);

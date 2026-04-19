@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import useOrdersWebsocket from '@hooks/user/useOrdersWebsocket';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
+import useWorkspaceOnboardingGuard from '@hooks/admin/useWorkspaceOnboardingGuard';
 import { colFlex } from '@styles/flexStyles';
 import AppContainer from '@components/common/container/AppContainer';
 import { OrderStatus } from '@@types/index';
@@ -22,6 +23,7 @@ const ListContainer = styled.div`
 
 function AdminOrderRealtime() {
   useWakeLock();
+  useWorkspaceOnboardingGuard();
 
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { fetchTodayOrders } = useAdminOrder(workspaceId);

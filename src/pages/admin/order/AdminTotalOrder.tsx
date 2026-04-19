@@ -9,6 +9,7 @@ import AppContainer from '@components/common/container/AppContainer';
 import OrderSessionDetailCard from '@components/admin/order/table/OrderSessionDetailCard';
 import SearchInput from '@components/common/input/SearchInput';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
+import useWorkspaceOnboardingGuard from '@hooks/admin/useWorkspaceOnboardingGuard';
 import { useEffect } from 'react';
 import { OrderStatus } from '@@types/index';
 import { useAdminFetchTotalOrder } from '@hooks/admin/useAdminFetchTotalOrder';
@@ -63,6 +64,8 @@ const StatCardsWrapper = styled.div`
 `;
 
 function AdminTotalOrder() {
+  useWorkspaceOnboardingGuard();
+
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const {
     data: orders,

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
+import useWorkspaceOnboardingGuard from '@hooks/admin/useWorkspaceOnboardingGuard';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useAtomValue, useSetAtom } from 'jotai';
@@ -61,6 +62,8 @@ const EmptyContainer = styled.div`
 `;
 
 function AdminProduct() {
+  useWorkspaceOnboardingGuard();
+
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const location = useLocation();
   const { fetchProducts, fetchCategories, deleteProduct } = useAdminProducts(workspaceId); // [추가] deleteProduct 가져오기
