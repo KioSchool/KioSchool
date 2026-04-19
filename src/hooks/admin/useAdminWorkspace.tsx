@@ -5,10 +5,6 @@ import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { useSetAtom } from 'jotai';
 import { getAdminWorkspacePath } from '@constants/routes';
 
-interface UpdateWorkspaceInfoAndImageOptions {
-  navigate?: boolean;
-}
-
 function useAdminWorkspace() {
   const { adminApi } = useApi();
   const setAdminWorkspace = useSetAtom(adminWorkspaceAtom);
@@ -26,7 +22,7 @@ function useAdminWorkspace() {
       })
       .catch((error) => {
         console.error(error.response.data.message);
-        return Promise.reject(error);
+        throw error;
       });
   };
 
@@ -37,7 +33,9 @@ function useAdminWorkspace() {
         setAdminWorkspace(res.data);
         return res.data;
       })
-      .catch((error) => Promise.reject(error));
+      .catch((error) => {
+        throw error;
+      });
   };
 
   const updateWorkspaceOrderSetting = (workspaceId: string | undefined | null, useOrderSessionTimeLimit: boolean, orderSessionTimeLimitMinutes: number) => {
@@ -51,7 +49,9 @@ function useAdminWorkspace() {
         setAdminWorkspace(res.data);
         return res.data;
       })
-      .catch((error) => Promise.reject(error));
+      .catch((error) => {
+        throw error;
+      });
   };
 
   const updateWorkspaceInfo = (workspaceId: number, name: string, description: string, notice?: string) => {
@@ -97,7 +97,6 @@ function useAdminWorkspace() {
     notice: string | undefined,
     imageIds: Array<number | null>,
     imageFiles: Array<File | null>,
-    options: UpdateWorkspaceInfoAndImageOptions = {},
   ) => {
     const updateWorkspaceInfoResult = updateWorkspaceInfo(workspaceId, name, description, notice);
     const updateWorkspaceImageResult = updateWorkspaceImage(workspaceId, imageIds, imageFiles);
@@ -105,16 +104,12 @@ function useAdminWorkspace() {
     return Promise.all([updateWorkspaceInfoResult, updateWorkspaceImageResult])
       .then(([, imageResponse]) => {
         setAdminWorkspace(imageResponse);
-
-        if (options.navigate ?? true) {
-          navigate(getAdminWorkspacePath(workspaceId));
-        }
-
+        navigate(getAdminWorkspacePath(workspaceId));
         return imageResponse;
       })
       .catch((error) => {
         console.error(error.response.data.message);
-        return Promise.reject(error);
+        throw error;
       });
   };
 
