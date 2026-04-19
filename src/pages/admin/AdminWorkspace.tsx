@@ -33,42 +33,25 @@ function AdminWorkspace() {
   const workspace = useAtomValue(adminWorkspaceAtom);
   const setSideNavIsOpen = useSetAtom(adminSideNavIsOpenAtom);
   const [isWorkspaceLoading, setIsWorkspaceLoading] = useState(true);
-  const [showCompleteStep, setShowCompleteStep] = useState(false);
 
   useEffect(() => {
-    setShowCompleteStep(false);
     setIsWorkspaceLoading(true);
 
     fetchWorkspace(workspaceId).finally(() => {
       setIsWorkspaceLoading(false);
     });
+    setSideNavIsOpen(true);
   }, [workspaceId]);
 
-  const isOnboardingVisible = !isWorkspaceLoading && (showCompleteStep || needsWorkspaceOnboarding(workspace));
-
-  useEffect(() => {
-    if (isWorkspaceLoading) {
-      return;
-    }
-
-    setSideNavIsOpen(!isOnboardingVisible);
-  }, [isOnboardingVisible, isWorkspaceLoading]);
+  const isOnboardingVisible = !isWorkspaceLoading && needsWorkspaceOnboarding(workspace);
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} useTitle={!isOnboardingVisible} hideWorkspaceAdminNav={isOnboardingVisible}>
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })}>
       <>
         {isWorkspaceLoading ? (
           <LoadingContainer>워크스페이스 정보를 불러오는 중입니다.</LoadingContainer>
         ) : isOnboardingVisible ? (
-          <AdminWorkspaceOnboarding
-            workspaceId={workspaceId || ''}
-            showCompleteStep={showCompleteStep}
-            onComplete={() => setShowCompleteStep(true)}
-            onMoveToDashboard={() => {
-              setShowCompleteStep(false);
-              setSideNavIsOpen(true);
-            }}
-          />
+          <AdminWorkspaceOnboarding workspaceId={workspaceId || ''} />
         ) : (
           <>
             <ContentContainer>

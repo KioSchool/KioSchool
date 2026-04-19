@@ -2,7 +2,6 @@ import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import { useRef } from 'react';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
-import useWorkspaceOnboardingGuard from '@hooks/admin/useWorkspaceOnboardingGuard';
 import { useParams } from 'react-router-dom';
 import CategoryDragAndDropContent from '@components/admin/product-category/CategoryDragAndDropContent';
 import { colFlex, rowFlex } from '@styles/flexStyles';
@@ -67,8 +66,6 @@ const CategoriesButtonContainer = styled.div`
 `;
 
 function AdminProductCategories() {
-  useWorkspaceOnboardingGuard();
-
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { addCategory, reorderCategories } = useAdminProducts(workspaceId);
   const categoryInputRef = useRef<HTMLInputElement>(null);

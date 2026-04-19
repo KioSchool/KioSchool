@@ -10,7 +10,6 @@ import ContentCard from '@components/common/card/ContentCard';
 import HourlySalesChart from '@components/admin/order/statistic/HourlySalesChart';
 import PopularProductsSection from '@components/admin/order/statistic/PopularProductsSection';
 import { useAdminFetchDailyStatistics } from '@hooks/admin/useAdminFetchDailyStatistics';
-import useWorkspaceOnboardingGuard from '@hooks/admin/useWorkspaceOnboardingGuard';
 import { formatMinutesToTime } from '@utils/formatDate';
 import { Color } from '@resources/colors';
 
@@ -72,8 +71,6 @@ const getComparisonColor = (value: number) => (value >= 0 ? Color.RED : Color.BL
 const isValidDate = (dateStr: string) => !isNaN(new Date(dateStr).getTime());
 
 function AdminOrderStatistics() {
-  useWorkspaceOnboardingGuard();
-
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { selectedDate, setSelectedDate, statistics, isLoading } = useAdminFetchDailyStatistics(workspaceId);
 

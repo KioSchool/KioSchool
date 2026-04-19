@@ -10,7 +10,6 @@ import AppContainer from '@components/common/container/AppContainer';
 import RightSidebarModal from '@components/common/modal/RightSidebarModal';
 import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
-import useWorkspaceOnboardingGuard from '@hooks/admin/useWorkspaceOnboardingGuard';
 import useTableOrders from '@hooks/admin/useTableOrders';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
@@ -80,8 +79,6 @@ const FallbackContainer = styled.div`
 `;
 
 function AdminTableRealtime() {
-  useWorkspaceOnboardingGuard();
-
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const [searchParams] = useSearchParams();
   const tableNo = searchParams.get('tableNo');

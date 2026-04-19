@@ -98,19 +98,9 @@ interface Props {
   useFullHeight?: boolean;
   customWidth?: string;
   customGap?: string;
-  hideWorkspaceAdminNav?: boolean;
 }
 
-function AppContainer({
-  children,
-  useFlex,
-  backgroundColor,
-  useTitle = true,
-  useFullHeight = false,
-  customWidth,
-  customGap,
-  hideWorkspaceAdminNav = false,
-}: Props) {
+function AppContainer({ children, useFlex, backgroundColor, useTitle = true, useFullHeight = false, customWidth, customGap }: Props) {
   const location = useLocation();
   const workspace = useAtomValue(adminWorkspaceAtom);
   const isSideNavOpen = useAtomValue(adminSideNavIsOpenAtom);
@@ -119,11 +109,11 @@ function AppContainer({
 
   const isAdminWorkspace = location.pathname.startsWith('/admin/workspace/');
   const isAdminHome = location.pathname === '/admin';
-  const title = isAdminHome ? '키오스쿨' : workspace.name;
+  const title = isAdminHome ? '키오스쿨' : workspace.name || '주점 온보딩';
   const label = isAdminHome ? `${workspace.owner.name}님 환영합니다.` : getPageTitle(location.pathname);
 
   const useNavBackground = true;
-  const sideNavOffset = isAdminWorkspace && isSideNavOpen && !hideWorkspaceAdminNav ? SIDE_NAV_WIDTH : 0;
+  const sideNavOffset = isAdminWorkspace && isSideNavOpen ? SIDE_NAV_WIDTH : 0;
   const scale = calculateLayoutScale(windowWidth, customWidth, sideNavOffset);
 
   useEffect(() => {
@@ -132,7 +122,7 @@ function AppContainer({
 
   return (
     <MainContainer backgroundColor={backgroundColor} sideNavOffset={sideNavOffset} className={'main-container'}>
-      <NavBar useBackground={useNavBackground} hideWorkspaceAdminNav={hideWorkspaceAdminNav} />
+      <NavBar useBackground={useNavBackground} />
       <SubContainer customWidth={customWidth} className={'sub-container'} useTitle={useTitle}>
         {useTitle && (
           <TitleContainer className={'title-container'}>

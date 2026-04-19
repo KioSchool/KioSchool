@@ -90,15 +90,14 @@ const NavUrl = styled.a`
 
 interface NavBarProps {
   useBackground?: boolean;
-  hideWorkspaceAdminNav?: boolean;
 }
 
-function NavBar({ useBackground = false, hideWorkspaceAdminNav = false }: NavBarProps) {
+function NavBar({ useBackground = false }: NavBarProps) {
   const location = useLocation();
   const [isSideNavOpen, setIsSideNavOpen] = useAtom(adminSideNavIsOpenAtom);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const isShowHamburger = location.pathname.startsWith('/admin/workspace/') && !hideWorkspaceAdminNav;
+  const isShowHamburger = location.pathname.startsWith('/admin/workspace/');
 
   const handleHamburgerClick = () => {
     setIsSideNavOpen((prev) => !prev);
