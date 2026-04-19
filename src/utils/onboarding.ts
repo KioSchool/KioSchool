@@ -9,14 +9,20 @@ export const ONBOARDING_STEP_DEFINITIONS: OnboardingStepDefinition[] = [
   { step: ONBOARDING_STEP.COMPLETE, label: '완료' },
 ];
 
+function hasWorkspaceInfoCompleted(workspace: Workspace): boolean {
+  const hasWorkspaceImage = workspace.images.some((image) => Boolean(image.url));
+
+  return Boolean(workspace.name.trim()) && Boolean(workspace.description.trim()) && hasWorkspaceImage;
+}
+
 export function needsWorkspaceOnboarding(workspace: Workspace): boolean {
-  return !workspace.name || workspace.tableCount === 0 || workspace.products.length === 0 || workspace.productCategories.length === 0;
+  return !hasWorkspaceInfoCompleted(workspace) || workspace.tableCount === 0 || workspace.products.length === 0 || workspace.productCategories.length === 0;
 }
 
 export function getIncompleteOnboardingSteps(workspace: Workspace): OnboardingStep[] {
   const incompleteSteps: OnboardingStep[] = [];
 
-  if (!workspace.name) {
+  if (!hasWorkspaceInfoCompleted(workspace)) {
     incompleteSteps.push(ONBOARDING_STEP.INFO);
   }
 
@@ -44,7 +50,7 @@ export function getInitialOnboardingStep(workspace: Workspace): OnboardingStep {
 export function isOnboardingStepCompleted(workspace: Workspace, step: OnboardingStep): boolean {
   switch (step) {
     case ONBOARDING_STEP.INFO:
-      return Boolean(workspace.name);
+      return hasWorkspaceInfoCompleted(workspace);
     case ONBOARDING_STEP.TABLES:
       return workspace.tableCount > 0;
     case ONBOARDING_STEP.CATEGORIES:
