@@ -317,3 +317,17 @@ export interface DailyStatistics {
   isRealTime: boolean;
   lastUpdated: string;
 }
+
+export const ONBOARDING_STEP = {
+  INFO: 'info',
+  TABLES: 'tables',
+  MENU: 'menu',
+  COMPLETE: 'complete',
+} as const;
+
+export type OnboardingStep = typeof ONBOARDING_STEP[keyof typeof ONBOARDING_STEP];
+
+export interface OnboardingStepDefinition {
+  step: OnboardingStep;
+  label: string;
+}

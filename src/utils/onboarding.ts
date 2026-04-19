@@ -1,5 +1,7 @@
-import { ONBOARDING_STEP, OnboardingStep, OnboardingStepDefinition, OnboardingStepValidationMap, OnboardingValidationResult } from '@@types/onboarding';
-import { Workspace } from '@@types/index';
+import { ONBOARDING_STEP, OnboardingStep, OnboardingStepDefinition, Workspace } from '@@types/index';
+import { StepActionItem } from '@constants/data/onboardingData';
+import { ROUTES_PATH_KR_MAP } from '@constants/data/urlMapData';
+import { ADMIN_ROUTES } from '@constants/routes';
 
 export const ONBOARDING_STEP_DEFINITIONS: OnboardingStepDefinition[] = [
   { step: ONBOARDING_STEP.INFO, label: '기본 정보' },
@@ -12,6 +14,44 @@ function hasWorkspaceInfoCompleted(workspace: Workspace): boolean {
   const hasWorkspaceImage = workspace.images.some((image) => Boolean(image.url));
 
   return Boolean(workspace.name.trim()) && Boolean(workspace.description.trim()) && hasWorkspaceImage;
+}
+
+function getAdminWorkspaceRoute(pathTemplate: string, workspaceId: string, query?: Record<string, string>) {
+  const path = pathTemplate.replace(':workspaceId', workspaceId);
+
+  if (!query) {
+    return path;
+  }
+
+  return `${path}?${new URLSearchParams(query).toString()}`;
+}
+
+export function getOnboardingStepActions(workspaceId: string): Record<OnboardingStep, StepActionItem[]> {
+  return {
+    [ONBOARDING_STEP.INFO]: [
+      {
+        label: ROUTES_PATH_KR_MAP[ADMIN_ROUTES.WORKSPACE_EDIT],
+        path: getAdminWorkspaceRoute(ADMIN_ROUTES.WORKSPACE_EDIT, workspaceId),
+      },
+    ],
+    [ONBOARDING_STEP.TABLES]: [
+      {
+        label: ROUTES_PATH_KR_MAP[ADMIN_ROUTES.TABLE_REALTIME],
+        path: getAdminWorkspaceRoute(ADMIN_ROUTES.TABLE_REALTIME, workspaceId, { tableNo: '1' }),
+      },
+    ],
+    [ONBOARDING_STEP.MENU]: [
+      {
+        label: ROUTES_PATH_KR_MAP[ADMIN_ROUTES.PRODUCTS_CATEGORIES],
+        path: getAdminWorkspaceRoute(ADMIN_ROUTES.PRODUCTS_CATEGORIES, workspaceId),
+      },
+      {
+        label: ROUTES_PATH_KR_MAP[ADMIN_ROUTES.PRODUCTS],
+        path: getAdminWorkspaceRoute(ADMIN_ROUTES.PRODUCTS, workspaceId),
+      },
+    ],
+    [ONBOARDING_STEP.COMPLETE]: [],
+  };
 }
 
 export function needsWorkspaceOnboarding(workspace: Workspace): boolean {
@@ -52,65 +92,5 @@ export function isOnboardingStepCompleted(workspace: Workspace, step: Onboarding
       return workspace.products.length > 0;
     case ONBOARDING_STEP.COMPLETE:
       return !needsWorkspaceOnboarding(workspace);
-  }
-}
-
-export function validateOnboardingStep(step: OnboardingStep, data: OnboardingStepValidationMap[OnboardingStep]): OnboardingValidationResult {
-  switch (step) {
-    case ONBOARDING_STEP.INFO:
-      if (!(data as OnboardingStepValidationMap[typeof ONBOARDING_STEP.INFO]).name.trim()) {
-        return { valid: false, error: '주점 이름을 입력해주세요.' };
-      }
-
-      if (!(data as OnboardingStepValidationMap[typeof ONBOARDING_STEP.INFO]).description.trim()) {
-        return { valid: false, error: '주점 설명을 입력해주세요.' };
-      }
-
-      if (!(data as OnboardingStepValidationMap[typeof ONBOARDING_STEP.INFO]).imageUrl.trim()) {
-        return { valid: false, error: '대표 사진을 등록해주세요.' };
-      }
-
-      return { valid: true };
-    case ONBOARDING_STEP.TABLES:
-      if ((data as OnboardingStepValidationMap[typeof ONBOARDING_STEP.TABLES]).tableCount < 2) {
-        return { valid: false, error: '최소 2개 테이블이 필요합니다.' };
-      }
-
-      if ((data as OnboardingStepValidationMap[typeof ONBOARDING_STEP.TABLES]).tableCount > 50) {
-        return { valid: false, error: '테이블 수는 50개 이하로 설정해주세요.' };
-      }
-
-      return { valid: true };
-    case ONBOARDING_STEP.MENU:
-      if (!(data as OnboardingStepValidationMap[typeof ONBOARDING_STEP.MENU]).categoryName.trim()) {
-        return { valid: false, error: '새 카테고리 이름을 입력해주세요.' };
-      }
-
-      if (
-        !(data as OnboardingStepValidationMap[typeof ONBOARDING_STEP.MENU]).name.trim() ||
-        !(data as OnboardingStepValidationMap[typeof ONBOARDING_STEP.MENU]).description.trim()
-      ) {
-        return { valid: false, error: '상품 이름과 설명을 입력해주세요.' };
-      }
-
-      if ((data as OnboardingStepValidationMap[typeof ONBOARDING_STEP.MENU]).price < 0) {
-        return { valid: false, error: '가격은 음수가 될 수 없습니다.' };
-      }
-
-      if (!(data as OnboardingStepValidationMap[typeof ONBOARDING_STEP.MENU]).imageUrl) {
-        return { valid: false, error: '상품 이미지를 등록해주세요.' };
-      }
-
-      if ((data as OnboardingStepValidationMap[typeof ONBOARDING_STEP.MENU]).name.length > 12) {
-        return { valid: false, error: '상품 이름은 12자 이하로 입력해주세요.' };
-      }
-
-      if ((data as OnboardingStepValidationMap[typeof ONBOARDING_STEP.MENU]).description.length > 30) {
-        return { valid: false, error: '상품 설명은 30자 이하로 입력해주세요.' };
-      }
-
-      return { valid: true };
-    case ONBOARDING_STEP.COMPLETE:
-      return { valid: true };
   }
 }
