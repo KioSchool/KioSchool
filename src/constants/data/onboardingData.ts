@@ -32,7 +32,7 @@ export const ONBOARDING_STEP_CARDS: StepCardItem[] = [
     step: ONBOARDING_STEP.MENU,
     stepNumber: 3,
     title: '메뉴 등록',
-    description: '새 상품 카테고리를 만든 뒤 그 카테고리에 대표 상품 1개를 등록하면 이 단계가 완료됩니다.',
-    hint: '예: 안주 카테고리를 만든 뒤 대표 메뉴를 추가합니다. 카테고리만 만들고 상품이 없으면 아직 완료되지 않습니다.',
+    description: '카테고리를 확인하고 대표 상품 1개 이상을 등록하면 이 단계가 완료됩니다.',
+    hint: '카테고리를 먼저 정리해두면 상품 등록이 더 쉬워집니다. 기본 카테고리를 사용해도 완료할 수 있습니다.',
   },
 ];
