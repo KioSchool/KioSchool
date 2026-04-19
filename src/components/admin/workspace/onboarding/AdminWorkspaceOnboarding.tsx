@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { RiRefreshLine } from '@remixicon/react';
 import { Workspace } from '@@types/index';
 import NewCommonButton from '@components/common/button/NewCommonButton';
+import { OnboardingColor } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { getInitialOnboardingStep } from '@utils/onboarding';
 import OnboardingProgress from './OnboardingProgress';
@@ -23,7 +24,7 @@ const Header = styled.div`
 `;
 
 const Eyebrow = styled.div`
-  color: #8d959c;
+  color: ${OnboardingColor.EYEBROW_TEXT};
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -31,14 +32,14 @@ const Eyebrow = styled.div`
 
 const Title = styled.h1`
   margin: 0;
-  color: #25282b;
+  color: ${OnboardingColor.TITLE_TEXT};
   font-size: 18px;
   line-height: 1.2;
 `;
 
 const Description = styled.p`
   margin: 0;
-  color: #5d6368;
+  color: ${OnboardingColor.BODY_TEXT};
   font-size: 14px;
   line-height: 1.7;
 `;
@@ -74,7 +75,7 @@ function AdminWorkspaceOnboarding({ workspaceId, workspace, onRefreshStatus }: A
         <ProgressContainer>
           <OnboardingProgress workspace={workspace} currentStep={currentStep} />
         </ProgressContainer>
-        <NewCommonButton type="button" size="xs" icon={<RiRefreshLine size={16} />} gap={6} color={'blue_gray'} onClick={onRefreshStatus}>
+        <NewCommonButton type="button" size="xs" icon={<RiRefreshLine size={16} />} gap={6} color="blue_gray" onClick={onRefreshStatus}>
           상태 다시 확인
         </NewCommonButton>
       </ActionsRow>

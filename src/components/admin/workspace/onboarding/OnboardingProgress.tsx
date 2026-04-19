@@ -3,9 +3,8 @@ import styled from '@emotion/styled';
 import { Fragment } from 'react';
 import { RiCheckLine } from '@remixicon/react';
 import { match } from 'ts-pattern';
-import { Workspace } from '@@types/index';
-import { OnboardingStep } from '@@types/onboarding';
-import { Color } from '@resources/colors';
+import { OnboardingStep, Workspace } from '@@types/index';
+import { Color, OnboardingColor } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 import { ONBOARDING_STEP_DEFINITIONS, isOnboardingStepCompleted } from '@utils/onboarding';
 
@@ -25,21 +24,21 @@ const PROGRESS_VARIANT_STYLE_MAP: Record<ProgressVariant, ProgressVariantStyle> 
     borderColor: Color.KIO_ORANGE,
     background: Color.KIO_ORANGE,
     color: Color.WHITE,
-    labelColor: '#25282b',
+    labelColor: OnboardingColor.TITLE_TEXT,
     labelWeight: 700,
   },
   completed: {
     borderColor: Color.KIO_ORANGE,
     background: Color.KIO_ORANGE,
     color: Color.WHITE,
-    labelColor: '#25282b',
+    labelColor: OnboardingColor.TITLE_TEXT,
     labelWeight: 700,
   },
   idle: {
-    borderColor: '#d7dde2',
-    background: '#ffffff',
-    color: '#8d959c',
-    labelColor: '#8d959c',
+    borderColor: OnboardingColor.STEP_IDLE_BORDER,
+    background: OnboardingColor.STEP_INACTIVE_BG,
+    color: OnboardingColor.EYEBROW_TEXT,
+    labelColor: OnboardingColor.EYEBROW_TEXT,
     labelWeight: 500,
   },
 };
@@ -64,11 +63,10 @@ function getStepLabelStyles(variant: ProgressVariant) {
 }
 
 function getConnectorColor(variant: ConnectorVariant) {
-  if (variant === 'filled') {
-    return Color.KIO_ORANGE;
-  }
-
-  return '#e8eef2';
+  return match(variant)
+    .with('filled', () => Color.KIO_ORANGE)
+    .with('empty', () => OnboardingColor.CONNECTOR_IDLE)
+    .exhaustive();
 }
 
 function renderStepCircleContent(variant: ProgressVariant, index: number) {
