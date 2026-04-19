@@ -3,7 +3,7 @@ import { useAtomValue } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { RiArrowRightLine, RiCheckLine, RiRefreshLine } from '@remixicon/react';
-import { OnboardingStep } from '@@types/onboarding';
+import { ONBOARDING_STEP, OnboardingStep } from '@@types/onboarding';
 import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { Color } from '@resources/colors';
@@ -159,14 +159,23 @@ const StepButton = styled.button`
   }
 `;
 
+const StepActions = styled.div`
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 8px;
+  ${rowFlex({ justify: 'start', align: 'center' })}
+`;
+
 interface StepCardItem {
   step: OnboardingStep;
   stepNumber: number;
   title: string;
   description: string;
   hint: string;
-  buttonLabel: string;
-  path: string;
+  actions: {
+    label: string;
+    path: string;
+  }[];
 }
 
 interface AdminWorkspaceOnboardingProps {
@@ -183,40 +192,31 @@ function AdminWorkspaceOnboarding({ workspaceId }: AdminWorkspaceOnboardingProps
   const stepCards: StepCardItem[] = useMemo(
     () => [
       {
-        step: 'info',
+        step: ONBOARDING_STEP.INFO,
         stepNumber: 1,
         title: '주점 기본 정보',
         description: '주점명, 대표 사진, 주점 설명이 모두 등록되어야 이 단계가 완료됩니다.',
         hint: '공지사항은 선택값이지만, 주점명과 대표 사진, 설명은 꼭 채워야 기본 정보 단계가 완료됩니다.',
-        buttonLabel: '주점 정보 관리로 이동',
-        path: `/admin/workspace/${workspaceId}/edit`,
+        actions: [{ label: '주점 정보 관리로 이동', path: `/admin/workspace/${workspaceId}/edit` }],
       },
       {
-        step: 'tables',
+        step: ONBOARDING_STEP.TABLES,
         stepNumber: 2,
         title: '테이블 설정',
         description: '실시간 테이블 관리 화면에서 테이블 수를 정하고 QR 운영 준비를 합니다. 최소 2개 테이블이 필요합니다.',
         hint: '테이블을 2개 이상 설정해야 이 단계가 완료되고 이후 QR 코드 생성과 테이블 현황 확인이 가능해집니다.',
-        buttonLabel: '테이블 관리로 이동',
-        path: `/admin/workspace/${workspaceId}/table/realtime?tableNo=1`,
+        actions: [{ label: '테이블 관리로 이동', path: `/admin/workspace/${workspaceId}/table/realtime?tableNo=1` }],
       },
       {
-        step: 'categories',
+        step: ONBOARDING_STEP.MENU,
         stepNumber: 3,
-        title: '카테고리 생성',
-        description: '카테고리 관리 화면에서 메뉴 분류를 만들어 상품 등록의 기준을 준비합니다.',
-        hint: '예: 주류, 안주, 음료. 최소 1개 카테고리가 있어야 상품 등록이 수월합니다.',
-        buttonLabel: '카테고리 관리로 이동',
-        path: `/admin/workspace/${workspaceId}/products/categories`,
-      },
-      {
-        step: 'products',
-        stepNumber: 4,
-        title: '대표 상품 등록',
-        description: '상품 관리 화면에서 첫 상품 1개 이상을 등록하면 온보딩이 완료됩니다.',
-        hint: '첫 상품만 등록해도 대시보드로 전환됩니다. 나머지 메뉴는 나중에 계속 추가할 수 있습니다.',
-        buttonLabel: '상품 관리로 이동',
-        path: `/admin/workspace/${workspaceId}/products`,
+        title: '메뉴 등록',
+        description: '새 카테고리를 만든 뒤 그 카테고리에 대표 상품 1개를 등록하면 이 단계가 완료됩니다.',
+        hint: '예: 안주 카테고리를 만든 뒤 대표 메뉴를 추가합니다. 카테고리만 만들고 상품이 없으면 아직 완료되지 않습니다.',
+        actions: [
+          { label: '카테고리 관리로 이동', path: `/admin/workspace/${workspaceId}/products/categories` },
+          { label: '상품 관리로 이동', path: `/admin/workspace/${workspaceId}/products` },
+        ],
       },
     ],
     [workspaceId],
@@ -264,10 +264,14 @@ function AdminWorkspaceOnboarding({ workspaceId }: AdminWorkspaceOnboardingProps
               <StepDescription>{item.description}</StepDescription>
               <StepHint>{item.hint}</StepHint>
 
-              <StepButton type="button" onClick={() => navigate(item.path)}>
-                {item.buttonLabel}
-                <RiArrowRightLine size={16} />
-              </StepButton>
+              <StepActions>
+                {item.actions.map((action) => (
+                  <StepButton key={action.path} type="button" onClick={() => navigate(action.path)}>
+                    {action.label}
+                    <RiArrowRightLine size={16} />
+                  </StepButton>
+                ))}
+              </StepActions>
             </StepCard>
           );
         })}
