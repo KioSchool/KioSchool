@@ -1,8 +1,12 @@
-import { useEffect } from 'react';
-import { useBeforeUnload, useBlocker } from 'react-router-dom';
+import { useContext, useEffect } from 'react';
+import { UNSAFE_NavigationContext, useBeforeUnload } from 'react-router-dom';
+
+interface HistoryNavigator {
+  block: (blocker: (transition: { retry: () => void }) => void) => () => void;
+}
 
 function useOnboardingExitGuard(shouldBlock: boolean, message: string) {
-  const blocker = useBlocker(shouldBlock);
+  const { navigator } = useContext(UNSAFE_NavigationContext);
 
   useBeforeUnload(
     (event) => {
@@ -17,19 +21,27 @@ function useOnboardingExitGuard(shouldBlock: boolean, message: string) {
   );
 
   useEffect(() => {
-    if (blocker.state !== 'blocked') {
+    if (!shouldBlock) {
       return;
     }
 
-    const shouldLeave = window.confirm(message);
+    const historyNavigator = navigator as unknown as HistoryNavigator;
 
-    if (shouldLeave) {
-      blocker.proceed();
+    if (!historyNavigator.block) {
       return;
     }
 
-    blocker.reset();
-  }, [blocker, message]);
+    const unblock = historyNavigator.block((transition) => {
+      const shouldLeave = window.confirm(message);
+
+      if (shouldLeave) {
+        unblock();
+        transition.retry();
+      }
+    });
+
+    return unblock;
+  }, [message, navigator, shouldBlock]);
 }
 
 export default useOnboardingExitGuard;
