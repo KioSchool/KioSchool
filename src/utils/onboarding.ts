@@ -16,7 +16,7 @@ function hasWorkspaceInfoCompleted(workspace: Workspace): boolean {
 }
 
 export function needsWorkspaceOnboarding(workspace: Workspace): boolean {
-  return !hasWorkspaceInfoCompleted(workspace) || workspace.tableCount === 0 || workspace.products.length === 0 || workspace.productCategories.length === 0;
+  return !hasWorkspaceInfoCompleted(workspace) || workspace.tableCount < 2 || workspace.products.length === 0 || workspace.productCategories.length === 0;
 }
 
 export function getIncompleteOnboardingSteps(workspace: Workspace): OnboardingStep[] {
@@ -26,7 +26,7 @@ export function getIncompleteOnboardingSteps(workspace: Workspace): OnboardingSt
     incompleteSteps.push(ONBOARDING_STEP.INFO);
   }
 
-  if (workspace.tableCount === 0) {
+  if (workspace.tableCount < 2) {
     incompleteSteps.push(ONBOARDING_STEP.TABLES);
   }
 
@@ -52,7 +52,7 @@ export function isOnboardingStepCompleted(workspace: Workspace, step: Onboarding
     case ONBOARDING_STEP.INFO:
       return hasWorkspaceInfoCompleted(workspace);
     case ONBOARDING_STEP.TABLES:
-      return workspace.tableCount > 0;
+      return workspace.tableCount >= 2;
     case ONBOARDING_STEP.CATEGORIES:
       return workspace.productCategories.length > 0;
     case ONBOARDING_STEP.PRODUCTS:
@@ -69,8 +69,8 @@ export function validateOnboardingStep(step: OnboardingStep, data: OnboardingSte
         ? { valid: true }
         : { valid: false, error: '주점 이름을 입력해주세요.' };
     case ONBOARDING_STEP.TABLES:
-      if ((data as OnboardingStepValidationMap[typeof ONBOARDING_STEP.TABLES]).tableCount < 1) {
-        return { valid: false, error: '최소 1개 테이블이 필요합니다.' };
+      if ((data as OnboardingStepValidationMap[typeof ONBOARDING_STEP.TABLES]).tableCount < 2) {
+        return { valid: false, error: '최소 2개 테이블이 필요합니다.' };
       }
 
       if ((data as OnboardingStepValidationMap[typeof ONBOARDING_STEP.TABLES]).tableCount > 50) {

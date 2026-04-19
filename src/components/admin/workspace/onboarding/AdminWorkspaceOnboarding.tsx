@@ -16,13 +16,13 @@ const Container = styled.div`
   max-width: 1080px;
   padding: 12px 0 72px;
   box-sizing: border-box;
-  gap: 28px;
+  gap: 22px;
   ${colFlex({ align: 'center' })}
 `;
 
 const Header = styled.div`
   width: 100%;
-  gap: 12px;
+  gap: 8px;
   ${colFlex({ align: 'start' })}
 `;
 
@@ -50,7 +50,7 @@ const Description = styled.p`
 const ActionsRow = styled.div`
   width: 100%;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
-  gap: 16px;
+  gap: 12px;
 `;
 
 const ProgressContainer = styled.div`
@@ -61,13 +61,13 @@ const RefreshButton = styled.button`
   border: 1px solid #e8eef2;
   background: #ffffff;
   color: #5d6368;
-  padding: 10px 14px;
+  padding: 8px 12px;
   border-radius: 999px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   ${rowFlex({ justify: 'center', align: 'center' })}
-  gap: 8px;
+  gap: 6px;
 
   &:hover {
     color: ${Color.KIO_ORANGE};
@@ -77,68 +77,68 @@ const RefreshButton = styled.button`
 
 const StepList = styled.div`
   width: 100%;
-  gap: 16px;
+  gap: 12px;
   ${colFlex({ align: 'stretch' })}
 `;
 
 const StepCard = styled.div`
   width: 100%;
-  padding: 24px;
-  border-radius: 24px;
+  padding: 18px 20px;
+  border-radius: 20px;
   border: 1px solid #e8eef2;
   background: #ffffff;
   box-sizing: border-box;
-  gap: 18px;
+  gap: 12px;
   ${colFlex({ align: 'start' })}
 `;
 
 const StepHeader = styled.div`
   width: 100%;
   ${rowFlex({ justify: 'space-between', align: 'start' })}
-  gap: 18px;
+  gap: 12px;
 `;
 
 const StepMeta = styled.div`
-  gap: 10px;
+  gap: 8px;
   ${colFlex({ align: 'start' })}
 `;
 
 const StepNumber = styled.div<{ completed: boolean }>`
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: 999px;
   background: ${({ completed }) => (completed ? '#edf9f1' : '#fff3e7')};
   color: ${({ completed }) => (completed ? Color.GREEN : Color.KIO_ORANGE)};
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const StepBadge = styled.div<{ completed: boolean }>`
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: 999px;
   background: ${({ completed }) => (completed ? '#edf9f1' : '#fff3e7')};
   color: ${({ completed }) => (completed ? Color.GREEN : Color.KIO_ORANGE)};
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   ${rowFlex({ justify: 'center', align: 'center' })}
-  gap: 6px;
+  gap: 4px;
 `;
 
 const StepTitle = styled.div`
   color: #25282b;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 700;
 `;
 
 const StepDescription = styled.div`
   color: #5d6368;
-  font-size: 15px;
-  line-height: 1.7;
+  font-size: 14px;
+  line-height: 1.6;
 `;
 
 const StepHint = styled.div`
   color: #7b858c;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.6;
 `;
 
@@ -146,13 +146,13 @@ const StepButton = styled.button`
   border: none;
   background: ${Color.KIO_ORANGE};
   color: ${Color.WHITE};
-  padding: 12px 16px;
-  border-radius: 14px;
-  font-size: 14px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   ${rowFlex({ justify: 'center', align: 'center' })}
-  gap: 8px;
+  gap: 6px;
 
   &:hover {
     background: #ffaf70;
@@ -195,8 +195,8 @@ function AdminWorkspaceOnboarding({ workspaceId }: AdminWorkspaceOnboardingProps
         step: 'tables',
         stepNumber: 2,
         title: '테이블 설정',
-        description: '실시간 테이블 관리 화면에서 테이블 수를 정하고 QR 운영 준비를 합니다.',
-        hint: '테이블 수를 설정하면 이후 QR 코드 생성과 테이블 현황 확인이 가능해집니다.',
+        description: '실시간 테이블 관리 화면에서 테이블 수를 정하고 QR 운영 준비를 합니다. 최소 2개 테이블이 필요합니다.',
+        hint: '테이블을 2개 이상 설정해야 이 단계가 완료되고 이후 QR 코드 생성과 테이블 현황 확인이 가능해집니다.',
         buttonLabel: '테이블 관리로 이동',
         path: `/admin/workspace/${workspaceId}/table/realtime?tableNo=1`,
       },
