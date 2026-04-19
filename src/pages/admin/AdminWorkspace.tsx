@@ -43,6 +43,10 @@ function AdminWorkspace() {
     setSideNavIsOpen(true);
   }, [workspaceId]);
 
+  const handleRefreshWorkspace = () => {
+    fetchWorkspace(workspaceId);
+  };
+
   const isOnboardingVisible = !isWorkspaceLoading && needsWorkspaceOnboarding(workspace);
 
   return (
@@ -51,7 +55,7 @@ function AdminWorkspace() {
         {isWorkspaceLoading ? (
           <LoadingContainer>워크스페이스 정보를 불러오는 중입니다.</LoadingContainer>
         ) : isOnboardingVisible ? (
-          <AdminWorkspaceOnboarding workspaceId={workspaceId || ''} />
+          <AdminWorkspaceOnboarding workspaceId={workspaceId || ''} workspace={workspace} onRefreshStatus={handleRefreshWorkspace} />
         ) : (
           <>
             <ContentContainer>
