@@ -11,16 +11,31 @@ function useAdminWorkspace() {
 
   const navigate = useNavigate();
 
-  const fetchWorkspace = (workspaceId: string | undefined | null) => {
-    if (!workspaceId) return;
-
-    adminApi
-      .get<Workspace>('/workspace', { params: { workspaceId } })
+  const updateWorkspaceOnboarding = (workspaceId: number, isOnboarding: boolean) => {
+    return adminApi
+      .post<Workspace>('/workspace/onboarding', { workspaceId, isOnboarding })
       .then((res) => {
         setAdminWorkspace(res.data);
+        return res.data;
       })
       .catch((error) => {
         console.error(error.response.data.message);
+        throw error;
+      });
+  };
+
+  const fetchWorkspace = (workspaceId: string | undefined | null) => {
+    if (!workspaceId) return Promise.resolve(undefined);
+
+    return adminApi
+      .get<Workspace>('/workspace', { params: { workspaceId } })
+      .then((res) => {
+        setAdminWorkspace(res.data);
+        return res.data;
+      })
+      .catch((error) => {
+        console.error(error.response.data.message);
+        throw error;
       });
   };
 
@@ -108,6 +123,7 @@ function useAdminWorkspace() {
     updateWorkspaceTableCount,
     updateWorkspaceOrderSetting,
     updateWorkspaceInfoAndImage,
+    updateWorkspaceOnboarding,
     fetchWorkspaceTables,
     updateWorkspaceMemo,
   };
