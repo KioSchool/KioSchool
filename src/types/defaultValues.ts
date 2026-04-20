@@ -182,6 +182,7 @@ export const defaultWorkspaceValue: Workspace = {
   images: [defaultImageValue],
   notice: '',
   tableCount: 0,
+  isOnboarding: true,
   workspaceSetting: defaultWorkspaceSetting,
   id: 0,
   createdAt: '',

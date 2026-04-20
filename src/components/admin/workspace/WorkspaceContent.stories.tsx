@@ -87,6 +87,7 @@ const createMockWorkspace = (id: number, name: string, description: string, prod
   ],
   notice: '공지사항입니다.',
   tableCount: 10,
+  isOnboarding: false,
   workspaceSetting: defaultWorkspaceSetting,
   owner: {
     id: 1,

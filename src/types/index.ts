@@ -115,6 +115,7 @@ export interface Workspace {
   images: Array<WorkspaceImage>;
   notice: string;
   tableCount: number;
+  isOnboarding: boolean;
   workspaceSetting: WorkspaceSetting;
   id: number;
   createdAt: string;
