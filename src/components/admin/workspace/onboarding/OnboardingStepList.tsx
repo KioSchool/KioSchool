@@ -14,14 +14,13 @@ const Container = styled.div`
 
 interface OnboardingStepListProps {
   workspace: Workspace;
-  workspaceId: string;
   currentStep: OnboardingStep;
 }
 
-function OnboardingStepList({ workspace, workspaceId, currentStep }: OnboardingStepListProps) {
+function OnboardingStepList({ workspace, currentStep }: OnboardingStepListProps) {
   const navigate = useNavigate();
 
-  const stepActionsMap = getOnboardingStepActions(workspaceId);
+  const stepActionsMap = getOnboardingStepActions(workspace.id);
 
   return (
     <Container>

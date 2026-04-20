@@ -69,12 +69,7 @@ function AdminWorkspace() {
         {isWorkspaceLoading ? (
           <LoadingContainer>워크스페이스 정보를 불러오는 중입니다.</LoadingContainer>
         ) : isOnboardingVisible ? (
-          <AdminWorkspaceOnboarding
-            workspaceId={workspaceId || ''}
-            workspace={workspace}
-            onRefreshStatus={handleLoadWorkspace}
-            onSkipOnboarding={handleSkipOnboarding}
-          />
+          <AdminWorkspaceOnboarding workspace={workspace} onRefreshStatus={handleLoadWorkspace} onSkipOnboarding={handleSkipOnboarding} />
         ) : (
           <>
             <ContentContainer>

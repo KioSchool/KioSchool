@@ -83,13 +83,12 @@ const SkipButton = styled.button`
 `;
 
 interface AdminWorkspaceOnboardingProps {
-  workspaceId: string;
   workspace: Workspace;
   onRefreshStatus: () => void;
   onSkipOnboarding: () => void;
 }
 
-function AdminWorkspaceOnboarding({ workspaceId, workspace, onRefreshStatus, onSkipOnboarding }: AdminWorkspaceOnboardingProps) {
+function AdminWorkspaceOnboarding({ workspace, onRefreshStatus, onSkipOnboarding }: AdminWorkspaceOnboardingProps) {
   const currentStep = getInitialOnboardingStep(workspace);
 
   return (
@@ -115,7 +114,7 @@ function AdminWorkspaceOnboarding({ workspaceId, workspace, onRefreshStatus, onS
           최신 상태 확인
         </NewCommonButton>
       </ActionsRow>
-      <OnboardingStepList workspace={workspace} workspaceId={workspaceId} currentStep={currentStep} />
+      <OnboardingStepList workspace={workspace} currentStep={currentStep} />
     </Container>
   );
 }

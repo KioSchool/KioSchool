@@ -16,8 +16,8 @@ function hasWorkspaceInfoCompleted(workspace: Workspace): boolean {
   return Boolean(workspace.name.trim()) && Boolean(workspace.description.trim()) && hasWorkspaceImage;
 }
 
-function getAdminWorkspaceRoute(pathTemplate: string, workspaceId: string, query?: Record<string, string>) {
-  const path = pathTemplate.replace(':workspaceId', workspaceId);
+function getAdminWorkspaceRoute(pathTemplate: string, workspaceId: number, query?: Record<string, string>) {
+  const path = pathTemplate.replace(':workspaceId', workspaceId.toString());
 
   if (!query) {
     return path;
@@ -26,7 +26,7 @@ function getAdminWorkspaceRoute(pathTemplate: string, workspaceId: string, query
   return `${path}?${new URLSearchParams(query).toString()}`;
 }
 
-export function getOnboardingStepActions(workspaceId: string): Record<OnboardingStep, StepActionItem[]> {
+export function getOnboardingStepActions(workspaceId: number): Record<OnboardingStep, StepActionItem[]> {
   return {
     [ONBOARDING_STEP.INFO]: [
       {
