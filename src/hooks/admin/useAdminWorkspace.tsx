@@ -11,6 +11,19 @@ function useAdminWorkspace() {
 
   const navigate = useNavigate();
 
+  const updateWorkspaceOnboarding = (workspaceId: number, isOnboarding: boolean) => {
+    return adminApi
+      .post<Workspace>('/workspace/onboarding', { workspaceId, isOnboarding })
+      .then((res) => {
+        setAdminWorkspace(res.data);
+        return res.data;
+      })
+      .catch((error) => {
+        console.error(error.response.data.message);
+        throw error;
+      });
+  };
+
   const fetchWorkspace = (workspaceId: string | undefined | null) => {
     if (!workspaceId) return Promise.resolve(undefined);
 
@@ -110,6 +123,7 @@ function useAdminWorkspace() {
     updateWorkspaceTableCount,
     updateWorkspaceOrderSetting,
     updateWorkspaceInfoAndImage,
+    updateWorkspaceOnboarding,
     fetchWorkspaceTables,
     updateWorkspaceMemo,
   };

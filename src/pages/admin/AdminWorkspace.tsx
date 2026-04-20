@@ -10,8 +10,9 @@ import AppPopup from '@components/common/popup/AppPopup';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { adminSideNavIsOpenAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
 import AdminDashboard from '@components/admin/workspace/dashboard/AdminDashboard';
-import { needsWorkspaceOnboarding } from '@utils/onboarding';
 import AdminWorkspaceOnboarding from '@components/admin/workspace/onboarding/AdminWorkspaceOnboarding';
+import { needsWorkspaceOnboarding } from '@utils/onboarding';
+import useConfirm from '@hooks/useConfirm';
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -29,25 +30,38 @@ const LoadingContainer = styled.div`
 
 function AdminWorkspace() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchWorkspace } = useAdminWorkspace();
+  const { fetchWorkspace, updateWorkspaceOnboarding } = useAdminWorkspace();
   const workspace = useAtomValue(adminWorkspaceAtom);
   const setSideNavIsOpen = useSetAtom(adminSideNavIsOpenAtom);
   const [isWorkspaceLoading, setIsWorkspaceLoading] = useState(true);
+  const { ConfirmModal, confirm } = useConfirm({
+    title: '온보딩 과정을 건너뛰시겠습니까?',
+    description: '건너뛰면 온보딩 과정을 다시 진행할 수 없습니다.',
+    okText: '건너뛰기',
+    cancelText: '취소',
+  });
 
-  useEffect(() => {
+  const handleLoadWorkspace = () => {
     setIsWorkspaceLoading(true);
 
-    fetchWorkspace(workspaceId).finally(() => {
+    return fetchWorkspace(workspaceId).finally(() => {
       setIsWorkspaceLoading(false);
     });
+  };
+
+  useEffect(() => {
+    handleLoadWorkspace();
     setSideNavIsOpen(true);
   }, [workspaceId]);
 
-  const handleRefreshWorkspace = () => {
-    fetchWorkspace(workspaceId);
+  const handleSkipOnboarding = async () => {
+    const userInput = await confirm();
+    if (!userInput) return;
+
+    return updateWorkspaceOnboarding(workspace.id, false);
   };
 
-  const isOnboardingVisible = !isWorkspaceLoading && needsWorkspaceOnboarding(workspace);
+  const isOnboardingVisible = !isWorkspaceLoading && workspace.isOnboarding && needsWorkspaceOnboarding(workspace);
 
   return (
     <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })}>
@@ -55,7 +69,12 @@ function AdminWorkspace() {
         {isWorkspaceLoading ? (
           <LoadingContainer>워크스페이스 정보를 불러오는 중입니다.</LoadingContainer>
         ) : isOnboardingVisible ? (
-          <AdminWorkspaceOnboarding workspaceId={workspaceId || ''} workspace={workspace} onRefreshStatus={handleRefreshWorkspace} />
+          <AdminWorkspaceOnboarding
+            workspaceId={workspaceId || ''}
+            workspace={workspace}
+            onRefreshStatus={handleLoadWorkspace}
+            onSkipOnboarding={handleSkipOnboarding}
+          />
         ) : (
           <>
             <ContentContainer>
@@ -66,6 +85,7 @@ function AdminWorkspace() {
             <AppFaqButton />
           </>
         )}
+        <ConfirmModal />
       </>
     </AppContainer>
   );
