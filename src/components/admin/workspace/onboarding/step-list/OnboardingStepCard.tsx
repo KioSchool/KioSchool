@@ -4,7 +4,7 @@ import { RiCheckLine } from '@remixicon/react';
 import { match } from 'ts-pattern';
 import AppBadge from '@components/common/badge/AppBadge';
 import NewCommonButton from '@components/common/button/NewCommonButton';
-import { StepActionItem, StepCardItem } from '@constants/data/onboardingData';
+import { StepActionItem, StepCardItem } from '@components/admin/workspace/onboarding/onboardingData';
 import { Color, OnboardingColor } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 

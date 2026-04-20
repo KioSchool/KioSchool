@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { OnboardingStep, Workspace } from '@@types/index';
-import { ONBOARDING_STEP_CARDS } from '@constants/data/onboardingData';
+import { Workspace } from '@@types/index';
 import { colFlex } from '@styles/flexStyles';
 import { getOnboardingStepActions, isOnboardingStepCompleted } from '@utils/onboarding';
 import OnboardingStepCard from './step-list/OnboardingStepCard';
+import { ONBOARDING_STEP_CARDS, OnboardingStep } from './onboardingData';
 
 const Container = styled.div`
   width: 100%;

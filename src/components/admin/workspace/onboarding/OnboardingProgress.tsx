@@ -3,10 +3,11 @@ import styled from '@emotion/styled';
 import { Fragment } from 'react';
 import { RiCheckLine } from '@remixicon/react';
 import { match } from 'ts-pattern';
-import { OnboardingStep, Workspace } from '@@types/index';
+import { Workspace } from '@@types/index';
 import { Color, OnboardingColor } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 import { ONBOARDING_STEP_DEFINITIONS, isOnboardingStepCompleted } from '@utils/onboarding';
+import { OnboardingStep } from './onboardingData';
 
 type ProgressVariant = 'active' | 'completed' | 'idle';
 type ConnectorVariant = 'filled' | 'empty';

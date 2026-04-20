@@ -1,5 +1,5 @@
-import { ONBOARDING_STEP, OnboardingStep, OnboardingStepDefinition, Workspace } from '@@types/index';
-import { StepActionItem } from '@constants/data/onboardingData';
+import { Workspace } from '@@types/index';
+import { ONBOARDING_STEP, OnboardingStep, OnboardingStepDefinition, StepActionItem } from '@components/admin/workspace/onboarding/onboardingData';
 import { ROUTES_PATH_KR_MAP } from '@constants/data/urlMapData';
 import { ADMIN_ROUTES } from '@constants/routes';
 

@@ -17,8 +17,8 @@ import { match } from 'ts-pattern';
 
 const ContentContainer = styled.div`
   width: 100%;
-  ${rowFlex({ justify: 'center', align: 'start' })}
   gap: 40px;
+  ${rowFlex({ justify: 'center', align: 'start' })}
 `;
 
 const LoadingContainer = styled.div`

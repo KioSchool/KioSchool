@@ -1,17 +1,11 @@
-import { ONBOARDING_STEP, OnboardingStep } from '@@types/index';
+export const ONBOARDING_STEP = {
+  INFO: 'info',
+  TABLES: 'tables',
+  MENU: 'menu',
+  COMPLETE: 'complete',
+} as const;
 
-export interface StepActionItem {
-  label: string;
-  path: string;
-}
-
-export interface StepCardItem {
-  step: OnboardingStep;
-  stepNumber: number;
-  title: string;
-  description: string;
-  hint: string;
-}
+export type OnboardingStep = typeof ONBOARDING_STEP[keyof typeof ONBOARDING_STEP];
 
 export const ONBOARDING_STEP_CARDS: StepCardItem[] = [
   {
@@ -36,3 +30,21 @@ export const ONBOARDING_STEP_CARDS: StepCardItem[] = [
     hint: '카테고리를 먼저 정리해두면 상품 등록이 더 쉬워집니다. 기본 카테고리를 사용해도 완료할 수 있습니다.',
   },
 ];
+
+export interface OnboardingStepDefinition {
+  step: OnboardingStep;
+  label: string;
+}
+
+export interface StepActionItem {
+  label: string;
+  path: string;
+}
+
+export interface StepCardItem {
+  step: OnboardingStep;
+  stepNumber: number;
+  title: string;
+  description: string;
+  hint: string;
+}
