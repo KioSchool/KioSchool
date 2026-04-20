@@ -54,10 +54,6 @@ export function getOnboardingStepActions(workspaceId: number): Record<Onboarding
   };
 }
 
-export function needsWorkspaceOnboarding(workspace: Workspace): boolean {
-  return !hasWorkspaceInfoCompleted(workspace) || workspace.tableCount < 2 || workspace.products.length === 0;
-}
-
 export function getIncompleteOnboardingSteps(workspace: Workspace): OnboardingStep[] {
   const incompleteSteps: OnboardingStep[] = [];
 
@@ -82,6 +78,10 @@ export function getInitialOnboardingStep(workspace: Workspace): OnboardingStep {
   return firstIncompleteStep ?? ONBOARDING_STEP.COMPLETE;
 }
 
+export function isWorkspaceOnboardingCompleted(workspace: Workspace): boolean {
+  return getInitialOnboardingStep(workspace) === ONBOARDING_STEP.COMPLETE;
+}
+
 export function isOnboardingStepCompleted(workspace: Workspace, step: OnboardingStep): boolean {
   switch (step) {
     case ONBOARDING_STEP.INFO:
@@ -91,6 +91,6 @@ export function isOnboardingStepCompleted(workspace: Workspace, step: Onboarding
     case ONBOARDING_STEP.MENU:
       return workspace.products.length > 0;
     case ONBOARDING_STEP.COMPLETE:
-      return !needsWorkspaceOnboarding(workspace);
+      return isWorkspaceOnboardingCompleted(workspace);
   }
 }

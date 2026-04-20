@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import styled from '@emotion/styled';
@@ -11,7 +11,7 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { adminSideNavIsOpenAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
 import AdminDashboard from '@components/admin/workspace/dashboard/AdminDashboard';
 import AdminWorkspaceOnboarding from '@components/admin/workspace/onboarding/AdminWorkspaceOnboarding';
-import { needsWorkspaceOnboarding } from '@utils/onboarding';
+import { isWorkspaceOnboardingCompleted } from '@utils/onboarding';
 import useConfirm from '@hooks/useConfirm';
 import { match } from 'ts-pattern';
 
@@ -35,6 +35,7 @@ function AdminWorkspace() {
   const workspace = useAtomValue(adminWorkspaceAtom);
   const setSideNavIsOpen = useSetAtom(adminSideNavIsOpenAtom);
   const [isWorkspaceLoading, setIsWorkspaceLoading] = useState(true);
+  const isAutoCompletingOnboardingRef = useRef(false);
   const { ConfirmModal, confirm } = useConfirm({
     title: '온보딩 과정을 건너뛰시겠습니까?',
     description: '건너뛰면 온보딩 과정을 다시 진행할 수 없습니다.',
@@ -55,6 +56,20 @@ function AdminWorkspace() {
     setSideNavIsOpen(true);
   }, [workspaceId]);
 
+  const isOnboardingCompleted = isWorkspaceOnboardingCompleted(workspace);
+
+  useEffect(() => {
+    if (isWorkspaceLoading || workspace.id === 0 || !workspace.isOnboarding || !isOnboardingCompleted || isAutoCompletingOnboardingRef.current) {
+      return;
+    }
+
+    isAutoCompletingOnboardingRef.current = true;
+
+    updateWorkspaceOnboarding(workspace.id, false).finally(() => {
+      isAutoCompletingOnboardingRef.current = false;
+    });
+  }, [isOnboardingCompleted, isWorkspaceLoading, updateWorkspaceOnboarding, workspace.id, workspace.isOnboarding]);
+
   const handleSkipOnboarding = async () => {
     const userInput = await confirm();
     if (!userInput) return;
@@ -62,7 +77,7 @@ function AdminWorkspace() {
     return updateWorkspaceOnboarding(workspace.id, false);
   };
 
-  const isOnboardingVisible = !isWorkspaceLoading && workspace.isOnboarding && needsWorkspaceOnboarding(workspace);
+  const isOnboardingVisible = !isWorkspaceLoading && workspace.isOnboarding && !isOnboardingCompleted;
   const pageContent = match({ isWorkspaceLoading, isOnboardingVisible })
     .with({ isWorkspaceLoading: true }, () => <LoadingContainer>워크스페이스 정보를 불러오는 중입니다.</LoadingContainer>)
     .with({ isOnboardingVisible: true }, () => (
