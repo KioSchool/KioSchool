@@ -13,6 +13,7 @@ import AdminDashboard from '@components/admin/workspace/dashboard/AdminDashboard
 import AdminWorkspaceOnboarding from '@components/admin/workspace/onboarding/AdminWorkspaceOnboarding';
 import { needsWorkspaceOnboarding } from '@utils/onboarding';
 import useConfirm from '@hooks/useConfirm';
+import { match } from 'ts-pattern';
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -62,24 +63,26 @@ function AdminWorkspace() {
   };
 
   const isOnboardingVisible = !isWorkspaceLoading && workspace.isOnboarding && needsWorkspaceOnboarding(workspace);
+  const pageContent = match({ isWorkspaceLoading, isOnboardingVisible })
+    .with({ isWorkspaceLoading: true }, () => <LoadingContainer>워크스페이스 정보를 불러오는 중입니다.</LoadingContainer>)
+    .with({ isOnboardingVisible: true }, () => (
+      <AdminWorkspaceOnboarding workspace={workspace} onRefreshStatus={handleLoadWorkspace} onSkipOnboarding={handleSkipOnboarding} />
+    ))
+    .otherwise(() => (
+      <>
+        <ContentContainer>
+          <AdminDashboard />
+          <PreviewContainer width={300} height={640} />
+        </ContentContainer>
+        <AppPopup />
+        <AppFaqButton />
+      </>
+    ));
 
   return (
     <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })}>
       <>
-        {isWorkspaceLoading ? (
-          <LoadingContainer>워크스페이스 정보를 불러오는 중입니다.</LoadingContainer>
-        ) : isOnboardingVisible ? (
-          <AdminWorkspaceOnboarding workspace={workspace} onRefreshStatus={handleLoadWorkspace} onSkipOnboarding={handleSkipOnboarding} />
-        ) : (
-          <>
-            <ContentContainer>
-              <AdminDashboard />
-              <PreviewContainer width={300} height={640} />
-            </ContentContainer>
-            <AppPopup />
-            <AppFaqButton />
-          </>
-        )}
+        {pageContent}
         <ConfirmModal />
       </>
     </AppContainer>
