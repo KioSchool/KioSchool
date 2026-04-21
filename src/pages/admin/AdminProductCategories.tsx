@@ -29,7 +29,7 @@ const CategoriesItemContainer = styled.div`
 `;
 
 const SectionTitle = styled.div`
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 700;
   color: #464a4d;
   padding-bottom: 15px;
@@ -46,7 +46,7 @@ const CategoryInput = styled.input`
   border: none;
   border-bottom: 1px solid #e8eef2;
   padding: 12px 4px;
-  font-size: 18px;
+  font-size: 16px;
   box-sizing: border-box;
 
   &:focus {
@@ -107,7 +107,7 @@ function AdminProductCategories() {
         </CategoriesItemContainer>
 
         <CategoriesButtonContainer className={'categories-button-container'}>
-          <NewCommonButton onClick={saveCategory} size="md">
+          <NewCommonButton onClick={saveCategory} size="sm">
             편집 완료
           </NewCommonButton>
         </CategoriesButtonContainer>

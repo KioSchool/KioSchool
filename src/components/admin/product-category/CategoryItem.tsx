@@ -24,12 +24,12 @@ const CategoryContentsContainer = styled.div`
 `;
 
 const CategoryName = styled.label`
-  font-size: 18px;
+  font-size: 16px;
   width: 50%;
 `;
 
 const DefaultCategoryNotice = styled.label`
-  font-size: 14px;
+  font-size: 12px;
   color: #8d8d8d;
 `;
 
