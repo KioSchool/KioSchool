@@ -2,6 +2,9 @@ import { GhostType } from '@@types/index';
 
 export const TIMELINE_START_HOUR = 9;
 
+export const FALLBACK_WALL_START_HOUR = 17;
+export const FALLBACK_WALL_END_HOUR = 5;
+
 export const MIN_VALID_SESSION_MINUTES = 30;
 
 export const TIMELINE_COLORS = {

@@ -7,7 +7,7 @@ import { addHours, startOfDay } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
 import SessionBar from './SessionBar';
 import TimeAxis from './TimeAxis';
-import { TIMELINE_COLORS, TIMELINE_START_HOUR } from './timelineConstants';
+import { FALLBACK_WALL_END_HOUR, FALLBACK_WALL_START_HOUR, TIMELINE_COLORS, TIMELINE_START_HOUR } from './timelineConstants';
 
 const ScrollContainer = styled.div`
   width: 100%;
@@ -107,9 +107,12 @@ function TimelineGrid({ sessions, tableCount, selectedDate, currentTime, minPric
     const baseDayStart = addHours(startOfDay(toZonedTime(selectedDate, 'Asia/Seoul')), TIMELINE_START_HOUR);
     const baseDayEnd = addHours(baseDayStart, 24);
 
-    // 2. Fallback 범위 (보편적인 주점 영업시간: 당일 17:00 ~ 익일 05:00 / 총 12시간)
-    let minTimeMs = addHours(baseDayStart, 8).getTime(); // 17:00
-    let maxTimeMs = addHours(baseDayStart, 20).getTime(); // 05:00
+    // 2. Fallback 범위 설정
+    const fallbackStartOffset = FALLBACK_WALL_START_HOUR - TIMELINE_START_HOUR;
+    const fallbackEndOffset = FALLBACK_WALL_END_HOUR + 24 - TIMELINE_START_HOUR;
+
+    let minTimeMs = addHours(baseDayStart, fallbackStartOffset).getTime();
+    let maxTimeMs = addHours(baseDayStart, fallbackEndOffset).getTime();
 
     // 3. 세션 있을 때 범위 동적 확대 (축소는 하지 않음)
     if (sessions && sessions.length > 0) {
