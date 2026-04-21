@@ -16,11 +16,9 @@ const ChartContainer = styled.div`
 const FallbackContainer = styled.div`
   width: 100%;
   height: 400px;
-  padding-top: 12px;
-  font-size: 12px;
+  font-size: 14px;
   color: #939393;
-  font-weight: 500;
-  ${colFlex({ justify: 'start', align: 'start' })};
+  ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
 const Legend = styled.div`
@@ -65,7 +63,7 @@ function HourlySalesChart({ salesByHour }: HourlySalesChartProps) {
   const hasData = salesByHour.some((item) => item.revenue > 0 || item.orderCount > 0);
 
   if (!hasData) {
-    return <FallbackContainer>시간대별 매출 데이터가 없습니다.</FallbackContainer>;
+    return <FallbackContainer>아직 시간대별 매출 데이터가 없어요</FallbackContainer>;
   }
 
   return (
