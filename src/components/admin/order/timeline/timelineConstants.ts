@@ -1,7 +1,6 @@
 import { GhostType } from '@@types/index';
 
 export const TIMELINE_START_HOUR = 9;
-export const TIMELINE_HOURS = 24;
 
 export const MIN_VALID_SESSION_MINUTES = 30;
 
