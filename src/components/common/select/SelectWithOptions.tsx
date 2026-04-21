@@ -4,7 +4,7 @@ import { Color } from '@resources/colors';
 
 interface Option {
   name: string;
-  id: number | string;
+  id: number | string | null;
 }
 
 const Container = styled.select<{ width?: string }>`
@@ -47,17 +47,17 @@ export interface SelectWithOptionsProps extends SelectHTMLAttributes<HTMLSelectE
 }
 
 function SelectWithOptions({ options, isUseDefaultOption = true, width, ...otherProps }: SelectWithOptionsProps) {
-  const defaultOption = { name: '기본메뉴', id: 'null' };
+  const defaultOption = { name: '기본메뉴', id: null };
   const allOptions = isUseDefaultOption ? [defaultOption, ...options] : [...options];
 
   const isControlled = otherProps.value !== undefined;
   const useDefaultOption = !isControlled && allOptions.length > 0;
-  const defaultValueProp = useDefaultOption ? { defaultValue: allOptions[0].id } : {};
+  const defaultValueProp = useDefaultOption ? { defaultValue: allOptions[0].id ?? '' } : {};
 
   return (
     <Container {...defaultValueProp} {...otherProps} width={width} required>
       {allOptions.map((item) => (
-        <option key={item.id} value={item.id}>
+        <option key={item.id ?? 'default'} value={item.id ?? ''}>
           {item.name}
         </option>
       ))}
