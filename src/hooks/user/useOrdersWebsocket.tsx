@@ -2,7 +2,7 @@ import * as StompJs from '@stomp/stompjs';
 import kioSchoolOrderAlarm from '@resources/audio/kioSchoolOrderAlarm.mp3';
 import { Order, OrderWebsocket } from '@@types/index';
 import { useSetAtom } from 'jotai';
-import { adminOrdersAtom } from '../../jotai/admin/atoms';
+import { adminOrdersAtom } from '@jotai/admin/atoms';
 import { useCallback, useEffect, useMemo } from 'react';
 import SockJS from 'sockjs-client/dist/sockjs';
 import { URLS } from '@constants/urls';
