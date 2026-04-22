@@ -5,15 +5,21 @@ import useAdminUser from '@hooks/admin/useAdminUser';
 import AppContainer from '@components/common/container/AppContainer';
 import AddWorkspace from '@components/common/workspace/AddWorkspace';
 import WorkspaceContent from '@components/admin/workspace/WorkspaceContent';
-import { rowFlex } from '@styles/flexStyles';
+import { colFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
 import { adminUserAtom, adminWorkspacesAtom } from '@jotai/admin/atoms';
 import AppFaqButton from '@components/common/button/AppFaqButton';
 import KioSchoolGuideYoutubeContent, { KIOSCHOOL_GUIDE_YOUTUBE_TOAST_COOKIE } from '@components/admin/home/KioSchoolGuideYoutubeContent';
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@constants/routes';
+import styled from '@emotion/styled';
 
 const YOUTUBE_TOAST_ID = 'youtube-guide-toast';
+
+const Container = styled.div`
+  width: 95%;
+  ${colFlex({ align: 'center' })}
+`;
 
 function AdminHome() {
   const navigate = useNavigate();
@@ -52,14 +58,15 @@ function AdminHome() {
   }, [cookies]);
 
   return (
-    <AppContainer useFlex={rowFlex({ justify: 'center', align: 'center' })} customGap={'30px'}>
-      <>
-        <WorkspaceContent workspaces={workspaces} />
-        {Array.from({ length: addWorkspaceNumber }).map((_, i) => (
-          <AddWorkspace key={i} workspaces={workspaces} />
-        ))}
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} customGap={'30px'}>
+      <Container>
+        <WorkspaceContent workspaces={workspaces}>
+          {Array.from({ length: addWorkspaceNumber }).map((_, i) => (
+            <AddWorkspace key={i} workspaces={workspaces} />
+          ))}
+        </WorkspaceContent>
         <AppFaqButton />
-      </>
+      </Container>
     </AppContainer>
   );
 }

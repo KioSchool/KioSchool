@@ -6,20 +6,33 @@ import { RiArrowRightSLine, RiDeleteBinFill } from '@remixicon/react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { expandButtonStyle } from '@styles/buttonStyles';
+import { mobileMediaQuery, tabletMediaQuery } from '@styles/globalStyles';
 import { useNavigate } from 'react-router-dom';
 import { getAdminWorkspacePath } from '@constants/routes';
 import { formatDate } from '@utils/formatDate';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 
 const Container = styled.div`
+  width: 100%;
   gap: 29px;
-  ${rowFlex()}
+  flex-wrap: wrap;
+  ${rowFlex({ justify: 'center', align: 'center' })}
+
+  ${tabletMediaQuery} {
+    gap: 20px;
+  }
+
+  ${mobileMediaQuery} {
+    gap: 16px;
+  }
 `;
 
 const WorkspaceContainer = styled.div`
   box-sizing: border-box;
-  width: 380px;
+  width: 100%;
+  max-width: 380px;
   height: 350px;
+  flex: 1 1 340px;
   border-radius: 16px;
   padding: 24px 20px;
   background: ${Color.KIO_ORANGE};
@@ -79,9 +92,10 @@ const Description = styled.li`
 
 interface Props {
   workspaces: Workspace[];
+  children?: React.ReactNode;
 }
 
-function WorkspaceContent({ workspaces }: Props) {
+function WorkspaceContent({ workspaces, children }: Props) {
   const navigate = useNavigate();
   const { leaveWorkspace } = useAdminUser();
   const { ConfirmModal, confirm } = useConfirm({
@@ -133,6 +147,7 @@ function WorkspaceContent({ workspaces }: Props) {
           </NewCommonButton>
         </WorkspaceContainer>
       ))}
+      {children}
       <ConfirmModal />
     </Container>
   );
