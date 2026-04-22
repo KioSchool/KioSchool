@@ -27,7 +27,7 @@ const inputStyle = `
 `;
 
 const containerStyle = css`
-  width: 100%;
+  width: 95%;
   gap: 10px;
   ${colFlex({ justify: 'center', align: 'start' })}
 `;

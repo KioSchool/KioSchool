@@ -89,7 +89,7 @@ function AdminProductCategories() {
   };
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })}>
+    <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })}>
       <Container className={'admin-product-categories-container'}>
         <CategoriesInputContainer className={'categories-input-container'}>
           <SectionTitle>등록할 카테고리명</SectionTitle>
