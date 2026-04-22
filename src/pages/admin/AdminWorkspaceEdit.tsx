@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
-import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { WorkspaceImage } from '@@types/index';
 import { extractImageIdsAndFiles, initWorkspaceImages, removeAndPushNull } from '@utils/workspaceEdit';
@@ -12,19 +11,8 @@ import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
 import { css } from '@emotion/react';
 import NewCommonButton from '@components/common/button/NewCommonButton';
-
-const inputStyle = `
-  box-sizing: border-box;
-  border-radius: 15px;
-  border: none;
-  padding: 12px 20px;
-  resize: none;
-  border: 1px solid #e8eef2;
-  &:focus {
-    outline: none;
-    border: 1px solid ${Color.KIO_ORANGE};
-  }
-`;
+import NewAppInput from '@components/common/input/NewAppInput';
+import NewAppTextarea from '@components/common/input/NewAppTextarea';
 
 const containerStyle = css`
   width: 95%;
@@ -49,11 +37,6 @@ const TitleContainer = styled.div`
   ${containerStyle}
 `;
 
-const TitleInput = styled.input`
-  width: 100%;
-  ${inputStyle}
-`;
-
 const ImageContainer = styled.div`
   ${containerStyle}
 `;
@@ -64,25 +47,17 @@ const ImageInputContainer = styled.div`
 `;
 
 const DescriptionContainer = styled.div`
-  height: 150px;
   ${containerStyle}
-`;
-
-const DescriptionInput = styled.textarea`
-  width: 100%;
-  height: 130px;
-  ${inputStyle}
 `;
 
 const NoticeContainer = styled.div`
-  height: 150px;
   ${containerStyle}
 `;
 
-const NoticeInput = styled.textarea`
-  width: 100%;
-  height: 130px;
-  ${inputStyle}
+const ButtonContainer = styled.div`
+  width: 95%;
+  margin-top: 20px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 function AdminWorkspaceEdit() {
@@ -159,8 +134,7 @@ function AdminWorkspaceEdit() {
     <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'}>
       <ContentContainer>
         <TitleContainer>
-          <Label>주점명</Label>
-          <TitleInput ref={titleRef} defaultValue={workspace?.name || ''} />
+          <NewAppInput label="주점명" ref={titleRef} defaultValue={workspace?.name || ''} width="100%" />
         </TitleContainer>
         <ImageContainer>
           <Label>대표 사진</Label>
@@ -169,16 +143,16 @@ function AdminWorkspaceEdit() {
           </ImageInputContainer>
         </ImageContainer>
         <DescriptionContainer>
-          <Label>주점 설명</Label>
-          <DescriptionInput ref={descriptionRef} defaultValue={workspace?.description || ''} />
+          <NewAppTextarea label="주점 설명" ref={descriptionRef} defaultValue={workspace?.description || ''} width="100%" />
         </DescriptionContainer>
         <NoticeContainer>
-          <Label>공지 사항</Label>
-          <NoticeInput ref={noticeRef} defaultValue={workspace?.notice || ''} />
+          <NewAppTextarea label="공지 사항" ref={noticeRef} defaultValue={workspace?.notice || ''} width="100%" />
         </NoticeContainer>
-        <NewCommonButton size={'sm'} onClick={handleSubmit}>
-          편집 완료
-        </NewCommonButton>
+        <ButtonContainer>
+          <NewCommonButton size={'sm'} onClick={handleSubmit}>
+            편집 완료
+          </NewCommonButton>
+        </ButtonContainer>
       </ContentContainer>
     </AppContainer>
   );
