@@ -6,10 +6,10 @@ import { Color } from '@resources/colors';
 
 const AddWorkspaceContainer = styled.form`
   cursor: pointer;
-  width: 100%;
+  width: calc((100% - 40px) / 3);
   max-width: 380px;
+  min-width: 0;
   height: 350px;
-  flex: 1 1 340px;
   border: 1px solid #e8eef2;
   border-radius: 16px;
   background: ${Color.WHITE};
