@@ -19,6 +19,10 @@ import { TIMELINE_COLORS } from '@components/admin/order/timeline/timelineConsta
 import { RiRefreshLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 
+const Container = styled.div`
+  width: 95%;
+`;
+
 const FilterContainer = styled.div`
   width: 100%;
   margin-bottom: 20px;
@@ -88,8 +92,8 @@ function AdminOrderTimeline() {
   const dateLabel = format(selectedDate, 'yyyy년 MM월 dd일');
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'start' })} customWidth={'1200px'}>
-      <>
+    <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })} customWidth={'1200px'}>
+      <Container>
         <FilterContainer>
           <FilterLeft>
             <CustomSelect value={dateLabel} triggerLabel={dateLabel} highlightOnSelect={true} width="160px">
@@ -131,7 +135,7 @@ function AdminOrderTimeline() {
         />
 
         {selectedSession && <SessionDetailModal session={selectedSession} currentTime={currentTime} isModalOpen={isModalOpen} closeModal={handleCloseModal} />}
-      </>
+      </Container>
     </AppContainer>
   );
 }

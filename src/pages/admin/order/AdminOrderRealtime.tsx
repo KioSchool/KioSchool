@@ -15,7 +15,7 @@ import styled from '@emotion/styled';
 import { useWakeLock } from '@hooks/useWakeLock';
 
 const ListContainer = styled.div`
-  width: 100%;
+  width: 95%;
   gap: 20px;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
@@ -40,7 +40,7 @@ function AdminOrderRealtime() {
   }, []);
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })}>
+    <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })}>
       <ListContainer>
         <TitledOrderStatusList
           orders={notPaidOrders}

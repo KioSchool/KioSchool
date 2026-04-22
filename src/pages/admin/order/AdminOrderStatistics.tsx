@@ -14,7 +14,7 @@ import { formatMinutesToTime } from '@utils/formatDate';
 import { Color } from '@resources/colors';
 
 const Container = styled.div`
-  width: 100%;
+  width: 95%;
   flex: 1;
   gap: 20px;
   padding-top: 25px;
@@ -85,7 +85,7 @@ function AdminOrderStatistics() {
   const comparisonColor = comparison ? getComparisonColor(comparison.revenueGrowthRate) : undefined;
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'start' })} customWidth={'1200px'}>
+    <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })} customWidth={'1200px'}>
       <Container>
         <FilterContainer>
           <CustomSelect value={dateLabel} triggerLabel={dateLabel} highlightOnSelect={true} width="160px">
