@@ -75,8 +75,8 @@ export const useAdminFetchTableSessionTimeline = (workspaceId: string | undefine
       const isValidSession = getEffectiveUsageTime(session, currentTime) >= MIN_VALID_SESSION_MINUTES;
       const hasOrders = session.orderCount > 0;
 
-      if (filters.showValidSessionsOnly) return isValidSession;
-      if (filters.hasOrders) return hasOrders;
+      if (filters.showValidSessionsOnly && !isValidSession) return false;
+      if (filters.hasOrders && !hasOrders) return false;
       return true;
     });
   }, [sessions, filters, currentTime]);

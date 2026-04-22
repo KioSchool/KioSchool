@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { rowFlex } from '@styles/flexStyles';
-import { TIMELINE_START_HOUR, TIMELINE_HOURS, TIMELINE_COLORS } from './timelineConstants';
+import { TIMELINE_COLORS } from './timelineConstants';
 
 const AxisContainer = styled.div`
   flex: 1;
@@ -23,8 +23,13 @@ const HourCell = styled.span<{ isLast?: boolean }>`
   line-height: 32px;
 `;
 
-function TimeAxis() {
-  const hours = Array.from({ length: TIMELINE_HOURS }, (_, i) => (TIMELINE_START_HOUR + i) % 24);
+interface TimeAxisProps {
+  startHour: number;
+  totalHours: number;
+}
+
+function TimeAxis({ startHour, totalHours }: TimeAxisProps) {
+  const hours = Array.from({ length: totalHours }, (_, i) => (startHour + i) % 24);
 
   return (
     <AxisContainer>

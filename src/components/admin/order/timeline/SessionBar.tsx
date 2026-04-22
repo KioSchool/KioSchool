@@ -5,26 +5,31 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { getSessionBarStyle } from './sessionBarStyle';
 import { formatMinutesToTime } from '@utils/formatDate';
 import { differenceInMinutes } from 'date-fns';
-import { TIMELINE_HOURS, TIMELINE_COLORS } from './timelineConstants';
+import { TIMELINE_COLORS } from './timelineConstants';
 
 const MIN_BAR_WIDTH_FOR_TEXT = 6;
 
 const Bar = styled.div<{ left: number; width: number; backgroundColor: string; backgroundImage?: string }>`
   position: absolute;
-  top: 5px;
-  bottom: 5px;
+  top: 6px;
+  bottom: 6px;
   left: ${({ left }) => left}%;
   width: ${({ width }) => Math.max(width, 0.4)}%;
-  min-width: 6px;
-  border-radius: 6px;
+  min-width: 8px;
+  border-radius: 4px;
   cursor: pointer;
   overflow: hidden;
-  transition: filter 0.15s;
+  transition: filter 0.15s, z-index 0.1s, transform 0.15s;
   background-color: ${({ backgroundColor }) => backgroundColor};
   background-image: ${({ backgroundImage }) => backgroundImage || 'none'};
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-sizing: border-box;
+  z-index: 1;
 
   &:hover {
     filter: brightness(0.92);
+    z-index: 10;
+    transform: scaleY(1.15);
   }
 
   &:hover .session-bar-tooltip {
@@ -75,9 +80,9 @@ const Tooltip = styled.div`
   transition: opacity 0.15s;
 `;
 
-function getTimePercent(date: Date, timelineStart: Date): number {
+function getTimePercent(date: Date, timelineStart: Date, totalHours: number): number {
   const diffMs = date.getTime() - timelineStart.getTime();
-  const totalMs = TIMELINE_HOURS * 60 * 60 * 1000;
+  const totalMs = totalHours * 60 * 60 * 1000;
   return Math.max(0, Math.min(100, (diffMs / totalMs) * 100));
 }
 
@@ -87,18 +92,19 @@ interface SessionBarProps {
   currentTime: Date;
   minPrice: number;
   maxPrice: number;
+  totalHours: number;
   onSessionClick: (session: OrderSessionWithOrder) => void;
 }
 
-function SessionBar({ session, dayStart, currentTime, minPrice, maxPrice, onSessionClick }: SessionBarProps) {
+function SessionBar({ session, dayStart, currentTime, minPrice, maxPrice, totalHours, onSessionClick }: SessionBarProps) {
   const start = new Date(session.createdAt);
   const end = session.endAt ? new Date(session.endAt) : currentTime;
-  const timelineEnd = new Date(dayStart.getTime() + TIMELINE_HOURS * 60 * 60 * 1000);
+  const timelineEnd = new Date(dayStart.getTime() + totalHours * 60 * 60 * 1000);
 
   const clippedStart = start < dayStart ? dayStart : start;
   const clippedEnd = end > timelineEnd ? timelineEnd : end;
-  const left = getTimePercent(clippedStart, dayStart);
-  const right = getTimePercent(clippedEnd, dayStart);
+  const left = getTimePercent(clippedStart, dayStart, totalHours);
+  const right = getTimePercent(clippedEnd, dayStart, totalHours);
   const width = right - left;
 
   const totalPrice = session.totalOrderPrice;
