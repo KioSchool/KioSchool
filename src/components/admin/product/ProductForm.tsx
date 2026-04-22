@@ -169,7 +169,6 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
               dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
             }}
             width={'100%'}
-            isUseDefaultOption={mode === 'ADD'}
           />
         </InputColContainer>
 
