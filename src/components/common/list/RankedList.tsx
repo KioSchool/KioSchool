@@ -43,8 +43,11 @@ const Value = styled.div`
 `;
 
 const EmptyText = styled.div`
+  width: 100%;
+  height: 100%;
   color: #939393;
-  font-size: 12px;
+  font-size: 14px;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 export interface RankedItem {
@@ -65,7 +68,7 @@ const formatRankedValue = (value: number, unit: string) => {
   return `${formattedNumber}${unit}`;
 };
 
-function RankedList({ items, emptyText = '데이터가 없습니다.' }: RankedListProps) {
+function RankedList({ items, emptyText = '아직 판매 데이터가 없어요' }: RankedListProps) {
   if (items.length === 0) {
     return <EmptyText>{emptyText}</EmptyText>;
   }
