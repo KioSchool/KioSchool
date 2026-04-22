@@ -80,11 +80,10 @@ interface ProductFormProps {
 
 function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onDelete }: ProductFormProps) {
   const productCategories = useAtomValue(adminCategoriesAtom);
-  const productCategoryOptions = [...productCategories, { id: null, name: '기본메뉴' }];
 
   const initialState = initialValues || {
     ...defaultProductEditValue,
-    productCategory: { id: null, name: '기본메뉴' },
+    productCategory: { id: 'null', name: '' },
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -132,7 +131,7 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
       description: state.description,
       price: state.price,
       workspaceId: workspaceId,
-      productCategoryId: state.productCategory?.id ?? null,
+      productCategoryId: state.productCategory?.id,
     };
 
     await onSubmit(formData, state.image?.file);
@@ -164,13 +163,12 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
         <InputColContainer>
           <InputLabel>카테고리</InputLabel>
           <SelectWithOptions
-            options={productCategoryOptions}
-            value={state.productCategory?.id ?? ''}
+            options={productCategories}
+            value={state.productCategory?.id || ''}
             onChange={(event: ChangeEvent<HTMLSelectElement>) => {
-              dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value || null });
+              dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
             }}
             width={'100%'}
-            isUseDefaultOption={false}
           />
         </InputColContainer>
 

@@ -98,7 +98,7 @@ export interface ProductStateType {
   price: number;
   productId?: string;
   workspaceId: string | undefined;
-  productCategoryId: string | number | null;
+  productCategoryId: string | number;
 }
 
 export interface ProductActionType {
