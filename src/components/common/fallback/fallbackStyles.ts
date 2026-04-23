@@ -83,6 +83,64 @@ export const FallbackActionRow = styled.div`
   }
 `;
 
+export const FallbackTipsContainer = styled.div`
+  width: 100%;
+  max-width: 360px;
+  gap: 12px;
+  margin-top: 28px;
+  padding: 18px 20px;
+  box-sizing: border-box;
+  background: ${Color.WHITE};
+  border: 1px solid ${Color.HEAVY_GREY};
+  border-radius: 12px;
+  ${colFlex()};
+
+  ${mobileMediaQuery} {
+    max-width: 320px;
+    margin-top: 24px;
+    padding: 16px 18px;
+  }
+`;
+
+export const FallbackTipsTitle = styled.h3`
+  color: ${Color.BLACK};
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+
+  ${mobileMediaQuery} {
+    font-size: 13px;
+  }
+`;
+
+export const FallbackTipsList = styled.ul`
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  ${colFlex({ align: 'start' })};
+`;
+
+export const FallbackTipItem = styled.li`
+  position: relative;
+  padding-left: 14px;
+  color: ${Color.GREY};
+  font-size: 13px;
+  line-height: 1.5;
+  word-break: keep-all;
+
+  &::before {
+    content: '-';
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: ${Color.GREY};
+  }
+
+  ${mobileMediaQuery} {
+    font-size: 12px;
+  }
+`;
+
 export const PrimaryFallbackButton = styled.button`
   padding: 14px 24px;
   gap: 6px;

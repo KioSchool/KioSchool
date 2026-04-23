@@ -8,6 +8,10 @@ import {
   FallbackContainer,
   FallbackDescription,
   FallbackIconWrapper,
+  FallbackTipItem,
+  FallbackTipsContainer,
+  FallbackTipsList,
+  FallbackTipsTitle,
   FallbackTitle,
   PrimaryFallbackButton,
   SecondaryFallbackButton,
@@ -33,6 +37,15 @@ function SentryErrorFallback() {
         <br />
         새로고침 후에도 문제가 지속되면 관리자에게 문의해주세요.
       </FallbackDescription>
+      <FallbackTipsContainer>
+        <FallbackTipsTitle>문제 해결 방법</FallbackTipsTitle>
+        <FallbackTipsList>
+          <FallbackTipItem>인터넷 연결 상태를 확인해주세요.</FallbackTipItem>
+          <FallbackTipItem>브라우저를 새로고침 해보세요.</FallbackTipItem>
+          <FallbackTipItem>잠시 후 다시 접속해보세요.</FallbackTipItem>
+          <FallbackTipItem>문제가 지속되면 관리자에게 문의해주세요.</FallbackTipItem>
+        </FallbackTipsList>
+      </FallbackTipsContainer>
       <FallbackActionRow>
         <PrimaryFallbackButton type="button" onClick={handleReload}>
           <RiRefreshLine size={18} />
