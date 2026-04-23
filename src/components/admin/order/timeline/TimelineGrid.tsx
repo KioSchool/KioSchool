@@ -66,20 +66,31 @@ const TrackColumn = styled.div`
   ${colFlex()}
 `;
 
-const TrackRow = styled.div<{ totalHours: number }>`
+const TrackRow = styled.div`
   height: 50px;
   position: relative;
   border-bottom: 1px solid ${TIMELINE_COLORS.BORDER};
   border-right: 1px solid ${TIMELINE_COLORS.BORDER};
   box-sizing: border-box;
   background-color: white;
-  background-image: repeating-linear-gradient(
-    to right,
-    ${TIMELINE_COLORS.BORDER} 0px,
-    ${TIMELINE_COLORS.BORDER} 1px,
-    transparent 1px,
-    transparent calc(100% / ${({ totalHours }) => totalHours * 2})
-  );
+`;
+
+const TimeGridLayer = styled.div<{ segmentCount: number }>`
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: grid;
+  grid-template-columns: repeat(${({ segmentCount }) => segmentCount}, minmax(0, 1fr));
+  pointer-events: none;
+`;
+
+const TimeGridSegment = styled.div`
+  border-left: 1px solid ${TIMELINE_COLORS.BORDER_CARD};
+  box-sizing: border-box;
+
+  &[data-hour='true'] {
+    border-left-color: ${TIMELINE_COLORS.BORDER};
+  }
 `;
 
 const EmptyMessage = styled.div`
@@ -148,6 +159,7 @@ function TimelineGrid({ sessions, tableCount, selectedDate, currentTime, minPric
   );
 
   const sessionsByTable = useMemo(() => groupBy(sessions, 'tableNumber'), [sessions]);
+  const timeSegments = useMemo(() => Array.from({ length: totalHours * 2 }, (_, i) => i), [totalHours]);
 
   if (tableCount === 0) {
     return <EmptyMessage>워크스페이스에 테이블이 없습니다</EmptyMessage>;
@@ -175,7 +187,12 @@ function TimelineGrid({ sessions, tableCount, selectedDate, currentTime, minPric
           {tableNumbers.map((tableNo) => {
             const tableSessions = sessionsByTable[tableNo] || [];
             return (
-              <TrackRow key={tableNo} totalHours={totalHours}>
+              <TrackRow key={tableNo}>
+                <TimeGridLayer segmentCount={timeSegments.length} aria-hidden="true">
+                  {timeSegments.map((segment) => (
+                    <TimeGridSegment key={segment} data-hour={segment % 2 === 0} />
+                  ))}
+                </TimeGridLayer>
                 {tableSessions.map((session) => (
                   <SessionBar
                     key={session.id}
