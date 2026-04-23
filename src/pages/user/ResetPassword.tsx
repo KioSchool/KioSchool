@@ -5,9 +5,10 @@ import styled from '@emotion/styled';
 import useAuthentication from '@hooks/useAuthentication';
 import { colFlex } from '@styles/flexStyles';
 import NewAppInput from '@components/common/input/NewAppInput';
-import NewRoundedButton from '@components/common/button/NewRoundedButton';
+import NewCommonButton from '@components/common/button/NewCommonButton';
 import LinkLabel from '@components/common/label/LinkLabel';
 import { Color } from '@resources/colors';
+import { USER_ROUTES } from '@constants/routes';
 
 const ErrorContainer = styled.div`
   height: 30px;
@@ -46,19 +47,15 @@ function ResetPassword() {
 
   if (!code) {
     return (
-      <AppContainer
-        useFlex={colFlex({ justify: 'center', align: 'center' })}
-        customGap={'20px'}
-        titleNavBarProps={{ title: '비밀번호 찾기', useBackIcon: false }}
-      >
+      <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} customGap={'20px'} useTitle={false} useFullHeight={true}>
         <>
           <NewAppInput placeholder={'아이디를 입력해주세요'} ref={idInputRef} label={'아이디'} />
           <NewAppInput placeholder={'이메일을 입력해주세요'} ref={emailInputRef} label={'이메일'} />
-          <NewRoundedButton customSize={{ height: 45, width: 350 }} onClick={sendResetPasswordLinkHandler} style={{ marginTop: '50px' }}>
+          <NewCommonButton customSize={{ height: 45, width: 350, font: 20 }} onClick={sendResetPasswordLinkHandler} style={{ marginTop: '50px' }}>
             비밀번호 재설정 링크 전송하기
-          </NewRoundedButton>
+          </NewCommonButton>
 
-          <LinkLabel text={'로그인하기'} href={'/login'} />
+          <LinkLabel text={'로그인하기'} href={USER_ROUTES.LOGIN} />
         </>
       </AppContainer>
     );
@@ -110,7 +107,7 @@ function ResetPassword() {
     resetPassword(userPasswordInput, code)
       .then(() => {
         alert('비밀번호가 재설정되었습니다.');
-        navigate('/login');
+        navigate(USER_ROUTES.LOGIN);
       })
       .catch(() => {
         alert('비밀번호는 8자 이상 20자 이하로 설정해주세요.');
@@ -118,11 +115,7 @@ function ResetPassword() {
   };
 
   return (
-    <AppContainer
-      useFlex={colFlex({ justify: 'center', align: 'center' })}
-      customGap={'20px'}
-      titleNavBarProps={{ title: '비밀번호 재설정', useBackIcon: false }}
-    >
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} customGap={'20px'} useTitle={false} useFullHeight={true}>
       <>
         <NewAppInput
           label={'비밀번호'}
@@ -145,7 +138,7 @@ function ResetPassword() {
           required
         />
         <ErrorContainer>{errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}</ErrorContainer>
-        <NewRoundedButton onClick={resetPasswordHandler}>비밀번호 재설정</NewRoundedButton>
+        <NewCommonButton onClick={resetPasswordHandler}>비밀번호 재설정</NewCommonButton>
       </>
     </AppContainer>
   );

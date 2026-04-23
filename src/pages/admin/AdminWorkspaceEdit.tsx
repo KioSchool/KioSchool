@@ -1,126 +1,66 @@
 import { useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import RoundedAppButton from '@components/common/button/RoundedAppButton';
+import { useParams } from 'react-router-dom';
 import AppContainer from '@components/common/container/AppContainer';
-import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
-import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { WorkspaceImage } from '@@types/index';
 import { extractImageIdsAndFiles, initWorkspaceImages, removeAndPushNull } from '@utils/workspaceEdit';
 import WorkspaceImageInput from '@components/admin/workspace/WorkspaceImageInput';
-import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
+import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { useAtomValue } from 'jotai';
+import { css } from '@emotion/react';
+import NewCommonButton from '@components/common/button/NewCommonButton';
+import NewAppInput from '@components/common/input/NewAppInput';
+import NewAppTextarea from '@components/common/input/NewAppTextarea';
 
-const textAreaStyle = `
-  border-radius: 10px;
-  border: none;
-  background: ${Color.LIGHT_GREY};
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1) inset;
-  padding: 10px;
-  resize: none;
-
-  &:focus {
-    outline: none;
-    border: 1px solid ${Color.KIO_ORANGE};
-  }
+const containerStyle = css`
+  width: 95%;
+  gap: 10px;
+  ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
 const ContentContainer = styled.div`
   width: 100%;
   height: 100%;
+  gap: 10px;
+  ${colFlex({ justify: 'center', align: 'center' })}
+`;
+
+const Label = styled.label`
+  color: #464a4d;
+  font-size: 16px;
+  font-weight: 700;
 `;
 
 const TitleContainer = styled.div`
-  width: 100%;
-  height: 50px;
-  border-top: 2px solid ${Color.HEAVY_GREY};
-  ${rowFlex({ justify: 'center', align: 'center' })}
-`;
-
-const TitleLabelContainer = styled.div`
-  width: 15%;
-  height: 100%;
-  ${rowFlex({ justify: 'center', align: 'center' })}
-`;
-
-const TitleInput = styled.input`
-  width: 85%;
-  height: 65%;
-  ${textAreaStyle}
-  padding: 0 10px;
+  ${containerStyle}
 `;
 
 const ImageContainer = styled.div`
-  width: 100%;
-  height: 150px;
-  padding: 10px 0;
-  border-top: 1px solid ${Color.HEAVY_GREY};
-  ${rowFlex({ justify: 'center', align: 'center' })}
-`;
-
-const ImageLabelContainer = styled.div`
-  width: 15%;
-  height: 100%;
-  ${colFlex({ justify: 'start', align: 'center' })}
+  ${containerStyle}
 `;
 
 const ImageInputContainer = styled.div`
-  width: 85%;
-  height: 100%;
+  width: 100%;
   ${rowFlex({ justify: 'space-between', align: 'start' })}
 `;
 
 const DescriptionContainer = styled.div`
-  width: 100%;
-  height: 150px;
-  padding: 10px 0;
-  border-top: 1px solid ${Color.HEAVY_GREY};
-  ${rowFlex({ justify: 'center', align: 'start' })}
-`;
-
-const DescriptionLabelContainer = styled.div`
-  width: 15%;
-  height: 100%;
-  ${colFlex({ justify: 'start', align: 'center' })}
-`;
-
-const DescriptionInput = styled.textarea`
-  width: 833px;
-  height: 130px;
-  ${textAreaStyle}
+  ${containerStyle}
 `;
 
 const NoticeContainer = styled.div`
-  width: 100%;
-  height: 150px;
-  padding: 10px 0;
-  border-top: 1px solid ${Color.HEAVY_GREY};
-  border-bottom: 2px solid ${Color.HEAVY_GREY};
-  ${rowFlex({ justify: 'center', align: 'start' })}
+  ${containerStyle}
 `;
 
-const NoticeLabelContainer = styled.div`
-  width: 15%;
-  height: 100%;
-  ${colFlex({ justify: 'start', align: 'center' })}
-`;
-
-const NoticeInput = styled.textarea`
-  width: 833px;
-  height: 130px;
-  ${textAreaStyle}
-`;
-
-const SubmitButtonContainer = styled.div`
-  width: 100%;
-  height: 50px;
-  ${rowFlex({ justify: 'end', align: 'center' })}
+const ButtonContainer = styled.div`
+  width: 95%;
+  margin-top: 20px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 function AdminWorkspaceEdit() {
-  const navigate = useNavigate();
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { updateWorkspaceInfoAndImage } = useAdminWorkspace();
   const workspace = useAtomValue(adminWorkspaceAtom);
@@ -191,45 +131,28 @@ function AdminWorkspaceEdit() {
   };
 
   return (
-    <AppContainer
-      useFlex={rowFlex({ justify: 'center' })}
-      customWidth={'1000px'}
-      titleNavBarProps={{
-        title: workspace?.name || '',
-        subTitle: '워크스페이스 관리',
-        onLeftArrowClick: () => navigate(-1),
-      }}
-    >
+    <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'}>
       <ContentContainer>
         <TitleContainer>
-          <TitleLabelContainer>
-            <AppLabel size={20}>주점명</AppLabel>
-          </TitleLabelContainer>
-          <TitleInput ref={titleRef} defaultValue={workspace?.name || ''} />
+          <NewAppInput label="주점명" ref={titleRef} defaultValue={workspace?.name || ''} width="100%" />
         </TitleContainer>
         <ImageContainer>
-          <ImageLabelContainer>
-            <AppLabel size={20}>대표 사진</AppLabel>
-          </ImageLabelContainer>
+          <Label>대표 사진</Label>
           <ImageInputContainer>
             <WorkspaceImageInput images={displayImages} handleImageClick={handleImageClick} ref={fileInputRef} handleAddNewImage={handleAddNewImage} />
           </ImageInputContainer>
         </ImageContainer>
         <DescriptionContainer>
-          <DescriptionLabelContainer>
-            <AppLabel size={20}>주점 설명</AppLabel>
-          </DescriptionLabelContainer>
-          <DescriptionInput ref={descriptionRef} defaultValue={workspace?.description || ''} />
+          <NewAppTextarea label="주점 설명" ref={descriptionRef} defaultValue={workspace?.description || ''} width="100%" />
         </DescriptionContainer>
         <NoticeContainer>
-          <NoticeLabelContainer>
-            <AppLabel size={20}>공지 사항</AppLabel>
-          </NoticeLabelContainer>
-          <NoticeInput ref={noticeRef} defaultValue={workspace?.notice || ''} />
+          <NewAppTextarea label="공지 사항" ref={noticeRef} defaultValue={workspace?.notice || ''} width="100%" />
         </NoticeContainer>
-        <SubmitButtonContainer>
-          <RoundedAppButton onClick={handleSubmit}>수정 완료</RoundedAppButton>
-        </SubmitButtonContainer>
+        <ButtonContainer>
+          <NewCommonButton size={'sm'} onClick={handleSubmit}>
+            편집 완료
+          </NewCommonButton>
+        </ButtonContainer>
       </ContentContainer>
     </AppContainer>
   );

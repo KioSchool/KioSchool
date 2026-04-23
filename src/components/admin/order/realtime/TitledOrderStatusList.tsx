@@ -2,33 +2,62 @@ import { memo } from 'react';
 import styled from '@emotion/styled';
 import { Order, OrderStatus } from '@@types/index';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import AppLabel from '@components/common/label/AppLabel';
 import NotPaidOrderCard from './NotPaidOrderCard';
 import PaidOrderCard from './PaidOrderCard';
 import ServedOrderCard from './ServedOrderCard';
-import { areOrdersEquivalent } from '@utils/MemoCompareFunction';
+import { areOrdersEquivalent } from '@utils/memoCompareFunction';
+import { match } from 'ts-pattern';
+import { RiInformationFill } from '@remixicon/react';
+import AppTooltip from '@components/common/tooltip/AppToolTip';
 
-const TitleContainer = styled.div`
+const TitledOrderStatusContainer = styled.div`
   width: 100%;
-  height: 40px;
-  border-radius: 10px;
-  background: #ececec;
-  padding: 0 20px;
+  border: 1px solid #e8eef2;
+  border-radius: 16px;
+  background: #ffffff50;
+  padding: 18px 30px;
   box-sizing: border-box;
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
+  gap: 10px;
+  box-shadow: 0 4px 20px 0 rgba(92, 92, 92, 0.05) outset;
+  ${colFlex({ align: 'stretch' })}
+`;
+
+const TitleWrapper = styled.div`
+  width: 100%;
+  height: 24px;
+  gap: 10px;
+  color: #464a4d;
+  ${rowFlex({ justify: 'flex-start', align: 'center' })}
 `;
 
 const OrderCardListContainer = styled.div`
-  ${colFlex({ align: 'start' })}
-  gap: 10px;
+  gap: 8px;
   width: 100%;
   overflow-x: auto;
+  ${colFlex({ align: 'start' })}
 `;
 
 const CardListContainer = styled.div<{ height?: number }>`
-  gap: 10px;
+  gap: 8px;
   height: ${(props) => props.height || 200}px;
+  width: 100%;
   ${rowFlex({ align: 'start' })}
+`;
+
+const EmptyListMessageContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  ${rowFlex({ justify: 'center', align: 'center' })}
+`;
+
+const MessageLabel = styled.div`
+  font-size: 16px;
+  color: #464a4d;
+`;
+
+const TitleLabel = styled.div`
+  font-size: 16px;
+  font-weight: 700;
 `;
 
 function areOrdersEqual(prevOrders: Order[], nextOrders: Order[]) {
@@ -49,9 +78,9 @@ const getOrderContainerHeight = (status: OrderStatus) => {
     case OrderStatus.NOT_PAID:
       return 110;
     case OrderStatus.PAID:
-      return 270;
+      return 260;
     case OrderStatus.SERVED:
-      return 110;
+      return 74;
     default:
       return 200;
   }
@@ -65,28 +94,37 @@ interface OrderStatusListProps {
 }
 
 function TitledOrderStatusList({ orders, orderStatus, title, description }: OrderStatusListProps) {
+  let orderListContent: React.ReactNode;
+
+  if (orders.length > 0) {
+    orderListContent = orders.map((order) =>
+      match(order.status)
+        .with(OrderStatus.NOT_PAID, () => <NotPaidOrderCard key={order.id} order={order} />)
+        .with(OrderStatus.PAID, () => <PaidOrderCard key={order.id} order={order} />)
+        .with(OrderStatus.SERVED, () => <ServedOrderCard key={order.id} order={order} />)
+        .with(OrderStatus.CANCELLED, () => null)
+        .exhaustive(),
+    );
+  } else {
+    orderListContent = (
+      <EmptyListMessageContainer>
+        <MessageLabel>현재 표시할 주문 내역이 없습니다.</MessageLabel>
+      </EmptyListMessageContainer>
+    );
+  }
+
   return (
-    <>
-      <TitleContainer>
-        <AppLabel size={20} style={{ fontWeight: 700 }}>
-          {title}
-        </AppLabel>
-        <AppLabel size={14}>{description}</AppLabel>
-      </TitleContainer>
+    <TitledOrderStatusContainer>
+      <TitleWrapper>
+        <TitleLabel>{title}</TitleLabel>
+        <AppTooltip content={description}>
+          <RiInformationFill />
+        </AppTooltip>
+      </TitleWrapper>
       <OrderCardListContainer>
-        <CardListContainer height={getOrderContainerHeight(orderStatus)}>
-          {orders.map((order) => {
-            if (order.status === OrderStatus.NOT_PAID) {
-              return <NotPaidOrderCard key={order.id} order={order} />;
-            } else if (order.status === OrderStatus.PAID) {
-              return <PaidOrderCard key={order.id} order={order} />;
-            } else if (order.status === OrderStatus.SERVED) {
-              return <ServedOrderCard key={order.id} order={order} />;
-            }
-          })}
-        </CardListContainer>
+        <CardListContainer height={getOrderContainerHeight(orderStatus)}>{orderListContent}</CardListContainer>
       </OrderCardListContainer>
-    </>
+    </TitledOrderStatusContainer>
   );
 }
 

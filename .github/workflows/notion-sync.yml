@@ -1,0 +1,48 @@
+name: Update Notion Task Status from PR
+
+on:
+  pull_request:
+    types: [opened, reopened, closed]
+
+jobs:
+  update_notion:
+    runs-on: ubuntu-latest
+    if: "contains(github.head_ref, 'KIO-')"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get Task ID Number from Branch Name
+        id: get_id
+        run: |
+          BRANCH_NAME="${{ github.head_ref }}"
+          REGEX="KIO-([0-9]+)"
+          if [[ $BRANCH_NAME =~ $REGEX ]]; then
+            echo "task_id_num=${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
+          else
+            echo "No KIO-[number] ID found in branch name."
+          fi
+
+      - name: Set up Node.js
+        if: steps.get_id.outputs.task_id_num
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Script Dependencies
+        if: steps.get_id.outputs.task_id_num
+        run: npm install
+        working-directory: .github/scripts
+
+      - name: Run Notion Sync Script
+        if: steps.get_id.outputs.task_id_num
+        run: node notion-sync.js
+        working-directory: .github/scripts
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          TASK_ID_NUM: ${{ steps.get_id.outputs.task_id_num }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_ACTION: ${{ github.event.action }}
+          PR_IS_MERGED: ${{ github.event.pull_request.merged }}

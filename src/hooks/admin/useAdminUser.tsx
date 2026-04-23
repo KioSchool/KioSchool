@@ -3,7 +3,8 @@ import { User, Workspace } from '@@types/index';
 import { useNavigate } from 'react-router-dom';
 import useAuthentication from '@hooks/useAuthentication';
 import { useSetAtom } from 'jotai';
-import { adminUserAtom, adminBanksAtom, adminWorkspacesAtom } from 'src/jotai/admin/atoms';
+import { adminUserAtom, adminBanksAtom, adminWorkspacesAtom } from '@jotai/admin/atoms';
+import { USER_ROUTES } from '@constants/routes';
 
 function useAdminUser() {
   const { adminApi } = useApi();
@@ -46,11 +47,12 @@ function useAdminUser() {
   };
 
   const registerTossAccount = (accountUrl: string) => {
-    adminApi
+    return adminApi
       .post('/toss-account', { accountUrl })
       .then((res) => {
         setAdminUser(res.data);
         alert('계좌 정보가 성공적으로 저장되었습니다.');
+        return res.data;
       })
       .catch((error) => {
         alert(error.response.data.message);
@@ -63,7 +65,7 @@ function useAdminUser() {
       .delete('/user')
       .then(() => {
         alert('탈퇴가 완료되었습니다.');
-        navigate('/');
+        navigate(USER_ROUTES.HOME);
       })
       .catch((error) => console.error('Failed to delete user: ', error));
   };
@@ -91,7 +93,42 @@ function useAdminUser() {
       });
   };
 
-  return { fetchWorkspaces, createWorkspaces, leaveWorkspace, registerTossAccount, fetchAdminUser, deleteUser, fetchBanks, registerAccount };
+  const deleteAccount = () => {
+    adminApi
+      .delete<User>('/account')
+      .then((res) => {
+        setAdminUser(res.data);
+        alert('계좌 삭제가 완료되었습니다.');
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
+  };
+
+  const deleteTossAccount = () => {
+    adminApi
+      .delete<User>('/toss-account')
+      .then((res) => {
+        setAdminUser(res.data);
+        alert('Toss QR 정보 삭제가 완료되었습니다.');
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
+  };
+
+  return {
+    fetchWorkspaces,
+    createWorkspaces,
+    leaveWorkspace,
+    registerTossAccount,
+    fetchAdminUser,
+    deleteUser,
+    fetchBanks,
+    registerAccount,
+    deleteAccount,
+    deleteTossAccount,
+  };
 }
 
 export default useAdminUser;

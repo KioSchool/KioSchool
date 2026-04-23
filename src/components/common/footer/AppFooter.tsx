@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import AppLabel from '@components/common/label/AppLabel';
 import { colFlex } from '@styles/flexStyles';
-import { Color } from '@resources/colors';
+import { ColorType } from '@resources/colors';
 
 const FixedContainer = styled.div`
   z-index: 1001;
@@ -24,7 +24,7 @@ const NonFixedContainer = styled.div`
 
 interface AppFooterProps {
   fixed?: boolean;
-  color?: Color;
+  color?: ColorType;
 }
 
 function AppFooter({ fixed = true, color }: AppFooterProps) {

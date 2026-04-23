@@ -5,9 +5,10 @@ import { colFlex } from '@styles/flexStyles';
 import useRegister from '@hooks/user/useRegister';
 import AppContainer from '@components/common/container/AppContainer';
 import NewAppInput from '@components/common/input/NewAppInput';
-import NewRoundedButton from '@components/common/button/NewRoundedButton';
+import NewCommonButton from '@components/common/button/NewCommonButton';
 import { Color } from '@resources/colors';
 import LinkLabel from '@components/common/label/LinkLabel';
+import { USER_ROUTES } from '@constants/routes';
 
 const FormContainer = styled.form`
   flex-wrap: wrap;
@@ -144,7 +145,7 @@ function Register() {
     }
 
     localStorage.setItem('isLoggedIn', 'true');
-    navigate('/');
+    navigate(USER_ROUTES.HOME);
   };
 
   const sendCode = async () => {
@@ -203,7 +204,7 @@ function Register() {
   };
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} titleNavBarProps={{ title: '회원가입', useBackIcon: false }}>
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} useTitle={false} useFullHeight={true}>
       <>
         <FormContainer id={'form'} onSubmit={submitHandler}>
           <NewAppInput label={'이름'} ref={userNameInputRef} placeholder={'이름을 입력해주세요.'} required />
@@ -271,9 +272,9 @@ function Register() {
             )}
           </EmailContainer>
           <ErrorMessageContainer>{errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}</ErrorMessageContainer>
-          <NewRoundedButton size={'sm'}>회원가입</NewRoundedButton>
+          <NewCommonButton size={'sm'}>회원가입</NewCommonButton>
         </FormContainer>
-        <LinkLabel text={'로그인하기'} href={'/login'} style={{ marginTop: '20px' }} />
+        <LinkLabel text={'로그인하기'} href={USER_ROUTES.LOGIN} style={{ marginTop: '20px' }} />
       </>
     </AppContainer>
   );

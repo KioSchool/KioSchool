@@ -20,6 +20,8 @@ const Container = styled.select<{ width?: string }>`
 
   appearance: none;
 
+  color: #c9c9c9;
+
   &:focus {
     outline: none;
     caret-color: ${Color.KIO_ORANGE};
@@ -27,6 +29,14 @@ const Container = styled.select<{ width?: string }>`
 
   &::placeholder {
     color: #c9c9c9;
+  }
+
+  &:valid {
+    color: #464a4d;
+  }
+
+  option {
+    color: #464a4d;
   }
 `;
 
@@ -40,8 +50,12 @@ function SelectWithOptions({ options, isUseDefaultOption = true, width, ...other
   const defaultOption = { name: '기본메뉴', id: 'null' };
   const allOptions = isUseDefaultOption ? [defaultOption, ...options] : [...options];
 
+  const isControlled = otherProps.value !== undefined;
+  const useDefaultOption = !isControlled && allOptions.length > 0;
+  const defaultValueProp = useDefaultOption ? { defaultValue: allOptions[0].id } : {};
+
   return (
-    <Container {...otherProps} width={width}>
+    <Container {...defaultValueProp} {...otherProps} width={width} required>
       {allOptions.map((item) => (
         <option key={item.id} value={item.id}>
           {item.name}

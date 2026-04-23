@@ -1,22 +1,32 @@
 import { Workspace } from '@@types/index';
 import styled from '@emotion/styled';
 import useAdminUser from '@hooks/admin/useAdminUser';
-import useCustomNavigate from '@hooks/useCustomNavigate';
 import useConfirm from '@hooks/useConfirm';
-import { RiDeleteBinFill } from '@remixicon/react';
+import { RiArrowRightSLine, RiDeleteBinFill } from '@remixicon/react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { expandButtonStyle } from '@styles/buttonStyles';
+import { useNavigate } from 'react-router-dom';
+import { getAdminWorkspacePath } from '@constants/routes';
+import { formatDate } from '@utils/formatDate';
+import NewCommonButton from '@components/common/button/NewCommonButton';
+
+const Container = styled.div`
+  width: 100%;
+  gap: 20px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
+`;
 
 const WorkspaceContainer = styled.div`
   box-sizing: border-box;
-  cursor: pointer;
-  width: 321px;
-  height: 332px;
-  border-radius: 25px;
-  padding: 20px;
+  width: calc((100% - 40px) / 3);
+  max-width: 380px;
+  min-width: 0;
+  height: 350px;
+  border-radius: 16px;
+  padding: 24px 20px;
   background: ${Color.KIO_ORANGE};
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 20px rgba(92, 92, 92, 0.25);
   ${colFlex({ justify: 'space-between', align: 'flex-start' })}
 
   &:hover {
@@ -24,61 +34,60 @@ const WorkspaceContainer = styled.div`
   }
 
   &:active {
-    border-radius: 25px;
     background: ${Color.KIO_ORANGE};
-    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.25) inset;
   }
 `;
 
-const MenuTitle = styled.div`
-  color: #fff;
-  font-size: 20px;
-  font-weight: 500;
-  ${rowFlex()}
-`;
-
-const DeleteButton = styled(RiDeleteBinFill)`
-  color: ${Color.WHITE};
-  ${expandButtonStyle}
-`;
-
-const TitleContainer = styled.div`
+const ContentContainer = styled.div`
   width: 100%;
-  flex-wrap: wrap;
-  word-break: keep-all;
+  gap: 8px;
   ${colFlex()}
 `;
 
 const MainTitleContainer = styled.div`
   width: 100%;
   flex-wrap: wrap;
+  word-break: keep-all;
   ${rowFlex({ justify: 'space-between' })}
 `;
 
-const SubTitleContainer = styled.div``;
-
-const Description = styled.div`
-  width: calc(100% - 30px);
+const DeleteButton = styled(RiDeleteBinFill)`
   color: ${Color.WHITE};
-  font-size: 20px;
-  font-weight: 500;
-  ${rowFlex()}
+  width: 20px;
+  height: 20px;
+  ${expandButtonStyle}
 `;
 
 const Title = styled.div`
   color: ${Color.WHITE};
-  font-size: 25px;
+  font-size: 20px;
   font-weight: 700;
   ${rowFlex()}
 `;
 
+const DescriptionContainer = styled.ul`
+  gap: 8px;
+  padding-left: 20px;
+  margin: 0;
+  ${colFlex()}
+`;
+
+const Description = styled.li`
+  color: ${Color.WHITE};
+  font-size: 16px;
+  font-weight: 500;
+  list-style-type: disc;
+  line-height: 1.8;
+`;
+
 interface Props {
   workspaces: Workspace[];
+  children?: React.ReactNode;
 }
 
-function WorkspaceContent({ workspaces }: Props) {
+function WorkspaceContent({ workspaces, children }: Props) {
+  const navigate = useNavigate();
   const { leaveWorkspace } = useAdminUser();
-  const { appendPath } = useCustomNavigate();
   const { ConfirmModal, confirm } = useConfirm({
     title: '해당 워크스페이스를 삭제하시겠습니까?',
     description: '확인 후 되돌릴 수 없습니다.',
@@ -93,35 +102,44 @@ function WorkspaceContent({ workspaces }: Props) {
   };
 
   return (
-    <>
+    <Container>
       {workspaces.map((it) => (
-        <WorkspaceContainer
-          key={it.id}
-          onClick={() => {
-            appendPath(`/workspace/${it.id}`);
-          }}
-          className={'workspace-container'}
-        >
-          <TitleContainer className={'title-container'}>
+        <WorkspaceContainer key={it.id} className={'workspace-container'}>
+          <ContentContainer>
             <MainTitleContainer className={'main-title-container'}>
-              <Description className={'description'}>{it.description}</Description>
+              <Title className={'title'}>{it.name}</Title>
               <DeleteButton
                 onClick={(e: React.FormEvent) => {
                   leaveHandler(e, it.id);
                 }}
               />
             </MainTitleContainer>
+            <DescriptionContainer>
+              <Description className={'menu-title'}>메뉴 개수 : {it.products.length} 개</Description>
+              <Description className={'table-title'}>테이블 개수 : {it.tableCount} 개</Description>
+              <Description className={'date-title'}>만든 날짜 : {formatDate(it.createdAt)}</Description>
+            </DescriptionContainer>
+          </ContentContainer>
 
-            <SubTitleContainer className={'sub-title-container'}>
-              <Title className={'title'}>{it.name}</Title>
-            </SubTitleContainer>
-          </TitleContainer>
-
-          <MenuTitle className={'menu-title'}>메뉴 개수 {it.products.length} 개</MenuTitle>
+          <NewCommonButton
+            customSize={{ width: 92, height: 36, font: 14, borderRadius: 8, padding: 10 }}
+            onClick={() => navigate(getAdminWorkspacePath(it.id))}
+            customColors={{
+              background: 'rgba(255, 255, 255, 0.2)',
+              color: Color.WHITE,
+              border: '1px solid #fff',
+              hoverBackground: '#FFF5EB',
+              hoverColor: Color.KIO_ORANGE,
+            }}
+            icon={<RiArrowRightSLine size={16} />}
+          >
+            입장하기
+          </NewCommonButton>
         </WorkspaceContainer>
       ))}
+      {children}
       <ConfirmModal />
-    </>
+    </Container>
   );
 }
 

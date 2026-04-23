@@ -1,17 +1,14 @@
 import styled from '@emotion/styled';
-import AppLabel from '@components/common/label/AppLabel';
 import { useState } from 'react';
-import AppButton from '@components/common/button/AppButton';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import NewCommonButton from '@components/common/button/NewCommonButton';
+import { RiCloseLargeLine } from '@remixicon/react';
 
 const Container = styled.div`
-  z-index: 1002;
+  z-index: 1011;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(2px);
   ${colFlex({ justify: 'center', align: 'center' })}
@@ -19,19 +16,44 @@ const Container = styled.div`
 
 const SubContainer = styled.div`
   width: 800px;
-  height: 200px;
-  ${colFlex({ justify: 'space-between', align: 'center' })}
+  height: 176px;
   color: ${Color.WHITE};
+  position: relative;
+  ${colFlex({ justify: 'space-between', align: 'center' })}
+`;
+
+const CloseButton = styled(RiCloseLargeLine)`
+  position: absolute;
+  top: -100px;
+  right: 10px;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 const TextContainer = styled.div`
+  gap: 14px;
   ${colFlex({ align: 'center' })}
-  gap: 12px;
 `;
 
 const ButtonContainer = styled.div`
-  ${rowFlex({ justify: 'space-between' })}
   gap: 12px;
+  ${rowFlex({ justify: 'space-between' })}
+`;
+
+const TitleLabel = styled.div`
+  font-size: 40px;
+  font-weight: 700;
+`;
+
+const DescriptionLabel = styled.div`
+  font-size: 20px;
+  font-weight: 700;
+  padding: 12px 0;
 `;
 
 interface ConfirmProps {
@@ -63,29 +85,31 @@ function useConfirm({ title, description, okText, cancelText }: ConfirmProps) {
     handleClose();
   };
 
+  const handleDismiss = () => {
+    promise?.resolve(null);
+    handleClose();
+  };
+
   const ConfirmModal = () => {
     if (promise === null) return null;
 
     return (
       <Container className={'confirm-container'}>
         <SubContainer className={'confirm-sub-container'}>
+          <CloseButton onClick={handleDismiss} />
           <TextContainer className={'text-container'}>
-            <AppLabel size={'large'} style={{ fontWeight: 700 }} color={Color.WHITE}>
-              {title}
-            </AppLabel>
-            <AppLabel size={24} color={Color.WHITE}>
-              {description}
-            </AppLabel>
+            <TitleLabel>{title}</TitleLabel>
+            <DescriptionLabel>{description}</DescriptionLabel>
           </TextContainer>
           <ButtonContainer className={'button-container'}>
             {cancelText && (
-              <AppButton size={250} onClick={handleCancel} style={{ background: 'white', color: 'black' }}>
+              <NewCommonButton size="sm" color="blue_gray" onClick={handleCancel}>
                 {cancelText}
-              </AppButton>
+              </NewCommonButton>
             )}
-            <AppButton size={250} onClick={handleOk}>
+            <NewCommonButton size="sm" color="kio_orange" onClick={handleOk}>
               {okText}
-            </AppButton>
+            </NewCommonButton>
           </ButtonContainer>
         </SubContainer>
       </Container>

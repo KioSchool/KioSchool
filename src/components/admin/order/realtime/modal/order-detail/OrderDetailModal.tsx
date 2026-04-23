@@ -8,6 +8,10 @@ import OrderModalHeaderContents from '@components/admin/order/realtime/modal/ord
 import { createPortal } from 'react-dom';
 import { useEffect } from 'react';
 import useModal from '@hooks/useModal';
+import { orderModalReadOnlyAtom } from '@jotai/admin/atoms';
+import { useSetAtom } from 'jotai';
+
+const DetailModalContainer = styled.div``;
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -15,31 +19,37 @@ const ModalOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(70, 74, 77, 0.3);
   backdrop-filter: blur(2px);
   z-index: 2000;
 `;
 
 const ModalContainer = styled.div`
-  ${colFlex({ justify: 'center' })}
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: ${Color.WHITE};
   border-radius: 10px;
-  width: 700px;
+  border: 1px solid #e8eef2;
+  width: 500px;
   z-index: 2001;
-  gap: 15px;
+  gap: 12px;
+  box-shadow: 0 4px 20px 0 rgba(92, 92, 92, 0.05);
+  ${colFlex({ justify: 'center' })}
 `;
 
-interface Props {
+interface OrderDetailModalProps {
   order: Order;
   isModalOpen: boolean;
   closeModal: () => void;
+  readOnly?: boolean;
 }
-function OrderDetailModal({ order, isModalOpen, closeModal }: Props) {
+
+function OrderDetailModal({ order, isModalOpen, closeModal, readOnly = false }: OrderDetailModalProps) {
   const { modalKey } = useModal();
+
+  const setReadOnly = useSetAtom(orderModalReadOnlyAtom);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -49,26 +59,28 @@ function OrderDetailModal({ order, isModalOpen, closeModal }: Props) {
     };
 
     window.addEventListener('keydown', handleKeyDown);
+    setReadOnly(readOnly);
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'auto';
+      setReadOnly(false);
     };
-  }, []);
+  }, [readOnly, setReadOnly]);
 
   if (!isModalOpen) {
     return null;
   }
 
   return createPortal(
-    <>
+    <DetailModalContainer>
       <ModalOverlay onClick={closeModal} />
       <ModalContainer>
         <OrderModalHeaderContents onClose={closeModal} order={order} />
         <OrderModalMainContents order={order} />
         <OrderModalFooterContents orderStatus={order.status} id={order.id} closeModal={closeModal} />
       </ModalContainer>
-    </>,
+    </DetailModalContainer>,
     document.getElementById(modalKey) as HTMLElement,
   );
 }

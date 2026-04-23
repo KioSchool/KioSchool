@@ -1,0 +1,82 @@
+import styled from '@emotion/styled';
+import { colFlex } from '@styles/flexStyles';
+import { adminUserAccountAtom, externalSidebarAtom } from '@jotai/admin/atoms';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { ACCOUNT_INFO, ACCOUNT_MODAL } from '@constants/data/accountData';
+import RegisterAccountInfoContainer from './RegisterAccountInfoContainer';
+import RegistrationStatusInfo from './RegistrationStatusInfo';
+import AccountInfoItem from './AccountInfoItem';
+import { useLocation } from 'react-router-dom';
+import RegisterAccount from '@components/admin/account/register/RegisterAccount';
+import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
+import useAdminUser from '@hooks/admin/useAdminUser';
+import useConfirm from '@hooks/useConfirm';
+
+const DetailsWrapper = styled.div`
+  width: 100%;
+  height: 86%;
+  gap: 12px;
+  ${colFlex({ justify: 'start', align: 'start' })}
+`;
+
+function AccountInfo() {
+  const location = useLocation();
+  const accountInfo = useAtomValue(adminUserAccountAtom);
+  const { deleteAccount } = useAdminUser();
+
+  const setExternalSidebar = useSetAtom(externalSidebarAtom);
+
+  const { ConfirmModal, confirm } = useConfirm({
+    title: '현재 등록된 계좌를 삭제하시겠습니까?',
+    description: '확인 후 되돌릴 수 없습니다.',
+    okText: '삭제하기',
+    cancelText: '취소',
+  });
+
+  const handleRegisterAccount = () => {
+    setExternalSidebar({
+      location: location,
+      title: ACCOUNT_MODAL.TITLE,
+      subtitle: ACCOUNT_MODAL.SUBTITLE,
+      action: RIGHT_SIDEBAR_ACTION.OPEN,
+      content: <RegisterAccount />,
+    });
+  };
+
+  const handleDeleteAccount = async () => {
+    const userInput = await confirm();
+    if (!userInput) return;
+    deleteAccount();
+  };
+
+  const content =
+    accountInfo && accountInfo.accountNumber ? (
+      <DetailsWrapper>
+        <AccountInfoItem label={ACCOUNT_INFO.BANK_NAME_LABEL} value={accountInfo.bankName} />
+        <AccountInfoItem label={ACCOUNT_INFO.HOLDER_LABEL} value={accountInfo.accountHolder} />
+        <AccountInfoItem label={ACCOUNT_INFO.ACCOUNT_NUMBER_LABEL} value={accountInfo.accountNumber} />
+        <ConfirmModal />
+      </DetailsWrapper>
+    ) : (
+      <RegistrationStatusInfo status="unregisteredAccount" />
+    );
+
+  return (
+    <RegisterAccountInfoContainer
+      title={ACCOUNT_INFO.TITLE}
+      secondaryButton={{
+        text: ACCOUNT_INFO.SECONDARY_BUTTON,
+        onClick: handleDeleteAccount,
+        disabled: !accountInfo.accountNumber,
+      }}
+      primaryButton={{
+        text: ACCOUNT_INFO.PRIMARY_BUTTON,
+        onClick: handleRegisterAccount,
+      }}
+    >
+      {content}
+    </RegisterAccountInfoContainer>
+  );
+}
+
+export default AccountInfo;

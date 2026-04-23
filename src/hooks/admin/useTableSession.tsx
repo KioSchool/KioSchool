@@ -1,6 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { AxiosError } from 'axios';
 import useAdminTable from '@hooks/admin/useAdminTable';
-import { dateConverter } from '@utils/FormatDate';
+import useConfirm from '@hooks/useConfirm';
+import { dateConverter } from '@utils/formatDate';
+
+const EMPTY_SESSION_ERROR_MESSAGE = '주문 내역이 없는 세션';
+
+function isEmptyOrderSessionError(error: unknown): boolean {
+  const axiosError = error as AxiosError<{ message?: string }>;
+  return axiosError.response?.status === 400 && !!axiosError.response?.data?.message?.includes(EMPTY_SESSION_ERROR_MESSAGE);
+}
 
 const SESSION_STORAGE_KEY = 'selectedTimeLimit';
 const DEFAULT_TIME_LIMIT = 10;
@@ -62,28 +71,42 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
   });
 
   useEffect(() => {
-    const existingValue = sessionStorage.getItem(SESSION_STORAGE_KEY);
-
-    if (!existingValue) {
-      sessionStorage.setItem(SESSION_STORAGE_KEY, selectedTimeLimit);
-    }
-  }, []);
-
-  useEffect(() => {
     sessionStorage.setItem(SESSION_STORAGE_KEY, selectedTimeLimit);
   }, [selectedTimeLimit]);
 
   const { updateSessionEndTime, finishTableSession, startTableSession } = useAdminTable(workspaceId);
+  const { ConfirmModal: EndSessionConfirmModal, confirm: confirmEndSession } = useConfirm({
+    title: '세션을 종료하시겠습니까?',
+    description: '종료 후 되돌릴 수 없습니다.',
+    okText: '종료',
+    cancelText: '취소',
+  });
+  const { ConfirmModal: EmptySessionConfirmModal, confirm: confirmEmptySession } = useConfirm({
+    title: '주문 내역이 없는 세션입니다.',
+    description: '주문 타임라인에 어떻게 저장하시겠습니까?',
+    okText: '유효한 세션으로 저장',
+    cancelText: '무효한 세션으로 저장',
+  });
 
-  const handleApiAndRefetch = (apiCall: Promise<any>) => {
-    apiCall.then((res) => {
-      if (res) refetchTable();
-    });
+  const handleApiAndRefetch = (apiCall: Promise<unknown>) => {
+    apiCall
+      .then((res) => {
+        if (res) refetchTable();
+      })
+      .catch((error) => {
+        console.error('API 호출 실패:', error);
+        alert('작업을 처리하는 중 오류가 발생했습니다.');
+      });
   };
 
   const handleDecreaseTime = () => {
-    if (!currentExpectedEndAt || !orderSessionId) {
+    if (!orderSessionId) {
       alert('세션 ID가 없습니다. 세션을 시작해주세요.');
+      return;
+    }
+
+    if (!currentExpectedEndAt) {
+      alert('현재 예상 종료 시간이 없습니다. 사용 종료 후 다시 시작해주세요.');
       return;
     }
 
@@ -101,8 +124,13 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
   };
 
   const handleIncreaseTime = () => {
-    if (!currentExpectedEndAt || !orderSessionId) {
+    if (!orderSessionId) {
       alert('세션 ID가 없습니다. 세션을 시작해주세요.');
+      return;
+    }
+
+    if (!currentExpectedEndAt) {
+      alert('현재 예상 종료 시간이 없습니다. 사용 종료 후 다시 시작해주세요.');
       return;
     }
 
@@ -119,9 +147,27 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
     handleApiAndRefetch(updateSessionEndTime(orderSessionId, newEndDateString));
   };
 
-  const handleEndSession = () => {
+  const endSessionWithEmptyCheck = async (sessionId: number, table: number) => {
+    try {
+      return await finishTableSession(sessionId, table);
+    } catch (error) {
+      if (!isEmptyOrderSessionError(error)) throw error;
+
+      const result = await confirmEmptySession();
+      if (result === null) return;
+
+      const isGhost = !Boolean(result);
+      return finishTableSession(sessionId, table, isGhost);
+    }
+  };
+
+  const handleEndSession = async () => {
     if (!orderSessionId || !tableNumber) return;
-    handleApiAndRefetch(finishTableSession(orderSessionId, tableNumber));
+
+    const confirmed = await confirmEndSession();
+    if (!confirmed) return;
+
+    handleApiAndRefetch(endSessionWithEmptyCheck(orderSessionId, tableNumber));
   };
 
   const handleStartSession = () => {
@@ -156,8 +202,13 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
     });
   };
 
+  const setTimeLimit = (value: number) => {
+    setSelectedTimeLimit(String(value));
+  };
+
   return {
     selectedTimeLimit,
+    setTimeLimit,
     handleDecrement,
     handleIncrement,
     handleTimeChange,
@@ -165,5 +216,7 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
     handleIncreaseTime,
     handleEndSession,
     handleStartSession,
+    EndSessionConfirmModal,
+    EmptySessionConfirmModal,
   };
 }

@@ -1,4 +1,5 @@
 import AppPopup from '@components/common/popup/AppPopup';
+import { CookiesProvider } from 'react-cookie';
 import { BrowserRouter } from 'react-router-dom';
 
 const meta = {
@@ -7,7 +8,9 @@ const meta = {
   decorators: [
     (Story: any) => (
       <BrowserRouter>
-        <Story />
+        <CookiesProvider>
+          <Story />
+        </CookiesProvider>
       </BrowserRouter>
     ),
   ],

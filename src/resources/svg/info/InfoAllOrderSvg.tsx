@@ -1,4 +1,3 @@
-
 interface InfoAllOrderSvgProps extends React.SVGProps<SVGSVGElement> {}
 
 function InfoAllOrderSvg(props: InfoAllOrderSvgProps) {

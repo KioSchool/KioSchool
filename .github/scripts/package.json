@@ -1,0 +1,8 @@
+{
+  "name": "notion-sync-script",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@notionhq/client": "^2.2.14"
+  }
+}

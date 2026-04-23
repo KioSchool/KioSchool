@@ -1,16 +1,36 @@
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import { BrowserRouter, useLocation, useNavigationType, createRoutesFromChildren, matchRoutes, Routes } from 'react-router-dom';
+import { BrowserRouter, createRoutesFromChildren, matchRoutes, Routes, useLocation, useNavigationType } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
 import * as Sentry from '@sentry/react';
 import React from 'react';
 import SentryErrorFallback from './components/common/fallback/SentryErrorFallback';
+import { URLS } from '@constants/urls';
 
 const environment = import.meta.env.VITE_ENVIRONMENT;
+const gaId = import.meta.env.VITE_GA_ID;
+
+if (gaId) {
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+  document.head.appendChild(script);
+
+  // @ts-ignore
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    // @ts-ignore
+    window.dataLayer.push(arguments);
+  }
+  // @ts-ignore
+  gtag('js', new Date());
+  // @ts-ignore
+  gtag('config', gaId);
+}
 
 Sentry.init({
-  dsn: 'https://a8801beae2acbe48fda784373f4603c3@o4509990064816128.ingest.us.sentry.io/4509990065995776',
+  dsn: URLS.SENTRY_DSN,
   environment: environment,
   integrations: [
     Sentry.reactRouterV6BrowserTracingIntegration({
@@ -28,11 +48,7 @@ Sentry.init({
   replaysSessionSampleRate: environment === 'development' ? 0.5 : 0.2,
   replaysOnErrorSampleRate: 1.0,
   tracesSampleRate: environment === 'development' ? 0.3 : 0.2,
-  tracePropagationTargets: [
-    /^https:\/\/.*\.kio-school\.com\/admin\//,
-    /^https:\/\/.*\.kio-school\.com\/user\//,
-    /^https:\/\/.*\.kio-school\.com\/super-admin\//,
-  ],
+  tracePropagationTargets: URLS.SENTRY_TRACE_PROPAGATION_TARGETS,
 });
 export const SentryRoutes = Sentry.withSentryReactRouterV6Routing(Routes);
 

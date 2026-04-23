@@ -1,9 +1,8 @@
 import styled from '@emotion/styled';
 import { useRef } from 'react';
 import { colFlex } from '@styles/flexStyles';
-import { lineSeedKrFont } from '@styles/fonts';
 import NewAppInput from '@components/common/input/NewAppInput';
-import NewRoundedButton from '@components/common/button/NewRoundedButton';
+import NewCommonButton from '@components/common/button/NewCommonButton';
 import usePopup from '@hooks/usePopup';
 
 const Container = styled.div`
@@ -24,20 +23,17 @@ const Icon = styled.div`
 `;
 
 const Title = styled.div`
-  font-family: 'LINE Seed Sans KR', 'sans-serif';
   font-size: 24px;
   font-weight: 700;
-  ${lineSeedKrFont}
 `;
 
 const Description = styled.div`
-  font-family: 'LINE Seed Sans KR', 'sans-serif';
+  text-align: center;
+  word-break: keep-all;
   font-size: 16px;
   font-weight: 400;
   opacity: 0.56;
   white-space: pre-wrap;
-  text-align: center;
-  ${lineSeedKrFont}
 `;
 
 function PopupContent1() {
@@ -76,7 +72,7 @@ function PopupContent1() {
       <Title>{title}</Title>
       <Description>{description}</Description>
       <NewAppInput type="text" placeholder="010-1234-5678" ref={inputRef} />
-      <NewRoundedButton onClick={submitHandler}>제출하기</NewRoundedButton>
+      <NewCommonButton onClick={submitHandler}>제출하기</NewCommonButton>
     </Container>
   );
 }

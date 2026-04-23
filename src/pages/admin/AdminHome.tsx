@@ -3,12 +3,18 @@ import useAdminUser from '@hooks/admin/useAdminUser';
 import AppContainer from '@components/common/container/AppContainer';
 import AddWorkspace from '@components/common/workspace/AddWorkspace';
 import WorkspaceContent from '@components/admin/workspace/WorkspaceContent';
-import AppFooter from '@components/common/footer/AppFooter';
-import { rowFlex } from '@styles/flexStyles';
+import { colFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
-import { adminUserAtom, adminWorkspacesAtom } from 'src/jotai/admin/atoms';
+import { adminUserAtom, adminWorkspacesAtom } from '@jotai/admin/atoms';
 import AppFaqButton from '@components/common/button/AppFaqButton';
 import { useNavigate } from 'react-router-dom';
+import { ADMIN_ROUTES } from '@constants/routes';
+import styled from '@emotion/styled';
+
+const Container = styled.div`
+  width: 95%;
+  ${colFlex({ align: 'center' })}
+`;
 
 function AdminHome() {
   const navigate = useNavigate();
@@ -22,21 +28,21 @@ function AdminHome() {
     fetchAdminUser().then(() => {
       if (!user.account) {
         alert('계좌 정보가 등록되어 있지 않습니다. 계좌 정보를 등록해주세요.');
-        navigate('/admin/register-account');
+        navigate(ADMIN_ROUTES.REGISTER_ACCOUNT);
       }
     });
   }, []);
 
   return (
-    <AppContainer useFlex={rowFlex({ justify: 'space-between' })} titleNavBarProps={{ title: `${user.name}님의 주점`, useBackIcon: false }}>
-      <>
-        <WorkspaceContent workspaces={workspaces} />
-        {Array.from({ length: addWorkspaceNumber }).map((_, i) => (
-          <AddWorkspace key={i} workspaces={workspaces} />
-        ))}
-        <AppFooter />
+    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} customGap={'30px'}>
+      <Container>
+        <WorkspaceContent workspaces={workspaces}>
+          {Array.from({ length: addWorkspaceNumber }).map((_, i) => (
+            <AddWorkspace key={i} workspaces={workspaces} />
+          ))}
+        </WorkspaceContent>
         <AppFaqButton />
-      </>
+      </Container>
     </AppContainer>
   );
 }

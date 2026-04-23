@@ -7,6 +7,8 @@ import QRCode from 'qrcode';
 import { RiDownloadLine } from '@remixicon/react';
 
 const Container = styled.div`
+  width: 188px;
+  height: 188px;
   border: 1px solid #ececec;
   border-radius: 10px;
   overflow: hidden;
@@ -19,7 +21,7 @@ const Header = styled.div`
   width: 100%;
   height: 40px;
   padding: 5px 10px;
-  background-color: ${Color.LIGHT_GREY};
+  background-color: #f0f5f8;
   border-bottom: 1px solid #ececec;
   ${rowFlex({ justify: 'center', align: 'center' })};
 `;
@@ -39,27 +41,28 @@ const DownloadIcon = styled(RiDownloadLine)`
 
 const Content = styled.div`
   width: 100%;
-  padding: 20px;
-  gap: 25px;
+  padding: 10px;
+  gap: 10px;
+  flex: 1;
+  box-sizing: border-box;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
-const Button = styled.button`
-  background: ${Color.KIO_ORANGE};
-  color: ${Color.WHITE};
+const LinkButton = styled.button`
+  background: #e8eef2;
+  color: #464a4d;
   border: none;
   border-radius: 40px;
   cursor: pointer;
-  font-family: 'LINE Seed Sans KR', sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
-  padding: 10px 8px;
-  width: 90%;
-  height: 30px;
+  padding: 0;
+  width: 80%;
+  height: 29px;
   ${rowFlex({ justify: 'center', align: 'center' })}
 
   &:hover {
-    background: #ff9d50;
+    background: #d9e3e8;
   }
 `;
 
@@ -76,8 +79,6 @@ interface TableQRCodeProps {
 
 function TableQRCode({ workspaceId, selectedTable }: TableQRCodeProps) {
   const qrCodeUrl = `${location.origin}/order?workspaceId=${workspaceId}&tableNo=${selectedTable.tableNumber}`;
-  const baseUrl = location.origin;
-  const previewUrl = `${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${selectedTable.tableNumber}`;
 
   const onClickDownloadQRCode = async () => {
     try {
@@ -97,18 +98,18 @@ function TableQRCode({ workspaceId, selectedTable }: TableQRCodeProps) {
   };
 
   const onClickOrderLink = () => {
-    window.open(previewUrl, '_blank');
+    window.open(qrCodeUrl, '_blank');
   };
 
   return (
     <Container>
       <Header>
-        <Label>QR 코드</Label>
+        <Label>QR</Label>
         <DownloadIcon onClick={onClickDownloadQRCode} />
       </Header>
       <Content>
-        <QRCodeCanvas value={qrCodeUrl} size={80} bgColor="#ffffff" fgColor="#000000" level="M" />
-        <Button onClick={onClickOrderLink}>주문하기 링크</Button>
+        <QRCodeCanvas value={qrCodeUrl} size={70} bgColor="#ffffff" fgColor="#000000" level="M" />
+        <LinkButton onClick={onClickOrderLink}>주문하기 링크</LinkButton>
       </Content>
     </Container>
   );

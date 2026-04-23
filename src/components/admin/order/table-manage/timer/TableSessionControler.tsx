@@ -1,17 +1,19 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import { colFlex } from '@styles/flexStyles';
-import TableTimeControler from './TableTimeControler';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import TableTimeButtons from './TableTimeButtons';
 import { Table } from '@@types/index';
 import { useTableSession } from '@hooks/admin/useTableSession';
 import { useAtomValue } from 'jotai';
-import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
+import { adminWorkspaceAtom } from '@jotai/admin/atoms';
+import NumberInput from '@components/common/input/NumberInput';
+import { formatMinutesToTime } from '@utils/formatDate';
 
 const Container = styled.div`
   border: 1px solid #ececec;
   border-radius: 10px;
   overflow: hidden;
+  height: 120px;
   ${colFlex({ justify: 'start', align: 'center' })}
 `;
 
@@ -21,7 +23,7 @@ const Header = styled.div`
   height: 40px;
   padding: 5px 10px;
   color: ${Color.GREY};
-  background-color: ${Color.LIGHT_GREY};
+  background-color: #f0f5f8;
   font-size: 15px;
   font-weight: 600;
   border-bottom: 1px solid #ececec;
@@ -29,10 +31,21 @@ const Header = styled.div`
 `;
 
 const Content = styled.div`
-  width: 90%;
-  flex: 1;
-  gap: 5px;
+  width: 100%;
+  height: 100%;
+  padding: 10px 10px;
+  box-sizing: border-box;
+  gap: 10px;
+  ${rowFlex({ justify: 'center', align: 'center' })};
+`;
+
+const TimeInputWrapper = styled.div`
   ${colFlex({ justify: 'center', align: 'center' })};
+`;
+
+const ButtonsWrapper = styled.div`
+  gap: 7px;
+  ${rowFlex({ justify: 'center', align: 'center' })};
 `;
 
 interface TableSessionControlerProps {
@@ -45,16 +58,7 @@ interface TableSessionControlerProps {
 }
 
 function TableSessionControler({ tables, workspaceId, orderSessionId, currentExpectedEndAt, tableNumber, refetchTable }: TableSessionControlerProps) {
-  const {
-    selectedTimeLimit,
-    handleDecrement,
-    handleIncrement,
-    handleTimeChange,
-    handleDecreaseTime,
-    handleIncreaseTime,
-    handleEndSession,
-    handleStartSession,
-  } = useTableSession({
+  const { selectedTimeLimit, setTimeLimit, handleDecrement, handleIncrement, handleDecreaseTime, handleIncreaseTime } = useTableSession({
     workspaceId,
     currentExpectedEndAt,
     orderSessionId,
@@ -64,28 +68,35 @@ function TableSessionControler({ tables, workspaceId, orderSessionId, currentExp
 
   const workspace = useAtomValue(adminWorkspaceAtom);
   const nowTable = tables.find((table) => table.tableNumber === tableNumber);
-  const isDisabledSession = !nowTable?.orderSession;
-  const defaultSessionTimeLimit = String(workspace?.workspaceSetting?.orderSessionTimeLimitMinutes);
+  const setting = workspace?.workspaceSetting;
+  const defaultSessionTimeLimit = setting?.orderSessionTimeLimitMinutes ?? 60;
+  const isDisabledSession = !nowTable?.orderSession || !setting?.useOrderSessionTimeLimit;
+
+  const currentMinutes = isDisabledSession ? defaultSessionTimeLimit : Number(selectedTimeLimit);
+
+  const handleValueChange = (value: number) => {
+    if (isDisabledSession) return;
+
+    setTimeLimit(value);
+  };
 
   return (
     <Container>
-      <Header>상태 변경</Header>
+      <Header>잔여시간</Header>
       <Content>
-        <TableTimeControler
-          timeLimit={isDisabledSession ? defaultSessionTimeLimit : selectedTimeLimit}
-          handleDecrement={handleDecrement}
-          handleIncrement={handleIncrement}
-          handleTimeChange={handleTimeChange}
-          disabled={isDisabledSession}
-        />
-        <TableTimeButtons
-          handleDecreaseTime={handleDecreaseTime}
-          handleIncreaseTime={handleIncreaseTime}
-          handleEndSession={handleEndSession}
-          handleStartSession={handleStartSession}
-          orderSessionId={orderSessionId}
-          disabled={isDisabledSession}
-        />
+        <TimeInputWrapper>
+          <NumberInput
+            value={currentMinutes}
+            formatter={formatMinutesToTime}
+            onChange={handleValueChange}
+            onIncrement={handleIncrement}
+            onDecrement={handleDecrement}
+            disabled={isDisabledSession}
+          />
+        </TimeInputWrapper>
+        <ButtonsWrapper>
+          <TableTimeButtons handleDecreaseTime={handleDecreaseTime} handleIncreaseTime={handleIncreaseTime} disabled={isDisabledSession} />
+        </ButtonsWrapper>
       </Content>
     </Container>
   );

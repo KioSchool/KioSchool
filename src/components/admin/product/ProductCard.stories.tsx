@@ -1,3 +1,4 @@
+import { ProductStatus } from '@@types/index';
 import ProductCard from '@components/admin/product/ProductCard';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -27,7 +28,7 @@ export const Basic = {
       name: 'test',
       description: 'test description',
       price: 10000,
-      isSellable: true,
+      status: ProductStatus.SELLING,
       imageUrl: 'https://www.lowcarbcanada.ca/cdn/shop/products/Impastable_Penne_82136a7a-d0bb-47bc-9ab9-8f8f076b85a2_600x.jpg?v=1729450547',
       id: 1,
     },
@@ -41,7 +42,7 @@ export const Unsellable = {
       name: 'test',
       description: 'test description',
       price: 10000,
-      isSellable: false,
+      status: ProductStatus.SOLD_OUT,
       imageUrl: 'https://www.lowcarbcanada.ca/cdn/shop/products/Impastable_Penne_82136a7a-d0bb-47bc-9ab9-8f8f076b85a2_600x.jpg?v=1729450547',
       id: 1,
     },

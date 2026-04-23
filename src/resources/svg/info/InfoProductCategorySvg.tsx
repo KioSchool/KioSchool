@@ -1,4 +1,3 @@
-
 interface InfoProductCategorySvgProps extends React.SVGProps<SVGSVGElement> {}
 
 function InfoProductCategorySvg(props: InfoProductCategorySvgProps) {

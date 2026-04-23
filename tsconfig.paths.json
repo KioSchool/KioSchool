@@ -5,14 +5,14 @@
       "@components/*": [
         "src/components/*"
       ],
+      "@constants/*": [
+        "src/constants/*"
+      ],
       "@hooks/*": [
         "src/hooks/*"
       ],
       "@pages/*": [
         "src/pages/*"
-      ],
-      "@recoils/*": [
-        "src/recoils/*"
       ],
       "@styles/*": [
         "src/styles/*"
@@ -25,6 +25,9 @@
       ],
       "@utils/*": [
         "src/utils/*"
+      ],
+      "@jotai/*": [
+        "src/jotai/*"
       ]
     }
   }

@@ -1,36 +1,22 @@
 import useAuthentication from '@hooks/useAuthentication';
 import { NavLinkItem } from '@components/common/nav/NavBar';
-import styled from '@emotion/styled';
-import { useNavigate } from 'react-router-dom';
-import { navBarLabelStyle } from '@styles/navBarStyles';
-
-const LogoutText = styled.p`
-  margin: 0;
-  ${navBarLabelStyle}
-`;
+import { ADMIN_ROUTES, USER_ROUTES } from '@constants/routes';
 
 function AuthenticationButton() {
-  const { logout, isLoggedIn } = useAuthentication();
-  const navigate = useNavigate();
+  const { isLoggedIn } = useAuthentication();
 
   return (
     <>
       {isLoggedIn() ? (
-        <LogoutText
-          onClick={async () => {
-            await logout();
-            navigate('/');
-          }}
-          className={'nav-link-item'}
-        >
-          로그아웃
-        </LogoutText>
+        <NavLinkItem to={ADMIN_ROUTES.HOME} className={'nav-link-item'}>
+          내 주점
+        </NavLinkItem>
       ) : (
         <>
-          <NavLinkItem to={'/login'} className={'nav-link-item'}>
+          <NavLinkItem to={USER_ROUTES.LOGIN} className={'nav-link-item'}>
             로그인
           </NavLinkItem>
-          <NavLinkItem to={'/register'} className={'nav-link-item'}>
+          <NavLinkItem to={USER_ROUTES.REGISTER} className={'nav-link-item'}>
             회원가입
           </NavLinkItem>
         </>

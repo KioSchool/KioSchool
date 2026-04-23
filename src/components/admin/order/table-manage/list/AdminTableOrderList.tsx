@@ -1,14 +1,10 @@
 import { Order } from '@@types/index';
-import useAdminOrder from '@hooks/admin/useAdminOrder';
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
 import { RiResetRightFill } from '@remixicon/react';
 import { Color } from '@resources/colors';
-import { formatKoreanTime } from '@utils/FormatDate';
+import { formatKoreanTime } from '@utils/formatDate';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import OrderRowItem from './OrderRowItem';
-
-const defaultInterval = 60000;
 
 const Container = styled.div`
   border: 1px solid #ececec;
@@ -25,7 +21,7 @@ const Header = styled.div`
   height: 40px;
   padding: 5px 10px;
   color: ${Color.GREY};
-  background-color: ${Color.LIGHT_GREY};
+  background-color: #f0f5f8;
   font-size: 15px;
   font-weight: 600;
   border-bottom: 1px solid #ececec;
@@ -65,7 +61,7 @@ const OrderHeader = styled.div`
   display: grid;
   grid-template-columns: 0.5fr 1.2fr 1.8fr 1fr 1fr 1fr 0.5fr;
   padding: 10px;
-  background-color: ${Color.LIGHT_GREY};
+  background-color: #f0f5f8;
   border-bottom: 1px solid #ececec;
   text-align: center;
   font-size: 15px;
@@ -90,41 +86,17 @@ const HeaderCell = styled.div`
 `;
 
 interface TableOrderListProps {
-  workspaceId: number | undefined | null;
-  orderSessionId: number;
+  orders: Order[];
+  onRefresh: () => void;
 }
 
 const formattedNowTime = formatKoreanTime(new Date().toISOString()) || '시간 없음';
 
-function AdminTableOrderList({ workspaceId, orderSessionId }: TableOrderListProps) {
-  const { fetchOrderSession } = useAdminOrder(String(workspaceId));
-  const [tableOrders, setTableOrders] = useState<Order[]>([]);
-
-  const getTableOrders = () => {
-    if (orderSessionId) {
-      fetchOrderSession(orderSessionId)
-        .then((response) => {
-          setTableOrders(response.data);
-        })
-        .catch((error) => {
-          console.error('Error fetching table orders:', error);
-        });
-    } else {
-      setTableOrders([]);
-    }
-  };
-
-  useEffect(() => {
-    getTableOrders();
-
-    const intervalId = setInterval(getTableOrders, defaultInterval);
-    return () => clearInterval(intervalId);
-  }, [workspaceId, orderSessionId]);
-
+function AdminTableOrderList({ orders, onRefresh }: TableOrderListProps) {
   return (
     <Container>
       <Header>
-        <RefreshSection onClick={getTableOrders}>
+        <RefreshSection onClick={onRefresh}>
           <NowTimeLabel>{formattedNowTime}</NowTimeLabel>
           <RefreshIcon />
         </RefreshSection>
@@ -141,7 +113,7 @@ function AdminTableOrderList({ workspaceId, orderSessionId }: TableOrderListProp
           <HeaderCell>보기</HeaderCell>
         </OrderHeader>
         <OrderItem>
-          {tableOrders.length > 0 ? tableOrders.map((order: Order) => <OrderRowItem key={order.id} order={order} />) : <OrderFallback>주문 없음</OrderFallback>}
+          {orders.length > 0 ? orders.map((order: Order) => <OrderRowItem key={order.id} order={order} />) : <OrderFallback>주문 없음</OrderFallback>}
         </OrderItem>
       </OrderListContainer>
     </Container>

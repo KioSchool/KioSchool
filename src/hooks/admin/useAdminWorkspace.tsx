@@ -1,8 +1,9 @@
 import useApi from '@hooks/useApi';
 import { Workspace } from '@@types/index';
 import { useNavigate } from 'react-router-dom';
-import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
+import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { useSetAtom } from 'jotai';
+import { getAdminWorkspacePath } from '@constants/routes';
 
 function useAdminWorkspace() {
   const { adminApi } = useApi();
@@ -10,16 +11,31 @@ function useAdminWorkspace() {
 
   const navigate = useNavigate();
 
-  const fetchWorkspace = (workspaceId: string | undefined | null) => {
-    if (!workspaceId) return;
-
-    adminApi
-      .get<Workspace>('/workspace', { params: { workspaceId } })
+  const updateWorkspaceOnboarding = (workspaceId: number, isOnboarding: boolean) => {
+    return adminApi
+      .post<Workspace>('/workspace/onboarding', { workspaceId, isOnboarding })
       .then((res) => {
         setAdminWorkspace(res.data);
+        return res.data;
       })
       .catch((error) => {
         console.error(error.response.data.message);
+        throw error;
+      });
+  };
+
+  const fetchWorkspace = (workspaceId: string | undefined | null) => {
+    if (!workspaceId) return Promise.resolve(undefined);
+
+    return adminApi
+      .get<Workspace>('/workspace', { params: { workspaceId } })
+      .then((res) => {
+        setAdminWorkspace(res.data);
+        return res.data;
+      })
+      .catch((error) => {
+        console.error(error.response.data.message);
+        throw error;
       });
   };
 
@@ -87,7 +103,7 @@ function useAdminWorkspace() {
     Promise.all([updateWorkspaceInfoResult, updateWorkspaceImageResult])
       .then(([infoResponse]) => {
         setAdminWorkspace(infoResponse.data);
-        navigate(`/admin/workspace/${workspaceId}`);
+        navigate(getAdminWorkspacePath(workspaceId));
       })
       .catch((error) => {
         console.error(error.response.data.message);
@@ -96,7 +112,21 @@ function useAdminWorkspace() {
 
   const fetchWorkspaceTables = (workspaceId: string | undefined | null) => adminApi.get(`/workspace/tables`, { params: { workspaceId } });
 
-  return { fetchWorkspace, updateWorkspaceTableCount, updateWorkspaceOrderSetting, updateWorkspaceInfoAndImage, fetchWorkspaceTables };
+  const updateWorkspaceMemo = (workspaceId: number, memo: string) => {
+    return adminApi.put<Workspace>('/workspace/memo', { workspaceId, memo }).then((res) => {
+      setAdminWorkspace(res.data);
+    });
+  };
+
+  return {
+    fetchWorkspace,
+    updateWorkspaceTableCount,
+    updateWorkspaceOrderSetting,
+    updateWorkspaceInfoAndImage,
+    updateWorkspaceOnboarding,
+    fetchWorkspaceTables,
+    updateWorkspaceMemo,
+  };
 }
 
 export default useAdminWorkspace;

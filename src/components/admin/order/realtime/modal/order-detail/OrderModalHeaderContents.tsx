@@ -1,36 +1,57 @@
 import { Order } from '@@types/index';
-import AppLabel from '@components/common/label/AppLabel';
 import styled from '@emotion/styled';
-import { Color } from '@resources/colors';
-import { RiCloseLargeLine } from '@remixicon/react';
+import { RiCloseLargeLine, RiArrowRightSLine } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { formatDate } from '@utils/FormatDate';
-import { orderStatusConverter } from '@utils/OrderStatusConverter';
+import { formatDate } from '@utils/formatDate';
+import { useAtomValue } from 'jotai';
+import { createSearchParams, useNavigate, useParams } from 'react-router-dom';
+import { orderModalReadOnlyAtom } from '@jotai/admin/atoms';
 
 const ModalHeader = styled.div`
+  padding: 20px 30px 12px 30px;
+  border-bottom: 1px solid #e8eef2;
+  color: #464a4d;
   ${colFlex({ justify: 'space-between', align: 'start' })}
-  gap: 10px;
-  padding: 40px 40px 20px 40px;
-  border-bottom: 12px solid ${Color.LIGHT_GREY};
 `;
 
 const ModalHeaderTitle = styled.div`
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
   width: 100%;
+  height: 24px;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
-const HeaderDetailContainer = styled.div`
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
+const ModalDescription = styled.div`
   width: 100%;
+  gap: 4px;
+  height: 48px;
+  ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
-const HeaderDetail = styled.div`
-  ${colFlex({ align: 'start' })}
-  gap: 5px;
+const ModalTableDescription = styled.div`
+  gap: 4px;
+  ${rowFlex({ align: 'center' })}
+`;
+
+const MainLabel = styled.div`
+  font-size: 16px;
+  font-weight: 800;
+`;
+
+const DescriptionLabel = styled.div`
+  font-size: 14px;
+  font-weight: 400;
 `;
 
 const CloseIcon = styled(RiCloseLargeLine)`
+  width: 16px;
+  height: 16px;
+  ${expandButtonStyle}
+`;
+
+const ArrowRightIcon = styled(RiArrowRightSLine)`
+  width: 16px;
+  height: 16px;
   ${expandButtonStyle}
 `;
 
@@ -40,21 +61,34 @@ interface OrderModalHeaderContentsProps {
 }
 
 function OrderModalHeaderContents({ onClose, order }: OrderModalHeaderContentsProps) {
+  const navigate = useNavigate();
+  const { workspaceId } = useParams<{ workspaceId: string }>();
+
+  const readOnly = useAtomValue(orderModalReadOnlyAtom);
+
+  const handleNavigateToTable = () => {
+    onClose();
+    navigate({
+      pathname: `/admin/workspace/${workspaceId}/order/table`,
+      search: createSearchParams({
+        tableNo: `${order.tableNumber}` || '',
+      }).toString(),
+    });
+  };
+
   return (
     <ModalHeader>
       <ModalHeaderTitle>
-        <AppLabel color={Color.BLACK} size={20} style={{ fontWeight: 800 }}>{`테이블 ${order.tableNumber}`}</AppLabel>
+        <MainLabel>{`주문 번호  ${order.orderNumber}`}</MainLabel>
         <CloseIcon onClick={onClose} />
       </ModalHeaderTitle>
-      <HeaderDetailContainer>
-        <HeaderDetail>
-          <AppLabel color={Color.BLACK} size={17}>{`주문 번호  ${order.orderNumber}`}</AppLabel>
-          <AppLabel color={Color.BLACK} size={17}>{`${order.customerName} | ${formatDate(order.createdAt)}`}</AppLabel>
-        </HeaderDetail>
-        <AppLabel color={Color.KIO_ORANGE} size={20} style={{ fontWeight: 600 }}>
-          {orderStatusConverter(order.status)}
-        </AppLabel>
-      </HeaderDetailContainer>
+      <ModalDescription>
+        <DescriptionLabel>{`${formatDate(order.createdAt)} · ${order.customerName}`}</DescriptionLabel>
+        <ModalTableDescription>
+          <DescriptionLabel>{`테이블 ${order.tableNumber}`}</DescriptionLabel>
+          {!readOnly && <ArrowRightIcon onClick={handleNavigateToTable} />}
+        </ModalTableDescription>
+      </ModalDescription>
     </ModalHeader>
   );
 }

@@ -1,157 +1,145 @@
-import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import 'react-datepicker/dist/react-datepicker.css';
-import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
+import { format } from 'date-fns';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { OrderStatus } from '@@types/index';
-import { tabletMediaQuery } from '@styles/globalStyles';
-import OrderStatisticsNavBarChildren from '@components/admin/order/statistic/OrderStatisticsNavBarChildren';
+import CustomSelect from '@components/common/select/CustomSelect';
+import CustomDatePicker from '@components/common/date-picker/CustomDatePicker';
+import StatCard from '@components/common/card/StatCard';
+import ContentCard from '@components/common/card/ContentCard';
+import HourlySalesChart from '@components/admin/order/statistic/HourlySalesChart';
+import PopularProductsSection from '@components/admin/order/statistic/PopularProductsSection';
+import { useAdminFetchDailyStatistics } from '@hooks/admin/useAdminFetchDailyStatistics';
+import { formatMinutesToTime } from '@utils/formatDate';
 import { Color } from '@resources/colors';
-import TotalOrder from '@components/admin/order/statistic/TotalOrder';
-import ProductStatistics from '@components/admin/order/statistic/ProductStatistics';
-import OrderPriceStatistics from '@components/admin/order/statistic/OrderPriceStatistics';
-import { lineSeedKrFont } from '@styles/fonts';
-import dayjs from 'dayjs';
-import { dateConverter } from '@utils/FormatDate';
-import { adminOrdersAtom } from 'src/jotai/admin/atoms';
-import { useAtomValue } from 'jotai';
-
-type CategoryKey = 'all' | 'byProduct' | 'byPrice';
-
-interface Category {
-  key: CategoryKey;
-  label: string;
-  render: React.ReactNode;
-}
 
 const Container = styled.div`
-  width: 100%;
+  width: 95%;
   flex: 1;
-  gap: 10px;
+  gap: 20px;
   padding-top: 25px;
   ${colFlex({ align: 'center' })}
+`;
 
-  ${tabletMediaQuery} {
-    width: 80%;
+const FilterContainer = styled.div`
+  width: 100%;
+  gap: 10px;
+  padding-bottom: 10px;
+  ${rowFlex({ justify: 'space-between', align: 'center' })};
+`;
+
+const UpdateLabel = styled.span`
+  font-size: 12px;
+  color: #939393;
+`;
+
+const StatCardRow = styled.div`
+  width: 100%;
+  gap: 12px;
+  ${rowFlex()}
+
+  & > * {
+    flex: 1;
+    width: auto;
   }
 `;
 
-const HeaderContainer = styled.div`
-  box-sizing: border-box;
+const SectionRow = styled.div`
   width: 100%;
-  height: 45px;
-  ${rowFlex({ justify: 'space-between', align: 'center' })};
-  padding: 0 20px;
-  border-radius: 7px 7px 0 0;
-  background: ${Color.KIO_ORANGE};
+  gap: 12px;
+  ${rowFlex()}
+
+  & > *:first-of-type {
+    flex: 7;
+    min-width: 0;
+  }
+
+  & > *:last-of-type {
+    flex: 3;
+    min-width: 0;
+  }
 `;
 
-const HeaderLabel = styled.p`
-  color: ${Color.WHITE};
-  text-align: center;
-  ${lineSeedKrFont}
-  font-family: 'LINE Seed Sans KR', 'sans-serif';
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 140%;
-  letter-spacing: -0.4px;
-`;
+const formatWithSign = (value: number, formatter?: (v: number) => string) => {
+  const sign = value >= 0 ? '+' : '';
+  const formatted = formatter ? formatter(value) : String(value);
+  return `${sign}${formatted}`;
+};
 
-const CategoryContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  width: 100%;
-  padding: 0 10px;
-  box-sizing: border-box;
-  border-bottom: 1px solid ${Color.LIGHT_GREY};
-`;
+const getComparisonColor = (value: number) => (value >= 0 ? Color.RED : Color.BLUE);
 
-const CategoryLink = styled.div<{ isSelected: boolean }>`
-  padding: 10px;
-  border-bottom: 3px solid ${({ isSelected }) => (isSelected ? Color.BLACK : 'transparent')};
-  font-weight: ${({ isSelected }) => (isSelected ? 600 : 400)};
-  cursor: pointer;
-  ${rowFlex({ justify: 'center', align: 'center' })}
-`;
+const isValidDate = (dateStr: string) => !isNaN(new Date(dateStr).getTime());
 
 function AdminOrderStatistics() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchOrders } = useAdminOrder(workspaceId);
-  const orders = useAtomValue(adminOrdersAtom);
-  const [showServedOrder, setShowServedOrder] = useState(false);
-  const [startDate, setStartDate] = useState<Date>(() => dayjs().subtract(1, 'day').toDate());
-  const [endDate, setEndDate] = useState(new Date());
-  const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('all');
+  const { selectedDate, setSelectedDate, statistics, isLoading } = useAdminFetchDailyStatistics(workspaceId);
 
-  const status = showServedOrder ? OrderStatus.SERVED : undefined;
-  const parsedStartDate = dateConverter(startDate);
-  const parsedEndDate = dateConverter(endDate);
+  const dateLabel = format(selectedDate, 'yyyy년 MM월 dd일');
+  const comparison = statistics?.previousDayComparison;
 
-  useEffect(() => {
-    fetchOrders({
-      startDate: parsedStartDate,
-      endDate: parsedEndDate,
-      status,
-    });
-  }, [startDate, endDate, showServedOrder]);
-
-  const totalOrderPrice = orders.reduce((sum, order) => sum + order.totalPrice, 0).toLocaleString();
-
-  const categories: Category[] = [
-    {
-      key: 'all',
-      label: '전체 주문 조회',
-      render: <TotalOrder orders={orders} />,
-    },
-    {
-      key: 'byProduct',
-      label: '상품별 판매량',
-      render: <ProductStatistics orders={orders} />,
-    },
-    {
-      key: 'byPrice',
-      label: '시간대별 매출',
-      render: <OrderPriceStatistics startDate={parsedStartDate} endDate={parsedEndDate} status={status} />,
-    },
-  ];
+  const orderDiff = Math.abs(comparison?.orderCountDifference ?? 0);
+  const orderDiffDirection = (comparison?.orderCountDifference ?? 0) >= 0 ? '증가' : '감소';
+  const comparisonValue = comparison ? formatWithSign(comparison.revenueGrowthRate, (v) => v.toFixed(1)) : '-';
+  const comparisonDescription = comparison ? `전일 대비 ${orderDiff}건의 주문이 ${orderDiffDirection}했습니다.` : '비교 데이터가 없습니다.';
+  const comparisonHighlight = comparison ? `${orderDiff}건` : undefined;
+  const comparisonColor = comparison ? getComparisonColor(comparison.revenueGrowthRate) : undefined;
 
   return (
-    <AppContainer
-      useFlex={colFlex({ justify: 'center', align: 'center' })}
-      useNavBackground
-      titleNavBarProps={{
-        title: '주문 통계',
-        children: (
-          <OrderStatisticsNavBarChildren
-            showServedOrder={showServedOrder}
-            setShowServedOrder={setShowServedOrder}
-            startDate={startDate}
-            setStartDate={setStartDate}
-            endDate={endDate}
-            setEndDate={setEndDate}
-          />
-        ),
-      }}
-      useScroll={true}
-    >
+    <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })} customWidth={'1200px'}>
       <Container>
-        <HeaderContainer>
-          <HeaderLabel>총 매출액</HeaderLabel>
-          <HeaderLabel>{totalOrderPrice} 원</HeaderLabel>
-        </HeaderContainer>
+        <FilterContainer>
+          <CustomSelect value={dateLabel} triggerLabel={dateLabel} highlightOnSelect={true} width="160px">
+            <CustomDatePicker mode="single" selectedDate={selectedDate} onDateChange={setSelectedDate} />
+          </CustomSelect>
+          {statistics?.lastUpdated && isValidDate(statistics.lastUpdated) && (
+            <UpdateLabel>최종 업데이트 {format(new Date(statistics.lastUpdated), 'HH:mm')}</UpdateLabel>
+          )}
+        </FilterContainer>
 
-        <CategoryContainer>
-          {categories.map(({ key, label }) => (
-            <CategoryLink key={key} isSelected={selectedCategory === key} onClick={() => setSelectedCategory(key)}>
-              {label}
-            </CategoryLink>
-          ))}
-        </CategoryContainer>
+        {isLoading && !statistics && <UpdateLabel>로딩 중...</UpdateLabel>}
 
-        {categories.find((category) => category.key === selectedCategory)?.render}
+        {statistics && (
+          <StatCardRow>
+            <StatCard
+              title="총 주문 건수"
+              value={statistics.totalOrders.toLocaleString()}
+              description={`총 판매된 상품 수량은 ${statistics.totalSalesVolume}개입니다.`}
+              descriptionHighlight={`${statistics.totalSalesVolume}개`}
+              unit="건"
+            />
+            <StatCard
+              title="총 매출액"
+              value={statistics.totalRevenue.toLocaleString()}
+              description={`평균 주문 금액은 ${statistics.averageOrderAmount.toLocaleString()}원입니다.`}
+              descriptionHighlight={`${statistics.averageOrderAmount.toLocaleString()}원`}
+              unit="원"
+            />
+            <StatCard
+              title="전일 대비 주문 증감률"
+              value={comparisonValue}
+              description={comparisonDescription}
+              descriptionHighlight={comparisonHighlight}
+              valueColor={comparisonColor}
+              unit="%"
+            />
+            <StatCard
+              title="테이블 회전율"
+              value={statistics.tableTurnoverRate.toFixed(1)}
+              description={`평균 테이블 이용 시간은 ${formatMinutesToTime(statistics.averageStayTimeMinutes)}입니다.`}
+              descriptionHighlight={formatMinutesToTime(statistics.averageStayTimeMinutes)}
+              unit="회전"
+            />
+          </StatCardRow>
+        )}
+
+        {statistics && (
+          <SectionRow>
+            <ContentCard title="시간대별 추이" showDivider={false}>
+              <HourlySalesChart salesByHour={statistics.salesByHour} />
+            </ContentCard>
+            <PopularProductsSection popularProducts={statistics.popularProducts} />
+          </SectionRow>
+        )}
       </Container>
     </AppContainer>
   );

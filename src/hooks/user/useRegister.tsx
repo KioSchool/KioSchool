@@ -31,7 +31,10 @@ function useRegister() {
       .post('/user/email', {
         email,
       })
-      .then(() => true)
+      .then(() => {
+        alert('인증 코드가 이메일로 전송되었습니다.');
+        return true;
+      })
       .catch((error) => error.response.data.message);
   };
 

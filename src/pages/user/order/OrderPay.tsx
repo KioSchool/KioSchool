@@ -9,10 +9,8 @@ import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import OrderPayRadio from '@components/user/order/OrderPayRadio';
 import OrderPayDescription from '@components/user/order/OrderPayDescription';
 import { HttpStatusCode } from 'axios';
-import { userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
+import { userOrderBasketAtom, userWorkspaceAtom } from '@jotai/user/atoms';
 import { useAtom, useAtomValue } from 'jotai';
-import NewAppInput from '@components/common/input/NewAppInput';
-import { Color } from '@resources/colors';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import usePreventRefresh from '@hooks/usePreventRefresh';
 import useTossPopup from '@hooks/user/useTossPopup';
@@ -40,20 +38,6 @@ const ContentsContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
-const InputContainer = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  padding: 0 10px;
-  gap: 10px;
-  ${colFlex({ justify: 'center', align: 'start' })}
-`;
-
-const InputLabel = styled.div`
-  font-size: 14px;
-  font-weight: 600;
-  color: ${Color.BLACK};
-`;
-
 function OrderPay() {
   const workspace = useAtomValue(userWorkspaceAtom);
   const [orderBasket, setOrderBasket] = useAtom(userOrderBasketAtom);
@@ -74,6 +58,7 @@ function OrderPay() {
   const isTossAvailable = !!tossAccountUrl;
 
   const [isTossPay, setIsTossPay] = useState<boolean>(isTossAvailable);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const customerNameRef = useRef<HTMLInputElement>(null);
 
   const errorHandler = (error: any) => {
@@ -130,7 +115,7 @@ function OrderPay() {
         });
       },
       onError: errorHandler,
-    });
+    })?.finally(() => setIsSubmitting(false));
   };
 
   const createOrderAndNavigateToComplete = (customerName: string) => {
@@ -142,19 +127,27 @@ function OrderPay() {
             orderId: res.data.id.toString(),
             workspaceId: workspaceId || '',
             tableNo: tableNo || '',
+            tossPay: 'false',
           }).toString(),
         });
       })
-      .catch(errorHandler);
+      .catch(errorHandler)
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   const payOrder = () => {
+    if (isSubmitting) return;
+
     const customerName = customerNameRef.current?.value;
 
     if (!customerName) {
-      alert('입금자명을 입력해주세요.');
+      alert('송금자명을 입력해주세요.');
       return;
     }
+
+    setIsSubmitting(true);
 
     if (isTossPay) {
       createOrderAndNavigateToToss(customerName);
@@ -169,19 +162,15 @@ function OrderPay() {
       <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
       <SubContainer className={'order-pay-sub-container'}>
         <ContentsContainer>
-          <InputContainer>
-            <InputLabel>입금자명</InputLabel>
-            <NewAppInput ref={customerNameRef} placeholder={'입금자명을 입력해주세요.'} width={'100%'} height={33} />
-          </InputContainer>
-          <HorizontalDivider />
-          <OrderPayRadio isTossAvailable={isTossAvailable} isTossPay={isTossPay} setIsTossPay={setIsTossPay} />
+          <OrderPayRadio isTossAvailable={isTossAvailable} isTossPay={isTossPay} setIsTossPay={setIsTossPay} customerNameRef={customerNameRef} />
           <HorizontalDivider />
           <OrderPayDescription />
         </ContentsContainer>
       </SubContainer>
       <OrderButton
         showButton={orderBasket.length > 0}
-        buttonLabel={`${totalAmount.toLocaleString()}원 · ${isTossPay ? 'Toss로' : '계좌로'} 결제하기`}
+        disabled={isSubmitting}
+        buttonLabel={isSubmitting ? '주문 진행 중...' : `${totalAmount.toLocaleString()}원 · ${isTossPay ? '토스로 송금' : '계좌로 송금'}`}
         onClick={payOrder}
       />
     </Container>

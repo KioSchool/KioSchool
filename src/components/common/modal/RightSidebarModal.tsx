@@ -1,0 +1,162 @@
+﻿import React from 'react';
+import styled from '@emotion/styled';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import { tabletMediaQuery } from '@styles/globalStyles';
+import { Color } from '@resources/colors';
+import { RiArrowRightSLine } from '@remixicon/react';
+import useModal from '@hooks/useModal';
+import RightSidebarModalOpenButton from './RightSidebarModalOpenButton';
+import { useAtom, useAtomValue } from 'jotai';
+import { externalSidebarAtom } from '@jotai/admin/atoms';
+import { layoutScaleAtom } from '@jotai/atoms';
+import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
+import { Location } from 'react-router-dom';
+
+const Container = styled.div``;
+
+const AttachedCloseButton = styled.button`
+  position: absolute;
+  top: calc(50% - 25px);
+  left: -30px;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 100px;
+  padding: 0;
+  background-color: ${Color.WHITE};
+  color: #464a4d;
+  border: 1px solid #e8e8f2;
+  border-right: none;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  cursor: pointer;
+  ${colFlex({ justify: 'center', align: 'center' })};
+`;
+
+const SidebarContainer = styled.div<{ isOpen: boolean; scale: number }>`
+  position: fixed;
+  top: calc(65px / ${(props) => props.scale});
+  right: 0;
+  width: 300px;
+  z-index: 1010;
+  height: calc((100vh - 65px) / ${(props) => props.scale});
+  background-color: ${Color.WHITE};
+  border-left: 1px solid #e8eef2;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+  padding: 46px 15px 0 41px;
+  gap: 15px;
+  transform: translateX(${(props) => (props.isOpen ? '0' : '100%')});
+  transition: transform 0.3s ease-in-out;
+  ${colFlex()}
+
+  ${tabletMediaQuery} {
+    width: 280px;
+  }
+`;
+
+const SidebarHeader = styled.div`
+  width: 100%;
+  ${colFlex({ justify: 'center', align: 'center' })};
+`;
+
+const TitleContainer = styled.div`
+  color: #464a4d;
+  width: 100%;
+  gap: 8px;
+  ${colFlex({ justify: 'start', align: 'start' })};
+`;
+
+const Title = styled.div`
+  font-size: 18px;
+  font-weight: 700;
+`;
+
+const SubTitle = styled.div`
+  font-size: 16px;
+  line-height: 180%;
+  white-space: pre-line;
+`;
+
+const CloseButton = styled(RiArrowRightSLine)`
+  width: 24px;
+  height: 24px;
+  color: #464a4d;
+  cursor: pointer;
+  ${rowFlex({ justify: 'end', align: 'end' })}
+`;
+
+interface InternalSidebarControlProps {
+  title: string;
+  subtitle?: string;
+  children: React.ReactNode;
+  useOpenButton?: boolean;
+  useExternalControl?: never;
+}
+
+interface ExternalSidebarControlProps {
+  title?: never;
+  subtitle?: never;
+  children?: never;
+  useOpenButton?: never;
+  useExternalControl: {
+    location: Location;
+  };
+}
+
+type RightSidebarModalProps = InternalSidebarControlProps | ExternalSidebarControlProps;
+
+function RightSidebarModal({ title, subtitle, useOpenButton = true, children, useExternalControl }: RightSidebarModalProps) {
+  const { isModalOpen, openModal, closeModal } = useModal();
+  const [externalSidebar, setExternalSidebar] = useAtom(externalSidebarAtom);
+  const { action, location: externalLocation } = externalSidebar;
+  const scale = useAtomValue(layoutScaleAtom);
+
+  const isControlled = useExternalControl !== undefined;
+
+  const isOpen = isControlled ? action === RIGHT_SIDEBAR_ACTION.OPEN && externalLocation?.pathname === useExternalControl.location.pathname : isModalOpen;
+
+  const displayData = isControlled
+    ? {
+        title: externalSidebar.title,
+        subtitle: externalSidebar.subtitle,
+        content: externalSidebar.content,
+      }
+    : {
+        title,
+        subtitle,
+        content: children,
+      };
+
+  const handleClose = () => {
+    if (isControlled) {
+      setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE });
+    } else {
+      closeModal();
+    }
+  };
+
+  return (
+    <Container>
+      {!isControlled && useOpenButton && <RightSidebarModalOpenButton openModal={openModal} />}
+
+      <SidebarContainer isOpen={isOpen} scale={scale}>
+        {isOpen && (
+          <AttachedCloseButton onClick={handleClose}>
+            <CloseButton />
+          </AttachedCloseButton>
+        )}
+
+        <SidebarHeader>
+          <TitleContainer>
+            {displayData.title && <Title>{displayData.title}</Title>}
+            {displayData.subtitle && <SubTitle>{displayData.subtitle}</SubTitle>}
+          </TitleContainer>
+        </SidebarHeader>
+
+        {displayData.content}
+      </SidebarContainer>
+    </Container>
+  );
+}
+
+export default RightSidebarModal;

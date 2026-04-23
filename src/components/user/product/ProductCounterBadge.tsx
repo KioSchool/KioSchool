@@ -4,7 +4,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { RiAddLine, RiCloseCircleFill, RiSubtractLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
-import { userOrderBasketAtom } from 'src/jotai/user/atoms';
+import { userOrderBasketAtom } from '@jotai/user/atoms';
 import { useAtom } from 'jotai';
 
 const Container = styled.div`

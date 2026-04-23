@@ -3,8 +3,10 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
-import { userWorkspaceAtom } from 'src/jotai/user/atoms';
-import OrderAccountInfo from '@components/user/order/OrderAccountInfo';
+import { userWorkspaceAtom } from '@jotai/user/atoms';
+import OrderAccountInfo from '@components/user/order/orderWait/OrderAccountInfo';
+import OrderWaitTipBanner from '@components/user/order/orderWait/OrderWaitTipBanner';
+import OrderWaitStepGuide from '@components/user/order/orderWait/OrderWaitStepGuide';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import { Color } from '@resources/colors';
 import { useEffect, useState } from 'react';
@@ -15,6 +17,9 @@ import { defaultUserOrderValue } from '@@types/defaultValues';
 import { keyframes } from '@emotion/react';
 import useWorkspace from '@hooks/user/useWorkspace';
 import useTossPopup from '@hooks/user/useTossPopup';
+import { ORDER_ROUTES } from '@constants/routes';
+import { isOverOneDay } from '@utils/formatDate';
+import { TOSS_TIPS, BANK_TRANSFER_TIPS } from '@constants/data/orderWaitData';
 
 const Container = styled.div`
   width: 100%;
@@ -25,7 +30,8 @@ const Container = styled.div`
 const SubContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
-  padding: 20px 20px 0 20px;
+  padding: 20px 20px 80px 20px;
+  gap: 24px;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
@@ -51,62 +57,30 @@ const Label = styled.div`
   font-weight: 600;
 `;
 
-const DescriptionContainer = styled.div`
-  box-sizing: border-box;
-  border-radius: 10px;
-  width: 100%;
-  font-size: 13px;
-  font-weight: 500;
-  color: #898989;
-  text-align: center;
-  box-sizing: border-box;
-  background: ${Color.LIGHT_GREY};
-  padding: 20px 30px;
-  word-break: keep-all;
-  gap: 10px;
-  ${colFlex({ justify: 'center', align: 'center' })}
+const PriceLabel = styled(Label)`
+  font-size: 18px;
+  font-weight: 700;
+  color: ${Color.KIO_ORANGE};
 `;
 
 const loadingDots = keyframes`
-  0%, 20% {
-    content: '.';
-  }
-  40% {
-    content: '..';
-  }
-  60% {
-    content: '...';
-  }
-  80%, 100% {
-    content: '';
-  }
+  0%, 20% { content: '.'; }
+  40% { content: '..'; }
+  60% { content: '...'; }
+  80%, 100% { content: ''; }
 `;
 
-const AnimatedButtonContainer = styled.div`
+const PollingStatusContainer = styled.div`
   position: fixed;
-  bottom: 50px;
-  width: 100vw;
-  height: 50px;
-  ${rowFlex({ justify: 'center', align: 'center' })}
-`;
-
-const AnimatedButtonSubContainer = styled.div`
-  padding: 10px;
-  border-radius: 20px;
-  background: ${Color.WHITE};
-  box-shadow: 0 16px 32px 0 rgba(194, 191, 172, 0.6);
-`;
-
-const TheActualAnimatedButton = styled.button`
-  width: 290px;
-  height: 50px;
-  background-color: ${Color.KIO_ORANGE};
-  color: white;
-  border: none;
-  border-radius: 15px;
-  cursor: default;
-  font-size: 18px;
-  font-weight: bold;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  background-color: ${Color.WHITE};
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
+  font-size: 15px;
+  font-weight: 600;
+  color: ${Color.BLACK};
+  z-index: 10;
   ${rowFlex({ justify: 'center', align: 'center' })}
 
   .dots::after {
@@ -114,20 +88,8 @@ const TheActualAnimatedButton = styled.button`
     animation: ${loadingDots} 1.5s infinite;
     content: '...';
     text-align: left;
-    width: 25px;
+    width: 20px;
   }
-`;
-
-const RetryButton = styled.button`
-  width: 145px;
-  height: 30px;
-  font-size: 12px;
-  background: ${Color.WHITE};
-  border: 0.5px solid #939393;
-  border-radius: 45px;
-  padding: 0 10px;
-  color: ${Color.BLACK};
-  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const Dot = styled.span``;
@@ -149,17 +111,21 @@ function OrderWait() {
   const account = workspace.owner.account;
   const tossAccountUrl = account?.tossAccountUrl;
 
+  const tips = isTossPay ? TOSS_TIPS : BANK_TRANSFER_TIPS;
+
   const fetchIntervalTime = 5000;
   const { fetchOrder } = useOrder();
 
   useBlockPopState();
 
   useEffect(() => {
+    let intervalId: NodeJS.Timeout | null = null;
+
     const pollOrder = async () => {
       if (!orderId) {
         alert('주문 ID가 없습니다. 초기 화면으로 돌아갑니다.');
         navigate({
-          pathname: '/order',
+          pathname: ORDER_ROUTES.ORDER,
           search: createSearchParams({
             workspaceId: workspaceId || '',
             tableNo: tableNo || '',
@@ -170,14 +136,22 @@ function OrderWait() {
 
       const orderData = await fetchOrder(orderId);
       setCurrentOrder(orderData);
+
+      if (intervalId && isOverOneDay(orderData.createdAt)) {
+        clearInterval(intervalId);
+      }
     };
 
     pollOrder();
     fetchWorkspace(workspaceId);
 
-    const intervalId = setInterval(pollOrder, fetchIntervalTime);
+    intervalId = setInterval(pollOrder, fetchIntervalTime);
 
-    return () => clearInterval(intervalId);
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
   }, [orderId]);
 
   const currentOrderStatus = currentOrder?.status;
@@ -200,16 +174,6 @@ function OrderWait() {
     }
   }, [currentOrderStatus]);
 
-  const waitingText = isTossPay
-    ? '현재 결제 확인 중입니다. 토스 앱이 자동으로 열리지 않았다면 재시도 해보시거나, 위 계좌로 직접 송금해주세요. 결제가 확인되면 자동으로 주문 내역 페이지로 이동합니다. 결제 확인까지 최대 3분정도 소요될 수 있습니다.'
-    : '위 계좌로 송금을 완료해주세요. 송금 후에는 잠시만 기다려주세요. 결제가 확인되면 자동으로 주문 내역 페이지로 이동합니다. 결제 확인까지 최대 3분정도 소요될 수 있습니다.';
-
-  const handleButtonClick = () => {
-    if (currentOrderStatus === OrderStatus.NOT_PAID) {
-      alert('결제 확인 중입니다. 대기가 길어질 경우 운영진에게 문의해주세요.');
-    }
-  };
-
   const handleTossRetry = () => {
     openTossPopupSync({
       tossAccountUrl,
@@ -220,28 +184,23 @@ function OrderWait() {
 
   return (
     <Container className={'order-wait-container'}>
+      <OrderWaitTipBanner tips={tips} />
       <OrderStickyNavBar useLeftArrow={false} showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
       <SubContainer className={'order-wait-sub-container'}>
         <ContentsContainer>
           <OrderAccountInfo />
           <HorizontalDivider />
           <OrderInfoContainer>
-            <Label>결제 금액</Label>
-            <Label>{totalPrice.toLocaleString()}원</Label>
+            <Label>송금하실 금액</Label>
+            <PriceLabel>{totalPrice.toLocaleString()}원</PriceLabel>
           </OrderInfoContainer>
-          <DescriptionContainer>
-            {waitingText}
-            {isTossPay && <RetryButton onClick={handleTossRetry}>토스 앱 열기</RetryButton>}
-          </DescriptionContainer>
+          <HorizontalDivider />
+          <OrderWaitStepGuide isTossPay={isTossPay} onTossRetry={handleTossRetry} />
         </ContentsContainer>
       </SubContainer>
-      <AnimatedButtonContainer>
-        <AnimatedButtonSubContainer>
-          <TheActualAnimatedButton onClick={handleButtonClick}>
-            결제 확인 중 <Dot className="dots" />
-          </TheActualAnimatedButton>
-        </AnimatedButtonSubContainer>
-      </AnimatedButtonContainer>
+      <PollingStatusContainer>
+        입금 내역을 확인하고 있습니다 <Dot className="dots" />
+      </PollingStatusContainer>
     </Container>
   );
 }

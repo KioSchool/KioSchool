@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import AppButton from '@components/common/button/AppButton';
+import NewCommonButton from '@components/common/button/NewCommonButton';
 import { rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 
@@ -8,7 +8,8 @@ const Container = styled.div`
   bottom: 50px;
   width: 100vw;
   height: 50px;
-  ${rowFlex({ justify: 'center', align: 'center' })}
+  z-index: 11;
+  ${rowFlex({ justify: 'center', align: 'center' })};
 `;
 
 const OrderButtonSubContainer = styled.div`
@@ -22,17 +23,23 @@ interface OrderButtonProps {
   showButton: boolean;
   buttonLabel: string;
   onClick?: () => void;
+  disabled?: boolean;
 }
 
-function OrderButton({ showButton, buttonLabel, onClick }: OrderButtonProps) {
+function OrderButton({ showButton, buttonLabel, onClick, disabled }: OrderButtonProps) {
   if (!showButton) return null;
 
   return (
     <Container className={'order-button-container'}>
       <OrderButtonSubContainer className={'order-button-sub-container'}>
-        <AppButton size={290} onClick={onClick} style={{ fontWeight: 'bold' }}>
+        <NewCommonButton
+          customSize={{ width: 290, height: 50, font: 18, borderRadius: 15 }}
+          style={{ fontWeight: 'bold' }}
+          onClick={onClick}
+          disabled={disabled}
+        >
           {buttonLabel}
-        </AppButton>
+        </NewCommonButton>
       </OrderButtonSubContainer>
     </Container>
   );

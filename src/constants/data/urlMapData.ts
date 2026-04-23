@@ -1,0 +1,38 @@
+import { ADMIN_ROUTES, ORDER_ROUTES, SUPER_ADMIN_ROUTES, TEST_ROUTES, USER_ROUTES } from '@constants/routes';
+
+export const ROUTES_PATH_KR_MAP = {
+  [USER_ROUTES.HOME]: '홈',
+  [USER_ROUTES.LOGIN]: '로그인',
+  [USER_ROUTES.REGISTER]: '회원가입',
+  [USER_ROUTES.RESET_PASSWORD]: '비밀번호 재설정',
+  [USER_ROUTES.INFO]: '서비스 안내',
+  [USER_ROUTES.EMAIL_DOMAINS]: '이메일 도메인 목록',
+
+  [ORDER_ROUTES.ORDER]: '주문하기',
+  [ORDER_ROUTES.ORDER_BASKET]: '장바구니',
+  [ORDER_ROUTES.ORDER_PAY]: '결제하기',
+  [ORDER_ROUTES.ORDER_WAIT]: '주문 대기',
+  [ORDER_ROUTES.ORDER_COMPLETE]: '주문 완료',
+
+  [ADMIN_ROUTES.HOME]: '대시보드',
+  [ADMIN_ROUTES.MY_INFO]: '내 정보',
+  [ADMIN_ROUTES.REGISTER_ACCOUNT]: '계좌 관리',
+  [ADMIN_ROUTES.WORKSPACE]: '주점 대시보드',
+  [ADMIN_ROUTES.WORKSPACE_EDIT]: '주점 정보 관리',
+  [ADMIN_ROUTES.ORDER_REALTIME]: '실시간 주문 조회',
+  [ADMIN_ROUTES.ORDER_STATISTICS]: '주문 통계',
+  [ADMIN_ROUTES.TABLE_REALTIME]: '실시간 테이블 관리',
+  [ADMIN_ROUTES.ORDER_TIMELINE]: '주문 타임라인 조회',
+  [ADMIN_ROUTES.TOTAL_ORDER]: '전체 주문 조회',
+  [ADMIN_ROUTES.PRODUCTS]: '상품 관리',
+  [ADMIN_ROUTES.PRODUCTS_CATEGORIES]: '카테고리 관리',
+
+  [SUPER_ADMIN_ROUTES.HOME]: '최고 관리자 홈',
+  [SUPER_ADMIN_ROUTES.WORKSPACE]: '워크스페이스 관리',
+  [SUPER_ADMIN_ROUTES.MANAGE]: '운영 관리',
+  [SUPER_ADMIN_ROUTES.USER]: '사용자 관리',
+  [SUPER_ADMIN_ROUTES.EMAIL]: '이메일 관리',
+  [SUPER_ADMIN_ROUTES.BANK]: '은행 정보 관리',
+
+  [TEST_ROUTES.SENTRY_TEST]: 'Sentry 테스트',
+} as const;

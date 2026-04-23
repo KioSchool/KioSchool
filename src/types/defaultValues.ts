@@ -1,6 +1,7 @@
 import {
   Account,
   Bank,
+  DashboardResponse,
   Order,
   OrderProduct,
   OrderProductBase,
@@ -9,6 +10,7 @@ import {
   Product,
   ProductCategory,
   ProductEdit,
+  ProductStatus,
   User,
   UserRole,
   Workspace,
@@ -97,7 +99,7 @@ export const defaultProductValue: Product = {
   name: '',
   description: '',
   price: 0,
-  isSellable: null,
+  status: ProductStatus.SELLING,
   imageUrl: '',
   id: 0,
   createdAt: '',
@@ -110,7 +112,7 @@ export const defaultProductEditValue: ProductEdit = {
   description: '',
   price: 0,
   id: 0,
-  isSellable: true,
+  status: ProductStatus.SELLING,
   image: {
     url: '',
     file: null,
@@ -180,8 +182,28 @@ export const defaultWorkspaceValue: Workspace = {
   images: [defaultImageValue],
   notice: '',
   tableCount: 0,
+  isOnboarding: true,
   workspaceSetting: defaultWorkspaceSetting,
   id: 0,
   createdAt: '',
   updatedAt: '',
+  memo: '',
+};
+
+export const defaultDashboardValue: DashboardResponse = {
+  dashboardWorkspaceInfo: {
+    name: '',
+    notice: '',
+    memo: '',
+    occupiedTables: 0,
+    totalTables: 0,
+  },
+  stats: {
+    totalSales: 0,
+    totalOrderCount: 0,
+    averageOrderAmount: 0,
+  },
+  topSellingProducts: [],
+  recentOrders: [],
+  outOfStockProducts: [],
 };

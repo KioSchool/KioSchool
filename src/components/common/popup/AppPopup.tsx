@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { RiCloseCircleFill } from '@remixicon/react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import { PopupData, popupDatas } from '@resources/data/popupData';
+import { PopupData, popupDatas } from '@constants/data/popupData';
 import { useCookies } from 'react-cookie';
 
 const Container = styled.div`

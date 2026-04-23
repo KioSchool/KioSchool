@@ -1,8 +1,13 @@
 import { Workspace } from '@@types/index';
-import { SubContainer } from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+
+const Container = styled.div`
+  width: 100%;
+  height: 80px;
+  ${colFlex({ justify: 'center', align: 'start' })}
+`;
 
 const SubLabelContainer = styled.div`
   color: ${Color.HEAVY_GREY};
@@ -29,7 +34,7 @@ function SuperAdminWorkspaceContent({ id, name, owner, createdAt }: Workspace) {
   const createdDateAndOwnerText = `${filteredCreatedDate} | ${owner.name}`;
 
   return (
-    <SubContainer useFlex={colFlex({ justify: 'center', align: 'start' })} customWidth={'1000px'} customHeight={'80px'} customGap={'5px'}>
+    <Container>
       <WorkspaceLabel
         onClick={() => {
           window.open(`${window.location.origin}/admin/workspace/${id}`, '_blank', 'rel=noopener noreferrer popup=false');
@@ -39,7 +44,7 @@ function SuperAdminWorkspaceContent({ id, name, owner, createdAt }: Workspace) {
         {name}
       </WorkspaceLabel>
       <SubLabelContainer className={'sub-label-container'}>{createdDateAndOwnerText}</SubLabelContainer>
-    </SubContainer>
+    </Container>
   );
 }
 

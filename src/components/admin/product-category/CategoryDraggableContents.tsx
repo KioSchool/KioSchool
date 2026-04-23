@@ -1,54 +1,25 @@
 import { ProductCategory } from '@@types/index';
-import styled from '@emotion/styled';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import useConfirm from '@hooks/useConfirm';
-import { Color } from '@resources/colors';
-import { RiMenuLine, RiDeleteBinFill } from '@remixicon/react';
-import { rowFlex } from '@styles/flexStyles';
-import { Draggable } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
-import { expandButtonStyle } from '@styles/buttonStyles';
+import CategoryItem from '@components/admin/product-category/CategoryItem';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import styled from '@emotion/styled';
 
-const CategoryItemContainer = styled.div`
-  position: relative;
-  width: 650px;
-  ${rowFlex({ justify: 'center', align: 'center' })}
-`;
-
-const CategoryContentsContainer = styled.div`
-  box-sizing: border-box;
-  padding: 15px 30px;
-  width: 600px;
-  height: 55px;
-  background-color: ${Color.WHITE};
-  border-radius: 51px;
-  border: 1px solid rgba(201, 201, 201, 0.5);
-  margin: 10px 0;
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
-`;
-
-const CategoryName = styled.label`
-  font-size: 18px;
-  width: 50%;
-`;
-
-const DeleteIcon = styled(RiDeleteBinFill)`
-  position: absolute;
-  left: -10px;
-  color: #b9b9b9;
-  ${expandButtonStyle}
-`;
-
-const GripIcon = styled(RiMenuLine)`
-  color: #b9b9b9;
+const DraggableContainer = styled.div<{ transform?: string; transition?: string; isDragging?: boolean }>`
+  transform: ${({ transform }) => transform};
+  transition: ${({ transition }) => transition};
+  z-index: ${({ isDragging }) => (isDragging ? 999 : 'auto')};
+  opacity: ${({ isDragging }) => (isDragging ? 0 : 1)};
+  touch-action: none;
 `;
 
 interface DraggableProps {
   category: ProductCategory;
-  index: number;
 }
 
-function CategoryDraggableContents({ category, index }: DraggableProps) {
+function CategoryDraggableContents({ category }: DraggableProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { deleteCategory } = useAdminProducts(workspaceId);
   const { ConfirmModal, confirm } = useConfirm({
@@ -56,6 +27,8 @@ function CategoryDraggableContents({ category, index }: DraggableProps) {
     description: '카테고리에 포함된 상품이 없어야 카테고리를 삭제할 수 있습니다.',
     okText: '확인',
   });
+
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: category.id });
 
   const deleteCategoryHandler = () => {
     deleteCategory(category.id).catch((e) => {
@@ -67,17 +40,16 @@ function CategoryDraggableContents({ category, index }: DraggableProps) {
 
   return (
     <>
-      <Draggable key={category.id} draggableId={String(category.id)} index={index}>
-        {(provided) => (
-          <CategoryItemContainer ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className={'draggable-category-container'}>
-            <DeleteIcon onClick={deleteCategoryHandler} />
-            <CategoryContentsContainer>
-              <CategoryName>{category.name}</CategoryName>
-              <GripIcon />
-            </CategoryContentsContainer>
-          </CategoryItemContainer>
-        )}
-      </Draggable>
+      <DraggableContainer
+        ref={setNodeRef}
+        transform={CSS.Transform.toString(transform)}
+        transition={transition}
+        isDragging={isDragging}
+        {...attributes}
+        {...listeners}
+      >
+        <CategoryItem category={category} isDefault={false} deleteHandler={deleteCategoryHandler} />
+      </DraggableContainer>
       <ConfirmModal />
     </>
   );

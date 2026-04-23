@@ -3,9 +3,9 @@ import { RiSearchLine } from '@remixicon/react';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
-import { formatKoreanTime } from '@utils/FormatDate';
+import { formatKoreanTime } from '@utils/formatDate';
 import useModal from '@hooks/useModal';
-import TableOrderDetailModal from '../modal/TableOrderDetailModal';
+import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
 
 const OrderRow = styled.div`
   display: grid;
@@ -66,7 +66,7 @@ function OrderRowItem({ order }: OrderRowItemProps) {
           <SearchIcon onClick={openModal} />
         </ActionCell>
       </OrderRow>
-      <TableOrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
+      <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} readOnly />
     </>
   );
 }

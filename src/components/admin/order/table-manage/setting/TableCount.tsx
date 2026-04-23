@@ -1,4 +1,4 @@
-import RoundedAppButton from '@components/common/button/RoundedAppButton';
+import NewCommonButton from '@components/common/button/NewCommonButton';
 import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { RiAddFill, RiSubtractFill } from '@remixicon/react';
@@ -7,7 +7,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { adminWorkspaceAtom } from 'src/jotai/admin/atoms';
+import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 
 const Container = styled.div`
   width: 100%;
@@ -120,9 +120,9 @@ function TableCount() {
           <Input type="number" min="1" value={tableCount} onChange={handleInputChange} />
           <PlusButton onClick={handlePlusClick} />
         </InputContainer>
-        <RoundedAppButton size={'130px'} fontSize={'16px'} onClick={handleConfirm}>
+        <NewCommonButton customSize={{ width: 130, font: 16 }} onClick={handleConfirm}>
           저장
-        </RoundedAppButton>
+        </NewCommonButton>
       </Content>
     </Container>
   );

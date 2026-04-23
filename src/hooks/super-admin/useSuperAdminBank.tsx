@@ -1,6 +1,6 @@
 import useApi from '@hooks/useApi';
 import { Bank, PaginationResponse } from '@@types/index';
-import { superAdminBankPaginationResponseAtom } from 'src/jotai/super-admin/atoms';
+import { superAdminBankPaginationResponseAtom } from '@jotai/super-admin/atoms';
 import { useSetAtom } from 'jotai';
 
 function useSuperAdminBank() {

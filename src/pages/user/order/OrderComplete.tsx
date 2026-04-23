@@ -8,13 +8,15 @@ import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import OrderStatusBar from '@components/user/order/OrderStatusBar';
 import useRefresh from '@hooks/useRefresh';
 import OrderButton from '@components/user/order/OrderButton';
-import { userOrderBasketAtom, userWorkspaceAtom } from 'src/jotai/user/atoms';
+import { userOrderBasketAtom, userWorkspaceAtom } from '@jotai/user/atoms';
 import { useAtomValue } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
 import useBlockPopState from '@hooks/useBlockPopState';
 import { defaultUserOrderValue } from '@@types/defaultValues';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import { Order, OrderStatus } from '@@types/index';
+import { ORDER_ROUTES } from '@constants/routes';
+import { isOverOneDay } from '@utils/formatDate';
 
 const Container = styled.div`
   width: 100%;
@@ -142,7 +144,7 @@ function OrderComplete() {
       const orderData = await fetchOrder(orderId);
       setOrder(orderData);
 
-      if (intervalId && (orderData.status === OrderStatus.SERVED || orderData.status === OrderStatus.CANCELLED)) {
+      if (intervalId && (orderData.status === OrderStatus.SERVED || orderData.status === OrderStatus.CANCELLED || isOverOneDay(orderData.createdAt))) {
         clearInterval(intervalId);
       }
     };
@@ -216,7 +218,7 @@ function OrderComplete() {
         buttonLabel={`더 주문하기`}
         onClick={() =>
           navigate({
-            pathname: '/order',
+            pathname: ORDER_ROUTES.ORDER,
             search: createSearchParams({
               workspaceId: workspaceId || '',
               tableNo: tableNo || '',

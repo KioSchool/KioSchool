@@ -1,3 +1,5 @@
+import { Location } from 'react-router-dom';
+
 export interface Order {
   tableNumber: number;
   phoneNumber: string;
@@ -24,13 +26,29 @@ export interface OrderWebsocket {
   data: Order;
 }
 
+export const GHOST_TYPE = {
+  NONE: 'NONE',
+  USER: 'USER',
+  BATCH: 'BATCH',
+} as const;
+export type GhostType = typeof GHOST_TYPE[keyof typeof GHOST_TYPE];
+
 export interface OrderSession {
   expectedEndAt: string;
   endAt: string | null;
   tableNumber: number;
+  usageTime: number;
+  totalOrderPrice: number;
+  orderCount: number;
+  ghostType: GhostType;
   id: number;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface OrderSessionWithOrder extends OrderSession {
+  orders: Array<Order>;
+  customerName: string;
 }
 
 export interface OrderProduct extends OrderProductBase {
@@ -43,11 +61,17 @@ export interface OrderProduct extends OrderProductBase {
   updatedAt: string;
 }
 
+export enum ProductStatus {
+  SELLING = 'SELLING',
+  SOLD_OUT = 'SOLD_OUT',
+  HIDDEN = 'HIDDEN',
+}
+
 export interface Product {
   name: string;
   description: string;
   price: number;
-  isSellable: boolean | null;
+  status: ProductStatus;
   imageUrl: string;
   id: number;
   createdAt: string;
@@ -74,7 +98,7 @@ export interface ProductStateType {
   price: number;
   productId?: string;
   workspaceId: string | undefined;
-  productCategoryId: string;
+  productCategoryId: string | number;
 }
 
 export interface ProductActionType {
@@ -91,10 +115,12 @@ export interface Workspace {
   images: Array<WorkspaceImage>;
   notice: string;
   tableCount: number;
+  isOnboarding: boolean;
   workspaceSetting: WorkspaceSetting;
   id: number;
   createdAt: string;
   updatedAt: string;
+  memo: string;
 }
 
 export interface WorkspaceImage {
@@ -197,4 +223,98 @@ export interface Table {
   id: number;
   createdAt: string;
   updatedAt: string;
+}
+
+export const RIGHT_SIDEBAR_ACTION = {
+  OPEN: 'OPEN',
+  CLOSE: 'CLOSE',
+} as const;
+
+export type RightSidebarAction = typeof RIGHT_SIDEBAR_ACTION[keyof typeof RIGHT_SIDEBAR_ACTION];
+
+interface OpenSidebarOptions {
+  action: typeof RIGHT_SIDEBAR_ACTION.OPEN;
+  location: Location;
+  title: string;
+  subtitle?: string;
+  content: React.ReactNode;
+}
+
+interface CloseSidebarOptions {
+  action: typeof RIGHT_SIDEBAR_ACTION.CLOSE;
+  location?: never;
+  title?: never;
+  subtitle?: never;
+  content?: never;
+}
+
+export type ExternalRightSidebarOptions = OpenSidebarOptions | CloseSidebarOptions;
+
+export type ButtonSize = 'xs' | 'sm' | 'md';
+export type ButtonColor = 'kio_orange' | 'blue_gray';
+
+export interface DashboardWorkspace {
+  name: string;
+  notice: string;
+  memo: string;
+  occupiedTables: number;
+  totalTables: number;
+}
+
+export interface DashboardStats {
+  totalSales: number;
+  totalOrderCount: number;
+  averageOrderAmount: number;
+}
+
+export interface TopSellingProduct {
+  product: Product;
+  totalQuantity: number;
+}
+
+export interface DashboardResponse {
+  dashboardWorkspaceInfo: DashboardWorkspace;
+  stats: DashboardStats;
+  topSellingProducts: TopSellingProduct[];
+  recentOrders: Order[];
+  outOfStockProducts: Product[];
+}
+
+export interface PreviousDayComparison {
+  revenueGrowthRate: number;
+  orderCountDifference: number;
+}
+
+export interface HourlySales {
+  hour: number;
+  orderCount: number;
+  revenue: number;
+}
+
+export interface PopularProductItem {
+  productId: number;
+  name: string;
+  value: number;
+}
+
+export interface PopularProducts {
+  byQuantity: PopularProductItem[];
+  byReorderRate: PopularProductItem[];
+  byRevenue: PopularProductItem[];
+}
+
+export interface DailyStatistics {
+  referenceDate: string;
+  totalSalesVolume: number;
+  totalRevenue: number;
+  averageOrderAmount: number;
+  totalOrders: number;
+  averageOrdersPerTable: number;
+  tableTurnoverRate: number;
+  averageStayTimeMinutes: number;
+  previousDayComparison: PreviousDayComparison | null;
+  salesByHour: HourlySales[];
+  popularProducts: PopularProducts;
+  isRealTime: boolean;
+  lastUpdated: string;
 }

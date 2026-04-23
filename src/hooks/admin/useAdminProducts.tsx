@@ -1,8 +1,9 @@
 import useApi from '@hooks/useApi';
-import { Product, ProductCategory } from '@@types/index';
+import { Product, ProductCategory, ProductStatus } from '@@types/index';
 import { useNavigate } from 'react-router-dom';
-import { adminCategoriesAtom, adminProductsAtom } from 'src/jotai/admin/atoms';
+import { adminCategoriesAtom, adminProductsAtom } from '@jotai/admin/atoms';
 import { useSetAtom } from 'jotai';
+import { getAdminProductsPath } from '@constants/routes';
 
 function useAdminProducts(workspaceId: string | undefined | null) {
   const { adminApi } = useApi();
@@ -46,7 +47,7 @@ function useAdminProducts(workspaceId: string | undefined | null) {
     adminApi
       .post('/product', data)
       .then(() => {
-        navigate(`/admin/workspace/${product.workspaceId}/products`);
+        navigate(getAdminProductsPath(product.workspaceId));
       })
       .catch((error) => console.error('Failed to add product: ', error));
   };
@@ -57,17 +58,17 @@ function useAdminProducts(workspaceId: string | undefined | null) {
     adminApi
       .put('/product', data)
       .then(() => {
-        navigate(`/admin/workspace/${parameter.workspaceId}/products`);
+        navigate(getAdminProductsPath(parameter.workspaceId));
       })
       .catch((error) => console.error('Failed to add product: ', error));
   };
 
-  const editProductSellable = (productId: number, isSellable: boolean) => {
+  const editProductStatus = (productId: number, status: ProductStatus) => {
     adminApi
-      .put('/product/sellable', {
+      .put('/product/status', {
         workspaceId,
         productId,
-        isSellable,
+        status,
       })
       .then(() => {
         fetchProducts();
@@ -121,7 +122,7 @@ function useAdminProducts(workspaceId: string | undefined | null) {
     adminApi
       .post('/product-categories/sort', { workspaceId, productCategoryIds })
       .then(() => {
-        navigate(`/admin/workspace/${workspaceId}/products`);
+        navigate(getAdminProductsPath(workspaceId!));
       })
       .catch((error) => {
         console.error('Failed to reorder products categories : ', error);
@@ -140,7 +141,7 @@ function useAdminProducts(workspaceId: string | undefined | null) {
     deleteProduct,
     fetchProduct,
     editProduct,
-    editProductSellable,
+    editProductStatus,
     reorderCategories,
     deleteCategory,
   };

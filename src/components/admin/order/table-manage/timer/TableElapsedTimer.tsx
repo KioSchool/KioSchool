@@ -1,15 +1,39 @@
 import styled from '@emotion/styled';
-import { colFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
 import { Color } from '@resources/colors';
-import useFormattedTime from '@hooks/useFormattedTime';
-import { formatKoreanTime } from '@utils/FormatDate';
+import { OrderSession } from '@@types/index';
+import { useTableSession } from '@hooks/admin/useTableSession';
+import useTableElapsedTimer from '@hooks/admin/useTableElapsedTimer';
 
 const Container = styled.div`
   border: 1px solid #ececec;
   border-radius: 10px;
-  overflow: hidden;
+  height: 100%;
   ${colFlex({ justify: 'start', align: 'center' })}
+`;
+
+const Content = styled.div`
+  flex: 1;
+  padding-bottom: 15px;
+  ${colFlex({ justify: 'center', align: 'center' })}
+`;
+
+const EndSessionButton = styled.button`
+  background: #e8eef2;
+  color: #464a4d;
+  border: none;
+  border-radius: 40px;
+  width: 220px;
+  height: 29px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  ${rowFlex({ justify: 'center', align: 'center' })};
+
+  &:hover {
+    background: #d9e3e8;
+  }
 `;
 
 const Header = styled.div`
@@ -18,82 +42,66 @@ const Header = styled.div`
   height: 40px;
   padding: 5px 10px;
   color: ${Color.GREY};
-  background-color: ${Color.LIGHT_GREY};
+  background-color: #f0f5f8;
   font-size: 15px;
   font-weight: 600;
-  width: 100%;
   border-bottom: 1px solid #ececec;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
-const getMinutesDifference = (startDate: string | undefined, endDate?: string | undefined): number => {
-  if (!startDate) return 0;
-
-  const start = new Date(startDate.replace(' ', 'T'));
-  const end = endDate ? new Date(endDate.replace(' ', 'T')) : new Date();
-  const diffMilliseconds = end.getTime() - start.getTime();
-
-  return Math.max(0, Math.floor(diffMilliseconds / (1000 * 60)));
-};
-
-const formatMinutesToTime = (minutes: number): string => {
-  const hours = Math.floor(minutes / 60);
-  const remainingMinutes = minutes % 60;
-  if (hours > 0) {
-    return `${hours}시간 ${remainingMinutes}분`;
-  }
-  return `${minutes}분`;
-};
-
 interface TableUsageTimeProps {
-  createdAt: string | undefined;
-  expectedEndAt: string | undefined;
+  orderSession: OrderSession | null;
+  workspaceId?: string;
+  tableNumber?: number;
+  refetchTable: () => void;
 }
 
-function TableElapsedTimer({ createdAt, expectedEndAt }: TableUsageTimeProps) {
-  const elapsedMinutes = useFormattedTime<number>({
-    date: createdAt,
-    formatter: () => getMinutesDifference(createdAt),
+function TableElapsedTimer({ orderSession, workspaceId, tableNumber, refetchTable }: TableUsageTimeProps) {
+  const { isTableSessionActive, maxMinutes, gaugeValue, getGaugeText } = useTableElapsedTimer(orderSession);
+  const { handleEndSession, EndSessionConfirmModal, EmptySessionConfirmModal } = useTableSession({
+    workspaceId,
+    currentExpectedEndAt: orderSession?.expectedEndAt,
+    orderSessionId: orderSession?.id,
+    tableNumber,
+    refetchTable,
   });
-  const maxMinutes = createdAt && expectedEndAt ? Math.max(1, getMinutesDifference(createdAt, expectedEndAt)) : 60;
-  const gaugeValue = Math.min(elapsedMinutes || 0, maxMinutes);
 
   return (
-    <Container>
-      <Header>사용시간</Header>
-      <Gauge
-        width={180}
-        height={140}
-        value={gaugeValue}
-        valueMin={0}
-        valueMax={maxMinutes}
-        startAngle={-90}
-        endAngle={90}
-        cornerRadius="50%"
-        text={({ value }) => {
-          const formattedStartTime = createdAt && formatKoreanTime(createdAt);
-          const startTime = formattedStartTime ? `${formattedStartTime}부터` : '시작시간 없음';
-          const currentMinutes = value || 0;
-          const formattedCurrent = formatMinutesToTime(currentMinutes);
-          const formattedMax = formatMinutesToTime(maxMinutes);
-          return `${startTime} \n${formattedCurrent} / ${formattedMax}`;
-        }}
-        sx={{
-          [`& .${gaugeClasses.valueText}`]: {
-            fontSize: 11,
-            fontWeight: 500,
-            transform: 'translateY(-10px)',
-            textAlign: 'center',
-          },
-          [`& .${gaugeClasses.valueArc}`]: {
-            fill: Color.KIO_ORANGE,
-          },
-          [`& .${gaugeClasses.referenceArc}`]: {
-            fill: Color.LIGHT_GREY,
-          },
-        }}
-      />
-    </Container>
+    <>
+      <Container>
+        <Header>사용시간</Header>
+        <Content>
+          <Gauge
+            width={180}
+            height={140}
+            value={gaugeValue}
+            valueMin={0}
+            valueMax={maxMinutes}
+            startAngle={-90}
+            endAngle={90}
+            cornerRadius="50%"
+            text={({ value }) => getGaugeText(value)}
+            sx={{
+              [`& .${gaugeClasses.valueText}`]: {
+                fontSize: 11,
+                fontWeight: 500,
+                transform: 'translateY(-10px)',
+                textAlign: 'center',
+              },
+              [`& .${gaugeClasses.valueArc}`]: {
+                fill: isTableSessionActive ? Color.KIO_ORANGE : Color.LIGHT_GREY,
+              },
+              [`& .${gaugeClasses.referenceArc}`]: {
+                fill: Color.LIGHT_GREY,
+              },
+            }}
+          />
+          <EndSessionButton onClick={handleEndSession}>사용 종료</EndSessionButton>
+        </Content>
+      </Container>
+      <EndSessionConfirmModal />
+      <EmptySessionConfirmModal />
+    </>
   );
 }
 

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { USER_ROUTES } from '@constants/routes';
 
 const AUTH_ERROR_EVENT = 'adminAuthError';
 
@@ -9,7 +10,7 @@ function AuthErrorListener() {
   const handleAdminAuthError = () => {
     alert('로그인이 필요합니다.');
     localStorage.setItem('isLoggedIn', 'false');
-    navigate('/login');
+    navigate(USER_ROUTES.LOGIN);
   };
 
   useEffect(() => {
