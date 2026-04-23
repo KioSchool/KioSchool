@@ -29,7 +29,7 @@ const ProductAddButtonContainer = styled.div`
 
 const ProductContainer = styled.div`
   box-sizing: border-box;
-  width: 100%;
+  width: 95%;
   padding: 18px 30px;
   gap: 10px;
   border: 1px solid #e8eef2;

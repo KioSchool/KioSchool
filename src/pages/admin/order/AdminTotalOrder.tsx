@@ -14,6 +14,10 @@ import { OrderStatus } from '@@types/index';
 import { useAdminFetchTotalOrder } from '@hooks/admin/useAdminFetchTotalOrder';
 import StatCard from '@components/common/card/StatCard';
 
+const Container = styled.div`
+  width: 95%;
+`;
+
 const FilterContainer = styled.div`
   width: 100%;
   gap: 10px;
@@ -89,8 +93,8 @@ function AdminTotalOrder() {
   const dateRangeLabel = startDate && endDate ? `${startDate.toLocaleDateString()} ~ ${endDate.toLocaleDateString()}` : '날짜 선택';
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'start' })} customWidth={'1000px'}>
-      <>
+    <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })} customWidth={'1000px'}>
+      <Container>
         <FilterContainer>
           <ResetButton onClick={handleReset}>
             <RiRefreshLine size={14} />
@@ -125,7 +129,7 @@ function AdminTotalOrder() {
         ) : (
           <FallbackContainer>조회된 주문 내역이 없습니다.</FallbackContainer>
         )}
-      </>
+      </Container>
     </AppContainer>
   );
 }

@@ -12,13 +12,16 @@ import { formatDate } from '@utils/formatDate';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 
 const Container = styled.div`
-  gap: 29px;
-  ${rowFlex()}
+  width: 100%;
+  gap: 20px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const WorkspaceContainer = styled.div`
   box-sizing: border-box;
-  width: 380px;
+  width: calc((100% - 40px) / 3);
+  max-width: 380px;
+  min-width: 0;
   height: 350px;
   border-radius: 16px;
   padding: 24px 20px;
@@ -79,9 +82,10 @@ const Description = styled.li`
 
 interface Props {
   workspaces: Workspace[];
+  children?: React.ReactNode;
 }
 
-function WorkspaceContent({ workspaces }: Props) {
+function WorkspaceContent({ workspaces, children }: Props) {
   const navigate = useNavigate();
   const { leaveWorkspace } = useAdminUser();
   const { ConfirmModal, confirm } = useConfirm({
@@ -133,6 +137,7 @@ function WorkspaceContent({ workspaces }: Props) {
           </NewCommonButton>
         </WorkspaceContainer>
       ))}
+      {children}
       <ConfirmModal />
     </Container>
   );

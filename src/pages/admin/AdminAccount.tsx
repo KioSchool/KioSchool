@@ -10,8 +10,7 @@ import { useLocation } from 'react-router-dom';
 
 const AccountContainer = styled.div`
   width: 100%;
-  // TODO : 디자인이 생각보다 너무 길어서 자체적으로 줄임
-  height: 600px;
+  height: 520px;
   gap: 15px;
   ${rowFlex({ justify: 'space-between' })};
 `;

@@ -22,7 +22,7 @@ import NewCommonButton from '@components/common/button/NewCommonButton';
 import { RiSettings3Fill } from '@remixicon/react';
 
 const Container = styled.div`
-  width: 100%;
+  width: 95%;
   height: 100%;
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -49,13 +49,13 @@ const DetailHeader = styled.div`
 `;
 
 const RightColumn = styled.div`
-  ${colFlex()};
   gap: 12px;
+  ${colFlex()};
 `;
 
 const TopCards = styled.div`
-  ${rowFlex({ justify: 'space-between' })};
   gap: 5px;
+  ${rowFlex({ justify: 'space-between' })};
 `;
 
 const SettingIcon = styled(RiSettings3Fill)`
@@ -112,7 +112,7 @@ function AdminTableRealtime() {
   };
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })}>
+    <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })}>
       <>
         <SettingsButtonContainer>
           <NewCommonButton size="sm" icon={<SettingIcon />} onClick={handleOpenSettings}>
