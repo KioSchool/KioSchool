@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
+import useAdminWorkspaceAccess from '@hooks/admin/useAdminWorkspaceAccess';
 import styled from '@emotion/styled';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
@@ -31,10 +32,10 @@ const LoadingContainer = styled.div`
 
 function AdminWorkspace() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchWorkspace, updateWorkspaceOnboarding } = useAdminWorkspace();
+  const { updateWorkspaceOnboarding } = useAdminWorkspace();
+  const { isWorkspaceLoading, hasWorkspaceAccess, refreshWorkspaceAccess } = useAdminWorkspaceAccess(workspaceId);
   const workspace = useAtomValue(adminWorkspaceAtom);
   const setSideNavIsOpen = useSetAtom(adminSideNavIsOpenAtom);
-  const [isWorkspaceLoading, setIsWorkspaceLoading] = useState(true);
   const isAutoCompletingOnboardingRef = useRef(false);
   const { ConfirmModal, confirm } = useConfirm({
     title: '온보딩 과정을 건너뛰시겠습니까?',
@@ -43,23 +44,21 @@ function AdminWorkspace() {
     cancelText: '취소',
   });
 
-  const handleLoadWorkspace = () => {
-    setIsWorkspaceLoading(true);
-
-    return fetchWorkspace(workspaceId).finally(() => {
-      setIsWorkspaceLoading(false);
-    });
-  };
-
   useEffect(() => {
-    handleLoadWorkspace();
     setSideNavIsOpen(true);
   }, [workspaceId]);
 
   const isOnboardingCompleted = isWorkspaceOnboardingCompleted(workspace);
 
   useEffect(() => {
-    if (isWorkspaceLoading || workspace.id === 0 || !workspace.isOnboarding || !isOnboardingCompleted || isAutoCompletingOnboardingRef.current) {
+    if (
+      isWorkspaceLoading ||
+      !hasWorkspaceAccess ||
+      workspace.id === 0 ||
+      !workspace.isOnboarding ||
+      !isOnboardingCompleted ||
+      isAutoCompletingOnboardingRef.current
+    ) {
       return;
     }
 
@@ -68,7 +67,7 @@ function AdminWorkspace() {
     updateWorkspaceOnboarding(workspace.id, false).finally(() => {
       isAutoCompletingOnboardingRef.current = false;
     });
-  }, [isOnboardingCompleted, isWorkspaceLoading, updateWorkspaceOnboarding, workspace.id, workspace.isOnboarding]);
+  }, [hasWorkspaceAccess, isOnboardingCompleted, isWorkspaceLoading, updateWorkspaceOnboarding, workspace.id, workspace.isOnboarding]);
 
   const handleSkipOnboarding = async () => {
     const userInput = await confirm();
@@ -77,11 +76,12 @@ function AdminWorkspace() {
     return updateWorkspaceOnboarding(workspace.id, false);
   };
 
-  const isOnboardingVisible = !isWorkspaceLoading && workspace.isOnboarding && !isOnboardingCompleted;
-  const pageContent = match({ isWorkspaceLoading, isOnboardingVisible })
+  const isOnboardingVisible = hasWorkspaceAccess && !isWorkspaceLoading && workspace.isOnboarding && !isOnboardingCompleted;
+  const pageContent = match({ isWorkspaceLoading, hasWorkspaceAccess, isOnboardingVisible })
     .with({ isWorkspaceLoading: true }, () => <LoadingContainer>워크스페이스 정보를 불러오는 중입니다.</LoadingContainer>)
+    .with({ hasWorkspaceAccess: false }, () => <LoadingContainer>워크스페이스 접근 권한을 확인하는 중입니다.</LoadingContainer>)
     .with({ isOnboardingVisible: true }, () => (
-      <AdminWorkspaceOnboarding workspace={workspace} onRefreshStatus={handleLoadWorkspace} onSkipOnboarding={handleSkipOnboarding} />
+      <AdminWorkspaceOnboarding workspace={workspace} onRefreshStatus={refreshWorkspaceAccess} onSkipOnboarding={handleSkipOnboarding} />
     ))
     .otherwise(() => (
       <>
