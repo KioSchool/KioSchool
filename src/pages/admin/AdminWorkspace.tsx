@@ -1,7 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
-import useAdminWorkspaceAccess from '@hooks/admin/useAdminWorkspaceAccess';
 import styled from '@emotion/styled';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
@@ -32,10 +31,11 @@ const LoadingContainer = styled.div`
 
 function AdminWorkspace() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { updateWorkspaceOnboarding } = useAdminWorkspace();
-  const { isWorkspaceLoading, hasWorkspaceAccess, refreshWorkspaceAccess } = useAdminWorkspaceAccess(workspaceId);
+  const { updateWorkspaceOnboarding, fetchWorkspaceAccess } = useAdminWorkspace();
   const workspace = useAtomValue(adminWorkspaceAtom);
   const setSideNavIsOpen = useSetAtom(adminSideNavIsOpenAtom);
+  const [isWorkspaceLoading, setIsWorkspaceLoading] = useState(true);
+  const [hasWorkspaceAccess, setHasWorkspaceAccess] = useState(false);
   const isAutoCompletingOnboardingRef = useRef(false);
   const { ConfirmModal, confirm } = useConfirm({
     title: '온보딩 과정을 건너뛰시겠습니까?',
@@ -46,6 +46,24 @@ function AdminWorkspace() {
 
   useEffect(() => {
     setSideNavIsOpen(true);
+  }, [setSideNavIsOpen, workspaceId]);
+
+  const handleLoadWorkspace = () => {
+    setIsWorkspaceLoading(true);
+    setHasWorkspaceAccess(false);
+
+    return fetchWorkspaceAccess(workspaceId, workspace.id)
+      .then((isAccessibleWorkspace) => {
+        setHasWorkspaceAccess(isAccessibleWorkspace);
+        return isAccessibleWorkspace;
+      })
+      .finally(() => {
+        setIsWorkspaceLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    handleLoadWorkspace().catch(() => undefined);
   }, [workspaceId]);
 
   const isOnboardingCompleted = isWorkspaceOnboardingCompleted(workspace);
@@ -81,7 +99,7 @@ function AdminWorkspace() {
     .with({ isWorkspaceLoading: true }, () => <LoadingContainer>워크스페이스 정보를 불러오는 중입니다.</LoadingContainer>)
     .with({ hasWorkspaceAccess: false }, () => <LoadingContainer>워크스페이스 접근 권한을 확인하는 중입니다.</LoadingContainer>)
     .with({ isOnboardingVisible: true }, () => (
-      <AdminWorkspaceOnboarding workspace={workspace} onRefreshStatus={refreshWorkspaceAccess} onSkipOnboarding={handleSkipOnboarding} />
+      <AdminWorkspaceOnboarding workspace={workspace} onRefreshStatus={handleLoadWorkspace} onSkipOnboarding={handleSkipOnboarding} />
     ))
     .otherwise(() => (
       <>
