@@ -11,10 +11,6 @@ export default defineConfig({
     sentryVitePlugin({
       org: 'kioschool',
       project: 'kio-school',
-      authToken: process.env.SENTRY_AUTH_TOKEN,
-      sourcemaps: {
-        assets: './build/**',
-      },
       reactComponentAnnotation: {
         enabled: true,
       },
