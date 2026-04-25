@@ -62,7 +62,12 @@ export function setupApiInterceptors(
     }
   };
 
-  const handleRequestError = (error: AxiosError) => Promise.reject(error);
+  const handleRequestError = (error: AxiosError) => {
+    if (axios.isCancel(error) || error.code === 'ERR_CANCELED') {
+      return suppressUnhandled(error);
+    }
+    return Promise.reject(error);
+  };
 
   const handleResponse = (response: AxiosResponse) => {
     cleanupRequest(response.config);
