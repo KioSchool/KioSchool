@@ -14,9 +14,6 @@ const gitSha = (() => {
 })();
 
 export default defineConfig({
-  define: {
-    'import.meta.env.VITE_APP_VERSION': JSON.stringify(gitSha),
-  },
   plugins: [
     react(),
     tsconfigPaths(),

@@ -36,7 +36,6 @@ if (gaId) {
 Sentry.init({
   dsn: URLS.SENTRY_DSN,
   environment,
-  release: import.meta.env.VITE_APP_VERSION,
   integrations: [
     Sentry.reactRouterV6BrowserTracingIntegration({
       useEffect: React.useEffect,
