@@ -7,9 +7,13 @@ import * as Sentry from '@sentry/react';
 import React from 'react';
 import SentryErrorFallback from './components/common/fallback/SentryErrorFallback';
 import { URLS } from '@constants/urls';
+import type { SentryEnvironment } from '@constants/sentry';
+import { SENTRY_CONFIG } from '@constants/sentry';
 
-const environment = import.meta.env.VITE_ENVIRONMENT;
+const environment = import.meta.env.VITE_ENVIRONMENT as SentryEnvironment;
 const gaId = import.meta.env.VITE_GA_ID;
+
+const sentryRates = SENTRY_CONFIG.RATES_BY_ENV[environment] ?? SENTRY_CONFIG.RATES_BY_ENV.production;
 
 if (gaId) {
   const script = document.createElement('script');
@@ -31,7 +35,8 @@ if (gaId) {
 
 Sentry.init({
   dsn: URLS.SENTRY_DSN,
-  environment: environment,
+  environment,
+  release: import.meta.env.VITE_APP_VERSION,
   integrations: [
     Sentry.reactRouterV6BrowserTracingIntegration({
       useEffect: React.useEffect,
@@ -40,14 +45,12 @@ Sentry.init({
       createRoutesFromChildren,
       matchRoutes,
     }),
-    Sentry.consoleLoggingIntegration({ levels: ['warn', 'error'] }),
+    Sentry.consoleLoggingIntegration({ levels: [...SENTRY_CONFIG.CONSOLE_LEVELS] }),
     Sentry.replayIntegration(),
   ],
   enableLogs: true,
   sendDefaultPii: true,
-  replaysSessionSampleRate: environment === 'development' ? 0.5 : 0.2,
-  replaysOnErrorSampleRate: 1.0,
-  tracesSampleRate: environment === 'development' ? 0.3 : 0.2,
+  ...sentryRates,
   tracePropagationTargets: URLS.SENTRY_TRACE_PROPAGATION_TARGETS,
 });
 export const SentryRoutes = Sentry.withSentryReactRouterV6Routing(Routes);

@@ -130,8 +130,8 @@ function SentryTestPage() {
   const { userApi } = useApi();
 
   // 현재 환경 정보
-  const environment = import.meta.env.VITE_ENVIRONMENT || 'development';
-  const isDevelopment = environment === 'development';
+  const environment = import.meta.env.VITE_ENVIRONMENT || 'local';
+  const isDevelopment = environment === 'local';
 
   // Session Replay 상태 확인
   useEffect(() => {
