@@ -31,10 +31,11 @@ const LoadingContainer = styled.div`
 
 function AdminWorkspace() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchWorkspace, updateWorkspaceOnboarding } = useAdminWorkspace();
+  const { updateWorkspaceOnboarding, fetchWorkspaceAccess } = useAdminWorkspace();
   const workspace = useAtomValue(adminWorkspaceAtom);
   const setSideNavIsOpen = useSetAtom(adminSideNavIsOpenAtom);
   const [isWorkspaceLoading, setIsWorkspaceLoading] = useState(true);
+  const [hasWorkspaceAccess, setHasWorkspaceAccess] = useState(false);
   const isAutoCompletingOnboardingRef = useRef(false);
   const { ConfirmModal, confirm } = useConfirm({
     title: '온보딩 과정을 건너뛰시겠습니까?',
@@ -43,23 +44,39 @@ function AdminWorkspace() {
     cancelText: '취소',
   });
 
+  useEffect(() => {
+    setSideNavIsOpen(true);
+  }, [setSideNavIsOpen, workspaceId]);
+
   const handleLoadWorkspace = () => {
     setIsWorkspaceLoading(true);
+    setHasWorkspaceAccess(false);
 
-    return fetchWorkspace(workspaceId).finally(() => {
-      setIsWorkspaceLoading(false);
-    });
+    return fetchWorkspaceAccess(workspaceId, workspace.id)
+      .then((isAccessibleWorkspace) => {
+        setHasWorkspaceAccess(isAccessibleWorkspace);
+        return isAccessibleWorkspace;
+      })
+      .finally(() => {
+        setIsWorkspaceLoading(false);
+      });
   };
 
   useEffect(() => {
-    handleLoadWorkspace();
-    setSideNavIsOpen(true);
+    handleLoadWorkspace().catch(() => undefined);
   }, [workspaceId]);
 
   const isOnboardingCompleted = isWorkspaceOnboardingCompleted(workspace);
 
   useEffect(() => {
-    if (isWorkspaceLoading || workspace.id === 0 || !workspace.isOnboarding || !isOnboardingCompleted || isAutoCompletingOnboardingRef.current) {
+    if (
+      isWorkspaceLoading ||
+      !hasWorkspaceAccess ||
+      workspace.id === 0 ||
+      !workspace.isOnboarding ||
+      !isOnboardingCompleted ||
+      isAutoCompletingOnboardingRef.current
+    ) {
       return;
     }
 
@@ -68,7 +85,7 @@ function AdminWorkspace() {
     updateWorkspaceOnboarding(workspace.id, false).finally(() => {
       isAutoCompletingOnboardingRef.current = false;
     });
-  }, [isOnboardingCompleted, isWorkspaceLoading, updateWorkspaceOnboarding, workspace.id, workspace.isOnboarding]);
+  }, [hasWorkspaceAccess, isOnboardingCompleted, isWorkspaceLoading, updateWorkspaceOnboarding, workspace.id, workspace.isOnboarding]);
 
   const handleSkipOnboarding = async () => {
     const userInput = await confirm();
@@ -77,9 +94,10 @@ function AdminWorkspace() {
     return updateWorkspaceOnboarding(workspace.id, false);
   };
 
-  const isOnboardingVisible = !isWorkspaceLoading && workspace.isOnboarding && !isOnboardingCompleted;
-  const pageContent = match({ isWorkspaceLoading, isOnboardingVisible })
+  const isOnboardingVisible = hasWorkspaceAccess && !isWorkspaceLoading && workspace.isOnboarding && !isOnboardingCompleted;
+  const pageContent = match({ isWorkspaceLoading, hasWorkspaceAccess, isOnboardingVisible })
     .with({ isWorkspaceLoading: true }, () => <LoadingContainer>워크스페이스 정보를 불러오는 중입니다.</LoadingContainer>)
+    .with({ hasWorkspaceAccess: false }, () => <LoadingContainer>워크스페이스 접근 권한을 확인하는 중입니다.</LoadingContainer>)
     .with({ isOnboardingVisible: true }, () => (
       <AdminWorkspaceOnboarding workspace={workspace} onRefreshStatus={handleLoadWorkspace} onSkipOnboarding={handleSkipOnboarding} />
     ))
