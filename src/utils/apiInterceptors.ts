@@ -1,9 +1,24 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import * as Sentry from '@sentry/react';
+import { match } from 'ts-pattern';
 import { loadingManager } from './loadingManager';
 import { SENTRY_CONFIG } from '@constants/sentry';
 
 const TIMEOUT_BEFORE_SHOW_LOADING = 500;
+
+type ErrorCategory = 'cancel' | 'auth' | 'ignored-url' | 'normal';
+
+function categorize(error: AxiosError): ErrorCategory {
+  if (axios.isCancel(error) || error.code === 'ERR_CANCELED') return 'cancel';
+
+  const status = error.response?.status ?? 0;
+  if (status === 401 || status === 403) return 'auth';
+
+  const url = error.config?.url ?? '';
+  if (SENTRY_CONFIG.IGNORED_URL_PATTERNS.some((pattern) => url.includes(pattern))) return 'ignored-url';
+
+  return 'normal';
+}
 
 /**
  * Promise.reject를 호출자에게 전달하되, 인터셉터에서 한 번 catch를 부착해
@@ -17,6 +32,20 @@ function suppressUnhandled<T>(error: T): Promise<never> {
   const rejection = Promise.reject<never>(error);
   rejection.catch(() => {});
   return rejection;
+}
+
+function reportToSentry(error: AxiosError) {
+  Sentry.captureException(error, {
+    tags: {
+      errorType: 'apiError',
+      statusCode: error.response?.status ?? 0,
+    },
+    extra: {
+      url: error.config?.url ?? '',
+      method: error.config?.method,
+      responseData: error.response?.data,
+    },
+  });
 }
 
 /**
@@ -62,7 +91,7 @@ export function setupApiInterceptors(
     }
   };
 
-  const handleRequestError = (error: AxiosError) => {
+  const handleRequestError = (error: AxiosError): Promise<never> => {
     if (axios.isCancel(error) || error.code === 'ERR_CANCELED') {
       return suppressUnhandled(error);
     }
@@ -74,43 +103,21 @@ export function setupApiInterceptors(
     return response;
   };
 
-  const handleResponseError = (error: AxiosError) => {
-    if (error.config) {
-      cleanupRequest(error.config);
-    }
+  const handleResponseError = (error: AxiosError): Promise<never> => {
+    if (error.config) cleanupRequest(error.config);
 
-    // [#1] 의도된 axios 요청 취소는 항상 무시 + unhandled 차단
-    if (axios.isCancel(error) || error.code === 'ERR_CANCELED') {
-      return suppressUnhandled(error);
-    }
-
-    const status = error.response?.status ?? 0;
-    const url = error.config?.url ?? '';
-
-    // [#3] 401/403: 글로벌 처리 후 호출자에게 reject 전달 + unhandled 차단
-    if (status === 401 || status === 403) {
-      handleAuthError();
-      return suppressUnhandled(error);
-    }
-
-    // [#8] 헬스체크 등 의도된 폴링 endpoint는 Sentry 미전송
-    const isIgnoredUrl = SENTRY_CONFIG.IGNORED_URL_PATTERNS.some((pattern) => url.includes(pattern));
-
-    if (!isIgnoredUrl) {
-      Sentry.captureException(error, {
-        tags: {
-          errorType: 'apiError',
-          statusCode: status,
-        },
-        extra: {
-          url,
-          method: error.config?.method,
-          responseData: error.response?.data,
-        },
-      });
-    }
-
-    return Promise.reject(error);
+    return match(categorize(error))
+      .with('cancel', () => suppressUnhandled(error))
+      .with('auth', () => {
+        handleAuthError();
+        return suppressUnhandled(error);
+      })
+      .with('ignored-url', () => Promise.reject<never>(error))
+      .with('normal', () => {
+        reportToSentry(error);
+        return Promise.reject<never>(error);
+      })
+      .exhaustive();
   };
 
   api.interceptors.request.use(handleRequestStart, handleRequestError);
