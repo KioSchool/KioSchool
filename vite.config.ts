@@ -3,15 +3,6 @@ import { sentryVitePlugin } from '@sentry/vite-plugin';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
-import { execSync } from 'child_process';
-
-const gitSha = (() => {
-  try {
-    return execSync('git rev-parse HEAD').toString().trim();
-  } catch {
-    return 'unknown';
-  }
-})();
 
 export default defineConfig({
   plugins: [
@@ -21,7 +12,6 @@ export default defineConfig({
       org: 'kioschool',
       project: 'kio-school',
       authToken: process.env.SENTRY_AUTH_TOKEN,
-      release: { name: gitSha },
       sourcemaps: {
         assets: './build/**',
       },
