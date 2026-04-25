@@ -131,7 +131,7 @@ function SentryTestPage() {
 
   // 현재 환경 정보
   const environment = import.meta.env.VITE_ENVIRONMENT || 'local';
-  const isDevelopment = environment === 'local';
+  const isLocal = environment === 'local';
 
   // Session Replay 상태 확인
   useEffect(() => {
@@ -232,15 +232,15 @@ function SentryTestPage() {
       {/* 환경 정보 표시 */}
       <InfoBox
         style={{
-          background: isDevelopment ? '#fef3c7' : '#d1fae5',
-          borderColor: isDevelopment ? '#f59e0b' : '#10b981',
+          background: isLocal ? '#fef3c7' : '#d1fae5',
+          borderColor: isLocal ? '#f59e0b' : '#10b981',
         }}
       >
-        <InfoTitle style={{ color: isDevelopment ? '#92400e' : '#047857' }}>
+        <InfoTitle style={{ color: isLocal ? '#92400e' : '#047857' }}>
           🌍 현재 환경: {environment.toUpperCase()} | 🎬 Session Replay: {replayStatus}
         </InfoTitle>
-        <InfoText style={{ color: isDevelopment ? '#b45309' : '#059669' }}>
-          {isDevelopment ? '개발환경에서도 Sentry로 전송되어 테스트 가능합니다.' : '프로덕션 환경의 모든 에러가 Sentry로 전송됩니다.'}
+        <InfoText style={{ color: isLocal ? '#b45309' : '#059669' }}>
+          {isLocal ? '개발환경에서도 Sentry로 전송되어 테스트 가능합니다.' : '프로덕션 환경의 모든 에러가 Sentry로 전송됩니다.'}
         </InfoText>
       </InfoBox>
 
