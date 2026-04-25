@@ -7,7 +7,7 @@ import { execSync } from 'child_process';
 
 const gitSha = (() => {
   try {
-    return execSync('git rev-parse --short HEAD').toString().trim();
+    return execSync('git rev-parse HEAD').toString().trim();
   } catch {
     return 'unknown';
   }
