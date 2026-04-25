@@ -112,7 +112,7 @@ export function setupApiInterceptors(
         handleAuthError();
         return suppressUnhandled(error);
       })
-      .with('ignored-url', () => Promise.reject<never>(error))
+      .with('ignored-url', () => suppressUnhandled(error))
       .with('normal', () => {
         reportToSentry(error);
         return Promise.reject<never>(error);
