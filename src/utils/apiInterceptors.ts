@@ -95,10 +95,8 @@ export function setupApiInterceptors(
 
     // [#8] 헬스체크 등 의도된 폴링 endpoint는 Sentry 미전송
     const isIgnoredUrl = SENTRY_CONFIG.IGNORED_URL_PATTERNS.some((pattern) => url.includes(pattern));
-    // [#2] 비즈니스 에러 status code도 Sentry 미전송
-    const isIgnoredStatus = SENTRY_CONFIG.IGNORED_STATUS_CODES.has(status);
 
-    if (!isIgnoredUrl && !isIgnoredStatus) {
+    if (!isIgnoredUrl) {
       Sentry.captureException(error, {
         tags: {
           errorType: 'apiError',
