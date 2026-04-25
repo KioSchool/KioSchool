@@ -141,11 +141,15 @@ function OrderComplete() {
         return;
       }
 
-      const orderData = await fetchOrder(orderId);
-      setOrder(orderData);
+      try {
+        const orderData = await fetchOrder(orderId);
+        setOrder(orderData);
 
-      if (intervalId && (orderData.status === OrderStatus.SERVED || orderData.status === OrderStatus.CANCELLED || isOverOneDay(orderData.createdAt))) {
-        clearInterval(intervalId);
+        if (intervalId && (orderData.status === OrderStatus.SERVED || orderData.status === OrderStatus.CANCELLED || isOverOneDay(orderData.createdAt))) {
+          clearInterval(intervalId);
+        }
+      } catch {
+        // 폴링은 다음 회차에 자동 재시도. 일시적 네트워크 단절/타임아웃은 의도적 흡수.
       }
     };
 
