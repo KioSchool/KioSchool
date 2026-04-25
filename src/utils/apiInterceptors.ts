@@ -59,7 +59,7 @@ export function setupApiInterceptors(
       cleanupRequest(error.config);
     }
 
-    if (error.response?.status !== 403 && error.response?.status !== 401) {
+    if (error.response?.status !== 405 && error.response?.status !== 403 && error.response?.status !== 401) {
       Sentry.captureException(error, {
         tags: {
           errorType: 'apiError',
@@ -73,7 +73,7 @@ export function setupApiInterceptors(
       });
     }
 
-    if (error.response?.status === 403) {
+    if (error.response?.status === 401 || error.response?.status === 403) {
       handleAuthError();
     }
 

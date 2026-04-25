@@ -1,9 +1,12 @@
 import useApi from '@hooks/useApi';
 import { Workspace } from '@@types/index';
+import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { useSetAtom } from 'jotai';
-import { getAdminWorkspacePath } from '@constants/routes';
+import { ADMIN_ROUTES, getAdminWorkspacePath } from '@constants/routes';
+
+const INVALID_WORKSPACE_ALERT_MESSAGE = '접근할 수 없는 워크스페이스입니다.';
 
 function useAdminWorkspace() {
   const { adminApi } = useApi();
@@ -36,6 +39,28 @@ function useAdminWorkspace() {
       .catch((error) => {
         console.error(error.response.data.message);
         throw error;
+      });
+  };
+
+  const fetchWorkspaceAccess = (workspaceId: string | undefined | null, fallbackWorkspaceId?: number) => {
+    if (!workspaceId) {
+      navigate(ADMIN_ROUTES.HOME, { replace: true });
+      return Promise.resolve(false);
+    }
+
+    return fetchWorkspace(workspaceId)
+      .then((loadedWorkspace) => !!loadedWorkspace && String(loadedWorkspace.id) === workspaceId)
+      .catch((error: AxiosError) => {
+        if (error.response?.status === 405) {
+          const fallbackPath =
+            fallbackWorkspaceId && String(fallbackWorkspaceId) !== workspaceId ? getAdminWorkspacePath(fallbackWorkspaceId) : ADMIN_ROUTES.HOME;
+
+          alert(INVALID_WORKSPACE_ALERT_MESSAGE);
+          navigate(fallbackPath, { replace: true });
+          return false;
+        }
+
+        return false;
       });
   };
 
@@ -120,6 +145,7 @@ function useAdminWorkspace() {
 
   return {
     fetchWorkspace,
+    fetchWorkspaceAccess,
     updateWorkspaceTableCount,
     updateWorkspaceOrderSetting,
     updateWorkspaceInfoAndImage,
