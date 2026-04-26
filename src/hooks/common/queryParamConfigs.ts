@@ -7,7 +7,7 @@ export const dateQueryParamConfig: TypedQueryParamConfig<Date> = {
   key: 'date',
   parse: (raw) => {
     if (!raw) return null;
-    
+
     const parsed = parse(raw, DATE_FORMAT, new Date());
     return isValid(parsed) ? parsed : null;
   },
