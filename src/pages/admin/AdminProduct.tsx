@@ -1,18 +1,21 @@
 import { useEffect } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
+import useAdminProductDnd from '@hooks/admin/useAdminProductDnd';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { useAtomValue, useSetAtom } from 'jotai';
-import { adminCategoriesAtom, adminProductsAtom, externalSidebarAtom } from '@jotai/admin/atoms';
+import { useSetAtom } from 'jotai';
+import { externalSidebarAtom } from '@jotai/admin/atoms';
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
 import useConfirm from '@hooks/useConfirm';
 import AppContainer from '@components/common/container/AppContainer';
 import NewCommonButton from '@components/common/button/NewCommonButton';
-import ProductCard from '@components/admin/product/ProductCard';
 import RightSidebarModal from '@components/common/modal/RightSidebarModal';
 import ProductAdd from '@components/admin/product/ProductAdd';
 import ProductEdit from '@components/admin/product/ProductEdit';
+import { closestCenter, DndContext, DragOverlay } from '@dnd-kit/core';
+import ProductDroppableContainer from '@components/admin/product/ProductDroppableContainer';
+import ProductCard from '@components/admin/product/ProductCard';
 
 const Container = styled.div`
   width: 100%;
@@ -22,55 +25,37 @@ const Container = styled.div`
 `;
 
 const ProductAddButtonContainer = styled.div`
-  width: 1000px;
-  padding-bottom: 24px;
-  ${colFlex({ align: 'end' })}
-`;
-
-const ProductContainer = styled.div`
-  box-sizing: border-box;
   width: 95%;
-  padding: 18px 30px;
-  gap: 10px;
-  border: 1px solid #e8eef2;
-  border-radius: 16px;
-  background: #ffffff50;
-  box-shadow: 0 4px 20px 0 rgba(92, 92, 92, 0.05) outset;
-  ${colFlex({ justify: 'center', align: 'center' })};
+  padding-bottom: 24px;
+  ${rowFlex({ justify: 'space-between', align: 'end' })}
 `;
 
-const CategoryTitle = styled.div`
-  font-size: 16px;
-  font-weight: 700;
-  width: 100%;
-`;
+const DragHintText = styled.div`
+  font-size: 14px;
+  color: #8e9599;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 
-const ProductCardsContainer = styled.div`
-  gap: 8px;
-  width: 100%;
-  overflow-x: auto;
-  flex-wrap: nowrap;
-  padding-bottom: 4px;
-  ${rowFlex({ justify: 'start', align: 'center' })};
-`;
-
-const EmptyContainer = styled.div`
-  width: 100%;
-  height: 220px;
-  ${rowFlex({ justify: 'center', align: 'center' })};
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #ff6b00;
+  }
 `;
 
 function AdminProduct() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const location = useLocation();
-  const { fetchProducts, fetchCategories, deleteProduct } = useAdminProducts(workspaceId); // [추가] deleteProduct 가져오기
-  const products = useAtomValue(adminProductsAtom);
-  const rawCategories = useAtomValue(adminCategoriesAtom);
-  const categories = [...rawCategories, { id: null, name: '기본메뉴' }];
+
+  const { fetchProducts, fetchCategories, deleteProduct } = useAdminProducts(workspaceId);
+  const { products, categories, activeProduct, sensors, handleDragStart, handleDragOver, handleDragEnd } = useAdminProductDnd(workspaceId);
 
   const setExternalSidebar = useSetAtom(externalSidebarAtom);
 
-  //TODO : useConfirm hook 수정 여부
   const { ConfirmModal, confirm } = useConfirm({
     title: `해당 상품을 삭제하시겠습니까?`,
     description: '확인 후 되돌릴 수 없습니다.',
@@ -117,25 +102,26 @@ function AdminProduct() {
     <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })}>
       <Container>
         <ProductAddButtonContainer>
+          <DragHintText>상품 카드를 드래그하여 순서를 변경하거나 카테고리를 변경할 수 있습니다.</DragHintText>
           <NewCommonButton size="sm" onClick={handleOpenAddProduct}>
             상품 추가
           </NewCommonButton>
         </ProductAddButtonContainer>
-        {categories.map((category) => (
-          <ProductContainer key={category.id || 'default'} className={'products-container'}>
-            <CategoryTitle>{category.name}</CategoryTitle>
-            <ProductCardsContainer className={'product-cards-container'}>
-              {products
-                .filter((product) => (product.productCategory?.id || null) === category.id)
-                .map((product) => (
-                  <ProductCard key={product.id} product={product} onClick={() => handleOpenEditProduct(product.id)} />
-                ))}
-              {products.filter((product) => (product.productCategory?.id || null) === category.id).length === 0 && (
-                <EmptyContainer className={'product-empty-container'}>등록된 상품이 없습니다.</EmptyContainer>
-              )}
-            </ProductCardsContainer>
-          </ProductContainer>
-        ))}
+
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={handleDragStart} onDragOver={handleDragOver} onDragEnd={handleDragEnd}>
+          {categories.map((category) => (
+            <ProductDroppableContainer
+              key={category.id || 'default'}
+              categoryId={category.id}
+              categoryName={category.name}
+              products={products.filter((p) => (p.productCategory?.id || null) === category.id)}
+              onProductClick={handleOpenEditProduct}
+            />
+          ))}
+
+          <DragOverlay>{activeProduct ? <ProductCard product={activeProduct} showStatusSelector={false} /> : null}</DragOverlay>
+        </DndContext>
+
         <RightSidebarModal useExternalControl={{ location: location }} />
         <ConfirmModal />
       </Container>
