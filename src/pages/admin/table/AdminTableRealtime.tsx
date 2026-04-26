@@ -10,11 +10,13 @@ import AppContainer from '@components/common/container/AppContainer';
 import RightSidebarModal from '@components/common/modal/RightSidebarModal';
 import styled from '@emotion/styled';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
+import useQueryParam from '@hooks/common/useQueryParam';
+import { tableNoQueryParamConfig } from '@hooks/common/queryParamConfigs';
 import useTableOrders from '@hooks/admin/useTableOrders';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useEffect, useState } from 'react';
-import { useParams, useSearchParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { adminWorkspaceAtom, externalSidebarAtom } from '@jotai/admin/atoms';
 import { RIGHT_SIDEBAR_ACTION, Table } from '@@types/index';
@@ -80,8 +82,7 @@ const FallbackContainer = styled.div`
 
 function AdminTableRealtime() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const [searchParams] = useSearchParams();
-  const tableNo = searchParams.get('tableNo');
+  const { value: tableNo } = useQueryParam(tableNoQueryParamConfig);
   const { fetchWorkspaceTables } = useAdminWorkspace();
   const workspace = useAtomValue(adminWorkspaceAtom);
 

@@ -1,6 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import { format, differenceInMinutes } from 'date-fns';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
+import useQueryParam from '@hooks/common/useQueryParam';
+import { dateQueryParamConfig } from '@hooks/common/queryParamConfigs';
 import { OrderSessionWithOrder } from '@@types/index';
 import { MIN_VALID_SESSION_MINUTES } from '@components/admin/order/timeline/timelineConstants';
 import { adminWorkspaceAtom } from '@jotai/admin/atoms';
@@ -29,7 +31,7 @@ export const useAdminFetchTableSessionTimeline = (workspaceId: string | undefine
   const { fetchOrderSessions } = useAdminOrder(workspaceId);
   const workspace = useAtomValue(adminWorkspaceAtom);
 
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const { value: selectedDate, setValue: setSelectedDate } = useQueryParam(dateQueryParamConfig);
   const [sessions, setSessions] = useState<OrderSessionWithOrder[]>([]);
   const [currentTime, setCurrentTime] = useState<Date>(new Date());
   const [isLoading, setIsLoading] = useState(false);
