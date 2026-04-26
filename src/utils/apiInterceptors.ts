@@ -12,7 +12,7 @@ function categorize(error: AxiosError): ErrorCategory {
   if (axios.isCancel(error) || error.code === 'ERR_CANCELED') return 'cancel';
 
   const status = error.response?.status ?? 0;
-  if (status === 401 || status === 403) return 'auth';
+  if (status === 401 || status === 403 || status === 405) return 'auth';
 
   const url = error.config?.url ?? '';
   if (SENTRY_CONFIG.IGNORED_URL_PATTERNS.some((pattern) => url.includes(pattern))) return 'ignored-url';
@@ -109,7 +109,9 @@ export function setupApiInterceptors(
     return match(categorize(error))
       .with('cancel', () => suppressUnhandled(error))
       .with('auth', () => {
-        handleAuthError();
+        const status = error.response?.status ?? 0;
+        // 405는 access-guard 자리에서 로컬 처리 (master PR #452). 글로벌 로그아웃 이벤트는 401/403만.
+        if (status === 401 || status === 403) handleAuthError();
         return suppressUnhandled(error);
       })
       .with('ignored-url', () => suppressUnhandled(error))
