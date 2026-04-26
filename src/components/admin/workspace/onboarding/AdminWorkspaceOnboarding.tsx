@@ -2,13 +2,21 @@ import styled from '@emotion/styled';
 import { RiRefreshLine } from '@remixicon/react';
 import { Workspace } from '@@types/index';
 import NewCommonButton from '@components/common/button/NewCommonButton';
-import OnboardingContainer from '@components/onboarding/OnboardingContainer';
 import OnboardingHeader from '@components/onboarding/OnboardingHeader';
 import { OnboardingColor } from '@resources/colors';
-import { rowFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { getInitialOnboardingStep } from '@utils/onboarding';
 import OnboardingProgress from './OnboardingProgress';
 import OnboardingStepList from './OnboardingStepList';
+
+const Container = styled.div`
+  width: 100%;
+  max-width: 880px;
+  padding: 12px 0 72px;
+  box-sizing: border-box;
+  gap: 22px;
+  ${colFlex({ align: 'center' })}
+`;
 
 const ActionsRow = styled.div`
   width: 100%;
@@ -48,7 +56,7 @@ function AdminWorkspaceOnboarding({ workspace, onRefreshStatus, onSkipOnboarding
   const currentStep = getInitialOnboardingStep(workspace);
 
   return (
-    <OnboardingContainer>
+    <Container>
       <OnboardingHeader
         eyebrow="WORKSPACE ONBOARDING"
         title="온보딩이 완료될 때까지 이 화면에서 진행 상황을 안내합니다"
@@ -69,7 +77,7 @@ function AdminWorkspaceOnboarding({ workspace, onRefreshStatus, onSkipOnboarding
         </NewCommonButton>
       </ActionsRow>
       <OnboardingStepList workspace={workspace} currentStep={currentStep} />
-    </OnboardingContainer>
+    </Container>
   );
 }
 
