@@ -3,7 +3,7 @@ import useAdminUser from '@hooks/admin/useAdminUser';
 import AppContainer from '@components/common/container/AppContainer';
 import AddWorkspace from '@components/common/workspace/AddWorkspace';
 import WorkspaceContent from '@components/admin/workspace/WorkspaceContent';
-import AdminHomeAccountOnboarding from '@components/admin/home/AdminHomeAccountOnboarding';
+import HomeOnboarding from '@components/admin/home/HomeOnboarding';
 import { colFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
 import { adminUserAtom, adminWorkspacesAtom } from '@jotai/admin/atoms';
@@ -29,7 +29,7 @@ function AdminHome() {
   if (!isAccountRegistered) {
     return (
       <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} customGap={'30px'}>
-        <AdminHomeAccountOnboarding />
+        <HomeOnboarding />
       </AppContainer>
     );
   }

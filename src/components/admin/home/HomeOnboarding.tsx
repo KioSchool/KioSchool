@@ -1,45 +1,11 @@
 import styled from '@emotion/styled';
 import NewCommonButton from '@components/common/button/NewCommonButton';
+import OnboardingContainer from '@components/onboarding/OnboardingContainer';
+import OnboardingHeader from '@components/onboarding/OnboardingHeader';
 import { ADMIN_ROUTES } from '@constants/routes';
 import { OnboardingColor } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useNavigate } from 'react-router-dom';
-
-const Container = styled.div`
-  width: 100%;
-  max-width: 880px;
-  padding: 12px 0 72px;
-  box-sizing: border-box;
-  gap: 22px;
-  ${colFlex({ align: 'center' })}
-`;
-
-const Header = styled.div`
-  width: 100%;
-  gap: 8px;
-  ${colFlex({ align: 'start' })}
-`;
-
-const Eyebrow = styled.div`
-  color: ${OnboardingColor.EYEBROW_TEXT};
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-`;
-
-const Title = styled.h1`
-  margin: 0;
-  color: ${OnboardingColor.TITLE_TEXT};
-  font-size: 18px;
-  line-height: 1.2;
-`;
-
-const Description = styled.p`
-  margin: 0;
-  color: ${OnboardingColor.BODY_TEXT};
-  font-size: 14px;
-  line-height: 1.7;
-`;
 
 const HighlightCard = styled.div`
   width: 100%;
@@ -71,7 +37,7 @@ const ActionRow = styled.div`
   ${rowFlex({ justify: 'start', align: 'center' })}
 `;
 
-function AdminHomeAccountOnboarding() {
+function HomeOnboarding() {
   const navigate = useNavigate();
 
   const handleMoveRegisterAccount = () => {
@@ -79,12 +45,12 @@ function AdminHomeAccountOnboarding() {
   };
 
   return (
-    <Container>
-      <Header>
-        <Eyebrow>ACCOUNT SETUP</Eyebrow>
-        <Title>계좌를 먼저 등록해야 주점을 생성하고 운영할 수 있습니다</Title>
-        <Description>계좌 정보를 등록하면 주문 결제 안내에 필요한 정보가 연결되고, 그 다음부터 주점을 추가해 운영을 시작할 수 있습니다.</Description>
-      </Header>
+    <OnboardingContainer>
+      <OnboardingHeader
+        eyebrow="ACCOUNT SETUP"
+        title="계좌를 먼저 등록해야 주점을 생성하고 운영할 수 있습니다"
+        description="계좌 정보를 등록하면 주문 결제 안내에 필요한 정보가 연결되고, 그 다음부터 주점을 추가해 운영을 시작할 수 있습니다."
+      />
 
       <HighlightCard>
         <StepTitle>계좌 정보를 등록해주세요</StepTitle>
@@ -95,8 +61,8 @@ function AdminHomeAccountOnboarding() {
           </NewCommonButton>
         </ActionRow>
       </HighlightCard>
-    </Container>
+    </OnboardingContainer>
   );
 }
 
-export default AdminHomeAccountOnboarding;
+export default HomeOnboarding;
