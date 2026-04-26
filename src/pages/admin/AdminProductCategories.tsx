@@ -6,8 +6,6 @@ import { useParams } from 'react-router-dom';
 import CategoryDragAndDropContent from '@components/admin/product-category/CategoryDragAndDropContent';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import { adminCategoriesAtom } from '@jotai/admin/atoms';
-import { useAtomValue } from 'jotai';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 
 const Container = styled.div`
@@ -60,16 +58,10 @@ const CategoryInput = styled.input`
   }
 `;
 
-const CategoriesButtonContainer = styled.div`
-  padding-top: 64px;
-  ${rowFlex({ justify: 'center' })}
-`;
-
 function AdminProductCategories() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { addCategory, reorderCategories } = useAdminProducts(workspaceId);
+  const { addCategory } = useAdminProducts(workspaceId);
   const categoryInputRef = useRef<HTMLInputElement>(null);
-  const rawCategories = useAtomValue(adminCategoriesAtom);
 
   const addCategoryHandler = () => {
     const userInput = categoryInputRef.current?.value;
@@ -81,11 +73,6 @@ function AdminProductCategories() {
 
     addCategory(userInput);
     if (categoryInputRef.current) categoryInputRef.current.value = '';
-  };
-
-  const saveCategory = () => {
-    const categoriesId = rawCategories.map((itm) => itm.id);
-    reorderCategories(categoriesId);
   };
 
   return (
@@ -105,12 +92,6 @@ function AdminProductCategories() {
           <SectionTitle>카테고리 순서</SectionTitle>
           <CategoryDragAndDropContent />
         </CategoriesItemContainer>
-
-        <CategoriesButtonContainer className={'categories-button-container'}>
-          <NewCommonButton onClick={saveCategory} size="sm">
-            편집 완료
-          </NewCommonButton>
-        </CategoriesButtonContainer>
       </Container>
     </AppContainer>
   );
