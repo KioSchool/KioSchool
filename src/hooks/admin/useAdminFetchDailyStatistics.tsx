@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
+import useQueryParam from '@hooks/common/useQueryParam';
+import { dateQueryParamConfig } from '@hooks/common/queryParamConfigs';
 import useApi from '@hooks/useApi';
 import { DailyStatistics } from '@@types/index';
 
 export const useAdminFetchDailyStatistics = (workspaceId: string | undefined) => {
   const { adminApi } = useApi();
 
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const { value: selectedDate, setValue: setSelectedDate } = useQueryParam(dateQueryParamConfig);
   const [statistics, setStatistics] = useState<DailyStatistics | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
