@@ -31,6 +31,7 @@ import { ToastContainer } from 'react-toastify';
 import useNetworkStatusNotifier from '@hooks/useNetworkStatusNotifier';
 import useServerHealth from '@hooks/useServerHealth';
 import useScrollToTop from '@hooks/useScrollToTop';
+import useSentryContext from '@hooks/common/useSentryContext';
 import ServerErrorFallback from '@components/common/fallback/ServerErrorFallback';
 import OrderWait from '@pages/user/order/OrderWait';
 import AdminTotalOrder from '@pages/admin/order/AdminTotalOrder';
@@ -43,6 +44,7 @@ import Info from '@pages/user/info/Info';
 import PcOnlyLayout from '@components/common/layout/PcOnlyLayout';
 
 function App() {
+  useSentryContext();
   useNetworkStatusNotifier();
   useScrollToTop();
   const { isServerHealthy, isChecking, error, manualRetry } = useServerHealth();
