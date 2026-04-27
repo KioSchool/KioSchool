@@ -16,6 +16,7 @@ import ProductEdit from '@components/admin/product/ProductEdit';
 import { closestCenter, DndContext, DragOverlay } from '@dnd-kit/core';
 import ProductDroppableContainer from '@components/admin/product/ProductDroppableContainer';
 import ProductCard from '@components/admin/product/ProductCard';
+import { Color } from '@resources/colors';
 
 const Container = styled.div`
   width: 100%;
@@ -33,9 +34,8 @@ const ProductAddButtonContainer = styled.div`
 const DragHintText = styled.div`
   font-size: 14px;
   color: #8e9599;
-  display: flex;
-  align-items: center;
   gap: 6px;
+  ${rowFlex({ align: 'center' })}
 
   &::before {
     content: '';
@@ -43,7 +43,7 @@ const DragHintText = styled.div`
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background-color: #ff6b00;
+    background-color: ${Color.KIO_ORANGE};
   }
 `;
 
