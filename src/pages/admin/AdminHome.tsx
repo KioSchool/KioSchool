@@ -23,7 +23,8 @@ function AdminHome() {
   const isAccountRegistered = !!user.account?.accountNumber;
 
   useEffect(() => {
-    Promise.allSettled([fetchWorkspaces(), fetchAdminUser()]).finally();
+    fetchWorkspaces();
+    fetchAdminUser();
   }, []);
 
   if (!isAccountRegistered) {
