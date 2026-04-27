@@ -30,10 +30,10 @@ const ProductCardsContainer = styled.div<{ isOver: boolean }>`
   flex-wrap: nowrap;
   padding-bottom: 4px;
   min-height: 220px;
-  ${rowFlex({ justify: 'start', align: 'center' })};
   background-color: ${({ isOver }) => (isOver ? 'rgba(0, 0, 0, 0.02)' : 'transparent')};
   transition: background-color 0.2s ease;
   border-radius: 16px;
+  ${rowFlex({ justify: 'start', align: 'center' })};
 `;
 
 const EmptyContainer = styled.div`
