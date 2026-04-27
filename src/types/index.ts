@@ -76,7 +76,7 @@ export interface Product {
   id: number;
   createdAt: string;
   updatedAt: string;
-  productCategory: ProductCategory;
+  productCategory: ProductCategory | null;
 }
 
 export interface ProductCategory {

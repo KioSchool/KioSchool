@@ -7,7 +7,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import { Color } from '@resources/colors';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
-import { userOrderBasketAtom, userWorkspaceAtom } from '@jotai/user/atoms';
+import { userOrderBasketAtom, userProductsAtom, userWorkspaceAtom } from '@jotai/user/atoms';
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect, useMemo } from 'react';
 import useOrder from '@hooks/user/useOrder';
@@ -69,31 +69,11 @@ const ProductCounterBadgeContainer = styled.div`
 
 function OrderBasket() {
   const workspace = useAtomValue(userWorkspaceAtom);
+  const products = useAtomValue(userProductsAtom);
   const [orderBasket, setOrderBasket] = useAtom(userOrderBasketAtom);
   const productsMap = useMemo(() => {
-    return _.keyBy(workspace.products, 'id');
-  }, [workspace.products]);
-
-  // todo type error로 인해 추가한 코드, 추후 제거 필요
-  const invalidItems = orderBasket.filter((item) => !productsMap[item.productId]);
-  if (invalidItems.length > 0) {
-    console.error(
-      '장바구니에서 유효하지 않은 상품이 감지되어 제거되었습니다.',
-      JSON.stringify(
-        {
-          제거된_상품: invalidItems,
-          현재_장바구니_상태: orderBasket,
-          현재_상품_목록_ID: Object.keys(productsMap),
-          Workspace: workspace,
-          ProductsMap: productsMap,
-        },
-        null,
-        2,
-      ),
-    );
-    const validBasket = orderBasket.filter((item) => productsMap[item.productId]);
-    setOrderBasket(validBasket);
-  }
+    return _.keyBy(products, 'id');
+  }, [products]);
 
   const totalAmount = orderBasket.reduce((acc, cur) => {
     return acc + productsMap[cur.productId].price * cur.quantity;
