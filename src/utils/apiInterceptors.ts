@@ -1,8 +1,52 @@
-import { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { loadingManager } from './loadingManager';
+import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import * as Sentry from '@sentry/react';
+import { match } from 'ts-pattern';
+import { loadingManager } from './loadingManager';
+import { SENTRY_CONFIG } from '@constants/sentry';
 
 const TIMEOUT_BEFORE_SHOW_LOADING = 500;
+
+type ErrorCategory = 'cancel' | 'auth' | 'ignored-url' | 'normal';
+
+function categorize(error: AxiosError): ErrorCategory {
+  if (axios.isCancel(error) || error.code === 'ERR_CANCELED') return 'cancel';
+
+  const status = error.response?.status ?? 0;
+  if (status === 401 || status === 403 || status === 405) return 'auth';
+
+  const url = error.config?.url ?? '';
+  if (SENTRY_CONFIG.IGNORED_URL_PATTERNS.some((pattern) => url.includes(pattern))) return 'ignored-url';
+
+  return 'normal';
+}
+
+/**
+ * Promise.reject를 호출자에게 전달하되, 인터셉터에서 한 번 catch를 부착해
+ * unhandled rejection으로 분류되지 않게 한다.
+ *
+ * (Promise.reject 직후 동기적으로 .catch를 부착하므로 microtask 종료 시점에
+ * 핸들러가 이미 부착된 상태 → 브라우저가 unhandled로 분류하지 않음.
+ * 호출자가 추가 .catch를 부착해도 정상 동작.)
+ */
+function suppressUnhandled<T>(error: T): Promise<never> {
+  const rejection = Promise.reject<never>(error);
+  rejection.catch(() => {});
+  return rejection;
+}
+
+function reportToSentry(error: AxiosError) {
+  Sentry.captureException(error, {
+    tags: {
+      errorType: 'apiError',
+      statusCode: error.response?.status ?? 0,
+    },
+    extra: {
+      url: error.config?.url ?? '',
+      method: error.config?.method,
+      responseData: error.response?.data,
+    },
+  });
+}
 
 /**
  * 공통 인터셉터 설정 함수
@@ -47,37 +91,35 @@ export function setupApiInterceptors(
     }
   };
 
-  const handleRequestError = (error: AxiosError) => Promise.reject(error);
+  const handleRequestError = (error: AxiosError): Promise<never> => {
+    if (axios.isCancel(error) || error.code === 'ERR_CANCELED') {
+      return suppressUnhandled(error);
+    }
+    return Promise.reject(error);
+  };
 
   const handleResponse = (response: AxiosResponse) => {
     cleanupRequest(response.config);
     return response;
   };
 
-  const handleResponseError = (error: AxiosError) => {
-    if (error.config) {
-      cleanupRequest(error.config);
-    }
+  const handleResponseError = (error: AxiosError): Promise<never> => {
+    if (error.config) cleanupRequest(error.config);
 
-    if (error.response?.status !== 405 && error.response?.status !== 403 && error.response?.status !== 401) {
-      Sentry.captureException(error, {
-        tags: {
-          errorType: 'apiError',
-          statusCode: error.response?.status,
-        },
-        extra: {
-          url: error.config?.url,
-          method: error.config?.method,
-          responseData: error.response?.data,
-        },
-      });
-    }
-
-    if (error.response?.status === 401 || error.response?.status === 403) {
-      handleAuthError();
-    }
-
-    return Promise.reject(error);
+    return match(categorize(error))
+      .with('cancel', () => suppressUnhandled(error))
+      .with('auth', () => {
+        const status = error.response?.status ?? 0;
+        // 405는 access-guard 자리에서 로컬 처리 (master PR #452). 글로벌 로그아웃 이벤트는 401/403만.
+        if (status === 401 || status === 403) handleAuthError();
+        return suppressUnhandled(error);
+      })
+      .with('ignored-url', () => suppressUnhandled(error))
+      .with('normal', () => {
+        reportToSentry(error);
+        return Promise.reject<never>(error);
+      })
+      .exhaustive();
   };
 
   api.interceptors.request.use(handleRequestStart, handleRequestError);
