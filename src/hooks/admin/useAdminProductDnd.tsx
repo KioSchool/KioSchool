@@ -105,7 +105,7 @@ function useAdminProductDnd(workspaceId: string | undefined) {
           // 동작하지 않는 문제를 해결하기 위해 해당 아이템을 무조건 현재 카테고리의 가장 마지막으로 이동시킵니다.
           const activeCategoryId = finalItems[activeIndex]?.productCategory?.id || null;
           const targetItems = finalItems.filter((p) => (p.productCategory?.id || null) === activeCategoryId);
-          
+
           if (targetItems.length > 0) {
             const lastTargetItem = targetItems[targetItems.length - 1];
             const lastTargetIndex = finalItems.findIndex((p) => p.id === lastTargetItem.id);
