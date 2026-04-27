@@ -14,7 +14,7 @@ import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import WorkspaceNotice from '@components/user/order/WorkspaceNotice';
 import OrderProductContent from './OrderProductContent';
 import { useAtomValue } from 'jotai';
-import { userCategoriesAtom, userOrderBasketAtom, userWorkspaceAtom } from '@jotai/user/atoms';
+import { userCategoriesAtom, userOrderBasketAtom, userProductsAtom, userWorkspaceAtom } from '@jotai/user/atoms';
 
 const Container = styled.div`
   width: 100%;
@@ -55,11 +55,12 @@ function Order() {
   const workspace = useAtomValue(userWorkspaceAtom);
   const isShowNotice = workspace.notice.length > 0;
   const rawProductCategories = useAtomValue(userCategoriesAtom);
-  const sellableProducts = workspace.products.filter((it) => it.status === ProductStatus.SELLING);
+  const rawProducts = useAtomValue(userProductsAtom);
+  const sellableProducts = rawProducts.filter((it) => it.status === ProductStatus.SELLING);
 
   const productsByCategoryId = _.groupBy<Product>(sellableProducts, (product) => product.productCategory?.id);
 
-  const productsMap = _.keyBy(workspace.products, 'id');
+  const productsMap = _.keyBy(rawProducts, 'id');
 
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
@@ -67,7 +68,7 @@ function Order() {
   const isPreview = searchParams.get('preview') === 'true';
 
   const { fetchWorkspace } = useWorkspace();
-  const { fetchCategories } = useProduct(workspaceId);
+  const { fetchCategories, fetchProducts } = useProduct(workspaceId);
   const navigate = useNavigate();
   const orderBasket = useAtomValue(userOrderBasketAtom);
   const totalAmount = orderBasket.reduce((acc, cur) => {
@@ -80,6 +81,7 @@ function Order() {
   useEffect(() => {
     fetchWorkspace(workspaceId);
     fetchCategories();
+    fetchProducts();
 
     const updateStickyNavBarVisibility = () => {
       if (!headerRef.current) return;

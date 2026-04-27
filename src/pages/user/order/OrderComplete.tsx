@@ -135,17 +135,41 @@ function OrderComplete() {
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout | null = null;
+    let terminated = false;
+
+    const stopPolling = () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+      }
+    };
 
     const pollOrder = async () => {
-      if (!orderId) {
-        return;
-      }
+      if (!orderId) return;
 
       const orderData = await fetchOrder(orderId);
       setOrder(orderData);
 
-      if (intervalId && (orderData.status === OrderStatus.SERVED || orderData.status === OrderStatus.CANCELLED || isOverOneDay(orderData.createdAt))) {
-        clearInterval(intervalId);
+      if (orderData.status === OrderStatus.SERVED || orderData.status === OrderStatus.CANCELLED || isOverOneDay(orderData.createdAt)) {
+        terminated = true;
+        stopPolling();
+      }
+    };
+
+    const startPolling = () => {
+      if (intervalId || terminated) return;
+      intervalId = setInterval(pollOrder, fetchIntervalTime);
+    };
+
+    // 백그라운드 탭에서는 모바일 OS가 fetch를 throttle/abort 하므로 폴링 자체를 멈춘다.
+    const handleVisibilityChange = () => {
+      if (terminated) return;
+
+      if (document.hidden) {
+        stopPolling();
+      } else {
+        pollOrder();
+        startPolling();
       }
     };
 
@@ -155,16 +179,18 @@ function OrderComplete() {
       return;
     }
 
-    pollOrder();
-    intervalId = setInterval(pollOrder, fetchIntervalTime);
+    if (!document.hidden) {
+      pollOrder();
+      startPolling();
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     resetOrderBasket();
     allowPullToRefresh();
 
     return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
+      stopPolling();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [orderId]);
 

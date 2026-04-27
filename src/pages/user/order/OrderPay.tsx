@@ -9,7 +9,7 @@ import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import OrderPayRadio from '@components/user/order/OrderPayRadio';
 import OrderPayDescription from '@components/user/order/OrderPayDescription';
 import { HttpStatusCode } from 'axios';
-import { userOrderBasketAtom, userWorkspaceAtom } from '@jotai/user/atoms';
+import { userOrderBasketAtom, userProductsAtom, userWorkspaceAtom } from '@jotai/user/atoms';
 import { useAtom, useAtomValue } from 'jotai';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import usePreventRefresh from '@hooks/usePreventRefresh';
@@ -40,8 +40,9 @@ const ContentsContainer = styled.div`
 
 function OrderPay() {
   const workspace = useAtomValue(userWorkspaceAtom);
+  const products = useAtomValue(userProductsAtom);
   const [orderBasket, setOrderBasket] = useAtom(userOrderBasketAtom);
-  const productsMap = _.keyBy(workspace.products, 'id');
+  const productsMap = _.keyBy(products, 'id');
   const totalAmount = orderBasket.reduce((acc, cur) => {
     return acc + productsMap[cur.productId].price * cur.quantity;
   }, 0);

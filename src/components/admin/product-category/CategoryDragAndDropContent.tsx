@@ -28,7 +28,7 @@ const FixedItemWrapper = styled.div`
 
 function CategoryDragAndDropContent() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { fetchCategories } = useAdminProducts(workspaceId);
+  const { fetchCategories, reorderCategories } = useAdminProducts(workspaceId);
   const [categories, setCategories] = useAtom(adminCategoriesAtom);
   const [activeId, setActiveId] = useState(null);
 
@@ -59,6 +59,8 @@ function CategoryDragAndDropContent() {
     if (oldIndex !== newIndex) {
       const newList = arrayMove(categories, oldIndex, newIndex);
       setCategories(newList);
+      const categoriesId = newList.map((itm) => itm.id);
+      reorderCategories(categoriesId);
     }
   };
 

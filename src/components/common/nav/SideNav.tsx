@@ -103,15 +103,6 @@ function SideNav({ isOpen }: SideNavProps) {
     return currentPath === path;
   };
 
-  const buildNavPath = (path: string, defaultQuery?: Record<string, string>): string => {
-    const fullPath = `${URL_PREFIX}${path}`;
-    if (!defaultQuery) return fullPath;
-
-    const queryString = new URLSearchParams(defaultQuery).toString();
-
-    return `${fullPath}?${queryString}`;
-  };
-
   return (
     <SideNavContainer isOpen={isOpen}>
       {adminNavData.map((categoryData) => (
@@ -119,7 +110,7 @@ function SideNav({ isOpen }: SideNavProps) {
           <CategoryTitle>{categoryData.category}</CategoryTitle>
           {categoryData.items.map((item) => (
             <NavItem key={item.path} isActive={isActiveLink(item.path)}>
-              <SideNavLink to={buildNavPath(item.path, item.defaultQuery)}>{item.name}</SideNavLink>
+              <SideNavLink to={`${URL_PREFIX}${item.path}`}>{item.name}</SideNavLink>
             </NavItem>
           ))}
         </NavCategory>
