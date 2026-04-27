@@ -70,6 +70,14 @@ function useAdminProductDnd(workspaceId: string | undefined) {
           if (overIndex !== -1) {
             return arrayMove(newItems, activeIndex, overIndex);
           }
+        } else {
+          // 카테고리의 빈 공간(우측 끝)으로 드래그했을 때, 해당 카테고리의 맨 마지막으로 위치를 이동시킵니다.
+          const targetItems = prev.filter((p) => (p.productCategory?.id || null) === overCategoryId);
+          if (targetItems.length > 0) {
+            const lastTargetItem = targetItems[targetItems.length - 1];
+            const lastTargetIndex = prev.findIndex((p) => p.id === lastTargetItem.id);
+            return arrayMove(newItems, activeIndex, lastTargetIndex);
+          }
         }
         return newItems;
       });
@@ -91,6 +99,19 @@ function useAdminProductDnd(workspaceId: string | undefined) {
           const overIndex = finalItems.findIndex((p) => p.id === overIdNum);
           if (overIndex !== -1) {
             finalItems = arrayMove(finalItems, activeIndex, overIndex);
+          }
+        } else if (overIdNum === null) {
+          // 같은 카테고리 내에서 우측의 넓은 빈 공간 영역으로 드래그 앤 드롭했을 때,
+          // 동작하지 않는 문제를 해결하기 위해 해당 아이템을 무조건 현재 카테고리의 가장 마지막으로 이동시킵니다.
+          const activeCategoryId = finalItems[activeIndex]?.productCategory?.id || null;
+          const targetItems = finalItems.filter((p) => (p.productCategory?.id || null) === activeCategoryId);
+          
+          if (targetItems.length > 0) {
+            const lastTargetItem = targetItems[targetItems.length - 1];
+            const lastTargetIndex = finalItems.findIndex((p) => p.id === lastTargetItem.id);
+            if (activeIndex !== lastTargetIndex) {
+              finalItems = arrayMove(finalItems, activeIndex, lastTargetIndex);
+            }
           }
         }
 
