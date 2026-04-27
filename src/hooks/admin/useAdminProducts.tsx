@@ -126,7 +126,6 @@ function useAdminProducts(workspaceId: string | undefined | null) {
       })
       .catch((error) => {
         console.error('Failed to reorder products categories : ', error);
-        throw error;
       });
   };
 
@@ -138,7 +137,6 @@ function useAdminProducts(workspaceId: string | undefined | null) {
       })
       .catch((error) => {
         console.error('Failed to reorder products : ', error);
-        throw error;
       });
   };
 
