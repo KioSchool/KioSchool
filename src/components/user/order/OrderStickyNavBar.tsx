@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 import { useNavigate } from 'react-router-dom';
-import { RiShareForward2Fill, RiArrowLeftLine } from '@remixicon/react';
+import { RiArrowLeftLine, RiShareForward2Fill } from '@remixicon/react';
 
 const Container = styled.div<{ isShow: boolean }>`
   position: fixed;
@@ -66,7 +66,7 @@ const WorkspaceNameLabel = styled.label`
 const TableLabel = styled.label`
   margin-right: auto;
   padding-left: 10px;
-  width: 60px;
+  width: 70px;
   font-size: 15px;
   font-weight: 600;
 `;
