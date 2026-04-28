@@ -8,7 +8,19 @@ import SuperAdminUserContent from '@components/super-admin/user/SuperAdminUserCo
 import { useSearchParams } from 'react-router-dom';
 import PaginationSearchContents from '@components/common/pagination/PaginationSearchContents';
 import { PaginationResponse, User } from '@@types/index';
+import styled from '@emotion/styled';
 import { defaultPaginationValue } from '@@types/defaultValues';
+
+const HeaderContainer = styled.div`
+  width: 100%;
+  margin-bottom: 8px;
+  gap: 16px;
+  ${colFlex()}
+`;
+
+const SearchContainer = styled.div`
+  width: 100%;
+`;
 
 function SuperAdminUser() {
   const pageSize = 6;
@@ -31,7 +43,11 @@ function SuperAdminUser() {
   return (
     <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'} customGap={'20px'} useTitle={false}>
       <>
-        <PaginationSearchBar />
+        <HeaderContainer>
+          <SearchContainer>
+            <PaginationSearchBar />
+          </SearchContainer>
+        </HeaderContainer>
         <PaginationSearchContents contents={users} target={'유저'} ContentComponent={SuperAdminUserContent} />
         <Pagination
           totalPageCount={users.totalPages}

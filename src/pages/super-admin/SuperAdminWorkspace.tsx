@@ -8,7 +8,19 @@ import { useSearchParams } from 'react-router-dom';
 import PaginationSearchContents from '@components/common/pagination/PaginationSearchContents';
 import { PaginationResponse, Workspace } from '@@types/index';
 import { useEffect, useState } from 'react';
+import styled from '@emotion/styled';
 import { defaultPaginationValue } from '@@types/defaultValues';
+
+const HeaderContainer = styled.div`
+  width: 100%;
+  margin-bottom: 8px;
+  gap: 16px;
+  ${colFlex()}
+`;
+
+const SearchContainer = styled.div`
+  width: 100%;
+`;
 
 function SuperAdminWorkspace() {
   const pageSize = 6;
@@ -31,7 +43,11 @@ function SuperAdminWorkspace() {
   return (
     <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'} customGap={'20px'} useTitle={false}>
       <>
-        <PaginationSearchBar />
+        <HeaderContainer>
+          <SearchContainer>
+            <PaginationSearchBar />
+          </SearchContainer>
+        </HeaderContainer>
         <PaginationSearchContents contents={workspaces} target={'워크스페이스'} ContentComponent={SuperAdminWorkspaceContent} />
         <Pagination
           totalPageCount={workspaces.totalPages}
