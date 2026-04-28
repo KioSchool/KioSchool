@@ -83,6 +83,7 @@ function OrderBasket() {
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
+  const tableHash = searchParams.get('tableHash');
 
   const { createOrder } = useOrder();
 
@@ -109,7 +110,7 @@ function OrderBasket() {
 
   const navigateHandler = () => {
     if (totalAmount === 0) {
-      createOrder(workspaceId, tableNo, orderBasket, '0원 주문')
+      createOrder(workspaceId, tableHash, orderBasket, '0원 주문')
         .then((res) => {
           navigate({
             pathname: '/order-complete',
@@ -117,6 +118,7 @@ function OrderBasket() {
               orderId: res.data.id.toString(),
               workspaceId: workspaceId || '',
               tableNo: tableNo || '',
+              tableHash: tableHash || '',
             }).toString(),
           });
         })
@@ -127,10 +129,7 @@ function OrderBasket() {
 
     navigate({
       pathname: '/order-pay',
-      search: createSearchParams({
-        workspaceId: workspaceId || '',
-        tableNo: tableNo || '',
-      }).toString(),
+      search: createSearchParams(searchParams).toString(),
     });
   };
 

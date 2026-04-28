@@ -19,7 +19,7 @@ import useWorkspace from '@hooks/user/useWorkspace';
 import useTossPopup from '@hooks/user/useTossPopup';
 import { ORDER_ROUTES } from '@constants/routes';
 import { isOverOneDay } from '@utils/formatDate';
-import { TOSS_TIPS, BANK_TRANSFER_TIPS } from '@constants/data/orderWaitData';
+import { BANK_TRANSFER_TIPS, TOSS_TIPS } from '@constants/data/orderWaitData';
 
 const Container = styled.div`
   width: 100%;
@@ -160,11 +160,7 @@ function OrderWait() {
   const navigateToComplete = () => {
     navigate({
       pathname: '/order-complete',
-      search: createSearchParams({
-        orderId: orderId || '',
-        workspaceId: workspaceId || '',
-        tableNo: tableNo || '',
-      }).toString(),
+      search: createSearchParams(searchParams).toString(),
     });
   };
 
