@@ -1,5 +1,16 @@
 import { defaultBanksValue, defaultDashboardValue, defaultUserValue, defaultWorkspaceValue } from '@@types/defaultValues';
-import { Bank, DashboardResponse, ExternalRightSidebarOptions, Order, Product, ProductCategory, RIGHT_SIDEBAR_ACTION, Table, User, Workspace } from '@@types/index';
+import {
+  Bank,
+  DashboardResponse,
+  ExternalRightSidebarOptions,
+  Order,
+  Product,
+  ProductCategory,
+  RIGHT_SIDEBAR_ACTION,
+  Table,
+  User,
+  Workspace,
+} from '@@types/index';
 import { atom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 
