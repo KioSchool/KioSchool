@@ -10,9 +10,8 @@ import SuperAdminEmailDomainContent from '@components/super-admin/email/SuperAdm
 import { superAdminEmailDomainPaginationResponseAtom } from '@jotai/super-admin/atoms';
 import { useAtomValue } from 'jotai';
 import styled from '@emotion/styled';
-import { RiAddLine } from '@remixicon/react';
-import { Color } from '@resources/colors';
 import useInputConfirm from '@hooks/useInputConfirm';
+import NewCommonButton from '@components/common/button/NewCommonButton';
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -28,28 +27,6 @@ const ActionsContainer = styled.div`
 
 const SearchContainer = styled.div`
   flex: 1;
-`;
-
-const ActionButton = styled.button`
-  background: ${Color.KIO_ORANGE};
-  color: ${Color.WHITE};
-  border: none;
-  border-radius: 8px;
-  height: 50px;
-  padding: 0 24px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  gap: 8px;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  ${rowFlex({ justify: 'center', align: 'center' })}
-
-  &:hover {
-    background: #f7842e;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 145, 66, 0.3);
-  }
 `;
 
 function SuperAdminEmailDomainList() {
@@ -95,10 +72,7 @@ function SuperAdminEmailDomainList() {
             <SearchContainer>
               <PaginationSearchBar />
             </SearchContainer>
-            <ActionButton onClick={handleAddClick}>
-              <RiAddLine size={20} />
-              도메인 추가
-            </ActionButton>
+            <NewCommonButton onClick={handleAddClick}>도메인 추가</NewCommonButton>
           </ActionsContainer>
         </HeaderContainer>
         <PaginationSearchContents contents={emailDomain} target={'이메일'} ContentComponent={SuperAdminEmailDomainContent} />
