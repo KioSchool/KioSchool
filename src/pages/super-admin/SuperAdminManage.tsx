@@ -84,35 +84,35 @@ const CardDescription = styled.p`
   line-height: 1.5;
 `;
 
+const MENU_ITEMS = [
+  {
+    title: '워크스페이스 관리',
+    description: '주점(워크스페이스) 목록 조회 및 상태 관리',
+    icon: <RiStore3Line size={32} />,
+    route: SUPER_ADMIN_ROUTES.WORKSPACE,
+  },
+  {
+    title: '사용자 관리',
+    description: '서비스 가입 사용자 목록 조회 및 권한 관리',
+    icon: <RiUser3Line size={32} />,
+    route: SUPER_ADMIN_ROUTES.USER,
+  },
+  {
+    title: '이메일 도메인 관리',
+    description: '대학별 허용 이메일 도메인 추가 및 삭제',
+    icon: <RiMailSendLine size={32} />,
+    route: SUPER_ADMIN_ROUTES.EMAIL,
+  },
+  {
+    title: '은행 정보 관리',
+    description: '결제 계좌에 사용될 은행 목록 관리',
+    icon: <RiBankCardLine size={32} />,
+    route: SUPER_ADMIN_ROUTES.BANK,
+  },
+];
+
 function SuperAdminManage() {
   const { navigateWithPage } = useCustomNavigate();
-
-  const MENU_ITEMS = [
-    {
-      title: '워크스페이스 관리',
-      description: '주점(워크스페이스) 목록 조회 및 상태 관리',
-      icon: <RiStore3Line size={32} />,
-      route: SUPER_ADMIN_ROUTES.WORKSPACE,
-    },
-    {
-      title: '사용자 관리',
-      description: '서비스 가입 사용자 목록 조회 및 권한 관리',
-      icon: <RiUser3Line size={32} />,
-      route: SUPER_ADMIN_ROUTES.USER,
-    },
-    {
-      title: '이메일 도메인 관리',
-      description: '대학별 허용 이메일 도메인 추가 및 삭제',
-      icon: <RiMailSendLine size={32} />,
-      route: SUPER_ADMIN_ROUTES.EMAIL,
-    },
-    {
-      title: '은행 정보 관리',
-      description: '결제 계좌에 사용될 은행 목록 관리',
-      icon: <RiBankCardLine size={32} />,
-      route: SUPER_ADMIN_ROUTES.BANK,
-    },
-  ];
 
   return (
     <AppContainer useFlex={colFlex({ align: 'center', justify: 'center' })} backgroundColor={Color.LIGHT_GREY} useTitle={false}>
