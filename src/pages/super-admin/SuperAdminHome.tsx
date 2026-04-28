@@ -9,8 +9,8 @@ import { Color } from '@resources/colors';
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  ${colFlex({ justify: 'center', align: 'center' })}
   gap: 40px;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const MainTitle = styled.div`
@@ -39,10 +39,10 @@ const LinkSuperAdminHome = styled(Link)`
   border-radius: 36px;
   background-color: ${Color.KIO_ORANGE};
   color: ${Color.WHITE};
-  ${rowFlex({ justify: 'center', align: 'center' })}
   gap: 12px;
   transition: all 0.2s ease-in-out;
   box-shadow: 0 4px 12px rgba(255, 145, 66, 0.3);
+  ${rowFlex({ justify: 'center', align: 'center' })}
 
   &:hover {
     transform: translateY(-4px);
