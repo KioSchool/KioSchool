@@ -25,33 +25,33 @@ const ModalBox = styled.div`
   border-radius: 16px;
   padding: 40px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  ${colFlex({ justify: 'flex-start', align: 'stretch' })}
   gap: 30px;
   position: relative;
+  ${colFlex({ justify: 'flex-start', align: 'stretch' })}
 `;
 
 const TextContainer = styled.div`
-  ${colFlex({ justify: 'center' })}
   gap: 8px;
+  ${colFlex({ justify: 'center' })}
 `;
 
 const SubmitContainer = styled.div`
-  ${colFlex({ justify: 'start' })}
   width: 100%;
   gap: 20px;
+  ${colFlex({ justify: 'start' })}
 `;
 
 const InputContainer = styled.div`
-  ${colFlex({ align: 'start' })}
   width: 100%;
   gap: 8px;
+  ${colFlex({ align: 'start' })}
 `;
 
 const ButtonContainer = styled.div`
-  ${colFlex({ justify: 'space-between' })}
   gap: 12px;
   width: 100%;
   margin-top: 10px;
+  ${colFlex({ justify: 'space-between' })}
 `;
 
 const CloseButton = styled(RiCloseLargeLine)`
