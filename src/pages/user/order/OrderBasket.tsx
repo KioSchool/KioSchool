@@ -83,6 +83,7 @@ function OrderBasket() {
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
+  const tableHash = searchParams.get('tableHash');
 
   const { createOrder } = useOrder();
 
@@ -105,11 +106,22 @@ function OrderBasket() {
       navigate(-1);
       return;
     }
+
+    if (error.response?.status === HttpStatusCode.NotFound) {
+      if (error.response?.data?.message === '존재하지 않는 태이블입니다.') {
+        alert('유효하지 않은 테이블입니다. QR 코드를 다시 스캔해주세요.');
+        return;
+      }
+      alert('존재하지 않는 상품이 있습니다. 주문 화면으로 돌아갑니다.');
+      setOrderBasket([]);
+      navigate(-1);
+      return;
+    }
   };
 
   const navigateHandler = () => {
     if (totalAmount === 0) {
-      createOrder(workspaceId, tableNo, orderBasket, '0원 주문')
+      createOrder(workspaceId, tableNo, tableHash, orderBasket, '0원 주문')
         .then((res) => {
           navigate({
             pathname: '/order-complete',
@@ -117,6 +129,7 @@ function OrderBasket() {
               orderId: res.data.id.toString(),
               workspaceId: workspaceId || '',
               tableNo: tableNo || '',
+              tableHash: tableHash || '',
             }).toString(),
           });
         })
@@ -130,6 +143,7 @@ function OrderBasket() {
       search: createSearchParams({
         workspaceId: workspaceId || '',
         tableNo: tableNo || '',
+        tableHash: tableHash || '',
       }).toString(),
     });
   };

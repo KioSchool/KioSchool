@@ -12,10 +12,11 @@ function useOrder() {
       .catch(() => defaultUserOrderValue);
   };
 
-  const createOrder = (workspaceId: string | null, tableNumber: string | null, orderProducts: OrderProductBase[], customerName: string) => {
+  const createOrder = (workspaceId: string | null, tableNumber: string | null, tableHash: string | null, orderProducts: OrderProductBase[], customerName: string) => {
     return userApi.post<Order>('/order', {
       workspaceId,
       tableNumber,
+      tableHash,
       orderProducts,
       customerName,
     });
