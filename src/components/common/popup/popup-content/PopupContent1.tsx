@@ -37,7 +37,7 @@ const Description = styled.div`
 `;
 
 function PopupContent1() {
-  const { sendPopupResult, closePopupForever } = usePopup();
+  const { sendAdminPopupResult, closePopupForever } = usePopup();
 
   const title = '키오스쿨 사용 인터뷰에 참여해주세요!';
   const description =
@@ -61,7 +61,7 @@ function PopupContent1() {
     - 입력한 전화번호: ${inputValue}
     `;
 
-    sendPopupResult(result);
+    sendAdminPopupResult(result);
 
     closePopupForever(1);
   };

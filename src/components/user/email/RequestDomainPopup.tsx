@@ -69,7 +69,7 @@ interface RequestDomainPopupProps {
 }
 
 function RequestDomainPopup({ onClose }: RequestDomainPopupProps) {
-  const { sendPopupResult } = usePopup();
+  const { sendUserPopupResult } = usePopup();
 
   const schoolNameRef = useRef<HTMLInputElement>(null);
   const domainRef = useRef<HTMLInputElement>(null);
@@ -94,7 +94,7 @@ function RequestDomainPopup({ onClose }: RequestDomainPopupProps) {
     - 도메인/이메일: ${domain}
     `;
 
-    sendPopupResult(result);
+    sendUserPopupResult(result);
     alert('요청이 접수되었습니다. 감사합니다.');
     onClose();
   };
