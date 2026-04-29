@@ -109,8 +109,9 @@ function AppContainer({ children, useFlex, backgroundColor, useTitle = true, use
 
   const isAdminWorkspace = location.pathname.startsWith('/admin/workspace/');
   const isAdminHome = location.pathname === '/admin';
-  const title = isAdminHome ? '키오스쿨' : workspace.name;
-  const label = isAdminHome ? `${workspace.owner.name}님 환영합니다.` : getPageTitle(location.pathname);
+  const isSuperAdmin = location.pathname.startsWith('/super-admin');
+  const title = isSuperAdmin ? '슈퍼 어드민' : isAdminHome ? '키오스쿨' : workspace.name;
+  const label = isSuperAdmin ? getPageTitle(location.pathname) : isAdminHome ? `${workspace.owner.name}님 환영합니다.` : getPageTitle(location.pathname);
 
   const useNavBackground = true;
   const sideNavOffset = isAdminWorkspace && isSideNavOpen ? SIDE_NAV_WIDTH : 0;
