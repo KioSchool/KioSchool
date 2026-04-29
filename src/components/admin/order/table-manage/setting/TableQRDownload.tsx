@@ -5,6 +5,7 @@ import { QRCodeCanvas } from 'qrcode.react';
 import { downloadQRGrid } from '@utils/qrCode';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { colFlex } from '@styles/flexStyles';
+import { Table } from '@@types/index';
 
 const Container = styled.div`
   width: 100%;
@@ -30,10 +31,10 @@ const QRContainer = styled.div`
 interface TableQRDownloadProps {
   workspaceId?: string;
   workspaceName: string;
-  tableCount: number;
+  tables: Table[];
 }
 
-function TableQRDownload({ workspaceId, workspaceName, tableCount }: TableQRDownloadProps) {
+function TableQRDownload({ workspaceId, workspaceName, tables }: TableQRDownloadProps) {
   const QRCodeContainerRef = useRef<HTMLDivElement>(null);
   const baseUrl = location.origin;
 
@@ -76,10 +77,10 @@ function TableQRDownload({ workspaceId, workspaceName, tableCount }: TableQRDown
       </Container>
 
       <QRContainer ref={QRCodeContainerRef}>
-        {Array.from({ length: tableCount }, (_, index) => (
+        {tables.map((table) => (
           <QRCodeCanvas
-            key={index}
-            value={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${index + 1}`}
+            key={table.tableHash}
+            value={`${baseUrl}/order?workspaceId=${workspaceId}&tableNo=${table.tableNumber}&tableHash=${table.tableHash}`}
             size={150}
             bgColor="#ffffff"
             fgColor="#000000"

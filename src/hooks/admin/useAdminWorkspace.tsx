@@ -2,7 +2,7 @@ import useApi from '@hooks/useApi';
 import { Workspace } from '@@types/index';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { adminWorkspaceAtom } from '@jotai/admin/atoms';
+import { adminTablesAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { useSetAtom } from 'jotai';
 import { ADMIN_ROUTES, getAdminWorkspacePath } from '@constants/routes';
 
@@ -11,6 +11,7 @@ const INVALID_WORKSPACE_ALERT_MESSAGE = '접근할 수 없는 워크스페이스
 function useAdminWorkspace() {
   const { adminApi } = useApi();
   const setAdminWorkspace = useSetAtom(adminWorkspaceAtom);
+  const setAdminTables = useSetAtom(adminTablesAtom);
 
   const navigate = useNavigate();
 
@@ -135,7 +136,8 @@ function useAdminWorkspace() {
       });
   };
 
-  const fetchWorkspaceTables = (workspaceId: string | undefined | null) => adminApi.get(`/workspace/tables`, { params: { workspaceId } });
+  const fetchWorkspaceTables = (workspaceId: string | undefined | null) =>
+    adminApi.get(`/workspace/tables`, { params: { workspaceId } }).then((res) => setAdminTables(res.data));
 
   const updateWorkspaceMemo = (workspaceId: number, memo: string) => {
     return adminApi.put<Workspace>('/workspace/memo', { workspaceId, memo }).then((res) => {

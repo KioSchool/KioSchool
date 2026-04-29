@@ -15,11 +15,11 @@ import { tableNoQueryParamConfig } from '@hooks/common/queryParamConfigs';
 import useTableOrders from '@hooks/admin/useTableOrders';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { useEffect, useState } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { adminWorkspaceAtom, externalSidebarAtom } from '@jotai/admin/atoms';
-import { RIGHT_SIDEBAR_ACTION, Table } from '@@types/index';
+import { adminTablesAtom, adminWorkspaceAtom, externalSidebarAtom } from '@jotai/admin/atoms';
+import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { RiSettings3Fill } from '@remixicon/react';
 
@@ -89,14 +89,12 @@ function AdminTableRealtime() {
   const location = useLocation();
   const setExternalSidebar = useSetAtom(externalSidebarAtom);
 
-  const [tables, setTables] = useState<Table[]>([]);
+  const tables = useAtomValue(adminTablesAtom);
   const selectedTable = tables.find((t) => t.tableNumber === Number(tableNo));
   const { orders, totalOrderAmount, fetchOrders } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
 
   const fetchTables = () => {
-    fetchWorkspaceTables(workspaceId)
-      .then((response) => setTables(response.data))
-      .catch((error) => console.error('테이블 데이터를 조회하는데 문제가 발생했습니다:', error));
+    fetchWorkspaceTables(workspaceId);
   };
 
   useEffect(() => {

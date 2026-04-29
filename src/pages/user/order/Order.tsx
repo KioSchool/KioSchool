@@ -64,7 +64,6 @@ function Order() {
 
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
-  const tableNo = searchParams.get('tableNo');
   const isPreview = searchParams.get('preview') === 'true';
 
   const { fetchWorkspace } = useWorkspace();
@@ -127,10 +126,7 @@ function Order() {
           }
           navigate({
             pathname: '/order-basket',
-            search: createSearchParams({
-              workspaceId: workspaceId || '',
-              tableNo: tableNo || '',
-            }).toString(),
+            search: createSearchParams(searchParams).toString(),
           });
         }}
       />

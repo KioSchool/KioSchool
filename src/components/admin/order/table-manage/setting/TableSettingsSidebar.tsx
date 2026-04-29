@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useAtomValue } from 'jotai';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { adminWorkspaceAtom } from '@jotai/admin/atoms';
+import { adminWorkspaceAtom, adminTablesAtom } from '@jotai/admin/atoms';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { colFlex } from '@styles/flexStyles';
@@ -43,6 +43,7 @@ const SaveButton = styled(NewCommonButton)`
 function TableSettingsSidebar() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const workspace = useAtomValue(adminWorkspaceAtom);
+  const tables = useAtomValue(adminTablesAtom);
   const { updateWorkspaceTableCount, updateWorkspaceOrderSetting } = useAdminWorkspace();
 
   const [tableCount, setTableCount] = useState(workspace.tableCount || 1);
@@ -87,7 +88,7 @@ function TableSettingsSidebar() {
 
   return (
     <Container>
-      <TableQRDownload workspaceId={workspaceId} workspaceName={workspace.name} tableCount={workspace.tableCount} />
+      <TableQRDownload workspaceId={workspaceId} workspaceName={workspace.name} tables={tables} />
 
       <Divider />
 

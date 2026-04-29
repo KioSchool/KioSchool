@@ -53,6 +53,7 @@ function OrderPay() {
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
+  const tableHash = searchParams.get('tableHash');
 
   const account = workspace.owner.account;
   const tossAccountUrl = account?.tossAccountUrl;
@@ -71,7 +72,7 @@ function OrderPay() {
     }
 
     if (error.response?.status === HttpStatusCode.NotFound) {
-      alert('존재하지 않는 상품이 있습니다. 주문 화면으로 돌아갑니다.');
+      alert(error.response?.data?.message);
       setOrderBasket([]);
       navigate(-2);
       return;
@@ -103,7 +104,7 @@ function OrderPay() {
       tossAccountUrl,
       amount: totalAmount,
       closeDelay: 5000,
-      promise: createOrder(workspaceId, tableNo, orderBasket, customerName),
+      promise: createOrder(workspaceId, tableHash, orderBasket, customerName),
       onSuccess: (res) => {
         navigate({
           pathname: '/order-wait',
@@ -111,6 +112,7 @@ function OrderPay() {
             orderId: res.data.id.toString(),
             workspaceId: workspaceId || '',
             tableNo: tableNo || '',
+            tableHash: tableHash || '',
             tossPay: 'true',
           }).toString(),
         });
@@ -120,7 +122,7 @@ function OrderPay() {
   };
 
   const createOrderAndNavigateToComplete = (customerName: string) => {
-    createOrder(workspaceId, tableNo, orderBasket, customerName)
+    createOrder(workspaceId, tableHash, orderBasket, customerName)
       .then((res) => {
         navigate({
           pathname: '/order-wait',
@@ -128,6 +130,7 @@ function OrderPay() {
             orderId: res.data.id.toString(),
             workspaceId: workspaceId || '',
             tableNo: tableNo || '',
+            tableHash: tableHash || '',
             tossPay: 'false',
           }).toString(),
         });
