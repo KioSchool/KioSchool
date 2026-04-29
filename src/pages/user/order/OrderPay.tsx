@@ -72,7 +72,7 @@ function OrderPay() {
     }
 
     if (error.response?.status === HttpStatusCode.NotFound) {
-      alert('존재하지 않는 상품이 있습니다. 주문 화면으로 돌아갑니다.');
+      alert(error.response?.data?.message);
       setOrderBasket([]);
       navigate(-2);
       return;
