@@ -1,13 +1,15 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { subHours } from 'date-fns';
+import { useAtomValue } from 'jotai';
+import { adminTablesAtom } from '@jotai/admin/atoms';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
-import { Table, OrderStatus } from '@@types/index';
+import { OrderStatus } from '@@types/index';
 import { TABLE_ORDER_SORT_OPTIONS, TABLE_ORDER_STATUS_OPTIONS } from '@constants/data/adminOrderData';
 
 export const useAdminFetchOrderBase = (workspaceId: string | undefined) => {
   const { fetchWorkspaceTables } = useAdminWorkspace();
 
-  const [tables, setTables] = useState<Table[]>([]);
+  const tables = useAtomValue(adminTablesAtom);
   const [startDate, setStartDate] = useState<Date | null>(subHours(new Date(), 2));
   const [endDate, setEndDate] = useState<Date | null>(new Date());
   const [tableNumber, setTableNumber] = useState<string>('ALL');
@@ -16,7 +18,7 @@ export const useAdminFetchOrderBase = (workspaceId: string | undefined) => {
 
   useEffect(() => {
     if (workspaceId) {
-      fetchWorkspaceTables(workspaceId).then((res) => setTables(res.data));
+      fetchWorkspaceTables(workspaceId);
     }
   }, [workspaceId]);
 

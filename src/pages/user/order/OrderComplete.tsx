@@ -17,6 +17,7 @@ import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import { Order, OrderStatus } from '@@types/index';
 import { ORDER_ROUTES } from '@constants/routes';
 import { isOverOneDay } from '@utils/formatDate';
+import useWorkspace from '@hooks/user/useWorkspace';
 
 const Container = styled.div`
   width: 100%;
@@ -114,8 +115,10 @@ function OrderComplete() {
   const orderId = searchParams.get('orderId');
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
+  const tableHash = searchParams.get('tableHash');
 
   const { fetchOrder } = useOrder();
+  const { fetchWorkspace } = useWorkspace();
   const { allowPullToRefresh } = useRefresh();
   const resetOrderBasket = useResetAtom(userOrderBasketAtom);
   const [order, setOrder] = useState<Order>(defaultUserOrderValue);
@@ -187,6 +190,7 @@ function OrderComplete() {
 
     resetOrderBasket();
     allowPullToRefresh();
+    fetchWorkspace(workspaceId);
 
     return () => {
       stopPolling();
@@ -196,7 +200,7 @@ function OrderComplete() {
 
   return (
     <Container className={'order-complete-container'}>
-      <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={order.tableNumber} useShareButton={true} useLeftArrow={false} />
+      <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={true} useLeftArrow={false} />
       <SubContainer className={'order-complete-sub-container'}>
         <SubTitle>주문내역</SubTitle>
         <ContentsContainer>
@@ -248,6 +252,7 @@ function OrderComplete() {
             search: createSearchParams({
               workspaceId: workspaceId || '',
               tableNo: tableNo || '',
+              tableHash: tableHash || '',
             }).toString(),
           })
         }

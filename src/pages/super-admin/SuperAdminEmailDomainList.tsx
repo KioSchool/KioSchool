@@ -1,5 +1,5 @@
 import PaginationSearchBar from '@components/common/pagination/PaginationSearchBar';
-import { colFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useEffect } from 'react';
 import Pagination from '@components/common/pagination/Pagination';
 import AppContainer from '@components/common/container/AppContainer';
@@ -9,12 +9,41 @@ import useSuperAdminEmail from '@hooks/super-admin/useSuperAdminEmail';
 import SuperAdminEmailDomainContent from '@components/super-admin/email/SuperAdminEmailDomainContent';
 import { superAdminEmailDomainPaginationResponseAtom } from '@jotai/super-admin/atoms';
 import { useAtomValue } from 'jotai';
+import styled from '@emotion/styled';
+import useInputConfirm from '@hooks/useInputConfirm';
+import NewCommonButton from '@components/common/button/NewCommonButton';
+
+const HeaderContainer = styled.div`
+  width: 100%;
+  gap: 16px;
+  ${colFlex()}
+`;
+
+const ActionsContainer = styled.div`
+  width: 100%;
+  gap: 20px;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
+`;
+
+const SearchContainer = styled.div`
+  flex: 1;
+`;
 
 function SuperAdminEmailDomainList() {
   const pageSize = 6;
   const [searchParams, setSearchParams] = useSearchParams();
   const emailDomain = useAtomValue(superAdminEmailDomainPaginationResponseAtom);
-  const { fetchAllEmailDomain } = useSuperAdminEmail();
+  const { fetchAllEmailDomain, addEmailDomain } = useSuperAdminEmail();
+
+  const { InputConfirmModal, confirm } = useInputConfirm({
+    title: '이메일 도메인 추가',
+    description: '대학/학교명과 이메일 도메인을 입력해주세요.',
+    submitText: '추가하기',
+    inputSlots: [
+      { label: '학교/기관명', placeholder: '예: 성신여자대학교' },
+      { label: '도메인', placeholder: '예: sungshin.ac.kr' },
+    ],
+  });
 
   useEffect(() => {
     const nowPage = Number(searchParams.get('page'));
@@ -23,10 +52,29 @@ function SuperAdminEmailDomainList() {
     fetchAllEmailDomain(nowPage, pageSize, searchValue);
   }, [searchParams.toString()]);
 
+  const handleAddClick = async () => {
+    try {
+      const result = await confirm();
+      if (result['학교/기관명'] && result['도메인']) {
+        addEmailDomain(result['학교/기관명'], result['도메인']);
+      }
+    } catch {
+      // User cancelled
+    }
+  };
+
   return (
     <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'} customGap={'20px'} useTitle={false}>
       <>
-        <PaginationSearchBar />
+        <InputConfirmModal />
+        <HeaderContainer>
+          <ActionsContainer>
+            <SearchContainer>
+              <PaginationSearchBar />
+            </SearchContainer>
+            <NewCommonButton onClick={handleAddClick}>도메인 추가</NewCommonButton>
+          </ActionsContainer>
+        </HeaderContainer>
         <PaginationSearchContents contents={emailDomain} target={'이메일'} ContentComponent={SuperAdminEmailDomainContent} />
         <Pagination
           totalPageCount={emailDomain.totalPages}

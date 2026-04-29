@@ -78,7 +78,7 @@ interface TableQRCodeProps {
 }
 
 function TableQRCode({ workspaceId, selectedTable }: TableQRCodeProps) {
-  const qrCodeUrl = `${location.origin}/order?workspaceId=${workspaceId}&tableNo=${selectedTable.tableNumber}`;
+  const qrCodeUrl = `${location.origin}/order?workspaceId=${workspaceId}&tableNo=${selectedTable.tableNumber}&tableHash=${selectedTable.tableHash}`;
 
   const onClickDownloadQRCode = async () => {
     try {

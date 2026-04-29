@@ -14,52 +14,57 @@ const Container = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(2px);
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
-const SubContainer = styled.div`
-  width: 600px;
-  ${colFlex({ justify: 'space-between', align: 'start' })}
-  color: ${Color.WHITE};
-  gap: 40px;
+const ModalBox = styled.div`
+  width: 500px;
+  background: ${Color.WHITE};
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  gap: 30px;
   position: relative;
+  ${colFlex({ justify: 'flex-start', align: 'stretch' })}
 `;
 
 const TextContainer = styled.div`
+  gap: 8px;
   ${colFlex({ justify: 'center' })}
-  gap: 12px;
 `;
 
 const SubmitContainer = styled.div`
-  ${colFlex({ justify: 'start' })}
   width: 100%;
-  gap: 10px;
+  gap: 20px;
+  ${colFlex({ justify: 'start' })}
 `;
 
 const InputContainer = styled.div`
-  ${colFlex({ align: 'start' })}
   width: 100%;
-  gap: 10px;
+  gap: 8px;
+  ${colFlex({ align: 'start' })}
 `;
 
 const ButtonContainer = styled.div`
-  ${colFlex({ justify: 'space-between' })}
   gap: 12px;
   width: 100%;
+  margin-top: 10px;
+  ${colFlex({ justify: 'space-between' })}
 `;
 
 const CloseButton = styled(RiCloseLargeLine)`
   position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 20px;
-  height: 20px;
+  top: 24px;
+  right: 24px;
+  width: 24px;
+  height: 24px;
+  color: ${Color.HEAVY_GREY};
   cursor: pointer;
 
   &:hover {
-    transform: scale(1.1);
+    color: ${Color.BLACK};
   }
 `;
 
@@ -107,39 +112,39 @@ function useInputConfirm({ title, description, submitText, inputSlots = [] }: In
 
     return (
       <Container className="confirm-container">
-        <SubContainer className="confirm-sub-container">
+        <ModalBox className="confirm-modal-box">
           <CloseButton onClick={handleClose} />
           <TextContainer className="text-container">
-            <AppLabel size="medium" style={{ fontWeight: 700 }} color={Color.WHITE}>
+            <AppLabel size="medium" style={{ fontWeight: 700 }} color={Color.BLACK}>
               {title}
             </AppLabel>
             {description && (
-              <AppLabel size={20} color={Color.WHITE}>
+              <AppLabel size={16} color={Color.GREY}>
                 {description}
               </AppLabel>
             )}
           </TextContainer>
-          <SubmitContainer className="button-container">
+          <SubmitContainer className="form-inputs-container">
             {inputSlots.map((slot, index) => (
               <InputContainer key={index}>
-                <AppLabel size={15} color={Color.WHITE}>
+                <AppLabel size={15} color={Color.GREY} style={{ fontWeight: 600 }}>
                   {slot.label}
                 </AppLabel>
                 <NewAppInput
                   ref={(el: HTMLInputElement | null) => (inputRefs.current[index] = el)}
                   type="text"
                   placeholder={slot.placeholder}
-                  style={{ width: '100%' }}
+                  style={{ width: '100%', height: '48px', boxSizing: 'border-box' }}
                 />
               </InputContainer>
             ))}
           </SubmitContainer>
           <ButtonContainer className="button-container">
-            <NewCommonButton style={{ width: '100%' }} onClick={handleConfirm}>
+            <NewCommonButton style={{ width: '100%', height: '56px' }} onClick={handleConfirm}>
               {submitText}
             </NewCommonButton>
           </ButtonContainer>
-        </SubContainer>
+        </ModalBox>
       </Container>
     );
   };
