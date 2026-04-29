@@ -114,6 +114,7 @@ function OrderComplete() {
   const orderId = searchParams.get('orderId');
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
+  const tableHash = searchParams.get('tableHash');
 
   const { fetchOrder } = useOrder();
   const { allowPullToRefresh } = useRefresh();
@@ -248,6 +249,7 @@ function OrderComplete() {
             search: createSearchParams({
               workspaceId: workspaceId || '',
               tableNo: tableNo || '',
+              tableHash: tableHash || '',
             }).toString(),
           })
         }
