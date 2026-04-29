@@ -6,6 +6,7 @@ import NewCommonButton from '@components/common/button/NewCommonButton';
 import usePopup from '@hooks/usePopup';
 import { RiCloseCircleFill } from '@remixicon/react';
 import { Color } from '@resources/colors';
+import { getRequestDomainPopupResult, validateRequestDomainPopupForm } from '@utils/requestDomainPopup';
 
 const Container = styled.div`
   width: 100%;
@@ -69,32 +70,30 @@ interface RequestDomainPopupProps {
 }
 
 function RequestDomainPopup({ onClose }: RequestDomainPopupProps) {
-  const { sendPopupResult } = usePopup();
+  const { sendUserPopupResult } = usePopup();
 
   const schoolNameRef = useRef<HTMLInputElement>(null);
   const domainRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = () => {
-    const schoolName = schoolNameRef.current?.value;
-    const domain = domainRef.current?.value;
+    const { schoolName, emailOrDomain, errorMessage } = validateRequestDomainPopupForm(schoolNameRef.current?.value, domainRef.current?.value);
 
-    if (!schoolName) {
-      alert('학교 이름을 입력해주세요.');
+    if (errorMessage) {
+      alert(errorMessage);
       return;
     }
 
-    if (!domain) {
-      alert('사용하시는 학교 이메일을 입력해주세요.');
-      return;
+    if (schoolNameRef.current) {
+      schoolNameRef.current.value = schoolName;
     }
 
-    const result = `
-    ### [도메인 추가 요청]
-    - 학교명: ${schoolName}
-    - 도메인/이메일: ${domain}
-    `;
+    if (domainRef.current) {
+      domainRef.current.value = emailOrDomain;
+    }
 
-    sendPopupResult(result);
+    const result = getRequestDomainPopupResult(schoolName, emailOrDomain);
+
+    sendUserPopupResult(result);
     alert('요청이 접수되었습니다. 감사합니다.');
     onClose();
   };

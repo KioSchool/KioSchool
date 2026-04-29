@@ -4,11 +4,15 @@ import { addDays, startOfDay } from 'date-fns';
 import useApi from '@hooks/useApi';
 
 function usePopup() {
-  const { adminApi } = useApi();
+  const { adminApi, userApi } = useApi();
   const [isOpen, setIsOpen] = useState(false);
 
-  const sendPopupResult = (result: string) => {
+  const sendAdminPopupResult = (result: string) => {
     adminApi.post('/discord/popup', { result });
+  };
+
+  const sendUserPopupResult = (result: string) => {
+    userApi.post('/discord/popup', { result });
   };
 
   const isValidPopup = (popupId: number, expireDate: Date) => {
@@ -50,12 +54,13 @@ function usePopup() {
 
   return {
     isOpen,
-    sendPopupResult,
     openPopup,
     closePopup,
     closePopupForDay,
     closePopupForever,
     isValidPopup,
+    sendAdminPopupResult,
+    sendUserPopupResult,
   };
 }
 
