@@ -100,7 +100,7 @@ function OrderBasket() {
   };
 
   const errorHandler = (error: any) => {
-    if (error.response.status === HttpStatusCode.NotAcceptable) {
+    if (error.response?.status === HttpStatusCode.NotAcceptable) {
       alert('품절된 상품이 있습니다. 주문 화면으로 돌아갑니다.');
       setOrderBasket([]);
       navigate(-1);
