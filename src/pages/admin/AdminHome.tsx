@@ -11,7 +11,7 @@ import { useAtomValue } from 'jotai';
 import { adminUserAtom, adminWorkspacesAtom } from '@jotai/admin/atoms';
 import AppFaqButton from '@components/common/button/AppFaqButton';
 import styled from '@emotion/styled';
-import OrderQRNoticePopupContent from '@components/admin/home/OrderQrNoticePopupContent';
+import OrderQRNoticePopupContent from '@components/admin/home/OrderQRNoticePopupContent';
 
 const Container = styled.div`
   width: 95%;
@@ -28,7 +28,7 @@ const ADMIN_HOME_POPUP_DATAS: PopupData[] = [
   {
     popupId: 2,
     title: '주문 QR 코드 재다운로드 안내',
-    expireDate: new Date(2026, 5, 5, 23, 59, 59, 999),
+    expireDate: new Date(2026, 5, 5),
     children: <OrderQRNoticePopupContent />,
   },
 ];

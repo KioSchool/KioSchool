@@ -13,21 +13,28 @@ const Container = styled.div`
   background: transparent;
   z-index: 9999;
   position: fixed;
+  inset: 0;
+  pointer-events: none;
 `;
 
 const SubContainer = styled.div`
   width: 100%;
   height: 100%;
-  ${colFlex({ justify: 'center', align: 'center' })};
+  padding: 88px 32px 0 32px;
+  box-sizing: border-box;
+  pointer-events: none;
+  ${colFlex({ justify: 'flex-start', align: 'flex-end' })};
 `;
 
 const ContentContainer = styled.div`
-  width: 600px;
+  width: 420px;
+  max-width: 100%;
   border-radius: 16px;
-  padding: 32px;
+  padding: 24px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   background: ${Color.WHITE};
-  box-shadow: 3px 3px 10px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+  pointer-events: auto;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
