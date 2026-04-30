@@ -3,7 +3,7 @@ import PopupContent1 from '@components/common/popup/popup-content/PopupContent1'
 export interface PopupData {
   popupId: number;
   title: string;
-  expireDate: Date;
+  expireDate?: Date;
   children: React.ReactNode;
 }
 

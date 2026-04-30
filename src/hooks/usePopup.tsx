@@ -15,13 +15,17 @@ function usePopup() {
     userApi.post('/discord/popup', { result });
   };
 
-  const isValidPopup = (popupId: number, expireDate: Date) => {
+  const isValidPopup = (popupId: number, expireDate?: Date) => {
     const cookies = new Cookies();
     const currentDate = new Date();
 
     const cookie = cookies.get(`close_popup_${popupId}`);
     if (cookie) {
       return false;
+    }
+
+    if (!expireDate) {
+      return true;
     }
 
     return expireDate >= currentDate;
