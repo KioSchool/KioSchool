@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { RiCloseCircleFill } from '@remixicon/react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import { PopupData, popupDatas } from '@constants/data/popupData';
+import { PopupData } from '@constants/data/popupData';
 import { useCookies } from 'react-cookie';
 
 const Container = styled.div`
@@ -54,7 +54,11 @@ const CloseButtonIcon = styled(RiCloseCircleFill)`
   color: #e0e0e0;
 `;
 
-function AppPopup() {
+interface AppPopupProps {
+  popupDatas: PopupData[];
+}
+
+function AppPopup({ popupDatas }: AppPopupProps) {
   const { isValidPopup, closePopupForDay } = usePopup();
   const [validPopupData, setValidPopupData] = useState<PopupData | null>(popupDatas[0]);
   const [cookies] = useCookies();
@@ -68,7 +72,7 @@ function AppPopup() {
     }
 
     setValidPopupData(popupDatas[index]);
-  }, [cookies]);
+  }, [cookies, isValidPopup, popupDatas]);
 
   if (!validPopupData) {
     return null;
