@@ -1,38 +1,47 @@
 import styled from '@emotion/styled';
-import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
   width: 100%;
+  height: 100%;
   box-sizing: border-box;
-  gap: 20px;
+  gap: 32px;
+  ${colFlex({ justify: 'center', align: 'center' })};
+`;
+
+const Icon = styled.div`
+  width: 100px;
+  height: 100px;
+  border-radius: 60px;
+  background: #fff3c9;
+  font-size: 45px;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
 const Title = styled.div`
-  color: ${Color.BLACK};
   text-align: center;
   word-break: keep-all;
   font-size: 24px;
   font-weight: 700;
   line-height: 1.4;
+  white-space: pre-wrap;
 `;
 
 const Description = styled.div`
-  color: ${Color.BLACK};
   text-align: center;
   word-break: keep-all;
   font-size: 16px;
   font-weight: 400;
   line-height: 1.6;
-  opacity: 0.72;
+  opacity: 0.56;
   white-space: pre-wrap;
 `;
 
-function OrderQrNoticePopupContent() {
+function OrderQRNoticePopupContent() {
   return (
     <Container>
-      <Title>4월 30일 이전에 다운로드한 주문 QR 코드는 작동하지 않습니다.</Title>
+      <Icon>⚠️</Icon>
+      <Title>4월 30일 이전에 다운로드한 주문 QR 코드는{'\n'}작동하지 않습니다.</Title>
       <Description>
         주문을 받으려면 주문 QR 코드를 다시 다운로드해 주세요.
         {'\n'}
@@ -42,4 +51,4 @@ function OrderQrNoticePopupContent() {
   );
 }
 
-export default OrderQrNoticePopupContent;
+export default OrderQRNoticePopupContent;
