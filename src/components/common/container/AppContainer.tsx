@@ -100,6 +100,16 @@ interface Props {
   customGap?: string;
 }
 
+const getHeaderInfo = (pathname: string, workspaceName: string, userName: string) => {
+  if (pathname.startsWith('/super-admin')) {
+    return { title: '슈퍼 어드민', label: getPageTitle(pathname) };
+  }
+  if (pathname === '/admin') {
+    return { title: '키오스쿨', label: `${userName}님 환영합니다.` };
+  }
+  return { title: workspaceName, label: getPageTitle(pathname) };
+};
+
 function AppContainer({ children, useFlex, backgroundColor, useTitle = true, useFullHeight = false, customWidth, customGap }: Props) {
   const location = useLocation();
   const workspace = useAtomValue(adminWorkspaceAtom);
@@ -109,10 +119,7 @@ function AppContainer({ children, useFlex, backgroundColor, useTitle = true, use
   const setLayoutParams = useSetAtom(layoutParamsAtom);
 
   const isAdminWorkspace = location.pathname.startsWith('/admin/workspace/');
-  const isAdminHome = location.pathname === '/admin';
-  const isSuperAdmin = location.pathname.startsWith('/super-admin');
-  const title = isSuperAdmin ? '슈퍼 어드민' : isAdminHome ? '키오스쿨' : workspace.name;
-  const label = isSuperAdmin ? getPageTitle(location.pathname) : isAdminHome ? `${user.name}님 환영합니다.` : getPageTitle(location.pathname);
+  const { title, label } = getHeaderInfo(location.pathname, workspace.name, user.name);
 
   const useNavBackground = true;
   const sideNavOffset = isAdminWorkspace && isSideNavOpen ? SIDE_NAV_WIDTH : 0;
