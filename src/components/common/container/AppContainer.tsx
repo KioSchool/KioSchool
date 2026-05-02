@@ -5,11 +5,11 @@ import { SerializedStyles } from '@emotion/react';
 import { Color } from '@resources/colors';
 import { useLocation } from 'react-router-dom';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { adminSideNavIsOpenAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
-import { windowWidthAtom, layoutParamsAtom } from '@jotai/atoms';
+import { adminSideNavIsOpenAtom, adminUserAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
+import { layoutParamsAtom, windowWidthAtom } from '@jotai/atoms';
 import { calculateLayoutScale } from 'src/utils/layout';
 import { getPageTitle } from '@@types/guard';
-import { SIDE_NAV_WIDTH, DEFAULT_LAYOUT_WIDTH } from '@constants/layout';
+import { DEFAULT_LAYOUT_WIDTH, SIDE_NAV_WIDTH } from '@constants/layout';
 import { tabletMediaQuery } from '@styles/globalStyles';
 import { useEffect } from 'react';
 
@@ -103,6 +103,7 @@ interface Props {
 function AppContainer({ children, useFlex, backgroundColor, useTitle = true, useFullHeight = false, customWidth, customGap }: Props) {
   const location = useLocation();
   const workspace = useAtomValue(adminWorkspaceAtom);
+  const user = useAtomValue(adminUserAtom);
   const isSideNavOpen = useAtomValue(adminSideNavIsOpenAtom);
   const windowWidth = useAtomValue(windowWidthAtom);
   const setLayoutParams = useSetAtom(layoutParamsAtom);
@@ -111,7 +112,7 @@ function AppContainer({ children, useFlex, backgroundColor, useTitle = true, use
   const isAdminHome = location.pathname === '/admin';
   const isSuperAdmin = location.pathname.startsWith('/super-admin');
   const title = isSuperAdmin ? '슈퍼 어드민' : isAdminHome ? '키오스쿨' : workspace.name;
-  const label = isSuperAdmin ? getPageTitle(location.pathname) : isAdminHome ? `${workspace.owner.name}님 환영합니다.` : getPageTitle(location.pathname);
+  const label = isSuperAdmin ? getPageTitle(location.pathname) : isAdminHome ? `${user.name}님 환영합니다.` : getPageTitle(location.pathname);
 
   const useNavBackground = true;
   const sideNavOffset = isAdminWorkspace && isSideNavOpen ? SIDE_NAV_WIDTH : 0;
