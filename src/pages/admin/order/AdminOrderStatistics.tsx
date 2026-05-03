@@ -7,6 +7,7 @@ import CustomSelect from '@components/common/select/CustomSelect';
 import CustomDatePicker from '@components/common/date-picker/CustomDatePicker';
 import StatCard from '@components/common/card/StatCard';
 import ContentCard from '@components/common/card/ContentCard';
+import RefreshSpinIcon from '@components/common/refresh/RefreshSpinIcon';
 import HourlySalesChart from '@components/admin/order/statistic/HourlySalesChart';
 import PopularProductsSection from '@components/admin/order/statistic/PopularProductsSection';
 import { useAdminFetchDailyStatistics } from '@hooks/admin/useAdminFetchDailyStatistics';
@@ -26,6 +27,11 @@ const FilterContainer = styled.div`
   gap: 10px;
   padding-bottom: 10px;
   ${rowFlex({ justify: 'space-between', align: 'center' })};
+`;
+
+const UpdateInfo = styled.div`
+  gap: 6px;
+  ${rowFlex({ align: 'center' })}
 `;
 
 const UpdateLabel = styled.span`
@@ -72,7 +78,7 @@ const isValidDate = (dateStr: string) => !isNaN(new Date(dateStr).getTime());
 
 function AdminOrderStatistics() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { selectedDate, setSelectedDate, statistics, isLoading } = useAdminFetchDailyStatistics(workspaceId);
+  const { selectedDate, setSelectedDate, statistics, isLoading, manualRefetch } = useAdminFetchDailyStatistics(workspaceId);
 
   const dateLabel = format(selectedDate, 'yyyy년 MM월 dd일');
   const comparison = statistics?.previousDayComparison;
@@ -92,7 +98,10 @@ function AdminOrderStatistics() {
             <CustomDatePicker mode="single" selectedDate={selectedDate} onDateChange={setSelectedDate} />
           </CustomSelect>
           {statistics?.lastUpdated && isValidDate(statistics.lastUpdated) && (
-            <UpdateLabel>최종 업데이트 {format(new Date(statistics.lastUpdated), 'HH:mm')}</UpdateLabel>
+            <UpdateInfo>
+              <UpdateLabel>최종 업데이트 {format(new Date(statistics.lastUpdated), 'HH:mm')} · 5분마다 자동 갱신</UpdateLabel>
+              <RefreshSpinIcon isLoading={isLoading} onClick={manualRefetch} />
+            </UpdateInfo>
           )}
         </FilterContainer>
 
