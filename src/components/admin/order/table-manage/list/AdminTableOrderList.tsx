@@ -1,9 +1,9 @@
 import { Order } from '@@types/index';
 import styled from '@emotion/styled';
-import { RiResetRightFill } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import { formatKoreanTime } from '@utils/formatDate';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import RefreshSpinIcon from '@components/common/refresh/RefreshSpinIcon';
 import OrderRowItem from './OrderRowItem';
 
 const Container = styled.div`
@@ -33,18 +33,9 @@ const RefreshSection = styled.div`
   left: 10px;
   ${rowFlex({ align: 'center' })};
   gap: 10px;
-  cursor: pointer;
-  &:hover {
-    color: ${Color.KIO_ORANGE};
-  }
 `;
 
 const NowTimeLabel = styled.div``;
-
-const RefreshIcon = styled(RiResetRightFill)`
-  width: 20px;
-  height: 20px;
-`;
 
 const HeaderTitle = styled.div`
   text-align: center;
@@ -88,17 +79,18 @@ const HeaderCell = styled.div`
 interface TableOrderListProps {
   orders: Order[];
   onRefresh: () => void;
+  isLoading: boolean;
 }
 
 const formattedNowTime = formatKoreanTime(new Date().toISOString()) || '시간 없음';
 
-function AdminTableOrderList({ orders, onRefresh }: TableOrderListProps) {
+function AdminTableOrderList({ orders, onRefresh, isLoading }: TableOrderListProps) {
   return (
     <Container>
       <Header>
-        <RefreshSection onClick={onRefresh}>
+        <RefreshSection>
           <NowTimeLabel>{formattedNowTime}</NowTimeLabel>
-          <RefreshIcon />
+          <RefreshSpinIcon isLoading={isLoading} onClick={onRefresh} size={20} color={Color.GREY} />
         </RefreshSection>
         <HeaderTitle>주문 내역</HeaderTitle>
       </Header>

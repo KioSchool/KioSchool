@@ -110,7 +110,7 @@ function AdminTableRealtime() {
 
   const tables = useAtomValue(adminTablesAtom);
   const selectedTable = tables.find((t) => t.tableNumber === Number(tableNo));
-  const { orders, totalOrderAmount, fetchOrders } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
+  const { orders, totalOrderAmount, fetchOrders, isLoading: isOrdersLoading } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
 
   const fetchTables = () => {
     fetchWorkspaceTables(workspaceId);
@@ -169,7 +169,7 @@ function AdminTableRealtime() {
                     />
                   </RightColumn>
                 </DetailHeader>
-                <AdminTableOrderList orders={orders} onRefresh={fetchOrders} />
+                <AdminTableOrderList orders={orders} onRefresh={fetchOrders} isLoading={isOrdersLoading} />
               </TableDetail>
               {!selectedTable.orderSession && (
                 <InactiveTableView workspaceId={workspaceId} tableNumber={selectedTable.tableNumber} refetchTable={fetchTables} />
