@@ -99,9 +99,16 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
     }
   }, [initialValues]);
 
+  const isPriceNumeric = (price: string | number) => /^\d+$/.test(String(price).trim());
+
   const handleSubmit = async () => {
     if (!state.name || !state.description) {
       alert('상품 이름 및 설명을 입력해주세요');
+      return;
+    }
+
+    if (!isPriceNumeric(state.price)) {
+      alert('상품 가격은 숫자만 입력해주세요.');
       return;
     }
 
