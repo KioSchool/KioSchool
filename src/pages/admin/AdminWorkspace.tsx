@@ -44,10 +44,6 @@ function AdminWorkspace() {
     cancelText: '취소',
   });
 
-  useEffect(() => {
-    setSideNavIsOpen(true);
-  }, [setSideNavIsOpen, workspaceId]);
-
   const handleLoadWorkspace = () => {
     setIsWorkspaceLoading(true);
     setHasWorkspaceAccess(false);
@@ -95,6 +91,13 @@ function AdminWorkspace() {
   };
 
   const isOnboardingVisible = hasWorkspaceAccess && !isWorkspaceLoading && workspace.isOnboarding && !isOnboardingCompleted;
+
+  useEffect(() => {
+    if (isWorkspaceLoading || !hasWorkspaceAccess) return;
+
+    setSideNavIsOpen(!isOnboardingVisible);
+  }, [isOnboardingVisible, isWorkspaceLoading, hasWorkspaceAccess, setSideNavIsOpen]);
+
   const pageContent = match({ isWorkspaceLoading, hasWorkspaceAccess, isOnboardingVisible })
     .with({ isWorkspaceLoading: true }, () => <LoadingContainer>워크스페이스 정보를 불러오는 중입니다.</LoadingContainer>)
     .with({ hasWorkspaceAccess: false }, () => <LoadingContainer>워크스페이스 접근 권한을 확인하는 중입니다.</LoadingContainer>)
