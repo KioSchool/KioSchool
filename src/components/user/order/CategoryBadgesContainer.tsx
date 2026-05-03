@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { Product, ProductCategory } from '@@types/index';
 import { rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
+
 import { scrollToCategoryBadge } from '@utils/categoryTracking';
 import { Link } from 'react-scroll';
 
@@ -29,7 +30,8 @@ const CategoryLink = styled(Link)`
   border-bottom: 3px solid transparent;
 
   &.active {
-    border-bottom: 3px solid black;
+    border-bottom: 3px solid ${Color.KIO_ORANGE};
+    color: ${Color.KIO_ORANGE};
     font-weight: 600;
   }
 `;
