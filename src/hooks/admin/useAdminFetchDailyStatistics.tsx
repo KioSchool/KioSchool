@@ -5,7 +5,7 @@ import { dateQueryParamConfig } from '@hooks/common/queryParamConfigs';
 import useApi from '@hooks/useApi';
 import { DailyStatistics } from '@@types/index';
 
-const POLLING_INTERVAL = 5 * 60 * 1000;
+const POLLING_INTERVAL = 1 * 60 * 1000;
 
 export const useAdminFetchDailyStatistics = (workspaceId: string | undefined) => {
   const { adminApi } = useApi();
