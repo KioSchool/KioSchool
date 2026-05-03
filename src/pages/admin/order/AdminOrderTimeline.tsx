@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
+import { css, keyframes } from '@emotion/react';
 import { format } from 'date-fns';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import AppContainer from '@components/common/container/AppContainer';
@@ -44,6 +45,20 @@ const UpdateLabel = styled.span`
   color: ${TIMELINE_COLORS.TEXT_PRIMARY};
 `;
 
+const spinAnimation = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+`;
+
+const RefreshIconWrapper = styled.div<{ shouldAnimate: boolean }>`
+  ${rowFlex({ justify: 'center', align: 'center' })}
+  ${({ shouldAnimate }) =>
+    shouldAnimate &&
+    css`
+      animation: ${spinAnimation} 0.8s linear;
+    `}
+`;
+
 const RefreshIcon = styled(RiRefreshLine)`
   width: 16px;
   height: 16px;
@@ -70,11 +85,16 @@ function AdminOrderTimeline() {
   const { fetchProducts } = useAdminProducts(workspaceId);
 
   const [selectedSession, setSelectedSession] = useState<OrderSessionWithOrder | null>(null);
+  const [spinCount, setSpinCount] = useState(0);
   const { isModalOpen, openModal, closeModal } = useModal();
 
   useEffect(() => {
     fetchProducts();
   }, [workspaceId]);
+
+  useEffect(() => {
+    if (isLoading) setSpinCount((count) => count + 1);
+  }, [isLoading]);
 
   const handleSessionClick = useCallback(
     (session: OrderSessionWithOrder) => {
@@ -112,7 +132,9 @@ function AdminOrderTimeline() {
           </FilterLeft>
           <UpdateInfo>
             <UpdateLabel>최종 업데이트 {format(currentTime, 'HH:mm')}</UpdateLabel>
-            <RefreshIcon onClick={manualRefetch} />
+            <RefreshIconWrapper key={spinCount} shouldAnimate={spinCount > 0}>
+              <RefreshIcon onClick={manualRefetch} />
+            </RefreshIconWrapper>
           </UpdateInfo>
         </FilterContainer>
 
