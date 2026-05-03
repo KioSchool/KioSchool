@@ -81,10 +81,12 @@ function TableSettingsSidebar() {
       return;
     }
 
+    const shouldRedirectToOnboarding = workspace.isOnboarding && tableCount >= 2 && Boolean(workspaceId);
+
     try {
       await Promise.all([updateWorkspaceTableCount(workspaceId, tableCount), updateWorkspaceOrderSetting(workspaceId, isTimeLimited, timeLimitMinutes)]);
 
-      if (workspace.isOnboarding && tableCount >= 2 && workspaceId) {
+      if (shouldRedirectToOnboarding) {
         navigate(getAdminWorkspacePath(Number(workspaceId)));
       }
     } catch (error) {

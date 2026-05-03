@@ -29,6 +29,7 @@ function ProductAdd() {
     }
 
     const submitData = { ...formData, workspaceId };
+    const shouldRedirectToOnboarding = workspace.isOnboarding && Boolean(workspaceId);
 
     return addProduct(submitData, file)
       .then(() => fetchProducts())
@@ -36,7 +37,7 @@ function ProductAdd() {
         alert('상품이 추가되었습니다.');
         closeSidebar();
 
-        if (workspace.isOnboarding && workspaceId) {
+        if (shouldRedirectToOnboarding) {
           navigate(getAdminWorkspacePath(Number(workspaceId)));
         }
       })
