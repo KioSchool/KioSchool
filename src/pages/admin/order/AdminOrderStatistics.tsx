@@ -99,7 +99,7 @@ function AdminOrderStatistics() {
           </CustomSelect>
           {statistics?.lastUpdated && isValidDate(statistics.lastUpdated) && (
             <UpdateInfo>
-              <UpdateLabel>최종 업데이트 {format(new Date(statistics.lastUpdated), 'HH:mm')} · 5분마다 자동 갱신</UpdateLabel>
+              <UpdateLabel>최종 업데이트 {format(new Date(statistics.lastUpdated), 'HH:mm')} · 5분 단위 계산</UpdateLabel>
               <RefreshSpinIcon isLoading={isLoading} onClick={manualRefetch} />
             </UpdateInfo>
           )}
