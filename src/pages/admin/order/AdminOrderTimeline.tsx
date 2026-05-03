@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { css, keyframes } from '@emotion/react';
 import { format } from 'date-fns';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import AppContainer from '@components/common/container/AppContainer';
@@ -9,6 +8,7 @@ import CustomSelect from '@components/common/select/CustomSelect';
 import CustomDatePicker from '@components/common/date-picker/CustomDatePicker';
 import CustomCheckbox from '@components/common/checkbox/CustomCheckbox';
 import StatCard from '@components/common/card/StatCard';
+import RefreshSpinIcon from '@components/common/refresh/RefreshSpinIcon';
 import TimelineGrid from '@components/admin/order/timeline/TimelineGrid';
 import SessionDetailModal from '@components/admin/order/timeline/SessionDetailModal';
 import { useAdminFetchTableSessionTimeline } from '@hooks/admin/useAdminFetchTableSessionTimeline';
@@ -17,8 +17,6 @@ import useModal from '@hooks/useModal';
 import { OrderSessionWithOrder } from '@@types/index';
 import { formatMinutesToTime } from '@utils/formatDate';
 import { TIMELINE_COLORS } from '@components/admin/order/timeline/timelineConstants';
-import { RiRefreshLine } from '@remixicon/react';
-import { expandButtonStyle } from '@styles/buttonStyles';
 
 const Container = styled.div`
   width: 95%;
@@ -45,27 +43,6 @@ const UpdateLabel = styled.span`
   color: ${TIMELINE_COLORS.TEXT_PRIMARY};
 `;
 
-const spinAnimation = keyframes`
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-`;
-
-const RefreshIconWrapper = styled.div<{ shouldAnimate: boolean }>`
-  ${rowFlex({ justify: 'center', align: 'center' })}
-  ${({ shouldAnimate }) =>
-    shouldAnimate &&
-    css`
-      animation: ${spinAnimation} 0.8s linear;
-    `}
-`;
-
-const RefreshIcon = styled(RiRefreshLine)`
-  width: 16px;
-  height: 16px;
-  color: ${TIMELINE_COLORS.TEXT_PRIMARY};
-  ${expandButtonStyle}
-`;
-
 const StatCardRow = styled.div`
   width: 100%;
   gap: 12px;
@@ -85,16 +62,11 @@ function AdminOrderTimeline() {
   const { fetchProducts } = useAdminProducts(workspaceId);
 
   const [selectedSession, setSelectedSession] = useState<OrderSessionWithOrder | null>(null);
-  const [spinCount, setSpinCount] = useState(0);
   const { isModalOpen, openModal, closeModal } = useModal();
 
   useEffect(() => {
     fetchProducts();
   }, [workspaceId]);
-
-  useEffect(() => {
-    if (isLoading) setSpinCount((count) => count + 1);
-  }, [isLoading]);
 
   const handleSessionClick = useCallback(
     (session: OrderSessionWithOrder) => {
@@ -132,9 +104,7 @@ function AdminOrderTimeline() {
           </FilterLeft>
           <UpdateInfo>
             <UpdateLabel>최종 업데이트 {format(currentTime, 'HH:mm')}</UpdateLabel>
-            <RefreshIconWrapper key={spinCount} shouldAnimate={spinCount > 0}>
-              <RefreshIcon onClick={manualRefetch} />
-            </RefreshIconWrapper>
+            <RefreshSpinIcon isLoading={isLoading} onClick={manualRefetch} color={TIMELINE_COLORS.TEXT_PRIMARY} />
           </UpdateInfo>
         </FilterContainer>
 
