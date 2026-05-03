@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
 import { useAtomValue } from 'jotai';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { adminWorkspaceAtom, adminTablesAtom } from '@jotai/admin/atoms';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { colFlex } from '@styles/flexStyles';
+import { getAdminWorkspacePath } from '@constants/routes';
 import TableTimeSetting from './TableTimeSetting';
 import TableQRDownload from './TableQRDownload';
 import NumberInput from '@components/common/input/NumberInput';
@@ -46,6 +47,8 @@ function TableSettingsSidebar() {
   const tables = useAtomValue(adminTablesAtom);
   const { updateWorkspaceTableCount, updateWorkspaceOrderSetting } = useAdminWorkspace();
 
+  const navigate = useNavigate();
+
   const [tableCount, setTableCount] = useState(workspace.tableCount || 1);
   const [isTimeLimited, setIsTimeLimited] = useState(workspace.workspaceSetting?.useOrderSessionTimeLimit ?? false);
   const [timeLimitMinutes, setTimeLimitMinutes] = useState(workspace.workspaceSetting?.orderSessionTimeLimitMinutes ?? 60);
@@ -80,6 +83,10 @@ function TableSettingsSidebar() {
 
     try {
       await Promise.all([updateWorkspaceTableCount(workspaceId, tableCount), updateWorkspaceOrderSetting(workspaceId, isTimeLimited, timeLimitMinutes)]);
+
+      if (workspace.isOnboarding && tableCount >= 2 && workspaceId) {
+        navigate(getAdminWorkspacePath(Number(workspaceId)));
+      }
     } catch (error) {
       console.error('설정 저장 실패:', error);
       alert('설정 저장에 실패했습니다. 다시 시도해주세요.');
