@@ -9,6 +9,7 @@ import TableSettingsSidebar from '@components/admin/order/table-manage/setting/T
 import AppContainer from '@components/common/container/AppContainer';
 import RightSidebarModal from '@components/common/modal/RightSidebarModal';
 import styled from '@emotion/styled';
+import { css, keyframes } from '@emotion/react';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import useQueryParam from '@hooks/common/useQueryParam';
 import { tableNoQueryParamConfig } from '@hooks/common/queryParamConfigs';
@@ -22,6 +23,9 @@ import { adminTablesAtom, adminWorkspaceAtom, externalSidebarAtom } from '@jotai
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { RiSettings3Fill } from '@remixicon/react';
+import { ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardingData';
+import { isOnboardingStepCompleted } from '@utils/onboarding';
+import OnboardingStepHint from '@components/admin/workspace/onboarding/OnboardingStepHint';
 
 const Container = styled.div`
   width: 95%;
@@ -71,6 +75,21 @@ const SettingsButtonContainer = styled.div`
   ${colFlex({ align: 'end' })}
 `;
 
+const buttonPulseAnimation = keyframes`
+  0% { box-shadow: 0 0 0 0 rgba(255, 145, 66, 0.45); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 145, 66, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 145, 66, 0); }
+`;
+
+const ButtonHighlightWrapper = styled.div<{ animate: boolean }>`
+  border-radius: 40px;
+  ${({ animate }) =>
+    animate &&
+    css`
+      animation: ${buttonPulseAnimation} 1.8s ease-out infinite;
+    `}
+`;
+
 const FallbackContainer = styled.div`
   height: 600px;
   border: 1px solid #ececec;
@@ -110,13 +129,18 @@ function AdminTableRealtime() {
     });
   };
 
+  const needsTablesOnboarding = workspace.isOnboarding && !isOnboardingStepCompleted(workspace, ONBOARDING_STEP.TABLES);
+
   return (
     <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })}>
       <>
+        <OnboardingStepHint step={ONBOARDING_STEP.TABLES} width="1000px" />
         <SettingsButtonContainer>
-          <NewCommonButton size="sm" icon={<SettingIcon />} onClick={handleOpenSettings}>
-            테이블 설정
-          </NewCommonButton>
+          <ButtonHighlightWrapper animate={needsTablesOnboarding}>
+            <NewCommonButton size="sm" icon={<SettingIcon />} onClick={handleOpenSettings}>
+              테이블 설정
+            </NewCommonButton>
+          </ButtonHighlightWrapper>
         </SettingsButtonContainer>
         <Container>
           <AdminTableList tables={tables} />
