@@ -57,7 +57,7 @@ function OrderModalMainContents({ order }: OrderModalMainContentsProps) {
   const readOnly = useAtomValue(orderModalReadOnlyAtom);
 
   const products = useAtomValue(adminProductsAtom);
-  const productMap: Record<number, Product> = _.keyBy(products, 'id');
+  const productMap: Record<number, Product | undefined> = _.keyBy(products, 'id');
 
   const isPaidStatus = order.status === OrderStatus.PAID;
   const isAllServed = order.orderProducts.every((orderProduct) => orderProduct.isServed);

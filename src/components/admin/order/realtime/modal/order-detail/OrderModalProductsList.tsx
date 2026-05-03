@@ -77,7 +77,7 @@ const ProductQuantityLabel = styled.div`
 
 interface OrderModalProductListProps {
   orderProducts: OrderProduct[];
-  productMap: Record<number, Product>;
+  productMap: Record<number, Product | undefined>;
   isPaidStatus: boolean;
   onIncrease: (orderProduct: OrderProduct) => void;
   onDecrease: (orderProduct: OrderProduct) => void;
@@ -88,7 +88,7 @@ function OrderModalProductList({ orderProducts, productMap, isPaidStatus, onIncr
     <OrderProductContainer>
       {orderProducts.map((orderProduct) => {
         const product = productMap[orderProduct.productId];
-        const productImageUrl = product.imageUrl || defaultProductImage;
+        const productImageUrl = product?.imageUrl || defaultProductImage;
 
         return (
           <ProductContainer key={`${orderProduct.id}`}>
