@@ -12,6 +12,7 @@ import { getPageTitle } from '@@types/guard';
 import { DEFAULT_LAYOUT_WIDTH, SIDE_NAV_WIDTH } from '@constants/layout';
 import { tabletMediaQuery } from '@styles/globalStyles';
 import { useEffect } from 'react';
+import { match } from 'ts-pattern';
 
 export const MainContainer = styled.div<{ backgroundColor?: string; sideNavOffset: number }>`
   width: ${(props) => (props.sideNavOffset > 0 ? `calc(100% - ${props.sideNavOffset}px)` : '100%')};
@@ -100,15 +101,15 @@ interface Props {
   customGap?: string;
 }
 
-const getHeaderInfo = (pathname: string, workspaceName: string, userName: string) => {
-  if (pathname.startsWith('/super-admin')) {
-    return { title: '슈퍼 어드민', label: getPageTitle(pathname) };
-  }
-  if (pathname === '/admin') {
-    return { title: '키오스쿨', label: `${userName}님 환영합니다.` };
-  }
-  return { title: workspaceName, label: getPageTitle(pathname) };
-};
+function getHeaderInfo(pathname: string, workspaceName: string, userName: string) {
+  return match(pathname)
+    .when(
+      (currentPathname) => currentPathname.startsWith('/super-admin'),
+      () => ({ title: '슈퍼 어드민', label: getPageTitle(pathname) }),
+    )
+    .with('/admin', () => ({ title: '키오스쿨', label: `${userName}님 환영합니다.` }))
+    .otherwise(() => ({ title: workspaceName, label: getPageTitle(pathname) }));
+}
 
 function AppContainer({ children, useFlex, backgroundColor, useTitle = true, useFullHeight = false, customWidth, customGap }: Props) {
   const location = useLocation();
