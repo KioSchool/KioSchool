@@ -71,13 +71,9 @@ const SettingIcon = styled(RiSettings3Fill)`
 
 const SettingsButtonContainer = styled.div`
   width: 1000px;
+  padding-top: 12px;
   padding-bottom: 24px;
-  ${colFlex({ align: 'end' })}
-const SettingsButtonContainer = styled.div`
- width: 1000px;
- padding-top: 12px;
- padding-bottom: 24px;
- ${colFlex({ align: 'end' })}
+  ${colFlex({ align: 'end' })};
 `;
 
 const buttonPulseAnimation = keyframes`
