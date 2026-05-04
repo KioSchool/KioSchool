@@ -4,7 +4,7 @@ import useCustomNavigate from '@hooks/useCustomNavigate';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { SUPER_ADMIN_ROUTES } from '@constants/routes';
 import { Color } from '@resources/colors';
-import { RiArrowRightSLine, RiBankCardLine, RiMailSendLine, RiStore3Line, RiUser3Line } from '@remixicon/react';
+import { RiArrowRightSLine, RiBankCardLine, RiDashboard3Line, RiFileListLine, RiMailSendLine, RiStore3Line, RiUser3Line } from '@remixicon/react';
 
 const Container = styled.div`
   width: 100%;
@@ -108,6 +108,18 @@ const MENU_ITEMS = [
     description: '결제 계좌에 사용될 은행 목록 관리',
     icon: <RiBankCardLine size={32} />,
     route: SUPER_ADMIN_ROUTES.BANK,
+  },
+  {
+    title: '서비스 현황 대시보드',
+    description: '유저·워크스페이스·매출 통계 및 계정 연동 현황 한눈에 보기',
+    icon: <RiDashboard3Line size={32} />,
+    route: SUPER_ADMIN_ROUTES.DASHBOARD,
+  },
+  {
+    title: '전체 주문 모니터링',
+    description: '전체 워크스페이스의 주문을 상태·날짜·워크스페이스별로 조회',
+    icon: <RiFileListLine size={32} />,
+    route: SUPER_ADMIN_ROUTES.ORDERS,
   },
 ];
 
