@@ -8,7 +8,7 @@ const Container = styled.div<{ expanded: boolean }>`
   box-sizing: border-box;
   width: 100%;
   padding: 0 20px;
-  margin: 15px 0;
+  margin: 15px 0 30px 0;
   height: auto;
   ${colFlex({ align: 'center' })}
 `;
