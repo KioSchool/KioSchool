@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useAdminUser from '@hooks/admin/useAdminUser';
 import AppContainer from '@components/common/container/AppContainer';
 import AddWorkspace from '@components/common/workspace/AddWorkspace';
@@ -16,6 +16,14 @@ import OrderQRNoticePopupContent from '@components/admin/home/OrderQRNoticePopup
 const Container = styled.div`
   width: 95%;
   ${colFlex({ align: 'center' })}
+`;
+
+const LoadingContainer = styled.div`
+  width: 100%;
+  min-height: 320px;
+  color: #5d6368;
+  font-size: 18px;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const ADMIN_HOME_POPUP_DATAS: PopupData[] = [
@@ -39,15 +47,20 @@ function AdminHome() {
   const { fetchWorkspaces, fetchAdminUser } = useAdminUser();
   const workspaces = useAtomValue(adminWorkspacesAtom);
   const user = useAtomValue(adminUserAtom);
+  const [isAdminUserLoading, setIsAdminUserLoading] = useState(true);
   const addWorkspaceNumber = 3 - workspaces.length;
   const isAccountRegistered = !!user.account?.accountNumber;
 
   useEffect(() => {
     fetchWorkspaces();
-    fetchAdminUser();
+    fetchAdminUser().finally(() => {
+      setIsAdminUserLoading(false);
+    });
   }, []);
 
-  const pageContent = !isAccountRegistered ? (
+  const pageContent = isAdminUserLoading ? (
+    <LoadingContainer>계정 정보를 불러오는 중입니다.</LoadingContainer>
+  ) : !isAccountRegistered ? (
     <HomeOnboarding />
   ) : (
     <Container>
