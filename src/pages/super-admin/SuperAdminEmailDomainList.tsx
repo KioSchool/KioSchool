@@ -13,6 +13,13 @@ import styled from '@emotion/styled';
 import useInputConfirm from '@hooks/useInputConfirm';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 
+const PageContainer = styled.div`
+  width: 100%;
+  padding: 72px 0 40px;
+  gap: 20px;
+  ${colFlex()}
+`;
+
 const HeaderContainer = styled.div`
   width: 100%;
   gap: 16px;
@@ -64,8 +71,8 @@ function SuperAdminEmailDomainList() {
   };
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'} customGap={'20px'} useTitle={false}>
-      <>
+    <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'} useTitle={false}>
+      <PageContainer>
         <InputConfirmModal />
         <HeaderContainer>
           <ActionsContainer>
@@ -83,7 +90,7 @@ function SuperAdminEmailDomainList() {
             setSearchParams(searchParams);
           }}
         />
-      </>
+      </PageContainer>
     </AppContainer>
   );
 }

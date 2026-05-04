@@ -9,6 +9,8 @@ import { Color } from '@resources/colors';
 const Container = styled.div`
   width: 100%;
   height: 100%;
+  padding-top: 72px;
+  box-sizing: border-box;
   gap: 40px;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;

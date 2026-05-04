@@ -11,6 +11,13 @@ import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { defaultPaginationValue } from '@@types/defaultValues';
 
+const PageContainer = styled.div`
+  width: 100%;
+  padding: 72px 0 40px;
+  gap: 20px;
+  ${colFlex()}
+`;
+
 const HeaderContainer = styled.div`
   width: 100%;
   margin-bottom: 8px;
@@ -41,8 +48,8 @@ function SuperAdminWorkspace() {
   }, [searchParams.toString()]);
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'} customGap={'20px'} useTitle={false}>
-      <>
+    <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'} useTitle={false}>
+      <PageContainer>
         <HeaderContainer>
           <SearchContainer>
             <PaginationSearchBar />
@@ -56,7 +63,7 @@ function SuperAdminWorkspace() {
             setSearchParams(searchParams);
           }}
         />
-      </>
+      </PageContainer>
     </AppContainer>
   );
 }
