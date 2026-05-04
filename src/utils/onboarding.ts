@@ -6,7 +6,7 @@ import { ADMIN_ROUTES } from '@constants/routes';
 export const ONBOARDING_STEP_DEFINITIONS: OnboardingStepDefinition[] = [
   { step: ONBOARDING_STEP.INFO, label: '기본 정보' },
   { step: ONBOARDING_STEP.TABLES, label: '테이블 설정' },
-  { step: ONBOARDING_STEP.MENU, label: '메뉴 등록' },
+  { step: ONBOARDING_STEP.MENU, label: '상품 등록' },
   { step: ONBOARDING_STEP.COMPLETE, label: '완료' },
 ];
 

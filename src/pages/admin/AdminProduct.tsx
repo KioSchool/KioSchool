@@ -17,6 +17,8 @@ import { closestCenter, DndContext, DragOverlay } from '@dnd-kit/core';
 import ProductDroppableContainer from '@components/admin/product/ProductDroppableContainer';
 import ProductCard from '@components/admin/product/ProductCard';
 import { Color } from '@resources/colors';
+import OnboardingStepHint from '@components/admin/workspace/onboarding/OnboardingStepHint';
+import { ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardingData';
 
 const Container = styled.div`
   width: 100%;
@@ -99,8 +101,9 @@ function AdminProduct() {
   };
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })}>
+    <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })}>
       <Container>
+        <OnboardingStepHint step={ONBOARDING_STEP.MENU} width="95%" />
         <ProductAddButtonContainer>
           <DragHintText>상품 카드를 드래그하여 순서를 변경하거나 카테고리를 변경할 수 있습니다.</DragHintText>
           <NewCommonButton size="sm" onClick={handleOpenAddProduct}>

@@ -7,15 +7,19 @@ const AUTO_REFRESH_INTERVAL = 60000;
 export default function useTableOrders(workspaceId: string | undefined, orderSessionId: number | undefined) {
   const { fetchOrderSession } = useAdminOrder(String(workspaceId));
   const [orders, setOrders] = useState<Order[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchOrders = useCallback(() => {
-    if (orderSessionId) {
-      fetchOrderSession(orderSessionId)
-        .then((response) => setOrders(response.data))
-        .catch((error) => console.error('테이블 주문을 가져오는 중 오류 발생:', error));
-    } else {
+    if (!orderSessionId) {
       setOrders([]);
+      return;
     }
+
+    setIsLoading(true);
+    fetchOrderSession(orderSessionId)
+      .then((response) => setOrders(response.data))
+      .catch((error) => console.error('테이블 주문을 가져오는 중 오류 발생:', error))
+      .finally(() => setIsLoading(false));
   }, [orderSessionId]);
 
   useEffect(() => {
@@ -26,5 +30,5 @@ export default function useTableOrders(workspaceId: string | undefined, orderSes
 
   const totalOrderAmount = orders.reduce((sum, order) => sum + order.totalPrice, 0);
 
-  return { orders, totalOrderAmount, fetchOrders };
+  return { orders, totalOrderAmount, fetchOrders, isLoading };
 }

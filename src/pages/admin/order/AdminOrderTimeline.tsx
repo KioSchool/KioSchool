@@ -8,6 +8,7 @@ import CustomSelect from '@components/common/select/CustomSelect';
 import CustomDatePicker from '@components/common/date-picker/CustomDatePicker';
 import CustomCheckbox from '@components/common/checkbox/CustomCheckbox';
 import StatCard from '@components/common/card/StatCard';
+import RefreshSpinIcon from '@components/common/refresh/RefreshSpinIcon';
 import TimelineGrid from '@components/admin/order/timeline/TimelineGrid';
 import SessionDetailModal from '@components/admin/order/timeline/SessionDetailModal';
 import { useAdminFetchTableSessionTimeline } from '@hooks/admin/useAdminFetchTableSessionTimeline';
@@ -16,8 +17,6 @@ import useModal from '@hooks/useModal';
 import { OrderSessionWithOrder } from '@@types/index';
 import { formatMinutesToTime } from '@utils/formatDate';
 import { TIMELINE_COLORS } from '@components/admin/order/timeline/timelineConstants';
-import { RiRefreshLine } from '@remixicon/react';
-import { expandButtonStyle } from '@styles/buttonStyles';
 
 const Container = styled.div`
   width: 95%;
@@ -42,13 +41,6 @@ const UpdateInfo = styled.div`
 const UpdateLabel = styled.span`
   font-size: 12px;
   color: ${TIMELINE_COLORS.TEXT_PRIMARY};
-`;
-
-const RefreshIcon = styled(RiRefreshLine)`
-  width: 16px;
-  height: 16px;
-  color: ${TIMELINE_COLORS.TEXT_PRIMARY};
-  ${expandButtonStyle}
 `;
 
 const StatCardRow = styled.div`
@@ -112,7 +104,7 @@ function AdminOrderTimeline() {
           </FilterLeft>
           <UpdateInfo>
             <UpdateLabel>최종 업데이트 {format(currentTime, 'HH:mm')}</UpdateLabel>
-            <RefreshIcon onClick={manualRefetch} />
+            <RefreshSpinIcon isLoading={isLoading} onClick={manualRefetch} color={TIMELINE_COLORS.TEXT_PRIMARY} />
           </UpdateInfo>
         </FilterContainer>
 

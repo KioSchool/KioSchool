@@ -12,7 +12,7 @@ const Container = styled.div`
 const HeaderRow = styled.div`
   width: 100%;
   gap: 12px;
-  ${rowFlex({ justify: 'space-between', align: 'start' })}
+  ${rowFlex({ justify: 'space-between', align: 'end' })}
 `;
 
 const TextContainer = styled.div`
