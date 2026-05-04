@@ -27,8 +27,6 @@ import SuperAdminEmailDomainList from '@pages/super-admin/SuperAdminEmailDomainL
 import UserEmailDomain from '@pages/user/UserEmailDomain';
 import AdminWorkspaceEdit from '@pages/admin/AdminWorkspaceEdit';
 import SuperAdminBank from '@pages/super-admin/SuperAdminBank';
-import SuperAdminDashboard from '@pages/super-admin/SuperAdminDashboard';
-import SuperAdminOrders from '@pages/super-admin/SuperAdminOrders';
 import { ToastContainer } from 'react-toastify';
 import useNetworkStatusNotifier from '@hooks/useNetworkStatusNotifier';
 import useServerHealth from '@hooks/useServerHealth';
@@ -104,8 +102,6 @@ function App() {
           <Route path={SUPER_ADMIN_ROUTES.USER} element={<SuperAdminUser />} />
           <Route path={SUPER_ADMIN_ROUTES.EMAIL} element={<SuperAdminEmailDomainList />} />
           <Route path={SUPER_ADMIN_ROUTES.BANK} element={<SuperAdminBank />} />
-          <Route path={SUPER_ADMIN_ROUTES.DASHBOARD} element={<SuperAdminDashboard />} />
-          <Route path={SUPER_ADMIN_ROUTES.ORDERS} element={<SuperAdminOrders />} />
 
           <Route path={TEST_ROUTES.SENTRY_TEST} element={<SentryTestPage />} />
         </Route>

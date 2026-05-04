@@ -9,7 +9,7 @@ import { adminSideNavIsOpenAtom, adminUserAtom, adminWorkspaceAtom } from '@jota
 import { layoutParamsAtom, windowWidthAtom } from '@jotai/atoms';
 import { calculateLayoutScale } from 'src/utils/layout';
 import { getPageTitle } from '@@types/guard';
-import { DEFAULT_LAYOUT_WIDTH, NAV_BAR_HEIGHT, SIDE_NAV_WIDTH } from '@constants/layout';
+import { DEFAULT_LAYOUT_WIDTH, SIDE_NAV_WIDTH } from '@constants/layout';
 import { tabletMediaQuery } from '@styles/globalStyles';
 import { useEffect } from 'react';
 import { match } from 'ts-pattern';
@@ -37,12 +37,7 @@ export const SubContainer = styled.div<{
   gap: ${(props) => props.customGap || '0'};
   box-sizing: border-box;
   flex-grow: 1;
-  padding-top: ${(props) => {
-    if (props.useTitle) return '90px';
-    // 랜딩 페이지(customWidth='100%')는 내부 섹션이 NavBar 높이를 자체 처리
-    if (props.customWidth === '100%') return '0';
-    return `${NAV_BAR_HEIGHT}px`;
-  }};
+  padding-top: ${(props) => (props.useTitle ? '90px' : '0')};
   ${(props) =>
     props.useFlex ||
     colFlex({

@@ -40,9 +40,6 @@ export const SUPER_ADMIN_ROUTES = {
   USER: '/super-admin/user',
   EMAIL: '/super-admin/email',
   BANK: '/super-admin/bank',
-  DASHBOARD: '/super-admin/dashboard',
-  ORDERS: '/super-admin/orders',
-  ACCOUNT_STATUS: '/super-admin/account-status',
 } as const;
 
 export const TEST_ROUTES = {
