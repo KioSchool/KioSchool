@@ -5,7 +5,7 @@ import AddWorkspace from '@components/common/workspace/AddWorkspace';
 import WorkspaceContent from '@components/admin/workspace/WorkspaceContent';
 import HomeOnboarding from '@components/admin/home/HomeOnboarding';
 import AppPopup from '@components/common/popup/AppPopup';
-import { PopupData } from '@constants/data/popupData';
+import { POPUP_CLOSE_MODE, PopupData } from '@constants/data/popupData';
 import { colFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
 import { adminUserAtom, adminWorkspacesAtom } from '@jotai/admin/atoms';
@@ -30,6 +30,8 @@ const ADMIN_HOME_POPUP_DATAS: PopupData[] = [
     title: '주문 QR 코드 재다운로드 안내',
     expireDate: new Date(2026, 5, 5),
     children: <OrderQRNoticePopupContent />,
+    closeMode: POPUP_CLOSE_MODE.FOREVER,
+    closeText: '다시 보지 않기',
   },
 ];
 

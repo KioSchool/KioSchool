@@ -46,9 +46,9 @@ function usePopup() {
     closePopup();
   };
 
-  const closePopupForever = (popupId: number) => {
+  const closePopupForever = (popupId: number, expireDate?: Date) => {
     const cookies = new Cookies();
-    cookies.set(`close_popup_${popupId}`, 'true', { path: '/' });
+    cookies.set(`close_popup_${popupId}`, 'true', { path: '/', expires: expireDate });
     closePopup();
   };
 

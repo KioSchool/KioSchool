@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { RiCloseCircleFill } from '@remixicon/react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import { PopupData } from '@constants/data/popupData';
+import { POPUP_CLOSE_MODE, PopupData } from '@constants/data/popupData';
 import { useCookies } from 'react-cookie';
 
 const Container = styled.div`
@@ -66,7 +66,7 @@ interface AppPopupProps {
 }
 
 function AppPopup({ popupDatas }: AppPopupProps) {
-  const { isValidPopup, closePopupForDay } = usePopup();
+  const { isValidPopup, closePopupForDay, closePopupForever } = usePopup();
   const [validPopupData, setValidPopupData] = useState<PopupData | null>(popupDatas[0]);
   const [cookies] = useCookies();
 
@@ -85,18 +85,24 @@ function AppPopup({ popupDatas }: AppPopupProps) {
     return null;
   }
 
-  const { popupId, children } = validPopupData;
+  const { popupId, expireDate, children, closeMode = POPUP_CLOSE_MODE.DAY, closeText } = validPopupData;
+  const popupCloseText = closeText ?? (closeMode === POPUP_CLOSE_MODE.FOREVER ? '다시 보지 않기' : '하루 동안 보지 않기');
+
+  const handleClosePopup = () => {
+    if (closeMode === POPUP_CLOSE_MODE.FOREVER) {
+      closePopupForever(popupId, expireDate);
+      return;
+    }
+
+    closePopupForDay(popupId);
+  };
 
   return (
     <Container>
       <SubContainer>
         <ContentContainer>
-          <CloseButtonContainer
-            onClick={() => {
-              closePopupForDay(popupId);
-            }}
-          >
-            <CloseText>하루 동안 보지 않기</CloseText>
+          <CloseButtonContainer onClick={handleClosePopup}>
+            <CloseText>{popupCloseText}</CloseText>
             <CloseButtonIcon />
           </CloseButtonContainer>
           {children}
