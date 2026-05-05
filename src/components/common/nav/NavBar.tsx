@@ -99,7 +99,8 @@ function NavBar({ useBackground = false }: NavBarProps) {
   const [isSideNavOpen, setIsSideNavOpen] = useAtom(sideNavIsOpenAtom);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const isShowHamburger = location.pathname.startsWith('/admin/workspace/');
+  const isShowHamburger =
+    location.pathname.startsWith('/admin/workspace/') || location.pathname.startsWith('/super-admin');
 
   const handleHamburgerClick = () => {
     setIsSideNavOpen((prev) => !prev);
@@ -134,8 +135,14 @@ function NavBar({ useBackground = false }: NavBarProps) {
       </NavContainer>
 
       <MobileNav isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
-      {isShowHamburger && workspaceId && (
-        <SideNav isOpen={isSideNavOpen} navData={adminNavData} pathPrefix={`/admin/workspace/${workspaceId}`} />
+      {isShowHamburger && (
+        <SideNav
+          isOpen={isSideNavOpen}
+          navData={adminNavData}
+          pathPrefix={
+            location.pathname.startsWith('/super-admin') ? '/super-admin' : `/admin/workspace/${workspaceId}`
+          }
+        />
       )}
     </>
   );

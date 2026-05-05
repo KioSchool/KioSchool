@@ -10,7 +10,7 @@ import { layoutParamsAtom, windowWidthAtom, sideNavIsOpenAtom } from '@jotai/ato
 import { calculateLayoutScale } from 'src/utils/layout';
 import { getPageTitle } from '@@types/guard';
 import { DEFAULT_LAYOUT_WIDTH, SIDE_NAV_WIDTH } from '@constants/layout';
-import { tabletMediaQuery } from '@styles/globalStyles';
+import { mobileMediaQuery, tabletMediaQuery } from '@styles/globalStyles';
 import { useEffect } from 'react';
 import { match } from 'ts-pattern';
 
@@ -37,7 +37,18 @@ export const SubContainer = styled.div<{
   gap: ${(props) => props.customGap || '0'};
   box-sizing: border-box;
   flex-grow: 1;
-  padding-top: ${(props) => (props.useTitle ? '90px' : '0')};
+  padding-top: ${(props) => (props.useTitle ? '90px' : '65px')};
+  padding-inline: 0;
+
+  ${tabletMediaQuery} {
+    padding-inline: 24px;
+  }
+
+  ${mobileMediaQuery} {
+    padding-top: ${(props) => (props.useTitle ? '80px' : '56px')};
+    padding-inline: 16px;
+  }
+
   ${(props) =>
     props.useFlex ||
     colFlex({
@@ -62,6 +73,10 @@ const WorkspaceName = styled.div`
   ${tabletMediaQuery} {
     font-size: 32px;
   }
+
+  ${mobileMediaQuery} {
+    font-size: 24px;
+  }
 `;
 
 const LocationLabel = styled.div`
@@ -73,6 +88,10 @@ const LocationLabel = styled.div`
 
   ${tabletMediaQuery} {
     font-size: 16px;
+  }
+
+  ${mobileMediaQuery} {
+    font-size: 14px;
   }
 `;
 
@@ -129,11 +148,12 @@ function AppContainer({
   const windowWidth = useAtomValue(windowWidthAtom);
   const setLayoutParams = useSetAtom(layoutParamsAtom);
 
-  const isAdminWorkspace = location.pathname.startsWith('/admin/workspace/');
+  const isPathWithSideNav =
+    location.pathname.startsWith('/admin/workspace/') || location.pathname.startsWith('/super-admin');
   const { title, label } = getHeaderInfo(location.pathname, workspace.name, user.name);
 
   const useNavBackground = true;
-  const sideNavOffset = isAdminWorkspace && isSideNavOpen ? SIDE_NAV_WIDTH : 0;
+  const sideNavOffset = isPathWithSideNav && isSideNavOpen ? SIDE_NAV_WIDTH : 0;
   const scale = disableLayoutScale ? 1 : calculateLayoutScale(windowWidth, customWidth, sideNavOffset);
 
   useEffect(() => {
