@@ -99,6 +99,7 @@ interface Props {
   useFullHeight?: boolean;
   customWidth?: string;
   customGap?: string;
+  disableLayoutScale?: boolean;
 }
 
 function getHeaderInfo(pathname: string, workspaceName: string, userName: string) {
@@ -111,7 +112,16 @@ function getHeaderInfo(pathname: string, workspaceName: string, userName: string
     .otherwise(() => ({ title: workspaceName, label: getPageTitle(pathname) }));
 }
 
-function AppContainer({ children, useFlex, backgroundColor, useTitle = true, useFullHeight = false, customWidth, customGap }: Props) {
+function AppContainer({
+  children,
+  useFlex,
+  backgroundColor,
+  useTitle = true,
+  useFullHeight = false,
+  customWidth,
+  customGap,
+  disableLayoutScale = false,
+}: Props) {
   const location = useLocation();
   const workspace = useAtomValue(adminWorkspaceAtom);
   const user = useAtomValue(adminUserAtom);
@@ -124,7 +134,7 @@ function AppContainer({ children, useFlex, backgroundColor, useTitle = true, use
 
   const useNavBackground = true;
   const sideNavOffset = isAdminWorkspace && isSideNavOpen ? SIDE_NAV_WIDTH : 0;
-  const scale = calculateLayoutScale(windowWidth, customWidth, sideNavOffset);
+  const scale = disableLayoutScale ? 1 : calculateLayoutScale(windowWidth, customWidth, sideNavOffset);
 
   useEffect(() => {
     setLayoutParams({ customWidth, sideNavOffset });

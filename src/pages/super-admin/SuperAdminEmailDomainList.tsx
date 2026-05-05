@@ -71,7 +71,7 @@ function SuperAdminEmailDomainList() {
   };
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'} useTitle={false}>
+    <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'} useTitle={false} disableLayoutScale>
       <PageContainer>
         <InputConfirmModal />
         <HeaderContainer>

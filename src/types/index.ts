@@ -320,24 +320,30 @@ export interface DailyStatistics {
 }
 
 // Super Admin 전용 타입
+export interface UserStats {
+  total: number;
+  newLast7Days: number;
+  newLast30Days: number;
+}
+
+export interface WorkspaceStats {
+  total: number;
+  newLast7Days: number;
+  newLast30Days: number;
+  onboardingCompletionRate: number;
+}
+
+export interface RevenueStats {
+  totalRevenueAllTime: number;
+  totalOrdersAllTime: number;
+  totalRevenueLast30Days: number;
+  totalOrdersLast30Days: number;
+}
+
 export interface SuperAdminDashboard {
-  users: {
-    total: number;
-    newLast7Days: number;
-    newLast30Days: number;
-  };
-  workspaces: {
-    total: number;
-    newLast7Days: number;
-    newLast30Days: number;
-    onboardingCompletionRate: number;
-  };
-  revenue: {
-    totalRevenueAllTime: number;
-    totalOrdersAllTime: number;
-    totalRevenueLast30Days: number;
-    totalOrdersLast30Days: number;
-  };
+  users: UserStats;
+  workspaces: WorkspaceStats;
+  revenue: RevenueStats;
 }
 
 export interface WorkspaceAdminDetail {
@@ -375,4 +381,11 @@ export interface AccountConnectionStatus {
   usersWithAccount: number;
   usersWithoutAccount: number;
   connectionRate: number;
+}
+
+export interface OrdersFilter {
+  workspaceId: string;
+  statuses: OrderStatus[];
+  startDate: string;
+  endDate: string;
 }

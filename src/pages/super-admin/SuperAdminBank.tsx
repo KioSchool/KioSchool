@@ -64,7 +64,7 @@ function SuperAdminBank() {
   };
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'} customGap={'20px'} useTitle={true}>
+    <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'} customGap={'20px'} useTitle={true} disableLayoutScale>
       <>
         <InputConfirmModal />
         <HeaderContainer>

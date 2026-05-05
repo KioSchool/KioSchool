@@ -48,7 +48,7 @@ function SuperAdminUser() {
   }, [searchParams.toString()]);
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'} useTitle={false}>
+    <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'} useTitle={false} disableLayoutScale>
       <PageContainer>
         <HeaderContainer>
           <SearchContainer>

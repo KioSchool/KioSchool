@@ -52,3 +52,8 @@ export const TEST_ROUTES = {
 export const getAdminWorkspacePath = (workspaceId: string | number) => `/admin/workspace/${workspaceId}`;
 
 export const getAdminProductsPath = (workspaceId: string | number) => `/admin/workspace/${workspaceId}/products`;
+
+export function getSuperAdminOrdersPath(query?: { workspaceId?: number }): string {
+  if (!query?.workspaceId) return SUPER_ADMIN_ROUTES.ORDERS;
+  return `${SUPER_ADMIN_ROUTES.ORDERS}?workspaceId=${query.workspaceId}`;
+}

@@ -2,24 +2,25 @@ import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { match } from 'ts-pattern';
 import AppContainer from '@components/common/container/AppContainer';
-import DashboardSections from '@components/super-admin/dashboard/DashboardSections';
-import useSuperAdminDashboard from '@hooks/super-admin/useSuperAdminDashboard';
-import { SuperAdminDashboard as SuperAdminDashboardData } from '@@types/index';
+import AccountConnectionRateCard from '@components/super-admin/account-status/AccountConnectionRateCard';
+import AccountBreakdownList from '@components/super-admin/account-status/AccountBreakdownList';
+import useSuperAdminAccount from '@hooks/super-admin/useSuperAdminAccount';
+import { AccountConnectionStatus } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 
 const PageContainer = styled.div`
   width: 100%;
-  max-width: 1100px;
+  max-width: 640px;
   padding: 72px 24px 40px;
-  gap: 28px;
+  gap: 16px;
   min-width: 0;
   ${colFlex()}
 
   ${mobileMediaQuery} {
     padding: 56px 14px 24px;
-    gap: 18px;
+    gap: 12px;
   }
 `;
 
@@ -42,26 +43,29 @@ const LoadingText = styled.div`
   padding: 60px 0;
 `;
 
-function SuperAdminDashboard() {
-  const [dashboard, setDashboard] = useState<SuperAdminDashboardData | null>(null);
-  const { fetchDashboard } = useSuperAdminDashboard();
+function SuperAdminAccountStatus() {
+  const [status, setStatus] = useState<AccountConnectionStatus | null>(null);
+  const { fetchAccountConnectionStatus } = useSuperAdminAccount();
 
   useEffect(() => {
-    fetchDashboard().then(setDashboard);
-  }, [fetchDashboard]);
+    fetchAccountConnectionStatus().then(setStatus);
+  }, [fetchAccountConnectionStatus]);
 
   return (
     <AppContainer useFlex={colFlex({ align: 'center' })} backgroundColor={Color.LIGHT_GREY} useTitle={false} disableLayoutScale>
       <PageContainer>
-        <PageTitle>서비스 현황 대시보드</PageTitle>
-        {match(dashboard)
-          .with(null, () => <LoadingText>대시보드 불러오는 중...</LoadingText>)
+        <PageTitle>계정 연동 현황</PageTitle>
+        {match(status)
+          .with(null, () => <LoadingText>불러오는 중...</LoadingText>)
           .otherwise((data) => (
-            <DashboardSections data={data} />
+            <>
+              <AccountConnectionRateCard status={data} />
+              <AccountBreakdownList status={data} />
+            </>
           ))}
       </PageContainer>
     </AppContainer>
   );
 }
 
-export default SuperAdminDashboard;
+export default SuperAdminAccountStatus;

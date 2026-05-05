@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { PaginationResponse, SuperAdminOrder } from '@@types/index';
 import { defaultPaginationValue } from '@@types/defaultValues';
 import useApi from '@hooks/useApi';
@@ -14,15 +15,18 @@ interface FetchAllOrdersParams {
 function useSuperAdminOrders() {
   const { superAdminApi } = useApi();
 
-  const fetchAllOrders = (params: FetchAllOrdersParams): Promise<PaginationResponse<SuperAdminOrder>> => {
-    return superAdminApi
-      .get<PaginationResponse<SuperAdminOrder>>('/orders', { params })
-      .then((res) => res.data)
-      .catch((error) => {
-        console.error(error);
-        return defaultPaginationValue;
-      });
-  };
+  const fetchAllOrders = useCallback(
+    (params: FetchAllOrdersParams): Promise<PaginationResponse<SuperAdminOrder>> => {
+      return superAdminApi
+        .get<PaginationResponse<SuperAdminOrder>>('/orders', { params })
+        .then((res) => res.data)
+        .catch((error) => {
+          console.error(error);
+          return defaultPaginationValue;
+        });
+    },
+    [superAdminApi],
+  );
 
   return { fetchAllOrders };
 }

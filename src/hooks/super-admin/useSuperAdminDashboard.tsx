@@ -1,10 +1,11 @@
+import { useCallback } from 'react';
 import { SuperAdminDashboard } from '@@types/index';
 import useApi from '@hooks/useApi';
 
 function useSuperAdminDashboard() {
   const { superAdminApi } = useApi();
 
-  const fetchDashboard = (): Promise<SuperAdminDashboard | null> => {
+  const fetchDashboard = useCallback((): Promise<SuperAdminDashboard | null> => {
     return superAdminApi
       .get<SuperAdminDashboard>('/dashboard')
       .then((res) => res.data)
@@ -12,7 +13,7 @@ function useSuperAdminDashboard() {
         console.error(error);
         return null;
       });
-  };
+  }, [superAdminApi]);
 
   return { fetchDashboard };
 }

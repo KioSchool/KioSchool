@@ -9,6 +9,15 @@ export const Color = {
   RED: '#FF5A5A',
   LIGHT_RED: '#FFEBEB',
   BLUE: '#46ADFF',
+
+  KIO_ORANGE_FAINT: '#FFF3E7',
+  GREEN_FAINT: '#EDF9F1',
+  BLUE_FAINT: '#E8F5FF',
+  KIO_ORANGE_DARK: '#f7842e',
+  KIO_ORANGE_ICON_BG: '#FFE7D3',
+  BLUE_ICON_BG: '#DCEEFF',
+  GREEN_ICON_BG: '#D4F1E1',
+  GREY_ICON_BG: '#E5E5E5',
 } as const;
 
 export const OnboardingColor = {
@@ -26,4 +35,4 @@ export const OnboardingColor = {
   CONNECTOR_IDLE: '#e8eef2',
 } as const;
 
-export type ColorType = typeof Color[keyof typeof Color];
+export type ColorType = (typeof Color)[keyof typeof Color];
