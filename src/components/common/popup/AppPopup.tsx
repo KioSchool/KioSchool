@@ -66,7 +66,7 @@ interface AppPopupProps {
 }
 
 function AppPopup({ popupDatas }: AppPopupProps) {
-  const { isValidPopup, closePopupForDay, closePopupForever } = usePopup();
+  const { isValidPopup, closePopup } = usePopup();
   const [validPopupData, setValidPopupData] = useState<PopupData | null>(popupDatas[0]);
   const [cookies] = useCookies();
 
@@ -89,12 +89,7 @@ function AppPopup({ popupDatas }: AppPopupProps) {
   const popupCloseText = closeText ?? (closeMode === POPUP_CLOSE_MODE.FOREVER ? '다시 보지 않기' : '하루 동안 보지 않기');
 
   const handleClosePopup = () => {
-    if (closeMode === POPUP_CLOSE_MODE.FOREVER) {
-      closePopupForever(popupId, expireDate);
-      return;
-    }
-
-    closePopupForDay(popupId);
+    closePopup(popupId, closeMode, expireDate);
   };
 
   return (

@@ -4,6 +4,7 @@ import { colFlex } from '@styles/flexStyles';
 import NewAppInput from '@components/common/input/NewAppInput';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import usePopup from '@hooks/usePopup';
+import { POPUP_CLOSE_MODE } from '@constants/data/popupData';
 
 const Container = styled.div`
   width: 100%;
@@ -37,7 +38,7 @@ const Description = styled.div`
 `;
 
 function PopupContent1() {
-  const { sendAdminPopupResult, closePopupForever } = usePopup();
+  const { sendAdminPopupResult, closePopup } = usePopup();
 
   const title = '키오스쿨 사용 인터뷰에 참여해주세요!';
   const description =
@@ -63,7 +64,7 @@ function PopupContent1() {
 
     sendAdminPopupResult(result);
 
-    closePopupForever(1);
+    closePopup(1, POPUP_CLOSE_MODE.FOREVER);
   };
 
   return (
