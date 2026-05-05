@@ -3,6 +3,8 @@ import { Cookies } from 'react-cookie';
 import { addDays, startOfDay } from 'date-fns';
 import useApi from '@hooks/useApi';
 
+const DEFAULT_POPUP_COOKIE_EXPIRE_DATE = new Date(9999, 11, 31);
+
 function usePopup() {
   const { adminApi, userApi } = useApi();
   const [isOpen, setIsOpen] = useState(false);
@@ -48,7 +50,7 @@ function usePopup() {
 
   const closePopupForever = (popupId: number, expireDate?: Date) => {
     const cookies = new Cookies();
-    cookies.set(`close_popup_${popupId}`, 'true', { path: '/', expires: expireDate });
+    cookies.set(`close_popup_${popupId}`, 'true', { path: '/', expires: expireDate ?? DEFAULT_POPUP_COOKIE_EXPIRE_DATE });
     closePopup();
   };
 
