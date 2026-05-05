@@ -64,7 +64,7 @@ function RegisterAccount() {
     name: bank.name,
   }));
 
-  const allBanks = [{ id: 1, name: '은행을 선택해주세요.' }, ...filteredBanks];
+  const allBanks = [{ id: '', name: '은행을 선택해주세요.' }, ...filteredBanks];
 
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedBankId(event.target.value);
