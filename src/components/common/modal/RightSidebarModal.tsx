@@ -7,8 +7,7 @@ import { RiArrowRightSLine } from '@remixicon/react';
 import useModal from '@hooks/useModal';
 import RightSidebarModalOpenButton from './RightSidebarModalOpenButton';
 import { useAtom, useAtomValue } from 'jotai';
-import { externalSidebarAtom } from '@jotai/admin/atoms';
-import { layoutScaleAtom } from '@jotai/atoms';
+import { externalSidebarAtom, layoutScaleAtom } from '@jotai/atoms';
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
 import { Location } from 'react-router-dom';
 

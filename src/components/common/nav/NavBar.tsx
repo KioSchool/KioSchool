@@ -9,7 +9,7 @@ import { navBarLabelStyle } from '@styles/navBarStyles';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { URLS } from '@constants/urls';
 import { USER_ROUTES, ADMIN_ROUTES } from '@constants/routes';
-import { adminSideNavIsOpenAtom } from '@jotai/admin/atoms';
+import { sideNavIsOpenAtom } from '@jotai/atoms';
 import kioLogo from '@resources/image/kioLogo.png';
 import AuthenticationButton from '@components/user/AuthenticationButton';
 import MobileNav from './MobileNav';
@@ -94,7 +94,7 @@ interface NavBarProps {
 
 function NavBar({ useBackground = false }: NavBarProps) {
   const location = useLocation();
-  const [isSideNavOpen, setIsSideNavOpen] = useAtom(adminSideNavIsOpenAtom);
+  const [isSideNavOpen, setIsSideNavOpen] = useAtom(sideNavIsOpenAtom);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isShowHamburger = location.pathname.startsWith('/admin/workspace/');

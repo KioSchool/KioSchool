@@ -8,7 +8,8 @@ import PreviewContainer from '@components/common/container/PreviewContainer';
 import AppFaqButton from '@components/common/button/AppFaqButton';
 import AppPopup from '@components/common/popup/AppPopup';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { adminSideNavIsOpenAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
+import { adminWorkspaceAtom } from '@jotai/admin/atoms';
+import { sideNavIsOpenAtom } from '@jotai/atoms';
 import AdminDashboard from '@components/admin/workspace/dashboard/AdminDashboard';
 import AdminWorkspaceOnboarding from '@components/admin/workspace/onboarding/AdminWorkspaceOnboarding';
 import { isWorkspaceOnboardingCompleted } from '@utils/onboarding';
@@ -33,7 +34,7 @@ function AdminWorkspace() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { updateWorkspaceOnboarding, fetchWorkspaceAccess } = useAdminWorkspace();
   const workspace = useAtomValue(adminWorkspaceAtom);
-  const setSideNavIsOpen = useSetAtom(adminSideNavIsOpenAtom);
+  const setSideNavIsOpen = useSetAtom(sideNavIsOpenAtom);
   const [isWorkspaceLoading, setIsWorkspaceLoading] = useState(true);
   const [hasWorkspaceAccess, setHasWorkspaceAccess] = useState(false);
   const isAutoCompletingOnboardingRef = useRef(false);

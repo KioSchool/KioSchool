@@ -5,8 +5,8 @@ import { SerializedStyles } from '@emotion/react';
 import { Color } from '@resources/colors';
 import { useLocation } from 'react-router-dom';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { adminSideNavIsOpenAtom, adminUserAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
-import { layoutParamsAtom, windowWidthAtom } from '@jotai/atoms';
+import { adminUserAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
+import { layoutParamsAtom, windowWidthAtom, sideNavIsOpenAtom } from '@jotai/atoms';
 import { calculateLayoutScale } from 'src/utils/layout';
 import { getPageTitle } from '@@types/guard';
 import { DEFAULT_LAYOUT_WIDTH, SIDE_NAV_WIDTH } from '@constants/layout';
@@ -125,7 +125,7 @@ function AppContainer({
   const location = useLocation();
   const workspace = useAtomValue(adminWorkspaceAtom);
   const user = useAtomValue(adminUserAtom);
-  const isSideNavOpen = useAtomValue(adminSideNavIsOpenAtom);
+  const isSideNavOpen = useAtomValue(sideNavIsOpenAtom);
   const windowWidth = useAtomValue(windowWidthAtom);
   const setLayoutParams = useSetAtom(layoutParamsAtom);
 
