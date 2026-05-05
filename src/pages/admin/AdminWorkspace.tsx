@@ -7,6 +7,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import PreviewContainer from '@components/common/container/PreviewContainer';
 import AppFaqButton from '@components/common/button/AppFaqButton';
 import AppPopup from '@components/common/popup/AppPopup';
+import { popupDatas } from '@constants/data/popupData';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { adminSideNavIsOpenAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
 import AdminDashboard from '@components/admin/workspace/dashboard/AdminDashboard';
@@ -43,10 +44,6 @@ function AdminWorkspace() {
     okText: '건너뛰기',
     cancelText: '취소',
   });
-
-  useEffect(() => {
-    setSideNavIsOpen(true);
-  }, [setSideNavIsOpen, workspaceId]);
 
   const handleLoadWorkspace = () => {
     setIsWorkspaceLoading(true);
@@ -95,6 +92,13 @@ function AdminWorkspace() {
   };
 
   const isOnboardingVisible = hasWorkspaceAccess && !isWorkspaceLoading && workspace.isOnboarding && !isOnboardingCompleted;
+
+  useEffect(() => {
+    if (isWorkspaceLoading || !hasWorkspaceAccess) return;
+
+    setSideNavIsOpen(!isOnboardingVisible);
+  }, [isOnboardingVisible, isWorkspaceLoading, hasWorkspaceAccess, setSideNavIsOpen]);
+
   const pageContent = match({ isWorkspaceLoading, hasWorkspaceAccess, isOnboardingVisible })
     .with({ isWorkspaceLoading: true }, () => <LoadingContainer>워크스페이스 정보를 불러오는 중입니다.</LoadingContainer>)
     .with({ hasWorkspaceAccess: false }, () => <LoadingContainer>워크스페이스 접근 권한을 확인하는 중입니다.</LoadingContainer>)
@@ -107,7 +111,7 @@ function AdminWorkspace() {
           <AdminDashboard />
           <PreviewContainer width={300} height={640} />
         </ContentContainer>
-        <AppPopup />
+        <AppPopup popupDatas={popupDatas} />
         <AppFaqButton />
       </>
     ));

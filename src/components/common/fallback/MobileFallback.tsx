@@ -18,10 +18,14 @@ function MobileFallback() {
       return;
     }
 
-    await navigator.share({
-      title: '키오스쿨',
-      url: window.location.href,
-    });
+    try {
+      await navigator.share({
+        title: '키오스쿨',
+        url: window.location.href,
+      });
+    } catch (error) {
+      if ((error as Error).name !== 'AbortError') throw error;
+    }
   };
 
   return (

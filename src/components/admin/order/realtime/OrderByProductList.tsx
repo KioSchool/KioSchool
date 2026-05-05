@@ -59,6 +59,7 @@ function OrderByProductList({ orders }: OrderByProductListProps) {
 
   const productMap = _.keyBy(products, 'id');
   const productCounts: Record<number, number> = {};
+  const productNames: Record<number, string> = {};
 
   orders.forEach((order) => {
     order.orderProducts.forEach((orderProduct) => {
@@ -66,22 +67,27 @@ function OrderByProductList({ orders }: OrderByProductListProps) {
       if (quantity > 0) {
         const productId = orderProduct.productId;
         productCounts[productId] = (productCounts[productId] || 0) + quantity;
+        productNames[productId] = productNames[productId] || orderProduct.productName;
       }
     });
   });
 
   const sortedProducts = Object.entries(productCounts)
-    .map(([productId, count]) => ({ productId, count }))
+    .map(([productId, count]) => ({
+      productId,
+      count,
+      snapshotProductName: productNames[Number(productId)] || '삭제된 상품',
+    }))
     .sort((a, b) => b.count - a.count);
 
   return (
     <ProductContainer>
-      {sortedProducts.map(({ productId, count }) => {
+      {sortedProducts.map(({ productId, count, snapshotProductName }) => {
+        if (count <= 0) return null;
+
         const product = productMap[productId];
         const productImageUrl = product?.imageUrl || defaultProductImage;
-        const productName = product.name;
-
-        if (count <= 0) return null;
+        const productName = product?.name || snapshotProductName;
 
         return (
           <ProductItem key={productId}>

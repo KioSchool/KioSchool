@@ -7,6 +7,8 @@ import CategoryDragAndDropContent from '@components/admin/product-category/Categ
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import NewCommonButton from '@components/common/button/NewCommonButton';
+import OnboardingStepHint from '@components/admin/workspace/onboarding/OnboardingStepHint';
+import { ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardingData';
 
 const Container = styled.div`
   width: 680px;
@@ -78,6 +80,7 @@ function AdminProductCategories() {
   return (
     <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })}>
       <Container className={'admin-product-categories-container'}>
+        <OnboardingStepHint step={ONBOARDING_STEP.MENU} />
         <CategoriesInputContainer className={'categories-input-container'}>
           <SectionTitle>등록할 카테고리명</SectionTitle>
           <InputRow>

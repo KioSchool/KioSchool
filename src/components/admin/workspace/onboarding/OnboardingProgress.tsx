@@ -5,7 +5,7 @@ import { RiCheckLine } from '@remixicon/react';
 import { match } from 'ts-pattern';
 import { Workspace } from '@@types/index';
 import { Color, OnboardingColor } from '@resources/colors';
-import { rowFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { ONBOARDING_STEP_DEFINITIONS, isOnboardingStepCompleted } from '@utils/onboarding';
 import { OnboardingStep } from './onboardingData';
 
@@ -78,35 +78,33 @@ function renderStepCircleContent(variant: ProgressVariant, index: number) {
   return index + 1;
 }
 
+const STEP_CIRCLE_SIZE = 30;
+
 const Container = styled.ol`
   width: 100%;
-  padding: 0;
+  padding: 0 0 24px;
   margin: 0;
   list-style: none;
-  gap: 12px;
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
+  ${rowFlex({ justify: 'space-between', align: 'flex-start' })}
 `;
 
 const StepItem = styled.li`
-  flex: 0 0 auto;
-  ${rowFlex({ justify: 'center', align: 'center' })}
+  flex: 0 0 ${STEP_CIRCLE_SIZE}px;
+  position: relative;
+  gap: 8px;
+  ${colFlex({ justify: 'flex-start', align: 'center' })}
 `;
 
 const Connector = styled.div<{ variant: ConnectorVariant }>`
   flex: 1;
   height: 2px;
+  margin-top: ${STEP_CIRCLE_SIZE / 2 - 1}px;
   background: ${({ variant }) => getConnectorColor(variant)};
 `;
 
-const StepContents = styled.div`
-  min-width: 118px;
-  gap: 8px;
-  ${rowFlex({ justify: 'center', align: 'center' })}
-`;
-
 const StepCircle = styled.div<{ variant: ProgressVariant }>`
-  width: 30px;
-  height: 30px;
+  width: ${STEP_CIRCLE_SIZE}px;
+  height: ${STEP_CIRCLE_SIZE}px;
   border-radius: 50%;
   font-size: 13px;
   font-weight: 700;
@@ -115,7 +113,10 @@ const StepCircle = styled.div<{ variant: ProgressVariant }>`
 `;
 
 const StepLabel = styled.span<{ variant: ProgressVariant }>`
+  position: absolute;
+  top: ${STEP_CIRCLE_SIZE + 8}px;
   font-size: 13px;
+  white-space: nowrap;
   ${({ variant }) => getStepLabelStyles(variant)}
 `;
 
@@ -143,10 +144,8 @@ function OnboardingProgress({ workspace, currentStep }: OnboardingProgressProps)
         return (
           <Fragment key={step}>
             <StepItem>
-              <StepContents>
-                <StepCircle variant={progressVariant}>{renderStepCircleContent(progressVariant, index)}</StepCircle>
-                <StepLabel variant={progressVariant}>{label}</StepLabel>
-              </StepContents>
+              <StepCircle variant={progressVariant}>{renderStepCircleContent(progressVariant, index)}</StepCircle>
+              <StepLabel variant={progressVariant}>{label}</StepLabel>
             </StepItem>
             {index < ONBOARDING_STEP_DEFINITIONS.length - 1 && <Connector variant={connectorVariant} />}
           </Fragment>

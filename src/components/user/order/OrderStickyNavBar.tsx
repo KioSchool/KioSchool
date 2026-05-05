@@ -87,10 +87,14 @@ function OrderStickyNavBar({ useLeftArrow = true, showNavBar, workspaceName, tab
       return;
     }
 
-    await navigator.share({
-      title: workspaceName,
-      url: window.location.href,
-    });
+    try {
+      await navigator.share({
+        title: workspaceName,
+        url: window.location.href,
+      });
+    } catch (error) {
+      if ((error as Error).name !== 'AbortError') throw error;
+    }
   };
 
   return (

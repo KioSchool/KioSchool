@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { Cookies } from 'react-cookie';
 import { addDays, startOfDay } from 'date-fns';
 import useApi from '@hooks/useApi';
+import { POPUP_CLOSE_MODE, PopupCloseMode } from '@constants/data/popupData';
+
+const DEFAULT_POPUP_COOKIE_EXPIRE_DATE = new Date(9999, 11, 31);
 
 function usePopup() {
   const { adminApi, userApi } = useApi();
@@ -33,7 +36,7 @@ function usePopup() {
     document.body.style.overflow = 'hidden';
   };
 
-  const closePopup = () => {
+  const closePopupModal = () => {
     setIsOpen(false);
     // 팝업창 close 시 배경 스크롤 금지 해제 코드
     document.body.style.overflow = 'auto';
@@ -43,21 +46,33 @@ function usePopup() {
     const cookies = new Cookies();
     const expireDate = startOfDay(addDays(new Date(), 1));
     cookies.set(`close_popup_${popupId}`, 'true', { path: '/', expires: expireDate });
-    closePopup();
+    closePopupModal();
   };
 
   const closePopupForever = (popupId: number) => {
     const cookies = new Cookies();
-    cookies.set(`close_popup_${popupId}`, 'true', { path: '/' });
-    closePopup();
+    cookies.set(`close_popup_${popupId}`, 'true', { path: '/', expires: DEFAULT_POPUP_COOKIE_EXPIRE_DATE });
+    closePopupModal();
+  };
+
+  const closePopup = (popupId?: number, closeMode?: PopupCloseMode) => {
+    if (popupId === undefined || closeMode === undefined) {
+      closePopupModal();
+      return;
+    }
+
+    if (closeMode === POPUP_CLOSE_MODE.FOREVER) {
+      closePopupForever(popupId);
+      return;
+    }
+
+    closePopupForDay(popupId);
   };
 
   return {
     isOpen,
     openPopup,
     closePopup,
-    closePopupForDay,
-    closePopupForever,
     isValidPopup,
     sendAdminPopupResult,
     sendUserPopupResult,

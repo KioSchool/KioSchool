@@ -2,10 +2,11 @@ import styled from '@emotion/styled';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
+import { AnimatePresence, motion } from 'framer-motion';
 
-const Container = styled.div`
+const MotionContainer = styled(motion.div)`
   position: fixed;
-  bottom: 50px;
+  bottom: max(24px, env(safe-area-inset-bottom));
   width: 100vw;
   height: 50px;
   z-index: 11;
@@ -27,21 +28,29 @@ interface OrderButtonProps {
 }
 
 function OrderButton({ showButton, buttonLabel, onClick, disabled }: OrderButtonProps) {
-  if (!showButton) return null;
-
   return (
-    <Container className={'order-button-container'}>
-      <OrderButtonSubContainer className={'order-button-sub-container'}>
-        <NewCommonButton
-          customSize={{ width: 290, height: 50, font: 18, borderRadius: 15 }}
-          style={{ fontWeight: 'bold' }}
-          onClick={onClick}
-          disabled={disabled}
+    <AnimatePresence>
+      {showButton && (
+        <MotionContainer
+          className={'order-button-container'}
+          initial={{ y: 80, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 80, opacity: 0 }}
+          transition={{ type: 'spring', damping: 25, stiffness: 300 }}
         >
-          {buttonLabel}
-        </NewCommonButton>
-      </OrderButtonSubContainer>
-    </Container>
+          <OrderButtonSubContainer className={'order-button-sub-container'}>
+            <NewCommonButton
+              customSize={{ width: 290, height: 50, font: 18, borderRadius: 15 }}
+              style={{ fontWeight: 'bold' }}
+              onClick={onClick}
+              disabled={disabled}
+            >
+              {buttonLabel}
+            </NewCommonButton>
+          </OrderButtonSubContainer>
+        </MotionContainer>
+      )}
+    </AnimatePresence>
   );
 }
 

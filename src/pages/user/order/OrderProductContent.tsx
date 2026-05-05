@@ -76,11 +76,11 @@ function OrderProductContent() {
   return (
     <MainContent className={'order-content'}>
       <SubContent>
-        {productsWithCategory.map(({ category, products }) => {
-          if (!products.length) return null;
+        {productsWithCategory.map(({ category, products }, index, array) => {
+          const isLastCategory = !defaultProducts && index === array.length - 1;
 
           return (
-            <CategoryProduct isLastElement={false} name={`category_${category.id}`} key={`product_category_${category.id}`}>
+            <CategoryProduct isLastElement={isLastCategory} name={`category_${category.id}`} key={`product_category_${category.id}`}>
               <CategoryTitle>{category.name}</CategoryTitle>
               {products.map((product, productIndex) => {
                 const productInBasket = orderBasket.find((item) => item.productId === product.id);

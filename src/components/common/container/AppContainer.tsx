@@ -5,13 +5,14 @@ import { SerializedStyles } from '@emotion/react';
 import { Color } from '@resources/colors';
 import { useLocation } from 'react-router-dom';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { adminSideNavIsOpenAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
-import { windowWidthAtom, layoutParamsAtom } from '@jotai/atoms';
+import { adminSideNavIsOpenAtom, adminUserAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
+import { layoutParamsAtom, windowWidthAtom } from '@jotai/atoms';
 import { calculateLayoutScale } from 'src/utils/layout';
 import { getPageTitle } from '@@types/guard';
-import { SIDE_NAV_WIDTH, DEFAULT_LAYOUT_WIDTH } from '@constants/layout';
+import { DEFAULT_LAYOUT_WIDTH, SIDE_NAV_WIDTH } from '@constants/layout';
 import { tabletMediaQuery } from '@styles/globalStyles';
 import { useEffect } from 'react';
+import { match } from 'ts-pattern';
 
 export const MainContainer = styled.div<{ backgroundColor?: string; sideNavOffset: number }>`
   width: ${(props) => (props.sideNavOffset > 0 ? `calc(100% - ${props.sideNavOffset}px)` : '100%')};
@@ -100,18 +101,26 @@ interface Props {
   customGap?: string;
 }
 
+function getHeaderInfo(pathname: string, workspaceName: string, userName: string) {
+  return match(pathname)
+    .when(
+      (currentPathname) => currentPathname.startsWith('/super-admin'),
+      () => ({ title: '슈퍼 어드민', label: getPageTitle(pathname) }),
+    )
+    .with('/admin', () => ({ title: '키오스쿨', label: `${userName}님 환영합니다.` }))
+    .otherwise(() => ({ title: workspaceName, label: getPageTitle(pathname) }));
+}
+
 function AppContainer({ children, useFlex, backgroundColor, useTitle = true, useFullHeight = false, customWidth, customGap }: Props) {
   const location = useLocation();
   const workspace = useAtomValue(adminWorkspaceAtom);
+  const user = useAtomValue(adminUserAtom);
   const isSideNavOpen = useAtomValue(adminSideNavIsOpenAtom);
   const windowWidth = useAtomValue(windowWidthAtom);
   const setLayoutParams = useSetAtom(layoutParamsAtom);
 
   const isAdminWorkspace = location.pathname.startsWith('/admin/workspace/');
-  const isAdminHome = location.pathname === '/admin';
-  const isSuperAdmin = location.pathname.startsWith('/super-admin');
-  const title = isSuperAdmin ? '슈퍼 어드민' : isAdminHome ? '키오스쿨' : workspace.name;
-  const label = isSuperAdmin ? getPageTitle(location.pathname) : isAdminHome ? `${workspace.owner.name}님 환영합니다.` : getPageTitle(location.pathname);
+  const { title, label } = getHeaderInfo(location.pathname, workspace.name, user.name);
 
   const useNavBackground = true;
   const sideNavOffset = isAdminWorkspace && isSideNavOpen ? SIDE_NAV_WIDTH : 0;

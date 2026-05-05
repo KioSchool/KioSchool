@@ -1,14 +1,17 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useSetAtom } from 'jotai';
-import { externalSidebarAtom } from '@jotai/admin/atoms';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { adminWorkspaceAtom, externalSidebarAtom } from '@jotai/admin/atoms';
 import { ProductStateType, RIGHT_SIDEBAR_ACTION } from '@@types/index';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
+import { getAdminWorkspacePath } from '@constants/routes';
 import ProductForm from './ProductForm';
 
 function ProductAdd() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const setExternalSidebar = useSetAtom(externalSidebarAtom);
+  const workspace = useAtomValue(adminWorkspaceAtom);
+  const navigate = useNavigate();
   const { addProduct, fetchCategories, fetchProducts } = useAdminProducts(workspaceId);
 
   useEffect(() => {
@@ -19,18 +22,28 @@ function ProductAdd() {
     setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE });
   };
 
-  const handleAddProduct = async (formData: ProductStateType, file: File | null) => {
+  const handleAddProduct = (formData: ProductStateType, file: File | null) => {
     if (!file) {
       alert('상품 이미지를 등록해주세요.');
-      return;
+      return Promise.resolve();
     }
 
     const submitData = { ...formData, workspaceId };
-    await addProduct(submitData, file);
+    const shouldRedirectToOnboarding = workspace.isOnboarding && Boolean(workspaceId);
 
-    await fetchProducts();
-    alert('상품이 추가되었습니다.');
-    closeSidebar();
+    return addProduct(submitData, file)
+      .then(() => fetchProducts())
+      .then(() => {
+        alert('상품이 추가되었습니다.');
+        closeSidebar();
+
+        if (shouldRedirectToOnboarding) {
+          navigate(getAdminWorkspacePath(Number(workspaceId)));
+        }
+      })
+      .catch(() => {
+        alert('상품 추가에 실패했습니다. 다시 시도해주세요.');
+      });
   };
 
   return <ProductForm mode="ADD" workspaceId={workspaceId} onSubmit={handleAddProduct} onCancel={closeSidebar} />;

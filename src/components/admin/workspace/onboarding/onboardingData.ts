@@ -25,7 +25,7 @@ export const ONBOARDING_STEP_CARDS: StepCardItem[] = [
   {
     step: ONBOARDING_STEP.MENU,
     stepNumber: 3,
-    title: '메뉴 등록',
+    title: '상품 등록',
     description: '카테고리를 확인하고 대표 상품 1개 이상을 등록하면 이 단계가 완료됩니다.',
     hint: '카테고리를 먼저 정리해두면 상품 등록이 더 쉬워집니다. 기본 카테고리를 사용해도 완료할 수 있습니다.',
   },

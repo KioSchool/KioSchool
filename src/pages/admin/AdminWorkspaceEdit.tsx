@@ -13,6 +13,8 @@ import { css } from '@emotion/react';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import NewAppInput from '@components/common/input/NewAppInput';
 import NewAppTextarea from '@components/common/input/NewAppTextarea';
+import OnboardingStepHint from '@components/admin/workspace/onboarding/OnboardingStepHint';
+import { ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardingData';
 
 const containerStyle = css`
   width: 95%;
@@ -43,6 +45,7 @@ const ImageContainer = styled.div`
 
 const ImageInputContainer = styled.div`
   width: 100%;
+  gap: 10px;
   ${rowFlex({ justify: 'space-between', align: 'start' })}
 `;
 
@@ -133,6 +136,7 @@ function AdminWorkspaceEdit() {
   return (
     <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'}>
       <ContentContainer>
+        <OnboardingStepHint step={ONBOARDING_STEP.INFO} width="95%" />
         <TitleContainer>
           <NewAppInput label="주점명" ref={titleRef} defaultValue={workspace?.name || ''} width="100%" />
         </TitleContainer>

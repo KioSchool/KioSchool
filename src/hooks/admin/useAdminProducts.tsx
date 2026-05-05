@@ -44,12 +44,10 @@ function useAdminProducts(workspaceId: string | undefined | null) {
   const addProduct = (product: any, file: File) => {
     const data = createFormData(product, file);
 
-    adminApi
-      .post('/product', data)
-      .then(() => {
-        navigate(getAdminProductsPath(product.workspaceId));
-      })
-      .catch((error) => console.error('Failed to add product: ', error));
+    return adminApi.post('/product', data).catch((error) => {
+      console.error('Failed to add product: ', error);
+      throw error;
+    });
   };
 
   const editProduct = (parameter: any, file: File | null) => {
