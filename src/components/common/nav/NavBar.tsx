@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { useAtom } from 'jotai';
 import { RiMenuFill } from '@remixicon/react';
 import { rowFlex } from '@styles/flexStyles';
@@ -10,6 +10,7 @@ import { expandButtonStyle } from '@styles/buttonStyles';
 import { URLS } from '@constants/urls';
 import { USER_ROUTES, ADMIN_ROUTES } from '@constants/routes';
 import { sideNavIsOpenAtom } from '@jotai/atoms';
+import { adminNavData } from '@constants/data/adminNavData';
 import kioLogo from '@resources/image/kioLogo.png';
 import AuthenticationButton from '@components/user/AuthenticationButton';
 import MobileNav from './MobileNav';
@@ -94,6 +95,7 @@ interface NavBarProps {
 
 function NavBar({ useBackground = false }: NavBarProps) {
   const location = useLocation();
+  const { workspaceId } = useParams<{ workspaceId: string }>();
   const [isSideNavOpen, setIsSideNavOpen] = useAtom(sideNavIsOpenAtom);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -132,7 +134,9 @@ function NavBar({ useBackground = false }: NavBarProps) {
       </NavContainer>
 
       <MobileNav isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
-      {isShowHamburger && <SideNav isOpen={isSideNavOpen} />}
+      {isShowHamburger && workspaceId && (
+        <SideNav isOpen={isSideNavOpen} navData={adminNavData} pathPrefix={`/admin/workspace/${workspaceId}`} />
+      )}
     </>
   );
 }

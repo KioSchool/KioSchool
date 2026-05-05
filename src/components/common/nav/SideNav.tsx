@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { colFlex } from '@styles/flexStyles';
-import { adminNavData } from '@constants/data/adminNavData';
+import { SideNavCategory } from '@@types/sideNav';
 import { Color } from '@resources/colors';
 import { SIDE_NAV_WIDTH } from '@constants/layout';
 
@@ -30,7 +30,6 @@ const NavCategory = styled.div`
 const CategoryTitle = styled.div`
   color: #464a4d;
   font-size: 18px;
-  font-style: normal;
   font-weight: 700;
 `;
 
@@ -90,27 +89,26 @@ const SideNavLink = styled(Link)`
 
 interface SideNavProps {
   isOpen: boolean;
+  navData: SideNavCategory[];
+  pathPrefix: string;
 }
 
-function SideNav({ isOpen }: SideNavProps) {
+function SideNav({ isOpen, navData, pathPrefix }: SideNavProps) {
   const location = useLocation();
-  const { workspaceId } = useParams<{ workspaceId: string }>();
-
-  const URL_PREFIX = `/admin/workspace/${workspaceId}`;
 
   const isActiveLink = (path: string): boolean => {
-    const currentPath = location.pathname.replace(`/admin/workspace/${workspaceId}`, '');
+    const currentPath = location.pathname.replace(pathPrefix, '');
     return currentPath === path;
   };
 
   return (
     <SideNavContainer isOpen={isOpen}>
-      {adminNavData.map((categoryData) => (
+      {navData.map((categoryData) => (
         <NavCategory key={categoryData.category}>
           <CategoryTitle>{categoryData.category}</CategoryTitle>
           {categoryData.items.map((item) => (
             <NavItem key={item.path} isActive={isActiveLink(item.path)}>
-              <SideNavLink to={`${URL_PREFIX}${item.path}`}>{item.name}</SideNavLink>
+              <SideNavLink to={`${pathPrefix}${item.path}`}>{item.name}</SideNavLink>
             </NavItem>
           ))}
         </NavCategory>
