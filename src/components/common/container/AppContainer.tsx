@@ -37,7 +37,7 @@ export const SubContainer = styled.div<{
   gap: ${(props) => props.customGap || '0'};
   box-sizing: border-box;
   flex-grow: 1;
-  padding-top: ${(props) => (props.useTitle ? '90px' : '65px')};
+  padding-top: ${(props) => (props.useTitle ? '90px' : '0')};
   padding-inline: 0;
 
   ${tabletMediaQuery} {
@@ -45,7 +45,7 @@ export const SubContainer = styled.div<{
   }
 
   ${mobileMediaQuery} {
-    padding-top: ${(props) => (props.useTitle ? '80px' : '56px')};
+    padding-top: ${(props) => (props.useTitle ? '80px' : '0')};
     padding-inline: 16px;
   }
 
