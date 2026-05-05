@@ -49,20 +49,20 @@ function usePopup() {
     closePopupModal();
   };
 
-  const closePopupForever = (popupId: number, expireDate?: Date) => {
+  const closePopupForever = (popupId: number) => {
     const cookies = new Cookies();
-    cookies.set(`close_popup_${popupId}`, 'true', { path: '/', expires: expireDate ?? DEFAULT_POPUP_COOKIE_EXPIRE_DATE });
+    cookies.set(`close_popup_${popupId}`, 'true', { path: '/', expires: DEFAULT_POPUP_COOKIE_EXPIRE_DATE });
     closePopupModal();
   };
 
-  const closePopup = (popupId?: number, closeMode?: PopupCloseMode, expireDate?: Date) => {
+  const closePopup = (popupId?: number, closeMode?: PopupCloseMode) => {
     if (popupId === undefined || closeMode === undefined) {
       closePopupModal();
       return;
     }
 
     if (closeMode === POPUP_CLOSE_MODE.FOREVER) {
-      closePopupForever(popupId, expireDate);
+      closePopupForever(popupId);
       return;
     }
 

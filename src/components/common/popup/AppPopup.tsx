@@ -85,11 +85,11 @@ function AppPopup({ popupDatas }: AppPopupProps) {
     return null;
   }
 
-  const { popupId, expireDate, children, closeMode = POPUP_CLOSE_MODE.DAY, closeText } = validPopupData;
+  const { popupId, children, closeMode = POPUP_CLOSE_MODE.DAY, closeText } = validPopupData;
   const popupCloseText = closeText ?? (closeMode === POPUP_CLOSE_MODE.FOREVER ? '다시 보지 않기' : '하루 동안 보지 않기');
 
   const handleClosePopup = () => {
-    closePopup(popupId, closeMode, expireDate);
+    closePopup(popupId, closeMode);
   };
 
   return (
