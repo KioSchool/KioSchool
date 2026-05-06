@@ -1,102 +1,69 @@
-import { useState } from 'react';
 import styled from '@emotion/styled';
-import { RiArrowDownSLine, RiArrowUpSLine } from '@remixicon/react';
-import { Workspace } from '@@types/index';
+import { useSetAtom } from 'jotai';
+import { Location } from 'react-router-dom';
+import { Workspace, RIGHT_SIDEBAR_ACTION } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { formatKoreanDate } from '@utils/formatNumber';
-import WorkspaceDetailPanel from './WorkspaceDetailPanel';
+import { externalSidebarAtom } from '@jotai/atoms';
+import { SUPER_ADMIN_ROUTES } from '@constants/routes';
+import WorkspaceDetailContent from './WorkspaceDetailContent';
 
 const Container = styled.div`
   width: 100%;
-  ${colFlex({ justify: 'center', align: 'start' })}
-`;
-
-const MainRow = styled.div`
-  width: 100%;
-  min-height: 56px;
-  gap: 10px;
+  cursor: pointer;
+  padding: 12px 0;
   ${rowFlex({ align: 'center' })}
+
+  &:hover .ws-name {
+    color: ${Color.KIO_ORANGE};
+  }
 `;
 
-const WorkspaceInfo = styled.div`
+const Info = styled.div`
   flex: 1;
   min-width: 0;
   gap: 2px;
   ${colFlex({ justify: 'center' })}
 `;
 
-const SubLabelContainer = styled.div`
+const Name = styled.div`
+  font-size: 14px;
+  font-weight: 600;
+  color: ${Color.BLACK};
+  transition: color 0.15s;
+`;
+
+const Sub = styled.div`
   font-size: 12px;
   color: ${Color.HEAVY_GREY};
-  ${rowFlex()}
 `;
 
-const WorkspaceLabel = styled.div`
-  font-size: 14px;
-  font-weight: 500;
-  text-decoration: none;
-  color: ${Color.BLACK};
-  cursor: pointer;
-  transition: color 0.15s;
+function SuperAdminWorkspaceContent(workspace: Workspace) {
+  const setExternalSidebar = useSetAtom(externalSidebarAtom);
 
-  &:hover {
-    color: ${Color.KIO_ORANGE};
-  }
-`;
-
-const ActionRow = styled.div`
-  gap: 6px;
-  flex-shrink: 0;
-  ${rowFlex({ align: 'center' })}
-`;
-
-const ToggleButton = styled.button`
-  height: 30px;
-  padding: 0 10px;
-  border-radius: 6px;
-  background: transparent;
-  color: ${Color.GREY};
-  border: 1px solid ${Color.HEAVY_GREY};
-  font-size: 12px;
-  cursor: pointer;
-  gap: 4px;
-  transition: border-color 0.15s, color 0.15s;
-  ${rowFlex({ align: 'center' })}
-
-  &:hover {
-    border-color: ${Color.GREY};
-    color: ${Color.BLACK};
-  }
-`;
-
-function SuperAdminWorkspaceContent({ id, name, owner, createdAt }: Workspace) {
-  const subLabel = `${formatKoreanDate(createdAt)} | ${owner.name}`;
-  const [showDetail, setShowDetail] = useState(false);
-
-  const handleOpenWorkspace = () => {
-    window.open(`${window.location.origin}/admin/workspace/${id}`, '_blank', 'rel=noopener noreferrer popup=false');
-  };
-
-  const handleToggleDetail = () => {
-    setShowDetail((prev) => !prev);
+  const handleClick = () => {
+    setExternalSidebar({
+      action: RIGHT_SIDEBAR_ACTION.OPEN,
+      title: workspace.name,
+      content: (
+        <WorkspaceDetailContent
+          workspace={workspace}
+          onClose={() => setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE })}
+        />
+      ),
+      location: { pathname: SUPER_ADMIN_ROUTES.WORKSPACE } as Location,
+    });
   };
 
   return (
-    <Container>
-      <MainRow>
-        <WorkspaceInfo>
-          <WorkspaceLabel onClick={handleOpenWorkspace}>{name}</WorkspaceLabel>
-          <SubLabelContainer className={'sub-label-container'}>{subLabel}</SubLabelContainer>
-        </WorkspaceInfo>
-        <ActionRow>
-          <ToggleButton type="button" onClick={handleToggleDetail}>
-            {showDetail ? <RiArrowUpSLine size={14} /> : <RiArrowDownSLine size={14} />}
-            {showDetail ? '닫기' : '상세'}
-          </ToggleButton>
-        </ActionRow>
-      </MainRow>
-      <WorkspaceDetailPanel workspaceId={id} isOpen={showDetail} />
+    <Container onClick={handleClick}>
+      <Info>
+        <Name className="ws-name">{workspace.name}</Name>
+        <Sub>
+          {formatKoreanDate(workspace.createdAt)} | {workspace.owner.name}
+        </Sub>
+      </Info>
     </Container>
   );
 }

@@ -1,69 +1,47 @@
+import { useEffect, useState } from 'react';
+import { Location, useSearchParams } from 'react-router-dom';
 import AppContainer from '@components/common/container/AppContainer';
 import Pagination from '@components/common/pagination/Pagination';
 import PaginationSearchBar from '@components/common/pagination/PaginationSearchBar';
-import useSuperAdminWorkspace from '@hooks/super-admin/useSuperAdminWorkspace';
-import { colFlex } from '@styles/flexStyles';
-import SuperAdminWorkspaceContent from '@components/super-admin/workspace/SuperAdminWorkspaceContent';
-import { useSearchParams } from 'react-router-dom';
 import PaginationSearchContents from '@components/common/pagination/PaginationSearchContents';
+import PageHeader from '@components/common/page/PageHeader';
+import SuperAdminPageContainer from '@components/super-admin/SuperAdminPageContainer';
+import RightSidebarModal from '@components/common/modal/RightSidebarModal';
+import SuperAdminWorkspaceContent from '@components/super-admin/workspace/SuperAdminWorkspaceContent';
+import useSuperAdminWorkspace from '@hooks/super-admin/useSuperAdminWorkspace';
 import { PaginationResponse, Workspace } from '@@types/index';
-import { useEffect, useState } from 'react';
-import styled from '@emotion/styled';
 import { defaultPaginationValue } from '@@types/defaultValues';
+import { colFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
+import { SUPER_ADMIN_ROUTES } from '@constants/routes';
 
-const PageContainer = styled.div`
-  width: 100%;
-  padding: 72px 0 40px;
-  gap: 20px;
-  ${colFlex()}
-`;
-
-const HeaderContainer = styled.div`
-  width: 100%;
-  margin-bottom: 8px;
-  gap: 16px;
-  ${colFlex()}
-`;
-
-const SearchContainer = styled.div`
-  width: 100%;
-`;
+const PAGE_SIZE = 6;
 
 function SuperAdminWorkspace() {
-  const pageSize = 6;
   const [searchParams, setSearchParams] = useSearchParams();
   const [workspaces, setWorkspaces] = useState<PaginationResponse<Workspace>>(defaultPaginationValue);
   const { fetchAllWorkspaces } = useSuperAdminWorkspace();
 
-  const fetchAndSetWorkspaces = async (page: number, size: number, name: string | undefined) => {
-    const workspaceResponse = await fetchAllWorkspaces(page, size, name);
-    setWorkspaces(workspaceResponse);
+  useEffect(() => {
+    const page = Number(searchParams.get('page'));
+    const name = searchParams.get('name') || '';
+    fetchAllWorkspaces(page, PAGE_SIZE, name).then(setWorkspaces);
+  }, [searchParams.toString(), fetchAllWorkspaces]);
+
+  const handlePageChange = (page: number) => {
+    searchParams.set('page', page.toString());
+    setSearchParams(searchParams);
   };
 
-  useEffect(() => {
-    const nowPage = Number(searchParams.get('page'));
-    const searchValue = searchParams.get('name') || '';
-
-    fetchAndSetWorkspaces(nowPage, pageSize, searchValue);
-  }, [searchParams.toString()]);
-
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'} useTitle={false} disableLayoutScale>
-      <PageContainer>
-        <HeaderContainer>
-          <SearchContainer>
-            <PaginationSearchBar />
-          </SearchContainer>
-        </HeaderContainer>
-        <PaginationSearchContents contents={workspaces} target={'워크스페이스'} ContentComponent={SuperAdminWorkspaceContent} />
-        <Pagination
-          totalPageCount={workspaces.totalPages}
-          paginateFunction={(page: number) => {
-            searchParams.set('page', page.toString());
-            setSearchParams(searchParams);
-          }}
-        />
-      </PageContainer>
+    <AppContainer useFlex={colFlex({ align: 'center' })} backgroundColor={Color.LIGHT_GREY} useTitle={false}>
+      <SuperAdminPageContainer>
+        <PageHeader title="워크스페이스 관리" description="서비스에 등록된 모든 주점(워크스페이스)을 조회하고 점검합니다." />
+        <PaginationSearchBar />
+        <PaginationSearchContents contents={workspaces} target="워크스페이스" ContentComponent={SuperAdminWorkspaceContent} />
+        <Pagination totalPageCount={workspaces.totalPages} paginateFunction={handlePageChange} />
+      </SuperAdminPageContainer>
+      <RightSidebarModal useExternalControl={{ location: { pathname: SUPER_ADMIN_ROUTES.WORKSPACE } as Location }} />
     </AppContainer>
   );
 }
