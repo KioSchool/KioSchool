@@ -11,7 +11,7 @@ import { calculateLayoutScale } from 'src/utils/layout';
 import { getPageTitle } from '@@types/guard';
 import { DEFAULT_LAYOUT_WIDTH, SIDE_NAV_WIDTH } from '@constants/layout';
 import { mobileMediaQuery, tabletMediaQuery } from '@styles/globalStyles';
-import { useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { match } from 'ts-pattern';
 
 export const MainContainer = styled.div<{ backgroundColor?: string; sideNavOffset: number }>`
@@ -111,7 +111,7 @@ const ContentContainer = styled.div<{
 `;
 
 interface Props {
-  children: JSX.Element;
+  children: ReactNode;
   useFlex: SerializedStyles;
   backgroundColor?: string;
   useTitle?: boolean;

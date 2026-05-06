@@ -5,7 +5,7 @@ import { SuperAdminOrder } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { formatCurrency, formatKoreanDateTime } from '@utils/formatNumber';
-import { getSuperAdminOrdersPath } from '@constants/routes';
+import { getAdminWorkspacePath, getSuperAdminOrdersPath } from '@constants/routes';
 import OrderStatusBadge from './OrderStatusBadge';
 
 const Wrap = styled.div`
@@ -119,7 +119,7 @@ function OrderDetailContent({ order, onClose }: OrderDetailContentProps) {
   const navigate = useNavigate();
 
   const handleOpenAdmin = () => {
-    window.open(`/admin/workspace/${order.workspaceId}`, '_blank', 'noopener,noreferrer');
+    window.open(getAdminWorkspacePath(order.workspaceId), '_blank', 'noopener,noreferrer');
   };
 
   const handleOpenWorkspaceOrders = () => {

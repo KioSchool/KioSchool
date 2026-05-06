@@ -16,9 +16,9 @@ import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { externalSidebarAtom } from '@jotai/atoms';
 import { parseOrdersFilterFromParams, serializeOrdersFilterToParams, toFetchParams } from '@utils/ordersFilter';
+import { SUPER_ADMIN_ROUTES } from '@constants/routes';
 
 const PAGE_SIZE = 20;
-const ORDERS_PATHNAME = '/super-admin/orders';
 
 function SuperAdminOrders() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -56,21 +56,19 @@ function SuperAdminOrders() {
       action: RIGHT_SIDEBAR_ACTION.OPEN,
       title: `주문 #${order.orderNumber}`,
       content: <OrderDetailContent order={order} onClose={() => setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE })} />,
-      location: { pathname: ORDERS_PATHNAME } as Location,
+      location: { pathname: SUPER_ADMIN_ROUTES.ORDERS } as Location,
     });
   };
 
   return (
     <AppContainer useFlex={colFlex({ align: 'center' })} backgroundColor={Color.LIGHT_GREY} useTitle={false}>
-      <>
-        <SuperAdminPageContainer>
-          <PageHeader title="전체 주문 모니터링" description="모든 워크스페이스의 주문을 시간·상태·워크스페이스 단위로 추적합니다." />
-          <OrdersFilterBar filter={filter} onChange={handleFilterChange} onReset={handleReset} />
-          <OrdersResultArea orders={orders.content} selectedOrderId={selectedOrder?.id ?? null} onSelect={handleSelect} onResetFilter={handleReset} />
-          <Pagination totalPageCount={orders.totalPages} paginateFunction={handlePageChange} />
-        </SuperAdminPageContainer>
-        <RightSidebarModal useExternalControl={{ location: { pathname: ORDERS_PATHNAME } as Location }} />
-      </>
+      <SuperAdminPageContainer>
+        <PageHeader title="전체 주문 모니터링" description="모든 워크스페이스의 주문을 시간·상태·워크스페이스 단위로 추적합니다." />
+        <OrdersFilterBar filter={filter} onChange={handleFilterChange} onReset={handleReset} />
+        <OrdersResultArea orders={orders.content} selectedOrderId={selectedOrder?.id ?? null} onSelect={handleSelect} onResetFilter={handleReset} />
+        <Pagination totalPageCount={orders.totalPages} paginateFunction={handlePageChange} />
+      </SuperAdminPageContainer>
+      <RightSidebarModal useExternalControl={{ location: { pathname: SUPER_ADMIN_ROUTES.ORDERS } as Location }} />
     </AppContainer>
   );
 }
