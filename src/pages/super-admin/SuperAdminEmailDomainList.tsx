@@ -1,96 +1,84 @@
-import PaginationSearchBar from '@components/common/pagination/PaginationSearchBar';
-import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useEffect } from 'react';
-import Pagination from '@components/common/pagination/Pagination';
-import AppContainer from '@components/common/container/AppContainer';
 import { useSearchParams } from 'react-router-dom';
-import PaginationSearchContents from '@components/common/pagination/PaginationSearchContents';
-import useSuperAdminEmail from '@hooks/super-admin/useSuperAdminEmail';
-import SuperAdminEmailDomainContent from '@components/super-admin/email/SuperAdminEmailDomainContent';
-import { superAdminEmailDomainPaginationResponseAtom } from '@jotai/super-admin/atoms';
 import { useAtomValue } from 'jotai';
-import styled from '@emotion/styled';
-import useInputConfirm from '@hooks/useInputConfirm';
+import AppContainer from '@components/common/container/AppContainer';
+import Pagination from '@components/common/pagination/Pagination';
+import PaginationSearchBar from '@components/common/pagination/PaginationSearchBar';
+import PaginationSearchContents from '@components/common/pagination/PaginationSearchContents';
+import PageHeader from '@components/common/page/PageHeader';
+import SuperAdminPageContainer from '@components/super-admin/SuperAdminPageContainer';
+import SuperAdminEmailDomainContent from '@components/super-admin/email/SuperAdminEmailDomainContent';
 import NewCommonButton from '@components/common/button/NewCommonButton';
+import useSuperAdminEmail from '@hooks/super-admin/useSuperAdminEmail';
+import useInputConfirm from '@hooks/useInputConfirm';
+import { superAdminEmailDomainPaginationResponseAtom } from '@jotai/super-admin/atoms';
+import { colFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
-const PageContainer = styled.div`
-  width: 100%;
-  padding: 72px 0 40px;
-  gap: 20px;
-  ${colFlex()}
-`;
-
-const HeaderContainer = styled.div`
-  width: 100%;
-  gap: 16px;
-  ${colFlex()}
-`;
-
-const ActionsContainer = styled.div`
-  width: 100%;
-  gap: 20px;
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
-`;
-
-const SearchContainer = styled.div`
-  flex: 1;
-`;
+const PAGE_SIZE = 6;
 
 function SuperAdminEmailDomainList() {
-  const pageSize = 6;
   const [searchParams, setSearchParams] = useSearchParams();
   const emailDomain = useAtomValue(superAdminEmailDomainPaginationResponseAtom);
   const { fetchAllEmailDomain, addEmailDomain } = useSuperAdminEmail();
 
   const { InputConfirmModal, confirm } = useInputConfirm({
     title: '이메일 도메인 추가',
-    description: '대학/학교명과 이메일 도메인을 입력해주세요.',
+    description: '대학별 허용할 이메일 도메인 정보를 입력해주세요.',
     submitText: '추가하기',
     inputSlots: [
-      { label: '학교/기관명', placeholder: '예: 성신여자대학교' },
-      { label: '도메인', placeholder: '예: sungshin.ac.kr' },
+      { label: '대학명', placeholder: '예: 서울대학교' },
+      { label: '도메인', placeholder: '예: snu.ac.kr' },
     ],
   });
 
   useEffect(() => {
-    const nowPage = Number(searchParams.get('page'));
-    const searchValue = searchParams.get('name') || '';
-
-    fetchAllEmailDomain(nowPage, pageSize, searchValue);
+    const page = Number(searchParams.get('page'));
+    const name = searchParams.get('name') || '';
+    fetchAllEmailDomain(page, PAGE_SIZE, name);
   }, [searchParams.toString()]);
 
   const handleAddClick = async () => {
     try {
       const result = await confirm();
-      if (result['학교/기관명'] && result['도메인']) {
-        addEmailDomain(result['학교/기관명'], result['도메인']);
+      if (result['대학명'] && result['도메인']) {
+        addEmailDomain(result['대학명'], result['도메인']);
       }
     } catch {
-      // User cancelled
+      // user cancelled
     }
   };
 
+  const handlePageChange = (page: number) => {
+    searchParams.set('page', page.toString());
+    setSearchParams(searchParams);
+  };
+
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'} useTitle={false} disableLayoutScale>
-      <PageContainer>
+    <AppContainer
+      useFlex={colFlex({ align: 'center' })}
+      backgroundColor={Color.LIGHT_GREY}
+      useTitle={false}
+    >
+      <SuperAdminPageContainer>
         <InputConfirmModal />
-        <HeaderContainer>
-          <ActionsContainer>
-            <SearchContainer>
-              <PaginationSearchBar />
-            </SearchContainer>
-            <NewCommonButton onClick={handleAddClick}>도메인 추가</NewCommonButton>
-          </ActionsContainer>
-        </HeaderContainer>
-        <PaginationSearchContents contents={emailDomain} target={'이메일'} ContentComponent={SuperAdminEmailDomainContent} />
-        <Pagination
-          totalPageCount={emailDomain.totalPages}
-          paginateFunction={(page: number) => {
-            searchParams.set('page', page.toString());
-            setSearchParams(searchParams);
-          }}
+        <PageHeader
+          title="이메일 도메인 관리"
+          description="대학별 허용 이메일 도메인을 추가하고 삭제합니다."
+          actions={
+            <NewCommonButton size="xs" onClick={handleAddClick}>
+              도메인 추가
+            </NewCommonButton>
+          }
         />
-      </PageContainer>
+        <PaginationSearchBar />
+        <PaginationSearchContents
+          contents={emailDomain}
+          target="이메일 도메인"
+          ContentComponent={SuperAdminEmailDomainContent}
+        />
+        <Pagination totalPageCount={emailDomain.totalPages} paginateFunction={handlePageChange} />
+      </SuperAdminPageContainer>
     </AppContainer>
   );
 }
