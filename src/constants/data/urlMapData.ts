@@ -29,7 +29,6 @@ export const ROUTES_PATH_KR_MAP = {
 
   [SUPER_ADMIN_ROUTES.HOME]: '최고 관리자 홈',
   [SUPER_ADMIN_ROUTES.WORKSPACE]: '워크스페이스 관리',
-  [SUPER_ADMIN_ROUTES.MANAGE]: '운영 관리',
   [SUPER_ADMIN_ROUTES.USER]: '사용자 관리',
   [SUPER_ADMIN_ROUTES.EMAIL]: '이메일 관리',
   [SUPER_ADMIN_ROUTES.BANK]: '은행 정보 관리',

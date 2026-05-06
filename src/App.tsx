@@ -1,4 +1,4 @@
-import { Route } from 'react-router-dom';
+import { Route, Navigate } from 'react-router-dom';
 import Home from '@pages/user/home/Home';
 import AdminHome from '@pages/admin/AdminHome';
 import Login from '@pages/user/Login';
@@ -18,9 +18,7 @@ import AdminOrderStatistics from '@pages/admin/order/AdminOrderStatistics';
 import AdminMyInfo from '@pages/admin/AdminMyInfo';
 import AdminProductCategories from '@pages/admin/AdminProductCategories';
 import ResetPassword from '@pages/user/ResetPassword';
-import SuperAdminHome from '@pages/super-admin/SuperAdminHome';
 import SuperAdminWorkspace from '@pages/super-admin/SuperAdminWorkspace';
-import SuperAdminManage from '@pages/super-admin/SuperAdminManage';
 import SuperAdminUser from '@pages/super-admin/SuperAdminUser';
 import AdminOrderRealtime from '@pages/admin/order/AdminOrderRealtime';
 import SuperAdminEmailDomainList from '@pages/super-admin/SuperAdminEmailDomainList';
@@ -80,9 +78,8 @@ function App() {
         <Route path={ORDER_ROUTES.ORDER_WAIT} element={<OrderWait />} />
         <Route path={ORDER_ROUTES.ORDER_COMPLETE} element={<OrderComplete />} />
 
-        <Route path={SUPER_ADMIN_ROUTES.HOME} element={<SuperAdminHome />} />
+        <Route path={SUPER_ADMIN_ROUTES.HOME} element={<Navigate to={SUPER_ADMIN_ROUTES.DASHBOARD} replace />} />
         <Route path={SUPER_ADMIN_ROUTES.WORKSPACE} element={<SuperAdminWorkspace />} />
-        <Route path={SUPER_ADMIN_ROUTES.MANAGE} element={<SuperAdminManage />} />
         <Route path={SUPER_ADMIN_ROUTES.USER} element={<SuperAdminUser />} />
         <Route path={SUPER_ADMIN_ROUTES.EMAIL} element={<SuperAdminEmailDomainList />} />
         <Route path={SUPER_ADMIN_ROUTES.BANK} element={<SuperAdminBank />} />

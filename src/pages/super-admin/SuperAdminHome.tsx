@@ -82,8 +82,8 @@ function SuperAdminHome() {
           </MainTitle>
           <SubText>시스템 전체를 관리하고 모니터링하세요.</SubText>
         </div>
-        <LinkSuperAdminHome to={SUPER_ADMIN_ROUTES.MANAGE}>
-          <LinkText>운영 관리 시작하기</LinkText>
+        <LinkSuperAdminHome to={SUPER_ADMIN_ROUTES.DASHBOARD}>
+          <LinkText>대시보드 보기</LinkText>
           <RiArrowRightLine size={16} />
         </LinkSuperAdminHome>
       </Container>

@@ -36,7 +36,6 @@ export const ADMIN_ROUTES = {
 export const SUPER_ADMIN_ROUTES = {
   HOME: '/super-admin',
   WORKSPACE: '/super-admin/workspace',
-  MANAGE: '/super-admin/manage',
   USER: '/super-admin/user',
   EMAIL: '/super-admin/email',
   BANK: '/super-admin/bank',
