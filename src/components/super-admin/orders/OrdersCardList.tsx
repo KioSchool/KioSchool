@@ -11,12 +11,13 @@ const List = styled.div`
   ${colFlex()}
 `;
 
-const Card = styled.div`
-  background: ${Color.WHITE};
-  border: 1px solid ${Color.HEAVY_GREY};
+const Card = styled.div<{ active: boolean }>`
+  background: ${({ active }) => (active ? '#FFF3E7' : Color.WHITE)};
+  border: 1px solid ${({ active }) => (active ? Color.KIO_ORANGE : '#f0f0f0')};
   border-radius: 10px;
   padding: 12px 14px;
   gap: 6px;
+  cursor: pointer;
   ${colFlex()}
 `;
 
@@ -50,13 +51,15 @@ const TimestampLine = styled.div`
 
 interface OrdersCardListProps {
   orders: SuperAdminOrder[];
+  selectedOrderId: number | null;
+  onSelect: (order: SuperAdminOrder) => void;
 }
 
-function OrdersCardList({ orders }: OrdersCardListProps) {
+function OrdersCardList({ orders, selectedOrderId, onSelect }: OrdersCardListProps) {
   return (
     <List>
       {orders.map((order) => (
-        <Card key={order.id}>
+        <Card key={order.id} active={selectedOrderId === order.id} onClick={() => onSelect(order)}>
           <HeaderRow>
             <WorkspaceName>{order.workspaceName}</WorkspaceName>
             <OrderStatusBadge status={order.status} />

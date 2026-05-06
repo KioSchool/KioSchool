@@ -29,18 +29,21 @@ const MobileOnly = styled.div`
 
 interface OrdersResultAreaProps {
   orders: SuperAdminOrder[];
+  selectedOrderId: number | null;
+  onSelect: (order: SuperAdminOrder) => void;
+  onResetFilter: () => void;
 }
 
-function OrdersResultArea({ orders }: OrdersResultAreaProps) {
+function OrdersResultArea({ orders, selectedOrderId, onSelect, onResetFilter }: OrdersResultAreaProps) {
   return match(orders)
-    .with([], () => <OrdersEmptyState />)
+    .with([], () => <OrdersEmptyState onReset={onResetFilter} />)
     .with(P.array(), (list) => (
       <Container>
         <DesktopOnly>
-          <OrdersTable orders={list} />
+          <OrdersTable orders={list} selectedOrderId={selectedOrderId} onSelect={onSelect} />
         </DesktopOnly>
         <MobileOnly>
-          <OrdersCardList orders={list} />
+          <OrdersCardList orders={list} selectedOrderId={selectedOrderId} onSelect={onSelect} />
         </MobileOnly>
       </Container>
     ))

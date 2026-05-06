@@ -10,11 +10,11 @@ const Table = styled.table`
   background: ${Color.WHITE};
   border-radius: 10px;
   overflow: hidden;
-  border: 1px solid ${Color.HEAVY_GREY};
+  border: 1px solid #f0f0f0;
 `;
 
 const Thead = styled.thead`
-  background: ${Color.LIGHT_GREY};
+  background: #fcfcfc;
 `;
 
 const Th = styled.th`
@@ -25,11 +25,13 @@ const Th = styled.th`
   color: ${Color.GREY};
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  border-bottom: 1px solid ${Color.HEAVY_GREY};
+  border-bottom: 1px solid #f0f0f0;
 `;
 
-const Tr = styled.tr`
-  border-bottom: 1px solid ${Color.HEAVY_GREY};
+const Tr = styled.tr<{ active: boolean }>`
+  border-bottom: 1px solid #f7f7f7;
+  cursor: pointer;
+  background: ${({ active }) => (active ? '#FFF3E7' : 'transparent')};
   transition: background 0.15s;
 
   &:last-child {
@@ -37,7 +39,7 @@ const Tr = styled.tr`
   }
 
   &:hover {
-    background: ${Color.LIGHT_GREY};
+    background: ${({ active }) => (active ? '#FFF3E7' : '#fcfaf6')};
   }
 `;
 
@@ -49,7 +51,7 @@ const Td = styled.td`
 `;
 
 const WorkspaceName = styled.span`
-  font-weight: 500;
+  font-weight: 600;
   color: ${Color.BLACK};
 `;
 
@@ -61,9 +63,11 @@ const WorkspaceIdSubText = styled.div`
 
 interface OrdersTableProps {
   orders: SuperAdminOrder[];
+  selectedOrderId: number | null;
+  onSelect: (order: SuperAdminOrder) => void;
 }
 
-function OrdersTable({ orders }: OrdersTableProps) {
+function OrdersTable({ orders, selectedOrderId, onSelect }: OrdersTableProps) {
   return (
     <Table>
       <Thead>
@@ -79,7 +83,7 @@ function OrdersTable({ orders }: OrdersTableProps) {
       </Thead>
       <tbody>
         {orders.map((order) => (
-          <Tr key={order.id}>
+          <Tr key={order.id} active={selectedOrderId === order.id} onClick={() => onSelect(order)}>
             <Td>
               <WorkspaceName>{order.workspaceName}</WorkspaceName>
               <WorkspaceIdSubText>ID: {order.workspaceId}</WorkspaceIdSubText>

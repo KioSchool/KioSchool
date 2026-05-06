@@ -1,49 +1,30 @@
 import { useEffect, useMemo, useState } from 'react';
-import styled from '@emotion/styled';
-import { useSearchParams } from 'react-router-dom';
+import { Location, useSearchParams } from 'react-router-dom';
+import { useAtom } from 'jotai';
 import AppContainer from '@components/common/container/AppContainer';
 import Pagination from '@components/common/pagination/Pagination';
+import PageHeader from '@components/common/page/PageHeader';
+import SuperAdminPageContainer from '@components/super-admin/SuperAdminPageContainer';
+import RightSidebarModal from '@components/common/modal/RightSidebarModal';
 import OrdersFilterBar from '@components/super-admin/orders/OrdersFilterBar';
 import OrdersResultArea from '@components/super-admin/orders/OrdersResultArea';
+import OrderDetailContent from '@components/super-admin/orders/OrderDetailContent';
 import useSuperAdminOrders from '@hooks/super-admin/useSuperAdminOrders';
-import { OrdersFilter, PaginationResponse, SuperAdminOrder } from '@@types/index';
+import { OrdersFilter, PaginationResponse, RIGHT_SIDEBAR_ACTION, SuperAdminOrder } from '@@types/index';
 import { defaultPaginationValue } from '@@types/defaultValues';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import { mobileMediaQuery } from '@styles/globalStyles';
+import { externalSidebarAtom } from '@jotai/atoms';
 import { parseOrdersFilterFromParams, serializeOrdersFilterToParams, toFetchParams } from '@utils/ordersFilter';
 
 const PAGE_SIZE = 20;
-
-const PageContainer = styled.div`
-  width: 100%;
-  max-width: 1100px;
-  padding: 72px 24px 40px;
-  gap: 16px;
-  min-width: 0;
-  ${colFlex()}
-
-  ${mobileMediaQuery} {
-    padding: 56px 14px 24px;
-    gap: 12px;
-  }
-`;
-
-const PageTitle = styled.h1`
-  font-size: 22px;
-  font-weight: 700;
-  color: ${Color.BLACK};
-  margin: 0;
-  letter-spacing: -0.01em;
-
-  ${mobileMediaQuery} {
-    font-size: 18px;
-  }
-`;
+const ORDERS_PATHNAME = '/super-admin/orders';
 
 function SuperAdminOrders() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [orders, setOrders] = useState<PaginationResponse<SuperAdminOrder>>(defaultPaginationValue);
+  const [selectedOrder, setSelectedOrder] = useState<SuperAdminOrder | null>(null);
+  const [, setExternalSidebar] = useAtom(externalSidebarAtom);
   const { fetchAllOrders } = useSuperAdminOrders();
 
   const qs = searchParams.toString();
@@ -61,9 +42,7 @@ function SuperAdminOrders() {
     setSearchParams(params);
   };
 
-  const handleReset = () => {
-    setSearchParams(new URLSearchParams());
-  };
+  const handleReset = () => setSearchParams(new URLSearchParams());
 
   const handlePageChange = (page: number) => {
     const params = serializeOrdersFilterToParams(filter);
@@ -71,14 +50,27 @@ function SuperAdminOrders() {
     setSearchParams(params);
   };
 
+  const handleSelect = (order: SuperAdminOrder) => {
+    setSelectedOrder(order);
+    setExternalSidebar({
+      action: RIGHT_SIDEBAR_ACTION.OPEN,
+      title: `주문 #${order.orderNumber}`,
+      content: <OrderDetailContent order={order} onClose={() => setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE })} />,
+      location: { pathname: ORDERS_PATHNAME } as Location,
+    });
+  };
+
   return (
-    <AppContainer useFlex={colFlex({ align: 'center' })} backgroundColor={Color.LIGHT_GREY} useTitle={false} disableLayoutScale>
-      <PageContainer>
-        <PageTitle>전체 주문 모니터링</PageTitle>
-        <OrdersFilterBar filter={filter} onChange={handleFilterChange} onReset={handleReset} />
-        <OrdersResultArea orders={orders.content} />
-        <Pagination totalPageCount={orders.totalPages} paginateFunction={handlePageChange} />
-      </PageContainer>
+    <AppContainer useFlex={colFlex({ align: 'center' })} backgroundColor={Color.LIGHT_GREY} useTitle={false}>
+      <>
+        <SuperAdminPageContainer>
+          <PageHeader title="전체 주문 모니터링" description="모든 워크스페이스의 주문을 시간·상태·워크스페이스 단위로 추적합니다." />
+          <OrdersFilterBar filter={filter} onChange={handleFilterChange} onReset={handleReset} />
+          <OrdersResultArea orders={orders.content} selectedOrderId={selectedOrder?.id ?? null} onSelect={handleSelect} onResetFilter={handleReset} />
+          <Pagination totalPageCount={orders.totalPages} paginateFunction={handlePageChange} />
+        </SuperAdminPageContainer>
+        <RightSidebarModal useExternalControl={{ location: { pathname: ORDERS_PATHNAME } as Location }} />
+      </>
     </AppContainer>
   );
 }
