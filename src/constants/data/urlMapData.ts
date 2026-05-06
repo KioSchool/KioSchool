@@ -27,7 +27,6 @@ export const ROUTES_PATH_KR_MAP = {
   [ADMIN_ROUTES.PRODUCTS]: '상품 관리',
   [ADMIN_ROUTES.PRODUCTS_CATEGORIES]: '카테고리 관리',
 
-  [SUPER_ADMIN_ROUTES.HOME]: '최고 관리자 홈',
   [SUPER_ADMIN_ROUTES.WORKSPACE]: '워크스페이스 관리',
   [SUPER_ADMIN_ROUTES.USER]: '사용자 관리',
   [SUPER_ADMIN_ROUTES.EMAIL]: '이메일 관리',
