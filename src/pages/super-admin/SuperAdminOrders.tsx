@@ -32,7 +32,6 @@ function SuperAdminOrders() {
   useEffect(() => {
     const page = Number(searchParams.get('page') ?? 0);
     fetchAllOrders({ ...toFetchParams(filter), page, size: PAGE_SIZE }).then(setOrders);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [qs, fetchAllOrders]);
 
   const handleFilterChange = (next: OrdersFilter) => {

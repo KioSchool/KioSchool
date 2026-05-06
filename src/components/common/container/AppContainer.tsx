@@ -148,8 +148,7 @@ function AppContainer({
   const windowWidth = useAtomValue(windowWidthAtom);
   const setLayoutParams = useSetAtom(layoutParamsAtom);
 
-  const isPathWithSideNav =
-    location.pathname.startsWith('/admin/workspace/') || location.pathname.startsWith('/super-admin');
+  const isPathWithSideNav = location.pathname.startsWith('/admin/workspace/') || location.pathname.startsWith('/super-admin');
   const { title, label } = getHeaderInfo(location.pathname, workspace.name, user.name);
 
   const useNavBackground = true;

@@ -120,11 +120,7 @@ const SecondaryCta = styled.button`
   }
 `;
 
-type DetailState =
-  | { kind: 'idle' }
-  | { kind: 'loading' }
-  | { kind: 'loaded'; detail: WorkspaceAdminDetail }
-  | { kind: 'error' };
+type DetailState = { kind: 'idle' } | { kind: 'loading' } | { kind: 'loaded'; detail: WorkspaceAdminDetail } | { kind: 'error' };
 
 interface WorkspaceDetailContentProps {
   workspace: Workspace;

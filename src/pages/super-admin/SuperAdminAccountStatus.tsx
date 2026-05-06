@@ -27,16 +27,9 @@ function SuperAdminAccountStatus() {
   }, [fetchAccountConnectionStatus]);
 
   return (
-    <AppContainer
-      useFlex={colFlex({ align: 'center' })}
-     
-      useTitle={false}
-    >
+    <AppContainer useFlex={colFlex({ align: 'center' })} useTitle={false}>
       <SuperAdminPageContainer>
-        <PageHeader
-          title="계좌 연동 현황"
-          description="계좌 연동률과 미연동 사용자 분포를 확인합니다."
-        />
+        <PageHeader title="계좌 연동 현황" description="계좌 연동률과 미연동 사용자 분포를 확인합니다." />
         {match(status)
           .with(null, () => <LoadingText>불러오는 중...</LoadingText>)
           .otherwise((data) => (

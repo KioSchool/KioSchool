@@ -46,12 +46,7 @@ function SuperAdminWorkspaceContent(workspace: Workspace) {
     setExternalSidebar({
       action: RIGHT_SIDEBAR_ACTION.OPEN,
       title: workspace.name,
-      content: (
-        <WorkspaceDetailContent
-          workspace={workspace}
-          onClose={() => setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE })}
-        />
-      ),
+      content: <WorkspaceDetailContent workspace={workspace} onClose={() => setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE })} />,
       location: { pathname: SUPER_ADMIN_ROUTES.WORKSPACE } as Location,
     });
   };

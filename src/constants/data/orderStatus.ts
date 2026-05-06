@@ -8,10 +8,7 @@ export const STATUS_LABELS: Record<OrderStatus, string> = {
   CANCELLED: '취소',
 };
 
-export const STATUS_PALETTE: Record<
-  OrderStatus,
-  { bg: string; text: string; lineThrough?: boolean }
-> = {
+export const STATUS_PALETTE: Record<OrderStatus, { bg: string; text: string; lineThrough?: boolean }> = {
   NOT_PAID: { bg: Color.LIGHT_RED, text: Color.RED },
   PAID: { bg: Color.KIO_ORANGE_FAINT, text: Color.KIO_ORANGE_DARK },
   SERVED: { bg: Color.GREEN_FAINT, text: Color.GREEN },

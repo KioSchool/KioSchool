@@ -26,16 +26,9 @@ function SuperAdminDashboard() {
   }, [fetchDashboard]);
 
   return (
-    <AppContainer
-      useFlex={colFlex({ align: 'center' })}
-     
-      useTitle={false}
-    >
+    <AppContainer useFlex={colFlex({ align: 'center' })} useTitle={false}>
       <SuperAdminPageContainer>
-        <PageHeader
-          title="서비스 현황 대시보드"
-          description="유저·워크스페이스·매출 통계를 한눈에 봅니다."
-        />
+        <PageHeader title="서비스 현황 대시보드" description="유저·워크스페이스·매출 통계를 한눈에 봅니다." />
         {match(dashboard)
           .with(null, () => <LoadingText>대시보드 불러오는 중...</LoadingText>)
           .otherwise((data) => (

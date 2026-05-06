@@ -192,9 +192,7 @@ function OrdersFilterBar({ filter, onChange, onReset }: OrdersFilterBarProps) {
   }, [datePickerOpen]);
 
   const toggleStatus = (status: OrderStatus) => {
-    const next = filter.statuses.includes(status)
-      ? filter.statuses.filter((s) => s !== status)
-      : [...filter.statuses, status];
+    const next = filter.statuses.includes(status) ? filter.statuses.filter((s) => s !== status) : [...filter.statuses, status];
     onChange({ ...filter, statuses: next });
   };
 
@@ -212,13 +210,7 @@ function OrdersFilterBar({ filter, onChange, onReset }: OrdersFilterBarProps) {
   return (
     <Bar>
       <Row>
-        <TextField
-          type="text"
-          inputMode="numeric"
-          placeholder="워크스페이스 ID로 검색"
-          value={workspaceIdInput}
-          onChange={handleWorkspaceId}
-        />
+        <TextField type="text" inputMode="numeric" placeholder="워크스페이스 ID로 검색" value={workspaceIdInput} onChange={handleWorkspaceId} />
         <PopoverWrap ref={popoverRef}>
           <DateTrigger type="button" onClick={() => setDatePickerOpen((v) => !v)}>
             <RiCalendarLine size={16} color={Color.GREY} />
@@ -226,27 +218,18 @@ function OrdersFilterBar({ filter, onChange, onReset }: OrdersFilterBarProps) {
           </DateTrigger>
           {datePickerOpen && (
             <Popover>
-              <CustomDatePicker
-                mode="range"
-                startDate={startDate}
-                endDate={endDate}
-                setStartDate={setStartDate}
-                setEndDate={setEndDate}
-              />
+              <CustomDatePicker mode="range" startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} />
             </Popover>
           )}
         </PopoverWrap>
-        <ResetButton type="button" onClick={onReset}>초기화</ResetButton>
+        <ResetButton type="button" onClick={onReset}>
+          초기화
+        </ResetButton>
       </Row>
       <Row>
         <FieldLabel>상태</FieldLabel>
         {ORDER_STATUSES.map((status) => (
-          <StatusPill
-            key={status}
-            active={filter.statuses.includes(status)}
-            onClick={() => toggleStatus(status)}
-            type="button"
-          >
+          <StatusPill key={status} active={filter.statuses.includes(status)} onClick={() => toggleStatus(status)} type="button">
             {STATUS_LABELS[status]}
           </StatusPill>
         ))}

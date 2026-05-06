@@ -54,11 +54,7 @@ function SuperAdminBank() {
   };
 
   return (
-    <AppContainer
-      useFlex={colFlex({ align: 'center' })}
-     
-      useTitle={false}
-    >
+    <AppContainer useFlex={colFlex({ align: 'center' })} useTitle={false}>
       <SuperAdminPageContainer>
         <InputConfirmModal />
         <PageHeader
@@ -71,11 +67,7 @@ function SuperAdminBank() {
           }
         />
         <PaginationSearchBar />
-        <PaginationSearchContents
-          contents={bank}
-          target="은행"
-          ContentComponent={SuperAdminBankContent}
-        />
+        <PaginationSearchContents contents={bank} target="은행" ContentComponent={SuperAdminBankContent} />
         <Pagination totalPageCount={bank.totalPages} paginateFunction={handlePageChange} />
       </SuperAdminPageContainer>
     </AppContainer>

@@ -54,11 +54,7 @@ function SuperAdminEmailDomainList() {
   };
 
   return (
-    <AppContainer
-      useFlex={colFlex({ align: 'center' })}
-     
-      useTitle={false}
-    >
+    <AppContainer useFlex={colFlex({ align: 'center' })} useTitle={false}>
       <SuperAdminPageContainer>
         <InputConfirmModal />
         <PageHeader
@@ -71,11 +67,7 @@ function SuperAdminEmailDomainList() {
           }
         />
         <PaginationSearchBar />
-        <PaginationSearchContents
-          contents={emailDomain}
-          target="이메일 도메인"
-          ContentComponent={SuperAdminEmailDomainContent}
-        />
+        <PaginationSearchContents contents={emailDomain} target="이메일 도메인" ContentComponent={SuperAdminEmailDomainContent} />
         <Pagination totalPageCount={emailDomain.totalPages} paginateFunction={handlePageChange} />
       </SuperAdminPageContainer>
     </AppContainer>

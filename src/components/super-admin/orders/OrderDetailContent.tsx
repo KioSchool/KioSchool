@@ -243,9 +243,7 @@ function OrderDetailContent({ order, onClose }: OrderDetailContentProps) {
           {order.workspaceName} 어드민 새 탭으로 열기
           <RiExternalLinkLine size={14} />
         </PrimaryCta>
-        <SecondaryCta onClick={handleOpenWorkspaceOrders}>
-          이 워크스페이스의 주문만 보기
-        </SecondaryCta>
+        <SecondaryCta onClick={handleOpenWorkspaceOrders}>이 워크스페이스의 주문만 보기</SecondaryCta>
       </Footer>
     </Wrap>
   );

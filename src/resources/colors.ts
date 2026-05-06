@@ -35,4 +35,4 @@ export const OnboardingColor = {
   CONNECTOR_IDLE: '#e8eef2',
 } as const;
 
-export type ColorType = (typeof Color)[keyof typeof Color];
+export type ColorType = typeof Color[keyof typeof Color];

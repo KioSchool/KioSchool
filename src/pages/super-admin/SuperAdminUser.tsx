@@ -31,22 +31,11 @@ function SuperAdminUser() {
   };
 
   return (
-    <AppContainer
-      useFlex={colFlex({ align: 'center' })}
-     
-      useTitle={false}
-    >
+    <AppContainer useFlex={colFlex({ align: 'center' })} useTitle={false}>
       <SuperAdminPageContainer>
-        <PageHeader
-          title="사용자 관리"
-          description="서비스에 가입한 모든 사용자를 조회합니다."
-        />
+        <PageHeader title="사용자 관리" description="서비스에 가입한 모든 사용자를 조회합니다." />
         <PaginationSearchBar />
-        <PaginationSearchContents
-          contents={users}
-          target="유저"
-          ContentComponent={SuperAdminUserContent}
-        />
+        <PaginationSearchContents contents={users} target="유저" ContentComponent={SuperAdminUserContent} />
         <Pagination totalPageCount={users.totalPages} paginateFunction={handlePageChange} />
       </SuperAdminPageContainer>
     </AppContainer>
