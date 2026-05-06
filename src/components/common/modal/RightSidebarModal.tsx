@@ -10,6 +10,7 @@ import { useAtom, useAtomValue } from 'jotai';
 import { externalSidebarAtom, layoutScaleAtom } from '@jotai/atoms';
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
 import { Location } from 'react-router-dom';
+import { NAVBAR_HEIGHT, NAVBAR_HEIGHT_MOBILE } from '@constants/layout';
 
 const Container = styled.div``;
 
@@ -45,11 +46,11 @@ const AttachedCloseButton = styled.button`
 
 const SidebarContainer = styled.div<{ isOpen: boolean; scale: number }>`
   position: fixed;
-  top: calc(65px / ${(props) => props.scale});
+  top: calc(${NAVBAR_HEIGHT}px / ${(props) => props.scale});
   right: 0;
   width: 300px;
   z-index: 1010;
-  height: calc((100vh - 65px) / ${(props) => props.scale});
+  height: calc((100vh - ${NAVBAR_HEIGHT}px) / ${(props) => props.scale});
   background-color: ${Color.WHITE};
   border-left: 1px solid #e8eef2;
   box-shadow: -4px 0 12px rgba(0, 0, 0, 0.05);
@@ -58,6 +59,7 @@ const SidebarContainer = styled.div<{ isOpen: boolean; scale: number }>`
   gap: 15px;
   transform: translateX(${(props) => (props.isOpen ? '0' : '100%')});
   transition: transform 0.3s ease-in-out;
+  overflow-y: auto;
   ${colFlex()}
 
   ${tabletMediaQuery} {
@@ -65,13 +67,13 @@ const SidebarContainer = styled.div<{ isOpen: boolean; scale: number }>`
   }
 
   ${mobileMediaQuery} {
-    top: 56px;
+    top: ${NAVBAR_HEIGHT_MOBILE}px;
     width: 100%;
-    height: calc(100vh - 56px);
+    height: calc(100vh - ${NAVBAR_HEIGHT_MOBILE}px);
     border-left: none;
     border-top: 1px solid #e8eef2;
     box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.06);
-    padding: 24px 16px 0 16px;
+    padding: 24px 16px 24px 16px;
     transform: translateY(${(props) => (props.isOpen ? '0' : '100%')});
   }
 `;
