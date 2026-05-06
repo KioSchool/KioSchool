@@ -3,13 +3,13 @@ import { Link, useLocation } from 'react-router-dom';
 import { colFlex } from '@styles/flexStyles';
 import { SideNavCategory } from '@@types/sideNav';
 import { Color } from '@resources/colors';
-import { SIDE_NAV_WIDTH } from '@constants/layout';
+import { NAVBAR_HEIGHT, SIDE_NAV_WIDTH } from '@constants/layout';
 
 const SideNavContainer = styled.nav<{ isOpen: boolean }>`
   position: fixed;
-  top: 65px;
+  top: ${NAVBAR_HEIGHT}px;
   left: 0;
-  height: calc(100vh - 65px);
+  height: calc(100vh - ${NAVBAR_HEIGHT}px);
   width: ${SIDE_NAV_WIDTH}px;
   background: white;
   box-sizing: border-box;
