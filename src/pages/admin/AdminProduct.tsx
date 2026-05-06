@@ -5,7 +5,7 @@ import useAdminProductDnd from '@hooks/admin/useAdminProductDnd';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useSetAtom } from 'jotai';
-import { externalSidebarAtom } from '@jotai/admin/atoms';
+import { externalSidebarAtom } from '@jotai/atoms';
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
 import useConfirm from '@hooks/useConfirm';
 import AppContainer from '@components/common/container/AppContainer';

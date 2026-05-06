@@ -2,13 +2,14 @@ import { Order } from '@@types/index';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
+import { mobileMediaQuery } from '@styles/globalStyles';
 import OrderModalFooterContents from '@components/admin/order/realtime/modal/order-detail/OrderModalFooterContents';
 import OrderModalMainContents from '@components/admin/order/realtime/modal/order-detail/OrderModalMainContents';
 import OrderModalHeaderContents from '@components/admin/order/realtime/modal/order-detail/OrderModalHeaderContents';
 import { createPortal } from 'react-dom';
 import { useEffect } from 'react';
 import useModal from '@hooks/useModal';
-import { orderModalReadOnlyAtom } from '@jotai/admin/atoms';
+import { orderModalReadOnlyAtom } from '@jotai/atoms';
 import { useSetAtom } from 'jotai';
 
 const DetailModalContainer = styled.div``;
@@ -33,10 +34,17 @@ const ModalContainer = styled.div`
   border-radius: 10px;
   border: 1px solid #e8eef2;
   width: 500px;
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
   z-index: 2001;
   gap: 12px;
   box-shadow: 0 4px 20px 0 rgba(92, 92, 92, 0.05);
   ${colFlex({ justify: 'center' })}
+
+  ${mobileMediaQuery} {
+    width: calc(100vw - 32px);
+    max-height: calc(100vh - 32px);
+  }
 `;
 
 interface OrderDetailModalProps {

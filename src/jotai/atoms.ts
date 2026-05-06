@@ -1,6 +1,7 @@
 import { atom } from 'jotai';
 import { calculateLayoutScale } from '@utils/layout';
 import { DEFAULT_LAYOUT_WIDTH } from '@constants/layout';
+import { ExternalRightSidebarOptions, RIGHT_SIDEBAR_ACTION } from '@@types/index';
 
 export const loadingCountAtom = atom<number>(0);
 
@@ -37,3 +38,11 @@ export const layoutScaleAtom = atom((get) => {
 
   return calculateLayoutScale(windowWidth, customWidth, sideNavOffset);
 });
+
+export const sideNavIsOpenAtom = atom(false);
+
+export const externalSidebarAtom = atom<ExternalRightSidebarOptions>({
+  action: RIGHT_SIDEBAR_ACTION.CLOSE,
+});
+
+export const orderModalReadOnlyAtom = atom(false);

@@ -1,14 +1,6 @@
-export interface AdminNavItem {
-  name: string;
-  path: string;
-}
+import { SideNavCategory } from '@@types/sideNav';
 
-export interface AdminNavCategory {
-  category: '주문' | '실시간' | '상품' | '주점' | '홈';
-  items: AdminNavItem[];
-}
-
-export const adminNavData: AdminNavCategory[] = [
+export const adminNavData: SideNavCategory[] = [
   {
     category: '홈',
     items: [

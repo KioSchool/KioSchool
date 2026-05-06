@@ -1,43 +1,41 @@
-import { User } from '@@types/index';
 import styled from '@emotion/styled';
+import { User } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 
-const Container = styled.div`
+const Row = styled.div`
   width: 100%;
-  height: 80px;
-  ${colFlex({ justify: 'center', align: 'start' })}
+  padding: 10px 0;
+  border-bottom: 1px solid #f7f7f7;
+  ${rowFlex({ align: 'center' })}
 `;
 
-const SubLabelContainer = styled.div`
-  color: ${Color.HEAVY_GREY};
-  ${rowFlex()}
+const Info = styled.div`
+  flex: 1;
+  min-width: 0;
+  gap: 2px;
+  ${colFlex()}
 `;
 
-const WorkspaceLabel = styled.div`
-  text-align: center;
-  font-size: 18px;
-  font-weight: 400;
-  text-decoration: none;
+const Name = styled.div`
+  font-size: 14px;
+  font-weight: 600;
+  color: ${Color.BLACK};
+`;
+
+const Sub = styled.div`
+  font-size: 12px;
   color: ${Color.GREY};
-  cursor: pointer;
-  transition: ease-in 0.1s;
-  &:hover {
-    color: ${Color.KIO_ORANGE};
-    text-decoration: underline;
-  }
 `;
 
-function SuperAdminUserContent({ name, email, createdAt }: User) {
-  const datePart = createdAt.split('T')[0];
-  const filteredCreatedDate = datePart.replace(/-/g, '.');
-  const createdDateAndOwnerText = `${filteredCreatedDate} | ${email}`;
-
+function SuperAdminUserContent(user: User) {
   return (
-    <Container>
-      <WorkspaceLabel className={'user-label'}>{name}</WorkspaceLabel>
-      <SubLabelContainer className={'sub-label-container'}>{createdDateAndOwnerText}</SubLabelContainer>
-    </Container>
+    <Row>
+      <Info>
+        <Name>{user.name}</Name>
+        <Sub>{user.email}</Sub>
+      </Info>
+    </Row>
   );
 }
 
