@@ -15,6 +15,7 @@ const Container = styled.div`
   box-sizing: border-box;
   padding: 24px;
   width: 290px;
+  max-width: calc(100vw - 32px);
   gap: 8px;
   background: #ffffff;
   border: 1px solid #e8eef2;
