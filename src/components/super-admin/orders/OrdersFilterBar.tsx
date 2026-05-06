@@ -171,13 +171,17 @@ function OrdersFilterBar({ filter, onChange, onReset }: OrdersFilterBarProps) {
 
   useEffect(() => {
     if (!datePickerOpen) return undefined;
-    const handleClick = (e: MouseEvent) => {
+    const handleClick = (e: MouseEvent | TouchEvent) => {
       if (popoverRef.current && !popoverRef.current.contains(e.target as Node)) {
         setDatePickerOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
+    document.addEventListener('touchstart', handleClick);
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+      document.removeEventListener('touchstart', handleClick);
+    };
   }, [datePickerOpen]);
 
   const toggleStatus = (status: OrderStatus) => {
@@ -187,17 +191,22 @@ function OrdersFilterBar({ filter, onChange, onReset }: OrdersFilterBarProps) {
     onChange({ ...filter, statuses: next });
   };
 
-  const handleWorkspaceId = (e: ChangeEvent<HTMLInputElement>) => setWorkspaceIdInput(e.target.value);
+  const handleWorkspaceId = (e: ChangeEvent<HTMLInputElement>) => {
+    const numericOnly = e.target.value.replace(/[^0-9]/g, '');
+    setWorkspaceIdInput(numericOnly);
+  };
 
-  const dateLabel = filter.startDate && filter.endDate
-    ? `${filter.startDate} ~ ${filter.endDate}`
-    : '기간 선택';
+  const dateLabel = (() => {
+    if (startDate && endDate) return `${formatYmd(startDate)} ~ ${formatYmd(endDate)}`;
+    if (startDate) return `${formatYmd(startDate)} ~ 종료일 선택`;
+    return '기간 선택';
+  })();
 
   return (
     <Bar>
       <Row>
         <TextField
-          type="number"
+          type="text"
           inputMode="numeric"
           placeholder="워크스페이스 ID로 검색"
           value={workspaceIdInput}
