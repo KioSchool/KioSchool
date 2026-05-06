@@ -12,6 +12,7 @@ const WORKSPACE_ID_DEBOUNCE_MS = 400;
 
 const Bar = styled.div`
   width: 100%;
+  box-sizing: border-box;
   background: ${Color.WHITE};
   border: 1px solid #f0f0f0;
   border-radius: 8px;
@@ -22,6 +23,7 @@ const Bar = styled.div`
 
 const Row = styled.div`
   width: 100%;
+  min-width: 0;
   gap: 10px;
   flex-wrap: wrap;
   ${rowFlex({ align: 'center' })}
@@ -62,6 +64,7 @@ const DateTrigger = styled.button`
   color: ${Color.BLACK};
   background: ${Color.WHITE};
   cursor: pointer;
+  box-sizing: border-box;
   gap: 6px;
   ${rowFlex({ align: 'center' })}
 

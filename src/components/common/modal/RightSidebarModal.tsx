@@ -59,6 +59,7 @@ const SidebarContainer = styled.div<{ isOpen: boolean; scale: number }>`
   gap: 15px;
   transform: translateX(${(props) => (props.isOpen ? '0' : '100%')});
   transition: transform 0.3s ease-in-out;
+  overflow-x: hidden;
   overflow-y: auto;
   ${colFlex()}
 

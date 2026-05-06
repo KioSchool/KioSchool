@@ -10,17 +10,24 @@ import OrderStatusBadge from './OrderStatusBadge';
 
 const Wrap = styled.div`
   width: 100%;
+  min-width: 0;
   gap: 16px;
+  overflow-x: hidden;
   ${colFlex()}
 `;
 
 const HeaderRow = styled.div`
   width: 100%;
+  min-width: 0;
+  gap: 8px;
   ${rowFlex({ justify: 'space-between', align: 'flex-start' })}
 `;
 
 const HeaderText = styled.div`
+  min-width: 0;
+  flex: 1;
   gap: 2px;
+  overflow: hidden;
   ${colFlex()}
 `;
 
@@ -28,11 +35,17 @@ const TitleText = styled.div`
   font-size: 16px;
   font-weight: 700;
   color: ${Color.BLACK};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const SubText = styled.div`
   font-size: 12px;
   color: ${Color.GREY};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const SectionTitle = styled.div`
@@ -68,6 +81,7 @@ const InfoValue = styled.b`
 
 const ProductList = styled.div`
   width: 100%;
+  box-sizing: border-box;
   background: #fcfcfc;
   border: 1px solid #f0f0f0;
   border-radius: 8px;
@@ -78,6 +92,8 @@ const ProductList = styled.div`
 
 const ProductRow = styled.div`
   width: 100%;
+  min-width: 0;
+  gap: 8px;
   font-size: 12px;
   color: ${Color.GREY};
   ${rowFlex({ justify: 'space-between', align: 'center' })}
@@ -95,7 +111,6 @@ const ProductNameCell = styled.span`
 
 const QtyCell = styled.span`
   flex-shrink: 0;
-  margin-right: 12px;
 `;
 
 const PriceCell = styled.span`
