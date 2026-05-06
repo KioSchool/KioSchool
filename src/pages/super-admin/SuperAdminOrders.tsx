@@ -1,29 +1,31 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Location, useSearchParams } from 'react-router-dom';
-import { useAtom } from 'jotai';
+import { useSearchParams } from 'react-router-dom';
 import AppContainer from '@components/common/container/AppContainer';
 import Pagination from '@components/common/pagination/Pagination';
 import PageHeader from '@components/common/page/PageHeader';
 import SuperAdminPageContainer from '@components/super-admin/SuperAdminPageContainer';
-import RightSidebarModal from '@components/common/modal/RightSidebarModal';
+import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
 import OrdersFilterBar from '@components/super-admin/orders/OrdersFilterBar';
 import OrdersResultArea from '@components/super-admin/orders/OrdersResultArea';
-import OrderDetailContent from '@components/super-admin/orders/OrderDetailContent';
 import useSuperAdminOrders from '@hooks/super-admin/useSuperAdminOrders';
-import { OrdersFilter, PaginationResponse, RIGHT_SIDEBAR_ACTION, SuperAdminOrder } from '@@types/index';
+import { Order, OrdersFilter, PaginationResponse, SuperAdminOrder } from '@@types/index';
 import { defaultPaginationValue } from '@@types/defaultValues';
 import { colFlex } from '@styles/flexStyles';
-import { externalSidebarAtom } from '@jotai/atoms';
 import { parseOrdersFilterFromParams, serializeOrdersFilterToParams, toFetchParams } from '@utils/ordersFilter';
-import { SUPER_ADMIN_ROUTES } from '@constants/routes';
 
 const PAGE_SIZE = 20;
+
+const adaptToOrder = (order: SuperAdminOrder): Order => ({
+  ...order,
+  phoneNumber: '',
+  cancelReason: '',
+  orderSession: null,
+});
 
 function SuperAdminOrders() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [orders, setOrders] = useState<PaginationResponse<SuperAdminOrder>>(defaultPaginationValue);
   const [selectedOrder, setSelectedOrder] = useState<SuperAdminOrder | null>(null);
-  const [, setExternalSidebar] = useAtom(externalSidebarAtom);
   const { fetchAllOrders } = useSuperAdminOrders();
 
   const qs = searchParams.toString();
@@ -49,15 +51,8 @@ function SuperAdminOrders() {
     setSearchParams(params, { replace: true });
   };
 
-  const handleSelect = (order: SuperAdminOrder) => {
-    setSelectedOrder(order);
-    setExternalSidebar({
-      action: RIGHT_SIDEBAR_ACTION.OPEN,
-      title: `주문 #${order.orderNumber}`,
-      content: <OrderDetailContent order={order} onClose={() => setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE })} />,
-      location: { pathname: SUPER_ADMIN_ROUTES.ORDERS } as Location,
-    });
-  };
+  const handleSelect = (order: SuperAdminOrder) => setSelectedOrder(order);
+  const handleClose = () => setSelectedOrder(null);
 
   return (
     <AppContainer useFlex={colFlex({ align: 'center' })} useTitle={false}>
@@ -67,7 +62,9 @@ function SuperAdminOrders() {
         <OrdersResultArea orders={orders.content} selectedOrderId={selectedOrder?.id ?? null} onSelect={handleSelect} onResetFilter={handleReset} />
         <Pagination totalPageCount={orders.totalPages} paginateFunction={handlePageChange} />
       </SuperAdminPageContainer>
-      <RightSidebarModal useExternalControl={{ location: { pathname: SUPER_ADMIN_ROUTES.ORDERS } as Location }} />
+      {selectedOrder && (
+        <OrderDetailModal order={adaptToOrder(selectedOrder)} isModalOpen closeModal={handleClose} readOnly />
+      )}
     </AppContainer>
   );
 }

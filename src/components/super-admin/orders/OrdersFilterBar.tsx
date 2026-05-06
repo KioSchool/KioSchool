@@ -73,6 +73,10 @@ const DateTrigger = styled.button`
 
 const PopoverWrap = styled.div`
   position: relative;
+
+  ${mobileMediaQuery} {
+    width: 100%;
+  }
 `;
 
 const Popover = styled.div`
