@@ -129,12 +129,14 @@ function NavBar({ useBackground = false }: NavBarProps) {
           </NavLinkItem>
         </NavLinkContainer>
 
-        <MobileMenuButton onClick={() => setIsMobileMenuOpen(true)}>
-          <RiMenuFill size={24} />
-        </MobileMenuButton>
+        {!isShowHamburger && (
+          <MobileMenuButton onClick={() => setIsMobileMenuOpen(true)}>
+            <RiMenuFill size={24} />
+          </MobileMenuButton>
+        )}
       </NavContainer>
 
-      <MobileNav isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
+      {!isShowHamburger && <MobileNav isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />}
       {isShowHamburger && (
         <SideNav
           isOpen={isSideNavOpen}
