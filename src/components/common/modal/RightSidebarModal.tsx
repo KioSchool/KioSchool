@@ -1,9 +1,9 @@
 ﻿import React from 'react';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { tabletMediaQuery } from '@styles/globalStyles';
+import { mobileMediaQuery, tabletMediaQuery } from '@styles/globalStyles';
 import { Color } from '@resources/colors';
-import { RiArrowRightSLine } from '@remixicon/react';
+import { RiArrowRightSLine, RiCloseLine } from '@remixicon/react';
 import useModal from '@hooks/useModal';
 import RightSidebarModalOpenButton from './RightSidebarModalOpenButton';
 import { useAtom, useAtomValue } from 'jotai';
@@ -29,6 +29,18 @@ const AttachedCloseButton = styled.button`
   border-bottom-left-radius: 8px;
   cursor: pointer;
   ${colFlex({ justify: 'center', align: 'center' })};
+
+  ${mobileMediaQuery} {
+    top: 12px;
+    left: auto;
+    right: 12px;
+    transform: none;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+  }
 `;
 
 const SidebarContainer = styled.div<{ isOpen: boolean; scale: number }>`
@@ -50,6 +62,17 @@ const SidebarContainer = styled.div<{ isOpen: boolean; scale: number }>`
 
   ${tabletMediaQuery} {
     width: 280px;
+  }
+
+  ${mobileMediaQuery} {
+    top: 56px;
+    width: 100%;
+    height: calc(100vh - 56px);
+    border-left: none;
+    border-top: 1px solid #e8eef2;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.06);
+    padding: 24px 16px 0 16px;
+    transform: translateY(${(props) => (props.isOpen ? '0' : '100%')});
   }
 `;
 
@@ -82,6 +105,22 @@ const CloseButton = styled(RiArrowRightSLine)`
   color: #464a4d;
   cursor: pointer;
   ${rowFlex({ justify: 'end', align: 'end' })}
+
+  ${mobileMediaQuery} {
+    display: none;
+  }
+`;
+
+const CloseButtonMobile = styled(RiCloseLine)`
+  width: 24px;
+  height: 24px;
+  color: #464a4d;
+  cursor: pointer;
+  display: none;
+
+  ${mobileMediaQuery} {
+    display: block;
+  }
 `;
 
 interface InternalSidebarControlProps {
@@ -142,6 +181,7 @@ function RightSidebarModal({ title, subtitle, useOpenButton = true, children, us
         {isOpen && (
           <AttachedCloseButton onClick={handleClose}>
             <CloseButton />
+            <CloseButtonMobile />
           </AttachedCloseButton>
         )}
 
