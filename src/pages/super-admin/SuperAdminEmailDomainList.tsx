@@ -13,7 +13,6 @@ import useSuperAdminEmail from '@hooks/super-admin/useSuperAdminEmail';
 import useInputConfirm from '@hooks/useInputConfirm';
 import { superAdminEmailDomainPaginationResponseAtom } from '@jotai/super-admin/atoms';
 import { colFlex } from '@styles/flexStyles';
-import { Color } from '@resources/colors';
 
 const PAGE_SIZE = 6;
 
@@ -57,7 +56,7 @@ function SuperAdminEmailDomainList() {
   return (
     <AppContainer
       useFlex={colFlex({ align: 'center' })}
-      backgroundColor={Color.LIGHT_GREY}
+     
       useTitle={false}
     >
       <SuperAdminPageContainer>

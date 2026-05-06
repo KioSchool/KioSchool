@@ -28,7 +28,7 @@ function SuperAdminDashboard() {
   return (
     <AppContainer
       useFlex={colFlex({ align: 'center' })}
-      backgroundColor={Color.LIGHT_GREY}
+     
       useTitle={false}
     >
       <SuperAdminPageContainer>

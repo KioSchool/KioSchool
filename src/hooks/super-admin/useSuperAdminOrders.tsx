@@ -9,8 +9,22 @@ interface FetchAllOrdersParams {
   workspaceId?: number;
   startDate?: string;
   endDate?: string;
-  statuses?: string[];
+  status?: string[];
 }
+
+const serializeOrdersParams = (params: Record<string, unknown>) => {
+  const usp = new URLSearchParams();
+  Object.entries(params).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      value.forEach((item) => {
+        if (item !== undefined && item !== null) usp.append(key, String(item));
+      });
+    } else if (value !== undefined && value !== null) {
+      usp.append(key, String(value));
+    }
+  });
+  return usp.toString();
+};
 
 function useSuperAdminOrders() {
   const { superAdminApi } = useApi();
@@ -18,7 +32,10 @@ function useSuperAdminOrders() {
   const fetchAllOrders = useCallback(
     (params: FetchAllOrdersParams): Promise<PaginationResponse<SuperAdminOrder>> => {
       return superAdminApi
-        .get<PaginationResponse<SuperAdminOrder>>('/orders', { params })
+        .get<PaginationResponse<SuperAdminOrder>>('/orders', {
+          params,
+          paramsSerializer: serializeOrdersParams,
+        })
         .then((res) => res.data)
         .catch((error) => {
           console.error(error);

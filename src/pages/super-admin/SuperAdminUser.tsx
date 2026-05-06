@@ -11,7 +11,6 @@ import useSuperAdminUser from '@hooks/super-admin/useSuperAdminUser';
 import { PaginationResponse, User } from '@@types/index';
 import { defaultPaginationValue } from '@@types/defaultValues';
 import { colFlex } from '@styles/flexStyles';
-import { Color } from '@resources/colors';
 
 const PAGE_SIZE = 6;
 
@@ -34,7 +33,7 @@ function SuperAdminUser() {
   return (
     <AppContainer
       useFlex={colFlex({ align: 'center' })}
-      backgroundColor={Color.LIGHT_GREY}
+     
       useTitle={false}
     >
       <SuperAdminPageContainer>

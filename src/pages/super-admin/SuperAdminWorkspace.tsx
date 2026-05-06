@@ -12,7 +12,6 @@ import useSuperAdminWorkspace from '@hooks/super-admin/useSuperAdminWorkspace';
 import { PaginationResponse, Workspace } from '@@types/index';
 import { defaultPaginationValue } from '@@types/defaultValues';
 import { colFlex } from '@styles/flexStyles';
-import { Color } from '@resources/colors';
 import { SUPER_ADMIN_ROUTES } from '@constants/routes';
 
 const PAGE_SIZE = 6;
@@ -34,7 +33,7 @@ function SuperAdminWorkspace() {
   };
 
   return (
-    <AppContainer useFlex={colFlex({ align: 'center' })} backgroundColor={Color.LIGHT_GREY} useTitle={false}>
+    <AppContainer useFlex={colFlex({ align: 'center' })} useTitle={false}>
       <SuperAdminPageContainer>
         <PageHeader title="워크스페이스 관리" description="서비스에 등록된 모든 주점(워크스페이스)을 조회하고 점검합니다." />
         <PaginationSearchBar />

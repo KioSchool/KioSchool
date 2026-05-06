@@ -35,7 +35,7 @@ export function serializeOrdersFilterToParams(filter: OrdersFilter): URLSearchPa
 
 export interface OrdersFetchSlice {
   workspaceId?: number;
-  statuses?: OrderStatus[];
+  status?: OrderStatus[];
   startDate?: string;
   endDate?: string;
 }
@@ -43,7 +43,7 @@ export interface OrdersFetchSlice {
 export function toFetchParams(filter: OrdersFilter): OrdersFetchSlice {
   const slice: OrdersFetchSlice = {};
   if (filter.workspaceId) slice.workspaceId = Number(filter.workspaceId);
-  if (filter.statuses.length > 0) slice.statuses = filter.statuses;
+  if (filter.statuses.length > 0) slice.status = filter.statuses;
   if (filter.startDate) slice.startDate = filter.startDate;
   if (filter.endDate) slice.endDate = filter.endDate;
   return slice;

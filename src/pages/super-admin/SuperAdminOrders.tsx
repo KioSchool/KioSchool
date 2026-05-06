@@ -12,7 +12,6 @@ import OrderDetailContent from '@components/super-admin/orders/OrderDetailConten
 import useSuperAdminOrders from '@hooks/super-admin/useSuperAdminOrders';
 import { OrdersFilter, PaginationResponse, RIGHT_SIDEBAR_ACTION, SuperAdminOrder } from '@@types/index';
 import { defaultPaginationValue } from '@@types/defaultValues';
-import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { externalSidebarAtom } from '@jotai/atoms';
 import { parseOrdersFilterFromParams, serializeOrdersFilterToParams, toFetchParams } from '@utils/ordersFilter';
@@ -39,15 +38,15 @@ function SuperAdminOrders() {
   const handleFilterChange = (next: OrdersFilter) => {
     const params = serializeOrdersFilterToParams(next);
     params.set('page', '0');
-    setSearchParams(params);
+    setSearchParams(params, { replace: true });
   };
 
-  const handleReset = () => setSearchParams(new URLSearchParams());
+  const handleReset = () => setSearchParams(new URLSearchParams(), { replace: true });
 
   const handlePageChange = (page: number) => {
     const params = serializeOrdersFilterToParams(filter);
     params.set('page', page.toString());
-    setSearchParams(params);
+    setSearchParams(params, { replace: true });
   };
 
   const handleSelect = (order: SuperAdminOrder) => {
@@ -61,7 +60,7 @@ function SuperAdminOrders() {
   };
 
   return (
-    <AppContainer useFlex={colFlex({ align: 'center' })} backgroundColor={Color.LIGHT_GREY} useTitle={false}>
+    <AppContainer useFlex={colFlex({ align: 'center' })} useTitle={false}>
       <SuperAdminPageContainer>
         <PageHeader title="전체 주문 모니터링" description="모든 워크스페이스의 주문을 시간·상태·워크스페이스 단위로 추적합니다." />
         <OrdersFilterBar filter={filter} onChange={handleFilterChange} onReset={handleReset} />

@@ -10,7 +10,7 @@ import { layoutParamsAtom, windowWidthAtom, sideNavIsOpenAtom } from '@jotai/ato
 import { calculateLayoutScale } from 'src/utils/layout';
 import { getPageTitle } from '@@types/guard';
 import { DEFAULT_LAYOUT_WIDTH, SIDE_NAV_WIDTH } from '@constants/layout';
-import { mobileMediaQuery, tabletMediaQuery } from '@styles/globalStyles';
+import { MOBILE_BREAKPOINT, mobileMediaQuery, tabletMediaQuery } from '@styles/globalStyles';
 import { ReactNode, useEffect } from 'react';
 import { match } from 'ts-pattern';
 
@@ -153,7 +153,8 @@ function AppContainer({
   const { title, label } = getHeaderInfo(location.pathname, workspace.name, user.name);
 
   const useNavBackground = true;
-  const sideNavOffset = isPathWithSideNav && isSideNavOpen ? SIDE_NAV_WIDTH : 0;
+  const isMobile = windowWidth > 0 && windowWidth < MOBILE_BREAKPOINT;
+  const sideNavOffset = isPathWithSideNav && isSideNavOpen && !isMobile ? SIDE_NAV_WIDTH : 0;
   const scale = disableLayoutScale ? 1 : calculateLayoutScale(windowWidth, customWidth, sideNavOffset);
 
   useEffect(() => {

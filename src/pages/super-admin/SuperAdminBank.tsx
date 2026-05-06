@@ -13,7 +13,6 @@ import useSuperAdminBank from '@hooks/super-admin/useSuperAdminBank';
 import useInputConfirm from '@hooks/useInputConfirm';
 import { superAdminBankPaginationResponseAtom } from '@jotai/super-admin/atoms';
 import { colFlex } from '@styles/flexStyles';
-import { Color } from '@resources/colors';
 
 const PAGE_SIZE = 6;
 
@@ -57,7 +56,7 @@ function SuperAdminBank() {
   return (
     <AppContainer
       useFlex={colFlex({ align: 'center' })}
-      backgroundColor={Color.LIGHT_GREY}
+     
       useTitle={false}
     >
       <SuperAdminPageContainer>
