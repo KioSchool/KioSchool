@@ -1,36 +1,23 @@
-import PaginationSearchBar from '@components/common/pagination/PaginationSearchBar';
-import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useEffect } from 'react';
-import Pagination from '@components/common/pagination/Pagination';
-import AppContainer from '@components/common/container/AppContainer';
 import { useSearchParams } from 'react-router-dom';
-import PaginationSearchContents from '@components/common/pagination/PaginationSearchContents';
-import useSuperAdminBank from '@hooks/super-admin/useSuperAdminBank';
-import SuperAdminBankContent from '@components/super-admin/bank/SuperAdminBankContent';
-import { superAdminBankPaginationResponseAtom } from '@jotai/super-admin/atoms';
 import { useAtomValue } from 'jotai';
-import styled from '@emotion/styled';
-import useInputConfirm from '@hooks/useInputConfirm';
+import AppContainer from '@components/common/container/AppContainer';
+import Pagination from '@components/common/pagination/Pagination';
+import PaginationSearchBar from '@components/common/pagination/PaginationSearchBar';
+import PaginationSearchContents from '@components/common/pagination/PaginationSearchContents';
+import PageHeader from '@components/common/page/PageHeader';
+import SuperAdminPageContainer from '@components/super-admin/SuperAdminPageContainer';
+import SuperAdminBankContent from '@components/super-admin/bank/SuperAdminBankContent';
 import NewCommonButton from '@components/common/button/NewCommonButton';
+import useSuperAdminBank from '@hooks/super-admin/useSuperAdminBank';
+import useInputConfirm from '@hooks/useInputConfirm';
+import { superAdminBankPaginationResponseAtom } from '@jotai/super-admin/atoms';
+import { colFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
-const HeaderContainer = styled.div`
-  width: 100%;
-  gap: 16px;
-  ${colFlex()}
-`;
-
-const ActionsContainer = styled.div`
-  width: 100%;
-  gap: 20px;
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
-`;
-
-const SearchContainer = styled.div`
-  flex: 1;
-`;
+const PAGE_SIZE = 6;
 
 function SuperAdminBank() {
-  const pageSize = 6;
   const [searchParams, setSearchParams] = useSearchParams();
   const bank = useAtomValue(superAdminBankPaginationResponseAtom);
   const { fetchAllBank, addBank } = useSuperAdminBank();
@@ -46,10 +33,9 @@ function SuperAdminBank() {
   });
 
   useEffect(() => {
-    const nowPage = Number(searchParams.get('page'));
-    const searchValue = searchParams.get('name') || '';
-
-    fetchAllBank(nowPage, pageSize, searchValue);
+    const page = Number(searchParams.get('page'));
+    const name = searchParams.get('name') || '';
+    fetchAllBank(page, PAGE_SIZE, name);
   }, [searchParams.toString()]);
 
   const handleAddClick = async () => {
@@ -59,31 +45,40 @@ function SuperAdminBank() {
         addBank(result['은행명'], result['은행코드']);
       }
     } catch {
-      // User cancelled
+      // user cancelled
     }
   };
 
+  const handlePageChange = (page: number) => {
+    searchParams.set('page', page.toString());
+    setSearchParams(searchParams);
+  };
+
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'} customGap={'20px'} useTitle={true} disableLayoutScale>
-      <>
+    <AppContainer
+      useFlex={colFlex({ align: 'center' })}
+      backgroundColor={Color.LIGHT_GREY}
+      useTitle={false}
+    >
+      <SuperAdminPageContainer>
         <InputConfirmModal />
-        <HeaderContainer>
-          <ActionsContainer>
-            <SearchContainer>
-              <PaginationSearchBar />
-            </SearchContainer>
-            <NewCommonButton onClick={handleAddClick}>은행 추가</NewCommonButton>
-          </ActionsContainer>
-        </HeaderContainer>
-        <PaginationSearchContents contents={bank} target={'은행'} ContentComponent={SuperAdminBankContent} />
-        <Pagination
-          totalPageCount={bank.totalPages}
-          paginateFunction={(page: number) => {
-            searchParams.set('page', page.toString());
-            setSearchParams(searchParams);
-          }}
+        <PageHeader
+          title="은행 정보 관리"
+          description="결제 계좌에 사용될 은행 목록을 관리합니다."
+          actions={
+            <NewCommonButton size="xs" onClick={handleAddClick}>
+              은행 추가
+            </NewCommonButton>
+          }
         />
-      </>
+        <PaginationSearchBar />
+        <PaginationSearchContents
+          contents={bank}
+          target="은행"
+          ContentComponent={SuperAdminBankContent}
+        />
+        <Pagination totalPageCount={bank.totalPages} paginateFunction={handlePageChange} />
+      </SuperAdminPageContainer>
     </AppContainer>
   );
 }

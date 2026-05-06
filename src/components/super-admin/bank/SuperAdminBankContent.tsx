@@ -1,64 +1,70 @@
-import { Bank } from '@@types/index';
-import NewCommonButton from '@components/common/button/NewCommonButton';
 import styled from '@emotion/styled';
+import { RiDeleteBinLine } from '@remixicon/react';
+import { Bank } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import useSuperAdminBank from '@hooks/super-admin/useSuperAdminBank';
 
-const Container = styled.div`
+const Row = styled.div`
   width: 100%;
-  height: 80px;
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
+  padding: 10px 0;
+  border-bottom: 1px solid #f7f7f7;
+  ${rowFlex({ align: 'center' })}
 `;
 
-const SubLabelContainer = styled.div`
-  color: ${Color.HEAVY_GREY};
-  ${rowFlex()}
+const Info = styled.div`
+  flex: 1;
+  min-width: 0;
+  gap: 2px;
+  ${colFlex()}
 `;
 
-const BankLabel = styled.div`
-  text-align: center;
-  font-size: 18px;
-  font-weight: 400;
-  text-decoration: none;
+const Name = styled.div`
+  font-size: 14px;
+  font-weight: 600;
+  color: ${Color.BLACK};
+`;
+
+const Code = styled.div`
+  font-size: 12px;
+  color: ${Color.GREY};
+`;
+
+const DeleteButton = styled.button`
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid #f0f0f0;
+  background: ${Color.WHITE};
   color: ${Color.GREY};
   cursor: pointer;
-  transition: ease-in 0.1s;
+  ${rowFlex({ justify: 'center', align: 'center' })}
+
   &:hover {
-    color: ${Color.KIO_ORANGE};
-    text-decoration: underline;
+    color: ${Color.RED};
+    border-color: ${Color.RED};
   }
 `;
 
-const LabelContainer = styled.div`
-  ${colFlex({ justify: 'center', align: 'start' })}
-  height: 100%;
-`;
-
-const ButtonContainer = styled.div`
-  ${colFlex({ justify: 'center', align: 'center' })}
-  height: 100%;
-`;
-
-function SuperAdminBankContent({ name, code, id }: Bank) {
+function SuperAdminBankContent(bank: Bank) {
   const { deleteBank } = useSuperAdminBank();
 
-  const onDeleteHandler = () => {
-    deleteBank(id);
+  const handleDelete = () => {
+    if (window.confirm(`"${bank.name}" 은행을 삭제하시겠습니까?`)) {
+      deleteBank(bank.id);
+    }
   };
 
   return (
-    <Container>
-      <LabelContainer>
-        <BankLabel className={'bank-label'}>{name}</BankLabel>
-        <SubLabelContainer className={'sub-label-container'}>은행 코드: {code}</SubLabelContainer>
-      </LabelContainer>
-      <ButtonContainer>
-        <NewCommonButton size="xs" customColors={{ background: '#AEAEAE' }} onClick={onDeleteHandler}>
-          삭제하기
-        </NewCommonButton>
-      </ButtonContainer>
-    </Container>
+    <Row>
+      <Info>
+        <Name>{bank.name}</Name>
+        <Code>코드: {bank.code}</Code>
+      </Info>
+      <DeleteButton onClick={handleDelete} aria-label="은행 삭제">
+        <RiDeleteBinLine size={16} />
+      </DeleteButton>
+    </Row>
   );
 }
 
