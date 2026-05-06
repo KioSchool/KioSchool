@@ -1,7 +1,7 @@
 import { SUPER_ADMIN_ROUTES } from '@constants/routes';
 import { SideNavCategory } from '@@types/sideNav';
 
-const stripPrefix = (route: string) => route.replace('/super-admin', '') || '';
+const stripPrefix = (route: string) => route.replace('/super-admin', '');
 
 export const superAdminNavData: SideNavCategory[] = [
   {
