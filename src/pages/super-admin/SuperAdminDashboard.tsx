@@ -1,42 +1,17 @@
 import { useEffect, useState } from 'react';
-import styled from '@emotion/styled';
 import { match } from 'ts-pattern';
+import styled from '@emotion/styled';
 import AppContainer from '@components/common/container/AppContainer';
+import PageHeader from '@components/common/page/PageHeader';
+import SuperAdminPageContainer from '@components/super-admin/SuperAdminPageContainer';
 import DashboardSections from '@components/super-admin/dashboard/DashboardSections';
 import useSuperAdminDashboard from '@hooks/super-admin/useSuperAdminDashboard';
 import { SuperAdminDashboard as SuperAdminDashboardData } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import { mobileMediaQuery } from '@styles/globalStyles';
-
-const PageContainer = styled.div`
-  width: 100%;
-  max-width: 1100px;
-  padding: 72px 24px 40px;
-  gap: 28px;
-  min-width: 0;
-  ${colFlex()}
-
-  ${mobileMediaQuery} {
-    padding: 56px 14px 24px;
-    gap: 18px;
-  }
-`;
-
-const PageTitle = styled.h1`
-  font-size: 22px;
-  font-weight: 700;
-  color: ${Color.BLACK};
-  margin: 0;
-  letter-spacing: -0.01em;
-
-  ${mobileMediaQuery} {
-    font-size: 18px;
-  }
-`;
 
 const LoadingText = styled.div`
-  font-size: 16px;
+  font-size: 14px;
   color: ${Color.GREY};
   text-align: center;
   padding: 60px 0;
@@ -51,15 +26,22 @@ function SuperAdminDashboard() {
   }, [fetchDashboard]);
 
   return (
-    <AppContainer useFlex={colFlex({ align: 'center' })} backgroundColor={Color.LIGHT_GREY} useTitle={false} disableLayoutScale>
-      <PageContainer>
-        <PageTitle>서비스 현황 대시보드</PageTitle>
+    <AppContainer
+      useFlex={colFlex({ align: 'center' })}
+      backgroundColor={Color.LIGHT_GREY}
+      useTitle={false}
+    >
+      <SuperAdminPageContainer>
+        <PageHeader
+          title="서비스 현황 대시보드"
+          description="유저·워크스페이스·매출 통계를 한눈에 봅니다."
+        />
         {match(dashboard)
           .with(null, () => <LoadingText>대시보드 불러오는 중...</LoadingText>)
           .otherwise((data) => (
             <DashboardSections data={data} />
           ))}
-      </PageContainer>
+      </SuperAdminPageContainer>
     </AppContainer>
   );
 }
