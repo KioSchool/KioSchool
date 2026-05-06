@@ -15,7 +15,7 @@ const BREAKDOWN_DOT_COLOR: Record<BreakdownKey, string> = {
 
 const Card = styled.div`
   background: ${Color.WHITE};
-  border: 1px solid ${Color.HEAVY_GREY};
+  border: 1px solid #f0f0f0;
   border-radius: 12px;
   padding: 18px;
   gap: 12px;
