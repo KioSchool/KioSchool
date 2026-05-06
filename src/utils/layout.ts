@@ -1,4 +1,5 @@
 import { DEFAULT_LAYOUT_WIDTH } from '@constants/layout';
+import { MOBILE_BREAKPOINT } from '@styles/globalStyles';
 
 const LAYOUT_PADDING = 20;
 const MIN_SCALE = 0.5;
@@ -13,6 +14,9 @@ const MIN_SCALE = 0.5;
 export const calculateLayoutScale = (windowWidth: number, customWidth?: string, sideNavOffset: number = 0) => {
   // 창 너비가 유효하지 않으면 기본값 반환
   if (windowWidth <= 0) return 1;
+
+  // 모바일에서는 스케일링 비활성 (페이지가 모바일 미디어쿼리로 자체 분기)
+  if (windowWidth < MOBILE_BREAKPOINT) return 1;
 
   // customWidth 파싱 및 안전한 기본값 처리 (NaN 방지)
   const parsedWidth = customWidth ? parseInt(customWidth, 10) : DEFAULT_LAYOUT_WIDTH;

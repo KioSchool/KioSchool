@@ -4,6 +4,7 @@ import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 
 const Container = styled.div<{ justifyCenter?: boolean }>`
+  width: 100%;
   height: 550px;
   ${(props) =>
     colFlex({
@@ -14,11 +15,6 @@ const Container = styled.div<{ justifyCenter?: boolean }>`
 
 const ListItem = styled.div`
   width: 100%;
-`;
-
-const HorizontalLine = styled.hr`
-  width: 100%;
-  border: 0.3px solid #eeecec;
 `;
 
 const EmptyLabel = styled.div`
@@ -39,10 +35,9 @@ function PaginationSearchContents({ contents, target, ContentComponent }: Conten
 
   return (
     <Container justifyCenter={contents.empty}>
-      {contents.content.map((item, index) => (
+      {contents.content.map((item) => (
         <ListItem key={item.id}>
           <ContentComponent {...item} />
-          {index < contents.content.length - 1 && <HorizontalLine />}
         </ListItem>
       ))}
     </Container>

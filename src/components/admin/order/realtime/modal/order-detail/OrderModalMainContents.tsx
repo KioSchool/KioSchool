@@ -5,7 +5,8 @@ import { Color } from '@resources/colors';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
-import { adminProductsAtom, orderModalReadOnlyAtom } from '@jotai/admin/atoms';
+import { adminProductsAtom } from '@jotai/admin/atoms';
+import { orderModalReadOnlyAtom } from '@jotai/atoms';
 import _ from 'lodash';
 import OrderModalProductList from './OrderModalProductsList';
 

@@ -1,5 +1,6 @@
 import { useLocation } from 'react-router-dom';
-import { adminUserAccountAtom, adminUserTossAccountAtom, externalSidebarAtom } from '@jotai/admin/atoms';
+import { adminUserAccountAtom, adminUserTossAccountAtom } from '@jotai/admin/atoms';
+import { externalSidebarAtom } from '@jotai/atoms';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { TOSS_ACCOUNT_INFO, TOSS_MODAL } from '@constants/data/accountData';
 import RegisterAccountInfoContainer from './RegisterAccountInfoContainer';

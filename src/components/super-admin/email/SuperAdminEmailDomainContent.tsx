@@ -1,64 +1,70 @@
-import { EmailDomain } from '@@types/index';
-import NewCommonButton from '@components/common/button/NewCommonButton';
 import styled from '@emotion/styled';
-import useSuperAdminEmail from '@hooks/super-admin/useSuperAdminEmail';
+import { RiDeleteBinLine } from '@remixicon/react';
+import { EmailDomain } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import useSuperAdminEmail from '@hooks/super-admin/useSuperAdminEmail';
 
-const Container = styled.div`
+const Row = styled.div`
   width: 100%;
-  height: 80px;
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
+  padding: 10px 0;
+  border-bottom: 1px solid #f7f7f7;
+  ${rowFlex({ align: 'center' })}
 `;
 
-const SubLabelContainer = styled.div`
-  color: ${Color.HEAVY_GREY};
-  ${rowFlex()}
+const Info = styled.div`
+  flex: 1;
+  min-width: 0;
+  gap: 2px;
+  ${colFlex()}
 `;
 
-const EmailLabel = styled.div`
-  text-align: center;
-  font-size: 18px;
-  font-weight: 400;
-  text-decoration: none;
+const Domain = styled.div`
+  font-size: 14px;
+  font-weight: 600;
+  color: ${Color.BLACK};
+`;
+
+const University = styled.div`
+  font-size: 12px;
+  color: ${Color.GREY};
+`;
+
+const DeleteButton = styled.button`
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid #f0f0f0;
+  background: ${Color.WHITE};
   color: ${Color.GREY};
   cursor: pointer;
-  transition: ease-in 0.1s;
+  ${rowFlex({ justify: 'center', align: 'center' })}
+
   &:hover {
-    color: ${Color.KIO_ORANGE};
-    text-decoration: underline;
+    color: ${Color.RED};
+    border-color: ${Color.RED};
   }
 `;
 
-const LabelContainer = styled.div`
-  ${colFlex({ justify: 'center', align: 'start' })}
-  height: 100%;
-`;
-
-const ButtonContainer = styled.div`
-  ${colFlex({ justify: 'center', align: 'center' })}
-  height: 100%;
-`;
-
-function SuperAdminEmailDomainContent({ name, domain, id }: EmailDomain) {
+function SuperAdminEmailDomainContent(emailDomain: EmailDomain) {
   const { deleteEmailDomain } = useSuperAdminEmail();
 
-  const onDeleteHandler = () => {
-    deleteEmailDomain(id);
+  const handleDelete = () => {
+    if (window.confirm(`"${emailDomain.domain}" 도메인을 삭제하시겠습니까?`)) {
+      deleteEmailDomain(emailDomain.id);
+    }
   };
 
   return (
-    <Container>
-      <LabelContainer>
-        <EmailLabel className={'email-label'}>{name}</EmailLabel>
-        <SubLabelContainer className={'sub-label-container'}>{domain}</SubLabelContainer>
-      </LabelContainer>
-      <ButtonContainer>
-        <NewCommonButton size="xs" customColors={{ background: '#AEAEAE' }} onClick={onDeleteHandler}>
-          삭제하기
-        </NewCommonButton>
-      </ButtonContainer>
-    </Container>
+    <Row>
+      <Info>
+        <Domain>{emailDomain.domain}</Domain>
+        <University>{emailDomain.name}</University>
+      </Info>
+      <DeleteButton onClick={handleDelete} aria-label="도메인 삭제">
+        <RiDeleteBinLine size={16} />
+      </DeleteButton>
+    </Row>
   );
 }
 

@@ -318,3 +318,74 @@ export interface DailyStatistics {
   isRealTime: boolean;
   lastUpdated: string;
 }
+
+// Super Admin 전용 타입
+export interface UserStats {
+  total: number;
+  newLast7Days: number;
+  newLast30Days: number;
+}
+
+export interface WorkspaceStats {
+  total: number;
+  newLast7Days: number;
+  newLast30Days: number;
+  onboardingCompletionRate: number;
+}
+
+export interface RevenueStats {
+  totalRevenueAllTime: number;
+  totalOrdersAllTime: number;
+  totalRevenueLast30Days: number;
+  totalOrdersLast30Days: number;
+}
+
+export interface SuperAdminDashboard {
+  users: UserStats;
+  workspaces: WorkspaceStats;
+  revenue: RevenueStats;
+}
+
+export interface WorkspaceAdminDetail {
+  id: number;
+  name: string;
+  owner: User;
+  description: string;
+  notice: string;
+  memo: string;
+  tableCount: number;
+  memberCount: number;
+  productCount: number;
+  isOnboarding: boolean;
+  workspaceSetting: WorkspaceSetting;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SuperAdminOrder {
+  id: number;
+  workspaceId: number;
+  workspaceName: string;
+  tableNumber: number;
+  customerName: string;
+  orderProducts: Array<OrderProduct>;
+  totalPrice: number;
+  status: OrderStatus;
+  orderNumber: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AccountConnectionStatus {
+  totalUsers: number;
+  usersWithAccount: number;
+  usersWithoutAccount: number;
+  connectionRate: number;
+}
+
+export interface OrdersFilter {
+  workspaceId: string;
+  statuses: OrderStatus[];
+  startDate: string;
+  endDate: string;
+}

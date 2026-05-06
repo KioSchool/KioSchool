@@ -1,49 +1,64 @@
-import { Workspace } from '@@types/index';
 import styled from '@emotion/styled';
+import { useSetAtom } from 'jotai';
+import { Location } from 'react-router-dom';
+import { Workspace, RIGHT_SIDEBAR_ACTION } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { formatKoreanDate } from '@utils/formatNumber';
+import { externalSidebarAtom } from '@jotai/atoms';
+import { SUPER_ADMIN_ROUTES } from '@constants/routes';
+import WorkspaceDetailContent from './WorkspaceDetailContent';
 
 const Container = styled.div`
   width: 100%;
-  height: 80px;
-  ${colFlex({ justify: 'center', align: 'start' })}
-`;
-
-const SubLabelContainer = styled.div`
-  color: ${Color.HEAVY_GREY};
-  ${rowFlex()}
-`;
-
-const WorkspaceLabel = styled.div`
-  text-align: center;
-  font-size: 18px;
-  font-weight: 400;
-  text-decoration: none;
-  color: ${Color.GREY};
   cursor: pointer;
-  transition: ease-in 0.1s;
-  &:hover {
+  padding: 12px 0;
+  ${rowFlex({ align: 'center' })}
+
+  &:hover .ws-name {
     color: ${Color.KIO_ORANGE};
-    text-decoration: underline;
   }
 `;
 
-function SuperAdminWorkspaceContent({ id, name, owner, createdAt }: Workspace) {
-  const datePart = createdAt.split('T')[0];
-  const filteredCreatedDate = datePart.replace(/-/g, '.');
-  const createdDateAndOwnerText = `${filteredCreatedDate} | ${owner.name}`;
+const Info = styled.div`
+  flex: 1;
+  min-width: 0;
+  gap: 2px;
+  ${colFlex({ justify: 'center' })}
+`;
+
+const Name = styled.div`
+  font-size: 14px;
+  font-weight: 600;
+  color: ${Color.BLACK};
+  transition: color 0.15s;
+`;
+
+const Sub = styled.div`
+  font-size: 12px;
+  color: ${Color.HEAVY_GREY};
+`;
+
+function SuperAdminWorkspaceContent(workspace: Workspace) {
+  const setExternalSidebar = useSetAtom(externalSidebarAtom);
+
+  const handleClick = () => {
+    setExternalSidebar({
+      action: RIGHT_SIDEBAR_ACTION.OPEN,
+      title: workspace.name,
+      content: <WorkspaceDetailContent workspace={workspace} onClose={() => setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE })} />,
+      location: { pathname: SUPER_ADMIN_ROUTES.WORKSPACE } as Location,
+    });
+  };
 
   return (
-    <Container>
-      <WorkspaceLabel
-        onClick={() => {
-          window.open(`${window.location.origin}/admin/workspace/${id}`, '_blank', 'rel=noopener noreferrer popup=false');
-        }}
-        className={'workspace-label'}
-      >
-        {name}
-      </WorkspaceLabel>
-      <SubLabelContainer className={'sub-label-container'}>{createdDateAndOwnerText}</SubLabelContainer>
+    <Container onClick={handleClick}>
+      <Info>
+        <Name className="ws-name">{workspace.name}</Name>
+        <Sub>
+          {formatKoreanDate(workspace.createdAt)} | {workspace.owner.name}
+        </Sub>
+      </Info>
     </Container>
   );
 }

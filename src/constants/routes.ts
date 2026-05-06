@@ -36,10 +36,12 @@ export const ADMIN_ROUTES = {
 export const SUPER_ADMIN_ROUTES = {
   HOME: '/super-admin',
   WORKSPACE: '/super-admin/workspace',
-  MANAGE: '/super-admin/manage',
   USER: '/super-admin/user',
   EMAIL: '/super-admin/email',
   BANK: '/super-admin/bank',
+  DASHBOARD: '/super-admin/dashboard',
+  ORDERS: '/super-admin/orders',
+  ACCOUNT_STATUS: '/super-admin/account-status',
 } as const;
 
 export const TEST_ROUTES = {
@@ -49,3 +51,8 @@ export const TEST_ROUTES = {
 export const getAdminWorkspacePath = (workspaceId: string | number) => `/admin/workspace/${workspaceId}`;
 
 export const getAdminProductsPath = (workspaceId: string | number) => `/admin/workspace/${workspaceId}/products`;
+
+export function getSuperAdminOrdersPath(query?: { workspaceId?: number }): string {
+  if (!query?.workspaceId) return SUPER_ADMIN_ROUTES.ORDERS;
+  return `${SUPER_ADMIN_ROUTES.ORDERS}?workspaceId=${query.workspaceId}`;
+}

@@ -3,6 +3,7 @@ import AppLabel from '@components/common/label/AppLabel';
 import { useRef, useState } from 'react';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { mobileMediaQuery } from '@styles/globalStyles';
 import { RiCloseLargeLine } from '@remixicon/react';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import NewAppInput from '@components/common/input/NewAppInput';
@@ -21,6 +22,9 @@ const Container = styled.div`
 
 const ModalBox = styled.div`
   width: 500px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
   background: ${Color.WHITE};
   border-radius: 16px;
   padding: 40px;
@@ -28,6 +32,12 @@ const ModalBox = styled.div`
   gap: 30px;
   position: relative;
   ${colFlex({ justify: 'flex-start', align: 'stretch' })}
+
+  ${mobileMediaQuery} {
+    padding: 24px 20px;
+    gap: 20px;
+    border-radius: 12px;
+  }
 `;
 
 const TextContainer = styled.div`

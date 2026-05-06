@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { useAtom } from 'jotai';
 import { RiMenuFill } from '@remixicon/react';
 import { rowFlex } from '@styles/flexStyles';
@@ -9,7 +9,9 @@ import { navBarLabelStyle } from '@styles/navBarStyles';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { URLS } from '@constants/urls';
 import { USER_ROUTES, ADMIN_ROUTES } from '@constants/routes';
-import { adminSideNavIsOpenAtom } from '@jotai/admin/atoms';
+import { sideNavIsOpenAtom } from '@jotai/atoms';
+import { adminNavData } from '@constants/data/adminNavData';
+import { superAdminNavData } from '@constants/data/superAdminNavData';
 import kioLogo from '@resources/image/kioLogo.png';
 import AuthenticationButton from '@components/user/AuthenticationButton';
 import MobileNav from './MobileNav';
@@ -94,10 +96,17 @@ interface NavBarProps {
 
 function NavBar({ useBackground = false }: NavBarProps) {
   const location = useLocation();
-  const [isSideNavOpen, setIsSideNavOpen] = useAtom(adminSideNavIsOpenAtom);
+  const { workspaceId } = useParams<{ workspaceId: string }>();
+  const [isSideNavOpen, setIsSideNavOpen] = useAtom(sideNavIsOpenAtom);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const isShowHamburger = location.pathname.startsWith('/admin/workspace/');
+  const isSuperAdmin = location.pathname.startsWith('/super-admin');
+  const isAdminWorkspace = location.pathname.startsWith('/admin/workspace/');
+  const isShowHamburger = isAdminWorkspace || isSuperAdmin;
+
+  const sideNavConfig = isSuperAdmin
+    ? { navData: superAdminNavData, pathPrefix: '/super-admin' }
+    : { navData: adminNavData, pathPrefix: `/admin/workspace/${workspaceId}` };
 
   const handleHamburgerClick = () => {
     setIsSideNavOpen((prev) => !prev);
@@ -126,13 +135,15 @@ function NavBar({ useBackground = false }: NavBarProps) {
           </NavLinkItem>
         </NavLinkContainer>
 
-        <MobileMenuButton onClick={() => setIsMobileMenuOpen(true)}>
-          <RiMenuFill size={24} />
-        </MobileMenuButton>
+        {!isShowHamburger && (
+          <MobileMenuButton onClick={() => setIsMobileMenuOpen(true)}>
+            <RiMenuFill size={24} />
+          </MobileMenuButton>
+        )}
       </NavContainer>
 
-      <MobileNav isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
-      {isShowHamburger && <SideNav isOpen={isSideNavOpen} />}
+      {!isShowHamburger && <MobileNav isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />}
+      {isShowHamburger && <SideNav isOpen={isSideNavOpen} {...sideNavConfig} />}
     </>
   );
 }

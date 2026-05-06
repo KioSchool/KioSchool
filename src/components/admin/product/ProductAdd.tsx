@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { adminWorkspaceAtom, externalSidebarAtom } from '@jotai/admin/atoms';
+import { adminWorkspaceAtom } from '@jotai/admin/atoms';
+import { externalSidebarAtom } from '@jotai/atoms';
 import { ProductStateType, RIGHT_SIDEBAR_ACTION } from '@@types/index';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { getAdminWorkspacePath } from '@constants/routes';

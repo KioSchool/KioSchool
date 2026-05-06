@@ -5,13 +5,13 @@ import { SerializedStyles } from '@emotion/react';
 import { Color } from '@resources/colors';
 import { useLocation } from 'react-router-dom';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { adminSideNavIsOpenAtom, adminUserAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
-import { layoutParamsAtom, windowWidthAtom } from '@jotai/atoms';
+import { adminUserAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
+import { layoutParamsAtom, windowWidthAtom, sideNavIsOpenAtom } from '@jotai/atoms';
 import { calculateLayoutScale } from 'src/utils/layout';
 import { getPageTitle } from '@@types/guard';
 import { DEFAULT_LAYOUT_WIDTH, SIDE_NAV_WIDTH } from '@constants/layout';
-import { tabletMediaQuery } from '@styles/globalStyles';
-import { useEffect } from 'react';
+import { MOBILE_BREAKPOINT, mobileMediaQuery, tabletMediaQuery } from '@styles/globalStyles';
+import { ReactNode, useEffect } from 'react';
 import { match } from 'ts-pattern';
 
 export const MainContainer = styled.div<{ backgroundColor?: string; sideNavOffset: number }>`
@@ -38,6 +38,17 @@ export const SubContainer = styled.div<{
   box-sizing: border-box;
   flex-grow: 1;
   padding-top: ${(props) => (props.useTitle ? '90px' : '0')};
+  padding-inline: 0;
+
+  ${tabletMediaQuery} {
+    padding-inline: 24px;
+  }
+
+  ${mobileMediaQuery} {
+    padding-top: ${(props) => (props.useTitle ? '80px' : '0')};
+    padding-inline: 16px;
+  }
+
   ${(props) =>
     props.useFlex ||
     colFlex({
@@ -62,6 +73,10 @@ const WorkspaceName = styled.div`
   ${tabletMediaQuery} {
     font-size: 32px;
   }
+
+  ${mobileMediaQuery} {
+    font-size: 24px;
+  }
 `;
 
 const LocationLabel = styled.div`
@@ -73,6 +88,10 @@ const LocationLabel = styled.div`
 
   ${tabletMediaQuery} {
     font-size: 16px;
+  }
+
+  ${mobileMediaQuery} {
+    font-size: 14px;
   }
 `;
 
@@ -92,13 +111,14 @@ const ContentContainer = styled.div<{
 `;
 
 interface Props {
-  children: JSX.Element;
+  children: ReactNode;
   useFlex: SerializedStyles;
   backgroundColor?: string;
   useTitle?: boolean;
   useFullHeight?: boolean;
   customWidth?: string;
   customGap?: string;
+  disableLayoutScale?: boolean;
 }
 
 function getHeaderInfo(pathname: string, workspaceName: string, userName: string) {
@@ -111,20 +131,30 @@ function getHeaderInfo(pathname: string, workspaceName: string, userName: string
     .otherwise(() => ({ title: workspaceName, label: getPageTitle(pathname) }));
 }
 
-function AppContainer({ children, useFlex, backgroundColor, useTitle = true, useFullHeight = false, customWidth, customGap }: Props) {
+function AppContainer({
+  children,
+  useFlex,
+  backgroundColor,
+  useTitle = true,
+  useFullHeight = false,
+  customWidth,
+  customGap,
+  disableLayoutScale = false,
+}: Props) {
   const location = useLocation();
   const workspace = useAtomValue(adminWorkspaceAtom);
   const user = useAtomValue(adminUserAtom);
-  const isSideNavOpen = useAtomValue(adminSideNavIsOpenAtom);
+  const isSideNavOpen = useAtomValue(sideNavIsOpenAtom);
   const windowWidth = useAtomValue(windowWidthAtom);
   const setLayoutParams = useSetAtom(layoutParamsAtom);
 
-  const isAdminWorkspace = location.pathname.startsWith('/admin/workspace/');
+  const isPathWithSideNav = location.pathname.startsWith('/admin/workspace/') || location.pathname.startsWith('/super-admin');
   const { title, label } = getHeaderInfo(location.pathname, workspace.name, user.name);
 
   const useNavBackground = true;
-  const sideNavOffset = isAdminWorkspace && isSideNavOpen ? SIDE_NAV_WIDTH : 0;
-  const scale = calculateLayoutScale(windowWidth, customWidth, sideNavOffset);
+  const isMobile = windowWidth > 0 && windowWidth < MOBILE_BREAKPOINT;
+  const sideNavOffset = isPathWithSideNav && isSideNavOpen && !isMobile ? SIDE_NAV_WIDTH : 0;
+  const scale = disableLayoutScale ? 1 : calculateLayoutScale(windowWidth, customWidth, sideNavOffset);
 
   useEffect(() => {
     setLayoutParams({ customWidth, sideNavOffset });

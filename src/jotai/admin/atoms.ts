@@ -1,16 +1,5 @@
 import { defaultBanksValue, defaultDashboardValue, defaultUserValue, defaultWorkspaceValue } from '@@types/defaultValues';
-import {
-  Bank,
-  DashboardResponse,
-  ExternalRightSidebarOptions,
-  Order,
-  Product,
-  ProductCategory,
-  RIGHT_SIDEBAR_ACTION,
-  Table,
-  User,
-  Workspace,
-} from '@@types/index';
+import { Bank, DashboardResponse, Order, Product, ProductCategory, Table, User, Workspace } from '@@types/index';
 import { atom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 
@@ -64,9 +53,3 @@ export const adminUserTossAccountAtom = atom((get) => {
 
   return { tossBankName, tossAccountNumber };
 });
-
-export const adminSideNavIsOpenAtom = atom(false);
-
-export const externalSidebarAtom = atom<ExternalRightSidebarOptions>({ action: RIGHT_SIDEBAR_ACTION.CLOSE });
-
-export const orderModalReadOnlyAtom = atom(false);
