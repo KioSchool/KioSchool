@@ -89,12 +89,14 @@ function OrderStickyNavBar({ useLeftArrow = true, showNavBar, workspaceName, tab
       return;
     }
 
+    const paramWorkspaceId = searchParams.get('workspaceId');
+    const paramTableNo = searchParams.get('tableNo');
+    const paramTableHash = searchParams.get('tableHash');
+
     try {
       await navigator.share({
         title: workspaceName,
-        url: `${window.location.origin}/share/${searchParams.get('workspaceId')}?tableNo=${searchParams.get('tableNo')}&tableHash=${searchParams.get(
-          'tableHash',
-        )}`,
+        url: `${window.location.origin}/share/${paramWorkspaceId}?tableNo=${paramTableNo}&tableHash=${paramTableHash}`,
       });
     } catch (error) {
       if ((error as Error).name !== 'AbortError') throw error;
