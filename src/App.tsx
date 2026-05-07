@@ -87,8 +87,9 @@ function App() {
         <Route path={SUPER_ADMIN_ROUTES.ACCOUNT_STATUS} element={<SuperAdminAccountStatus />} />
         <Route path={SUPER_ADMIN_ROUTES.ORDERS} element={<SuperAdminOrders />} />
 
+        <Route path={USER_ROUTES.LOGIN} element={<Login />} />
+
         <Route element={<PcOnlyLayout />}>
-          <Route path={USER_ROUTES.LOGIN} element={<Login />} />
           <Route path={USER_ROUTES.REGISTER} element={<Register />} />
           <Route path={USER_ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
           <Route path={USER_ROUTES.EMAIL_DOMAINS} element={<UserEmailDomain />} />

@@ -2,6 +2,7 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { mobileMediaQuery } from '@styles/globalStyles';
 import { RiShareBoxLine } from '@remixicon/react';
 import NewCommonButton, { CustomButtonSize } from '@components/common/button/NewCommonButton';
 import { ButtonColor, ButtonSize } from '@@types/index';
@@ -13,8 +14,13 @@ const Container = styled.div<ContainerProps>`
     }
     return width || '500px';
   }};
+  max-width: calc(100vw - 32px);
   gap: 6px;
   ${colFlex({ justify: 'center', align: 'center' })};
+
+  ${mobileMediaQuery} {
+    width: 100%;
+  }
 `;
 
 const HeaderContainer = styled.div`
