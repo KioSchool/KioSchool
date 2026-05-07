@@ -4,6 +4,7 @@ import useAuthentication from '@hooks/useAuthentication';
 import styled from '@emotion/styled';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { mobileMediaQuery } from '@styles/globalStyles';
 import NewAppInput from '@components/common/input/NewAppInput';
 import LinkLabel from '@components/common/label/LinkLabel';
 import NewCommonButton from '@components/common/button/NewCommonButton';
@@ -24,6 +25,13 @@ const ErrorMessage = styled.div`
 const LinkContainer = styled.div`
   gap: 10px;
   ${rowFlex({ justify: 'center', align: 'center' })};
+`;
+
+const SubmitButton = styled(NewCommonButton)`
+  ${mobileMediaQuery} {
+    width: 100%;
+    max-width: calc(100vw - 32px);
+  }
 `;
 
 function Login() {
@@ -61,7 +69,7 @@ function Login() {
           placeholder={'비밀번호를 입력해주세요.'}
         />
         <ErrorContainer>{errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}</ErrorContainer>
-        <NewCommonButton onClick={handleSubmit}>로그인</NewCommonButton>
+        <SubmitButton onClick={handleSubmit}>로그인</SubmitButton>
         <LinkContainer className={'button-container'}>
           <LinkLabel text={'비밀번호 찾기'} href={USER_ROUTES.RESET_PASSWORD} />
           <LinkLabel text={'회원가입 하기'} href={USER_ROUTES.REGISTER} />
