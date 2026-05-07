@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RiArrowLeftLine, RiShareForward2Fill } from '@remixicon/react';
 
 const Container = styled.div<{ isShow: boolean }>`
@@ -81,6 +81,14 @@ interface OrderStickyNavBarProps {
 
 function OrderStickyNavBar({ useLeftArrow = true, showNavBar, workspaceName, tableNo, useShareButton = true }: OrderStickyNavBarProps) {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const workspaceId = searchParams.get('workspaceId');
+
+  const buildShareUrl = () => {
+    if (workspaceId) return `${window.location.origin}/share/${workspaceId}`;
+    return window.location.href;
+  };
+
   const onClickShare = async () => {
     if (!navigator.share) {
       alert('이 브라우저는 Web Share API를 지원하지 않습니다. 다른 브라우저를 사용해주세요.');
@@ -90,7 +98,7 @@ function OrderStickyNavBar({ useLeftArrow = true, showNavBar, workspaceName, tab
     try {
       await navigator.share({
         title: workspaceName,
-        url: window.location.href,
+        url: buildShareUrl(),
       });
     } catch (error) {
       if ((error as Error).name !== 'AbortError') throw error;
