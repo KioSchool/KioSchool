@@ -214,6 +214,10 @@ function OrderDetailContent({ order, onClose }: OrderDetailContentProps) {
             <InfoValue>#{order.orderNumber}</InfoValue>
           </InfoRow>
           <InfoRow>
+            <span>주문 ID</span>
+            <InfoValue>{order.id}</InfoValue>
+          </InfoRow>
+          <InfoRow>
             <span>워크스페이스 ID</span>
             <InfoValue>{order.workspaceId}</InfoValue>
           </InfoRow>

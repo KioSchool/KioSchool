@@ -5,11 +5,12 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { formatNumber } from '@utils/formatNumber';
 
-type BreakdownKey = 'with' | 'without' | 'total';
+type BreakdownKey = 'with' | 'without' | 'toss' | 'total';
 
 const BREAKDOWN_DOT_COLOR: Record<BreakdownKey, string> = {
   with: Color.HEAVY_GREY,
   without: Color.KIO_ORANGE,
+  toss: '#3182f6',
   total: Color.GREY,
 };
 
@@ -65,6 +66,11 @@ function AccountBreakdownList({ status }: AccountBreakdownListProps) {
         <Dot tone="with" />
         <RowLabel>계좌 연동 완료</RowLabel>
         <RowCount>{formatNumber(status.usersWithAccount)}명</RowCount>
+      </Row>
+      <Row>
+        <Dot tone="toss" />
+        <RowLabel>토스 연동 완료</RowLabel>
+        <RowCount>{formatNumber(status.usersWithToss)}명</RowCount>
       </Row>
       <Row>
         <Dot tone="without" />

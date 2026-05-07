@@ -68,7 +68,7 @@ function OrdersCardList({ orders, selectedOrderId, onSelect }: OrdersCardListPro
             ID: {order.workspaceId} · {order.tableNumber}번 테이블
           </InfoLine>
           <InfoLine>
-            손님: {order.customerName} · 주문 #{order.orderNumber}
+            손님: {order.customerName} · 주문 #{order.orderNumber} · 주문 ID: {order.id}
           </InfoLine>
           <Price>{formatCurrency(order.totalPrice)}</Price>
           <TimestampLine>{formatKoreanDateTime(order.createdAt)}</TimestampLine>

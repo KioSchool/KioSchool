@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
-import { useSetAtom } from 'jotai';
+import { useAtom } from 'jotai';
 import { Location } from 'react-router-dom';
 import { Workspace, RIGHT_SIDEBAR_ACTION } from '@@types/index';
+import OnboardingBadge from './OnboardingBadge';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { formatKoreanDate } from '@utils/formatNumber';
@@ -13,7 +14,7 @@ const Container = styled.div`
   width: 100%;
   cursor: pointer;
   padding: 12px 0;
-  ${rowFlex({ align: 'center' })}
+  ${rowFlex({ align: 'center', justify: 'space-between' })}
 
   &:hover .ws-name {
     color: ${Color.KIO_ORANGE};
@@ -25,6 +26,11 @@ const Info = styled.div`
   min-width: 0;
   gap: 2px;
   ${colFlex({ justify: 'center' })}
+`;
+
+const RightInfo = styled.div`
+  margin-left: 12px;
+  ${rowFlex({ align: 'center', justify: 'flex-end' })}
 `;
 
 const Name = styled.div`
@@ -40,9 +46,15 @@ const Sub = styled.div`
 `;
 
 function SuperAdminWorkspaceContent(workspace: Workspace) {
-  const setExternalSidebar = useSetAtom(externalSidebarAtom);
+  const [externalSidebar, setExternalSidebar] = useAtom(externalSidebarAtom);
 
   const handleClick = () => {
+    const isSameOpen = externalSidebar.action === RIGHT_SIDEBAR_ACTION.OPEN && externalSidebar.title === workspace.name;
+    if (isSameOpen) {
+      setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE });
+      return;
+    }
+
     setExternalSidebar({
       action: RIGHT_SIDEBAR_ACTION.OPEN,
       title: workspace.name,
@@ -59,6 +71,9 @@ function SuperAdminWorkspaceContent(workspace: Workspace) {
           {formatKoreanDate(workspace.createdAt)} | {workspace.owner.name}
         </Sub>
       </Info>
+      <RightInfo>
+        <OnboardingBadge done={!workspace.isOnboarding} />
+      </RightInfo>
     </Container>
   );
 }

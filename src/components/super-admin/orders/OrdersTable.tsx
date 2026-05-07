@@ -90,7 +90,10 @@ function OrdersTable({ orders, selectedOrderId, onSelect }: OrdersTableProps) {
             </Td>
             <Td>{order.tableNumber}번</Td>
             <Td>{order.customerName}</Td>
-            <Td>#{order.orderNumber}</Td>
+            <Td>
+              #{order.orderNumber}
+              <WorkspaceIdSubText>ID: {order.id}</WorkspaceIdSubText>
+            </Td>
             <Td>{formatCurrency(order.totalPrice)}</Td>
             <Td>
               <OrderStatusBadge status={order.status} />
