@@ -340,10 +340,42 @@ export interface RevenueStats {
   totalOrdersLast30Days: number;
 }
 
+export interface DailyPoint {
+  date: string;
+  revenue: number;
+  orders: number;
+}
+
+export interface WorkspaceRankItem {
+  workspaceId: number;
+  workspaceName: string;
+  revenue: number;
+  orders: number;
+}
+
+export interface DashboardFunnel {
+  totalUsers: number;
+  workspacesCreated: number;
+  onboardingCompleted: number;
+  hadFirstOrder: number;
+}
+
+export interface DashboardInsights {
+  dailyLast30Days: DailyPoint[];
+  activeWorkspacesLast7Days: number;
+  activeWorkspacesLast30Days: number;
+  averageOrderValue: number;
+  cancelledOrdersLast30Days: number;
+  totalOrdersForCancelRate: number;
+  topWorkspaces: WorkspaceRankItem[];
+  funnel: DashboardFunnel;
+}
+
 export interface SuperAdminDashboard {
   users: UserStats;
   workspaces: WorkspaceStats;
   revenue: RevenueStats;
+  insights: DashboardInsights;
 }
 
 export interface WorkspaceAdminDetail {
@@ -381,6 +413,9 @@ export interface AccountConnectionStatus {
   usersWithAccount: number;
   usersWithoutAccount: number;
   connectionRate: number;
+  usersWithToss: number;
+  tossRateOfTotal: number;
+  tossRateOfAccount: number;
 }
 
 export interface OrdersFilter {
