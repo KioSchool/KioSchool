@@ -82,18 +82,6 @@ interface OrderStickyNavBarProps {
 function OrderStickyNavBar({ useLeftArrow = true, showNavBar, workspaceName, tableNo, useShareButton = true }: OrderStickyNavBarProps) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const workspaceId = searchParams.get('workspaceId');
-
-  const buildShareUrl = () => {
-    if (!workspaceId) return window.location.href;
-    const tableNoParam = searchParams.get('tableNo');
-    const tableHashParam = searchParams.get('tableHash');
-    const query = new URLSearchParams();
-    if (tableNoParam) query.set('tableNo', tableNoParam);
-    if (tableHashParam) query.set('tableHash', tableHashParam);
-    const qs = query.toString();
-    return `${window.location.origin}/share/${workspaceId}${qs ? `?${qs}` : ''}`;
-  };
 
   const onClickShare = async () => {
     if (!navigator.share) {
@@ -101,10 +89,14 @@ function OrderStickyNavBar({ useLeftArrow = true, showNavBar, workspaceName, tab
       return;
     }
 
+    const workspaceId = searchParams.get('workspaceId');
+    const tableNo = searchParams.get('tableNo');
+    const tableHash = searchParams.get('tableHash');
+
     try {
       await navigator.share({
         title: workspaceName,
-        url: buildShareUrl(),
+        url: `${window.location.origin}/share/${workspaceId}?tableNo=${tableNo}&tableHash=${tableHash}`,
       });
     } catch (error) {
       if ((error as Error).name !== 'AbortError') throw error;
