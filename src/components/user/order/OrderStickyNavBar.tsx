@@ -85,8 +85,14 @@ function OrderStickyNavBar({ useLeftArrow = true, showNavBar, workspaceName, tab
   const workspaceId = searchParams.get('workspaceId');
 
   const buildShareUrl = () => {
-    if (workspaceId) return `${window.location.origin}/share/${workspaceId}`;
-    return window.location.href;
+    if (!workspaceId) return window.location.href;
+    const tableNoParam = searchParams.get('tableNo');
+    const tableHashParam = searchParams.get('tableHash');
+    const query = new URLSearchParams();
+    if (tableNoParam) query.set('tableNo', tableNoParam);
+    if (tableHashParam) query.set('tableHash', tableHashParam);
+    const qs = query.toString();
+    return `${window.location.origin}/share/${workspaceId}${qs ? `?${qs}` : ''}`;
   };
 
   const onClickShare = async () => {
