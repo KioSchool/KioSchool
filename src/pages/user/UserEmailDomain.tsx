@@ -1,5 +1,5 @@
 import PaginationSearchBar from '@components/common/pagination/PaginationSearchBar';
-import { colFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useEffect, useState } from 'react';
 import Pagination from '@components/common/pagination/Pagination';
 import AppContainer from '@components/common/container/AppContainer';
@@ -13,15 +13,9 @@ import RequestDomainPopup from '@components/user/email/RequestDomainPopup';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import styled from '@emotion/styled';
 
-const RequestContainer = styled.div`
-  margin-top: 30px;
-  gap: 12px;
-  ${colFlex({ align: 'center' })};
-`;
-
-const RequestText = styled.div`
-  color: #888;
-  font-size: 14px;
+const SearchActionRow = styled.div`
+  width: 100%;
+  ${rowFlex({ justify: 'flex-end', align: 'center' })};
 `;
 
 function UserEmailDomain() {
@@ -46,8 +40,22 @@ function UserEmailDomain() {
   return (
     <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'} customGap={'20px'}>
       <>
+        <SearchActionRow>
+          <NewCommonButton onClick={() => setIsPopupOpen(true)} size="sm">
+            학교 도메인 추가 요청
+          </NewCommonButton>
+        </SearchActionRow>
         <PaginationSearchBar />
-        <PaginationSearchContents contents={emailDomain} target={'이메일 도메인'} ContentComponent={EmailDomainContent} />
+        <PaginationSearchContents
+          contents={emailDomain}
+          target={'이메일 도메인'}
+          ContentComponent={EmailDomainContent}
+          emptyAction={
+            <NewCommonButton onClick={() => setIsPopupOpen(true)} customSize={{ width: 300, height: 48, font: 15 }}>
+              학교 도메인 추가 요청하기
+            </NewCommonButton>
+          }
+        />
         <Pagination
           totalPageCount={emailDomain.totalPages}
           paginateFunction={(page: number) => {
@@ -55,12 +63,6 @@ function UserEmailDomain() {
             setSearchParams(searchParams);
           }}
         />
-        <RequestContainer>
-          <RequestText>찾으시는 학교나 도메인이 없으신가요?</RequestText>
-          <NewCommonButton onClick={() => setIsPopupOpen(true)} customSize={{ width: 220, height: 45, font: 15 }}>
-            학교 도메인 추가 요청하기
-          </NewCommonButton>
-        </RequestContainer>
         {isPopupOpen && <RequestDomainPopup onClose={() => setIsPopupOpen(false)} />}
       </>
     </AppContainer>

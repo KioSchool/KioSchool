@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { PaginationResponse } from '@@types/index';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
@@ -17,20 +18,33 @@ const ListItem = styled.div`
   width: 100%;
 `;
 
+const EmptyContainer = styled.div`
+  width: 100%;
+  height: 550px;
+  gap: 24px;
+  ${colFlex({ justify: 'center', align: 'center' })};
+`;
+
 const EmptyLabel = styled.div`
-  font-size: 40px;
-  color: ${Color.LIGHT_GREY};
+  font-size: 30px;
+  color: ${Color.GREY};
 `;
 
 interface ContentsProps {
   contents: PaginationResponse<any>;
   target: string;
   ContentComponent: React.ElementType;
+  emptyAction?: ReactNode;
 }
 
-function PaginationSearchContents({ contents, target, ContentComponent }: ContentsProps) {
+function PaginationSearchContents({ contents, target, ContentComponent, emptyAction }: ContentsProps) {
   if (contents.empty) {
-    return <EmptyLabel className={'empty-label'}>{`찾고자 하는 ${target} 이/가 존재하지 않습니다.`}</EmptyLabel>;
+    return (
+      <EmptyContainer>
+        <EmptyLabel className={'empty-label'}>{`찾고자 하는 ${target} 이/가 존재하지 않습니다.`}</EmptyLabel>
+        {emptyAction}
+      </EmptyContainer>
+    );
   }
 
   return (
