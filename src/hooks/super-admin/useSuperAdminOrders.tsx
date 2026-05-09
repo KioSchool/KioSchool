@@ -9,7 +9,7 @@ interface FetchAllOrdersParams {
   workspaceId?: number;
   startDate?: string;
   endDate?: string;
-  status?: string[];
+  statuses?: string[];
 }
 
 const serializeOrdersParams = (params: Record<string, unknown>) => {

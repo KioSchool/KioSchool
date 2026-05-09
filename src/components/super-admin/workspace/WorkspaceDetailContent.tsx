@@ -162,7 +162,7 @@ function WorkspaceDetailContent({ workspace, onClose }: WorkspaceDetailContentPr
             사장 {workspace.owner.name} · {formatKoreanDate(workspace.createdAt)} 가입
           </SubText>
         </HeaderText>
-        <OnboardingBadge done={workspace.isOnboarding} />
+        <OnboardingBadge done={!workspace.isOnboarding} />
       </HeaderRow>
 
       {match(state)

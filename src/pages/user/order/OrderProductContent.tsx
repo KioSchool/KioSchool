@@ -53,11 +53,13 @@ function OrderProductContent() {
   const productsToShow = rawProducts.filter((it) => it.status !== ProductStatus.HIDDEN);
   const productsByCategoryId = _.groupBy<Product>(productsToShow, (product) => product.productCategory?.id);
 
-  const productsWithCategory = rawProductCategories.map((category) => ({
-    category,
-    products: productsByCategoryId[category.id] || [],
-  }));
-  const isProductEmpty = productsWithCategory.every(({ products }) => products.length === 0);
+  const productsWithCategory = rawProductCategories
+    .map((category) => ({
+      category,
+      products: productsByCategoryId[category.id] || [],
+    }))
+    .filter(({ products }) => products.length > 0);
+  const isProductEmpty = productsWithCategory.length === 0;
 
   const defaultProducts = productsByCategoryId.undefined;
   const orderBasket = useAtomValue(userOrderBasketAtom);

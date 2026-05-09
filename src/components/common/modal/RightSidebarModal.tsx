@@ -1,9 +1,9 @@
-﻿import React from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery, tabletMediaQuery } from '@styles/globalStyles';
 import { Color } from '@resources/colors';
-import { RiArrowRightSLine, RiCloseLine } from '@remixicon/react';
+import { RiCloseLine } from '@remixicon/react';
 import useModal from '@hooks/useModal';
 import RightSidebarModalOpenButton from './RightSidebarModalOpenButton';
 import { useAtom, useAtomValue } from 'jotai';
@@ -13,36 +13,6 @@ import { Location } from 'react-router-dom';
 import { NAVBAR_HEIGHT, NAVBAR_HEIGHT_MOBILE } from '@constants/layout';
 
 const Container = styled.div``;
-
-const AttachedCloseButton = styled.button`
-  position: absolute;
-  top: calc(50% - 25px);
-  left: -30px;
-  transform: translateY(-50%);
-  width: 30px;
-  height: 100px;
-  padding: 0;
-  background-color: ${Color.WHITE};
-  color: #464a4d;
-  border: 1px solid #e8e8f2;
-  border-right: none;
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-  cursor: pointer;
-  ${colFlex({ justify: 'center', align: 'center' })};
-
-  ${mobileMediaQuery} {
-    top: 12px;
-    left: auto;
-    right: 12px;
-    transform: none;
-    width: 32px;
-    height: 32px;
-    border: none;
-    border-radius: 8px;
-    background: transparent;
-  }
-`;
 
 const SidebarContainer = styled.div<{ isOpen: boolean; scale: number }>`
   position: fixed;
@@ -55,7 +25,7 @@ const SidebarContainer = styled.div<{ isOpen: boolean; scale: number }>`
   border-left: 1px solid #e8eef2;
   box-shadow: -4px 0 12px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
-  padding: 46px 15px 0 41px;
+  padding: 20px 16px 0 16px;
   gap: 15px;
   transform: translateX(${(props) => (props.isOpen ? '0' : '100%')});
   transition: transform 0.3s ease-in-out;
@@ -74,20 +44,22 @@ const SidebarContainer = styled.div<{ isOpen: boolean; scale: number }>`
     border-left: none;
     border-top: 1px solid #e8eef2;
     box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.06);
-    padding: 24px 16px 24px 16px;
+    padding: 16px 16px 24px 16px;
     transform: translateY(${(props) => (props.isOpen ? '0' : '100%')});
   }
 `;
 
 const SidebarHeader = styled.div`
   width: 100%;
-  ${colFlex({ justify: 'center', align: 'center' })};
+  gap: 8px;
+  ${rowFlex({ justify: 'space-between', align: 'flex-start' })};
 `;
 
 const TitleContainer = styled.div`
   color: #464a4d;
-  width: 100%;
-  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  gap: 4px;
   ${colFlex({ justify: 'start', align: 'start' })};
 `;
 
@@ -102,27 +74,22 @@ const SubTitle = styled.div`
   white-space: pre-line;
 `;
 
-const CloseButton = styled(RiArrowRightSLine)`
-  width: 24px;
-  height: 24px;
-  color: #464a4d;
+const HeaderCloseButton = styled.button`
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  margin-top: 2px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: ${Color.GREY};
   cursor: pointer;
-  ${rowFlex({ justify: 'end', align: 'end' })}
+  ${rowFlex({ justify: 'center', align: 'center' })}
 
-  ${mobileMediaQuery} {
-    display: none;
-  }
-`;
-
-const CloseButtonMobile = styled(RiCloseLine)`
-  width: 24px;
-  height: 24px;
-  color: #464a4d;
-  cursor: pointer;
-  display: none;
-
-  ${mobileMediaQuery} {
-    display: block;
+  &:hover {
+    background: #f5f5f5;
+    color: ${Color.BLACK};
   }
 `;
 
@@ -181,18 +148,14 @@ function RightSidebarModal({ title, subtitle, useOpenButton = true, children, us
       {!isControlled && useOpenButton && <RightSidebarModalOpenButton openModal={openModal} />}
 
       <SidebarContainer isOpen={isOpen} scale={scale}>
-        {isOpen && (
-          <AttachedCloseButton onClick={handleClose}>
-            <CloseButton />
-            <CloseButtonMobile />
-          </AttachedCloseButton>
-        )}
-
         <SidebarHeader>
           <TitleContainer>
             {displayData.title && <Title>{displayData.title}</Title>}
             {displayData.subtitle && <SubTitle>{displayData.subtitle}</SubTitle>}
           </TitleContainer>
+          <HeaderCloseButton onClick={handleClose} aria-label="닫기">
+            <RiCloseLine size={20} />
+          </HeaderCloseButton>
         </SidebarHeader>
 
         {displayData.content}
