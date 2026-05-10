@@ -424,3 +424,26 @@ export interface OrdersFilter {
   startDate: string;
   endDate: string;
 }
+
+export type CardTemplate = 'SINGLE_TROPHY' | 'STORY_NUMBERS' | 'MILESTONE';
+
+export interface CardPayload {
+  totalRevenue?: number;
+  totalOrders?: number;
+  averageOrderAmount?: number;
+  tableCount?: number;
+  averageStayMinutes?: number;
+  cohortAverageRatio?: number;
+  absoluteValue?: number;
+  milestoneStep?: number;
+}
+
+export interface InsightCardResponse {
+  referenceDate: string;
+  template: CardTemplate;
+  bestMetricKey: string | null;
+  bestMetricPercentile: number | null;
+  headline: string;
+  imageUrl: string;
+  payload: CardPayload;
+}
