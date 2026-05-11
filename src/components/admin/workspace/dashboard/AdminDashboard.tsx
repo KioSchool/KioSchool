@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
 import styled from '@emotion/styled';
@@ -11,6 +11,8 @@ import TopSellingList from './TopSellingList';
 import MemoCard from './MemoCard';
 import { getBusinessStartDate } from '@utils/dashboard';
 import NotionGuideSection from './NotionGuideSection';
+import InsightCard from './InsightCard';
+import { InsightCardResponse } from '@@types/index';
 
 const DashboardContainer = styled.div`
   width: 800px;
@@ -38,6 +40,8 @@ function AdminDashboard() {
   const { fetchDashboard } = useAdminDashboard();
   const { dashboardWorkspaceInfo, stats } = useAtomValue(adminDashboardAtom);
   const workspace = useAtomValue(adminWorkspaceAtom);
+  const [, setShareCard] = useState<InsightCardResponse | null>(null);
+  const insightEnabled = import.meta.env.VITE_INSIGHT_CARD_ENABLED === 'true';
 
   useEffect(() => {
     fetchDashboard(workspaceId);
@@ -54,6 +58,9 @@ function AdminDashboard() {
   return (
     <DashboardContainer>
       <NoticeBanner />
+
+      {insightEnabled && workspaceId && <InsightCard workspaceId={workspaceId} onShareClick={setShareCard} />}
+      {/* TODO Phase 6: track shareCard state and render <ShareSupportModal card={shareCard} onClose={() => setShareCard(null)} /> */}
 
       <MainRow>
         <StatCardsWrapper>
