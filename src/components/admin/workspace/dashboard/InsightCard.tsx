@@ -34,8 +34,8 @@ const Medal = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #ffd86b, ${InsightDesignTokens.brand.dark});
-  box-shadow: 0 2px 8px rgba(247, 132, 46, 0.3);
+  background: linear-gradient(180deg, #ffe066 0%, #ffb300 55%, #c77800 100%);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
   font-size: 22px;
   flex-shrink: 0;
   ${rowFlex({ justify: 'center', align: 'center' })};
