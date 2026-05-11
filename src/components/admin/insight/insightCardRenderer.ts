@@ -53,10 +53,12 @@ function wrapText(ctx: CanvasRenderingContext2D, text: string, x: number, y: num
 }
 
 function drawBackground(ctx: CanvasRenderingContext2D) {
-  // Almost-white cream so the gold medal pops
+  // Cream → peach diagonal gradient. Tone-down vs almost-white,
+  // 그라데이션 stop 차이를 키워서 그라데이션 자체가 잘 보이게.
   const grad = ctx.createLinearGradient(0, 0, SIZE, SIZE);
-  grad.addColorStop(0, '#FFFDF8');
-  grad.addColorStop(1, '#FFF6EA');
+  grad.addColorStop(0, '#FFF1DE');
+  grad.addColorStop(0.55, '#FFE2BA');
+  grad.addColorStop(1, '#FFCE92');
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, SIZE, SIZE);
 }
@@ -127,20 +129,48 @@ function drawHeader(ctx: CanvasRenderingContext2D, card: InsightCardResponse, wo
   wrapText(ctx, card.headline, headlineX, medalY + 22, SIZE - headlineX - 80, 74);
 }
 
+const CELL_ALPHA_TOP: Record<RankKey, number> = { 1: 0.92, 2: 0.8, 3: 0.65, 4: 0.5 };
+const CELL_ALPHA_BOTTOM: Record<RankKey, number> = { 1: 0.6, 2: 0.45, 3: 0.32, 4: 0.22 };
+
+function drawGlassCell(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, rank: RankKey) {
+  const radius = 20;
+
+  // 1. soft drop shadow
+  ctx.save();
+  ctx.shadowColor = 'rgba(180, 110, 50, 0.12)';
+  ctx.shadowBlur = 24;
+  ctx.shadowOffsetY = 6;
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.001)'; // invisible draw — just to cast shadow
+  roundRect(ctx, x, y, w, h, radius);
+  ctx.fill();
+  ctx.restore();
+
+  // 2. glassmorphic fill: vertical white→white-faint gradient
+  const grad = ctx.createLinearGradient(x, y, x, y + h);
+  grad.addColorStop(0, `rgba(255, 255, 255, ${CELL_ALPHA_TOP[rank]})`);
+  grad.addColorStop(1, `rgba(255, 255, 255, ${CELL_ALPHA_BOTTOM[rank]})`);
+  ctx.fillStyle = grad;
+  roundRect(ctx, x, y, w, h, radius);
+  ctx.fill();
+
+  // 3. inner highlight stroke (top edge brighter)
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+  ctx.lineWidth = 1.5;
+  roundRect(ctx, x + 0.75, y + 0.75, w - 1.5, h - 1.5, radius - 0.75);
+  ctx.stroke();
+}
+
 function drawGrid(ctx: CanvasRenderingContext2D, top: MetricSummary[]) {
-  // 제목 묶음(끝 y ≈ 280)과 가까운 320부터 시작
   const startY = 320;
   const cellW = (SIZE - 80 * 2 - 24) / 2;
-  const cellH = 280;
+  const cellH = 250;
   const gap = 20;
-  // 셀 내부 공통 padding & 위계
-  // - label (작은 caption, 위)
-  // - value (큰 메인, 중앙)
-  // - note (작은 caption, 아래) — label과 동일 시각 위계
+  // 셀 내부 위계 — top/bottom padding 대칭으로 (note가 bottom과 멀어보이지 않게)
+  // padTop 32, padBottom 32
   const padX = 28;
-  const labelY = 56;
-  const valueY = 138;
-  const noteY = 204;
+  const labelY = 56; // top padding ~32 + caption baseline
+  const valueY = 150; // 중앙 영역 (hero)
+  const noteY = 218; // bottom padding ~32 (cellH 250 - 218 = 32)
 
   top.slice(0, 4).forEach((m, idx) => {
     const col = idx % 2;
@@ -149,11 +179,8 @@ function drawGrid(ctx: CanvasRenderingContext2D, top: MetricSummary[]) {
     const y = startY + row * (cellH + gap);
 
     const rankKey = (idx + 1) as RankKey;
-    const alpha = InsightDesignTokens.png.cellAlpha[rankKey];
 
-    ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-    roundRect(ctx, x, y, cellW, cellH, 18);
-    ctx.fill();
+    drawGlassCell(ctx, x, y, cellW, cellH, rankKey);
 
     const tone = InsightDesignTokens.rank[rankKey];
 
@@ -163,17 +190,13 @@ function drawGrid(ctx: CanvasRenderingContext2D, top: MetricSummary[]) {
     ctx.textAlign = 'left';
     ctx.fillText(`#${rankKey}  ${m.label}`, x + padX, y + labelY);
 
-    // value (hero, center) — 위계 강조
+    // value (hero, center)
     ctx.fillStyle = tone.text;
     ctx.font = `900 78px ${KO_FONT_STACK}`;
     ctx.fillText(m.value, x + padX, y + valueY);
 
-    // note (caption, bottom) — label과 동일 폰트/사이즈 위계
-    const note = m.percentile != null
-      ? `상위 ${Math.round(100 - m.percentile)}%`
-      : m.milestoneStep != null
-        ? '마일스톤 돌파'
-        : null;
+    // note (caption, bottom) — label과 동일 위계
+    const note = m.percentile != null ? `상위 ${Math.round(100 - m.percentile)}%` : m.milestoneStep != null ? '마일스톤 돌파' : null;
     if (note) {
       ctx.fillStyle = tone.labelText;
       ctx.font = `500 22px ${KO_FONT_STACK}`;
