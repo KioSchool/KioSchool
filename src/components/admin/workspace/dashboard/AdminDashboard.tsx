@@ -74,7 +74,7 @@ function AdminDashboard() {
 
       <MemoCard initialMemo={workspace.memo} />
       <NotionGuideSection />
-      {shareCard && <ShareSupportModal card={shareCard} onClose={() => setShareCard(null)} />}
+      {shareCard && <ShareSupportModal card={shareCard} workspaceName={workspace.name} onClose={() => setShareCard(null)} />}
     </DashboardContainer>
   );
 }
