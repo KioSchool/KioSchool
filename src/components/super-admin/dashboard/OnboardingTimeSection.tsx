@@ -7,6 +7,8 @@ import { mobileMediaQuery } from '@styles/globalStyles';
 import { formatNumber } from '@utils/formatNumber';
 import SectionTitle from './SectionTitle';
 
+const Section = styled.div``;
+
 const Card = styled.div`
   background: ${Color.WHITE};
   border: 1px solid #f0f0f0;
@@ -62,18 +64,31 @@ const TooltipBox = styled.div`
   ${colFlex()}
 `;
 
+const TooltipLabel = styled.span``;
+
+const TooltipValue = styled.b``;
+
+const MINUTES_PER_HOUR = 60;
+const MINUTES_PER_DAY = 1440;
+
 function formatMinutes(minutes: number): string {
-  if (minutes < 60) return `${Math.round(minutes)}분`;
-  if (minutes < 1440) return `${(minutes / 60).toFixed(1)}시간`;
-  return `${(minutes / 1440).toFixed(1)}일`;
+  if (minutes < MINUTES_PER_HOUR) return `${Math.round(minutes)}분`;
+  if (minutes < MINUTES_PER_DAY) return `${(minutes / MINUTES_PER_HOUR).toFixed(1)}시간`;
+  return `${(minutes / MINUTES_PER_DAY).toFixed(1)}일`;
 }
 
-function CustomTooltip({ active, payload, label }: any) {
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: Array<{ value: number }>;
+  label?: string;
+}
+
+function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
   if (!active || !payload?.length) return null;
   return (
     <TooltipBox>
-      <span>{label}</span>
-      <b>{formatNumber(payload[0].value)}명</b>
+      <TooltipLabel>{label}</TooltipLabel>
+      <TooltipValue>{formatNumber(payload[0].value)}명</TooltipValue>
     </TooltipBox>
   );
 }
@@ -84,7 +99,7 @@ interface OnboardingTimeSectionProps {
 
 function OnboardingTimeSection({ stats }: OnboardingTimeSectionProps) {
   return (
-    <div>
+    <Section>
       <SectionTitle>가입 → 첫 워크스페이스 개설 소요 시간</SectionTitle>
       <Card>
         <StatRow>
@@ -111,7 +126,7 @@ function OnboardingTimeSection({ stats }: OnboardingTimeSectionProps) {
           </BarChart>
         </ResponsiveContainer>
       </Card>
-    </div>
+    </Section>
   );
 }
 
