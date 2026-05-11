@@ -8,9 +8,9 @@ interface ShareMeta {
 }
 
 function useShareCard() {
-  const share = async (card: InsightCardResponse, meta: ShareMeta) => {
+  const share = async (card: InsightCardResponse, workspaceName: string, meta: ShareMeta) => {
     try {
-      const blob = await renderInsightCardToBlob(card);
+      const blob = await renderInsightCardToBlob(card, workspaceName);
       const file = new File([blob], 'kioschool-card.png', { type: 'image/png' });
 
       if (navigator.canShare?.({ files: [file] })) {
@@ -31,9 +31,9 @@ function useShareCard() {
     }
   };
 
-  const download = async (card: InsightCardResponse) => {
+  const download = async (card: InsightCardResponse, workspaceName: string) => {
     try {
-      const blob = await renderInsightCardToBlob(card);
+      const blob = await renderInsightCardToBlob(card, workspaceName);
       const a = document.createElement('a');
       const url = URL.createObjectURL(blob);
       a.href = url;
