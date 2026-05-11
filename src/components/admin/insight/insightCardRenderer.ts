@@ -53,12 +53,10 @@ function wrapText(ctx: CanvasRenderingContext2D, text: string, x: number, y: num
 }
 
 function drawBackground(ctx: CanvasRenderingContext2D) {
-  // Cream → peach diagonal gradient. Tone-down vs almost-white,
-  // 그라데이션 stop 차이를 키워서 그라데이션 자체가 잘 보이게.
+  // Subtle cream diagonal — 살짝 따뜻한 tone, 그라데이션은 자연스럽게.
   const grad = ctx.createLinearGradient(0, 0, SIZE, SIZE);
-  grad.addColorStop(0, '#FFF1DE');
-  grad.addColorStop(0.55, '#FFE2BA');
-  grad.addColorStop(1, '#FFCE92');
+  grad.addColorStop(0, '#FFF8EB');
+  grad.addColorStop(1, '#FFEAD0');
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, SIZE, SIZE);
 }
