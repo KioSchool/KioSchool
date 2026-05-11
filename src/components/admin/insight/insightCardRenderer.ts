@@ -60,16 +60,61 @@ function drawBackground(ctx: CanvasRenderingContext2D) {
   ctx.fillRect(0, 0, SIZE, SIZE);
 }
 
-function drawHeader(ctx: CanvasRenderingContext2D, card: InsightCardResponse) {
+function pickMedalEmoji(template: InsightCardResponse['template']): string {
+  if (template === 'SINGLE_TROPHY') return '🥇';
+  if (template === 'MILESTONE') return '🎉';
+  return '📊';
+}
+
+function drawMedal(ctx: CanvasRenderingContext2D, centerX: number, centerY: number, radius: number, emoji: string) {
+  const grad = ctx.createLinearGradient(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
+  grad.addColorStop(0, '#ffd86b');
+  grad.addColorStop(1, InsightDesignTokens.brand.dark);
+
+  ctx.save();
+  ctx.shadowColor = 'rgba(247, 132, 46, 0.35)';
+  ctx.shadowBlur = 24;
+  ctx.shadowOffsetY = 8;
+  ctx.beginPath();
+  ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+  ctx.fillStyle = grad;
+  ctx.fill();
+  ctx.restore();
+
+  ctx.font = `${radius * 1.2}px ${KO_FONT_STACK}`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(emoji, centerX, centerY + radius * 0.05);
+  ctx.textBaseline = 'alphabetic';
+}
+
+function drawHeader(ctx: CanvasRenderingContext2D, card: InsightCardResponse, workspaceName: string) {
   ctx.textAlign = 'left';
 
+  // 1. 주점 이름 (상단 좌측, 가장 위)
   ctx.fillStyle = InsightDesignTokens.brand.dark;
-  ctx.font = `600 32px ${KO_FONT_STACK}`;
-  ctx.fillText(`FESTIVAL DAILY · ${card.referenceDate}`, 80, 110);
+  ctx.font = `700 36px ${KO_FONT_STACK}`;
+  ctx.fillText(workspaceName, 80, 100);
 
+  // 2. FESTIVAL DAILY · 날짜 (주점 이름 아래, 차분)
   ctx.fillStyle = InsightDesignTokens.brand.dark;
-  ctx.font = `800 76px ${KO_FONT_STACK}`;
-  wrapText(ctx, card.headline, 80, 200, SIZE - 160, 92);
+  ctx.globalAlpha = 0.7;
+  ctx.font = `500 26px ${KO_FONT_STACK}`;
+  ctx.fillText(`FESTIVAL DAILY · ${card.referenceDate}`, 80, 144);
+  ctx.globalAlpha = 1;
+
+  // 3. 금메달 (헤드라인 왼쪽, 크게)
+  const medalRadius = 70;
+  const medalX = 80 + medalRadius;
+  const medalY = 270;
+  drawMedal(ctx, medalX, medalY, medalRadius, pickMedalEmoji(card.template));
+
+  // 4. 헤드라인 (메달 오른쪽)
+  ctx.fillStyle = InsightDesignTokens.brand.dark;
+  ctx.font = `900 72px ${KO_FONT_STACK}`;
+  ctx.textAlign = 'left';
+  const headlineX = medalX + medalRadius + 30;
+  wrapText(ctx, card.headline, headlineX, medalY + 12, SIZE - headlineX - 80, 84);
 }
 
 function drawGrid(ctx: CanvasRenderingContext2D, top: MetricSummary[]) {
@@ -113,26 +158,23 @@ function drawGrid(ctx: CanvasRenderingContext2D, top: MetricSummary[]) {
   });
 }
 
-async function drawFooter(ctx: CanvasRenderingContext2D, workspaceName: string) {
+async function drawFooter(ctx: CanvasRenderingContext2D) {
   const logo = await loadLogo();
-  const footerY = SIZE - 120;
+  const footerY = SIZE - 90;
 
   if (logo) {
-    const logoW = 220;
+    const logoW = 130;
     const logoH = (logo.height / logo.width) * logoW;
     const x = (SIZE - logoW) / 2;
     ctx.drawImage(logo, x, footerY - logoH / 2, logoW, logoH);
   } else {
     ctx.fillStyle = InsightDesignTokens.brand.dark;
-    ctx.font = `800 56px ${KO_FONT_STACK}`;
+    ctx.font = `800 40px ${KO_FONT_STACK}`;
     ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
     ctx.fillText('KIO', SIZE / 2, footerY);
+    ctx.textBaseline = 'alphabetic';
   }
-
-  ctx.fillStyle = InsightDesignTokens.brand.dark;
-  ctx.font = `500 26px ${KO_FONT_STACK}`;
-  ctx.textAlign = 'center';
-  ctx.fillText(workspaceName, SIZE / 2, footerY + 60);
 }
 
 export async function renderInsightCardToCanvas(
@@ -149,9 +191,9 @@ export async function renderInsightCardToCanvas(
   ctx.imageSmoothingQuality = 'high';
 
   drawBackground(ctx);
-  drawHeader(ctx, card);
+  drawHeader(ctx, card, workspaceName);
   drawGrid(ctx, card.topMetrics);
-  await drawFooter(ctx, workspaceName);
+  await drawFooter(ctx);
 
   return canvas;
 }
