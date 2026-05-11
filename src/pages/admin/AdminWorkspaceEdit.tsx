@@ -1,20 +1,26 @@
 import { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import AppContainer from '@components/common/container/AppContainer';
-import styled from '@emotion/styled';
-import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
-import { colFlex, rowFlex } from '@styles/flexStyles';
-import { WorkspaceImage } from '@@types/index';
-import { extractImageIdsAndFiles, initWorkspaceImages, removeAndPushNull } from '@utils/workspaceEdit';
-import WorkspaceImageInput from '@components/admin/workspace/WorkspaceImageInput';
-import { adminWorkspaceAtom } from '@jotai/admin/atoms';
-import { useAtomValue } from 'jotai';
 import { css } from '@emotion/react';
-import NewCommonButton from '@components/common/button/NewCommonButton';
-import NewAppInput from '@components/common/input/NewAppInput';
-import NewAppTextarea from '@components/common/input/NewAppTextarea';
+import styled from '@emotion/styled';
+import { useAtomValue } from 'jotai';
+import { WorkspaceImage } from '@@types/index';
 import OnboardingStepHint from '@components/admin/workspace/onboarding/OnboardingStepHint';
 import { ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardingData';
+import NewCommonButton from '@components/common/button/NewCommonButton';
+import AppContainer from '@components/common/container/AppContainer';
+import NewAppInput from '@components/common/input/NewAppInput';
+import NewAppTextarea from '@components/common/input/NewAppTextarea';
+import WorkspaceImageInput from '@components/admin/workspace/WorkspaceImageInput';
+import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
+import { adminWorkspaceAtom } from '@jotai/admin/atoms';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import {
+  validateWorkspaceInfoForm,
+  WORKSPACE_DESCRIPTION_MAX_LENGTH,
+  WORKSPACE_NAME_MAX_LENGTH,
+  WORKSPACE_NOTICE_MAX_LENGTH,
+} from '@utils/validateWorkspaceInfoForm';
+import { extractImageIdsAndFiles, initWorkspaceImages, removeAndPushNull } from '@utils/workspaceEdit';
 
 const containerStyle = css`
   width: 95%;
@@ -116,21 +122,24 @@ function AdminWorkspaceEdit() {
   };
 
   const handleSubmit = () => {
-    const title = titleRef.current?.value;
-    const description = descriptionRef.current?.value;
-    const notice = noticeRef.current?.value;
+    const rawTitle = titleRef.current?.value;
+    const rawDescription = descriptionRef.current?.value;
+    const rawNotice = noticeRef.current?.value;
 
-    if (!title || !title.trim()) {
-      alert('주점명을 입력해주세요.');
-      return;
-    }
-    if (!description || !description.trim()) {
-      alert('주점 설명을 입력해주세요.');
+    const { name, description, notice, errorMessage } = validateWorkspaceInfoForm(rawTitle, rawDescription, rawNotice);
+
+    if (errorMessage) {
+      if (!name) {
+        titleRef.current?.focus();
+      } else {
+        descriptionRef.current?.focus();
+      }
+      alert(errorMessage);
       return;
     }
 
     const { imageIds, imageFiles } = extractImageIdsAndFiles(displayImages);
-    updateWorkspaceInfoAndImage(Number(workspaceId), title, description, notice, imageIds, imageFiles);
+    updateWorkspaceInfoAndImage(Number(workspaceId), name, description, notice, imageIds, imageFiles);
   };
 
   return (
@@ -138,7 +147,14 @@ function AdminWorkspaceEdit() {
       <ContentContainer>
         <OnboardingStepHint step={ONBOARDING_STEP.INFO} width="95%" />
         <TitleContainer>
-          <NewAppInput label="주점명" ref={titleRef} defaultValue={workspace?.name || ''} width="100%" />
+          <NewAppInput
+            label="주점명"
+            ref={titleRef}
+            defaultValue={workspace?.name || ''}
+            placeholder={`최대 ${WORKSPACE_NAME_MAX_LENGTH}자까지 가능합니다.`}
+            maxLength={WORKSPACE_NAME_MAX_LENGTH}
+            width="100%"
+          />
         </TitleContainer>
         <ImageContainer>
           <Label>대표 사진</Label>
@@ -147,10 +163,24 @@ function AdminWorkspaceEdit() {
           </ImageInputContainer>
         </ImageContainer>
         <DescriptionContainer>
-          <NewAppTextarea label="주점 설명" ref={descriptionRef} defaultValue={workspace?.description || ''} width="100%" />
+          <NewAppTextarea
+            label="주점 설명"
+            ref={descriptionRef}
+            defaultValue={workspace?.description || ''}
+            placeholder={`최대 ${WORKSPACE_DESCRIPTION_MAX_LENGTH}자까지 가능합니다.`}
+            maxLength={WORKSPACE_DESCRIPTION_MAX_LENGTH}
+            width="100%"
+          />
         </DescriptionContainer>
         <NoticeContainer>
-          <NewAppTextarea label="공지 사항" ref={noticeRef} defaultValue={workspace?.notice || ''} width="100%" />
+          <NewAppTextarea
+            label="공지 사항"
+            ref={noticeRef}
+            defaultValue={workspace?.notice || ''}
+            placeholder={`최대 ${WORKSPACE_NOTICE_MAX_LENGTH}자까지 가능합니다.`}
+            maxLength={WORKSPACE_NOTICE_MAX_LENGTH}
+            width="100%"
+          />
         </NoticeContainer>
         <ButtonContainer>
           <NewCommonButton size={'sm'} onClick={handleSubmit}>
