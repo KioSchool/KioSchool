@@ -143,6 +143,7 @@ export default ExampleCard;
 - 반응형: `mobileMediaQuery` (768px), `tabletMediaQuery` (1200px) from `@styles/globalStyles`
 - **Styled 컴포넌트 내부 배치 순서**: 일반 CSS 속성 → `colFlex`/`rowFlex` → `mediaQuery` (import해서 사용하는 것들은 맨 아래에, flex → mediaQuery 순서)
 - **inline style 사용 금지** — 레이아웃 스타일은 반드시 Styled 컴포넌트로 정의. framer-motion의 애니메이션 값(`y`, `scale` 등)만 예외 허용
+- **쌩 HTML 태그 JSX 직접 반환 금지** — 컴포넌트 최상위 반환값은 반드시 Styled 컴포넌트를 사용한다. 스타일이 없는 래퍼가 필요하면 `const Section = styled.div\`\`` 처럼 빈 styled 컴포넌트로 감싼다.
 - 폰트: LINE Seed Sans KR (글로벌 적용)
 
 ## State Management (Jotai)
@@ -175,6 +176,10 @@ src/apis/
 - `withCredentials: true`, `timeout: 30000`
 - 인터셉터: 로딩 표시(500ms 디바운스), 에러 → Sentry 전송, 403/401 → 인증 에러 이벤트 발행
 - 사용: `useApi()` 훅에서 세 API 인스턴스를 반환
+
+## TypeScript Rules
+
+- **매직 넘버 금지** — 의미 있는 숫자 리터럴은 반드시 SCREAMING_SNAKE_CASE 상수로 추출한다. (예: `60` → `MINUTES_PER_HOUR`, `1440` → `MINUTES_PER_DAY`)
 
 ## Prettier / ESLint
 
