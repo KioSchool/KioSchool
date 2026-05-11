@@ -438,6 +438,16 @@ export interface CardPayload {
   milestoneStep?: number;
 }
 
+export interface MetricSummary {
+  key: string;
+  label: string;
+  value: string;
+  percentile: number | null;
+  milestoneStep: number | null;
+  rank: number;
+  highlighted: boolean;
+}
+
 export interface InsightCardResponse {
   referenceDate: string;
   template: CardTemplate;
@@ -445,4 +455,5 @@ export interface InsightCardResponse {
   bestMetricPercentile: number | null;
   headline: string;
   payload: CardPayload;
+  topMetrics: MetricSummary[];
 }
