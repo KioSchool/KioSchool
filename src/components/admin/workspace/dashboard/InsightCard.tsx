@@ -1,65 +1,94 @@
 import styled from '@emotion/styled';
-import { Color } from '@resources/colors';
-import { rowFlex } from '@styles/flexStyles';
+import { RiShare2Line } from '@remixicon/react';
+import { rowFlex, colFlex } from '@styles/flexStyles';
 import { useAdminFetchInsightCard } from '@hooks/admin/useAdminFetchInsightCard';
-import { InsightCardResponse } from '@@types/index';
+import { InsightCardResponse, MetricSummary } from '@@types/index';
+import { InsightDesignTokens, RankKey } from '@components/admin/insight/insightDesignTokens';
 
 const Container = styled.div`
   width: 100%;
-  border-radius: 8px;
-  border: 1px solid ${Color.GREY};
-  padding: 14px;
-  background: #fff;
+  background: ${InsightDesignTokens.card.background};
+  border: 1px solid ${InsightDesignTokens.card.border};
+  border-radius: ${InsightDesignTokens.card.radius};
+  box-shadow: ${InsightDesignTokens.card.shadow};
+  padding: ${InsightDesignTokens.card.padding};
+  gap: 12px;
+  ${colFlex({ align: 'stretch' })};
 `;
 
-const Empty = styled.div`
+const HeaderRow = styled.div`
   width: 100%;
-  border-radius: 8px;
-  border: 1px dashed ${Color.GREY};
-  padding: 14px;
-  text-align: center;
-  color: ${Color.GREY};
-  font-size: 12px;
+  ${rowFlex({ justify: 'space-between', align: 'center' })};
 `;
 
-const TrophyRow = styled.div`
-  gap: 14px;
-  ${rowFlex({ justify: 'start', align: 'center' })};
+const HeaderText = styled.div`
+  ${colFlex({ align: 'start' })};
+  gap: 2px;
 `;
 
-const Medal = styled.div`
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  flex-shrink: 0;
+const Sub = styled.div`
+  font-size: 11px;
+  color: ${InsightDesignTokens.text.muted};
 `;
 
 const Headline = styled.div`
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
-  color: #1f2937;
-`;
-
-const SubText = styled.div`
-  font-size: 12px;
-  color: #6b7280;
+  color: ${InsightDesignTokens.text.primary};
 `;
 
 const ShareButton = styled.button`
-  margin-left: auto;
-  padding: 8px 14px;
-  background: #3b82f6;
+  padding: 6px 12px;
+  background: ${InsightDesignTokens.brand.main};
   color: #fff;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
+  gap: 4px;
+  ${rowFlex({ align: 'center' })};
+
+  &:hover {
+    background: ${InsightDesignTokens.brand.dark};
+  }
+`;
+
+const Grid = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+`;
+
+const Cell = styled.div<{ rank: RankKey }>`
+  padding: 10px;
+  border-radius: 8px;
+  background: ${({ rank }) => InsightDesignTokens.rank[rank].bg};
+  border: 1px solid ${({ rank }) => InsightDesignTokens.rank[rank].border};
+  ${colFlex({ align: 'start' })};
+  gap: 2px;
+`;
+
+const CellLabel = styled.div<{ rank: RankKey }>`
+  font-size: 10px;
+  color: ${({ rank }) => InsightDesignTokens.rank[rank].labelText};
+`;
+
+const CellValue = styled.div<{ rank: RankKey }>`
+  font-size: 14px;
+  font-weight: 700;
+  color: ${({ rank }) => InsightDesignTokens.rank[rank].text};
+`;
+
+const CellNote = styled.div<{ rank: RankKey }>`
+  font-size: 9px;
+  color: ${({ rank }) => InsightDesignTokens.rank[rank].labelText};
+`;
+
+const RankPrefix = styled.span`
+  opacity: 0.6;
+  margin-right: 2px;
 `;
 
 interface Props {
@@ -67,34 +96,46 @@ interface Props {
   onShareClick: (card: InsightCardResponse) => void;
 }
 
+function MetricCell({ summary }: { summary: MetricSummary }) {
+  const rank = summary.rank as RankKey;
+  return (
+    <Cell rank={rank}>
+      <CellLabel rank={rank}>
+        <RankPrefix>#{summary.rank}</RankPrefix>
+        {summary.label}
+      </CellLabel>
+      <CellValue rank={rank}>{summary.value}</CellValue>
+      {summary.percentile != null && (
+        <CellNote rank={rank}>상위 {Math.round(100 - summary.percentile)}%</CellNote>
+      )}
+      {summary.milestoneStep != null && <CellNote rank={rank}>마일스톤 돌파</CellNote>}
+    </Cell>
+  );
+}
+
 function InsightCard({ workspaceId, onShareClick }: Props) {
   const { card, isLoading } = useAdminFetchInsightCard(workspaceId);
 
   if (isLoading) return null;
-  if (!card) return <Empty>오늘 영업이 끝나면 어제의 자랑 카드가 생성됩니다 ✨</Empty>;
-
-  const renderMedal = () => {
-    if (card.template === 'SINGLE_TROPHY') return <Medal>🥇</Medal>;
-    if (card.template === 'MILESTONE') return <Medal style={{ background: '#10b981' }}>🎉</Medal>;
-    return <Medal style={{ background: '#374151' }}>📊</Medal>;
-  };
+  if (!card || card.topMetrics.length === 0) return null;
 
   return (
     <Container>
-      <TrophyRow>
-        {renderMedal()}
-        <div>
-          <SubText>어제의 자랑 · {card.referenceDate}</SubText>
+      <HeaderRow>
+        <HeaderText>
+          <Sub>어제의 자랑 · {card.referenceDate}</Sub>
           <Headline>{card.headline}</Headline>
-          {card.payload.cohortAverageRatio != null && (
-            <SubText>
-              코호트 평균 대비 {card.payload.cohortAverageRatio > 0 ? '+' : ''}
-              {Math.round(card.payload.cohortAverageRatio * 100)}%
-            </SubText>
-          )}
-        </div>
-        <ShareButton onClick={() => onShareClick(card)}>📤 자랑하기</ShareButton>
-      </TrophyRow>
+        </HeaderText>
+        <ShareButton onClick={() => onShareClick(card)}>
+          <RiShare2Line size={14} />
+          자랑하기
+        </ShareButton>
+      </HeaderRow>
+      <Grid>
+        {card.topMetrics.map((m) => (
+          <MetricCell key={m.key} summary={m} />
+        ))}
+      </Grid>
     </Container>
   );
 }
