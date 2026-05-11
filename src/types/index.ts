@@ -444,6 +444,5 @@ export interface InsightCardResponse {
   bestMetricKey: string | null;
   bestMetricPercentile: number | null;
   headline: string;
-  imageUrl: string;
   payload: CardPayload;
 }

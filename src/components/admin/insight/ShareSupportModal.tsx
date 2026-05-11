@@ -108,12 +108,10 @@ function ShareSupportModal({ card, onClose }: Props) {
         <div>
           <HelperText style={{ marginBottom: 6 }}>공유</HelperText>
           <ShareRow>
-            <ShareButton onClick={() => share(card.imageUrl, meta)}>📤 공유하기</ShareButton>
-            <SaveButton onClick={() => download(card.imageUrl)}>📥 이미지 저장</SaveButton>
+            <ShareButton onClick={() => share(card, meta)}>📤 공유하기</ShareButton>
+            <SaveButton onClick={() => download(card)}>📥 이미지 저장</SaveButton>
           </ShareRow>
-          <HelperText style={{ marginTop: 6 }}>
-            "공유하기"는 OS 시트로 인스타/카톡/메일/저장 등이 한 자리에 뜹니다 (모바일이 가장 풍부).
-          </HelperText>
+          <HelperText style={{ marginTop: 6 }}>"공유하기"는 OS 시트로 인스타/카톡/메일/저장 등이 한 자리에 뜹니다 (모바일이 가장 풍부).</HelperText>
         </div>
         <DonationSection />
       </Modal>
