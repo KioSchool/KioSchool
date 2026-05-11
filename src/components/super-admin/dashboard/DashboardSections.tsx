@@ -10,6 +10,7 @@ import DailyChartSection from './DailyChartSection';
 import ActiveWorkspaceSection from './ActiveWorkspaceSection';
 import FunnelSection from './FunnelSection';
 import TopWorkspacesSection from './TopWorkspacesSection';
+import OnboardingTimeSection from './OnboardingTimeSection';
 
 const Stack = styled.div`
   width: 100%;
@@ -36,6 +37,7 @@ function DashboardSections({ data }: DashboardSectionsProps) {
       <WorkspaceStatsSection workspaces={data.workspaces} />
       <RevenueStatsSection revenue={data.revenue} />
       <FunnelSection funnel={data.insights.funnel} />
+      <OnboardingTimeSection stats={data.insights.onboardingTimeStats} />
       <TopWorkspacesSection items={data.insights.topWorkspaces} />
     </Stack>
   );

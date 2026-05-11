@@ -360,6 +360,18 @@ export interface DashboardFunnel {
   hadFirstOrder: number;
 }
 
+export interface OnboardingDistributionBucket {
+  label: string;
+  count: number;
+}
+
+export interface OnboardingTimeStats {
+  averageMinutes: number;
+  medianMinutes: number;
+  neverCreatedCount: number;
+  distribution: OnboardingDistributionBucket[];
+}
+
 export interface DashboardInsights {
   dailyLast30Days: DailyPoint[];
   activeWorkspacesLast7Days: number;
@@ -369,6 +381,7 @@ export interface DashboardInsights {
   totalOrdersForCancelRate: number;
   topWorkspaces: WorkspaceRankItem[];
   funnel: DashboardFunnel;
+  onboardingTimeStats: OnboardingTimeStats;
 }
 
 export interface SuperAdminDashboard {
