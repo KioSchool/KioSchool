@@ -53,9 +53,10 @@ function wrapText(ctx: CanvasRenderingContext2D, text: string, x: number, y: num
 }
 
 function drawBackground(ctx: CanvasRenderingContext2D) {
+  // Almost-white cream so the gold medal pops
   const grad = ctx.createLinearGradient(0, 0, SIZE, SIZE);
-  grad.addColorStop(0, '#FFE7D3');
-  grad.addColorStop(1, '#FFF3E7');
+  grad.addColorStop(0, '#FFFDF8');
+  grad.addColorStop(1, '#FFF6EA');
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, SIZE, SIZE);
 }
@@ -67,19 +68,28 @@ function pickMedalEmoji(template: InsightCardResponse['template']): string {
 }
 
 function drawMedal(ctx: CanvasRenderingContext2D, centerX: number, centerY: number, radius: number, emoji: string) {
-  const grad = ctx.createLinearGradient(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
-  grad.addColorStop(0, '#ffd86b');
-  grad.addColorStop(1, InsightDesignTokens.brand.dark);
+  // True gold gradient (lighter top, deep amber bottom) — distinct from cream bg
+  const grad = ctx.createLinearGradient(centerX, centerY - radius, centerX, centerY + radius);
+  grad.addColorStop(0, '#FFE066');
+  grad.addColorStop(0.55, '#FFB300');
+  grad.addColorStop(1, '#C77800');
 
   ctx.save();
-  ctx.shadowColor = 'rgba(247, 132, 46, 0.35)';
-  ctx.shadowBlur = 24;
-  ctx.shadowOffsetY = 8;
+  ctx.shadowColor = 'rgba(0, 0, 0, 0.18)';
+  ctx.shadowBlur = 18;
+  ctx.shadowOffsetY = 6;
   ctx.beginPath();
   ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
   ctx.fillStyle = grad;
   ctx.fill();
   ctx.restore();
+
+  // Inner highlight ring for metallic feel
+  ctx.beginPath();
+  ctx.arc(centerX, centerY, radius * 0.78, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+  ctx.lineWidth = 3;
+  ctx.stroke();
 
   ctx.font = `${radius * 1.2}px ${KO_FONT_STACK}`;
   ctx.textAlign = 'center';
@@ -91,37 +101,46 @@ function drawMedal(ctx: CanvasRenderingContext2D, centerX: number, centerY: numb
 function drawHeader(ctx: CanvasRenderingContext2D, card: InsightCardResponse, workspaceName: string) {
   ctx.textAlign = 'left';
 
-  // 1. 주점 이름 (상단 좌측, 가장 위)
+  // 1. 주점 이름 (상단 좌측)
   ctx.fillStyle = InsightDesignTokens.brand.dark;
-  ctx.font = `700 36px ${KO_FONT_STACK}`;
-  ctx.fillText(workspaceName, 80, 100);
+  ctx.font = `700 34px ${KO_FONT_STACK}`;
+  ctx.fillText(workspaceName, 80, 90);
 
-  // 2. FESTIVAL DAILY · 날짜 (주점 이름 아래, 차분)
+  // 2. FESTIVAL DAILY · 날짜
   ctx.fillStyle = InsightDesignTokens.brand.dark;
-  ctx.globalAlpha = 0.7;
-  ctx.font = `500 26px ${KO_FONT_STACK}`;
-  ctx.fillText(`FESTIVAL DAILY · ${card.referenceDate}`, 80, 144);
+  ctx.globalAlpha = 0.6;
+  ctx.font = `500 22px ${KO_FONT_STACK}`;
+  ctx.fillText(`FESTIVAL DAILY · ${card.referenceDate}`, 80, 124);
   ctx.globalAlpha = 1;
 
-  // 3. 금메달 (헤드라인 왼쪽, 크게)
-  const medalRadius = 70;
+  // 3. 금메달 + 헤드라인 (제목 묶음과 가깝게)
+  const medalRadius = 64;
   const medalX = 80 + medalRadius;
-  const medalY = 270;
+  const medalY = 218;
   drawMedal(ctx, medalX, medalY, medalRadius, pickMedalEmoji(card.template));
 
-  // 4. 헤드라인 (메달 오른쪽)
+  // 4. 헤드라인 (메달 오른쪽, 메달 vertical 중앙 정렬)
   ctx.fillStyle = InsightDesignTokens.brand.dark;
-  ctx.font = `900 72px ${KO_FONT_STACK}`;
+  ctx.font = `900 64px ${KO_FONT_STACK}`;
   ctx.textAlign = 'left';
-  const headlineX = medalX + medalRadius + 30;
-  wrapText(ctx, card.headline, headlineX, medalY + 12, SIZE - headlineX - 80, 84);
+  const headlineX = medalX + medalRadius + 28;
+  wrapText(ctx, card.headline, headlineX, medalY + 22, SIZE - headlineX - 80, 74);
 }
 
 function drawGrid(ctx: CanvasRenderingContext2D, top: MetricSummary[]) {
-  const startY = 360;
+  // 제목 묶음(끝 y ≈ 280)과 가까운 320부터 시작
+  const startY = 320;
   const cellW = (SIZE - 80 * 2 - 24) / 2;
-  const cellH = 290;
-  const gap = 24;
+  const cellH = 280;
+  const gap = 20;
+  // 셀 내부 공통 padding & 위계
+  // - label (작은 caption, 위)
+  // - value (큰 메인, 중앙)
+  // - note (작은 caption, 아래) — label과 동일 시각 위계
+  const padX = 28;
+  const labelY = 56;
+  const valueY = 138;
+  const noteY = 204;
 
   top.slice(0, 4).forEach((m, idx) => {
     const col = idx % 2;
@@ -129,31 +148,36 @@ function drawGrid(ctx: CanvasRenderingContext2D, top: MetricSummary[]) {
     const x = 80 + col * (cellW + gap);
     const y = startY + row * (cellH + gap);
 
-    const rankKey = ((idx + 1) as RankKey);
+    const rankKey = (idx + 1) as RankKey;
     const alpha = InsightDesignTokens.png.cellAlpha[rankKey];
 
     ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-    roundRect(ctx, x, y, cellW, cellH, 16);
+    roundRect(ctx, x, y, cellW, cellH, 18);
     ctx.fill();
 
     const tone = InsightDesignTokens.rank[rankKey];
+
+    // label (caption, top)
     ctx.fillStyle = tone.labelText;
-    ctx.font = `600 28px ${KO_FONT_STACK}`;
+    ctx.font = `600 26px ${KO_FONT_STACK}`;
     ctx.textAlign = 'left';
-    ctx.fillText(`#${rankKey}  ${m.label}`, x + 24, y + 60);
+    ctx.fillText(`#${rankKey}  ${m.label}`, x + padX, y + labelY);
 
+    // value (hero, center) — 위계 강조
     ctx.fillStyle = tone.text;
-    ctx.font = `800 72px ${KO_FONT_STACK}`;
-    ctx.fillText(m.value, x + 24, y + 160);
+    ctx.font = `900 78px ${KO_FONT_STACK}`;
+    ctx.fillText(m.value, x + padX, y + valueY);
 
-    if (m.percentile != null) {
+    // note (caption, bottom) — label과 동일 폰트/사이즈 위계
+    const note = m.percentile != null
+      ? `상위 ${Math.round(100 - m.percentile)}%`
+      : m.milestoneStep != null
+        ? '마일스톤 돌파'
+        : null;
+    if (note) {
       ctx.fillStyle = tone.labelText;
-      ctx.font = `500 24px ${KO_FONT_STACK}`;
-      ctx.fillText(`상위 ${Math.round(100 - m.percentile)}%`, x + 24, y + 220);
-    } else if (m.milestoneStep != null) {
-      ctx.fillStyle = tone.labelText;
-      ctx.font = `500 24px ${KO_FONT_STACK}`;
-      ctx.fillText('마일스톤 돌파', x + 24, y + 220);
+      ctx.font = `500 22px ${KO_FONT_STACK}`;
+      ctx.fillText(note, x + padX, y + noteY);
     }
   });
 }
@@ -177,10 +201,7 @@ async function drawFooter(ctx: CanvasRenderingContext2D) {
   }
 }
 
-export async function renderInsightCardToCanvas(
-  card: InsightCardResponse,
-  workspaceName: string,
-): Promise<HTMLCanvasElement> {
+export async function renderInsightCardToCanvas(card: InsightCardResponse, workspaceName: string): Promise<HTMLCanvasElement> {
   const canvas = document.createElement('canvas');
   canvas.width = SIZE;
   canvas.height = SIZE;
@@ -198,10 +219,7 @@ export async function renderInsightCardToCanvas(
   return canvas;
 }
 
-export async function renderInsightCardToBlob(
-  card: InsightCardResponse,
-  workspaceName: string,
-): Promise<Blob> {
+export async function renderInsightCardToBlob(card: InsightCardResponse, workspaceName: string): Promise<Blob> {
   const canvas = await renderInsightCardToCanvas(card, workspaceName);
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
@@ -211,10 +229,7 @@ export async function renderInsightCardToBlob(
   });
 }
 
-export async function renderInsightCardToDataUrl(
-  card: InsightCardResponse,
-  workspaceName: string,
-): Promise<string> {
+export async function renderInsightCardToDataUrl(card: InsightCardResponse, workspaceName: string): Promise<string> {
   const canvas = await renderInsightCardToCanvas(card, workspaceName);
   return canvas.toDataURL('image/png');
 }

@@ -12,21 +12,9 @@ const Container = styled.div`
   border: 1px solid ${InsightDesignTokens.card.border};
   border-radius: ${InsightDesignTokens.card.radius};
   box-shadow: ${InsightDesignTokens.card.shadow};
-  padding: 18px 21px;
+  padding: 14px 21px;
   gap: 14px;
-  position: relative;
-  overflow: hidden;
   ${colFlex({ align: 'stretch' })};
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 6px;
-    height: 100%;
-    background: linear-gradient(180deg, ${InsightDesignTokens.brand.dark}, ${InsightDesignTokens.brand.main});
-  }
 `;
 
 const HeaderRow = styled.div`
