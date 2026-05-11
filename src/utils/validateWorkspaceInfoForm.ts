@@ -7,9 +7,9 @@ interface WorkspaceInfoValidationResult {
   errorMessage: string | null;
 }
 
-export const WORKSPACE_NAME_MAX_LENGTH = 50;
-export const WORKSPACE_DESCRIPTION_MAX_LENGTH = 200;
-export const WORKSPACE_NOTICE_MAX_LENGTH = 500;
+export const WORKSPACE_NAME_MAX_LENGTH = 30;
+export const WORKSPACE_DESCRIPTION_MAX_LENGTH = 100;
+export const WORKSPACE_NOTICE_MAX_LENGTH = 300;
 
 function normalizeInput(value: string | undefined) {
   return value?.trim() ?? '';
