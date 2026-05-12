@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
 import styled from '@emotion/styled';
@@ -11,6 +11,9 @@ import TopSellingList from './TopSellingList';
 import MemoCard from './MemoCard';
 import { getBusinessStartDate } from '@utils/dashboard';
 import NotionGuideSection from './NotionGuideSection';
+import InsightCard from './InsightCard';
+import ShareSupportModal from '@components/admin/insight/ShareSupportModal';
+import { InsightCardResponse } from '@@types/index';
 
 const DashboardContainer = styled.div`
   width: 800px;
@@ -38,6 +41,8 @@ function AdminDashboard() {
   const { fetchDashboard } = useAdminDashboard();
   const { dashboardWorkspaceInfo, stats } = useAtomValue(adminDashboardAtom);
   const workspace = useAtomValue(adminWorkspaceAtom);
+  const [shareCard, setShareCard] = useState<InsightCardResponse | null>(null);
+  const insightEnabled = import.meta.env.VITE_INSIGHT_CARD_ENABLED === 'true';
 
   useEffect(() => {
     fetchDashboard(workspaceId);
@@ -55,6 +60,8 @@ function AdminDashboard() {
     <DashboardContainer>
       <NoticeBanner />
 
+      {insightEnabled && workspaceId && <InsightCard workspaceId={workspaceId} onShareClick={setShareCard} />}
+
       <MainRow>
         <StatCardsWrapper>
           <StatCard title="사용 중인 테이블" value={usingTable} description={`${usageRate}% 사용률`} highlightRate={usageRate} />
@@ -67,6 +74,7 @@ function AdminDashboard() {
 
       <MemoCard initialMemo={workspace.memo} />
       <NotionGuideSection />
+      {shareCard && <ShareSupportModal card={shareCard} workspaceName={workspace.name} onClose={() => setShareCard(null)} />}
     </DashboardContainer>
   );
 }
