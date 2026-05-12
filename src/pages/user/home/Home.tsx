@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
+import PageSeo from '@components/common/page/PageSeo';
 import { MotionConfig } from 'framer-motion';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex } from '@styles/flexStyles';
+import { MARKETING_SEO } from '@constants/marketingSeo';
 import HeroSection from '@components/user/home/hero/HeroSection';
 import PainPointSection from '@components/user/home/PainPointSection';
 import HowItWorksSection from '@components/user/home/how-it-works/HowItWorksSection';
@@ -24,6 +26,7 @@ function Home() {
   return (
     <MotionConfig reducedMotion="user">
       <LandingWrapper>
+        <PageSeo {...MARKETING_SEO.home} />
         <AppContainer useFlex={colFlex()} customWidth={'100%'} useTitle={false} useFullHeight={true}>
           <>
             <HeroSection />
