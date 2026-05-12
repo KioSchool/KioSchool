@@ -30,13 +30,13 @@ const Chip = styled.button<{ selected: boolean }>`
 `;
 
 const ChipIllustration = styled.img`
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   object-fit: contain;
 
   ${mobileMediaQuery} {
-    width: 64px;
-    height: 64px;
+    width: 96px;
+    height: 96px;
   }
 `;
 
