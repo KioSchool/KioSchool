@@ -152,11 +152,14 @@ function MetricCell({ summary }: { summary: MetricSummary }) {
   );
 }
 
+const MIN_YESTERDAY_REVENUE = 500000;
+
 function InsightCard({ workspaceId, onShareClick }: Props) {
   const { card, isLoading } = useAdminFetchInsightCard(workspaceId);
 
   if (isLoading) return null;
   if (!card || card.topMetrics.length === 0) return null;
+  if ((card.payload.totalRevenue ?? 0) < MIN_YESTERDAY_REVENUE) return null;
 
   return (
     <Container>
