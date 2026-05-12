@@ -2,11 +2,13 @@ import styled from '@emotion/styled';
 import { QRCodeSVG } from 'qrcode.react';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import { MIN_AMOUNT } from './donationConstants';
+import { CUSTOM_AMOUNT_SENTINEL, MIN_AMOUNT } from './donationConstants';
 
 const Container = styled.div`
   width: 100%;
-  padding: 16px;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 14px;
   background: ${Color.WHITE};
   border: 1px solid ${Color.HEAVY_GREY};
   border-radius: 10px;
@@ -28,12 +30,12 @@ const QrFrame = styled.div`
 `;
 
 const Placeholder = styled.div`
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   background: ${Color.LIGHT_GREY};
   border-radius: 8px;
   color: ${Color.GREY};
-  font-size: 13px;
+  font-size: 12px;
   text-align: center;
   padding: 0 12px;
   ${colFlex({ justify: 'center', align: 'center' })};
@@ -52,9 +54,12 @@ interface DonationQrProps {
 }
 
 function DonationQr({ tossAccountUrl, amount }: DonationQrProps) {
-  const isAmountValid = amount >= MIN_AMOUNT;
+  const isCustomMode = amount === CUSTOM_AMOUNT_SENTINEL;
+  const isAmountValid = isCustomMode || amount >= MIN_AMOUNT;
   const isReady = !!tossAccountUrl && isAmountValid;
-  const qrValue = isReady ? `${tossAccountUrl}&amount=${amount}` : '';
+  const qrValue = isReady && tossAccountUrl ? (isCustomMode ? tossAccountUrl : `${tossAccountUrl}&amount=${amount}`) : '';
+
+  const amountLabel = isCustomMode ? '원하는 금액으로 보내기' : `${amount.toLocaleString()}원 보내기`;
 
   const placeholderText = (() => {
     if (!tossAccountUrl) return '도네이션 정보가 설정되지 않았습니다.\n운영팀에 문의해주세요.';
@@ -63,10 +68,10 @@ function DonationQr({ tossAccountUrl, amount }: DonationQrProps) {
 
   return (
     <Container>
-      <AmountLine>{amount.toLocaleString()}원 보내기</AmountLine>
+      <AmountLine>{amountLabel}</AmountLine>
       {isReady ? (
         <QrFrame>
-          <QRCodeSVG value={qrValue} size={200} level="M" bgColor="#ffffff" fgColor="#000000" />
+          <QRCodeSVG value={qrValue} size={150} level="M" bgColor="#ffffff" fgColor="#000000" />
         </QrFrame>
       ) : (
         <Placeholder>{placeholderText}</Placeholder>

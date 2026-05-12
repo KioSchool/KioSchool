@@ -8,9 +8,13 @@ import c6TrioCheers from '@resources/image/donation/c6-trio-cheers.png';
 export const MIN_AMOUNT = 1000;
 export const DEFAULT_AMOUNT = 50000;
 
+export const CUSTOM_AMOUNT_SENTINEL = 0;
+
+export type PresetCharacter = 'K' | 'I' | 'O' | 'CUSTOM';
+
 export interface PresetOption {
   amount: number;
-  character: 'K' | 'I' | 'O';
+  character: PresetCharacter;
   description: string;
   illustration: string;
 }
@@ -33,6 +37,12 @@ export const PRESET_OPTIONS: readonly PresetOption[] = [
     character: 'O',
     description: '다음 신기능 하나, 통째로',
     illustration: c3OShipping,
+  },
+  {
+    amount: CUSTOM_AMOUNT_SENTINEL,
+    character: 'CUSTOM',
+    description: '원하는 만큼 보내기',
+    illustration: c4IFlag,
   },
 ] as const;
 

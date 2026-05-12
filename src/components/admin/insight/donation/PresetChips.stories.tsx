@@ -39,3 +39,10 @@ export const O100KSelected: Story = {
     onSelect: () => {},
   },
 };
+
+export const CustomSelected: Story = {
+  args: {
+    selectedAmount: 0,
+    onSelect: () => {},
+  },
+};

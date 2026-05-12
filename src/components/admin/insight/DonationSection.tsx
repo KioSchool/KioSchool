@@ -2,7 +2,6 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import CustomAmountInput from './donation/CustomAmountInput';
 import DonationQr from './donation/DonationQr';
 import PresetChips from './donation/PresetChips';
 import { DEFAULT_AMOUNT, PresetOption } from './donation/donationConstants';
@@ -30,7 +29,6 @@ const Tail = styled.div`
 
 function DonationSection() {
   const [amount, setAmount] = useState<number>(DEFAULT_AMOUNT);
-  const [isCustomExpanded, setIsCustomExpanded] = useState<boolean>(false);
 
   const tossUrl = import.meta.env.VITE_KIO_DONATION_TOSS_URL as string | undefined;
 
@@ -38,16 +36,11 @@ function DonationSection() {
     setAmount(option.amount);
   };
 
-  const handleCustomToggle = () => {
-    setIsCustomExpanded((prev) => !prev);
-  };
-
   return (
     <Section>
       <Label>KioSchool 만든 사람들에게 응원 보내기</Label>
       <PresetChips selectedAmount={amount} onSelect={handlePresetSelect} />
       <DonationQr tossAccountUrl={tossUrl} amount={amount} />
-      <CustomAmountInput expanded={isCustomExpanded} tossAccountUrl={tossUrl} onToggle={handleCustomToggle} />
       <Tail>송금자명에 닉네임이나 주점명을 적어주시면 운영팀이 확인하기 쉬워요.</Tail>
     </Section>
   );
