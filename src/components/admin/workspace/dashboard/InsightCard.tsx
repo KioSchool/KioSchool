@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { RiShare2Line } from '@remixicon/react';
 import { rowFlex, colFlex } from '@styles/flexStyles';
 import { useAdminFetchInsightCard } from '@hooks/admin/useAdminFetchInsightCard';
+import useInsightDiscordReport from '@hooks/admin/useInsightDiscordReport';
 import { InsightCardResponse, MetricSummary } from '@@types/index';
 import { InsightDesignTokens, RankKey } from '@components/admin/insight/insightDesignTokens';
 import goodCharacter from '@resources/image/donation/good.webp';
@@ -134,6 +135,7 @@ const RankPrefix = styled.span`
 
 interface Props {
   workspaceId: string;
+  workspaceName: string;
   onShareClick: (card: InsightCardResponse) => void;
 }
 
@@ -154,12 +156,18 @@ function MetricCell({ summary }: { summary: MetricSummary }) {
 
 const MIN_YESTERDAY_REVENUE = 500000;
 
-function InsightCard({ workspaceId, onShareClick }: Props) {
+function InsightCard({ workspaceId, workspaceName, onShareClick }: Props) {
   const { card, isLoading } = useAdminFetchInsightCard(workspaceId);
+  const { reportShareClick } = useInsightDiscordReport();
 
   if (isLoading) return null;
   if (!card || card.topMetrics.length === 0) return null;
   if ((card.payload.totalRevenue ?? 0) < MIN_YESTERDAY_REVENUE) return null;
+
+  const handleShareClick = () => {
+    reportShareClick(workspaceId, workspaceName, card);
+    onShareClick(card);
+  };
 
   return (
     <Container>
@@ -171,7 +179,7 @@ function InsightCard({ workspaceId, onShareClick }: Props) {
             <Headline>{card.headline}</Headline>
           </HeaderTextInner>
         </HeaderText>
-        <ShareButton onClick={() => onShareClick(card)}>
+        <ShareButton onClick={handleShareClick}>
           <RiShare2Line size={14} />
           자랑하기
         </ShareButton>

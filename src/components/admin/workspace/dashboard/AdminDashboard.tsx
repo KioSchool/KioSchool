@@ -60,7 +60,7 @@ function AdminDashboard() {
     <DashboardContainer>
       <NoticeBanner />
 
-      {insightEnabled && workspaceId && <InsightCard workspaceId={workspaceId} onShareClick={setShareCard} />}
+      {insightEnabled && workspaceId && <InsightCard workspaceId={workspaceId} workspaceName={workspace.name} onShareClick={setShareCard} />}
 
       <MainRow>
         <StatCardsWrapper>
@@ -74,7 +74,9 @@ function AdminDashboard() {
 
       <MemoCard initialMemo={workspace.memo} />
       <NotionGuideSection />
-      {shareCard && <ShareSupportModal card={shareCard} workspaceName={workspace.name} onClose={() => setShareCard(null)} />}
+      {shareCard && workspaceId && (
+        <ShareSupportModal card={shareCard} workspaceId={workspaceId} workspaceName={workspace.name} onClose={() => setShareCard(null)} />
+      )}
     </DashboardContainer>
   );
 }

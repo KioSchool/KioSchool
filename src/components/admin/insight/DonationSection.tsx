@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
+import useInsightDiscordReport from '@hooks/admin/useInsightDiscordReport';
 import DonationQr from './donation/DonationQr';
 import PresetChips from './donation/PresetChips';
 import { DEFAULT_AMOUNT, PresetOption } from './donation/donationConstants';
@@ -27,10 +28,17 @@ const Tail = styled.div`
   line-height: 1.4;
 `;
 
-function DonationSection() {
+interface DonationSectionProps {
+  workspaceId: string;
+  workspaceName: string;
+}
+
+function DonationSection({ workspaceId, workspaceName }: DonationSectionProps) {
   const [amount, setAmount] = useState<number>(DEFAULT_AMOUNT);
+  const { reportDonationAmountClick } = useInsightDiscordReport();
 
   const handlePresetSelect = (option: PresetOption) => {
+    reportDonationAmountClick(workspaceId, workspaceName, option);
     setAmount(option.amount);
   };
 

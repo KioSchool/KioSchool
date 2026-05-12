@@ -6,6 +6,7 @@ import { RiCloseLargeLine, RiShare2Line, RiDownload2Line } from '@remixicon/reac
 import { rowFlex, colFlex } from '@styles/flexStyles';
 import { MODAL_ROOT_KEY } from '@hooks/useModal';
 import useShareCard from '@hooks/admin/useShareCard';
+import useInsightDiscordReport from '@hooks/admin/useInsightDiscordReport';
 import { renderInsightCardToDataUrl } from './insightCardRenderer';
 import DonationSection from './DonationSection';
 import { InsightCardResponse } from '@@types/index';
@@ -108,12 +109,14 @@ const ActionButton = styled.button<{ primary?: boolean }>`
 
 interface Props {
   card: InsightCardResponse;
+  workspaceId: string;
   workspaceName: string;
   onClose: () => void;
 }
 
-function ShareSupportModal({ card, workspaceName, onClose }: Props) {
+function ShareSupportModal({ card, workspaceId, workspaceName, onClose }: Props) {
   const { share, download } = useShareCard();
+  const { reportShareAction } = useInsightDiscordReport();
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -164,17 +167,28 @@ function ShareSupportModal({ card, workspaceName, onClose }: Props) {
         </Preview>
 
         <ActionRow>
-          <ActionButton primary onClick={() => share(card, workspaceName, meta)}>
+          <ActionButton
+            primary
+            onClick={() => {
+              reportShareAction(workspaceId, workspaceName, 'share');
+              share(card, workspaceName, meta);
+            }}
+          >
             <RiShare2Line size={14} />
             공유하기
           </ActionButton>
-          <ActionButton onClick={() => download(card, workspaceName)}>
+          <ActionButton
+            onClick={() => {
+              reportShareAction(workspaceId, workspaceName, 'download');
+              download(card, workspaceName);
+            }}
+          >
             <RiDownload2Line size={14} />
             이미지 저장
           </ActionButton>
         </ActionRow>
 
-        <DonationSection />
+        <DonationSection workspaceId={workspaceId} workspaceName={workspaceName} />
       </Modal>
     </Overlay>
   );
