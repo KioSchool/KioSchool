@@ -151,11 +151,8 @@ function ShareSupportModal({ card, workspaceName, onClose }: Props) {
         </Header>
 
         <Preview>
-          {previewUrl ? (
-            <img src={previewUrl} alt="자랑 카드 미리보기" />
-          ) : (
-            <PreviewPlaceholder>미리보기 생성 중...</PreviewPlaceholder>
-          )}
+          {previewUrl && <img src={previewUrl} alt="자랑 카드 미리보기" />}
+          {!previewUrl && <PreviewPlaceholder>미리보기 생성 중...</PreviewPlaceholder>}
         </Preview>
 
         <ActionRow>
