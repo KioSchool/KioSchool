@@ -1,10 +1,28 @@
 import { RiCloseLine, RiMoneyDollarCircleLine, RiStore3Line } from '@remixicon/react';
+import styled from '@emotion/styled';
 import { DashboardInsights, WorkspaceStats } from '@@types/index';
+import { Color } from '@resources/colors';
+import { colFlex } from '@styles/flexStyles';
 import { formatCurrency, formatNumber } from '@utils/formatNumber';
 import StatCard from './StatCard';
 import StatCardIcon from './StatCardIcon';
 import StatGrid from './StatGrid';
 import SectionTitle from './SectionTitle';
+
+const FooterColumn = styled.div`
+  gap: 2px;
+  ${colFlex()}
+`;
+
+const FooterRate = styled.span`
+  font-size: 11px;
+  color: ${Color.GREY};
+`;
+
+const FooterHint = styled.span`
+  font-size: 10px;
+  color: ${Color.HEAVY_GREY};
+`;
 
 interface ActiveWorkspaceSectionProps {
   insights: DashboardInsights;
@@ -30,9 +48,12 @@ function ActiveWorkspaceSection({ insights, workspaces }: ActiveWorkspaceSection
           label="활성 워크스페이스 (7일)"
           value={formatNumber(insights.activeWorkspacesLast7Days)}
           footer={
-            <span style={{ fontSize: 11, color: '#888' }}>
-              {activeRate7}% of {formatNumber(workspaces.total)}
-            </span>
+            <FooterColumn>
+              <FooterRate>
+                {activeRate7}% of {formatNumber(workspaces.total)}
+              </FooterRate>
+              <FooterHint>최근 7일간 주문 1건 이상 발생한 워크스페이스</FooterHint>
+            </FooterColumn>
           }
         />
         <StatCard
@@ -44,9 +65,12 @@ function ActiveWorkspaceSection({ insights, workspaces }: ActiveWorkspaceSection
           label="활성 워크스페이스 (30일)"
           value={formatNumber(insights.activeWorkspacesLast30Days)}
           footer={
-            <span style={{ fontSize: 11, color: '#888' }}>
-              {activeRate30}% of {formatNumber(workspaces.total)}
-            </span>
+            <FooterColumn>
+              <FooterRate>
+                {activeRate30}% of {formatNumber(workspaces.total)}
+              </FooterRate>
+              <FooterHint>최근 30일간 주문 1건 이상 발생한 워크스페이스</FooterHint>
+            </FooterColumn>
           }
         />
         <StatCard
@@ -58,6 +82,7 @@ function ActiveWorkspaceSection({ insights, workspaces }: ActiveWorkspaceSection
           label="평균 객단가 (AOV)"
           value={formatCurrency(insights.averageOrderValue)}
           valueSize="md"
+          footer={<FooterHint>전체 기간 총 매출 ÷ 총 주문 수</FooterHint>}
         />
         <StatCard
           icon={
@@ -68,9 +93,12 @@ function ActiveWorkspaceSection({ insights, workspaces }: ActiveWorkspaceSection
           label="취소율 (30일)"
           value={`${cancelRate}%`}
           footer={
-            <span style={{ fontSize: 11, color: '#888' }}>
-              {formatNumber(insights.cancelledOrdersLast30Days)}건 / {formatNumber(insights.totalOrdersForCancelRate)}건
-            </span>
+            <FooterColumn>
+              <FooterRate>
+                {formatNumber(insights.cancelledOrdersLast30Days)}건 / {formatNumber(insights.totalOrdersForCancelRate)}건
+              </FooterRate>
+              <FooterHint>최근 30일 취소 주문 ÷ 전체 주문</FooterHint>
+            </FooterColumn>
           }
         />
       </StatGrid>
