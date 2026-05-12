@@ -1,7 +1,10 @@
 import styled from '@emotion/styled';
+import PageSeo from '@components/common/page/PageSeo';
 import { MotionConfig } from 'framer-motion';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex } from '@styles/flexStyles';
+import { MARKETING_SEO } from '@constants/marketingSeo';
+import InfoHeroSection from '@components/user/info/InfoHeroSection';
 import InfoFeaturesSection from '@components/user/info/InfoFeaturesSection';
 import InfoHowToUseSection from '@components/user/info/InfoHowToUseSection';
 import InfoCaseStudiesSection from '@components/user/info/InfoCaseStudiesSection';
@@ -25,8 +28,10 @@ function Info() {
   return (
     <MotionConfig reducedMotion="user">
       <LandingWrapper>
+        <PageSeo {...MARKETING_SEO.info} />
         <AppContainer useFlex={colFlex()} customWidth={'100%'} useTitle={false} useFullHeight={true}>
           <>
+            <InfoHeroSection />
             <InfoFeaturesSection />
             <InfoHowToUseSection />
             <InfoCaseStudiesSection />

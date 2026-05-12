@@ -7,7 +7,7 @@ import { mobileMediaQuery } from '@styles/globalStyles';
 import { captionTypography, headingTypography, subheadingTypography } from '@styles/landingTypography';
 import { Color } from '@resources/colors';
 import { ADMIN_ROUTES } from '@constants/routes';
-import useAuthentication from '@hooks/useAuthentication';
+import useMarketingLoginStatus from '@hooks/useMarketingLoginStatus';
 
 const Container = styled.div`
   width: 100%;
@@ -90,7 +90,7 @@ const ContactLink = styled.a`
 `;
 
 function InfoCtaSection() {
-  const { isLoggedIn } = useAuthentication();
+  const isLoggedIn = useMarketingLoginStatus();
 
   return (
     <Container>
@@ -103,7 +103,7 @@ function InfoCtaSection() {
         <CtaDivider />
         <Title>이번 축제, 키오스쿨과 함께하세요</Title>
         <Subtitle>가입부터 주점 운영까지, 3분이면 준비 끝</Subtitle>
-        <CtaButton to={ADMIN_ROUTES.HOME}>{isLoggedIn() ? '어드민 홈으로' : '무료로 시작하기'}</CtaButton>
+        <CtaButton to={ADMIN_ROUTES.HOME}>{isLoggedIn ? '어드민 홈으로' : '무료로 시작하기'}</CtaButton>
         <Reassurance>별도 비용 없이 시작할 수 있어요</Reassurance>
         <ContactLink href="https://www.instagram.com/kioschool/" target="_blank" rel="noopener noreferrer">
           <RiInstagramLine size={16} />

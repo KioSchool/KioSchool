@@ -135,8 +135,8 @@ function InfoFeaturesSection() {
         style={{ textAlign: 'center' }}
       >
         <SectionLabel>FEATURES</SectionLabel>
-        <SectionTitle>키오스쿨이 제공하는 기능</SectionTitle>
-        <SectionSubtitle>주점 운영에 필요한 것만, 군더더기 없이</SectionSubtitle>
+        <SectionTitle>대학 축제 주점 운영에 필요한 핵심 기능</SectionTitle>
+        <SectionSubtitle>QR 주문부터 주문 관리, 자동 정산, 테이블 운영까지 한 번에 준비하세요</SectionSubtitle>
       </motion.div>
       <FeatureList>
         {FEATURES.map((feature, index) => (
