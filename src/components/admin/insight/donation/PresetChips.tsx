@@ -26,6 +26,7 @@ const Chip = styled.button<{ selected: boolean }>`
   border-radius: 10px;
   cursor: pointer;
   gap: 4px;
+  word-break: keep-all;
   ${colFlex({ justify: 'start', align: 'center' })};
 
   &:hover {

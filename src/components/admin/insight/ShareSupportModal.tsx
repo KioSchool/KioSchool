@@ -21,7 +21,7 @@ const Overlay = styled.div`
 `;
 
 const Modal = styled.div`
-  width: 460px;
+  width: 500px;
   max-width: 92vw;
   max-height: 90vh;
   box-sizing: border-box;
