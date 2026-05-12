@@ -19,39 +19,22 @@ const meta: Meta<typeof DonationQr> = {
 export default meta;
 type Story = StoryObj<typeof DonationQr>;
 
-const SAMPLE_URL = 'https://toss.me/example?intent=donate';
-
 export const Default50K: Story = {
-  args: {
-    tossAccountUrl: SAMPLE_URL,
-    amount: 50000,
-  },
+  args: { amount: 50000 },
 };
 
 export const Small3K: Story = {
-  args: {
-    tossAccountUrl: SAMPLE_URL,
-    amount: 3000,
-  },
+  args: { amount: 3000 },
 };
 
 export const Large100K: Story = {
-  args: {
-    tossAccountUrl: SAMPLE_URL,
-    amount: 100000,
-  },
+  args: { amount: 100000 },
+};
+
+export const CustomFreeAmount: Story = {
+  args: { amount: 0 },
 };
 
 export const UnderflowPlaceholder: Story = {
-  args: {
-    tossAccountUrl: SAMPLE_URL,
-    amount: 500,
-  },
-};
-
-export const MissingUrlPlaceholder: Story = {
-  args: {
-    tossAccountUrl: undefined,
-    amount: 50000,
-  },
+  args: { amount: 500 },
 };

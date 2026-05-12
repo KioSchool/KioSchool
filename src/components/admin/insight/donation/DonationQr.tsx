@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { QRCodeSVG } from 'qrcode.react';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import { CUSTOM_AMOUNT_SENTINEL, MIN_AMOUNT } from './donationConstants';
+import { buildDonationTossUrl, CUSTOM_AMOUNT_SENTINEL, MIN_AMOUNT } from './donationConstants';
 
 const Container = styled.div`
   width: 100%;
@@ -49,34 +49,27 @@ const Guide = styled.div`
 `;
 
 interface DonationQrProps {
-  tossAccountUrl: string | undefined;
   amount: number;
 }
 
-function DonationQr({ tossAccountUrl, amount }: DonationQrProps) {
+function DonationQr({ amount }: DonationQrProps) {
   const isCustomMode = amount === CUSTOM_AMOUNT_SENTINEL;
   const isAmountValid = isCustomMode || amount >= MIN_AMOUNT;
-  const isReady = !!tossAccountUrl && isAmountValid;
-  const qrValue = isReady && tossAccountUrl ? (isCustomMode ? tossAccountUrl : `${tossAccountUrl}&amount=${amount}`) : '';
+  const qrValue = isAmountValid ? buildDonationTossUrl(isCustomMode ? undefined : amount) : '';
 
   const amountLabel = isCustomMode ? '원하는 금액으로 보내기' : `${amount.toLocaleString()}원 보내기`;
-
-  const placeholderText = (() => {
-    if (!tossAccountUrl) return '도네이션 정보가 설정되지 않았습니다.\n운영팀에 문의해주세요.';
-    return `${MIN_AMOUNT.toLocaleString()}원 이상 금액을 선택해주세요.`;
-  })();
 
   return (
     <Container>
       <AmountLine>{amountLabel}</AmountLine>
-      {isReady ? (
+      {isAmountValid ? (
         <QrFrame>
           <QRCodeSVG value={qrValue} size={150} level="M" bgColor="#ffffff" fgColor="#000000" />
         </QrFrame>
       ) : (
-        <Placeholder>{placeholderText}</Placeholder>
+        <Placeholder>{MIN_AMOUNT.toLocaleString()}원 이상 금액을 선택해주세요.</Placeholder>
       )}
-      <Guide>휴대폰 카메라로 QR을 스캔하면 토스로 바로 송금돼요.</Guide>
+      <Guide>휴대폰 카메라로 QR을 스캔하면 토스 앱이 열립니다.</Guide>
     </Container>
   );
 }

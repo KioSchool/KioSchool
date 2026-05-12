@@ -10,6 +10,20 @@ export const DEFAULT_AMOUNT = 50000;
 
 export const CUSTOM_AMOUNT_SENTINEL = 0;
 
+const TOSS_BANK_NAME = '토스뱅크';
+const TOSS_ACCOUNT_NO = '100127738116';
+
+export function buildDonationTossUrl(amount?: number): string {
+  const params = new URLSearchParams();
+  params.set('bank', TOSS_BANK_NAME);
+  params.set('accountNo', TOSS_ACCOUNT_NO);
+  params.set('origin', 'qr');
+  if (amount && amount > 0) {
+    params.set('amount', String(amount));
+  }
+  return `supertoss://send?${params.toString()}`;
+}
+
 export type PresetCharacter = 'K' | 'I' | 'O' | 'CUSTOM';
 
 export interface PresetOption {
@@ -29,13 +43,13 @@ export const PRESET_OPTIONS: readonly PresetOption[] = [
   {
     amount: 50000,
     character: 'I',
-    description: '이번 달 개선 작업 한 사이클',
+    description: '키오스쿨을 더 예쁘게',
     illustration: c2IPainting,
   },
   {
     amount: 100000,
     character: 'O',
-    description: '다음 신기능 하나, 통째로',
+    description: '더 편리한 기능을 위해',
     illustration: c3OShipping,
   },
   {

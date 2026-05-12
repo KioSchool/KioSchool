@@ -30,17 +30,15 @@ const Tail = styled.div`
 function DonationSection() {
   const [amount, setAmount] = useState<number>(DEFAULT_AMOUNT);
 
-  const tossUrl = import.meta.env.VITE_KIO_DONATION_TOSS_URL as string | undefined;
-
   const handlePresetSelect = (option: PresetOption) => {
     setAmount(option.amount);
   };
 
   return (
     <Section>
-      <Label>KioSchool 만든 사람들에게 응원 보내기</Label>
+      <Label>KioSchool 응원하기</Label>
       <PresetChips selectedAmount={amount} onSelect={handlePresetSelect} />
-      <DonationQr tossAccountUrl={tossUrl} amount={amount} />
+      <DonationQr amount={amount} />
       <Tail>송금자명에 닉네임이나 주점명을 적어주시면 운영팀이 확인하기 쉬워요.</Tail>
     </Section>
   );
