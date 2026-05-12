@@ -22,7 +22,6 @@ type Story = StoryObj<typeof PresetChips>;
 export const DefaultI50KSelected: Story = {
   args: {
     selectedAmount: 50000,
-    isPresetMode: true,
     onSelect: () => {},
   },
 };
@@ -30,7 +29,6 @@ export const DefaultI50KSelected: Story = {
 export const K30KSelected: Story = {
   args: {
     selectedAmount: 30000,
-    isPresetMode: true,
     onSelect: () => {},
   },
 };
@@ -38,15 +36,6 @@ export const K30KSelected: Story = {
 export const O100KSelected: Story = {
   args: {
     selectedAmount: 100000,
-    isPresetMode: true,
-    onSelect: () => {},
-  },
-};
-
-export const CustomModeNoSelection: Story = {
-  args: {
-    selectedAmount: 0,
-    isPresetMode: false,
     onSelect: () => {},
   },
 };

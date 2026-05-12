@@ -1,19 +1,13 @@
+import { useMemo } from 'react';
 import styled from '@emotion/styled';
+import { QRCodeSVG } from 'qrcode.react';
 import { Color } from '@resources/colors';
-import { colFlex, rowFlex } from '@styles/flexStyles';
-import {
-  CUSTOM_MAIN_ILLUSTRATION,
-  MIN_AMOUNT,
-  OVERFLOW_COPY,
-  OVERFLOW_ILLUSTRATION,
-  OVERFLOW_THRESHOLD,
-  UNDERFLOW_COPY,
-  UNDERFLOW_ILLUSTRATION,
-  UNDERFLOW_THRESHOLD,
-} from './donationConstants';
+import { colFlex } from '@styles/flexStyles';
+import { CUSTOM_RANDOM_ILLUSTRATIONS } from './donationConstants';
 
 const Container = styled.div`
   width: 100%;
+  min-width: 0;
   gap: 8px;
   ${colFlex({ justify: 'start', align: 'stretch' })};
 `;
@@ -32,82 +26,56 @@ const ToggleHeader = styled.button<{ expanded: boolean }>`
 
 const Panel = styled.div`
   width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   padding: 12px;
   background: ${Color.KIO_ORANGE_FAINT};
   border-radius: 8px;
   gap: 10px;
-  ${colFlex({ justify: 'start', align: 'stretch' })};
+  ${colFlex({ justify: 'start', align: 'center' })};
 `;
 
-const MainIllustrationRow = styled.div`
-  gap: 10px;
-  ${rowFlex({ justify: 'start', align: 'center' })};
-`;
-
-const MainIllustration = styled.img`
-  width: 72px;
-  height: 72px;
+const Illustration = styled.img`
+  width: 100%;
+  max-width: 140px;
+  aspect-ratio: 1;
   object-fit: contain;
-  flex-shrink: 0;
 `;
 
-const InputRow = styled.div`
-  flex: 1;
-  gap: 6px;
-  ${rowFlex({ justify: 'start', align: 'center' })};
-`;
-
-const AmountInput = styled.input`
-  flex: 1;
-  padding: 8px 10px;
-  border: 1px solid ${Color.HEAVY_GREY};
-  border-radius: 6px;
-  font-size: 14px;
+const QrFrame = styled.div`
+  padding: 8px;
   background: ${Color.WHITE};
-
-  &:focus {
-    outline: none;
-    border-color: ${Color.KIO_ORANGE};
-  }
+  border-radius: 8px;
+  border: 1px solid ${Color.KIO_ORANGE_FAINT};
 `;
 
-const Unit = styled.span`
+const Guide = styled.div`
+  font-size: 12px;
   color: ${Color.GREY};
-  font-size: 12px;
-`;
-
-const HelperRow = styled.div`
-  gap: 8px;
-  padding-top: 8px;
-  border-top: 1px dashed ${Color.HEAVY_GREY};
-  ${rowFlex({ justify: 'start', align: 'center' })};
-`;
-
-const HelperIllustration = styled.img`
-  width: 56px;
-  height: 56px;
-  object-fit: contain;
-  flex-shrink: 0;
-`;
-
-const HelperCopy = styled.div`
-  font-size: 12px;
-  color: ${Color.BLACK};
-  font-weight: 500;
+  text-align: center;
   line-height: 1.4;
 `;
 
-interface CustomAmountInputProps {
-  expanded: boolean;
-  customInput: string;
-  amount: number;
-  onToggle: () => void;
-  onCustomChange: (raw: string) => void;
+const Placeholder = styled.div`
+  font-size: 13px;
+  color: ${Color.GREY};
+  padding: 12px;
+  text-align: center;
+`;
+
+function pickRandomIllustration(): string {
+  const idx = Math.floor(Math.random() * CUSTOM_RANDOM_ILLUSTRATIONS.length);
+  return CUSTOM_RANDOM_ILLUSTRATIONS[idx];
 }
 
-function CustomAmountInput({ expanded, customInput, amount, onToggle, onCustomChange }: CustomAmountInputProps) {
-  const showUnderflow = amount > 0 && amount <= UNDERFLOW_THRESHOLD;
-  const showOverflow = amount >= OVERFLOW_THRESHOLD;
+interface CustomAmountInputProps {
+  expanded: boolean;
+  tossAccountUrl: string | undefined;
+  onToggle: () => void;
+}
+
+function CustomAmountInput({ expanded, tossAccountUrl, onToggle }: CustomAmountInputProps) {
+  const illustration = useMemo(() => pickRandomIllustration(), []);
 
   return (
     <Container>
@@ -116,25 +84,15 @@ function CustomAmountInput({ expanded, customInput, amount, onToggle, onCustomCh
       </ToggleHeader>
       {expanded && (
         <Panel>
-          <MainIllustrationRow>
-            <MainIllustration src={CUSTOM_MAIN_ILLUSTRATION} alt="I 캐릭터가 빈 깃발에 숫자를 적는 모습" />
-            <InputRow>
-              <AmountInput type="number" min={MIN_AMOUNT} value={customInput} placeholder="원하는 금액" onChange={(e) => onCustomChange(e.target.value)} />
-              <Unit>원</Unit>
-            </InputRow>
-          </MainIllustrationRow>
-          {showUnderflow && (
-            <HelperRow>
-              <HelperIllustration src={UNDERFLOW_ILLUSTRATION} alt="K 캐릭터가 종이컵을 받는 모습" />
-              <HelperCopy>{UNDERFLOW_COPY}</HelperCopy>
-            </HelperRow>
+          <Illustration src={illustration} alt="KioSchool 마스코트" />
+          {tossAccountUrl ? (
+            <QrFrame>
+              <QRCodeSVG value={tossAccountUrl} size={180} level="M" bgColor="#ffffff" fgColor="#000000" />
+            </QrFrame>
+          ) : (
+            <Placeholder>도네이션 정보가 설정되지 않았습니다.</Placeholder>
           )}
-          {showOverflow && (
-            <HelperRow>
-              <HelperIllustration src={OVERFLOW_ILLUSTRATION} alt="K, I, O 세 캐릭터가 함께 환호하는 모습" />
-              <HelperCopy>{OVERFLOW_COPY}</HelperCopy>
-            </HelperRow>
-          )}
+          <Guide>토스 앱에서 원하는 금액으로 자유롭게 보내세요.</Guide>
         </Panel>
       )}
     </Container>

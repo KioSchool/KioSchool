@@ -19,52 +19,28 @@ const meta: Meta<typeof CustomAmountInput> = {
 export default meta;
 type Story = StoryObj<typeof CustomAmountInput>;
 
+const SAMPLE_URL = 'https://toss.me/example?intent=donate';
+
 export const Collapsed: Story = {
   args: {
     expanded: false,
-    customInput: '',
-    amount: 50000,
+    tossAccountUrl: SAMPLE_URL,
     onToggle: () => {},
-    onCustomChange: () => {},
   },
 };
 
-export const ExpandedEmpty: Story = {
+export const ExpandedWithQr: Story = {
   args: {
     expanded: true,
-    customInput: '',
-    amount: 50000,
+    tossAccountUrl: SAMPLE_URL,
     onToggle: () => {},
-    onCustomChange: () => {},
   },
 };
 
-export const UnderflowHelperVisible: Story = {
+export const MissingUrl: Story = {
   args: {
     expanded: true,
-    customInput: '5000',
-    amount: 5000,
+    tossAccountUrl: undefined,
     onToggle: () => {},
-    onCustomChange: () => {},
-  },
-};
-
-export const NormalRangeNoHelper: Story = {
-  args: {
-    expanded: true,
-    customInput: '40000',
-    amount: 40000,
-    onToggle: () => {},
-    onCustomChange: () => {},
-  },
-};
-
-export const OverflowHelperVisible: Story = {
-  args: {
-    expanded: true,
-    customInput: '150000',
-    amount: 150000,
-    onToggle: () => {},
-    onCustomChange: () => {},
   },
 };

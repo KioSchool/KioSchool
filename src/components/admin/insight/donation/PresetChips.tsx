@@ -6,6 +6,7 @@ import { PRESET_OPTIONS, PresetOption } from './donationConstants';
 
 const Row = styled.div`
   width: 100%;
+  min-width: 0;
   gap: 8px;
   ${rowFlex({ justify: 'space-between', align: 'stretch' })};
 
@@ -15,7 +16,8 @@ const Row = styled.div`
 `;
 
 const Chip = styled.button<{ selected: boolean }>`
-  flex: 1;
+  flex: 1 1 0;
+  min-width: 0;
   padding: 10px 8px;
   background: ${({ selected }) => (selected ? Color.KIO_ORANGE_FAINT : Color.WHITE)};
   border: 1.5px solid ${({ selected }) => (selected ? Color.KIO_ORANGE : Color.HEAVY_GREY)};
@@ -30,14 +32,10 @@ const Chip = styled.button<{ selected: boolean }>`
 `;
 
 const ChipIllustration = styled.img`
-  width: 120px;
-  height: 120px;
+  width: 100%;
+  max-width: 120px;
+  aspect-ratio: 1;
   object-fit: contain;
-
-  ${mobileMediaQuery} {
-    width: 96px;
-    height: 96px;
-  }
 `;
 
 const ChipAmount = styled.div`
@@ -55,15 +53,14 @@ const ChipDescription = styled.div`
 
 interface PresetChipsProps {
   selectedAmount: number;
-  isPresetMode: boolean;
   onSelect: (option: PresetOption) => void;
 }
 
-function PresetChips({ selectedAmount, isPresetMode, onSelect }: PresetChipsProps) {
+function PresetChips({ selectedAmount, onSelect }: PresetChipsProps) {
   return (
     <Row>
       {PRESET_OPTIONS.map((option) => {
-        const selected = isPresetMode && selectedAmount === option.amount;
+        const selected = selectedAmount === option.amount;
         return (
           <Chip key={option.amount} selected={selected} onClick={() => onSelect(option)} type="button">
             <ChipIllustration src={option.illustration} alt={`${option.character} 캐릭터`} />

@@ -8,9 +8,6 @@ import c6TrioCheers from '@resources/image/donation/c6-trio-cheers.png';
 export const MIN_AMOUNT = 1000;
 export const DEFAULT_AMOUNT = 50000;
 
-export const UNDERFLOW_THRESHOLD = 10000;
-export const OVERFLOW_THRESHOLD = 100000;
-
 export interface PresetOption {
   amount: number;
   character: 'K' | 'I' | 'O';
@@ -39,9 +36,4 @@ export const PRESET_OPTIONS: readonly PresetOption[] = [
   },
 ] as const;
 
-export const CUSTOM_MAIN_ILLUSTRATION = c4IFlag;
-export const UNDERFLOW_ILLUSTRATION = c5KCoffee;
-export const OVERFLOW_ILLUSTRATION = c6TrioCheers;
-
-export const UNDERFLOW_COPY = '커피 한 잔도 진짜 큰 힘이에요';
-export const OVERFLOW_COPY = '사장님 덕분에 이번 주 회식 가능합니다';
+export const CUSTOM_RANDOM_ILLUSTRATIONS: readonly string[] = [c4IFlag, c5KCoffee, c6TrioCheers] as const;
