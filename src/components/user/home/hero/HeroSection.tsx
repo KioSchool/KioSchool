@@ -166,14 +166,13 @@ function HeroSection() {
 
       <ContentWrapper initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4, ease: 'easeOut' }}>
         <MainCopy>
-          대학 축제 주점을 위한
-          <MobileOnlyBreak />
-          <OrangeText> QR 주문 서비스</OrangeText>
+          축제는 <OrangeText>즐기라고</OrangeText>
+          <MobileOnlyBreak /> 있는 거니까
         </MainCopy>
         <SubCopy>
-          축제는 즐기라고 있는 거니까.
+          QR 주문, 실시간 주문 관리, 자동 정산까지
           <br />
-          QR 주문, 실시간 주문 관리, 자동 정산까지 주점 운영의 모든 것을{' '}
+          주점 운영의 모든 것을{' '}
           <KioHighlight
             ref={kioRef}
             style={
