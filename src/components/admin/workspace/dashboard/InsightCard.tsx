@@ -4,6 +4,7 @@ import { rowFlex, colFlex } from '@styles/flexStyles';
 import { useAdminFetchInsightCard } from '@hooks/admin/useAdminFetchInsightCard';
 import { InsightCardResponse, MetricSummary } from '@@types/index';
 import { InsightDesignTokens, RankKey } from '@components/admin/insight/insightDesignTokens';
+import goodCharacter from '@resources/image/donation/good.png';
 
 const Container = styled.div`
   width: 100%;
@@ -30,15 +31,11 @@ const HeaderText = styled.div`
   ${rowFlex({ align: 'center' })};
 `;
 
-const Medal = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: linear-gradient(180deg, #ffe066 0%, #ffb300 55%, #c77800 100%);
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
-  font-size: 22px;
+const Medal = styled.img`
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
   flex-shrink: 0;
-  ${rowFlex({ justify: 'center', align: 'center' })};
 `;
 
 const HeaderTextInner = styled.div`
@@ -155,12 +152,6 @@ function MetricCell({ summary }: { summary: MetricSummary }) {
   );
 }
 
-function pickMedalEmoji(template: InsightCardResponse['template']): string {
-  if (template === 'SINGLE_TROPHY') return '🥇';
-  if (template === 'MILESTONE') return '🎉';
-  return '📊';
-}
-
 function InsightCard({ workspaceId, onShareClick }: Props) {
   const { card, isLoading } = useAdminFetchInsightCard(workspaceId);
 
@@ -171,7 +162,7 @@ function InsightCard({ workspaceId, onShareClick }: Props) {
     <Container>
       <HeaderRow>
         <HeaderText>
-          <Medal>{pickMedalEmoji(card.template)}</Medal>
+          <Medal src={goodCharacter} alt="잘하고 있어요" />
           <HeaderTextInner>
             <Sub>어제의 자랑 · {card.referenceDate}</Sub>
             <Headline>{card.headline}</Headline>
