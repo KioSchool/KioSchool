@@ -7,7 +7,7 @@ import { mobileMediaQuery } from '@styles/globalStyles';
 import { displayHeadingTypography, subheadingTypography } from '@styles/landingTypography';
 import { Color } from '@resources/colors';
 import { ADMIN_ROUTES, USER_ROUTES } from '@constants/routes';
-import useAuthentication from '@hooks/useAuthentication';
+import useMarketingLoginStatus from '@hooks/useMarketingLoginStatus';
 import useMouseGlow, { MouseGlow } from '@components/user/home/useMouseGlow';
 import cloud1 from '@resources/image/home/cloud1.png';
 import cloud2 from '@resources/image/home/cloud2.png';
@@ -146,7 +146,7 @@ function lerpRgb(a: [number, number, number], b: [number, number, number], t: nu
 }
 
 function HeroSection() {
-  const { isLoggedIn } = useAuthentication();
+  const isLoggedIn = useMarketingLoginStatus();
   const containerRef = useRef<HTMLDivElement>(null);
   const kioRef = useRef<HTMLSpanElement>(null);
   const { mousePos, isHovering, intensity, handleMouseMove, handleMouseEnter, handleMouseLeave } = useMouseGlow(containerRef, kioRef);
@@ -166,13 +166,14 @@ function HeroSection() {
 
       <ContentWrapper initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4, ease: 'easeOut' }}>
         <MainCopy>
-          축제는 <OrangeText>즐기라고</OrangeText>
-          <MobileOnlyBreak /> 있는 거니까
+          대학 축제 주점을 위한
+          <MobileOnlyBreak />
+          <OrangeText> QR 주문 서비스</OrangeText>
         </MainCopy>
         <SubCopy>
-          QR 주문, 실시간 주문 관리, 자동 정산까지
+          축제는 즐기라고 있는 거니까.
           <br />
-          주점 운영의 모든 것을{' '}
+          QR 주문, 실시간 주문 관리, 자동 정산까지 주점 운영의 모든 것을{' '}
           <KioHighlight
             ref={kioRef}
             style={
@@ -187,7 +188,7 @@ function HeroSection() {
           이 대신할게요
         </SubCopy>
         <CtaRow>
-          <CtaButton to={ADMIN_ROUTES.HOME}>{isLoggedIn() ? '어드민 홈으로' : '무료로 시작하기'}</CtaButton>
+          <CtaButton to={ADMIN_ROUTES.HOME}>{isLoggedIn ? '어드민 홈으로' : '무료로 시작하기'}</CtaButton>
           <SecondaryButton to={USER_ROUTES.INFO}>서비스 알아보기</SecondaryButton>
         </CtaRow>
       </ContentWrapper>

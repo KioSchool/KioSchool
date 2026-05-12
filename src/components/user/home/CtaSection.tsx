@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import Typewriter from 'typewriter-effect';
 import { motion, useInView } from 'framer-motion';
@@ -8,7 +8,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { captionTypography, headingTypography, subheadingTypography } from '@styles/landingTypography';
 import { ADMIN_ROUTES, USER_ROUTES } from '@constants/routes';
-import useAuthentication from '@hooks/useAuthentication';
+import useMarketingLoginStatus from '@hooks/useMarketingLoginStatus';
 import useMouseGlow, { MouseGlow } from './useMouseGlow';
 
 const Container = styled.div`
@@ -136,12 +136,19 @@ const Reassurance = styled.p`
 `;
 
 function CtaSection() {
-  const { isLoggedIn } = useAuthentication();
+  const isLoggedIn = useMarketingLoginStatus();
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const kioRef = useRef<HTMLDivElement>(null);
+  const [hasMounted, setHasMounted] = useState(false);
   const isInViewport = useInView(titleRef, { once: true, amount: 0.3 });
   const { mousePos, isHovering, intensity, handleMouseMove, handleMouseEnter, handleMouseLeave } = useMouseGlow(containerRef, kioRef);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  const isTypewriterVisible = hasMounted && isInViewport;
 
   return (
     <Container ref={containerRef} onMouseMove={handleMouseMove} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
@@ -158,7 +165,7 @@ function CtaSection() {
             이번 축제,
             <br />
             <TypewriterLine ref={kioRef} style={{ '--kio-shadow': `0 0 ${28 * intensity}px rgba(255, 145, 66, ${0.6 * intensity})` } as React.CSSProperties}>
-              {isInViewport && (
+              {isTypewriterVisible ? (
                 <Typewriter
                   onInit={(typewriter) => {
                     typewriter
@@ -173,6 +180,8 @@ function CtaSection() {
                   }}
                   options={{ delay: 100, cursor: '|' }}
                 />
+              ) : (
+                '키오스쿨'
               )}
             </TypewriterLine>
             과 함께하세요
@@ -193,7 +202,7 @@ function CtaSection() {
           transition={{ duration: 0.4, ease: 'easeOut', delay: 0.2 }}
         >
           <CtaRow>
-            <CtaButton to={ADMIN_ROUTES.HOME}>{isLoggedIn() ? '어드민 홈으로' : '무료로 시작하기'}</CtaButton>
+            <CtaButton to={ADMIN_ROUTES.HOME}>{isLoggedIn ? '어드민 홈으로' : '무료로 시작하기'}</CtaButton>
             <SecondaryButton to={USER_ROUTES.INFO}>서비스 알아보기</SecondaryButton>
           </CtaRow>
           <Reassurance>별도 비용 없이 시작할 수 있어요</Reassurance>
