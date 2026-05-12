@@ -1,7 +1,7 @@
 import { InsightCardResponse, MetricSummary } from '@@types/index';
 import { InsightDesignTokens, RankKey } from './insightDesignTokens';
 import kioLogoSrc from '@resources/image/kioLogo.png';
-import goodCharacterSrc from '@resources/image/donation/good.png';
+import goodCharacterSrc from '@resources/image/donation/good.webp';
 
 const SIZE = InsightDesignTokens.png.size;
 const KO_FONT_STACK = '-apple-system, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif';

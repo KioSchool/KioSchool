@@ -4,7 +4,7 @@ import { rowFlex, colFlex } from '@styles/flexStyles';
 import { useAdminFetchInsightCard } from '@hooks/admin/useAdminFetchInsightCard';
 import { InsightCardResponse, MetricSummary } from '@@types/index';
 import { InsightDesignTokens, RankKey } from '@components/admin/insight/insightDesignTokens';
-import goodCharacter from '@resources/image/donation/good.png';
+import goodCharacter from '@resources/image/donation/good.webp';
 
 const Container = styled.div`
   width: 100%;

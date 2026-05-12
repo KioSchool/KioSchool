@@ -1,9 +1,9 @@
-import c1KCoding from '@resources/image/donation/c1-k-coding.png';
-import c2IPainting from '@resources/image/donation/c2-i-painting.png';
-import c3OShipping from '@resources/image/donation/c3-o-shipping.png';
-import c4IFlag from '@resources/image/donation/c4-i-flag.png';
-import c5KCoffee from '@resources/image/donation/c5-k-coffee.png';
-import c6TrioCheers from '@resources/image/donation/c6-trio-cheers.png';
+import c1KCoding from '@resources/image/donation/c1-k-coding.webp';
+import c2IPainting from '@resources/image/donation/c2-i-painting.webp';
+import c3OShipping from '@resources/image/donation/c3-o-shipping.webp';
+import c4IFlag from '@resources/image/donation/c4-i-flag.webp';
+import c5KCoffee from '@resources/image/donation/c5-k-coffee.webp';
+import c6TrioCheers from '@resources/image/donation/c6-trio-cheers.webp';
 
 export const MIN_AMOUNT = 1000;
 export const DEFAULT_AMOUNT = 50000;
