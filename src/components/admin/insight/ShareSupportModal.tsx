@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import styled from '@emotion/styled';
+import { toast } from 'react-toastify';
 import { RiCloseLargeLine, RiShare2Line, RiDownload2Line } from '@remixicon/react';
 import { rowFlex, colFlex } from '@styles/flexStyles';
 import { MODAL_ROOT_KEY } from '@hooks/useModal';
@@ -20,9 +21,10 @@ const Overlay = styled.div`
 `;
 
 const Modal = styled.div`
-  width: 380px;
-  max-width: 90vw;
+  width: 460px;
+  max-width: 92vw;
   max-height: 90vh;
+  box-sizing: border-box;
   background: #fff;
   border: 1px solid ${InsightDesignTokens.card.border};
   border-radius: 12px;
@@ -31,6 +33,7 @@ const Modal = styled.div`
   gap: 14px;
   position: relative;
   overflow-y: auto;
+  overflow-x: hidden;
   z-index: 2001;
   ${colFlex({ align: 'stretch' })};
 `;
@@ -61,6 +64,7 @@ const CloseButton = styled.button`
 const Preview = styled.div`
   width: 100%;
   aspect-ratio: 1;
+  min-height: 240px;
   border-radius: 10px;
   overflow: hidden;
   background: ${InsightDesignTokens.brand.faint};
@@ -70,6 +74,7 @@ const Preview = styled.div`
     width: 100%;
     height: 100%;
     object-fit: contain;
+    display: block;
   }
 `;
 
@@ -129,7 +134,10 @@ function ShareSupportModal({ card, workspaceName, onClose }: Props) {
       .then((url) => {
         if (!cancelled) setPreviewUrl(url);
       })
-      .catch((e) => console.error('preview render error', e));
+      .catch((e) => {
+        console.error('preview render error', e);
+        if (!cancelled) toast.error('카드 미리보기를 만들지 못했어요.');
+      });
     return () => {
       cancelled = true;
     };
