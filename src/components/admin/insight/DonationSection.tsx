@@ -2,11 +2,10 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import useTossPopup from '@hooks/user/useTossPopup';
 import CustomAmountInput from './donation/CustomAmountInput';
-import DonateCta from './donation/DonateCta';
+import DonationQr from './donation/DonationQr';
 import PresetChips from './donation/PresetChips';
-import { DEFAULT_AMOUNT, MIN_AMOUNT, PresetOption } from './donation/donationConstants';
+import { DEFAULT_AMOUNT, PresetOption } from './donation/donationConstants';
 
 type Mode = 'preset' | 'custom';
 
@@ -36,7 +35,6 @@ function DonationSection() {
   const [customInput, setCustomInput] = useState<string>('');
   const [isCustomExpanded, setIsCustomExpanded] = useState<boolean>(false);
 
-  const { openTossPopupSync } = useTossPopup();
   const tossUrl = import.meta.env.VITE_KIO_DONATION_TOSS_URL as string | undefined;
 
   const handlePresetSelect = (option: PresetOption) => {
@@ -56,18 +54,6 @@ function DonationSection() {
     setAmount(Number.isNaN(parsed) ? 0 : parsed);
   };
 
-  const handleDonate = () => {
-    if (!tossUrl) {
-      alert('도네이션 정보가 설정되지 않았습니다. 운영팀에 문의해주세요.');
-      return;
-    }
-    if (amount < MIN_AMOUNT) {
-      alert(`${MIN_AMOUNT.toLocaleString()}원 이상 입력해주세요.`);
-      return;
-    }
-    openTossPopupSync({ tossAccountUrl: tossUrl, amount, closeDelay: 5000 });
-  };
-
   return (
     <Section>
       <Label>KioSchool 만든 사람들에게 응원 보내기</Label>
@@ -79,7 +65,7 @@ function DonationSection() {
         onToggle={handleCustomToggle}
         onCustomChange={handleCustomChange}
       />
-      <DonateCta amount={amount} onClick={handleDonate} />
+      <DonationQr tossAccountUrl={tossUrl} amount={amount} />
       <Tail>송금자명에 닉네임이나 주점명을 적어주시면 운영팀이 확인하기 쉬워요.</Tail>
     </Section>
   );
