@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { FestivalWorkspaceRankItem } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { formatCurrency, formatNumber } from '@utils/formatNumber';
 import { getAdminWorkspacePath } from '@constants/routes';
 
 const Wrapper = styled.div`
@@ -28,12 +29,11 @@ const HeaderCell = styled.div`
   letter-spacing: 0.04em;
 `;
 
-const Row = styled.div<{ isEven: boolean }>`
+const Row = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-  padding: 10px 16px;
-  background: ${({ isEven }) => (isEven ? Color.WHITE : Color.LIGHT_GREY)};
-  border-bottom: 1px solid ${Color.HEAVY_GREY};
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
   align-items: center;
 
   &:last-child {
@@ -44,11 +44,26 @@ const Row = styled.div<{ isEven: boolean }>`
 const Cell = styled.div`
   font-size: 13px;
   color: ${Color.BLACK};
+  word-break: keep-all;
+`;
+
+const NameCell = styled(Cell)`
+  gap: 8px;
+  min-width: 0;
   ${rowFlex({ align: 'center' })}
 `;
 
+const Rank = styled.span`
+  font-size: 12px;
+  font-weight: 700;
+  color: ${Color.GREY};
+  width: 20px;
+  flex-shrink: 0;
+`;
+
 const NameGroup = styled.div`
-  gap: 4px;
+  min-width: 0;
+  gap: 2px;
   ${colFlex({ align: 'flex-start' })}
 `;
 
@@ -57,6 +72,7 @@ const WorkspaceName = styled(Link)`
   font-weight: 600;
   color: ${Color.BLACK};
   text-decoration: none;
+  word-break: keep-all;
 
   &:hover {
     color: ${Color.KIO_ORANGE};
@@ -69,24 +85,12 @@ const UniversityLabel = styled.div`
   color: ${Color.GREY};
 `;
 
-const RankBadge = styled.span<{ rank: number }>`
-  font-size: 11px;
-  font-weight: 700;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  margin-right: 8px;
-  flex-shrink: 0;
-  background: ${({ rank }) => (rank === 1 ? '#FFD700' : rank === 2 ? '#C0C0C0' : rank === 3 ? '#CD7F32' : Color.HEAVY_GREY)};
-  color: ${({ rank }) => (rank <= 3 ? Color.WHITE : Color.GREY)};
-  ${rowFlex({ align: 'center', justify: 'center' })}
-`;
-
 const EmptyRow = styled.div`
-  padding: 24px;
+  padding: 32px 16px;
   text-align: center;
   font-size: 13px;
   color: ${Color.GREY};
+  word-break: keep-all;
   ${colFlex({ align: 'center' })}
 `;
 
@@ -108,20 +112,20 @@ function FestivalWorkspaceRankingTable({ workspaces }: FestivalWorkspaceRankingT
         <EmptyRow>이번 달 축제 데이터가 없습니다.</EmptyRow>
       ) : (
         workspaces.map((w, idx) => (
-          <Row key={w.workspaceId} isEven={idx % 2 === 0}>
-            <Cell>
-              <RankBadge rank={idx + 1}>{idx + 1}</RankBadge>
+          <Row key={w.workspaceId}>
+            <NameCell>
+              <Rank>{idx + 1}</Rank>
               <NameGroup>
                 <WorkspaceName to={getAdminWorkspacePath(w.workspaceId)} target="_blank" rel="noopener noreferrer">
                   {w.workspaceName}
                 </WorkspaceName>
                 <UniversityLabel>{w.universityName}</UniversityLabel>
               </NameGroup>
-            </Cell>
-            <Cell>{w.festivalDays}일</Cell>
-            <Cell>{w.totalOrders.toLocaleString()}건</Cell>
-            <Cell>{w.totalRevenue.toLocaleString()}원</Cell>
-            <Cell>{w.averageOrderAmount.toLocaleString()}원</Cell>
+            </NameCell>
+            <Cell>{formatNumber(w.festivalDays)}일</Cell>
+            <Cell>{formatNumber(w.totalOrders)}건</Cell>
+            <Cell>{formatCurrency(w.totalRevenue)}</Cell>
+            <Cell>{formatCurrency(w.averageOrderAmount)}</Cell>
           </Row>
         ))
       )}
