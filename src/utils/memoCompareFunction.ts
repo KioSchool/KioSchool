@@ -1,14 +1,9 @@
 import { Order } from '@@types/index';
 
 export const areOrdersEquivalent = (prevOrder: Order, nextOrder: Order) => {
-  const isSameOrderId = prevOrder.id === nextOrder.id;
-  const hasSameStatus = prevOrder.status === nextOrder.status;
-  const hasSameProductsLength = prevOrder.orderProducts.length === nextOrder.orderProducts.length;
+  if (prevOrder.id !== nextOrder.id) return false;
+  if (prevOrder.status !== nextOrder.status) return false;
+  if (prevOrder.orderProducts.length !== nextOrder.orderProducts.length) return false;
 
-  const areAllServedCountsEqual = prevOrder.orderProducts.every((prevProduct, index) => {
-    const nextProduct = nextOrder.orderProducts[index];
-    return prevProduct.servedCount === nextProduct.servedCount;
-  });
-
-  return isSameOrderId && hasSameStatus && hasSameProductsLength && areAllServedCountsEqual;
+  return prevOrder.orderProducts.every((prevProduct, index) => prevProduct.servedCount === nextOrder.orderProducts[index].servedCount);
 };
