@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Location, useLocation } from 'react-router-dom';
 import { useSetAtom } from 'jotai';
+import { match } from 'ts-pattern';
 import styled from '@emotion/styled';
 import AppContainer from '@components/common/container/AppContainer';
 import PageHeader from '@components/common/page/PageHeader';
 import SuperAdminPageContainer from '@components/super-admin/SuperAdminPageContainer';
 import RightSidebarModal from '@components/common/modal/RightSidebarModal';
+import SectionTitle from '@components/super-admin/dashboard/SectionTitle';
 import FestivalCalendarGrid from '@components/super-admin/festival-calendar/FestivalCalendarGrid';
 import FestivalMonthSummary from '@components/super-admin/festival-calendar/FestivalMonthSummary';
 import FestivalUniversityTable from '@components/super-admin/festival-calendar/FestivalUniversityTable';
@@ -20,23 +22,18 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 
 const Sections = styled.div`
-  gap: 24px;
   width: 100%;
+  gap: 24px;
   ${colFlex()}
-`;
 
-const SectionLabel = styled.div`
-  font-size: 13px;
-  font-weight: 600;
-  color: ${Color.GREY};
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-bottom: 8px;
+  ${mobileMediaQuery} {
+    gap: 18px;
+  }
 `;
 
 const RankingRow = styled.div`
-  gap: 20px;
   width: 100%;
+  gap: 20px;
   align-items: flex-start;
   ${rowFlex()}
 
@@ -48,7 +45,6 @@ const RankingRow = styled.div`
 const RankingColumn = styled.div`
   flex: 1;
   min-width: 0;
-  gap: 8px;
   ${colFlex()}
 `;
 
@@ -57,6 +53,7 @@ const LoadingText = styled.div`
   color: ${Color.GREY};
   text-align: center;
   padding: 60px 0;
+  word-break: keep-all;
 `;
 
 function SuperAdminFestivalCalendar() {
@@ -91,9 +88,6 @@ function SuperAdminFestivalCalendar() {
     }
   };
 
-  const handleYearChange = (newYear: number) => setYear(newYear);
-  const handleMonthChange = (newMonth: number) => setMonth(newMonth);
-
   const handleDayClick = (dateStr: string, workspaces: FestivalWorkspace[]) => {
     if (workspaces.length === 0) return;
     setExternalSidebar({
@@ -108,37 +102,37 @@ function SuperAdminFestivalCalendar() {
   return (
     <AppContainer useFlex={colFlex({ align: 'center' })} useTitle={false}>
       <SuperAdminPageContainer>
-        <PageHeader title="축제 달력" description="주점별 축제 운영 현황을 달력으로 확인합니다. 주문 15건 이상 운영된 주점만 표시됩니다." />
-        {data === null ? (
-          <LoadingText>불러오는 중...</LoadingText>
-        ) : (
-          <Sections>
-            <div>
-              <SectionLabel>월별 요약</SectionLabel>
-              <FestivalMonthSummary summary={data.monthSummary} />
-            </div>
-            <FestivalCalendarGrid
-              year={year}
-              month={month}
-              calendar={data.calendar}
-              onPrevMonth={handlePrevMonth}
-              onNextMonth={handleNextMonth}
-              onYearChange={handleYearChange}
-              onMonthChange={handleMonthChange}
-              onDayClick={handleDayClick}
-            />
-            <RankingRow>
-              <RankingColumn>
-                <SectionLabel>대학별 순위</SectionLabel>
-                <FestivalUniversityTable universities={data.universityBreakdown} />
-              </RankingColumn>
-              <RankingColumn>
-                <SectionLabel>주점별 순위</SectionLabel>
-                <FestivalWorkspaceRankingTable workspaces={data.workspaceRanking} />
-              </RankingColumn>
-            </RankingRow>
-          </Sections>
-        )}
+        <PageHeader title="축제 달력" description="주점별 축제 운영 현황을 달력에서 확인합니다. 주문 15건 이상 발생한 주점만 집계됩니다." />
+        {match(data)
+          .with(null, () => <LoadingText>축제 달력 불러오는 중...</LoadingText>)
+          .otherwise((loaded) => (
+            <Sections>
+              <div>
+                <SectionTitle>월별 요약</SectionTitle>
+                <FestivalMonthSummary summary={loaded.monthSummary} />
+              </div>
+              <FestivalCalendarGrid
+                year={year}
+                month={month}
+                calendar={loaded.calendar}
+                onPrevMonth={handlePrevMonth}
+                onNextMonth={handleNextMonth}
+                onYearChange={setYear}
+                onMonthChange={setMonth}
+                onDayClick={handleDayClick}
+              />
+              <RankingRow>
+                <RankingColumn>
+                  <SectionTitle>대학별 순위</SectionTitle>
+                  <FestivalUniversityTable universities={loaded.universityBreakdown} />
+                </RankingColumn>
+                <RankingColumn>
+                  <SectionTitle>주점별 순위</SectionTitle>
+                  <FestivalWorkspaceRankingTable workspaces={loaded.workspaceRanking} />
+                </RankingColumn>
+              </RankingRow>
+            </Sections>
+          ))}
       </SuperAdminPageContainer>
       <RightSidebarModal useExternalControl={{ location: { pathname: SUPER_ADMIN_ROUTES.FESTIVAL_CALENDAR } as Location }} />
     </AppContainer>
