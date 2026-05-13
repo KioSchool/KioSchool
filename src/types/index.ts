@@ -360,6 +360,18 @@ export interface DashboardFunnel {
   hadFirstOrder: number;
 }
 
+export interface OnboardingDistributionBucket {
+  label: string;
+  count: number;
+}
+
+export interface OnboardingTimeStats {
+  averageMinutes: number;
+  medianMinutes: number;
+  neverCreatedCount: number;
+  distribution: OnboardingDistributionBucket[];
+}
+
 export interface DashboardInsights {
   dailyLast30Days: DailyPoint[];
   activeWorkspacesLast7Days: number;
@@ -369,6 +381,7 @@ export interface DashboardInsights {
   totalOrdersForCancelRate: number;
   topWorkspaces: WorkspaceRankItem[];
   funnel: DashboardFunnel;
+  onboardingTimeStats: OnboardingTimeStats;
 }
 
 export interface SuperAdminDashboard {
@@ -423,6 +436,39 @@ export interface OrdersFilter {
   statuses: OrderStatus[];
   startDate: string;
   endDate: string;
+}
+
+export type CardTemplate = 'SINGLE_TROPHY' | 'STORY_NUMBERS' | 'MILESTONE';
+
+export interface CardPayload {
+  totalRevenue?: number;
+  totalOrders?: number;
+  averageOrderAmount?: number;
+  tableCount?: number;
+  averageStayMinutes?: number;
+  cohortAverageRatio?: number;
+  absoluteValue?: number;
+  milestoneStep?: number;
+}
+
+export interface MetricSummary {
+  key: string;
+  label: string;
+  value: string;
+  percentile: number | null;
+  milestoneStep: number | null;
+  rank: number;
+  highlighted: boolean;
+}
+
+export interface InsightCardResponse {
+  referenceDate: string;
+  template: CardTemplate;
+  bestMetricKey: string | null;
+  bestMetricPercentile: number | null;
+  headline: string;
+  payload: CardPayload;
+  topMetrics: MetricSummary[];
 }
 
 export interface FestivalWorkspace {
