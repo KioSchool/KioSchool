@@ -1,10 +1,15 @@
+import { useEffect, useState } from 'react';
+import { RiArrowLeftSLine, RiArrowRightSLine } from '@remixicon/react';
 import styled from '@emotion/styled';
 import FestivalCalendarCell from './FestivalCalendarCell';
 import { FestivalWorkspace } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 
+const MIN_YEAR = 2000;
+const MAX_YEAR = 2100;
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
+const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1);
 
 const Wrapper = styled.div`
   gap: 16px;
@@ -22,30 +27,34 @@ const Controls = styled.div`
 `;
 
 const NavButton = styled.button`
-  padding: 6px 14px;
+  width: 32px;
+  height: 32px;
   border: 1px solid ${Color.HEAVY_GREY};
   border-radius: 8px;
   background: ${Color.WHITE};
-  color: ${Color.BLACK};
-  font-size: 13px;
+  color: ${Color.GREY};
   cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 
   &:hover {
     background: ${Color.LIGHT_GREY};
+    color: ${Color.BLACK};
   }
 `;
 
 const YearInput = styled.input`
   width: 72px;
-  padding: 6px 10px;
+  height: 32px;
+  padding: 0 10px;
   border: 1px solid ${Color.HEAVY_GREY};
   border-radius: 8px;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
   color: ${Color.BLACK};
   text-align: center;
   outline: none;
-  font-family: 'LINE Seed Sans KR', sans-serif;
+  font-family: inherit;
 
   &:focus {
     border-color: ${Color.KIO_ORANGE};
@@ -53,16 +62,17 @@ const YearInput = styled.input`
 `;
 
 const MonthSelect = styled.select`
-  padding: 6px 10px;
+  height: 32px;
+  padding: 0 10px;
   border: 1px solid ${Color.HEAVY_GREY};
   border-radius: 8px;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
   color: ${Color.BLACK};
   background: ${Color.WHITE};
   cursor: pointer;
   outline: none;
-  font-family: 'LINE Seed Sans KR', sans-serif;
+  font-family: inherit;
 
   &:focus {
     border-color: ${Color.KIO_ORANGE};
@@ -89,8 +99,6 @@ const Grid = styled.div`
   gap: 4px;
 `;
 
-const MONTHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-
 interface FestivalCalendarGridProps {
   year: number;
   month: number;
@@ -114,10 +122,19 @@ function buildCalendarDays(year: number, month: number): (number | null)[] {
 function FestivalCalendarGrid({ year, month, calendar, onPrevMonth, onNextMonth, onYearChange, onMonthChange, onDayClick }: FestivalCalendarGridProps) {
   const today = new Date();
   const days = buildCalendarDays(year, month);
+  const [yearDraft, setYearDraft] = useState(String(year));
 
-  const handleYearBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    const val = parseInt(e.target.value, 10);
-    if (!isNaN(val) && val >= 2000 && val <= 2100) onYearChange(val);
+  useEffect(() => {
+    setYearDraft(String(year));
+  }, [year]);
+
+  const commitYear = () => {
+    const next = parseInt(yearDraft, 10);
+    if (!Number.isNaN(next) && next >= MIN_YEAR && next <= MAX_YEAR && next !== year) {
+      onYearChange(next);
+    } else {
+      setYearDraft(String(year));
+    }
   };
 
   const handleYearKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -128,8 +145,18 @@ function FestivalCalendarGrid({ year, month, calendar, onPrevMonth, onNextMonth,
     <Wrapper>
       <Header>
         <Controls>
-          <NavButton onClick={onPrevMonth}>{'<'}</NavButton>
-          <YearInput defaultValue={year} key={year} onBlur={handleYearBlur} onKeyDown={handleYearKeyDown} type="number" min={2000} max={2100} />
+          <NavButton onClick={onPrevMonth} aria-label="이전 달">
+            <RiArrowLeftSLine size={18} />
+          </NavButton>
+          <YearInput
+            type="number"
+            min={MIN_YEAR}
+            max={MAX_YEAR}
+            value={yearDraft}
+            onChange={(e) => setYearDraft(e.target.value)}
+            onBlur={commitYear}
+            onKeyDown={handleYearKeyDown}
+          />
           <MonthSelect value={month} onChange={(e) => onMonthChange(Number(e.target.value))}>
             {MONTHS.map((m) => (
               <option key={m} value={m}>
@@ -137,7 +164,9 @@ function FestivalCalendarGrid({ year, month, calendar, onPrevMonth, onNextMonth,
               </option>
             ))}
           </MonthSelect>
-          <NavButton onClick={onNextMonth}>{'>'}</NavButton>
+          <NavButton onClick={onNextMonth} aria-label="다음 달">
+            <RiArrowRightSLine size={18} />
+          </NavButton>
         </Controls>
       </Header>
       <WeekdayRow>
