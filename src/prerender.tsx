@@ -1,6 +1,5 @@
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
-import type { ComponentProps } from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
 import { Route, Routes } from 'react-router-dom';
@@ -37,8 +36,6 @@ interface FakeDocument {
   createElement: (tagName: string) => FakeElement;
   createTextNode: (text: string) => FakeNode & { textContent: string };
 }
-
-type CacheProviderValue = ComponentProps<typeof CacheProvider>['value'];
 
 function createFakeElement(styleSheets: FakeDocument['styleSheets'], tagName: string): FakeElement {
   const element: FakeElement = {
@@ -110,7 +107,7 @@ export async function prerender({ url }: PrerenderArguments): Promise<PrerenderR
   ensurePrerenderDocument();
   const pathname = getPathname(url);
   const seo = getMarketingSeoByPathname(pathname);
-  const cache = createCache({ key: 'css' }) as CacheProviderValue;
+  const cache = createCache({ key: 'css' });
   const html = renderToString(
     <CacheProvider value={cache}>
       <HelmetProvider>
