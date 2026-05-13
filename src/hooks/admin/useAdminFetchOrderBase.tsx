@@ -4,7 +4,7 @@ import { useAtomValue } from 'jotai';
 import { adminTablesAtom } from '@jotai/admin/atoms';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { OrderStatus } from '@@types/index';
-import { TABLE_ORDER_SORT_OPTIONS, TABLE_ORDER_STATUS_OPTIONS } from '@constants/data/adminOrderData';
+import { DEFAULT_TOTAL_ORDER_STATUSES, TABLE_ORDER_SORT_OPTIONS, TABLE_ORDER_STATUS_OPTIONS } from '@constants/data/adminOrderData';
 
 export const useAdminFetchOrderBase = (workspaceId: string | undefined) => {
   const { fetchWorkspaceTables } = useAdminWorkspace();
@@ -14,7 +14,7 @@ export const useAdminFetchOrderBase = (workspaceId: string | undefined) => {
   const [endDate, setEndDate] = useState<Date | null>(new Date());
   const [tableNumber, setTableNumber] = useState<string>('ALL');
   const [sortOrder, setSortOrder] = useState<string>('LATEST');
-  const [orderStatuses, setOrderStatuses] = useState<OrderStatus[]>([]);
+  const [orderStatuses, setOrderStatuses] = useState<OrderStatus[]>([...DEFAULT_TOTAL_ORDER_STATUSES]);
 
   useEffect(() => {
     if (workspaceId) {
@@ -38,7 +38,7 @@ export const useAdminFetchOrderBase = (workspaceId: string | undefined) => {
     setEndDate(new Date());
     setTableNumber('ALL');
     setSortOrder('LATEST');
-    setOrderStatuses([]);
+    setOrderStatuses([...DEFAULT_TOTAL_ORDER_STATUSES]);
   }, []);
 
   return {
