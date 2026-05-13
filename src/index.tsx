@@ -5,6 +5,7 @@ import { BrowserRouter, createRoutesFromChildren, matchRoutes, Routes, useLocati
 import { CookiesProvider } from 'react-cookie';
 import * as Sentry from '@sentry/react';
 import React from 'react';
+import { HelmetProvider } from 'react-helmet-async';
 import SentryErrorFallback from './components/common/fallback/SentryErrorFallback';
 import { URLS } from '@constants/urls';
 import type { SentryEnvironment } from '@constants/sentry';
@@ -57,10 +58,12 @@ export const SentryRoutes = Sentry.withSentryReactRouterV6Routing(Routes);
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <Sentry.ErrorBoundary fallback={() => <SentryErrorFallback />}>
-    <BrowserRouter>
-      <CookiesProvider>
-        <App />
-      </CookiesProvider>
-    </BrowserRouter>
+    <HelmetProvider>
+      <BrowserRouter>
+        <CookiesProvider>
+          <App />
+        </CookiesProvider>
+      </BrowserRouter>
+    </HelmetProvider>
   </Sentry.ErrorBoundary>,
 );

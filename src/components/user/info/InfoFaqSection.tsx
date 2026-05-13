@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { colFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { bodyTypography, eyebrowTypography, headingTypography } from '@styles/landingTypography';
@@ -68,8 +68,11 @@ const Chevron = styled.span<{ open: boolean }>`
 `;
 
 const AnswerText = styled(motion.div)`
-  padding-bottom: 24px;
   overflow: hidden;
+`;
+
+const AnswerInner = styled.div`
+  padding-bottom: 24px;
   ${bodyTypography};
 `;
 
@@ -102,22 +105,18 @@ function FaqAccordionItem({ question, answer }: { question: string; answer: stri
 
   return (
     <FaqItem>
-      <FaqQuestion onClick={() => setIsOpen(!isOpen)}>
+      <FaqQuestion onClick={() => setIsOpen(!isOpen)} aria-expanded={isOpen} type="button">
         <QuestionText>{question}</QuestionText>
         <Chevron open={isOpen}>&#8964;</Chevron>
       </FaqQuestion>
-      <AnimatePresence>
-        {isOpen && (
-          <AnswerText
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
-          >
-            {answer}
-          </AnswerText>
-        )}
-      </AnimatePresence>
+      <AnswerText
+        initial={false}
+        animate={{ height: isOpen ? 'auto' : 0, opacity: isOpen ? 1 : 0 }}
+        transition={{ duration: 0.2, ease: 'easeOut' }}
+        aria-hidden={!isOpen}
+      >
+        <AnswerInner>{answer}</AnswerInner>
+      </AnswerText>
     </FaqItem>
   );
 }
