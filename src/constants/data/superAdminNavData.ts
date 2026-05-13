@@ -11,6 +11,7 @@ export const superAdminNavData: SideNavCategory[] = [
       { name: '워크스페이스 관리', path: stripPrefix(SUPER_ADMIN_ROUTES.WORKSPACE) },
       { name: '서비스 현황 대시보드', path: stripPrefix(SUPER_ADMIN_ROUTES.DASHBOARD) },
       { name: '계좌 연동 현황', path: stripPrefix(SUPER_ADMIN_ROUTES.ACCOUNT_STATUS) },
+      { name: '축제 달력', path: stripPrefix(SUPER_ADMIN_ROUTES.FESTIVAL_CALENDAR) },
     ],
   },
   {

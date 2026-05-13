@@ -42,6 +42,7 @@ export const SUPER_ADMIN_ROUTES = {
   DASHBOARD: '/super-admin/dashboard',
   ORDERS: '/super-admin/orders',
   ACCOUNT_STATUS: '/super-admin/account-status',
+  FESTIVAL_CALENDAR: '/super-admin/festival-calendar',
 } as const;
 
 export const TEST_ROUTES = {

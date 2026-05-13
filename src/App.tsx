@@ -28,6 +28,7 @@ import SuperAdminBank from '@pages/super-admin/SuperAdminBank';
 import SuperAdminDashboard from '@pages/super-admin/SuperAdminDashboard';
 import SuperAdminAccountStatus from '@pages/super-admin/SuperAdminAccountStatus';
 import SuperAdminOrders from '@pages/super-admin/SuperAdminOrders';
+import SuperAdminFestivalCalendar from '@pages/super-admin/SuperAdminFestivalCalendar';
 import { ToastContainer } from 'react-toastify';
 import useNetworkStatusNotifier from '@hooks/useNetworkStatusNotifier';
 import useServerHealth from '@hooks/useServerHealth';
@@ -86,6 +87,7 @@ function App() {
         <Route path={SUPER_ADMIN_ROUTES.DASHBOARD} element={<SuperAdminDashboard />} />
         <Route path={SUPER_ADMIN_ROUTES.ACCOUNT_STATUS} element={<SuperAdminAccountStatus />} />
         <Route path={SUPER_ADMIN_ROUTES.ORDERS} element={<SuperAdminOrders />} />
+        <Route path={SUPER_ADMIN_ROUTES.FESTIVAL_CALENDAR} element={<SuperAdminFestivalCalendar />} />
 
         <Route path={USER_ROUTES.LOGIN} element={<Login />} />
 

@@ -360,18 +360,6 @@ export interface DashboardFunnel {
   hadFirstOrder: number;
 }
 
-export interface OnboardingDistributionBucket {
-  label: string;
-  count: number;
-}
-
-export interface OnboardingTimeStats {
-  averageMinutes: number;
-  medianMinutes: number;
-  neverCreatedCount: number;
-  distribution: OnboardingDistributionBucket[];
-}
-
 export interface DashboardInsights {
   dailyLast30Days: DailyPoint[];
   activeWorkspacesLast7Days: number;
@@ -381,7 +369,6 @@ export interface DashboardInsights {
   totalOrdersForCancelRate: number;
   topWorkspaces: WorkspaceRankItem[];
   funnel: DashboardFunnel;
-  onboardingTimeStats: OnboardingTimeStats;
 }
 
 export interface SuperAdminDashboard {
@@ -438,35 +425,46 @@ export interface OrdersFilter {
   endDate: string;
 }
 
-export type CardTemplate = 'SINGLE_TROPHY' | 'STORY_NUMBERS' | 'MILESTONE';
-
-export interface CardPayload {
-  totalRevenue?: number;
-  totalOrders?: number;
-  averageOrderAmount?: number;
-  tableCount?: number;
-  averageStayMinutes?: number;
-  cohortAverageRatio?: number;
-  absoluteValue?: number;
-  milestoneStep?: number;
+export interface FestivalWorkspace {
+  workspaceId: number;
+  workspaceName: string;
+  universityName: string;
+  totalOrders: number;
+  totalRevenue: number;
+  averageOrderAmount: number;
+  tableTurnoverRate: number;
+  averageStayTimeMinutes: number;
+  peakHour: number | null;
 }
 
-export interface MetricSummary {
-  key: string;
-  label: string;
-  value: string;
-  percentile: number | null;
-  milestoneStep: number | null;
-  rank: number;
-  highlighted: boolean;
+export interface FestivalMonthSummary {
+  totalFestivalDays: number;
+  uniqueUniversities: number;
+  totalOrders: number;
+  totalRevenue: number;
+  busiestDay: string | null;
 }
 
-export interface InsightCardResponse {
-  referenceDate: string;
-  template: CardTemplate;
-  bestMetricKey: string | null;
-  bestMetricPercentile: number | null;
-  headline: string;
-  payload: CardPayload;
-  topMetrics: MetricSummary[];
+export interface FestivalUniversityStats {
+  universityName: string;
+  festivalDays: number;
+  totalOrders: number;
+  totalRevenue: number;
+}
+
+export interface FestivalWorkspaceRankItem {
+  workspaceId: number;
+  workspaceName: string;
+  universityName: string;
+  festivalDays: number;
+  totalOrders: number;
+  totalRevenue: number;
+  averageOrderAmount: number;
+}
+
+export interface FestivalCalendar {
+  monthSummary: FestivalMonthSummary;
+  universityBreakdown: FestivalUniversityStats[];
+  workspaceRanking: FestivalWorkspaceRankItem[];
+  calendar: Record<string, FestivalWorkspace[]>;
 }
