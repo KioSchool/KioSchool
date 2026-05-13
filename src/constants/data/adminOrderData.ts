@@ -1,9 +1,12 @@
 import { OrderStatus } from '@@types/index';
 
+export const DEFAULT_TOTAL_ORDER_STATUSES: OrderStatus[] = [OrderStatus.SERVED, OrderStatus.PAID, OrderStatus.NOT_PAID];
+
 export const TABLE_ORDER_STATUS_OPTIONS: { value: OrderStatus; label: string }[] = [
   { value: OrderStatus.SERVED, label: '서빙 완료' },
   { value: OrderStatus.PAID, label: '결제 완료' },
   { value: OrderStatus.NOT_PAID, label: '주문 완료' },
+  { value: OrderStatus.CANCELLED, label: '주문 취소' },
 ];
 
 export const TABLE_ORDER_SORT_OPTIONS = [
