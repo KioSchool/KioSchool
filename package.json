@@ -58,8 +58,8 @@
   },
   "scripts": {
     "start": "vite --host",
-    "build": "tsc -b && vite build && node scripts/generate-sitemap.mjs",
-    "build:dev": "tsc -b && vite build --mode dev",
+    "build": "tsc -b && vite build && node scripts/generate-seo-assets.mjs production",
+    "build:dev": "tsc -b && vite build --mode dev && node scripts/generate-seo-assets.mjs dev",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",

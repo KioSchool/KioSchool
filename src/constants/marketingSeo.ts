@@ -52,6 +52,9 @@ export interface MarketingSeoConfigEntry {
 }
 
 const MARKETING_OG_IMAGE_URL = `${URLS.EXTERNAL.KIO_SCHOOL}/preview.png`;
+const PRODUCTION_ENVIRONMENT = 'production';
+
+export const MARKETING_ROBOTS_CONTENT = import.meta.env.VITE_ENVIRONMENT === PRODUCTION_ENVIRONMENT ? 'index, follow' : 'noindex, nofollow';
 
 const ORGANIZATION_SCHEMA: MarketingOrganizationSchema = {
   '@context': 'https://schema.org',
@@ -123,7 +126,7 @@ export function getMarketingHeadElements(pathname: string): Set<MarketingHeadEle
   const seo = getMarketingSeoByPathname(pathname);
   const headElements: MarketingHeadElement[] = [
     { type: 'meta', props: { name: 'description', content: seo.description } },
-    { type: 'meta', props: { name: 'robots', content: 'index, follow' } },
+    { type: 'meta', props: { name: 'robots', content: MARKETING_ROBOTS_CONTENT } },
     { type: 'link', props: { rel: 'canonical', href: seo.canonicalUrl } },
     { type: 'meta', props: { property: 'og:type', content: 'website' } },
     { type: 'meta', props: { property: 'og:site_name', content: '키오스쿨' } },

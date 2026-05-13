@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { MARKETING_ROBOTS_CONTENT } from '@constants/marketingSeo';
 import type { MarketingSeoConfigEntry } from '@constants/marketingSeo';
 
 function PageSeo({ title, description, canonicalUrl, ogImageUrl, structuredData }: MarketingSeoConfigEntry) {
@@ -7,7 +8,7 @@ function PageSeo({ title, description, canonicalUrl, ogImageUrl, structuredData 
       <html lang="ko" />
       <title>{title}</title>
       <meta name="description" content={description} />
-      <meta name="robots" content="index, follow" />
+      <meta name="robots" content={MARKETING_ROBOTS_CONTENT} />
       <link rel="canonical" href={canonicalUrl} />
       <meta property="og:type" content="website" />
       <meta property="og:site_name" content="키오스쿨" />
