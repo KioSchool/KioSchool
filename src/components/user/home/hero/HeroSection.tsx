@@ -7,7 +7,7 @@ import { mobileMediaQuery } from '@styles/globalStyles';
 import { displayHeadingTypography, subheadingTypography } from '@styles/landingTypography';
 import { Color } from '@resources/colors';
 import { ADMIN_ROUTES, USER_ROUTES } from '@constants/routes';
-import useAuthentication from '@hooks/useAuthentication';
+import useMarketingLoginStatus from '@hooks/useMarketingLoginStatus';
 import useMouseGlow, { MouseGlow } from '@components/user/home/useMouseGlow';
 import cloud1 from '@resources/image/home/cloud1.png';
 import cloud2 from '@resources/image/home/cloud2.png';
@@ -146,7 +146,7 @@ function lerpRgb(a: [number, number, number], b: [number, number, number], t: nu
 }
 
 function HeroSection() {
-  const { isLoggedIn } = useAuthentication();
+  const isLoggedIn = useMarketingLoginStatus();
   const containerRef = useRef<HTMLDivElement>(null);
   const kioRef = useRef<HTMLSpanElement>(null);
   const { mousePos, isHovering, intensity, handleMouseMove, handleMouseEnter, handleMouseLeave } = useMouseGlow(containerRef, kioRef);
@@ -187,7 +187,7 @@ function HeroSection() {
           이 대신할게요
         </SubCopy>
         <CtaRow>
-          <CtaButton to={ADMIN_ROUTES.HOME}>{isLoggedIn() ? '어드민 홈으로' : '무료로 시작하기'}</CtaButton>
+          <CtaButton to={ADMIN_ROUTES.HOME}>{isLoggedIn ? '어드민 홈으로' : '무료로 시작하기'}</CtaButton>
           <SecondaryButton to={USER_ROUTES.INFO}>서비스 알아보기</SecondaryButton>
         </CtaRow>
       </ContentWrapper>

@@ -470,3 +470,47 @@ export interface InsightCardResponse {
   payload: CardPayload;
   topMetrics: MetricSummary[];
 }
+
+export interface FestivalWorkspace {
+  workspaceId: number;
+  workspaceName: string;
+  universityName: string;
+  totalOrders: number;
+  totalRevenue: number;
+  averageOrderAmount: number;
+  tableTurnoverRate: number;
+  averageStayTimeMinutes: number;
+  peakHour: number | null;
+}
+
+export interface FestivalMonthSummary {
+  totalFestivalDays: number;
+  uniqueUniversities: number;
+  totalOrders: number;
+  totalRevenue: number;
+  busiestDay: string | null;
+}
+
+export interface FestivalUniversityStats {
+  universityName: string;
+  festivalDays: number;
+  totalOrders: number;
+  totalRevenue: number;
+}
+
+export interface FestivalWorkspaceRankItem {
+  workspaceId: number;
+  workspaceName: string;
+  universityName: string;
+  festivalDays: number;
+  totalOrders: number;
+  totalRevenue: number;
+  averageOrderAmount: number;
+}
+
+export interface FestivalCalendar {
+  monthSummary: FestivalMonthSummary;
+  universityBreakdown: FestivalUniversityStats[];
+  workspaceRanking: FestivalWorkspaceRankItem[];
+  calendar: Record<string, FestivalWorkspace[]>;
+}
