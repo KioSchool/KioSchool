@@ -9,6 +9,8 @@ import Home from '@pages/user/home/Home';
 import Info from '@pages/user/info/Info';
 import { getMarketingHeadElements, getMarketingSeoByPathname } from '@constants/marketingSeo';
 
+const EMOTION_CACHE_KEY = 'css';
+
 interface FakeNode {
   parentNode: FakeElement | null;
 }
@@ -77,9 +79,7 @@ function createFakeElement(styleSheets: FakeDocument['styleSheets'], tagName: st
   return element;
 }
 
-function ensurePrerenderDocument() {
-  if (typeof document !== 'undefined') return;
-
+function installPrerenderDocument(): FakeDocument {
   const styleSheets: FakeDocument['styleSheets'] = [];
   const head = createFakeElement(styleSheets, 'head');
   const fakeDocument: FakeDocument = {
@@ -96,7 +96,10 @@ function ensurePrerenderDocument() {
   Object.defineProperty(globalThis, 'document', {
     value: fakeDocument,
     configurable: true,
+    writable: true,
   });
+
+  return fakeDocument;
 }
 
 function getPathname(url: string) {
@@ -104,10 +107,11 @@ function getPathname(url: string) {
 }
 
 export async function prerender({ url }: PrerenderArguments): Promise<PrerenderResult> {
-  ensurePrerenderDocument();
+  const fakeDocument = installPrerenderDocument();
   const pathname = getPathname(url);
   const seo = getMarketingSeoByPathname(pathname);
-  const cache = createCache({ key: 'css' });
+  const cache = createCache({ key: EMOTION_CACHE_KEY });
+
   const html = renderToString(
     <CacheProvider value={cache}>
       <HelmetProvider>
@@ -121,12 +125,25 @@ export async function prerender({ url }: PrerenderArguments): Promise<PrerenderR
     </CacheProvider>,
   );
 
+  const headElements = getMarketingHeadElements(pathname);
+  const cssRules = fakeDocument.styleSheets.flatMap((sheet) => sheet.cssRules);
+  const insertedIds = Object.keys(cache.inserted);
+  if (cssRules.length > 0) {
+    headElements.add({
+      type: 'style',
+      props: {
+        'data-emotion': `${cache.key} ${insertedIds.join(' ')}`,
+      },
+      children: cssRules.join(''),
+    });
+  }
+
   return {
     html,
     head: {
       lang: 'ko',
       title: seo.title,
-      elements: getMarketingHeadElements(pathname),
+      elements: headElements,
     },
   };
 }
