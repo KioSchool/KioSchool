@@ -6,7 +6,20 @@ import react from '@vitejs/plugin-react';
 import { vitePrerenderPlugin } from 'vite-prerender-plugin';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
+const EMOTION_SERVER_ALIASES = [
+  { find: /^@emotion\/react$/, replacement: path.resolve(__dirname, 'node_modules/@emotion/react/dist/emotion-react.esm.js') },
+  { find: /^@emotion\/styled$/, replacement: path.resolve(__dirname, 'node_modules/@emotion/styled/dist/emotion-styled.esm.js') },
+  { find: /^@emotion\/styled\/base$/, replacement: path.resolve(__dirname, 'node_modules/@emotion/styled/base/dist/emotion-styled-base.esm.js') },
+  {
+    find: /^@emotion\/use-insertion-effect-with-fallbacks$/,
+    replacement: path.resolve(__dirname, 'node_modules/@emotion/use-insertion-effect-with-fallbacks/dist/emotion-use-insertion-effect-with-fallbacks.esm.js'),
+  },
+];
+
 export default defineConfig({
+  resolve: {
+    alias: EMOTION_SERVER_ALIASES,
+  },
   plugins: [
     react(),
     tsconfigPaths(),
