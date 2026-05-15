@@ -1,9 +1,15 @@
+const WHITESPACE_REGEX = /\s+/g;
+
 export function formatNumber(n: number): string {
   return n.toLocaleString('ko-KR');
 }
 
 export function formatCurrency(n: number): string {
   return `${formatNumber(n)}원`;
+}
+
+export function removeWhitespace(value: string): string {
+  return value.replace(WHITESPACE_REGEX, '');
 }
 
 function pad2(n: number): string {
