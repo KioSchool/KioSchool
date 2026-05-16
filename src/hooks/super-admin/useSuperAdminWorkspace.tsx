@@ -7,14 +7,15 @@ interface FetchAllWorkspacesParamsType {
   page: number;
   size: number;
   name?: string;
+  updatedAfter?: string;
 }
 
 function useSuperAdminWorkspace() {
   const { superAdminApi } = useApi();
 
   const fetchAllWorkspaces = useCallback(
-    (page: number, size: number, name?: string) => {
-      const params: FetchAllWorkspacesParamsType = { page, size, name };
+    (page: number, size: number, name?: string, updatedAfter?: string) => {
+      const params: FetchAllWorkspacesParamsType = { page, size, name, updatedAfter };
       return superAdminApi
         .get<PaginationResponse<Workspace>>('/workspaces', { params })
         .then((res) => res.data)
