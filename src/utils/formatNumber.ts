@@ -1,9 +1,15 @@
+export const NON_DIGIT_REGEX = /[^0-9]/g;
+
 export function formatNumber(n: number): string {
   return n.toLocaleString('ko-KR');
 }
 
 export function formatCurrency(n: number): string {
   return `${formatNumber(n)}원`;
+}
+
+export function normalizeAccountNumber(value: string): string {
+  return value.replace(NON_DIGIT_REGEX, '');
 }
 
 function pad2(n: number): string {
