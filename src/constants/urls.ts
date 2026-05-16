@@ -12,6 +12,7 @@ export const URLS = {
 
   EXTERNAL: {
     NOTION_FAQ: 'https://ji-in.notion.site/FAQ-09eb07eac4a34ab4aa883727994e0b08?pvs=4',
+    GITHUB: 'https://github.com/KioSchool',
     INSTAGRAM: 'https://www.instagram.com/kioschool/',
     YOUTUBE: 'https://www.youtube.com/watch?v=4tZjnj48hBk',
     KIO_SCHOOL: 'https://kio-school.com',

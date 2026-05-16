@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
+import { RiGithubFill, RiInstagramLine } from '@remixicon/react';
 import { Link } from 'react-router-dom';
-import { RiInstagramLine } from '@remixicon/react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { URLS } from '@constants/urls';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { captionTypography, headingTypography, subheadingTypography } from '@styles/landingTypography';
 import { Color } from '@resources/colors';
@@ -70,8 +71,14 @@ const Reassurance = styled.p`
   ${captionTypography};
 `;
 
-const ContactLink = styled.a`
+const ContactLinkRow = styled.div`
   margin-top: 56px;
+  gap: 12px;
+  flex-wrap: wrap;
+  ${rowFlex({ justify: 'center', align: 'center' })};
+`;
+
+const ContactLink = styled.a`
   padding: 10px 20px;
   background: #f2f4f6;
   color: #3c3530;
@@ -105,10 +112,16 @@ function InfoCtaSection() {
         <Subtitle>가입부터 주점 운영까지, 3분이면 준비 끝</Subtitle>
         <CtaButton to={ADMIN_ROUTES.HOME}>{isLoggedIn ? '어드민 홈으로' : '무료로 시작하기'}</CtaButton>
         <Reassurance>별도 비용 없이 시작할 수 있어요</Reassurance>
-        <ContactLink href="https://www.instagram.com/kioschool/" target="_blank" rel="noopener noreferrer">
-          <RiInstagramLine size={16} />
-          키오스쿨 문의하기
-        </ContactLink>
+        <ContactLinkRow>
+          <ContactLink href={URLS.EXTERNAL.GITHUB} target="_blank" rel="noopener noreferrer" aria-label="키오스쿨 GitHub 저장소 보기">
+            <RiGithubFill size={16} />
+            키오스쿨 GitHub
+          </ContactLink>
+          <ContactLink href={URLS.EXTERNAL.INSTAGRAM} target="_blank" rel="noopener noreferrer" aria-label="키오스쿨 인스타그램으로 문의하기">
+            <RiInstagramLine size={16} />
+            키오스쿨 문의하기
+          </ContactLink>
+        </ContactLinkRow>
       </ContentWrapper>
     </Container>
   );
