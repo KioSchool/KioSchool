@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { RiArrowDownSLine } from '@remixicon/react';
 import styled from '@emotion/styled';
 import { FestivalWorkspaceRankItem } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { formatCurrency, formatNumber } from '@utils/formatNumber';
 import { getAdminWorkspacePath } from '@constants/routes';
+
+type SortKey = 'totalRevenue' | 'totalOrders';
 
 const Wrapper = styled.div`
   border: 1px solid ${Color.HEAVY_GREY};
@@ -27,6 +31,33 @@ const HeaderCell = styled.div`
   color: ${Color.GREY};
   text-transform: uppercase;
   letter-spacing: 0.04em;
+`;
+
+const SortableHeaderCell = styled.button<{ active: boolean }>`
+  font-size: 11px;
+  font-weight: 600;
+  color: ${({ active }) => (active ? Color.KIO_ORANGE : Color.GREY)};
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  gap: 2px;
+  ${rowFlex({ align: 'center' })}
+
+  svg {
+    transition: opacity 0.15s;
+    opacity: ${({ active }) => (active ? 1 : 0)};
+  }
+
+  &:hover {
+    color: ${Color.KIO_ORANGE};
+
+    svg {
+      opacity: 1;
+    }
+  }
 `;
 
 const Row = styled.div`
@@ -99,19 +130,29 @@ interface FestivalWorkspaceRankingTableProps {
 }
 
 function FestivalWorkspaceRankingTable({ workspaces }: FestivalWorkspaceRankingTableProps) {
+  const [sortKey, setSortKey] = useState<SortKey>('totalRevenue');
+
+  const sorted = [...workspaces].sort((a, b) => b[sortKey] - a[sortKey]);
+
   return (
     <Wrapper>
       <TableHeader>
         <HeaderCell>주점</HeaderCell>
         <HeaderCell>축제 일수</HeaderCell>
-        <HeaderCell>총 주문</HeaderCell>
-        <HeaderCell>총 매출</HeaderCell>
+        <SortableHeaderCell active={sortKey === 'totalOrders'} onClick={() => setSortKey('totalOrders')}>
+          총 주문
+          <RiArrowDownSLine size={12} />
+        </SortableHeaderCell>
+        <SortableHeaderCell active={sortKey === 'totalRevenue'} onClick={() => setSortKey('totalRevenue')}>
+          총 매출
+          <RiArrowDownSLine size={12} />
+        </SortableHeaderCell>
         <HeaderCell>평균 주문금액</HeaderCell>
       </TableHeader>
-      {workspaces.length === 0 ? (
+      {sorted.length === 0 ? (
         <EmptyRow>이번 달 축제 데이터가 없습니다.</EmptyRow>
       ) : (
-        workspaces.map((w, idx) => (
+        sorted.map((w, idx) => (
           <Row key={w.workspaceId}>
             <NameCell>
               <Rank>{idx + 1}</Rank>
