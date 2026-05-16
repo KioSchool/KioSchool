@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { RiExternalLinkLine } from '@remixicon/react';
 import styled from '@emotion/styled';
@@ -6,6 +7,8 @@ import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { formatCurrency, formatNumber } from '@utils/formatNumber';
 import { getAdminWorkspacePath } from '@constants/routes';
+
+type SortKey = 'totalOrders' | 'totalRevenue';
 
 const DaySummary = styled.div`
   display: grid;
@@ -65,9 +68,39 @@ const UniversityTag = styled.div`
   word-break: keep-all;
 `;
 
+const WorkspaceListHeader = styled.div`
+  padding-top: 16px;
+  gap: 8px;
+  ${rowFlex({ align: 'center', justify: 'space-between' })}
+`;
+
+const WorkspaceListLabel = styled.div`
+  font-size: 11px;
+  font-weight: 600;
+  color: ${Color.GREY};
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+`;
+
+const SortToggle = styled.div`
+  gap: 4px;
+  ${rowFlex({ align: 'center' })}
+`;
+
+const SortButton = styled.button<{ active: boolean }>`
+  font-size: 11px;
+  font-weight: ${({ active }) => (active ? 700 : 400)};
+  color: ${({ active }) => (active ? Color.KIO_ORANGE : Color.GREY)};
+  background: ${({ active }) => (active ? '#fff3eb' : 'none')};
+  border: 1px solid ${({ active }) => (active ? Color.KIO_ORANGE : Color.HEAVY_GREY)};
+  border-radius: 10px;
+  padding: 2px 8px;
+  cursor: pointer;
+`;
+
 const WorkspaceList = styled.div`
   gap: 12px;
-  padding-top: 16px;
+  padding-top: 12px;
   ${colFlex()}
 `;
 
@@ -146,9 +179,13 @@ interface FestivalDayDetailProps {
 }
 
 function FestivalDayDetail({ workspaces }: FestivalDayDetailProps) {
+  const [sortKey, setSortKey] = useState<SortKey>('totalOrders');
+
   const totalOrders = workspaces.reduce((sum, w) => sum + w.totalOrders, 0);
   const totalRevenue = workspaces.reduce((sum, w) => sum + w.totalRevenue, 0);
   const universities = [...new Set(workspaces.map((w) => w.universityName))];
+
+  const sorted = [...workspaces].sort((a, b) => b[sortKey] - a[sortKey]);
 
   return (
     <>
@@ -174,8 +211,19 @@ function FestivalDayDetail({ workspaces }: FestivalDayDetailProps) {
           ))}
         </UniversityTagList>
       </UniversitySection>
+      <WorkspaceListHeader>
+        <WorkspaceListLabel>주점 목록</WorkspaceListLabel>
+        <SortToggle>
+          <SortButton active={sortKey === 'totalOrders'} onClick={() => setSortKey('totalOrders')}>
+            주문순
+          </SortButton>
+          <SortButton active={sortKey === 'totalRevenue'} onClick={() => setSortKey('totalRevenue')}>
+            매출순
+          </SortButton>
+        </SortToggle>
+      </WorkspaceListHeader>
       <WorkspaceList>
-        {workspaces.map((w) => (
+        {sorted.map((w) => (
           <WorkspaceCard key={w.workspaceId}>
             <WorkspaceCardHeader>
               <WorkspaceName to={getAdminWorkspacePath(w.workspaceId)} target="_blank" rel="noopener noreferrer">
