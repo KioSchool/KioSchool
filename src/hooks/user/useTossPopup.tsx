@@ -20,7 +20,13 @@ function useTossPopup() {
     return userAgent.includes('safari') && !userAgent.includes('chrome');
   };
 
-  const createPopup = (url?: string) => window.open(url, '_blank');
+  const createPopup = (url?: string) => {
+    const popup = window.open(url ?? 'about:blank', '_blank', 'noopener,noreferrer');
+    if (popup) {
+      popup.opener = null;
+    }
+    return popup;
+  };
 
   const closePopupWithDelay = (popup: Window | null, delay: number) => {
     if (popup && !popup.closed) {

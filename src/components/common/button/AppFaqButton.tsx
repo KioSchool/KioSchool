@@ -26,7 +26,10 @@ const QuestionIcon = styled(RiQuestionFill)`
 
 function AppFaqButton() {
   const handleButtonClick = () => {
-    window.open(URLS.EXTERNAL.NOTION_FAQ, '_blank');
+    const faqWindow = window.open(URLS.EXTERNAL.NOTION_FAQ, '_blank', 'noopener,noreferrer');
+    if (faqWindow) {
+      faqWindow.opener = null;
+    }
   };
 
   return (
