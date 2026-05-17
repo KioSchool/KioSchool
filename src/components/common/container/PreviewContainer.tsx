@@ -97,10 +97,7 @@ function PreviewContainer({ width = 360, height = 700 }: PreviewContainerProps) 
   const previewUrl = `${baseUrl}/order?workspaceId=${workspaceId}&tableNo=1&preview=true`;
 
   const onClickPreviewLink = () => {
-    const previewWindow = window.open(previewUrl, '_blank', 'noopener,noreferrer');
-    if (previewWindow) {
-      previewWindow.opener = null;
-    }
+    window.open(previewUrl, '_blank', 'noopener,noreferrer');
   };
 
   const onClickDownloadQRCode = async () => {

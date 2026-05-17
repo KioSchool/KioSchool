@@ -20,13 +20,7 @@ function useTossPopup() {
     return userAgent.includes('safari') && !userAgent.includes('chrome');
   };
 
-  const createPopup = (url?: string) => {
-    const popup = window.open(url ?? 'about:blank', '_blank', 'noopener,noreferrer');
-    if (popup) {
-      popup.opener = null;
-    }
-    return popup;
-  };
+  const createPopup = (url: string) => window.open(url, '_blank', 'noopener,noreferrer');
 
   const closePopupWithDelay = (popup: Window | null, delay: number) => {
     if (popup && !popup.closed) {
@@ -48,7 +42,7 @@ function useTossPopup() {
     let popup: Window | null = null;
 
     if (isSafari) {
-      popup = createPopup();
+      popup = createPopup('about:blank');
       if (popup) {
         popup.location.replace(tossUrl);
       }
@@ -67,7 +61,7 @@ function useTossPopup() {
     }
 
     const isSafari = isSafariBrowser();
-    const popup = isSafari ? createPopup() : null;
+    const popup = isSafari ? createPopup('about:blank') : null;
 
     return promise
       .then((response) => {

@@ -98,10 +98,7 @@ function TableQRCode({ workspaceId, selectedTable }: TableQRCodeProps) {
   };
 
   const onClickOrderLink = () => {
-    const orderWindow = window.open(qrCodeUrl, '_blank', 'noopener,noreferrer');
-    if (orderWindow) {
-      orderWindow.opener = null;
-    }
+    window.open(qrCodeUrl, '_blank', 'noopener,noreferrer');
   };
 
   return (
