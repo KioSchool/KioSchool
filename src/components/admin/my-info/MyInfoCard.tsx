@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
+import { mobileMediaQuery, tabletMediaQuery } from '@styles/globalStyles';
 
 const CardContainer = styled.div`
   width: 295px;
@@ -18,6 +19,18 @@ const CardContainer = styled.div`
   &:hover {
     transform: translateY(-4px);
     box-shadow: 0 4px 20px 0 rgba(92, 92, 92, 0.1);
+  }
+
+  ${tabletMediaQuery} {
+    width: calc(50% - 5px);
+    max-width: 295px;
+    height: 240px;
+  }
+
+  ${mobileMediaQuery} {
+    width: 100%;
+    max-width: none;
+    height: 160px;
   }
 `;
 

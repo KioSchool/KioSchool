@@ -1,11 +1,13 @@
 import styled from '@emotion/styled';
 import { rowFlex, colFlex } from '@styles/flexStyles';
+import { mobileMediaQuery } from '@styles/globalStyles';
 import { User, UserRole } from '@@types/index';
 import { myInfoCardsData } from '@constants/data/myInfoData';
 import { useMyInfoActions } from '@hooks/admin/useMyInfoActions';
 import MyInfoCard from './MyInfoCard';
 
 const Container = styled.div`
+  width: 100%;
   gap: 40px;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
@@ -13,7 +15,12 @@ const Container = styled.div`
 const CardsContainer = styled.div`
   width: 95%;
   gap: 10px;
+  flex-wrap: wrap;
   ${rowFlex({ justify: 'center', align: 'center' })}
+
+  ${mobileMediaQuery} {
+    width: 100%;
+  }
 `;
 
 interface MyInfoContentProps {
