@@ -6,6 +6,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import NewAppInput from '@components/common/input/NewAppInput';
 import { adminBanksAtom } from '@jotai/admin/atoms';
 import { externalSidebarAtom } from '@jotai/atoms';
+import { normalizeAccountNumber } from '@utils/formatNumber';
 import { useAtomValue, useSetAtom } from 'jotai';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
@@ -71,6 +72,10 @@ function RegisterAccount() {
     setSelectedBankId(event.target.value);
   };
 
+  const handleAccountNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.target.value = normalizeAccountNumber(event.target.value);
+  };
+
   const handleReset = () => {
     setSelectedBankId('');
 
@@ -84,7 +89,7 @@ function RegisterAccount() {
 
   const registerHandler = async () => {
     const accountHolder = accountHolderRef.current?.value;
-    const accountNumber = accountNumberRef.current?.value;
+    const accountNumber = normalizeAccountNumber(accountNumberRef.current?.value ?? '');
 
     if (selectedBankId === '') {
       alert('은행을 선택해주세요.');
@@ -101,9 +106,8 @@ function RegisterAccount() {
       return;
     }
 
-    if (accountNumber.includes('-')) {
-      alert('하이픈(-)없이 숫자만 입력해주세요');
-      return;
+    if (accountNumberRef.current) {
+      accountNumberRef.current.value = accountNumber;
     }
 
     const response = await registerAccount(Number(selectedBankId), accountNumber, accountHolder);
@@ -128,7 +132,14 @@ function RegisterAccount() {
         </InputColContainer>
         <InputColContainer>
           <InputLabel>계좌번호</InputLabel>
-          <NewAppInput placeholder={'(-)를 제외한 계좌번호를 입력해주세요.'} type={'text'} ref={accountNumberRef} width={220} height={50} />
+          <NewAppInput
+            placeholder={'(-)를 제외한 계좌번호를 입력해주세요.'}
+            type={'text'}
+            ref={accountNumberRef}
+            width={220}
+            height={50}
+            onChange={handleAccountNumberChange}
+          />
         </InputColContainer>
       </InputContainer>
       <SubmitContainer>
