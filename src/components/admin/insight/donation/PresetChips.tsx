@@ -41,10 +41,18 @@ const ChipIllustration = styled.img`
   object-fit: contain;
 `;
 
-const ChipAmount = styled.div`
+const ChipMain = styled.div`
   font-size: 14px;
   font-weight: 700;
   color: ${Color.BLACK};
+  text-align: center;
+  word-break: keep-all;
+`;
+
+const ChipSub = styled.div`
+  font-size: 11px;
+  font-weight: 500;
+  color: ${Color.GREY};
 `;
 
 const ChipDescription = styled.div`
@@ -54,30 +62,44 @@ const ChipDescription = styled.div`
   line-height: 1.3;
 `;
 
+const MAX_PRESET_AMOUNT = 1000000;
+
 function pickRandomCustomIllustration(): string {
   const idx = Math.floor(Math.random() * CUSTOM_RANDOM_ILLUSTRATIONS.length);
   return CUSTOM_RANDOM_ILLUSTRATIONS[idx];
 }
 
+function formatRevenuePercent(amount: number, revenue: number): string {
+  const ratio = (amount / revenue) * 100;
+  return ratio >= 10 ? `${ratio.toFixed(0)}%` : `${ratio.toFixed(1)}%`;
+}
+
 interface PresetChipsProps {
   selectedAmount: number;
+  yesterdayRevenue?: number;
   onSelect: (option: PresetOption) => void;
 }
 
-function PresetChips({ selectedAmount, onSelect }: PresetChipsProps) {
+function PresetChips({ selectedAmount, yesterdayRevenue, onSelect }: PresetChipsProps) {
   const customIllustration = useMemo(() => pickRandomCustomIllustration(), []);
+  const usePercentMode = yesterdayRevenue != null && yesterdayRevenue >= MAX_PRESET_AMOUNT;
 
   return (
     <Row>
       {PRESET_OPTIONS.map((option) => {
         const isCustom = option.amount === CUSTOM_AMOUNT_SENTINEL;
         const illustration = isCustom ? customIllustration : option.illustration;
-        const amountLabel = isCustom ? '자유' : `${option.amount.toLocaleString()}원`;
         const selected = selectedAmount === option.amount;
+        const amountLabel = `${option.amount.toLocaleString()}원`;
+
+        const showPercent = usePercentMode && !isCustom;
+        const mainLabel = isCustom ? '자유' : showPercent ? `어제 매출의 ${formatRevenuePercent(option.amount, yesterdayRevenue!)}` : amountLabel;
+
         return (
           <Chip key={option.character} selected={selected} onClick={() => onSelect(option)} type="button">
             <ChipIllustration src={illustration} alt={`${option.character} 마스코트`} />
-            <ChipAmount>{amountLabel}</ChipAmount>
+            <ChipMain>{mainLabel}</ChipMain>
+            {showPercent && <ChipSub>{amountLabel}</ChipSub>}
             <ChipDescription>{option.description}</ChipDescription>
           </Chip>
         );
