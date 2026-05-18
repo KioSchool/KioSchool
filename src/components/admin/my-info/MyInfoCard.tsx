@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
+import { mobileMediaQuery } from '@styles/globalStyles';
 
 const CardContainer = styled.div`
   width: 295px;
@@ -19,6 +20,12 @@ const CardContainer = styled.div`
     transform: translateY(-4px);
     box-shadow: 0 4px 20px 0 rgba(92, 92, 92, 0.1);
   }
+
+  ${mobileMediaQuery} {
+    width: 100%;
+    height: auto;
+    padding: 24px 0;
+  }
 `;
 
 const IconWrapper = styled.div`
@@ -29,6 +36,10 @@ const Label = styled.div`
   color: #464a4d;
   font-size: 20px;
   font-weight: 700;
+
+  ${mobileMediaQuery} {
+    font-size: 16px;
+  }
 `;
 
 interface MyInfoCardProps {
