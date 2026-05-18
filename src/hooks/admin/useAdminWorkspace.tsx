@@ -2,6 +2,7 @@ import useApi from '@hooks/useApi';
 import { Workspace } from '@@types/index';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { adminTablesAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { useSetAtom } from 'jotai';
 import { ADMIN_ROUTES, getAdminWorkspacePath } from '@constants/routes';
@@ -23,7 +24,8 @@ function useAdminWorkspace() {
         return res.data;
       })
       .catch((error) => {
-        console.error(error.response.data.message);
+        toast.error(error.response?.data?.message ?? '온보딩 상태 변경에 실패했어요.');
+        console.error(error);
         throw error;
       });
   };
@@ -38,7 +40,8 @@ function useAdminWorkspace() {
         return res.data;
       })
       .catch((error) => {
-        console.error(error.response.data.message);
+        toast.error(error.response?.data?.message ?? '워크스페이스 정보를 불러오지 못했어요.');
+        console.error(error);
         throw error;
       });
   };
@@ -132,7 +135,8 @@ function useAdminWorkspace() {
         navigate(getAdminWorkspacePath(workspaceId));
       })
       .catch((error) => {
-        console.error(error.response.data.message);
+        toast.error(error.response?.data?.message ?? '워크스페이스 저장에 실패했어요. 잠시 후 다시 시도해주세요.');
+        console.error(error);
       });
   };
 
