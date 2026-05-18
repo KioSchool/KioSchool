@@ -11,9 +11,8 @@ const Container = styled.div`
   width: 100%;
   box-sizing: border-box;
   background: ${InsightDesignTokens.card.background};
-  border: 1px solid ${InsightDesignTokens.card.border};
   border-radius: ${InsightDesignTokens.card.radius};
-  box-shadow: ${InsightDesignTokens.card.shadow};
+  box-shadow: ${InsightDesignTokens.card.shadow}, 0 0 18px rgba(255, 145, 66, 0.14), 0 0 32px rgba(255, 145, 66, 0.16), 0 0 56px rgba(255, 145, 66, 0.09);
   padding: 14px 21px;
   gap: 14px;
   ${colFlex({ align: 'stretch' })};
