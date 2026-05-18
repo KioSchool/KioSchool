@@ -188,7 +188,7 @@ function ShareSupportModal({ card, workspaceId, workspaceName, onClose }: Props)
           </ActionButton>
         </ActionRow>
 
-        <DonationSection workspaceId={workspaceId} workspaceName={workspaceName} />
+        <DonationSection workspaceId={workspaceId} workspaceName={workspaceName} yesterdayRevenue={card.payload.totalRevenue} />
       </Modal>
     </Overlay>
   );
