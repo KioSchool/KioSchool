@@ -31,9 +31,10 @@ const Tail = styled.div`
 interface DonationSectionProps {
   workspaceId: string;
   workspaceName: string;
+  yesterdayRevenue?: number;
 }
 
-function DonationSection({ workspaceId, workspaceName }: DonationSectionProps) {
+function DonationSection({ workspaceId, workspaceName, yesterdayRevenue }: DonationSectionProps) {
   const [amount, setAmount] = useState<number>(DEFAULT_AMOUNT);
   const { reportDonationAmountClick } = useInsightDiscordReport();
 
@@ -45,7 +46,7 @@ function DonationSection({ workspaceId, workspaceName }: DonationSectionProps) {
   return (
     <Section>
       <Label>KioSchool 응원하기</Label>
-      <PresetChips selectedAmount={amount} onSelect={handlePresetSelect} />
+      <PresetChips selectedAmount={amount} yesterdayRevenue={yesterdayRevenue} onSelect={handlePresetSelect} />
       <DonationQr amount={amount} />
       <Tail>송금자명에 닉네임이나 주점명을 적어주시면 운영팀이 확인하기 쉬워요.</Tail>
     </Section>

@@ -90,6 +90,7 @@ function App() {
         <Route path={SUPER_ADMIN_ROUTES.FESTIVAL_CALENDAR} element={<SuperAdminFestivalCalendar />} />
 
         <Route path={USER_ROUTES.LOGIN} element={<Login />} />
+        <Route path={ADMIN_ROUTES.MY_INFO} element={<AdminMyInfo />} />
 
         <Route element={<PcOnlyLayout />}>
           <Route path={USER_ROUTES.REGISTER} element={<Register />} />
@@ -97,7 +98,6 @@ function App() {
           <Route path={USER_ROUTES.EMAIL_DOMAINS} element={<UserEmailDomain />} />
 
           <Route path={ADMIN_ROUTES.HOME} element={<AdminHome />} />
-          <Route path={ADMIN_ROUTES.MY_INFO} element={<AdminMyInfo />} />
           <Route path={ADMIN_ROUTES.REGISTER_ACCOUNT} element={<AdminAccount />} />
           <Route path={ADMIN_ROUTES.WORKSPACE} element={<AdminWorkspace />} />
           <Route path={ADMIN_ROUTES.WORKSPACE_EDIT} element={<AdminWorkspaceEdit />} />

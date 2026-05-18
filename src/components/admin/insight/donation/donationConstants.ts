@@ -6,7 +6,7 @@ import c5KCoffee from '@resources/image/donation/c5-k-coffee.webp';
 import c6TrioCheers from '@resources/image/donation/c6-trio-cheers.webp';
 
 export const MIN_AMOUNT = 1000;
-export const DEFAULT_AMOUNT = 50000;
+export const DEFAULT_AMOUNT = 30000;
 
 export const CUSTOM_AMOUNT_SENTINEL = 0;
 
