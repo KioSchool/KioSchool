@@ -67,6 +67,8 @@ const UnderlineInput = styled.input`
   }
 `;
 
+const MAX_WORKSPACE_NAME_LENGTH = 30;
+
 interface AddWorkspaceModalContentProps {
   closeModal: () => void;
 }
@@ -90,7 +92,13 @@ function AddWorkspaceModalContent({ closeModal }: AddWorkspaceModalContentProps)
     <ModalContentContainer>
       <CloseButton onClick={closeModal} />
       <Title>주점명을 입력해주세요.</Title>
-      <UnderlineInput value={workspaceName} onChange={(e) => setWorkspaceName(e.target.value)} placeholder="주점 이름 입력" autoFocus />
+      <UnderlineInput
+        value={workspaceName}
+        onChange={(e) => setWorkspaceName(e.target.value)}
+        placeholder={`주점 이름 입력 (최대 ${MAX_WORKSPACE_NAME_LENGTH}자)`}
+        maxLength={MAX_WORKSPACE_NAME_LENGTH}
+        autoFocus
+      />
       <NewCommonButton size="sm" onClick={createHandler} disabled={isButtonDisabled}>
         생성하기
       </NewCommonButton>
