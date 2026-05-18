@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
+import { useAtomValue } from 'jotai';
 import { format } from 'date-fns';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
@@ -10,9 +12,13 @@ import ContentCard from '@components/common/card/ContentCard';
 import RefreshSpinIcon from '@components/common/refresh/RefreshSpinIcon';
 import HourlySalesChart from '@components/admin/order/statistic/HourlySalesChart';
 import PopularProductsSection from '@components/admin/order/statistic/PopularProductsSection';
+import InsightCard from '@components/admin/workspace/dashboard/InsightCard';
+import ShareSupportModal from '@components/admin/insight/ShareSupportModal';
 import { useAdminFetchDailyStatistics } from '@hooks/admin/useAdminFetchDailyStatistics';
+import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { formatMinutesToTime } from '@utils/formatDate';
 import { Color } from '@resources/colors';
+import { InsightCardResponse } from '@@types/index';
 
 const Container = styled.div`
   width: 95%;
@@ -79,6 +85,9 @@ const isValidDate = (dateStr: string) => !isNaN(new Date(dateStr).getTime());
 function AdminOrderStatistics() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { selectedDate, setSelectedDate, statistics, isLoading, manualRefetch } = useAdminFetchDailyStatistics(workspaceId);
+  const workspace = useAtomValue(adminWorkspaceAtom);
+  const [shareCard, setShareCard] = useState<InsightCardResponse | null>(null);
+  const insightEnabled = import.meta.env.VITE_INSIGHT_CARD_ENABLED === 'true';
 
   const dateLabel = format(selectedDate, 'yyyy년 MM월 dd일');
   const comparison = statistics?.previousDayComparison;
@@ -104,6 +113,8 @@ function AdminOrderStatistics() {
             </UpdateInfo>
           )}
         </FilterContainer>
+
+        {insightEnabled && workspaceId && <InsightCard workspaceId={workspaceId} workspaceName={workspace.name} onShareClick={setShareCard} />}
 
         {isLoading && !statistics && <UpdateLabel>로딩 중...</UpdateLabel>}
 
@@ -148,6 +159,9 @@ function AdminOrderStatistics() {
             </ContentCard>
             <PopularProductsSection popularProducts={statistics.popularProducts} />
           </SectionRow>
+        )}
+        {shareCard && workspaceId && (
+          <ShareSupportModal card={shareCard} workspaceId={workspaceId} workspaceName={workspace.name} onClose={() => setShareCard(null)} />
         )}
       </Container>
     </AppContainer>
