@@ -43,6 +43,7 @@ export const SUPER_ADMIN_ROUTES = {
   ORDERS: '/super-admin/orders',
   ACCOUNT_STATUS: '/super-admin/account-status',
   FESTIVAL_CALENDAR: '/super-admin/festival-calendar',
+  CACHE: '/super-admin/cache',
 } as const;
 
 export const TEST_ROUTES = {
