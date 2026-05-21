@@ -20,6 +20,7 @@ export const superAdminNavData: SideNavCategory[] = [
       { name: '사용자 관리', path: stripPrefix(SUPER_ADMIN_ROUTES.USER) },
       { name: '은행 정보 관리', path: stripPrefix(SUPER_ADMIN_ROUTES.BANK) },
       { name: '이메일 도메인 관리', path: stripPrefix(SUPER_ADMIN_ROUTES.EMAIL) },
+      { name: 'Redis 캐시 관리', path: stripPrefix(SUPER_ADMIN_ROUTES.CACHE) },
     ],
   },
 ];
