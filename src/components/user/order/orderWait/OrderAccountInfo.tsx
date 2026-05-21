@@ -55,7 +55,11 @@ const Value = styled.div`
   ${rowFlex({ justify: 'start', align: 'center' })}
 `;
 
-function OrderAccountInfo() {
+interface OrderAccountInfoProps {
+  account?: Account;
+}
+
+function OrderAccountInfo({ account }: OrderAccountInfoProps) {
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
   const [accountInfo, setAccountInfo] = useState<Account>(defaultAccountValue);
@@ -63,10 +67,15 @@ function OrderAccountInfo() {
   const { fetchWorkspaceAccount } = useWorkspace();
 
   const getAccountInfo = async () => {
-    const account = await fetchWorkspaceAccount(workspaceId);
-    if (!account) return;
+    if (account) {
+      setAccountInfo(account);
+      return;
+    }
 
-    setAccountInfo(account);
+    const accountRes = await fetchWorkspaceAccount(workspaceId);
+    if (!accountRes) return;
+
+    setAccountInfo(accountRes);
   };
 
   const copyAccountInfo = () => {
@@ -80,7 +89,7 @@ function OrderAccountInfo() {
 
   useEffect(() => {
     getAccountInfo();
-  }, []);
+  }, [account]);
 
   return (
     <Container>

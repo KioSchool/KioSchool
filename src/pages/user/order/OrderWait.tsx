@@ -11,9 +11,9 @@ import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import { Color } from '@resources/colors';
 import { useEffect, useState } from 'react';
 import useBlockPopState from '@hooks/useBlockPopState';
-import { Order, OrderStatus } from '@@types/index';
+import { Account, Order, OrderStatus } from '@@types/index';
 import useOrder from '@hooks/user/useOrder';
-import { defaultUserOrderValue } from '@@types/defaultValues';
+import { defaultAccountValue, defaultUserOrderValue } from '@@types/defaultValues';
 import { keyframes } from '@emotion/react';
 import useWorkspace from '@hooks/user/useWorkspace';
 import useTossPopup from '@hooks/user/useTossPopup';
@@ -102,14 +102,14 @@ function OrderWait() {
   const orderId = searchParams.get('orderId') || null;
   const isTossPay = searchParams.get('tossPay') === 'true';
 
-  const { fetchWorkspace } = useWorkspace();
+  const { fetchWorkspace, fetchWorkspaceAccount } = useWorkspace();
   const { openTossPopupSync } = useTossPopup();
 
   const workspace = useAtomValue(userWorkspaceAtom);
   const [currentOrder, setCurrentOrder] = useState<Order>(defaultUserOrderValue);
+  const [accountInfo, setAccountInfo] = useState<Account>(defaultAccountValue);
 
-  const account = workspace.owner.account;
-  const tossAccountUrl = account?.tossAccountUrl;
+  const tossAccountUrl = accountInfo?.tossAccountUrl;
 
   const tips = isTossPay ? TOSS_TIPS : BANK_TRANSFER_TIPS;
 
@@ -144,6 +144,9 @@ function OrderWait() {
 
     pollOrder();
     fetchWorkspace(workspaceId);
+    fetchWorkspaceAccount(workspaceId).then((account) => {
+      if (account) setAccountInfo(account);
+    });
 
     intervalId = setInterval(pollOrder, fetchIntervalTime);
 
@@ -184,7 +187,7 @@ function OrderWait() {
       <OrderStickyNavBar useLeftArrow={false} showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
       <SubContainer className={'order-wait-sub-container'}>
         <ContentsContainer>
-          <OrderAccountInfo />
+          <OrderAccountInfo account={accountInfo} />
           <HorizontalDivider />
           <OrderInfoContainer>
             <Label>송금하실 금액</Label>
