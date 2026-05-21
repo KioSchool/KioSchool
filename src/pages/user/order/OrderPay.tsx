@@ -14,6 +14,9 @@ import { useAtom, useAtomValue } from 'jotai';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import usePreventRefresh from '@hooks/usePreventRefresh';
 import useTossPopup from '@hooks/user/useTossPopup';
+import useWorkspace from '@hooks/user/useWorkspace';
+import { Account } from '@@types/index';
+import { defaultAccountValue } from '@@types/defaultValues';
 
 const Container = styled.div`
   width: 100%;
@@ -50,16 +53,17 @@ function OrderPay() {
   const navigate = useNavigate();
   const { createOrder } = useOrder();
   const { openTossPopupWithPromise } = useTossPopup();
+  const { fetchWorkspaceAccount } = useWorkspace();
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
   const tableHash = searchParams.get('tableHash');
 
-  const account = workspace.owner.account;
-  const tossAccountUrl = account?.tossAccountUrl;
+  const [accountInfo, setAccountInfo] = useState<Account>(defaultAccountValue);
+  const tossAccountUrl = accountInfo?.tossAccountUrl;
   const isTossAvailable = !!tossAccountUrl;
 
-  const [isTossPay, setIsTossPay] = useState<boolean>(isTossAvailable);
+  const [isTossPay, setIsTossPay] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const customerNameRef = useRef<HTMLInputElement>(null);
 
@@ -87,6 +91,15 @@ function OrderPay() {
 
   useEffect(() => {
     customerNameRef.current?.focus();
+
+    fetchWorkspaceAccount(workspaceId).then((account) => {
+      if (account) {
+        setAccountInfo(account);
+        if (account.tossAccountUrl) {
+          setIsTossPay(true);
+        }
+      }
+    });
   }, []);
 
   /**
