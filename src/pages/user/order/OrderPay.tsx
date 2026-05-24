@@ -5,6 +5,7 @@ import OrderButton from '@components/user/order/OrderButton';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { colFlex } from '@styles/flexStyles';
 import useOrder from '@hooks/user/useOrder';
+import useWorkspace from '@hooks/user/useWorkspace';
 import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import OrderPayRadio from '@components/user/order/OrderPayRadio';
 import OrderPayDescription from '@components/user/order/OrderPayDescription';
@@ -14,7 +15,6 @@ import { useAtom, useAtomValue } from 'jotai';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import usePreventRefresh from '@hooks/usePreventRefresh';
 import useTossPopup from '@hooks/user/useTossPopup';
-import useWorkspace from '@hooks/user/useWorkspace';
 import { Account } from '@@types/index';
 import { defaultAccountValue } from '@@types/defaultValues';
 
@@ -52,8 +52,8 @@ function OrderPay() {
 
   const navigate = useNavigate();
   const { createOrder } = useOrder();
-  const { openTossPopupWithPromise } = useTossPopup();
   const { fetchWorkspaceAccount } = useWorkspace();
+  const { openTossPopupWithPromise } = useTossPopup();
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');

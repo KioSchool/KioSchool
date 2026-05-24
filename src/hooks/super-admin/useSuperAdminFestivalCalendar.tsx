@@ -18,7 +18,14 @@ function useSuperAdminFestivalCalendar() {
     [superAdminApi],
   );
 
-  return { fetchFestivalCalendar };
+  const setCalendarExclusion = useCallback(
+    (statisticId: number, excluded: boolean): Promise<void> => {
+      return superAdminApi.put(`/workspaces/festival-calendar/${statisticId}/excluded`, null, { params: { excluded } }).then(() => undefined);
+    },
+    [superAdminApi],
+  );
+
+  return { fetchFestivalCalendar, setCalendarExclusion };
 }
 
 export default useSuperAdminFestivalCalendar;

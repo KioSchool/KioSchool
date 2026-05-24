@@ -472,6 +472,7 @@ export interface InsightCardResponse {
 }
 
 export interface FestivalWorkspace {
+  statisticId: number;
   workspaceId: number;
   workspaceName: string;
   universityName: string;
@@ -481,6 +482,7 @@ export interface FestivalWorkspace {
   tableTurnoverRate: number;
   averageStayTimeMinutes: number;
   peakHour: number | null;
+  excluded: boolean;
 }
 
 export interface FestivalMonthSummary {

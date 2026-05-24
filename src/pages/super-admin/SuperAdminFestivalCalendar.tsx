@@ -88,6 +88,10 @@ function SuperAdminFestivalCalendar() {
     }
   };
 
+  const refetchCalendar = () => {
+    fetchFestivalCalendar(year, month).then(setData);
+  };
+
   const handleDayClick = (dateStr: string, workspaces: FestivalWorkspace[]) => {
     if (workspaces.length === 0) return;
     setExternalSidebar({
@@ -95,14 +99,17 @@ function SuperAdminFestivalCalendar() {
       location,
       title: dateStr,
       subtitle: `${workspaces.length}개 주점 운영`,
-      content: <FestivalDayDetail workspaces={workspaces} />,
+      content: <FestivalDayDetail key={dateStr} workspaces={workspaces} onExclusionChanged={refetchCalendar} />,
     });
   };
 
   return (
     <AppContainer useFlex={colFlex({ align: 'center' })} useTitle={false}>
       <SuperAdminPageContainer>
-        <PageHeader title="축제 달력" description="주점별 축제 운영 현황을 달력에서 확인합니다. 주문 15건 이상 발생한 주점만 집계됩니다." />
+        <PageHeader
+          title="축제 달력"
+          description="주점별 축제 운영 현황을 달력에서 확인합니다. 테스트로 보이는 항목은 주점 카드의 제외 버튼으로 숨길 수 있습니다."
+        />
         {match(data)
           .with(null, () => <LoadingText>축제 달력 불러오는 중...</LoadingText>)
           .otherwise((loaded) => (
