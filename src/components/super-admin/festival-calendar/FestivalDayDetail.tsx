@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { RiExternalLinkLine } from '@remixicon/react';
+import { RiArrowDownSLine, RiArrowUpSLine, RiExternalLinkLine, RiEyeOffLine, RiEyeLine } from '@remixicon/react';
 import styled from '@emotion/styled';
 import { FestivalWorkspace } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { formatCurrency, formatNumber } from '@utils/formatNumber';
 import { getAdminWorkspacePath } from '@constants/routes';
+import useSuperAdminFestivalCalendar from '@hooks/super-admin/useSuperAdminFestivalCalendar';
 
 type SortKey = 'totalOrders' | 'totalRevenue';
 
@@ -66,6 +67,14 @@ const UniversityTag = styled.div`
   color: ${Color.BLACK};
   font-weight: 500;
   word-break: keep-all;
+  gap: 5px;
+  ${rowFlex({ align: 'center' })}
+`;
+
+const UniversityTagCount = styled.span`
+  font-size: 11px;
+  font-weight: 700;
+  color: ${Color.KIO_ORANGE};
 `;
 
 const WorkspaceListHeader = styled.div`
@@ -136,6 +145,12 @@ const WorkspaceName = styled(Link)`
   }
 `;
 
+const WorkspaceCardActions = styled.div`
+  gap: 6px;
+  flex-shrink: 0;
+  ${rowFlex({ align: 'center' })}
+`;
+
 const UniversityBadge = styled.div`
   font-size: 11px;
   padding: 2px 8px;
@@ -144,7 +159,81 @@ const UniversityBadge = styled.div`
   color: ${Color.GREY};
   font-weight: 500;
   white-space: nowrap;
+`;
+
+const ExcludeButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 1px solid ${Color.HEAVY_GREY};
+  background: none;
+  color: ${Color.GREY};
+  cursor: pointer;
   flex-shrink: 0;
+
+  &:hover {
+    border-color: #f5a623;
+    color: #f5a623;
+    background: #fff8ef;
+  }
+`;
+
+const ExcludedSection = styled.div`
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px dashed ${Color.HEAVY_GREY};
+  ${colFlex()}
+`;
+
+const ExcludedSectionToggle = styled.button`
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  gap: 4px;
+  ${rowFlex({ align: 'center', justify: 'space-between' })}
+`;
+
+const ExcludedSectionLabel = styled.span`
+  font-size: 11px;
+  font-weight: 600;
+  color: ${Color.GREY};
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+`;
+
+const ExcludedWorkspaceCard = styled(WorkspaceCard)`
+  opacity: 0.5;
+`;
+
+const ExcludedOrderCount = styled.span`
+  font-size: 11px;
+  color: ${Color.GREY};
+  flex-shrink: 0;
+`;
+
+const RestoreButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 1px solid ${Color.HEAVY_GREY};
+  background: none;
+  color: ${Color.GREY};
+  cursor: pointer;
+  flex-shrink: 0;
+
+  &:hover {
+    border-color: ${Color.KIO_ORANGE};
+    color: ${Color.KIO_ORANGE};
+    background: #fff3eb;
+  }
 `;
 
 const MetricsGrid = styled.div`
@@ -176,16 +265,33 @@ const MetricValue = styled.div`
 
 interface FestivalDayDetailProps {
   workspaces: FestivalWorkspace[];
+  onExclusionChanged?: () => void;
 }
 
-function FestivalDayDetail({ workspaces }: FestivalDayDetailProps) {
+function FestivalDayDetail({ workspaces: initialWorkspaces, onExclusionChanged }: FestivalDayDetailProps) {
   const [sortKey, setSortKey] = useState<SortKey>('totalOrders');
+  const [workspaces, setWorkspaces] = useState<FestivalWorkspace[]>(initialWorkspaces);
+  const [showExcluded, setShowExcluded] = useState(false);
+  const { setCalendarExclusion } = useSuperAdminFestivalCalendar();
 
-  const totalOrders = workspaces.reduce((sum, w) => sum + w.totalOrders, 0);
-  const totalRevenue = workspaces.reduce((sum, w) => sum + w.totalRevenue, 0);
-  const universities = [...new Set(workspaces.map((w) => w.universityName))];
+  const activeWorkspaces = workspaces.filter((w) => !w.excluded);
+  const excludedWorkspaces = workspaces.filter((w) => w.excluded);
 
-  const sorted = [...workspaces].sort((a, b) => b[sortKey] - a[sortKey]);
+  const totalOrders = activeWorkspaces.reduce((sum, w) => sum + w.totalOrders, 0);
+  const totalRevenue = activeWorkspaces.reduce((sum, w) => sum + w.totalRevenue, 0);
+  const universityCountMap = activeWorkspaces.reduce<Record<string, number>>((acc, w) => {
+    acc[w.universityName] = (acc[w.universityName] ?? 0) + 1;
+    return acc;
+  }, {});
+
+  const handleSetExclusion = (statisticId: number, excluded: boolean) => {
+    setCalendarExclusion(statisticId, excluded).then(() => {
+      setWorkspaces((prev) => prev.map((w) => (w.statisticId === statisticId ? { ...w, excluded } : w)));
+      onExclusionChanged?.();
+    });
+  };
+
+  const sorted = [...activeWorkspaces].sort((a, b) => b[sortKey] - a[sortKey]);
 
   return (
     <>
@@ -200,14 +306,17 @@ function FestivalDayDetail({ workspaces }: FestivalDayDetailProps) {
         </SummaryItem>
         <SummaryItem>
           <SummaryLabel>참여 대학</SummaryLabel>
-          <SummaryValue>{universities.length}개교</SummaryValue>
+          <SummaryValue>{Object.keys(universityCountMap).length}개교</SummaryValue>
         </SummaryItem>
       </DaySummary>
       <UniversitySection>
         <SectionLabel>참여 대학교</SectionLabel>
         <UniversityTagList>
-          {universities.map((u) => (
-            <UniversityTag key={u}>{u}</UniversityTag>
+          {Object.entries(universityCountMap).map(([name, count]) => (
+            <UniversityTag key={name}>
+              <span>{name}</span>
+              <UniversityTagCount>{count}개</UniversityTagCount>
+            </UniversityTag>
           ))}
         </UniversityTagList>
       </UniversitySection>
@@ -230,7 +339,12 @@ function FestivalDayDetail({ workspaces }: FestivalDayDetailProps) {
                 <span>{w.workspaceName}</span>
                 <RiExternalLinkLine size={12} />
               </WorkspaceName>
-              <UniversityBadge>{w.universityName}</UniversityBadge>
+              <WorkspaceCardActions>
+                <UniversityBadge>{w.universityName}</UniversityBadge>
+                <ExcludeButton title="달력에서 제외" onClick={() => handleSetExclusion(w.statisticId, true)}>
+                  <RiEyeOffLine size={13} />
+                </ExcludeButton>
+              </WorkspaceCardActions>
             </WorkspaceCardHeader>
             <MetricsGrid>
               <Metric>
@@ -261,6 +375,32 @@ function FestivalDayDetail({ workspaces }: FestivalDayDetailProps) {
           </WorkspaceCard>
         ))}
       </WorkspaceList>
+      {excludedWorkspaces.length > 0 && (
+        <ExcludedSection>
+          <ExcludedSectionToggle onClick={() => setShowExcluded((v) => !v)}>
+            <ExcludedSectionLabel>제외된 주점 ({excludedWorkspaces.length})</ExcludedSectionLabel>
+            {showExcluded ? <RiArrowUpSLine size={16} color={Color.GREY} /> : <RiArrowDownSLine size={16} color={Color.GREY} />}
+          </ExcludedSectionToggle>
+          {showExcluded &&
+            excludedWorkspaces.map((w) => (
+              <ExcludedWorkspaceCard key={w.workspaceId}>
+                <WorkspaceCardHeader>
+                  <WorkspaceName to={getAdminWorkspacePath(w.workspaceId)} target="_blank" rel="noopener noreferrer">
+                    <span>{w.workspaceName}</span>
+                    <RiExternalLinkLine size={12} />
+                  </WorkspaceName>
+                  <WorkspaceCardActions>
+                    <ExcludedOrderCount>{formatNumber(w.totalOrders)}건</ExcludedOrderCount>
+                    <UniversityBadge>{w.universityName}</UniversityBadge>
+                    <RestoreButton title="달력에 복원" onClick={() => handleSetExclusion(w.statisticId, false)}>
+                      <RiEyeLine size={13} />
+                    </RestoreButton>
+                  </WorkspaceCardActions>
+                </WorkspaceCardHeader>
+              </ExcludedWorkspaceCard>
+            ))}
+        </ExcludedSection>
+      )}
     </>
   );
 }
