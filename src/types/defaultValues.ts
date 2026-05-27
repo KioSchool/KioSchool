@@ -129,6 +129,7 @@ export const defaultProductEditValue: ProductEdit = {
 export const defaultBankValue: Bank = {
   name: '',
   code: '',
+  tossName: null,
   id: 0,
   createdAt: '',
   updatedAt: '',
@@ -138,6 +139,7 @@ export const defaultBanksValue: Bank[] = [
   {
     name: '',
     code: '',
+    tossName: null,
     id: 0,
     createdAt: '',
     updatedAt: '',

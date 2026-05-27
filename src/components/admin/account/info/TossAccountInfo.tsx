@@ -5,6 +5,7 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { TOSS_ACCOUNT_INFO, TOSS_MODAL } from '@constants/data/accountData';
 import RegisterAccountInfoContainer from './RegisterAccountInfoContainer';
 import RegistrationStatusInfo from './RegistrationStatusInfo';
+import TossAutoRegisterPrompt from './TossAutoRegisterPrompt';
 import RegisterTossAccount from '@components/admin/account/register/RegisterTossAccount';
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
 import useAdminUser from '@hooks/admin/useAdminUser';
@@ -15,9 +16,11 @@ function TossAccountInfo() {
   const tossAccountInfo = useAtomValue(adminUserTossAccountAtom);
   const accountInfo = useAtomValue(adminUserAccountAtom);
   const setExternalSidebar = useSetAtom(externalSidebarAtom);
-  const { deleteTossAccount } = useAdminUser();
+  const { deleteTossAccount, registerTossAccountAuto } = useAdminUser();
 
-  const status = tossAccountInfo ? 'registered' : 'unregisteredTossQR';
+  const hasAccount = !!accountInfo?.accountNumber;
+  const supportsAutoRegister = !!accountInfo.bankTossName;
+  const showAutoPrompt = supportsAutoRegister && !tossAccountInfo && hasAccount;
 
   const { ConfirmModal, confirm } = useConfirm({
     title: '현재 등록된 QR을 삭제하시겠습니까?',
@@ -26,7 +29,7 @@ function TossAccountInfo() {
     cancelText: '취소',
   });
 
-  const handleRegisterQR = () => {
+  const openQrSidebar = () => {
     setExternalSidebar({
       location: location,
       title: TOSS_MODAL.TITLE,
@@ -42,22 +45,27 @@ function TossAccountInfo() {
     deleteTossAccount();
   };
 
+  if (showAutoPrompt) {
+    return (
+      <RegisterAccountInfoContainer title={TOSS_ACCOUNT_INFO.TITLE} infoTooltip={TOSS_ACCOUNT_INFO.TOOLTIP}>
+        <TossAutoRegisterPrompt onRegister={registerTossAccountAuto} onQrRegister={openQrSidebar} />
+        <ConfirmModal />
+      </RegisterAccountInfoContainer>
+    );
+  }
+
   return (
     <RegisterAccountInfoContainer
       title={TOSS_ACCOUNT_INFO.TITLE}
-      secondaryButton={{
-        text: TOSS_ACCOUNT_INFO.SECONDARY_BUTTON,
-        onClick: handleDeleteQR,
-        disabled: !tossAccountInfo,
-      }}
+      infoTooltip={TOSS_ACCOUNT_INFO.TOOLTIP}
+      secondaryButton={tossAccountInfo ? { text: TOSS_ACCOUNT_INFO.SECONDARY_BUTTON, onClick: handleDeleteQR } : undefined}
       primaryButton={{
         text: TOSS_ACCOUNT_INFO.PRIMARY_BUTTON,
-        onClick: handleRegisterQR,
-        disabled: !!tossAccountInfo || !accountInfo?.accountNumber,
+        onClick: openQrSidebar,
+        disabled: !!tossAccountInfo || !hasAccount,
       }}
-      infoTooltip={TOSS_ACCOUNT_INFO.TOOLTIP}
     >
-      <RegistrationStatusInfo status={status} />
+      <RegistrationStatusInfo status={tossAccountInfo ? 'registered' : 'unregisteredTossQR'} />
       <ConfirmModal />
     </RegisterAccountInfoContainer>
   );

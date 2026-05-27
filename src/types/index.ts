@@ -203,6 +203,7 @@ export interface Account {
 export interface Bank {
   name: string;
   code: string;
+  tossName: string | null;
   id: number;
   createdAt: string;
   updatedAt: string;
