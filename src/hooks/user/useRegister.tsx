@@ -14,7 +14,7 @@ function useRegister() {
       });
   };
 
-  const registerUser = async (id: string, password: string, name: string, email: string) => {
+  const registerUser = async (id: string, password: string, name: string, email: string): Promise<true | string> => {
     return userApi
       .post('/register', {
         id,
@@ -22,8 +22,8 @@ function useRegister() {
         name,
         email,
       })
-      .then(() => true)
-      .catch(() => false);
+      .then(() => true as const)
+      .catch((error) => error.response?.data?.message ?? '회원가입 실패: 알 수 없는 오류가 발생했습니다.');
   };
 
   const sendVerifyMail = async (email: string): Promise<boolean | string> => {

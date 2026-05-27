@@ -82,10 +82,11 @@ function FestivalCalendarCell({ day, isCurrentMonth, isToday, workspaces, onClic
     return <Cell isToday={false} hasEvent={false} isCurrentMonth={false} />;
   }
 
+  const activeWorkspaces = workspaces.filter((w) => !w.excluded);
   const hasEvent = workspaces.length > 0;
-  const visibleTags = workspaces.slice(0, MAX_VISIBLE_TAGS);
-  const hiddenCount = workspaces.length - MAX_VISIBLE_TAGS;
-  const totalOrders = workspaces.reduce((sum, w) => sum + w.totalOrders, 0);
+  const visibleTags = activeWorkspaces.slice(0, MAX_VISIBLE_TAGS);
+  const hiddenCount = activeWorkspaces.length - MAX_VISIBLE_TAGS;
+  const totalOrders = activeWorkspaces.reduce((sum, w) => sum + w.totalOrders, 0);
 
   return (
     <Cell isToday={isToday} hasEvent={hasEvent} isCurrentMonth={isCurrentMonth} onClick={hasEvent ? onClick : undefined}>

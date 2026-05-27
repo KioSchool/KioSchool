@@ -137,10 +137,10 @@ function Register() {
       return;
     }
 
-    const isSuccess = await registerUser(userId, password, userName, userEmail);
-    if (!isSuccess) {
+    const registerResult = await registerUser(userId, password, userName, userEmail);
+    if (registerResult !== true) {
       setIsCodeSent(false);
-      setErrorMessage('회원가입에 실패했습니다.');
+      setErrorMessage(registerResult);
       return;
     }
 
