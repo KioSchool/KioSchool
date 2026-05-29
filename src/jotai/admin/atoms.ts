@@ -30,8 +30,8 @@ export const adminUserAccountAtom = atom((get) => {
   }
 
   const { bank, accountNumber, accountHolder } = userAccount;
-  const { name: bankName } = bank;
-  return { bankName, accountNumber, accountHolder };
+  const { name: bankName, tossName: bankTossName } = bank;
+  return { bankName, bankTossName, accountNumber, accountHolder };
 });
 
 export const adminUserTossAccountAtom = atom((get) => {

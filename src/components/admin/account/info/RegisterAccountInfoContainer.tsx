@@ -55,12 +55,14 @@ interface ButtonProps {
 interface RegisterAccountInfoContainerProps {
   title: string;
   children: React.ReactNode;
-  primaryButton: ButtonProps;
-  secondaryButton: ButtonProps;
+  primaryButton?: ButtonProps;
+  secondaryButton?: ButtonProps;
   infoTooltip?: string;
 }
 
 function RegisterAccountInfoContainer({ title, children, primaryButton, secondaryButton, infoTooltip }: RegisterAccountInfoContainerProps) {
+  const hasButtons = primaryButton || secondaryButton;
+
   return (
     <Container>
       <TitleRow>
@@ -73,14 +75,20 @@ function RegisterAccountInfoContainer({ title, children, primaryButton, secondar
       </TitleRow>
 
       <ContentWrapper>{children}</ContentWrapper>
-      <ButtonWrapper>
-        <NewCommonButton onClick={secondaryButton.onClick} disabled={secondaryButton.disabled} color="blue_gray" size="sm">
-          {secondaryButton.text}
-        </NewCommonButton>
-        <NewCommonButton onClick={primaryButton.onClick} disabled={primaryButton.disabled} size="sm">
-          {primaryButton.text}
-        </NewCommonButton>
-      </ButtonWrapper>
+      {hasButtons && (
+        <ButtonWrapper>
+          {secondaryButton && (
+            <NewCommonButton onClick={secondaryButton.onClick} disabled={secondaryButton.disabled} color="blue_gray" size="sm">
+              {secondaryButton.text}
+            </NewCommonButton>
+          )}
+          {primaryButton && (
+            <NewCommonButton onClick={primaryButton.onClick} disabled={primaryButton.disabled} size="sm">
+              {primaryButton.text}
+            </NewCommonButton>
+          )}
+        </ButtonWrapper>
+      )}
     </Container>
   );
 }
