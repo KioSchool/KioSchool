@@ -32,11 +32,6 @@ const Sections = styled.div`
   }
 `;
 
-const Toolbar = styled.div`
-  width: 100%;
-  ${rowFlex({ justify: 'flex-end', align: 'center' })}
-`;
-
 const RankingRow = styled.div`
   width: 100%;
   gap: 20px;
@@ -120,9 +115,6 @@ function SuperAdminFestivalCalendar() {
           .with(null, () => <LoadingText>축제 달력 불러오는 중...</LoadingText>)
           .otherwise((loaded) => (
             <Sections>
-              <Toolbar>
-                <FestivalCsvDownloadButton workspaceRanking={loaded.workspaceRanking} year={year} month={month} />
-              </Toolbar>
               <div>
                 <SectionTitle>월별 요약</SectionTitle>
                 <FestivalMonthSummary summary={loaded.monthSummary} />
@@ -136,6 +128,7 @@ function SuperAdminFestivalCalendar() {
                 onYearChange={setYear}
                 onMonthChange={setMonth}
                 onDayClick={handleDayClick}
+                headerAction={<FestivalCsvDownloadButton workspaceRanking={loaded.workspaceRanking} year={year} month={month} />}
               />
               <RankingRow>
                 <RankingColumn>
