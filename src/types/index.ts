@@ -505,6 +505,8 @@ export interface FestivalWorkspaceRankItem {
   workspaceId: number;
   workspaceName: string;
   universityName: string;
+  ownerName: string;
+  ownerEmail: string;
   festivalDays: number;
   totalOrders: number;
   totalRevenue: number;

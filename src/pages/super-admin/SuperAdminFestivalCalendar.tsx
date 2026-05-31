@@ -13,6 +13,7 @@ import FestivalMonthSummary from '@components/super-admin/festival-calendar/Fest
 import FestivalUniversityTable from '@components/super-admin/festival-calendar/FestivalUniversityTable';
 import FestivalWorkspaceRankingTable from '@components/super-admin/festival-calendar/FestivalWorkspaceRankingTable';
 import FestivalDayDetail from '@components/super-admin/festival-calendar/FestivalDayDetail';
+import FestivalCsvDownloadButton from '@components/super-admin/festival-calendar/FestivalCsvDownloadButton';
 import useSuperAdminFestivalCalendar from '@hooks/super-admin/useSuperAdminFestivalCalendar';
 import { externalSidebarAtom } from '@jotai/atoms';
 import { FestivalCalendar, FestivalWorkspace, RIGHT_SIDEBAR_ACTION } from '@@types/index';
@@ -29,6 +30,11 @@ const Sections = styled.div`
   ${mobileMediaQuery} {
     gap: 18px;
   }
+`;
+
+const Toolbar = styled.div`
+  width: 100%;
+  ${rowFlex({ justify: 'flex-end', align: 'center' })}
 `;
 
 const RankingRow = styled.div`
@@ -114,6 +120,9 @@ function SuperAdminFestivalCalendar() {
           .with(null, () => <LoadingText>축제 달력 불러오는 중...</LoadingText>)
           .otherwise((loaded) => (
             <Sections>
+              <Toolbar>
+                <FestivalCsvDownloadButton workspaceRanking={loaded.workspaceRanking} year={year} month={month} />
+              </Toolbar>
               <div>
                 <SectionTitle>월별 요약</SectionTitle>
                 <FestivalMonthSummary summary={loaded.monthSummary} />
@@ -131,7 +140,7 @@ function SuperAdminFestivalCalendar() {
               <RankingRow>
                 <RankingColumn>
                   <SectionTitle>대학별 순위</SectionTitle>
-                  <FestivalUniversityTable universities={loaded.universityBreakdown} />
+                  <FestivalUniversityTable universities={loaded.universityBreakdown} workspaces={loaded.workspaceRanking} />
                 </RankingColumn>
                 <RankingColumn>
                   <SectionTitle>주점별 순위</SectionTitle>
