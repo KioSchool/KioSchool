@@ -117,11 +117,24 @@ function useAdminUser() {
       });
   };
 
+  const registerTossAccountAuto = () => {
+    adminApi
+      .post<User>('/toss-account/auto')
+      .then((res) => {
+        setAdminUser(res.data);
+        alert('토스 계좌가 자동으로 등록되었습니다.');
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
+  };
+
   return {
     fetchWorkspaces,
     createWorkspaces,
     leaveWorkspace,
     registerTossAccount,
+    registerTossAccountAuto,
     fetchAdminUser,
     deleteUser,
     fetchBanks,

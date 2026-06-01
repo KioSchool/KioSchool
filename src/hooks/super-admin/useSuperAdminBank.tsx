@@ -14,9 +14,7 @@ function useSuperAdminBank() {
   };
 
   const addBank = (name: string, code: string) => {
-    const params = { name, code };
-
-    superAdminApi.post('/bank', params).then(() => {
+    superAdminApi.post('/bank', { name, code }).then(() => {
       fetchAllBank(0, 6);
     });
   };
@@ -27,7 +25,15 @@ function useSuperAdminBank() {
     });
   };
 
-  return { fetchAllBank, addBank, deleteBank };
+  const updateBankTossName = (id: number, tossName: string) => {
+    return superAdminApi.put(`/bank/${id}/toss-name`, { tossName });
+  };
+
+  const deleteBankTossName = (id: number) => {
+    return superAdminApi.delete(`/bank/${id}/toss-name`);
+  };
+
+  return { fetchAllBank, addBank, deleteBank, updateBankTossName, deleteBankTossName };
 }
 
 export default useSuperAdminBank;
