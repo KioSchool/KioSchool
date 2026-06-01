@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { RiArrowLeftSLine, RiArrowRightSLine } from '@remixicon/react';
 import styled from '@emotion/styled';
 import FestivalCalendarCell from './FestivalCalendarCell';
@@ -108,6 +108,7 @@ interface FestivalCalendarGridProps {
   onYearChange: (year: number) => void;
   onMonthChange: (month: number) => void;
   onDayClick: (dateStr: string, workspaces: FestivalWorkspace[]) => void;
+  headerAction?: ReactNode;
 }
 
 function buildCalendarDays(year: number, month: number): (number | null)[] {
@@ -119,7 +120,17 @@ function buildCalendarDays(year: number, month: number): (number | null)[] {
   return days;
 }
 
-function FestivalCalendarGrid({ year, month, calendar, onPrevMonth, onNextMonth, onYearChange, onMonthChange, onDayClick }: FestivalCalendarGridProps) {
+function FestivalCalendarGrid({
+  year,
+  month,
+  calendar,
+  onPrevMonth,
+  onNextMonth,
+  onYearChange,
+  onMonthChange,
+  onDayClick,
+  headerAction = null,
+}: FestivalCalendarGridProps) {
   const today = new Date();
   const days = buildCalendarDays(year, month);
   const [yearDraft, setYearDraft] = useState(String(year));
@@ -168,6 +179,7 @@ function FestivalCalendarGrid({ year, month, calendar, onPrevMonth, onNextMonth,
             <RiArrowRightSLine size={18} />
           </NavButton>
         </Controls>
+        {headerAction}
       </Header>
       <WeekdayRow>
         {WEEKDAYS.map((w, i) => (

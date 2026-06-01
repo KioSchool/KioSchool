@@ -13,6 +13,7 @@ import FestivalMonthSummary from '@components/super-admin/festival-calendar/Fest
 import FestivalUniversityTable from '@components/super-admin/festival-calendar/FestivalUniversityTable';
 import FestivalWorkspaceRankingTable from '@components/super-admin/festival-calendar/FestivalWorkspaceRankingTable';
 import FestivalDayDetail from '@components/super-admin/festival-calendar/FestivalDayDetail';
+import FestivalCsvDownloadButton from '@components/super-admin/festival-calendar/FestivalCsvDownloadButton';
 import useSuperAdminFestivalCalendar from '@hooks/super-admin/useSuperAdminFestivalCalendar';
 import { externalSidebarAtom } from '@jotai/atoms';
 import { FestivalCalendar, FestivalWorkspace, RIGHT_SIDEBAR_ACTION } from '@@types/index';
@@ -127,11 +128,12 @@ function SuperAdminFestivalCalendar() {
                 onYearChange={setYear}
                 onMonthChange={setMonth}
                 onDayClick={handleDayClick}
+                headerAction={<FestivalCsvDownloadButton workspaceRanking={loaded.workspaceRanking} year={year} month={month} />}
               />
               <RankingRow>
                 <RankingColumn>
                   <SectionTitle>대학별 순위</SectionTitle>
-                  <FestivalUniversityTable universities={loaded.universityBreakdown} />
+                  <FestivalUniversityTable universities={loaded.universityBreakdown} workspaces={loaded.workspaceRanking} />
                 </RankingColumn>
                 <RankingColumn>
                   <SectionTitle>주점별 순위</SectionTitle>
