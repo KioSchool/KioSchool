@@ -9,7 +9,7 @@
 - Jotai (상태 관리), React Router v6
 - Emotion (`styled`) + MUI v7
 - ts-pattern (값 기반 분기에 `match` 사용)
-- Axios (HTTP), SockJS + STOMP (WebSocket)
+- Axios (HTTP), SSE (Server-Sent Events)
 - Sentry (에러 트래킹), Google Analytics
 
 ## Commands
