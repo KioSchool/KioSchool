@@ -1,5 +1,4 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const WS_URL = import.meta.env.VITE_WS_URL;
 
 export const URLS = {
   API: {
@@ -8,7 +7,7 @@ export const URLS = {
     SUPER_ADMIN: `${API_BASE_URL}/super-admin`,
   },
 
-  WS: WS_URL,
+  SSE: `${API_BASE_URL}/admin/sse`,
 
   EXTERNAL: {
     NOTION_FAQ: 'https://ji-in.notion.site/FAQ-09eb07eac4a34ab4aa883727994e0b08?pvs=4',
