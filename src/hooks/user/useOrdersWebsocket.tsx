@@ -1,10 +1,8 @@
-import * as StompJs from '@stomp/stompjs';
 import kioSchoolOrderAlarm from '@resources/audio/kioSchoolOrderAlarm.mp3';
 import { Order, OrderWebsocket } from '@@types/index';
 import { useSetAtom } from 'jotai';
 import { adminOrdersAtom } from '@jotai/admin/atoms';
-import { useCallback, useEffect, useMemo } from 'react';
-import SockJS from 'sockjs-client/dist/sockjs';
+import { useCallback, useEffect } from 'react';
 import { URLS } from '@constants/urls';
 
 function playOrderCreateAudio() {
@@ -29,56 +27,31 @@ function useOrdersWebsocket(workspaceId: string | undefined) {
     [setOrders],
   );
 
-  const client = useMemo(
-    () =>
-      new StompJs.Client({
-        webSocketFactory: () => new SockJS(URLS.WS),
-        debug: (str) => {
-          console.log(str);
-        },
-        reconnectDelay: 5000,
-        heartbeatIncoming: 4000,
-        heartbeatOutgoing: 4000,
-      }),
-    [],
-  );
-
   useEffect(() => {
-    let subscription: StompJs.StompSubscription | null = null;
+    if (!workspaceId) return;
 
-    client.onConnect = () => {
-      if (!subscription) {
-        subscription = client.subscribe(`/sub/order/${workspaceId}`, (response) => {
-          const orderWebsocket: OrderWebsocket = JSON.parse(response.body);
-          const order = orderWebsocket.data;
+    const eventSource = new EventSource(`${URLS.SSE}/orders/${workspaceId}`, { withCredentials: true });
 
-          if (orderWebsocket.type === 'CREATED') {
-            playOrderCreateAudio();
-            addOrder(order);
-          } else if (orderWebsocket.type === 'UPDATED') {
-            updateOrder(order);
-          }
-        });
+    eventSource.onmessage = (event) => {
+      const orderWebsocket: OrderWebsocket = JSON.parse(event.data);
+      const order = orderWebsocket.data;
+
+      if (orderWebsocket.type === 'CREATED') {
+        playOrderCreateAudio();
+        addOrder(order);
+      } else if (orderWebsocket.type === 'UPDATED') {
+        updateOrder(order);
       }
     };
 
-    client.onWebSocketError = (error) => {
-      console.error('WebSocket error', error);
+    eventSource.onerror = (error) => {
+      console.error('SSE error', error);
     };
-
-    client.onStompError = (frame) => {
-      console.error('Broker reported error: ' + frame.headers.message);
-    };
-
-    client.activate();
 
     return () => {
-      if (subscription) {
-        subscription.unsubscribe();
-      }
-      client.deactivate();
+      eventSource.close();
     };
-  }, [client, workspaceId, addOrder, updateOrder]);
+  }, [workspaceId, addOrder, updateOrder]);
 }
 
 export default useOrdersWebsocket;
