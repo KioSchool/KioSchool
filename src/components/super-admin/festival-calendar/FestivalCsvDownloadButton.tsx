@@ -40,16 +40,32 @@ interface FestivalCsvDownloadButtonProps {
 
 function FestivalCsvDownloadButton({ workspaceRanking, year, month }: FestivalCsvDownloadButtonProps) {
   const handleDownload = () => {
-    const rows: (string | number)[][] = workspaceRanking.map((workspace) => [
-      workspace.universityName,
-      workspace.workspaceName,
-      workspace.ownerName,
-      workspace.ownerEmail,
-      `${window.location.origin}${getAdminWorkspacePath(workspace.workspaceId)}`,
-      workspace.festivalDays,
-      workspace.totalOrders,
-      workspace.totalRevenue,
-    ]);
+    const grouped = new Map<string, FestivalWorkspaceRankItem[]>();
+    workspaceRanking.forEach((w) => {
+      const group = grouped.get(w.universityName) ?? [];
+      group.push(w);
+      grouped.set(w.universityName, group);
+    });
+
+    const schoolsSortedByRevenue = [...grouped.entries()].sort(
+      (a, b) => b[1].reduce((sum, w) => sum + w.totalRevenue, 0) - a[1].reduce((sum, w) => sum + w.totalRevenue, 0),
+    );
+
+    const rows: (string | number)[][] = schoolsSortedByRevenue.flatMap(([, workspaces]) =>
+      [...workspaces]
+        .sort((a, b) => b.totalRevenue - a.totalRevenue)
+        .map((workspace) => [
+          workspace.universityName,
+          workspace.workspaceName,
+          workspace.ownerName,
+          workspace.ownerEmail,
+          `${window.location.origin}${getAdminWorkspacePath(workspace.workspaceId)}`,
+          workspace.festivalDays,
+          workspace.totalOrders,
+          workspace.totalRevenue,
+        ]),
+    );
+
     const fileName = `축제주점_${year}-${String(month).padStart(MONTH_PAD_LENGTH, '0')}.csv`;
     exportToCsv(fileName, CSV_HEADERS, rows);
   };
