@@ -92,7 +92,7 @@
     "prettier": "^2.7.1",
     "storybook": "^8.6.17",
     "typescript": "^5.9.3",
-    "vite": "7.3.2",
+    "vite": "7.3.5",
     "vite-prerender-plugin": "^0.5.13",
     "vite-tsconfig-paths": "^5.1.4"
   }
