@@ -1,8 +1,10 @@
+import * as StompJs from '@stomp/stompjs';
 import kioSchoolOrderAlarm from '@resources/audio/kioSchoolOrderAlarm.mp3';
 import { Order, OrderWebsocket } from '@@types/index';
 import { useSetAtom } from 'jotai';
 import { adminOrdersAtom } from '@jotai/admin/atoms';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
+import SockJS from 'sockjs-client/dist/sockjs';
 import { URLS } from '@constants/urls';
 
 function playOrderCreateAudio() {
@@ -27,31 +29,56 @@ function useOrdersWebsocket(workspaceId: string | undefined) {
     [setOrders],
   );
 
+  const client = useMemo(
+    () =>
+      new StompJs.Client({
+        webSocketFactory: () => new SockJS(URLS.WS),
+        debug: (str) => {
+          console.log(str);
+        },
+        reconnectDelay: 5000,
+        heartbeatIncoming: 4000,
+        heartbeatOutgoing: 4000,
+      }),
+    [],
+  );
+
   useEffect(() => {
-    if (!workspaceId) return;
+    let subscription: StompJs.StompSubscription | null = null;
 
-    const eventSource = new EventSource(`${URLS.SSE}/orders/${workspaceId}`, { withCredentials: true });
+    client.onConnect = () => {
+      if (!subscription) {
+        subscription = client.subscribe(`/sub/order/${workspaceId}`, (response) => {
+          const orderWebsocket: OrderWebsocket = JSON.parse(response.body);
+          const order = orderWebsocket.data;
 
-    eventSource.onmessage = (event) => {
-      const orderWebsocket: OrderWebsocket = JSON.parse(event.data);
-      const order = orderWebsocket.data;
-
-      if (orderWebsocket.type === 'CREATED') {
-        playOrderCreateAudio();
-        addOrder(order);
-      } else if (orderWebsocket.type === 'UPDATED') {
-        updateOrder(order);
+          if (orderWebsocket.type === 'CREATED') {
+            playOrderCreateAudio();
+            addOrder(order);
+          } else if (orderWebsocket.type === 'UPDATED') {
+            updateOrder(order);
+          }
+        });
       }
     };
 
-    eventSource.onerror = (error) => {
-      console.error('SSE error', error);
+    client.onWebSocketError = (error) => {
+      console.error('WebSocket error', error);
     };
 
-    return () => {
-      eventSource.close();
+    client.onStompError = (frame) => {
+      console.error('Broker reported error: ' + frame.headers.message);
     };
-  }, [workspaceId, addOrder, updateOrder]);
+
+    client.activate();
+
+    return () => {
+      if (subscription) {
+        subscription.unsubscribe();
+      }
+      client.deactivate();
+    };
+  }, [client, workspaceId, addOrder, updateOrder]);
 }
 
 export default useOrdersWebsocket;
