@@ -181,10 +181,10 @@ function formatKoreanRevenue(latestManwon: number): string {
 }
 
 const METRICS = [
-  { value: 10000, suffix: ' 명+', label: '누적 이용자' },
-  { value: 11000, suffix: ' 건+', label: '누적 주문' },
-  { value: 40, suffix: ' 개+', label: '사용 주점' },
-  { value: 14000, suffix: ' 원+', label: '주점 누적 매출', format: formatKoreanRevenue },
+  { value: 27000, suffix: ' 명+', label: '누적 이용자' },
+  { value: 24000, suffix: ' 건+', label: '누적 주문' },
+  { value: 227, suffix: ' 개+', label: '사용 주점' },
+  { value: 43000, suffix: ' 원+', label: '주점 누적 매출', format: formatKoreanRevenue },
 ];
 
 const REVIEWS = [
