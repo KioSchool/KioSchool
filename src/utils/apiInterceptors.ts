@@ -116,7 +116,7 @@ export function setupApiInterceptors(
         .with('auth', () => {
           const status = error.response?.status ?? 0;
           // 405는 access-guard 자리에서 로컬 처리 (master PR #452). 글로벌 로그아웃 이벤트는 401/403만.
-          if (status === 401 || status === 403) handleAuthError();
+          if (SENTRY_CONFIG.AUTH_LOGOUT_STATUSES.includes(status)) handleAuthError();
           return suppressUnhandled(error);
         })
         .with('ignored-url', () => suppressUnhandled(error))
