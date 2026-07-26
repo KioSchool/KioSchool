@@ -1,11 +1,12 @@
 import useApi from '@hooks/useApi';
 import { Workspace } from '@@types/index';
-import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { adminTablesAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { useSetAtom } from 'jotai';
 import { ADMIN_ROUTES, getAdminWorkspacePath } from '@constants/routes';
+import { API_ERROR_CODES } from '@constants/errorCodes';
+import { isApiErrorCode } from '@utils/apiError';
 
 const INVALID_WORKSPACE_ALERT_MESSAGE = '접근할 수 없는 워크스페이스입니다.';
 
@@ -54,8 +55,9 @@ function useAdminWorkspace() {
 
     return fetchWorkspace(workspaceId)
       .then((loadedWorkspace) => !!loadedWorkspace && String(loadedWorkspace.id) === workspaceId)
-      .catch((error: AxiosError) => {
-        if (error.response?.status === 405) {
+      .catch((error: unknown) => {
+        // 405는 카테고리 삭제 불가(CANNOT_DELETE_USING_PRODUCT_CATEGORY)와도 겹치므로 code로 판정한다.
+        if (isApiErrorCode(error, API_ERROR_CODES.WORKSPACE_INACCESSIBLE)) {
           const fallbackPath =
             fallbackWorkspaceId && String(fallbackWorkspaceId) !== workspaceId ? getAdminWorkspacePath(fallbackWorkspaceId) : ADMIN_ROUTES.HOME;
 
