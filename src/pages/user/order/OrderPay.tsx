@@ -9,7 +9,8 @@ import useWorkspace from '@hooks/user/useWorkspace';
 import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import OrderPayRadio from '@components/user/order/OrderPayRadio';
 import OrderPayDescription from '@components/user/order/OrderPayDescription';
-import { HttpStatusCode } from 'axios';
+import { API_ERROR_CODES } from '@constants/errorCodes';
+import { getApiErrorMessage, isApiErrorCode } from '@utils/apiError';
 import { userOrderBasketAtom, userProductsAtom, userWorkspaceAtom } from '@jotai/user/atoms';
 import { useAtom, useAtomValue } from 'jotai';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
@@ -17,6 +18,12 @@ import usePreventRefresh from '@hooks/usePreventRefresh';
 import useTossPopup from '@hooks/user/useTossPopup';
 import { Account } from '@@types/index';
 import { defaultAccountValue } from '@@types/defaultValues';
+
+// 주문 대상이 사라진 경우. 장바구니를 비우고 주문 화면으로 되돌린다.
+const MISSING_ORDER_TARGET_CODES = [API_ERROR_CODES.NOT_FOUND_PRODUCT, API_ERROR_CODES.WORKSPACE_NOT_FOUND, API_ERROR_CODES.WORKSPACE_TABLE_NOT_FOUND] as const;
+
+// 주문을 받을 수 없는 상태. 안내만 하고 화면은 유지한다.
+const UNORDERABLE_STATE_CODES = [API_ERROR_CODES.NO_ORDER_SESSION, API_ERROR_CODES.ORDER_SESSION_ALREADY_EXIST, API_ERROR_CODES.TABLE_HASH_IS_NULL] as const;
 
 const Container = styled.div`
   width: 100%;
@@ -67,24 +74,23 @@ function OrderPay() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const customerNameRef = useRef<HTMLInputElement>(null);
 
-  const errorHandler = (error: any) => {
-    if (error.response?.status === HttpStatusCode.NotAcceptable) {
+  const errorHandler = (error: unknown) => {
+    if (isApiErrorCode(error, API_ERROR_CODES.NOT_SELLABLE_PRODUCT)) {
       alert('품절된 상품이 있습니다. 주문 화면으로 돌아갑니다.');
       setOrderBasket([]);
       navigate(-2);
       return;
     }
 
-    if (error.response?.status === HttpStatusCode.NotFound) {
-      alert(error.response?.data?.message);
+    if (isApiErrorCode(error, ...MISSING_ORDER_TARGET_CODES)) {
+      alert(getApiErrorMessage(error, '주문 대상을 찾을 수 없습니다. 주문 화면으로 돌아갑니다.'));
       setOrderBasket([]);
       navigate(-2);
       return;
     }
 
-    if (error.response?.status === HttpStatusCode.BadRequest) {
-      alert(error.response?.data?.message || '알 수 없는 오류가 발생했습니다.');
-      return;
+    if (isApiErrorCode(error, ...UNORDERABLE_STATE_CODES)) {
+      alert(getApiErrorMessage(error, '알 수 없는 오류가 발생했습니다.'));
     }
   };
   usePreventRefresh();

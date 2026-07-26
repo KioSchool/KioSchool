@@ -11,7 +11,8 @@ import { userOrderBasketAtom, userProductsAtom, userWorkspaceAtom } from '@jotai
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect, useMemo } from 'react';
 import useOrder from '@hooks/user/useOrder';
-import { HttpStatusCode } from 'axios';
+import { API_ERROR_CODES } from '@constants/errorCodes';
+import { isApiErrorCode } from '@utils/apiError';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -99,8 +100,8 @@ function OrderBasket() {
     }
   };
 
-  const errorHandler = (error: any) => {
-    if (error.response.status === HttpStatusCode.NotAcceptable) {
+  const errorHandler = (error: unknown) => {
+    if (isApiErrorCode(error, API_ERROR_CODES.NOT_SELLABLE_PRODUCT)) {
       alert('품절된 상품이 있습니다. 주문 화면으로 돌아갑니다.');
       setOrderBasket([]);
       navigate(-1);
