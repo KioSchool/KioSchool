@@ -54,6 +54,8 @@ export const API_ERROR_CODES = {
   EMAIL_SEND_FAILURE: 'EMAIL_SEND_FAILURE', // 500
 
   // Security
+  AUTHENTICATION_REQUIRED: 'AUTHENTICATION_REQUIRED', // 401
+  ACCESS_DENIED: 'ACCESS_DENIED', // 403
   INVALID_JWT: 'INVALID_JWT', // 401
 } as const;
 
@@ -62,17 +64,10 @@ export type ApiErrorCode = typeof API_ERROR_CODES[keyof typeof API_ERROR_CODES];
 /**
  * 세션 자체가 무효임을 뜻하는 code. 글로벌 로그아웃 이벤트를 발행한다.
  *
- * `INVALID_JWT`는 토큰은 유효하나 해당 사용자가 삭제된 경우로, JWT 필터가
- * `HandlerExceptionResolver`에 위임해 advice까지 도달하므로 code가 붙는다.
- */
-export const SESSION_INVALID_ERROR_CODES: readonly ApiErrorCode[] = [API_ERROR_CODES.INVALID_JWT];
-
-/**
- * code 없이 세션 무효로 판단할 status.
+ * - `AUTHENTICATION_REQUIRED`: 쿠키 부재·만료 토큰. JWT 필터는 이 경우 예외를 던지지 않고
+ *   통과시키므로, Spring Security의 `CustomAuthenticationEntryPoint`가 code를 실어준다.
+ * - `INVALID_JWT`: 토큰은 유효하나 해당 사용자가 삭제된 경우.
  *
- * 쿠키 만료·토큰 부재처럼 인증 정보가 아예 없으면 JWT 필터는 예외를 던지지 않고
- * 그냥 통과시킨다. 이후 Spring Security의 `ExceptionTranslationFilter`가
- * `@RestControllerAdvice`를 **우회해** 빈 바디로 거부하므로 응답에 `code`가 없다.
- * 세션 만료의 대부분이 이 경로이며, 백엔드 배포 여부와 무관하게 계속 유효하다.
+ * `ACCESS_DENIED`(403)는 인증은 됐고 권한만 부족한 상태라 세션이 유효하므로 제외한다.
  */
-export const SESSION_REJECTED_STATUSES: readonly number[] = [401, 403];
+export const SESSION_INVALID_ERROR_CODES: readonly ApiErrorCode[] = [API_ERROR_CODES.AUTHENTICATION_REQUIRED, API_ERROR_CODES.INVALID_JWT];
