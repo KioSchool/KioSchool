@@ -1,9 +1,9 @@
 import { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import * as Sentry from '@sentry/react';
 import { match } from 'ts-pattern';
-import { loadingManager } from './loadingManager';
 import { SENTRY_CONFIG } from '@constants/sentry';
 import { getApiErrorCode, isAxiosCancel, requiresGlobalLogout } from './apiError';
+import { loadingManager } from './loadingManager';
 import { isReportableError } from './sentryErrorFilter';
 
 const TIMEOUT_BEFORE_SHOW_LOADING = 500;
