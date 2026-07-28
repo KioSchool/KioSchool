@@ -6,6 +6,8 @@ import CategoryItem from '@components/admin/product-category/CategoryItem';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import styled from '@emotion/styled';
+import { API_ERROR_CODES } from '@constants/errorCodes';
+import { isApiErrorCode } from '@utils/apiError';
 
 const DraggableContainer = styled.div<{ transform?: string; transition?: string; isDragging?: boolean }>`
   transform: ${({ transform }) => transform};
@@ -32,7 +34,8 @@ function CategoryDraggableContents({ category }: DraggableProps) {
 
   const deleteCategoryHandler = () => {
     deleteCategory(category.id).catch((e) => {
-      if (e.response.status === 405) {
+      // 405는 워크스페이스 접근 불가(WORKSPACE_INACCESSIBLE)와도 겹치므로 code로 판정한다.
+      if (isApiErrorCode(e, API_ERROR_CODES.CANNOT_DELETE_USING_PRODUCT_CATEGORY)) {
         confirm();
       }
     });

@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
-import { AxiosError } from 'axios';
 import useAdminTable from '@hooks/admin/useAdminTable';
 import useConfirm from '@hooks/useConfirm';
 import { dateConverter } from '@utils/formatDate';
-
-const EMPTY_SESSION_ERROR_MESSAGE = '주문 내역이 없는 세션';
+import { API_ERROR_CODES } from '@constants/errorCodes';
+import { isApiErrorCode } from '@utils/apiError';
 
 function isEmptyOrderSessionError(error: unknown): boolean {
-  const axiosError = error as AxiosError<{ message?: string }>;
-  return axiosError.response?.status === 400 && !!axiosError.response?.data?.message?.includes(EMPTY_SESSION_ERROR_MESSAGE);
+  return isApiErrorCode(error, API_ERROR_CODES.EMPTY_ORDER_SESSION);
 }
 
 const SESSION_STORAGE_KEY = 'selectedTimeLimit';

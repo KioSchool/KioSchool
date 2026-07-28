@@ -1,21 +1,23 @@
-import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import * as Sentry from '@sentry/react';
 import { match } from 'ts-pattern';
-import { loadingManager } from './loadingManager';
 import { SENTRY_CONFIG } from '@constants/sentry';
+import { getApiErrorCode, isAxiosCancel, requiresGlobalLogout } from './apiError';
+import { loadingManager } from './loadingManager';
+import { isReportableError } from './sentryErrorFilter';
 
 const TIMEOUT_BEFORE_SHOW_LOADING = 500;
 
-type ErrorCategory = 'cancel' | 'auth' | 'ignored-url' | 'normal';
+type ErrorCategory = 'cancel' | 'ignored-url' | 'expected' | 'normal';
 
 function categorize(error: AxiosError): ErrorCategory {
-  if (axios.isCancel(error) || error.code === 'ERR_CANCELED') return 'cancel';
-
-  const status = error.response?.status ?? 0;
-  if (status === 401 || status === 403 || status === 405) return 'auth';
+  if (isAxiosCancel(error)) return 'cancel';
 
   const url = error.config?.url ?? '';
   if (SENTRY_CONFIG.IGNORED_URL_PATTERNS.some((pattern) => url.includes(pattern))) return 'ignored-url';
+
+  // 예상된 비즈니스 에러 및 세션 만료 → Sentry 미전송.
+  if (!isReportableError(error)) return 'expected';
 
   return 'normal';
 }
@@ -38,6 +40,7 @@ function reportToSentry(error: AxiosError) {
   Sentry.captureException(error, {
     tags: {
       errorType: 'apiError',
+      errorCode: getApiErrorCode(error) ?? 'NO_CODE',
       statusCode: error.response?.status ?? 0,
     },
     extra: {
@@ -92,7 +95,7 @@ export function setupApiInterceptors(
   };
 
   const handleRequestError = (error: AxiosError): Promise<never> => {
-    if (axios.isCancel(error) || error.code === 'ERR_CANCELED') {
+    if (isAxiosCancel(error)) {
       return suppressUnhandled(error);
     }
     return Promise.reject(error);
@@ -106,20 +109,21 @@ export function setupApiInterceptors(
   const handleResponseError = (error: AxiosError): Promise<never> => {
     if (error.config) cleanupRequest(error.config);
 
-    return match(categorize(error))
-      .with('cancel', () => suppressUnhandled(error))
-      .with('auth', () => {
-        const status = error.response?.status ?? 0;
-        // 405는 access-guard 자리에서 로컬 처리 (master PR #452). 글로벌 로그아웃 이벤트는 401/403만.
-        if (status === 401 || status === 403) handleAuthError();
-        return suppressUnhandled(error);
-      })
-      .with('ignored-url', () => suppressUnhandled(error))
-      .with('normal', () => {
-        reportToSentry(error);
-        return Promise.reject<never>(error);
-      })
-      .exhaustive();
+    // 로그아웃은 Sentry 보고 여부와 독립된 판단이므로 분류 전에 처리한다.
+    if (requiresGlobalLogout(error)) handleAuthError();
+
+    return (
+      match(categorize(error))
+        .with('cancel', () => suppressUnhandled(error))
+        .with('ignored-url', () => suppressUnhandled(error))
+        // 예상된 에러: Sentry 미보고, 호출자에겐 reject 전달(UI가 메시지 표시).
+        .with('expected', () => suppressUnhandled(error))
+        .with('normal', () => {
+          reportToSentry(error);
+          return Promise.reject<never>(error);
+        })
+        .exhaustive()
+    );
   };
 
   api.interceptors.request.use(handleRequestStart, handleRequestError);

@@ -2,6 +2,8 @@ import { PaginationResponse, EmailDomain } from '@@types/index';
 import useApi from '@hooks/useApi';
 import { useSetAtom } from 'jotai';
 import { superAdminEmailDomainPaginationResponseAtom } from '@jotai/super-admin/atoms';
+import { API_ERROR_CODES } from '@constants/errorCodes';
+import { getApiErrorMessage, isApiErrorCode } from '@utils/apiError';
 
 interface FetchAllEmailDomainParamsType {
   page: number;
@@ -39,9 +41,9 @@ function useSuperAdminEmail() {
       .then(() => {
         fetchAllEmailDomain(0, 6);
       })
-      .catch((error) => {
-        if (error.response.status === 400) {
-          alert(error.response.data.message);
+      .catch((error: unknown) => {
+        if (isApiErrorCode(error, API_ERROR_CODES.DUPLICATE_EMAIL_DOMAIN)) {
+          alert(getApiErrorMessage(error, '이미 등록된 도메인입니다.'));
         }
       });
   };

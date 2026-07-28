@@ -10,6 +10,7 @@ import SentryErrorFallback from './components/common/fallback/SentryErrorFallbac
 import { URLS } from '@constants/urls';
 import type { SentryEnvironment } from '@constants/sentry';
 import { SENTRY_CONFIG } from '@constants/sentry';
+import { isReportableError } from '@utils/sentryErrorFilter';
 
 const environment = import.meta.env.VITE_ENVIRONMENT as SentryEnvironment;
 const gaId = import.meta.env.VITE_GA_ID;
@@ -52,6 +53,14 @@ Sentry.init({
   sendDefaultPii: true,
   ...sentryRates,
   tracePropagationTargets: URLS.SENTRY_TRACE_PROPAGATION_TARGETS,
+  // 인터셉터를 우회해 전역 unhandled 경로로 잡히는 이벤트(예: 취소된 요청의 CanceledError,
+  // 새어나온 예상 4xx)를 전송 직전에 드롭한다. 인터셉터와 동일한 판정 함수를 공유한다.
+  beforeSend(event, hint) {
+    if (!isReportableError(hint?.originalException)) {
+      return null;
+    }
+    return event;
+  },
 });
 export const SentryRoutes = Sentry.withSentryReactRouterV6Routing(Routes);
 
