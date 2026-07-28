@@ -16,6 +16,7 @@
     "@remixicon/react": "^4.6.0",
     "@sentry/react": "^10.11.0",
     "@sentry/vite-plugin": "^4.3.0",
+    "@stomp/stompjs": "^7.0.0",
     "@types/lodash": "^4.14.202",
     "@types/node": "^22.14.0",
     "@types/qrcode": "^1.5.5",
@@ -49,6 +50,7 @@
     "react-scroll": "npm:@kioschool/react-scroll",
     "react-toastify": "^11.0.5",
     "recharts": "2.15.3",
+    "sockjs-client": "^1.6.1",
     "styled-components": "^6.1.19",
     "ts-pattern": "^5.9.0",
     "typewriter-effect": "^2.22.0"
