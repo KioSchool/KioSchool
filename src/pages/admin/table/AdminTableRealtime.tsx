@@ -1,5 +1,6 @@
 import AdminTableList from '@components/admin/order/table-manage/list/AdminTableList';
 import AdminTableOrderList from '@components/admin/order/table-manage/list/AdminTableOrderList';
+import TableLayoutView from '@components/admin/order/table-manage/layout/TableLayoutView/TableLayoutView';
 import TableQRCode from '@components/admin/order/table-manage/qrcode/TableQRCode';
 import TableElapsedTimer from '@components/admin/order/table-manage/timer/TableElapsedTimer';
 import TableSessionControler from '@components/admin/order/table-manage/timer/TableSessionControler';
@@ -17,23 +18,26 @@ import { tableNoQueryParamConfig } from '@hooks/common/queryParamConfigs';
 import useTableOrders from '@hooks/admin/useTableOrders';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { useEffect } from 'react';
+import { TABLE_DETAIL_COLUMN_PX } from '@constants/layout';
+import { useEffect, useState } from 'react';
+import { isMobile } from 'react-device-detect';
+import { toast } from 'react-toastify';
 import { useLocation, useParams } from 'react-router-dom';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { adminTablesAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
+import { adminTablesAtom, adminTableViewModeAtom, adminWorkspaceAtom, TABLE_VIEW, TableView } from '@jotai/admin/atoms';
 import { externalSidebarAtom } from '@jotai/atoms';
-import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
+import { RIGHT_SIDEBAR_ACTION, Table } from '@@types/index';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { RiSettings3Fill } from '@remixicon/react';
 import { ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardingData';
 import { isOnboardingStepCompleted } from '@utils/onboarding';
 import OnboardingStepHint from '@components/admin/workspace/onboarding/OnboardingStepHint';
 
-const Container = styled.div`
+const Container = styled.div<{ viewMode: TableView }>`
   width: 95%;
   height: 100%;
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: ${({ viewMode }) => (viewMode === TABLE_VIEW.LAYOUT ? `1fr ${TABLE_DETAIL_COLUMN_PX}px` : '1fr 2fr')};
   gap: 10px;
 `;
 
@@ -105,9 +109,11 @@ const FallbackContainer = styled.div`
 
 function AdminTableRealtime() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { value: tableNo } = useQueryParam(tableNoQueryParamConfig);
+  const { value: tableNo, setValue: setTableNo } = useQueryParam(tableNoQueryParamConfig);
   const { fetchWorkspaceTables } = useAdminWorkspace();
   const workspace = useAtomValue(adminWorkspaceAtom);
+  const storedViewMode = useAtomValue(adminTableViewModeAtom);
+  const viewMode = isMobile ? TABLE_VIEW.LIST : storedViewMode;
 
   const location = useLocation();
   const setExternalSidebar = useSetAtom(externalSidebarAtom);
@@ -115,6 +121,8 @@ function AdminTableRealtime() {
   const tables = useAtomValue(adminTablesAtom);
   const selectedTable = tables.find((t) => t.tableNumber === Number(tableNo));
   const { orders, totalOrderAmount, fetchOrders, isLoading: isOrdersLoading } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
+
+  const [noticedTableNo, setNoticedTableNo] = useState<string | null>(null);
 
   const fetchTables = () => {
     fetchWorkspaceTables(workspaceId);
@@ -124,6 +132,15 @@ function AdminTableRealtime() {
     fetchTables();
   }, [workspace.tableCount]);
 
+  useEffect(() => {
+    if (viewMode !== TABLE_VIEW.LAYOUT) return;
+    if (!selectedTable || selectedTable.position !== null) return;
+    if (noticedTableNo === tableNo) return;
+
+    toast.info(`${selectedTable.tableNumber}번 테이블은 아직 배치되지 않았습니다.`);
+    setNoticedTableNo(tableNo);
+  }, [viewMode, selectedTable, tableNo, noticedTableNo]);
+
   const handleOpenSettings = () => {
     setExternalSidebar({
       location,
@@ -132,6 +149,12 @@ function AdminTableRealtime() {
       content: <TableSettingsSidebar />,
     });
   };
+
+  const handleSelectTable = (table: Table) => {
+    setTableNo(String(table.tableNumber));
+  };
+
+  const handleStartEdit = () => {};
 
   const needsTablesOnboarding = workspace.isOnboarding && !isOnboardingStepCompleted(workspace, ONBOARDING_STEP.TABLES);
 
@@ -147,8 +170,17 @@ function AdminTableRealtime() {
             </NewCommonButton>
           </ButtonHighlightWrapper>
         </TopBar>
-        <Container>
-          <AdminTableList tables={tables} />
+        <Container viewMode={viewMode}>
+          {viewMode === TABLE_VIEW.LAYOUT ? (
+            <TableLayoutView
+              tables={tables}
+              selectedTableNumber={selectedTable?.tableNumber ?? null}
+              onSelectTable={handleSelectTable}
+              onStartEdit={handleStartEdit}
+            />
+          ) : (
+            <AdminTableList tables={tables} />
+          )}
           {selectedTable ? (
             <DetailWrapper>
               <TableDetail>
