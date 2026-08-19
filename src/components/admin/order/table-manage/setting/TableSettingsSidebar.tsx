@@ -7,6 +7,8 @@ import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { colFlex } from '@styles/flexStyles';
 import { getAdminWorkspacePath } from '@constants/routes';
+import { MAX_TABLE_COUNT } from '@constants/layout';
+import { getTableStatus, TABLE_STATUS } from '@utils/tableStatus';
 import TableTimeSetting from './TableTimeSetting';
 import TableQRDownload from './TableQRDownload';
 import NumberInput from '@components/common/input/NumberInput';
@@ -63,12 +65,15 @@ function TableSettingsSidebar() {
   };
 
   const handleTableCountPlus = () => {
-    setTableCount(tableCount + 1);
+    setTableCount(Math.min(MAX_TABLE_COUNT, tableCount + 1));
   };
 
   const handleTableCountChange = (value: number) => {
-    setTableCount(Math.max(1, value));
+    setTableCount(Math.min(MAX_TABLE_COUNT, Math.max(1, value)));
   };
+
+  const getStrandedTableNumbers = () =>
+    tables.filter((table) => table.tableNumber > tableCount && getTableStatus(table) !== TABLE_STATUS.EMPTY).map((table) => table.tableNumber);
 
   const handleSave = async () => {
     if (tableCount < 1) {
@@ -79,6 +84,12 @@ function TableSettingsSidebar() {
     if (isTimeLimited && (timeLimitMinutes === undefined || timeLimitMinutes < 1)) {
       alert('시간 제한은 1분 이상이어야 합니다.');
       return;
+    }
+
+    const stranded = getStrandedTableNumbers();
+    if (stranded.length > 0) {
+      const confirmed = window.confirm(`${stranded.join(', ')}번 테이블이 사용 중입니다.\n계속하면 이 테이블들이 화면에서 사라집니다. 진행할까요?`);
+      if (!confirmed) return;
     }
 
     const shouldRedirectToOnboarding = workspace.isOnboarding && tableCount >= 2 && Boolean(workspaceId);

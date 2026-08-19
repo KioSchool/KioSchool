@@ -22,7 +22,7 @@ import useTableOrders from '@hooks/admin/useTableOrders';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
-import { TABLE_DETAIL_COLUMN_PX, TABLE_LIST_COLUMN_PX } from '@constants/layout';
+import { TABLE_DETAIL_COLUMN_PX, TABLE_LIST_COLUMN_PX, TABLE_POLL_INTERVAL_MS } from '@constants/layout';
 import { getApiErrorMessage } from '@utils/apiError';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -158,6 +158,17 @@ function AdminTableRealtime() {
   }, [workspace.tableCount]);
 
   useEffect(() => {
+    if (isEditing) return undefined;
+
+    const timer = setInterval(() => {
+      if (document.hidden) return;
+      fetchTables();
+    }, TABLE_POLL_INTERVAL_MS);
+
+    return () => clearInterval(timer);
+  }, [isEditing, workspaceId]);
+
+  useEffect(() => {
     if (viewMode !== TABLE_VIEW.LAYOUT) return;
     if (!selectedTable || selectedTable.position !== null) return;
     if (noticedTableNo === tableNo) return;
@@ -184,7 +195,10 @@ function AdminTableRealtime() {
     setIsEditing(true);
   };
 
-  const handleExitEdit = () => setIsEditing(false);
+  const handleExitEdit = () => {
+    setIsEditing(false);
+    fetchTables();
+  };
 
   const handleSaveError = (error: unknown, changes: TablePositionUpdate[]) => {
     const index = parseConflictIndex(error);
