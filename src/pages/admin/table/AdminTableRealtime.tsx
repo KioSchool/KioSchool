@@ -14,6 +14,7 @@ import RightSidebarModal from '@components/common/modal/RightSidebarModal';
 import styled from '@emotion/styled';
 import { css, keyframes } from '@emotion/react';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
+import useAdminTableLayout, { parseConflictIndex, TablePositionUpdate } from '@hooks/admin/useAdminTableLayout';
 import useQueryParam from '@hooks/common/useQueryParam';
 import { tableNoQueryParamConfig } from '@hooks/common/queryParamConfigs';
 import useIsMobile from '@hooks/useIsMobile';
@@ -22,13 +23,14 @@ import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { TABLE_DETAIL_COLUMN_PX, TABLE_LIST_COLUMN_PX } from '@constants/layout';
+import { getApiErrorMessage } from '@utils/apiError';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useLocation, useParams } from 'react-router-dom';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { adminTablesAtom, adminTableViewModeAtom, adminWorkspaceAtom, TABLE_VIEW, TableView } from '@jotai/admin/atoms';
 import { externalSidebarAtom } from '@jotai/atoms';
-import { RIGHT_SIDEBAR_ACTION, Table } from '@@types/index';
+import { RIGHT_SIDEBAR_ACTION, Table, TablePosition } from '@@types/index';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { RiSettings3Fill } from '@remixicon/react';
 import { ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardingData';
@@ -128,6 +130,7 @@ function AdminTableRealtime() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { value: tableNo, setValue: setTableNo } = useQueryParam(tableNoQueryParamConfig);
   const { fetchWorkspaceTables } = useAdminWorkspace();
+  const { updateTablePositions } = useAdminTableLayout(workspaceId);
   const workspace = useAtomValue(adminWorkspaceAtom);
   const storedViewMode = useAtomValue(adminTableViewModeAtom);
   const isMobile = useIsMobile();
@@ -137,11 +140,14 @@ function AdminTableRealtime() {
   const setExternalSidebar = useSetAtom(externalSidebarAtom);
 
   const tables = useAtomValue(adminTablesAtom);
+  const setAdminTables = useSetAtom(adminTablesAtom);
   const selectedTable = tables.find((t) => t.tableNumber === Number(tableNo));
   const { orders, totalOrderAmount, fetchOrders, isLoading: isOrdersLoading } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
 
   const [noticedTableNo, setNoticedTableNo] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [isSavingLayout, setIsSavingLayout] = useState(false);
+  const [conflictedPosition, setConflictedPosition] = useState<TablePosition | null>(null);
 
   const fetchTables = () => {
     fetchWorkspaceTables(workspaceId);
@@ -173,12 +179,36 @@ function AdminTableRealtime() {
     setTableNo(String(table.tableNumber));
   };
 
-  const handleStartEdit = () => setIsEditing(true);
+  const handleStartEdit = () => {
+    setConflictedPosition(null);
+    setIsEditing(true);
+  };
 
   const handleExitEdit = () => setIsEditing(false);
 
-  const handleSaveLayout = () => {
-    // Task 11에서 실제 저장 API 연동 (updateTablePositions 호출 + 409 처리)
+  const handleSaveError = (error: unknown, changes: TablePositionUpdate[]) => {
+    const index = parseConflictIndex(error);
+    const conflicted = index !== null ? changes[index]?.position ?? null : null;
+
+    setConflictedPosition(conflicted);
+
+    const fallback = conflicted ? '이미 다른 테이블이 있는 자리입니다.' : '배치 저장에 실패했어요. 잠시 후 다시 시도해주세요.';
+    toast.error(getApiErrorMessage(error, fallback));
+  };
+
+  const handleSaveLayout = async (changes: TablePositionUpdate[]) => {
+    setIsSavingLayout(true);
+    try {
+      const updated = await updateTablePositions(changes);
+      setAdminTables(updated);
+      setConflictedPosition(null);
+      setIsEditing(false);
+      toast.success('배치를 저장했습니다.');
+    } catch (error) {
+      handleSaveError(error, changes);
+    } finally {
+      setIsSavingLayout(false);
+    }
   };
 
   const needsTablesOnboarding = workspace.isOnboarding && !isOnboardingStepCompleted(workspace, ONBOARDING_STEP.TABLES);
@@ -205,7 +235,13 @@ function AdminTableRealtime() {
         </TopBar>
         {isEditing ? (
           <EditorArea>
-            <TableLayoutEditor tables={tables} onExit={handleExitEdit} onSave={handleSaveLayout} isSaving={false} conflictedPosition={null} />
+            <TableLayoutEditor
+              tables={tables}
+              onExit={handleExitEdit}
+              onSave={handleSaveLayout}
+              isSaving={isSavingLayout}
+              conflictedPosition={conflictedPosition}
+            />
           </EditorArea>
         ) : (
           <Container viewMode={viewMode}>
