@@ -22,7 +22,9 @@ export const TABLE_VIEW = {
 
 export type TableView = typeof TABLE_VIEW[keyof typeof TABLE_VIEW];
 
-export const adminTableViewModeAtom = atomWithStorage<TableView>('adminTableViewMode', TABLE_VIEW.LIST);
+export const adminTableViewModeAtom = atomWithStorage<TableView>('adminTableViewMode', TABLE_VIEW.LIST, undefined, {
+  getOnInit: true,
+});
 
 export const adminUserAtom = atom<User>(defaultUserValue);
 
