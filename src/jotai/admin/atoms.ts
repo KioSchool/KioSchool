@@ -15,6 +15,15 @@ export const adminWorkspaceAtom = atomWithStorage<Workspace>('adminWorkspace', d
   getOnInit: true,
 });
 
+export const TABLE_VIEW = {
+  LAYOUT: 'LAYOUT',
+  LIST: 'LIST',
+} as const;
+
+export type TableView = typeof TABLE_VIEW[keyof typeof TABLE_VIEW];
+
+export const adminTableViewModeAtom = atomWithStorage<TableView>('adminTableViewMode', TABLE_VIEW.LIST);
+
 export const adminUserAtom = atom<User>(defaultUserValue);
 
 export const adminUserAccountAtom = atom((get) => {

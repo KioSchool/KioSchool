@@ -6,6 +6,7 @@ import TableSessionControler from '@components/admin/order/table-manage/timer/Ta
 import TableOrderAmount from '@components/admin/order/table-manage/TableOrderAmount';
 import InactiveTableView from '@components/admin/order/table-manage/InactiveTableView';
 import TableSettingsSidebar from '@components/admin/order/table-manage/setting/TableSettingsSidebar';
+import ViewToggle from '@components/admin/order/table-manage/ViewToggle/ViewToggle';
 import AppContainer from '@components/common/container/AppContainer';
 import RightSidebarModal from '@components/common/modal/RightSidebarModal';
 import styled from '@emotion/styled';
@@ -70,11 +71,12 @@ const SettingIcon = styled(RiSettings3Fill)`
   color: ${Color.WHITE};
 `;
 
-const SettingsButtonContainer = styled.div`
+const TopBar = styled.div`
   width: 1000px;
   padding-top: 12px;
   padding-bottom: 24px;
-  ${colFlex({ align: 'end' })};
+
+  ${rowFlex({ justify: 'space-between', align: 'center' })};
 `;
 
 const buttonPulseAnimation = keyframes`
@@ -137,13 +139,14 @@ function AdminTableRealtime() {
     <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })}>
       <>
         <OnboardingStepHint step={ONBOARDING_STEP.TABLES} width="1000px" />
-        <SettingsButtonContainer>
+        <TopBar>
+          <ViewToggle />
           <ButtonHighlightWrapper animate={needsTablesOnboarding}>
             <NewCommonButton size="sm" icon={<SettingIcon />} onClick={handleOpenSettings}>
               테이블 설정
             </NewCommonButton>
           </ButtonHighlightWrapper>
-        </SettingsButtonContainer>
+        </TopBar>
         <Container>
           <AdminTableList tables={tables} />
           {selectedTable ? (
