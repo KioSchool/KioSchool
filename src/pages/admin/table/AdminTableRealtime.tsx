@@ -15,13 +15,13 @@ import { css, keyframes } from '@emotion/react';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import useQueryParam from '@hooks/common/useQueryParam';
 import { tableNoQueryParamConfig } from '@hooks/common/queryParamConfigs';
+import useIsMobile from '@hooks/useIsMobile';
 import useTableOrders from '@hooks/admin/useTableOrders';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { TABLE_DETAIL_COLUMN_PX, TABLE_LIST_COLUMN_PX } from '@constants/layout';
 import { useEffect, useState } from 'react';
-import { isMobile } from 'react-device-detect';
 import { toast } from 'react-toastify';
 import { useLocation, useParams } from 'react-router-dom';
 import { useAtomValue, useSetAtom } from 'jotai';
@@ -119,6 +119,7 @@ function AdminTableRealtime() {
   const { fetchWorkspaceTables } = useAdminWorkspace();
   const workspace = useAtomValue(adminWorkspaceAtom);
   const storedViewMode = useAtomValue(adminTableViewModeAtom);
+  const isMobile = useIsMobile();
   const viewMode = isMobile ? TABLE_VIEW.LIST : storedViewMode;
 
   const location = useLocation();
