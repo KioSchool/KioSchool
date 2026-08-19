@@ -1,10 +1,10 @@
-import { isPast } from 'date-fns';
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import { RiExpandUpDownFill, RiArrowDropDownFill, RiArrowDropUpFill } from '@remixicon/react';
 
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { getTableStatus, TABLE_STATUS } from '@utils/tableStatus';
 import { Table } from '@@types/index';
 
 import TableListItem from './TableListItem';
@@ -162,26 +162,21 @@ function AdminTableList({ tables }: TableSessionListProps) {
   const [sortType, setSortType] = useState<SortType>(DEFAULT);
   const [filterType, setFilterType] = useState<FilterType>('ALL');
 
-  const usingCount = tables.filter((table) => table.orderSession !== null).length;
-  const emptyCount = tables.length - usingCount;
-  const exceededCount = tables.filter((table) => {
-    if (!table.orderSession || !table.orderSession.expectedEndAt) return false;
-    return isPast(new Date(table.orderSession.expectedEndAt));
-  }).length;
+  const statuses = tables.map(getTableStatus);
+  const usingCount = statuses.filter((status) => status !== TABLE_STATUS.EMPTY).length;
+  const emptyCount = statuses.filter((status) => status === TABLE_STATUS.EMPTY).length;
+  const exceededCount = statuses.filter((status) => status === TABLE_STATUS.EXCEEDED).length;
+
+  const matchesFilter = (table: Table, filter: FilterType) => {
+    const status = getTableStatus(table);
+    if (filter === 'USING') return status !== TABLE_STATUS.EMPTY;
+    if (filter === 'EMPTY') return status === TABLE_STATUS.EMPTY;
+    if (filter === 'EXCEEDED') return status === TABLE_STATUS.EXCEEDED;
+    return true;
+  };
 
   const getSortedTables = () => {
-    let copiedTables = [...tables];
-
-    if (filterType === 'USING') {
-      copiedTables = copiedTables.filter((table) => table.orderSession !== null);
-    } else if (filterType === 'EMPTY') {
-      copiedTables = copiedTables.filter((table) => table.orderSession === null);
-    } else if (filterType === 'EXCEEDED') {
-      copiedTables = copiedTables.filter((table) => {
-        if (!table.orderSession || !table.orderSession.expectedEndAt) return false;
-        return isPast(new Date(table.orderSession.expectedEndAt));
-      });
-    }
+    const copiedTables = tables.filter((table) => matchesFilter(table, filterType));
 
     switch (sortType) {
       case STATUS_ASC:

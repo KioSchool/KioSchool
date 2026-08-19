@@ -5,11 +5,8 @@ import { keyframes } from '@emotion/react';
 import useFormattedTime from '@hooks/useFormattedTime';
 import { Color } from '@resources/colors';
 import { formatRemainingTime } from '@utils/formatDate';
+import { getTableStatus, TABLE_STATUS, TableStatus } from '@utils/tableStatus';
 import { Table } from '@@types/index';
-
-type TimeStatus = 'selected' | 'expired' | 'warning' | 'normal';
-
-const WARNING_THRESHOLD_MS = 10 * 60 * 1000;
 
 const pulse = keyframes`
   0% { opacity: 1; }
@@ -17,26 +14,21 @@ const pulse = keyframes`
   100% { opacity: 1; }
 `;
 
-const getTimeStatus = (isSelected: boolean, expectedEndAt: string | undefined, isUsing: boolean): TimeStatus => {
-  if (isSelected) return 'selected';
-  if (!isUsing || !expectedEndAt) return 'normal';
+const SELECTED_STYLE = { background: Color.KIO_ORANGE, color: Color.WHITE };
 
-  const remainingTime = new Date(expectedEndAt).getTime() - new Date().getTime();
-
-  if (remainingTime <= 0) return 'expired';
-  if (remainingTime <= WARNING_THRESHOLD_MS) return 'warning';
-
-  return 'normal';
+const STATUS_STYLES: Record<TableStatus, { background: string; color: string }> = {
+  [TABLE_STATUS.EXCEEDED]: { background: Color.RED, color: Color.WHITE },
+  [TABLE_STATUS.WARNING]: { background: Color.LIGHT_RED, color: Color.GREY },
+  [TABLE_STATUS.USING]: { background: 'transparent', color: Color.GREY },
+  [TABLE_STATUS.EMPTY]: { background: 'transparent', color: Color.GREY },
 };
 
-const TIME_STATUS_STYLES = {
-  selected: { background: Color.KIO_ORANGE, color: Color.WHITE },
-  expired: { background: Color.RED, color: Color.WHITE },
-  warning: { background: Color.LIGHT_RED, color: Color.GREY },
-  normal: { background: 'transparent', color: Color.GREY },
+const getRowStyle = (isSelected: boolean, status: TableStatus) => {
+  if (isSelected) return SELECTED_STYLE;
+  return STATUS_STYLES[status];
 };
 
-const Row = styled.div<{ isSelected: boolean; expectedEndAt?: string; isUsing: boolean }>`
+const Row = styled.div<{ isSelected: boolean; status: TableStatus }>`
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   align-items: center;
@@ -46,13 +38,12 @@ const Row = styled.div<{ isSelected: boolean; expectedEndAt?: string; isUsing: b
   text-align: center;
   height: 30px;
 
-  ${({ isSelected, expectedEndAt, isUsing }) => {
-    const status = getTimeStatus(isSelected, expectedEndAt, isUsing);
-    const style = TIME_STATUS_STYLES[status];
+  ${({ isSelected, status }) => {
+    const style = getRowStyle(isSelected, status);
     return `
       color: ${style.color};
       background-color: ${style.background};
-      ${status === 'expired' && !isSelected ? `animation: ${pulse} 2s infinite;` : ''}
+      ${status === TABLE_STATUS.EXCEEDED && !isSelected ? `animation: ${pulse} 2s infinite;` : ''}
     `;
   }}
 
@@ -83,6 +74,8 @@ function TableListItem({ expectedEndAt, isUsing, table }: TableSessionItemProps)
   const remainTime = useFormattedTime<string>({ date: expectedEndAt, formatter: formatRemainingTime });
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedTableNo = searchParams.get('tableNo');
+  const isSelected = selectedTableNo === String(table.tableNumber);
+  const status = getTableStatus(table);
 
   const onClickTable = (tableNumber: number) => {
     searchParams.set('tableNo', String(tableNumber));
@@ -90,12 +83,7 @@ function TableListItem({ expectedEndAt, isUsing, table }: TableSessionItemProps)
   };
 
   return (
-    <Row
-      onClick={() => onClickTable(table.tableNumber)}
-      isSelected={selectedTableNo === String(table.tableNumber)}
-      expectedEndAt={expectedEndAt}
-      isUsing={isUsing}
-    >
+    <Row onClick={() => onClickTable(table.tableNumber)} isSelected={isSelected} status={status}>
       <Text>{table.tableNumber}</Text>
       <Text>{remainTime}</Text>
       <StatusTag isUsing={isUsing}>{isUsing ? '사용중' : '종료됨'}</StatusTag>
