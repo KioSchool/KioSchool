@@ -4,7 +4,13 @@ import { RiExpandUpDownFill, RiArrowDropDownFill, RiArrowDropUpFill } from '@rem
 
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { TABLE_LIST_NUMBER_COL_PX, TABLE_LIST_RING_COL_PX, TABLE_LIST_STATUS_COL_PX } from '@constants/layout';
+import {
+  TABLE_LIST_AMOUNT_COL_PX,
+  TABLE_LIST_NUMBER_COL_PX,
+  TABLE_LIST_ORDER_COL_PX,
+  TABLE_LIST_RING_COL_PX,
+  TABLE_LIST_STATUS_COL_PX,
+} from '@constants/layout';
 import { getTableStatus, STATUS_ORDER } from '@utils/tableStatus';
 import { Table } from '@@types/index';
 
@@ -29,7 +35,7 @@ const ListWrapper = styled.div`
 const Header = styled.div`
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: ${TABLE_LIST_NUMBER_COL_PX}px ${TABLE_LIST_RING_COL_PX}px 1fr ${TABLE_LIST_STATUS_COL_PX}px;
+  grid-template-columns: ${TABLE_LIST_NUMBER_COL_PX}px ${TABLE_LIST_RING_COL_PX}px 1fr ${TABLE_LIST_ORDER_COL_PX}px ${TABLE_LIST_AMOUNT_COL_PX}px ${TABLE_LIST_STATUS_COL_PX}px;
   padding: 5px 10px;
   font-weight: bold;
   background-color: #f0f5f8;
@@ -121,20 +127,20 @@ function AdminTableList({ tables }: TableSessionListProps) {
     <ListContainer>
       <ListWrapper>
         <Header>
-          <HeaderText>번호</HeaderText>
+          <HeaderText>테이블</HeaderText>
           <HeaderText />
-          <HeaderText>잔여 시간</HeaderText>
+          <HeaderText>사용 시간</HeaderText>
+          <HeaderText>주문</HeaderText>
+          <HeaderText>금액</HeaderText>
           <HeaderText clickable onClick={handleStatusClick}>
             상태
             {SORT_ICONS[sortType]}
           </HeaderText>
         </Header>
         <ListBody>
-          {sortedTables.map((table) => {
-            const isUsing = table.orderSession !== null;
-            const expectedEndAt = table.orderSession?.expectedEndAt;
-            return <TableListItem key={table.id} expectedEndAt={expectedEndAt} isUsing={isUsing} table={table} />;
-          })}
+          {sortedTables.map((table) => (
+            <TableListItem key={table.id} table={table} />
+          ))}
         </ListBody>
       </ListWrapper>
     </ListContainer>

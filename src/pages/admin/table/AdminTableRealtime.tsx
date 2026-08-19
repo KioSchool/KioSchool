@@ -25,13 +25,13 @@ import useTableOrders from '@hooks/admin/useTableOrders';
 import { Color } from '@resources/colors';
 import { colFlex, JustifyType, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
-import { TABLE_DETAIL_COLUMN_PX, TABLE_LIST_COLUMN_PX, TABLE_POLL_INTERVAL_MS } from '@constants/layout';
+import { TABLE_DETAIL_COLUMN_PX, TABLE_POLL_INTERVAL_MS } from '@constants/layout';
 import { getApiErrorMessage } from '@utils/apiError';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useLocation, useParams } from 'react-router-dom';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { adminTablesAtom, adminTableViewModeAtom, adminWorkspaceAtom, TABLE_VIEW, TableView } from '@jotai/admin/atoms';
+import { adminTablesAtom, adminTableViewModeAtom, adminWorkspaceAtom, TABLE_VIEW } from '@jotai/admin/atoms';
 import { externalSidebarAtom } from '@jotai/atoms';
 import { RIGHT_SIDEBAR_ACTION, Table, TablePosition } from '@@types/index';
 import NewCommonButton from '@components/common/button/NewCommonButton';
@@ -40,12 +40,11 @@ import { ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardi
 import { isOnboardingStepCompleted } from '@utils/onboarding';
 import OnboardingStepHint from '@components/admin/workspace/onboarding/OnboardingStepHint';
 
-const Container = styled.div<{ viewMode: TableView }>`
+const Container = styled.div`
   width: 95%;
   height: 100%;
   display: grid;
-  grid-template-columns: ${({ viewMode }) =>
-    viewMode === TABLE_VIEW.LAYOUT ? `1fr ${TABLE_DETAIL_COLUMN_PX}px` : `${TABLE_LIST_COLUMN_PX}px 1fr ${TABLE_DETAIL_COLUMN_PX}px`};
+  grid-template-columns: 1fr ${TABLE_DETAIL_COLUMN_PX}px;
   gap: 10px;
 
   ${mobileMediaQuery} {
@@ -92,7 +91,7 @@ const SettingIcon = styled(RiSettings3Fill)`
 `;
 
 const TopBar = styled.div`
-  width: 1000px;
+  width: 95%;
   padding-top: 12px;
   padding-bottom: 24px;
   gap: 12px;
@@ -235,7 +234,6 @@ function AdminTableRealtime() {
   };
 
   const needsTablesOnboarding = workspace.isOnboarding && !isOnboardingStepCompleted(workspace, ONBOARDING_STEP.TABLES);
-  const showOrdersInDetail = viewMode === TABLE_VIEW.LAYOUT || isMobile;
 
   return (
     <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })}>
@@ -277,13 +275,12 @@ function AdminTableRealtime() {
             />
           </EditorArea>
         ) : (
-          <Container viewMode={viewMode}>
+          <Container>
             {viewMode === TABLE_VIEW.LAYOUT ? (
               <TableLayoutView tables={filteredTables} selectedTableNumber={selectedTable?.tableNumber ?? null} onSelectTable={handleSelectTable} />
             ) : (
               <AdminTableList tables={filteredTables} />
             )}
-            {!showOrdersInDetail && <AdminTableOrderList orders={orders} onRefresh={fetchOrders} isLoading={isOrdersLoading} />}
             {selectedTable ? (
               <DetailWrapper>
                 <TableDetail>
@@ -309,7 +306,7 @@ function AdminTableRealtime() {
                       />
                     </RightColumn>
                   </DetailHeader>
-                  {showOrdersInDetail && <AdminTableOrderList orders={orders} onRefresh={fetchOrders} isLoading={isOrdersLoading} />}
+                  <AdminTableOrderList orders={orders} onRefresh={fetchOrders} isLoading={isOrdersLoading} />
                 </TableDetail>
                 {!selectedTable.orderSession && (
                   <InactiveTableView workspaceId={workspaceId} tableNumber={selectedTable.tableNumber} refetchTable={fetchTables} />
