@@ -9,18 +9,21 @@ import TableOrderAmount from '@components/admin/order/table-manage/TableOrderAmo
 import InactiveTableView from '@components/admin/order/table-manage/InactiveTableView';
 import TableSettingsSidebar from '@components/admin/order/table-manage/setting/TableSettingsSidebar';
 import ViewToggle from '@components/admin/order/table-manage/ViewToggle/ViewToggle';
+import TableFilterBar from '@components/admin/order/table-manage/TableFilterBar/TableFilterBar';
+import TableRefreshButton from '@components/admin/order/table-manage/TableRefreshButton/TableRefreshButton';
 import AppContainer from '@components/common/container/AppContainer';
 import RightSidebarModal from '@components/common/modal/RightSidebarModal';
 import styled from '@emotion/styled';
 import { css, keyframes } from '@emotion/react';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import useAdminTableLayout, { parseConflictIndex, TablePositionUpdate } from '@hooks/admin/useAdminTableLayout';
+import useTableFilter from '@hooks/admin/useTableFilter';
 import useQueryParam from '@hooks/common/useQueryParam';
 import { tableNoQueryParamConfig } from '@hooks/common/queryParamConfigs';
 import useIsMobile from '@hooks/useIsMobile';
 import useTableOrders from '@hooks/admin/useTableOrders';
 import { Color } from '@resources/colors';
-import { colFlex, rowFlex } from '@styles/flexStyles';
+import { colFlex, JustifyType, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { TABLE_DETAIL_COLUMN_PX, TABLE_LIST_COLUMN_PX, TABLE_POLL_INTERVAL_MS } from '@constants/layout';
 import { getApiErrorMessage } from '@utils/apiError';
@@ -92,8 +95,13 @@ const TopBar = styled.div`
   width: 1000px;
   padding-top: 12px;
   padding-bottom: 24px;
+  gap: 12px;
 
-  ${rowFlex({ justify: 'space-between', align: 'center' })};
+  ${colFlex()};
+`;
+
+const TopBarRow = styled.div<{ justify?: JustifyType }>`
+  ${({ justify }) => rowFlex({ justify: justify ?? 'space-between', align: 'center' })};
 `;
 
 const TopBarActions = styled.div`
@@ -143,6 +151,7 @@ function AdminTableRealtime() {
   const setAdminTables = useSetAtom(adminTablesAtom);
   const selectedTable = tables.find((t) => t.tableNumber === Number(tableNo));
   const { orders, totalOrderAmount, fetchOrders, isLoading: isOrdersLoading } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
+  const { filterType, setFilterType, counts, filteredTables } = useTableFilter(tables);
 
   const [noticedTableNo, setNoticedTableNo] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -233,19 +242,29 @@ function AdminTableRealtime() {
       <>
         <OnboardingStepHint step={ONBOARDING_STEP.TABLES} width="1000px" />
         <TopBar>
-          <ViewToggle />
-          <TopBarActions>
-            {viewMode === TABLE_VIEW.LAYOUT && !isEditing && (
-              <NewCommonButton size="sm" color="blue_gray" onClick={handleStartEdit}>
-                배치 편집
-              </NewCommonButton>
-            )}
-            <ButtonHighlightWrapper animate={needsTablesOnboarding}>
-              <NewCommonButton size="sm" icon={<SettingIcon />} onClick={handleOpenSettings}>
-                테이블 설정
-              </NewCommonButton>
-            </ButtonHighlightWrapper>
-          </TopBarActions>
+          <TopBarRow justify="flex-end">
+            <TopBarActions>
+              {viewMode === TABLE_VIEW.LAYOUT && !isEditing && (
+                <NewCommonButton size="sm" color="blue_gray" onClick={handleStartEdit}>
+                  배치 편집
+                </NewCommonButton>
+              )}
+              <ButtonHighlightWrapper animate={needsTablesOnboarding}>
+                <NewCommonButton size="sm" icon={<SettingIcon />} onClick={handleOpenSettings}>
+                  테이블 설정
+                </NewCommonButton>
+              </ButtonHighlightWrapper>
+            </TopBarActions>
+          </TopBarRow>
+          {!isEditing && (
+            <TopBarRow>
+              <TableFilterBar activeFilter={filterType} counts={counts} onChange={setFilterType} />
+              <TopBarActions>
+                <ViewToggle />
+                <TableRefreshButton onClick={fetchTables} />
+              </TopBarActions>
+            </TopBarRow>
+          )}
         </TopBar>
         {isEditing ? (
           <EditorArea>
@@ -260,9 +279,9 @@ function AdminTableRealtime() {
         ) : (
           <Container viewMode={viewMode}>
             {viewMode === TABLE_VIEW.LAYOUT ? (
-              <TableLayoutView tables={tables} selectedTableNumber={selectedTable?.tableNumber ?? null} onSelectTable={handleSelectTable} />
+              <TableLayoutView tables={filteredTables} selectedTableNumber={selectedTable?.tableNumber ?? null} onSelectTable={handleSelectTable} />
             ) : (
-              <AdminTableList tables={tables} />
+              <AdminTableList tables={filteredTables} />
             )}
             {!showOrdersInDetail && <AdminTableOrderList orders={orders} onRefresh={fetchOrders} isLoading={isOrdersLoading} />}
             {selectedTable ? (

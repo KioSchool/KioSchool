@@ -19,17 +19,17 @@ const Container = styled.div`
   }
 `;
 
+const TOGGLE_BUTTON_SIZE_PX = 36;
+
 const ToggleButton = styled.button<{ active: boolean }>`
+  width: ${TOGGLE_BUTTON_SIZE_PX}px;
+  height: ${TOGGLE_BUTTON_SIZE_PX}px;
   border: none;
   border-radius: 8px;
   background-color: ${({ active }) => (active ? Color.WHITE : 'transparent')};
   color: ${({ active }) => (active ? Color.KIO_ORANGE : Color.GREY)};
   box-shadow: ${({ active }) => (active ? '0 2px 8px rgba(0, 0, 0, 0.1)' : 'none')};
-  font-size: 14px;
-  font-weight: ${({ active }) => (active ? 'bold' : 'normal')};
-  padding: 6px 14px;
   cursor: pointer;
-  gap: 6px;
   transition: all 0.2s ease-in-out;
 
   ${rowFlex({ justify: 'center', align: 'center' })};
@@ -52,13 +52,11 @@ function ViewToggle() {
 
   return (
     <Container>
-      <ToggleButton active={viewMode === TABLE_VIEW.LAYOUT} onClick={handleSelect(TABLE_VIEW.LAYOUT)}>
+      <ToggleButton active={viewMode === TABLE_VIEW.LAYOUT} aria-label="배치 보기" onClick={handleSelect(TABLE_VIEW.LAYOUT)}>
         <GridIcon />
-        배치
       </ToggleButton>
-      <ToggleButton active={viewMode === TABLE_VIEW.LIST} onClick={handleSelect(TABLE_VIEW.LIST)}>
+      <ToggleButton active={viewMode === TABLE_VIEW.LIST} aria-label="목록 보기" onClick={handleSelect(TABLE_VIEW.LIST)}>
         <ListIcon />
-        목록
       </ToggleButton>
     </Container>
   );

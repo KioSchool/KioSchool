@@ -5,7 +5,7 @@ import { RiExpandUpDownFill, RiArrowDropDownFill, RiArrowDropUpFill } from '@rem
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { TABLE_LIST_NUMBER_COL_PX, TABLE_LIST_RING_COL_PX, TABLE_LIST_STATUS_COL_PX } from '@constants/layout';
-import { getTableStatus, STATUS_ORDER, TABLE_STATUS } from '@utils/tableStatus';
+import { getTableStatus, STATUS_ORDER } from '@utils/tableStatus';
 import { Table } from '@@types/index';
 
 import TableListItem from './TableListItem';
@@ -15,41 +15,6 @@ const ListContainer = styled.div`
   gap: 10px;
 
   ${colFlex()};
-`;
-
-const FilterBar = styled.div`
-  background-color: ${Color.LIGHT_GREY};
-  border-radius: 10px;
-  padding: 4px;
-  height: 48px;
-  flex-shrink: 0;
-
-  ${rowFlex()};
-`;
-
-const TabButton = styled.button<{ active: boolean; isWarning?: boolean }>`
-  flex: 1;
-  border: none;
-  border-radius: 8px;
-  background-color: ${({ active }) => (active ? Color.WHITE : 'transparent')};
-  color: ${({ active, isWarning }) => (active ? (isWarning ? Color.RED : Color.KIO_ORANGE) : Color.GREY)};
-  font-weight: ${({ active }) => (active ? 'bold' : 'normal')};
-  box-shadow: ${({ active }) => (active ? '0 2px 8px rgba(0, 0, 0, 0.1)' : 'none')};
-  font-size: 15px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  gap: 4px;
-
-  ${rowFlex({ justify: 'center', align: 'center' })};
-
-  &:hover {
-    background-color: ${({ active }) => (active ? Color.WHITE : Color.HEAVY_GREY)};
-  }
-`;
-
-const TabCount = styled.span<{ active: boolean; isWarning?: boolean }>`
-  font-size: 14px;
-  color: ${({ active, isWarning }) => (active ? (isWarning ? Color.RED : Color.KIO_ORANGE) : Color.GREY)};
 `;
 
 const ListWrapper = styled.div`
@@ -143,31 +108,10 @@ interface TableSessionListProps {
   tables: Table[];
 }
 
-type FilterType = 'ALL' | 'USING' | 'EMPTY' | 'EXCEEDED';
-
 function AdminTableList({ tables }: TableSessionListProps) {
   const [sortType, setSortType] = useState<SortType>(SORT_STATUS);
-  const [filterType, setFilterType] = useState<FilterType>('ALL');
 
-  const statuses = tables.map(getTableStatus);
-  const usingCount = statuses.filter((status) => status !== TABLE_STATUS.EMPTY).length;
-  const emptyCount = statuses.filter((status) => status === TABLE_STATUS.EMPTY).length;
-  const exceededCount = statuses.filter((status) => status === TABLE_STATUS.EXCEEDED).length;
-
-  const matchesFilter = (table: Table, filter: FilterType) => {
-    const status = getTableStatus(table);
-    if (filter === 'USING') return status !== TABLE_STATUS.EMPTY;
-    if (filter === 'EMPTY') return status === TABLE_STATUS.EMPTY;
-    if (filter === 'EXCEEDED') return status === TABLE_STATUS.EXCEEDED;
-    return true;
-  };
-
-  const getSortedTables = () => {
-    const copiedTables = tables.filter((table) => matchesFilter(table, filterType));
-    return copiedTables.sort(SORT_COMPARATORS[sortType]);
-  };
-
-  const sortedTables = getSortedTables();
+  const sortedTables = [...tables].sort(SORT_COMPARATORS[sortType]);
 
   const handleStatusClick = () => {
     setSortType((prev) => NEXT_SORT_STATE[prev]);
@@ -175,23 +119,6 @@ function AdminTableList({ tables }: TableSessionListProps) {
 
   return (
     <ListContainer>
-      <FilterBar>
-        <TabButton active={filterType === 'ALL'} onClick={() => setFilterType('ALL')}>
-          전체 <TabCount active={filterType === 'ALL'}>{tables.length}</TabCount>
-        </TabButton>
-        <TabButton active={filterType === 'USING'} onClick={() => setFilterType('USING')}>
-          사용중 <TabCount active={filterType === 'USING'}>{usingCount}</TabCount>
-        </TabButton>
-        <TabButton active={filterType === 'EMPTY'} onClick={() => setFilterType('EMPTY')}>
-          미사용 <TabCount active={filterType === 'EMPTY'}>{emptyCount}</TabCount>
-        </TabButton>
-        <TabButton isWarning active={filterType === 'EXCEEDED'} onClick={() => setFilterType('EXCEEDED')}>
-          초과{' '}
-          <TabCount active={filterType === 'EXCEEDED'} isWarning>
-            {exceededCount}
-          </TabCount>
-        </TabButton>
-      </FilterBar>
       <ListWrapper>
         <Header>
           <HeaderText>번호</HeaderText>
