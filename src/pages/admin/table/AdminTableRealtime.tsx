@@ -1,12 +1,7 @@
 import AdminTableList from '@components/admin/order/table-manage/list/AdminTableList';
-import AdminTableOrderList from '@components/admin/order/table-manage/list/AdminTableOrderList';
 import TableLayoutView from '@components/admin/order/table-manage/layout/TableLayoutView/TableLayoutView';
 import TableLayoutEditor from '@components/admin/order/table-manage/layout/edit/TableLayoutEditor/TableLayoutEditor';
-import TableQRCode from '@components/admin/order/table-manage/qrcode/TableQRCode';
-import TableElapsedTimer from '@components/admin/order/table-manage/timer/TableElapsedTimer';
-import TableSessionControler from '@components/admin/order/table-manage/timer/TableSessionControler';
-import TableOrderAmount from '@components/admin/order/table-manage/TableOrderAmount';
-import InactiveTableView from '@components/admin/order/table-manage/InactiveTableView';
+import TableDetailPanel from '@components/admin/order/table-manage/detail/TableDetailPanel/TableDetailPanel';
 import TableSettingsSidebar from '@components/admin/order/table-manage/setting/TableSettingsSidebar';
 import ViewToggle from '@components/admin/order/table-manage/ViewToggle/ViewToggle';
 import TableFilterBar from '@components/admin/order/table-manage/TableFilterBar/TableFilterBar';
@@ -54,35 +49,6 @@ const Container = styled.div`
 
 const EditorArea = styled.div`
   width: 95%;
-`;
-
-const DetailWrapper = styled.div`
-  position: relative;
-  height: 600px;
-`;
-
-const TableDetail = styled.div`
-  height: 100%;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  gap: 5px;
-`;
-
-const DetailHeader = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5px;
-  height: 320px;
-`;
-
-const RightColumn = styled.div`
-  gap: 12px;
-  ${colFlex()};
-`;
-
-const TopCards = styled.div`
-  gap: 5px;
-  ${rowFlex({ justify: 'space-between' })};
 `;
 
 const SettingIcon = styled(RiSettings3Fill)`
@@ -149,7 +115,7 @@ function AdminTableRealtime() {
   const tables = useAtomValue(adminTablesAtom);
   const setAdminTables = useSetAtom(adminTablesAtom);
   const selectedTable = tables.find((t) => t.tableNumber === Number(tableNo));
-  const { orders, totalOrderAmount, fetchOrders, isLoading: isOrdersLoading } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
+  const { orders, totalOrderAmount } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
   const { filterType, setFilterType, counts, filteredTables } = useTableFilter(tables);
 
   const [noticedTableNo, setNoticedTableNo] = useState<string | null>(null);
@@ -282,36 +248,14 @@ function AdminTableRealtime() {
               <AdminTableList tables={filteredTables} />
             )}
             {selectedTable ? (
-              <DetailWrapper>
-                <TableDetail>
-                  <DetailHeader>
-                    <TableElapsedTimer
-                      orderSession={selectedTable.orderSession}
-                      workspaceId={workspaceId}
-                      tableNumber={selectedTable.tableNumber}
-                      refetchTable={fetchTables}
-                    />
-                    <RightColumn>
-                      <TopCards>
-                        <TableQRCode workspaceId={workspaceId} selectedTable={selectedTable} />
-                        <TableOrderAmount totalOrderAmount={totalOrderAmount} />
-                      </TopCards>
-                      <TableSessionControler
-                        workspaceId={workspaceId}
-                        orderSessionId={selectedTable.orderSession?.id}
-                        currentExpectedEndAt={selectedTable.orderSession?.expectedEndAt}
-                        tableNumber={selectedTable.tableNumber}
-                        refetchTable={fetchTables}
-                        tables={tables}
-                      />
-                    </RightColumn>
-                  </DetailHeader>
-                  <AdminTableOrderList orders={orders} onRefresh={fetchOrders} isLoading={isOrdersLoading} />
-                </TableDetail>
-                {!selectedTable.orderSession && (
-                  <InactiveTableView workspaceId={workspaceId} tableNumber={selectedTable.tableNumber} refetchTable={fetchTables} />
-                )}
-              </DetailWrapper>
+              <TableDetailPanel
+                workspaceId={workspaceId}
+                workspaceName={workspace.name}
+                table={selectedTable}
+                orders={orders}
+                totalOrderAmount={totalOrderAmount}
+                refetchTable={fetchTables}
+              />
             ) : (
               <FallbackContainer>테이블을 선택하여 상세 정보를 확인하세요.</FallbackContainer>
             )}
