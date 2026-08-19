@@ -210,12 +210,7 @@ function AdminTableRealtime() {
         ) : (
           <Container viewMode={viewMode}>
             {viewMode === TABLE_VIEW.LAYOUT ? (
-              <TableLayoutView
-                tables={tables}
-                selectedTableNumber={selectedTable?.tableNumber ?? null}
-                onSelectTable={handleSelectTable}
-                onStartEdit={handleStartEdit}
-              />
+              <TableLayoutView tables={tables} selectedTableNumber={selectedTable?.tableNumber ?? null} onSelectTable={handleSelectTable} />
             ) : (
               <AdminTableList tables={tables} />
             )}

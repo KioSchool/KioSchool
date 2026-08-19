@@ -12,6 +12,9 @@ const SELECTED_OUTLINE_PX = 3;
 const SELECTED_OFFSET_PX = 2;
 const MS_PER_MINUTE = 60 * 1000;
 const MINUTES_PER_HOUR = 60;
+const HANDLE_HIT_AREA_PX = 28;
+const HANDLE_ICON_PX = 16;
+const HANDLE_OFFSET_PX = 2;
 
 const STATUS_STYLE: Record<TableStatus, { background: string; border: string; time: string }> = {
   [TABLE_STATUS.EMPTY]: { background: '#f4f4f4', border: Color.HEAVY_GREY, time: Color.GREY },
@@ -59,19 +62,23 @@ const TimeText = styled.span<{ status: TableStatus }>`
 
 const DragHandle = styled.button`
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: ${HANDLE_OFFSET_PX}px;
+  right: ${HANDLE_OFFSET_PX}px;
+  width: ${HANDLE_HIT_AREA_PX}px;
+  height: ${HANDLE_HIT_AREA_PX}px;
   border: none;
   background: transparent;
   padding: 0;
   cursor: grab;
   color: ${Color.GREY};
   touch-action: none;
+
+  ${rowFlex({ justify: 'center', align: 'center' })};
 `;
 
 const HandleIcon = styled(RiDraggable)`
-  width: 16px;
-  height: 16px;
+  width: ${HANDLE_ICON_PX}px;
+  height: ${HANDLE_ICON_PX}px;
 `;
 
 function getElapsedPercent(table: Table): number {

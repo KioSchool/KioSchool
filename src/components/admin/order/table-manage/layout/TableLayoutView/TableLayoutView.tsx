@@ -4,7 +4,6 @@ import { Table } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { TABLE_GRID_CELL_PX, TABLE_GRID_GAP_PX, TABLE_GRID_PADDING_PX } from '@constants/layout';
-import NewCommonButton from '@components/common/button/NewCommonButton';
 import TableLayoutCanvas from '../TableLayoutCanvas/TableLayoutCanvas';
 import TableLayoutCard from '../TableLayoutCard/TableLayoutCard';
 
@@ -22,11 +21,16 @@ const EmptyState = styled.div`
   height: 100%;
   border: 1px solid #ececec;
   border-radius: 10px;
-  gap: 12px;
+  gap: 6px;
   color: ${Color.GREY};
   font-size: 1.1rem;
 
   ${colFlex({ justify: 'center', align: 'center' })};
+`;
+
+const EmptyStateHint = styled.div`
+  font-size: 0.9rem;
+  color: ${Color.GREY};
 `;
 
 function scrollToPlacedCenter(box: HTMLDivElement | null, placedTables: Table[]) {
@@ -46,10 +50,9 @@ interface TableLayoutViewProps {
   tables: Table[];
   selectedTableNumber: number | null;
   onSelectTable: (table: Table) => void;
-  onStartEdit: () => void;
 }
 
-function TableLayoutView({ tables, selectedTableNumber, onSelectTable, onStartEdit }: TableLayoutViewProps) {
+function TableLayoutView({ tables, selectedTableNumber, onSelectTable }: TableLayoutViewProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const placedTables = useMemo(() => tables.filter((table) => table.position !== null), [tables]);
 
@@ -62,9 +65,7 @@ function TableLayoutView({ tables, selectedTableNumber, onSelectTable, onStartEd
       <Container>
         <EmptyState>
           아직 배치된 테이블이 없습니다
-          <NewCommonButton size="sm" onClick={onStartEdit}>
-            배치 편집
-          </NewCommonButton>
+          <EmptyStateHint>상단의 「배치 편집」 버튼을 눌러 테이블을 배치해주세요</EmptyStateHint>
         </EmptyState>
       </Container>
     );
