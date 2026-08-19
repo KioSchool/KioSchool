@@ -18,6 +18,7 @@ import { tableNoQueryParamConfig } from '@hooks/common/queryParamConfigs';
 import useTableOrders from '@hooks/admin/useTableOrders';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { mobileMediaQuery } from '@styles/globalStyles';
 import { TABLE_DETAIL_COLUMN_PX, TABLE_LIST_COLUMN_PX } from '@constants/layout';
 import { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
@@ -40,6 +41,10 @@ const Container = styled.div<{ viewMode: TableView }>`
   grid-template-columns: ${({ viewMode }) =>
     viewMode === TABLE_VIEW.LAYOUT ? `1fr ${TABLE_DETAIL_COLUMN_PX}px` : `${TABLE_LIST_COLUMN_PX}px 1fr ${TABLE_DETAIL_COLUMN_PX}px`};
   gap: 10px;
+
+  ${mobileMediaQuery} {
+    grid-template-columns: 1fr 2fr;
+  }
 `;
 
 const DetailWrapper = styled.div`
@@ -158,7 +163,7 @@ function AdminTableRealtime() {
   const handleStartEdit = () => {};
 
   const needsTablesOnboarding = workspace.isOnboarding && !isOnboardingStepCompleted(workspace, ONBOARDING_STEP.TABLES);
-  const showOrdersInDetail = viewMode === TABLE_VIEW.LAYOUT;
+  const showOrdersInDetail = viewMode === TABLE_VIEW.LAYOUT || isMobile;
 
   return (
     <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })}>

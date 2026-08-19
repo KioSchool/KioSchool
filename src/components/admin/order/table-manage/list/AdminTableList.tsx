@@ -4,6 +4,7 @@ import { RiExpandUpDownFill, RiArrowDropDownFill, RiArrowDropUpFill } from '@rem
 
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { TABLE_LIST_NUMBER_COL_PX, TABLE_LIST_RING_COL_PX, TABLE_LIST_STATUS_COL_PX } from '@constants/layout';
 import { getTableStatus, STATUS_ORDER, TABLE_STATUS } from '@utils/tableStatus';
 import { Table } from '@@types/index';
 
@@ -63,7 +64,7 @@ const ListWrapper = styled.div`
 const Header = styled.div`
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: 44px 40px 1fr 56px;
+  grid-template-columns: ${TABLE_LIST_NUMBER_COL_PX}px ${TABLE_LIST_RING_COL_PX}px 1fr ${TABLE_LIST_STATUS_COL_PX}px;
   padding: 5px 10px;
   font-weight: bold;
   background-color: #f0f5f8;

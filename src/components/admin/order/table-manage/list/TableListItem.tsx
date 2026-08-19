@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
 
 import ProgressRing, { RING_SIZE_ROW_PX } from '@components/admin/order/table-manage/layout/TableLayoutCard/ProgressRing';
+import { TABLE_LIST_NUMBER_COL_PX, TABLE_LIST_RING_COL_PX, TABLE_LIST_STATUS_COL_PX } from '@constants/layout';
 import useFormattedTime from '@hooks/useFormattedTime';
 import { Color } from '@resources/colors';
 import { formatRemainingTime } from '@utils/formatDate';
@@ -54,7 +55,7 @@ const getElapsedPercent = (table: Table): number => {
 
 const Row = styled.div<{ isSelected: boolean; status: TableStatus }>`
   display: grid;
-  grid-template-columns: 44px 40px 1fr 56px;
+  grid-template-columns: ${TABLE_LIST_NUMBER_COL_PX}px ${TABLE_LIST_RING_COL_PX}px 1fr ${TABLE_LIST_STATUS_COL_PX}px;
   align-items: center;
   padding: 5px 10px;
   border-bottom: 1px solid #e0e0e0;

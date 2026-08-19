@@ -13,6 +13,10 @@ export const TABLE_LIST_COLUMN_PX = 260;
 export const TABLE_TRAY_COLUMN_PX = 260;
 export const TABLE_DETAIL_COLUMN_PX = 290;
 
+export const TABLE_LIST_NUMBER_COL_PX = 44;
+export const TABLE_LIST_RING_COL_PX = 40;
+export const TABLE_LIST_STATUS_COL_PX = 56;
+
 export const TABLE_POLL_INTERVAL_MS = 15_000;
 export const DRAG_ACTIVATION_DISTANCE_PX = 5;
 export const MAX_TABLE_COUNT = 100;
