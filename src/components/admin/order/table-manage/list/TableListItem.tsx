@@ -8,6 +8,7 @@ import useFormattedTime from '@hooks/useFormattedTime';
 import { Color } from '@resources/colors';
 import { formatRemainingTime } from '@utils/formatDate';
 import { getTableStatus, TABLE_STATUS, TableStatus } from '@utils/tableStatus';
+import { getElapsedPercent } from '@utils/tableTime';
 import { Table } from '@@types/index';
 
 const pulse = keyframes`
@@ -15,8 +16,6 @@ const pulse = keyframes`
   50% { opacity: 0.6; }
   100% { opacity: 1; }
 `;
-
-const FULL_PERCENT = 100;
 
 const STATUS_ROW_BACKGROUND: Record<TableStatus, string> = {
   [TABLE_STATUS.EMPTY]: 'transparent',
@@ -37,20 +36,6 @@ const getRowHoleColor = (isSelected: boolean, status: TableStatus): string => {
 
   const background = STATUS_ROW_BACKGROUND[status];
   return background === 'transparent' ? Color.WHITE : background;
-};
-
-const getElapsedPercent = (table: Table): number => {
-  const session = table.orderSession;
-  if (!session) return 0;
-  if (!session.expectedEndAt) return 0;
-
-  const start = new Date(session.createdAt).getTime();
-  const end = new Date(session.expectedEndAt).getTime();
-  const total = end - start;
-  if (total <= 0) return FULL_PERCENT;
-
-  const elapsed = Date.now() - start;
-  return Math.min(FULL_PERCENT, (elapsed / total) * FULL_PERCENT);
 };
 
 const Row = styled.div<{ isSelected: boolean; status: TableStatus }>`
@@ -101,7 +86,7 @@ function TableListItem({ expectedEndAt, isUsing, table }: TableSessionItemProps)
       <Text>{table.tableNumber}</Text>
       <ProgressRing
         size={RING_SIZE_ROW_PX}
-        percent={getElapsedPercent(table)}
+        percent={getElapsedPercent(table.orderSession)}
         fillColor={status === TABLE_STATUS.EXCEEDED ? Color.RED : Color.KIO_ORANGE}
         holeColor={getRowHoleColor(isSelected, status)}
       />

@@ -4,14 +4,12 @@ import { RiDraggable } from '@remixicon/react';
 import { Table } from '@@types/index';
 import { Color } from '@resources/colors';
 import { getTableStatus, TABLE_STATUS, TableStatus } from '@utils/tableStatus';
+import { getElapsedPercent, getElapsedMs, formatShortDuration } from '@utils/tableTime';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import ProgressRing from './ProgressRing';
 
-const FULL_PERCENT = 100;
 const SELECTED_OUTLINE_PX = 3;
 const SELECTED_OFFSET_PX = 2;
-const MS_PER_MINUTE = 60 * 1000;
-const MINUTES_PER_HOUR = 60;
 const HANDLE_HIT_AREA_PX = 28;
 const HANDLE_ICON_PX = 16;
 const HANDLE_OFFSET_PX = 2;
@@ -81,32 +79,12 @@ const HandleIcon = styled(RiDraggable)`
   height: ${HANDLE_ICON_PX}px;
 `;
 
-function getElapsedPercent(table: Table): number {
-  const session = table.orderSession;
-  if (!session) return 0;
-  if (!session.expectedEndAt) return 0;
-
-  const start = new Date(session.createdAt).getTime();
-  const end = new Date(session.expectedEndAt).getTime();
-  const total = end - start;
-  if (total <= 0) return FULL_PERCENT;
-
-  const elapsed = Date.now() - start;
-  return Math.min(FULL_PERCENT, (elapsed / total) * FULL_PERCENT);
-}
-
 function getTimeLabel(table: Table): string {
   const session = table.orderSession;
   if (!session) return '미사용';
   if (!session.expectedEndAt) return '사용중';
 
-  const remainingMs = new Date(session.expectedEndAt).getTime() - Date.now();
-  const totalMinutes = Math.floor(Math.abs(remainingMs) / MS_PER_MINUTE);
-  const hours = Math.floor(totalMinutes / MINUTES_PER_HOUR);
-  const minutes = totalMinutes % MINUTES_PER_HOUR;
-  const label = `${hours}:${String(minutes).padStart(2, '0')}`;
-
-  return remainingMs < 0 ? `+${label}` : label;
+  return formatShortDuration(getElapsedMs(session));
 }
 
 interface TableLayoutCardProps {
@@ -133,7 +111,7 @@ function TableLayoutCard({ table, isSelected = false, showHandle = false, onSele
       )}
       <Bottom>
         <ProgressRing
-          percent={getElapsedPercent(table)}
+          percent={getElapsedPercent(table.orderSession)}
           fillColor={status === TABLE_STATUS.EXCEEDED ? Color.RED : Color.KIO_ORANGE}
           holeColor={ringStyle.background}
         />
