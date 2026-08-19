@@ -120,40 +120,71 @@ function OrderWait() {
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout | null = null;
+    let terminated = false;
+
+    const stopPolling = () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+      }
+    };
 
     const pollOrder = async () => {
-      if (!orderId) {
-        alert('주문 ID가 없습니다. 초기 화면으로 돌아갑니다.');
-        navigate({
-          pathname: ORDER_ROUTES.ORDER,
-          search: createSearchParams({
-            workspaceId: workspaceId || '',
-            tableNo: tableNo || '',
-          }).toString(),
-        });
-        return;
-      }
+      if (!orderId) return;
 
       const orderData = await fetchOrder(orderId);
       setCurrentOrder(orderData);
 
-      if (intervalId && isOverOneDay(orderData.createdAt)) {
-        clearInterval(intervalId);
+      if (isOverOneDay(orderData.createdAt)) {
+        terminated = true;
+        stopPolling();
       }
     };
 
-    pollOrder();
+    const startPolling = () => {
+      if (intervalId || terminated) return;
+      intervalId = setInterval(pollOrder, fetchIntervalTime);
+    };
+
+    // 백그라운드 탭에서는 모바일 OS가 fetch를 throttle/abort 하므로 폴링 자체를 멈춘다.
+    // 송금하러 토스/은행 앱으로 이탈하는 화면이라 특히 자주 발생한다.
+    const handleVisibilityChange = () => {
+      if (terminated) return;
+
+      if (document.hidden) {
+        stopPolling();
+      } else {
+        pollOrder();
+        startPolling();
+      }
+    };
+
+    if (!orderId) {
+      alert('주문 ID가 없습니다. 초기 화면으로 돌아갑니다.');
+      navigate({
+        pathname: ORDER_ROUTES.ORDER,
+        search: createSearchParams({
+          workspaceId: workspaceId || '',
+          tableNo: tableNo || '',
+        }).toString(),
+      });
+      return;
+    }
+
+    if (!document.hidden) {
+      pollOrder();
+      startPolling();
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
     fetchWorkspace(workspaceId);
     fetchWorkspaceAccount(workspaceId).then((account) => {
       if (account) setAccountInfo(account);
     });
 
-    intervalId = setInterval(pollOrder, fetchIntervalTime);
-
     return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
+      stopPolling();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [orderId]);
 
