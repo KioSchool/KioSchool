@@ -217,10 +217,16 @@ export interface EmailDomain {
   updatedAt: string;
 }
 
+export interface TablePosition {
+  x: number;
+  y: number;
+}
+
 export interface Table {
   tableNumber: number;
   tableHash: string;
   orderSession: OrderSession | null;
+  position: TablePosition | null;
   id: number;
   createdAt: string;
   updatedAt: string;
