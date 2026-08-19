@@ -4,7 +4,7 @@ import { RiExpandUpDownFill, RiArrowDropDownFill, RiArrowDropUpFill } from '@rem
 
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { getTableStatus, TABLE_STATUS } from '@utils/tableStatus';
+import { getTableStatus, STATUS_ORDER, TABLE_STATUS } from '@utils/tableStatus';
 import { Table } from '@@types/index';
 
 import TableListItem from './TableListItem';
@@ -63,7 +63,7 @@ const ListWrapper = styled.div`
 const Header = styled.div`
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 44px 40px 1fr 56px;
   padding: 5px 10px;
   font-weight: bold;
   background-color: #f0f5f8;
@@ -107,50 +107,36 @@ const DropUpIcon = styled(RiArrowDropUpFill)`
   height: 25px;
 `;
 
-const compareById = (table1: Table, table2: Table) => table1.id - table2.id;
+const SORT_STATUS = 'status' as const;
+const SORT_STATUS_REVERSE = 'status-reverse' as const;
+const SORT_NUMBER = 'number' as const;
 
-/**
- * 테이블 사용 상태를 기준으로 정렬하는 비교 함수
- * @param table1 비교할 첫 번째 테이블
- * @param table2 비교할 두 번째 테이블
- * @param prioritizeUsing true면 사용중 테이블을 앞으로, false면 종료된 테이블을 앞으로
- * @returns 정렬 순서 (-1: table1이 앞, 0: 동일, 1: table2가 앞)
- */
-const compareByStatus = (table1: Table, table2: Table, prioritizeUsing: boolean) => {
-  const table1Using = table1.orderSession !== null;
-  const table2Using = table2.orderSession !== null;
+type SortType = typeof SORT_STATUS | typeof SORT_STATUS_REVERSE | typeof SORT_NUMBER;
 
-  // 두 테이블의 사용 상태가 같으면 ID로 정렬
-  if (table1Using === table2Using) {
-    return compareById(table1, table2);
-  }
-
-  // 사용중 테이블을 우선하는 경우
-  if (prioritizeUsing) {
-    return table1Using ? -1 : 1; // table1이 사용중이면 앞으로
-  }
-
-  // 종료된 테이블을 우선하는 경우
-  return table1Using ? 1 : -1; // table1이 사용중이면 뒤로
+const SORT_ICONS: Record<SortType, JSX.Element> = {
+  [SORT_STATUS]: <DropDownIcon />,
+  [SORT_STATUS_REVERSE]: <DropUpIcon />,
+  [SORT_NUMBER]: <ExpandIcon />,
 };
 
-const DEFAULT = 'default' as const;
-const STATUS_ASC = 'status-asc' as const;
-const STATUS_DESC = 'status-desc' as const;
+const NEXT_SORT_STATE: Record<SortType, SortType> = {
+  [SORT_STATUS]: SORT_STATUS_REVERSE,
+  [SORT_STATUS_REVERSE]: SORT_NUMBER,
+  [SORT_NUMBER]: SORT_STATUS,
+};
 
-type SortType = typeof DEFAULT | typeof STATUS_ASC | typeof STATUS_DESC;
+const compareByNumber = (a: Table, b: Table) => a.tableNumber - b.tableNumber;
 
-const SORT_ICONS = {
-  [DEFAULT]: <ExpandIcon />,
-  [STATUS_ASC]: <DropDownIcon />,
-  [STATUS_DESC]: <DropUpIcon />,
-} as const;
+const compareByStatus = (a: Table, b: Table) => {
+  const diff = STATUS_ORDER[getTableStatus(a)] - STATUS_ORDER[getTableStatus(b)];
+  return diff !== 0 ? diff : compareByNumber(a, b);
+};
 
-const NEXT_SORT_STATE = {
-  [DEFAULT]: STATUS_ASC,
-  [STATUS_ASC]: STATUS_DESC,
-  [STATUS_DESC]: DEFAULT,
-} as const;
+const SORT_COMPARATORS: Record<SortType, (a: Table, b: Table) => number> = {
+  [SORT_STATUS]: compareByStatus,
+  [SORT_STATUS_REVERSE]: (a, b) => -compareByStatus(a, b),
+  [SORT_NUMBER]: compareByNumber,
+};
 
 interface TableSessionListProps {
   tables: Table[];
@@ -159,7 +145,7 @@ interface TableSessionListProps {
 type FilterType = 'ALL' | 'USING' | 'EMPTY' | 'EXCEEDED';
 
 function AdminTableList({ tables }: TableSessionListProps) {
-  const [sortType, setSortType] = useState<SortType>(DEFAULT);
+  const [sortType, setSortType] = useState<SortType>(SORT_STATUS);
   const [filterType, setFilterType] = useState<FilterType>('ALL');
 
   const statuses = tables.map(getTableStatus);
@@ -177,21 +163,13 @@ function AdminTableList({ tables }: TableSessionListProps) {
 
   const getSortedTables = () => {
     const copiedTables = tables.filter((table) => matchesFilter(table, filterType));
-
-    switch (sortType) {
-      case STATUS_ASC:
-        return copiedTables.sort((a, b) => compareByStatus(a, b, true));
-      case STATUS_DESC:
-        return copiedTables.sort((a, b) => compareByStatus(a, b, false));
-      default:
-        return copiedTables.sort(compareById);
-    }
+    return copiedTables.sort(SORT_COMPARATORS[sortType]);
   };
 
   const sortedTables = getSortedTables();
 
   const handleStatusClick = () => {
-    setSortType((prev) => NEXT_SORT_STATE[prev] || STATUS_ASC);
+    setSortType((prev) => NEXT_SORT_STATE[prev]);
   };
 
   return (
@@ -215,7 +193,8 @@ function AdminTableList({ tables }: TableSessionListProps) {
       </FilterBar>
       <ListWrapper>
         <Header>
-          <HeaderText>테이블</HeaderText>
+          <HeaderText>번호</HeaderText>
+          <HeaderText />
           <HeaderText>잔여 시간</HeaderText>
           <HeaderText clickable onClick={handleStatusClick}>
             상태

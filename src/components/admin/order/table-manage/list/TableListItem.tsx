@@ -2,6 +2,7 @@ import { useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
 
+import ProgressRing, { RING_SIZE_ROW_PX } from '@components/admin/order/table-manage/layout/TableLayoutCard/ProgressRing';
 import useFormattedTime from '@hooks/useFormattedTime';
 import { Color } from '@resources/colors';
 import { formatRemainingTime } from '@utils/formatDate';
@@ -14,52 +15,64 @@ const pulse = keyframes`
   100% { opacity: 1; }
 `;
 
-const SELECTED_STYLE = { background: Color.KIO_ORANGE, color: Color.WHITE };
+const FULL_PERCENT = 100;
 
-const STATUS_STYLES: Record<TableStatus, { background: string; color: string }> = {
-  [TABLE_STATUS.EXCEEDED]: { background: Color.RED, color: Color.WHITE },
-  [TABLE_STATUS.WARNING]: { background: Color.LIGHT_RED, color: Color.GREY },
-  [TABLE_STATUS.USING]: { background: 'transparent', color: Color.GREY },
-  [TABLE_STATUS.EMPTY]: { background: 'transparent', color: Color.GREY },
+const STATUS_ROW_BACKGROUND: Record<TableStatus, string> = {
+  [TABLE_STATUS.EMPTY]: 'transparent',
+  [TABLE_STATUS.USING]: 'transparent',
+  [TABLE_STATUS.WARNING]: Color.KIO_ORANGE_FAINT,
+  [TABLE_STATUS.EXCEEDED]: Color.LIGHT_RED,
 };
 
-const getRowStyle = (isSelected: boolean, status: TableStatus) => {
-  if (isSelected) return SELECTED_STYLE;
-  return STATUS_STYLES[status];
+const STATUS_TEXT_COLOR: Record<TableStatus, string> = {
+  [TABLE_STATUS.EMPTY]: Color.GREY,
+  [TABLE_STATUS.USING]: Color.BLACK,
+  [TABLE_STATUS.WARNING]: Color.BLACK,
+  [TABLE_STATUS.EXCEEDED]: Color.RED,
+};
+
+const getRowHoleColor = (isSelected: boolean, status: TableStatus): string => {
+  if (isSelected) return Color.KIO_ORANGE_FAINT;
+
+  const background = STATUS_ROW_BACKGROUND[status];
+  return background === 'transparent' ? Color.WHITE : background;
+};
+
+const getElapsedPercent = (table: Table): number => {
+  const session = table.orderSession;
+  if (!session) return 0;
+  if (!session.expectedEndAt) return 0;
+
+  const start = new Date(session.createdAt).getTime();
+  const end = new Date(session.expectedEndAt).getTime();
+  const total = end - start;
+  if (total <= 0) return FULL_PERCENT;
+
+  const elapsed = Date.now() - start;
+  return Math.min(FULL_PERCENT, (elapsed / total) * FULL_PERCENT);
 };
 
 const Row = styled.div<{ isSelected: boolean; status: TableStatus }>`
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 44px 40px 1fr 56px;
   align-items: center;
   padding: 5px 10px;
   border-bottom: 1px solid #e0e0e0;
+  border-left: 3px solid ${({ isSelected }) => (isSelected ? Color.KIO_ORANGE : 'transparent')};
+  background-color: ${({ isSelected, status }) => (isSelected ? Color.KIO_ORANGE_FAINT : STATUS_ROW_BACKGROUND[status])};
+  color: ${({ status }) => STATUS_TEXT_COLOR[status]};
   cursor: pointer;
   text-align: center;
-  height: 30px;
-
-  ${({ isSelected, status }) => {
-    const style = getRowStyle(isSelected, status);
-    return `
-      color: ${style.color};
-      background-color: ${style.background};
-      ${status === TABLE_STATUS.EXCEEDED && !isSelected ? `animation: ${pulse} 2s infinite;` : ''}
-    `;
-  }}
-
-  &:hover {
-    color: ${Color.WHITE};
-    background-color: ${Color.KIO_ORANGE};
-  }
+  height: 36px;
+  ${({ status }) => (status === TABLE_STATUS.EXCEEDED ? `animation: ${pulse} 2s infinite;` : '')}
 `;
 
 const Text = styled.div``;
 
 const StatusTag = styled.div<{ isUsing: boolean }>`
   color: ${({ isUsing }) => (isUsing ? Color.GREEN : Color.GREY)};
-  font-size: 15px;
-  margin-left: 10px;
-  padding: 5px 10px;
+  font-size: 12px;
+  padding: 4px 6px;
   border-radius: 13px;
   background-color: ${({ isUsing }) => (isUsing ? '#e7f7ef' : Color.LIGHT_GREY)};
 `;
@@ -85,6 +98,12 @@ function TableListItem({ expectedEndAt, isUsing, table }: TableSessionItemProps)
   return (
     <Row onClick={() => onClickTable(table.tableNumber)} isSelected={isSelected} status={status}>
       <Text>{table.tableNumber}</Text>
+      <ProgressRing
+        size={RING_SIZE_ROW_PX}
+        percent={getElapsedPercent(table)}
+        fillColor={status === TABLE_STATUS.EXCEEDED ? Color.RED : Color.KIO_ORANGE}
+        holeColor={getRowHoleColor(isSelected, status)}
+      />
       <Text>{remainTime}</Text>
       <StatusTag isUsing={isUsing}>{isUsing ? '사용중' : '종료됨'}</StatusTag>
     </Row>
