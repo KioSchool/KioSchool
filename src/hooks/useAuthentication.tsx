@@ -22,7 +22,7 @@ function useAuthentication() {
       });
   };
 
-  const login = (id: string, password: string) => {
+  const login = (id: string, password: string, redirectTo?: string | null) => {
     userApi
       .post('/login', {
         id,
@@ -30,7 +30,7 @@ function useAuthentication() {
       })
       .then(() => {
         localStorage.setItem('isLoggedIn', 'true');
-        navigate(ADMIN_ROUTES.HOME);
+        navigate(redirectTo ?? ADMIN_ROUTES.HOME);
       })
       .catch(() => {
         alert('Login Failed!');

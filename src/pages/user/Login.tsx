@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import useAuthentication from '@hooks/useAuthentication';
+import { REDIRECT_URL_PARAM, sanitizeRedirectUrl } from '@utils/redirectUrl';
 import styled from '@emotion/styled';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
@@ -37,12 +38,15 @@ const SubmitButton = styled(NewCommonButton)`
 function Login() {
   const { login, isLoggedIn } = useAuthentication();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const userIdInputRef = useRef<HTMLInputElement>(null);
   const userPasswordInputRef = useRef<HTMLInputElement>(null);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
+  const redirectTo = sanitizeRedirectUrl(searchParams.get(REDIRECT_URL_PARAM));
+
   useEffect(() => {
-    if (isLoggedIn()) navigate(USER_ROUTES.HOME);
+    if (isLoggedIn()) navigate(redirectTo ?? USER_ROUTES.HOME);
   }, []);
 
   const handleSubmit = () => {
@@ -53,7 +57,7 @@ function Login() {
       return;
     }
 
-    login(userId, userPassword);
+    login(userId, userPassword, redirectTo);
   };
 
   return (
