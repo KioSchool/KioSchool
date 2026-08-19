@@ -1,6 +1,7 @@
 import AdminTableList from '@components/admin/order/table-manage/list/AdminTableList';
 import AdminTableOrderList from '@components/admin/order/table-manage/list/AdminTableOrderList';
 import TableLayoutView from '@components/admin/order/table-manage/layout/TableLayoutView/TableLayoutView';
+import TableLayoutEditor from '@components/admin/order/table-manage/layout/edit/TableLayoutEditor/TableLayoutEditor';
 import TableQRCode from '@components/admin/order/table-manage/qrcode/TableQRCode';
 import TableElapsedTimer from '@components/admin/order/table-manage/timer/TableElapsedTimer';
 import TableSessionControler from '@components/admin/order/table-manage/timer/TableSessionControler';
@@ -47,6 +48,10 @@ const Container = styled.div<{ viewMode: TableView }>`
   }
 `;
 
+const EditorArea = styled.div`
+  width: 95%;
+`;
+
 const DetailWrapper = styled.div`
   position: relative;
   height: 600px;
@@ -87,6 +92,12 @@ const TopBar = styled.div`
   padding-bottom: 24px;
 
   ${rowFlex({ justify: 'space-between', align: 'center' })};
+`;
+
+const TopBarActions = styled.div`
+  gap: 8px;
+
+  ${rowFlex({ align: 'center' })};
 `;
 
 const buttonPulseAnimation = keyframes`
@@ -130,6 +141,7 @@ function AdminTableRealtime() {
   const { orders, totalOrderAmount, fetchOrders, isLoading: isOrdersLoading } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
 
   const [noticedTableNo, setNoticedTableNo] = useState<string | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   const fetchTables = () => {
     fetchWorkspaceTables(workspaceId);
@@ -161,7 +173,13 @@ function AdminTableRealtime() {
     setTableNo(String(table.tableNumber));
   };
 
-  const handleStartEdit = () => {};
+  const handleStartEdit = () => setIsEditing(true);
+
+  const handleExitEdit = () => setIsEditing(false);
+
+  const handleSaveLayout = () => {
+    // Task 11에서 실제 저장 API 연동 (updateTablePositions 호출 + 409 처리)
+  };
 
   const needsTablesOnboarding = workspace.isOnboarding && !isOnboardingStepCompleted(workspace, ONBOARDING_STEP.TABLES);
   const showOrdersInDetail = viewMode === TABLE_VIEW.LAYOUT || isMobile;
@@ -172,59 +190,72 @@ function AdminTableRealtime() {
         <OnboardingStepHint step={ONBOARDING_STEP.TABLES} width="1000px" />
         <TopBar>
           <ViewToggle />
-          <ButtonHighlightWrapper animate={needsTablesOnboarding}>
-            <NewCommonButton size="sm" icon={<SettingIcon />} onClick={handleOpenSettings}>
-              테이블 설정
-            </NewCommonButton>
-          </ButtonHighlightWrapper>
+          <TopBarActions>
+            {viewMode === TABLE_VIEW.LAYOUT && !isEditing && (
+              <NewCommonButton size="sm" color="blue_gray" onClick={handleStartEdit}>
+                배치 편집
+              </NewCommonButton>
+            )}
+            <ButtonHighlightWrapper animate={needsTablesOnboarding}>
+              <NewCommonButton size="sm" icon={<SettingIcon />} onClick={handleOpenSettings}>
+                테이블 설정
+              </NewCommonButton>
+            </ButtonHighlightWrapper>
+          </TopBarActions>
         </TopBar>
-        <Container viewMode={viewMode}>
-          {viewMode === TABLE_VIEW.LAYOUT ? (
-            <TableLayoutView
-              tables={tables}
-              selectedTableNumber={selectedTable?.tableNumber ?? null}
-              onSelectTable={handleSelectTable}
-              onStartEdit={handleStartEdit}
-            />
-          ) : (
-            <AdminTableList tables={tables} />
-          )}
-          {!showOrdersInDetail && <AdminTableOrderList orders={orders} onRefresh={fetchOrders} isLoading={isOrdersLoading} />}
-          {selectedTable ? (
-            <DetailWrapper>
-              <TableDetail>
-                <DetailHeader>
-                  <TableElapsedTimer
-                    orderSession={selectedTable.orderSession}
-                    workspaceId={workspaceId}
-                    tableNumber={selectedTable.tableNumber}
-                    refetchTable={fetchTables}
-                  />
-                  <RightColumn>
-                    <TopCards>
-                      <TableQRCode workspaceId={workspaceId} selectedTable={selectedTable} />
-                      <TableOrderAmount totalOrderAmount={totalOrderAmount} />
-                    </TopCards>
-                    <TableSessionControler
+        {isEditing ? (
+          <EditorArea>
+            <TableLayoutEditor tables={tables} onExit={handleExitEdit} onSave={handleSaveLayout} isSaving={false} conflictedPosition={null} />
+          </EditorArea>
+        ) : (
+          <Container viewMode={viewMode}>
+            {viewMode === TABLE_VIEW.LAYOUT ? (
+              <TableLayoutView
+                tables={tables}
+                selectedTableNumber={selectedTable?.tableNumber ?? null}
+                onSelectTable={handleSelectTable}
+                onStartEdit={handleStartEdit}
+              />
+            ) : (
+              <AdminTableList tables={tables} />
+            )}
+            {!showOrdersInDetail && <AdminTableOrderList orders={orders} onRefresh={fetchOrders} isLoading={isOrdersLoading} />}
+            {selectedTable ? (
+              <DetailWrapper>
+                <TableDetail>
+                  <DetailHeader>
+                    <TableElapsedTimer
+                      orderSession={selectedTable.orderSession}
                       workspaceId={workspaceId}
-                      orderSessionId={selectedTable.orderSession?.id}
-                      currentExpectedEndAt={selectedTable.orderSession?.expectedEndAt}
                       tableNumber={selectedTable.tableNumber}
                       refetchTable={fetchTables}
-                      tables={tables}
                     />
-                  </RightColumn>
-                </DetailHeader>
-                {showOrdersInDetail && <AdminTableOrderList orders={orders} onRefresh={fetchOrders} isLoading={isOrdersLoading} />}
-              </TableDetail>
-              {!selectedTable.orderSession && (
-                <InactiveTableView workspaceId={workspaceId} tableNumber={selectedTable.tableNumber} refetchTable={fetchTables} />
-              )}
-            </DetailWrapper>
-          ) : (
-            <FallbackContainer>테이블을 선택하여 상세 정보를 확인하세요.</FallbackContainer>
-          )}
-        </Container>
+                    <RightColumn>
+                      <TopCards>
+                        <TableQRCode workspaceId={workspaceId} selectedTable={selectedTable} />
+                        <TableOrderAmount totalOrderAmount={totalOrderAmount} />
+                      </TopCards>
+                      <TableSessionControler
+                        workspaceId={workspaceId}
+                        orderSessionId={selectedTable.orderSession?.id}
+                        currentExpectedEndAt={selectedTable.orderSession?.expectedEndAt}
+                        tableNumber={selectedTable.tableNumber}
+                        refetchTable={fetchTables}
+                        tables={tables}
+                      />
+                    </RightColumn>
+                  </DetailHeader>
+                  {showOrdersInDetail && <AdminTableOrderList orders={orders} onRefresh={fetchOrders} isLoading={isOrdersLoading} />}
+                </TableDetail>
+                {!selectedTable.orderSession && (
+                  <InactiveTableView workspaceId={workspaceId} tableNumber={selectedTable.tableNumber} refetchTable={fetchTables} />
+                )}
+              </DetailWrapper>
+            ) : (
+              <FallbackContainer>테이블을 선택하여 상세 정보를 확인하세요.</FallbackContainer>
+            )}
+          </Container>
+        )}
         <RightSidebarModal useExternalControl={{ location }} />
       </>
     </AppContainer>

@@ -20,3 +20,5 @@ export const TABLE_LIST_STATUS_COL_PX = 56;
 export const TABLE_POLL_INTERVAL_MS = 15_000;
 export const DRAG_ACTIVATION_DISTANCE_PX = 5;
 export const MAX_TABLE_COUNT = 100;
+
+export const TRAY_DROPPABLE_ID = 'tray';
