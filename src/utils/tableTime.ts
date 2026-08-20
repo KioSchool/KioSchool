@@ -44,7 +44,7 @@ export function getElapsedPercent(session: OrderSession | null): number {
  * Examples: "1:18", "0:48", "2:10"
  */
 export function formatShortDuration(ms: number): string {
-  const totalMinutes = Math.floor(ms / MS_PER_MINUTE);
+  const totalMinutes = Math.floor(Math.max(0, ms) / MS_PER_MINUTE);
   const hours = Math.floor(totalMinutes / MINUTES_PER_HOUR);
   const minutes = totalMinutes % MINUTES_PER_HOUR;
 
@@ -57,7 +57,7 @@ export function formatShortDuration(ms: number): string {
  * For durations under 1 hour, only shows minutes
  */
 export function formatLongDuration(ms: number): string {
-  const totalMinutes = Math.floor(ms / MS_PER_MINUTE);
+  const totalMinutes = Math.floor(Math.max(0, ms) / MS_PER_MINUTE);
   const hours = Math.floor(totalMinutes / MINUTES_PER_HOUR);
   const minutes = totalMinutes % MINUTES_PER_HOUR;
 
