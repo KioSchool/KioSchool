@@ -3,10 +3,8 @@ import { useDroppable } from '@dnd-kit/core';
 import { Table } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { TRAY_DROPPABLE_ID } from '@constants/layout';
+import { TABLE_GRID_CELL_PX, TRAY_DROPPABLE_ID } from '@constants/layout';
 import DraggableTableCard from '../DraggableTableCard/DraggableTableCard';
-
-const TRAY_CARD_PX = 84;
 
 const Container = styled.div<{ isOver: boolean }>`
   height: 100%;
@@ -34,8 +32,8 @@ const CardList = styled.div`
 `;
 
 const CardSlot = styled.div`
-  width: ${TRAY_CARD_PX}px;
-  height: ${TRAY_CARD_PX}px;
+  width: ${TABLE_GRID_CELL_PX}px;
+  height: ${TABLE_GRID_CELL_PX}px;
 `;
 
 const EmptyText = styled.div`
