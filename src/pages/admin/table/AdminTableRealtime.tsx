@@ -117,6 +117,7 @@ function AdminTableRealtime() {
   const selectedTable = tables.find((t) => t.tableNumber === Number(tableNo));
   const { orders, totalOrderAmount } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
   const { filterType, setFilterType, counts, filteredTables } = useTableFilter(tables);
+  const hasAnyPlacedTable = tables.some((table) => table.position != null);
 
   const [noticedTableNo, setNoticedTableNo] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -243,7 +244,12 @@ function AdminTableRealtime() {
         ) : (
           <Container>
             {viewMode === TABLE_VIEW.LAYOUT ? (
-              <TableLayoutView tables={filteredTables} selectedTableNumber={selectedTable?.tableNumber ?? null} onSelectTable={handleSelectTable} />
+              <TableLayoutView
+                tables={filteredTables}
+                hasAnyPlacedTable={hasAnyPlacedTable}
+                selectedTableNumber={selectedTable?.tableNumber ?? null}
+                onSelectTable={handleSelectTable}
+              />
             ) : (
               <AdminTableList tables={filteredTables} />
             )}

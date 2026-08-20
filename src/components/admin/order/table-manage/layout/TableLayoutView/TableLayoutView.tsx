@@ -46,26 +46,42 @@ function scrollToPlacedCenter(box: HTMLDivElement | null, placedTables: Table[])
   box.scrollTop = Math.max(0, TABLE_GRID_PADDING_PX + centerY * step - box.clientHeight / HALF);
 }
 
+function getEmptyStateMessage(hasAnyPlacedTable: boolean): { title: string; hint: string | null } {
+  if (hasAnyPlacedTable) {
+    return { title: '조건에 맞는 테이블이 없습니다', hint: null };
+  }
+
+  return { title: '아직 배치된 테이블이 없습니다', hint: '상단의 「배치 편집」 버튼을 눌러 테이블을 배치해주세요' };
+}
+
 interface TableLayoutViewProps {
   tables: Table[];
+  hasAnyPlacedTable: boolean;
   selectedTableNumber: number | null;
   onSelectTable: (table: Table) => void;
 }
 
-function TableLayoutView({ tables, selectedTableNumber, onSelectTable }: TableLayoutViewProps) {
+function TableLayoutView({ tables, hasAnyPlacedTable, selectedTableNumber, onSelectTable }: TableLayoutViewProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const hasCenteredRef = useRef(false);
   const placedTables = useMemo(() => tables.filter((table) => table.position != null), [tables]);
 
+  // 필터를 바꿀 때마다 캔버스를 재중심화하면 운영자가 보던 스크롤 위치를 잃는다 - 최초 1회만 중심 이동한다.
   useEffect(() => {
+    if (hasCenteredRef.current || !scrollRef.current || placedTables.length === 0) return;
+
     scrollToPlacedCenter(scrollRef.current, placedTables);
-  }, [placedTables.length]);
+    hasCenteredRef.current = true;
+  }, [placedTables]);
 
   if (placedTables.length === 0) {
+    const { title, hint } = getEmptyStateMessage(hasAnyPlacedTable);
+
     return (
       <Container>
         <EmptyState>
-          아직 배치된 테이블이 없습니다
-          <EmptyStateHint>상단의 「배치 편집」 버튼을 눌러 테이블을 배치해주세요</EmptyStateHint>
+          {title}
+          {hint && <EmptyStateHint>{hint}</EmptyStateHint>}
         </EmptyState>
       </Container>
     );
