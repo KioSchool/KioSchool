@@ -26,8 +26,6 @@ function useTableLayoutDraft(tables: Table[]) {
     setDraft(new Map(tables.map((table) => [table.id, null])));
   };
 
-  const clear = () => setDraft(new Map());
-
   // 옮겼다가 원래 자리로 되돌린 항목은 draft에 남아 있지만 서버와 같으므로 보내지 않는다.
   const changes: TablePositionUpdate[] = useMemo(() => {
     const result: TablePositionUpdate[] = [];
@@ -43,7 +41,7 @@ function useTableLayoutDraft(tables: Table[]) {
     return result;
   }, [draft, tables]);
 
-  return { positionOf, place, resetAll, clear, changes, isDirty: changes.length > 0 };
+  return { positionOf, place, resetAll, changes, isDirty: changes.length > 0 };
 }
 
 export default useTableLayoutDraft;

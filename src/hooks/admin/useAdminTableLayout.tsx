@@ -24,7 +24,7 @@ function useAdminTableLayout(workspaceId: string | undefined) {
   const updateTablePositions = (positions: TablePositionUpdate[]) =>
     adminApi.patch<Table[]>('/workspace/table/positions', { workspaceId, positions }).then((res) => res.data);
 
-  return { updateTablePositions, parseConflictIndex };
+  return { updateTablePositions };
 }
 
 export default useAdminTableLayout;
