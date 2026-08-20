@@ -3,8 +3,9 @@ import { Color } from '@resources/colors';
 import { rowFlex, colFlex } from '@styles/flexStyles';
 import { TABLE_DETAIL_RING_PX } from '@constants/layout';
 import ProgressRing from '@components/admin/order/table-manage/layout/TableLayoutCard/ProgressRing';
+import { formatKoreanTime } from '@utils/formatDate';
 import { TABLE_STATUS, TableStatus } from '@utils/tableStatus';
-import { formatLongDuration, formatStartTime, getElapsedMs, getElapsedPercent, getTotalMs } from '@utils/tableTime';
+import { formatLongDuration, getElapsedMs, getElapsedPercent, getTotalMs } from '@utils/tableTime';
 import { OrderSession } from '@@types/index';
 
 const Container = styled.div`
@@ -57,7 +58,7 @@ function TableUsageSummary({ session, status }: TableUsageSummaryProps) {
         holeColor={Color.WHITE}
       />
       <TextColumn>
-        <StartTimeText>{formatStartTime(session)}</StartTimeText>
+        <StartTimeText>{`${formatKoreanTime(session.createdAt)}부터`}</StartTimeText>
         <ElapsedText>
           <ElapsedValue>{elapsedLabel}</ElapsedValue>
           {totalLabel && <TotalValue> / {totalLabel}</TotalValue>}

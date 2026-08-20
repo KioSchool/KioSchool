@@ -7,8 +7,9 @@ import StatusBadge from '@components/admin/order/table-manage/common/StatusBadge
 import { TABLE_LIST_GRID_TEMPLATE } from '@constants/layout';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
+import { formatKoreanTime } from '@utils/formatDate';
 import { getTableStatus, TABLE_STATUS, TableStatus } from '@utils/tableStatus';
-import { formatLongDuration, formatStartTime, getElapsedMs, getElapsedPercent, getTotalMs } from '@utils/tableTime';
+import { formatLongDuration, getElapsedMs, getElapsedPercent, getTotalMs } from '@utils/tableTime';
 import { OrderSession, Table } from '@@types/index';
 
 const pulse = keyframes`
@@ -93,7 +94,7 @@ function getUsageTimeLabel(session: OrderSession | null): string {
 function getStartTimeLabel(session: OrderSession | null): string {
   if (!session) return '—';
 
-  return formatStartTime(session);
+  return `${formatKoreanTime(session.createdAt)}부터`;
 }
 
 function getOrderCountLabel(session: OrderSession | null): string {

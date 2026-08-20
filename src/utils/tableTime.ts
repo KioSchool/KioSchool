@@ -67,20 +67,3 @@ export function formatLongDuration(ms: number): string {
 
   return `${minutes}분`;
 }
-
-/**
- * Format session start time as "오후 11:10부터"
- */
-export function formatStartTime(session: OrderSession | null): string {
-  if (!session) return '';
-
-  const date = new Date(session.createdAt);
-  const options: Intl.DateTimeFormatOptions = {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  };
-  const timeString = new Intl.DateTimeFormat('ko-KR', options).format(date);
-
-  return `${timeString}부터`;
-}
