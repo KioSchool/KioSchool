@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { keyframes } from '@emotion/react';
+import { css, keyframes } from '@emotion/react';
 
 import ProgressRing, { RING_SIZE_ROW_PX } from '@components/admin/order/table-manage/layout/TableLayoutCard/ProgressRing';
 import StatusBadge from '@components/admin/order/table-manage/common/StatusBadge/StatusBadge';
@@ -44,7 +44,11 @@ const Row = styled.div<{ isSelected: boolean; status: TableStatus }>`
   color: ${({ status }) => STATUS_TEXT_COLOR[status]};
   cursor: pointer;
   text-align: center;
-  ${({ status }) => (status === TABLE_STATUS.EXCEEDED ? `animation: ${pulse} 2s infinite;` : '')}
+  ${({ status }) =>
+    status === TABLE_STATUS.EXCEEDED &&
+    css`
+      animation: ${pulse} 2s infinite;
+    `}
 `;
 
 const TableNumber = styled.div`
