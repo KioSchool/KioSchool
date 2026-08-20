@@ -18,6 +18,7 @@ const pulse = keyframes`
 `;
 
 const SELECTED_OUTLINE_PX = 2;
+const HOVER_BRIGHTNESS = 0.97;
 
 const STATUS_ROW_BACKGROUND: Record<TableStatus, string> = {
   [TABLE_STATUS.EMPTY]: Color.LIGHT_GREY,
@@ -44,6 +45,11 @@ const Row = styled.div<{ isSelected: boolean; status: TableStatus }>`
   color: ${({ status }) => STATUS_TEXT_COLOR[status]};
   cursor: pointer;
   text-align: center;
+
+  &:hover {
+    filter: brightness(${HOVER_BRIGHTNESS});
+  }
+
   ${({ status }) =>
     status === TABLE_STATUS.EXCEEDED &&
     css`
