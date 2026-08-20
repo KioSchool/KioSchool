@@ -58,11 +58,12 @@ interface TableLayoutEditorProps {
   tables: Table[];
   onExit: () => void;
   onSave: (changes: TablePositionUpdate[]) => void;
+  onPositionChange: () => void;
   isSaving: boolean;
   conflictedPosition: TablePosition | null;
 }
 
-function TableLayoutEditor({ tables, onExit, onSave, isSaving, conflictedPosition }: TableLayoutEditorProps) {
+function TableLayoutEditor({ tables, onExit, onSave, onPositionChange, isSaving, conflictedPosition }: TableLayoutEditorProps) {
   const { positionOf, place, resetAll, changes, isDirty } = useTableLayoutDraft(tables);
   const [activeTableId, setActiveTableId] = useState<number | null>(null);
 
@@ -89,11 +90,15 @@ function TableLayoutEditor({ tables, onExit, onSave, isSaving, conflictedPositio
 
     if (over.id === TRAY_DROPPABLE_ID) {
       place(tableId, null);
+      onPositionChange();
       return;
     }
 
     const position = parseCellId(over.id);
-    if (position) place(tableId, position);
+    if (!position) return;
+
+    place(tableId, position);
+    onPositionChange();
   };
 
   const handleSave = () => {

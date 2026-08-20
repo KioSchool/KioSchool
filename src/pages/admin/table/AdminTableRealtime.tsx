@@ -170,6 +170,10 @@ function AdminTableRealtime() {
     setIsEditing(true);
   };
 
+  const handlePositionChange = () => {
+    setConflictedPosition(null);
+  };
+
   const handleExitEdit = () => {
     setIsEditing(false);
     fetchTables();
@@ -237,6 +241,7 @@ function AdminTableRealtime() {
               tables={tables}
               onExit={handleExitEdit}
               onSave={handleSaveLayout}
+              onPositionChange={handlePositionChange}
               isSaving={isSavingLayout}
               conflictedPosition={conflictedPosition}
             />
