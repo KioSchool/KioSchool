@@ -4,14 +4,14 @@ import { RiExpandUpDownFill, RiArrowDropDownFill, RiArrowDropUpFill } from '@rem
 
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { TABLE_LIST_GRID_TEMPLATE } from '@constants/layout';
+import { TABLE_LIST_GRID_TEMPLATE, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
 import { getTableStatus, STATUS_ORDER } from '@utils/tableStatus';
 import { Table } from '@@types/index';
 
 import TableListItem from './TableListItem';
 
 const ListContainer = styled.div`
-  height: 600px;
+  height: ${TABLE_VIEW_HEIGHT_PX}px;
   gap: 10px;
 
   ${colFlex()};

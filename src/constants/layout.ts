@@ -11,7 +11,7 @@ export const TABLE_GRID_PADDING_PX = 16;
 
 export const TABLE_TRAY_COLUMN_PX = 260;
 export const TABLE_DETAIL_COLUMN_PX = 290;
-export const TABLE_DETAIL_PANEL_HEIGHT_PX = 600;
+export const TABLE_VIEW_HEIGHT_PX = 600;
 export const TABLE_DETAIL_RING_PX = 48;
 
 export const TABLE_LIST_NUMBER_COLUMN_PX = 56;

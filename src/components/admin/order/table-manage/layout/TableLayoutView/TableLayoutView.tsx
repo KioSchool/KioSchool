@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { Table } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import { TABLE_GRID_CELL_PX, TABLE_GRID_GAP_PX, TABLE_GRID_PADDING_PX } from '@constants/layout';
+import { TABLE_GRID_CELL_PX, TABLE_GRID_GAP_PX, TABLE_GRID_PADDING_PX, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
 import TableLayoutCanvas from '../TableLayoutCanvas/TableLayoutCanvas';
 import TableLayoutCard from '../TableLayoutCard/TableLayoutCard';
 
@@ -12,7 +12,7 @@ const HALF = 2;
 const Container = styled.div`
   width: 100%;
   min-width: 0;
-  height: 600px;
+  height: ${TABLE_VIEW_HEIGHT_PX}px;
   position: relative;
 `;
 

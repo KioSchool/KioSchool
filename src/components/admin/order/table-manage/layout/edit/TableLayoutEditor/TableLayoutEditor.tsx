@@ -4,7 +4,7 @@ import { pointerWithin, DndContext, DragEndEvent, DragOverlay, DragStartEvent, P
 import { Table, TablePosition } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import { DRAG_ACTIVATION_DISTANCE_PX, TABLE_GRID_CELL_PX, TABLE_TRAY_COLUMN_PX, TRAY_DROPPABLE_ID } from '@constants/layout';
+import { DRAG_ACTIVATION_DISTANCE_PX, TABLE_GRID_CELL_PX, TABLE_TRAY_COLUMN_PX, TABLE_VIEW_HEIGHT_PX, TRAY_DROPPABLE_ID } from '@constants/layout';
 import useTableLayoutDraft from '@hooks/admin/useTableLayoutDraft';
 import { TablePositionUpdate } from '@hooks/admin/useAdminTableLayout';
 import TableLayoutCanvas from '../../TableLayoutCanvas/TableLayoutCanvas';
@@ -25,7 +25,7 @@ const Frame = styled.div`
 
 const Container = styled.div`
   width: 100%;
-  height: 600px;
+  height: ${TABLE_VIEW_HEIGHT_PX}px;
   display: grid;
   grid-template-columns: ${TABLE_TRAY_COLUMN_PX}px 1fr;
   gap: 10px;

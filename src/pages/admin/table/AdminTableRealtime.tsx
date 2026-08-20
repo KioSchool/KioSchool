@@ -20,7 +20,7 @@ import useTableOrders from '@hooks/admin/useTableOrders';
 import { Color } from '@resources/colors';
 import { colFlex, JustifyType, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
-import { TABLE_DETAIL_COLUMN_PX, TABLE_POLL_INTERVAL_MS } from '@constants/layout';
+import { TABLE_DETAIL_COLUMN_PX, TABLE_POLL_INTERVAL_MS, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
 import { getApiErrorMessage } from '@utils/apiError';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -91,7 +91,7 @@ const ButtonHighlightWrapper = styled.div<{ animate: boolean }>`
 `;
 
 const FallbackContainer = styled.div`
-  height: 600px;
+  height: ${TABLE_VIEW_HEIGHT_PX}px;
   border: 1px solid #ececec;
   border-radius: 10px;
   font-size: 1.5rem;

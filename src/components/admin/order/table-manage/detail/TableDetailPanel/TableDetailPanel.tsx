@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useAtomValue } from 'jotai';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { TABLE_DETAIL_PANEL_HEIGHT_PX } from '@constants/layout';
+import { TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
 import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { useTableSession } from '@hooks/admin/useTableSession';
 import { getTableStatus } from '@utils/tableStatus';
@@ -17,7 +17,7 @@ const FALLBACK_SESSION_LIMIT_MINUTES = 60;
 
 const Panel = styled.div`
   width: 100%;
-  height: ${TABLE_DETAIL_PANEL_HEIGHT_PX}px;
+  height: ${TABLE_VIEW_HEIGHT_PX}px;
   box-sizing: border-box;
   border: 1px solid #ececec;
   border-radius: 10px;
