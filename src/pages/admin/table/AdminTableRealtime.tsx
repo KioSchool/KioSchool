@@ -144,7 +144,7 @@ function AdminTableRealtime() {
 
   useEffect(() => {
     if (viewMode !== TABLE_VIEW.LAYOUT) return;
-    if (!selectedTable || selectedTable.position !== null) return;
+    if (!selectedTable || selectedTable.position != null) return;
     if (noticedTableNo === tableNo) return;
 
     toast.info(`${selectedTable.tableNumber}번 테이블은 아직 배치되지 않았습니다.`);

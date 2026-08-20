@@ -54,7 +54,7 @@ interface TableLayoutViewProps {
 
 function TableLayoutView({ tables, selectedTableNumber, onSelectTable }: TableLayoutViewProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const placedTables = useMemo(() => tables.filter((table) => table.position !== null), [tables]);
+  const placedTables = useMemo(() => tables.filter((table) => table.position != null), [tables]);
 
   useEffect(() => {
     scrollToPlacedCenter(scrollRef.current, placedTables);
