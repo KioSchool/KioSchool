@@ -105,7 +105,7 @@ function TableLayoutCard({ table, isSelected = false, showHandle = false, onSele
     <Container status={status} isSelected={isSelected} onClick={handleClick}>
       <TableNumber>{table.tableNumber}</TableNumber>
       {showHandle && (
-        <DragHandle type="button" {...dragHandleProps}>
+        <DragHandle type="button" aria-label={`${table.tableNumber}번 테이블 위치 이동 핸들`} {...dragHandleProps}>
           <HandleIcon />
         </DragHandle>
       )}
