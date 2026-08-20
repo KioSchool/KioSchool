@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import { closestCenter, DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { pointerWithin, DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { Table, TablePosition } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
@@ -127,7 +127,7 @@ function TableLayoutEditor({ tables, onExit, onSave, isSaving, conflictedPositio
   return (
     <Frame>
       <EditorToolbar changeCount={changes.length} isSaving={isSaving} onSave={handleSave} onResetAll={resetAll} onExit={handleExit} />
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+      <DndContext sensors={sensors} collisionDetection={pointerWithin} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <Container>
           <UnplacedTableTray tables={unplacedTables} />
           <TableLayoutCanvas showGrid renderCell={renderCell} />
