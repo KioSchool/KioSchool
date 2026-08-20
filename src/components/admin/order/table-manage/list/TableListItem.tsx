@@ -4,13 +4,7 @@ import { keyframes } from '@emotion/react';
 
 import ProgressRing, { RING_SIZE_ROW_PX } from '@components/admin/order/table-manage/layout/TableLayoutCard/ProgressRing';
 import StatusBadge from '@components/admin/order/table-manage/common/StatusBadge/StatusBadge';
-import {
-  TABLE_LIST_AMOUNT_COL_PX,
-  TABLE_LIST_NUMBER_COL_PX,
-  TABLE_LIST_ORDER_COL_PX,
-  TABLE_LIST_RING_COL_PX,
-  TABLE_LIST_STATUS_COL_PX,
-} from '@constants/layout';
+import { TABLE_LIST_GRID_TEMPLATE } from '@constants/layout';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { getTableStatus, TABLE_STATUS, TableStatus } from '@utils/tableStatus';
@@ -41,7 +35,7 @@ const STATUS_TEXT_COLOR: Record<TableStatus, string> = {
 
 const Row = styled.div<{ isSelected: boolean; status: TableStatus }>`
   display: grid;
-  grid-template-columns: ${TABLE_LIST_NUMBER_COL_PX}px ${TABLE_LIST_RING_COL_PX}px 1fr ${TABLE_LIST_ORDER_COL_PX}px ${TABLE_LIST_AMOUNT_COL_PX}px ${TABLE_LIST_STATUS_COL_PX}px;
+  grid-template-columns: ${TABLE_LIST_GRID_TEMPLATE};
   align-items: center;
   padding: 8px 10px;
   border-bottom: 1px solid #e0e0e0;
