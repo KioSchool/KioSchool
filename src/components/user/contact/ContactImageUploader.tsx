@@ -175,7 +175,7 @@ function ContactImageUploader({ files, onFilesChange, onValidationError }: Conta
       {files.length > 0 && (
         <PreviewList>
           {files.map((file, index) => (
-            <PreviewItem key={`${file.name}-${file.lastModified}`}>
+            <PreviewItem key={`${file.name}-${file.lastModified}-${index}`}>
               <PreviewImage src={previewUrls[index]} alt={`${file.name} 미리보기`} />
               <RemoveButton type="button" onClick={() => handleRemove(index)} aria-label={`${file.name} 삭제`}>
                 <RiCloseLine size={16} />
