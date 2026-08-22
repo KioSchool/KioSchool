@@ -4,7 +4,6 @@ import { RiCloseLine } from '@remixicon/react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { Color } from '@resources/colors';
-import { URLS } from '@constants/urls';
 import { USER_ROUTES, ADMIN_ROUTES } from '@constants/routes';
 
 const Overlay = styled.div<{ isOpen: boolean }>`
@@ -70,19 +69,6 @@ const NavLink = styled(Link)`
   }
 `;
 
-const NavUrl = styled.a`
-  padding: 14px 0;
-  font-size: 16px;
-  font-weight: 500;
-  color: #3c3530;
-  text-decoration: none;
-  border-bottom: 1px solid #f2f4f6;
-
-  &:hover {
-    color: ${Color.KIO_ORANGE};
-  }
-`;
-
 interface MobileNavProps {
   isOpen: boolean;
   onClose: () => void;
@@ -100,9 +86,9 @@ function MobileNav({ isOpen, onClose }: MobileNavProps) {
         <NavLink to={USER_ROUTES.INFO} onClick={onClose}>
           키오스쿨 소개
         </NavLink>
-        <NavUrl href={URLS.EXTERNAL.NOTION_FAQ} target="_blank" rel="noopener noreferrer" onClick={onClose}>
-          FAQ
-        </NavUrl>
+        <NavLink to={USER_ROUTES.CONTACT} onClick={onClose}>
+          문의하기
+        </NavLink>
         <NavLink to={USER_ROUTES.LOGIN} onClick={onClose}>
           로그인
         </NavLink>

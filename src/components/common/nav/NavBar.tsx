@@ -7,7 +7,6 @@ import { rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { navBarLabelStyle } from '@styles/navBarStyles';
 import { expandButtonStyle } from '@styles/buttonStyles';
-import { URLS } from '@constants/urls';
 import { USER_ROUTES, ADMIN_ROUTES } from '@constants/routes';
 import { sideNavIsOpenAtom } from '@jotai/atoms';
 import { adminNavData } from '@constants/data/adminNavData';
@@ -86,10 +85,6 @@ export const NavLinkItem = styled(Link)`
   ${navBarLabelStyle}
 `;
 
-const NavUrl = styled.a`
-  ${navBarLabelStyle}
-`;
-
 interface NavBarProps {
   useBackground?: boolean;
 }
@@ -126,9 +121,9 @@ function NavBar({ useBackground = false }: NavBarProps) {
           <NavLinkItem to={USER_ROUTES.INFO} className={'nav-link-item'}>
             키오스쿨 소개
           </NavLinkItem>
-          <NavUrl href={URLS.EXTERNAL.NOTION_FAQ} target="_blank" rel="noopener noreferrer" className={'nav-link-item'}>
-            FAQ
-          </NavUrl>
+          <NavLinkItem to={USER_ROUTES.CONTACT} className={'nav-link-item'}>
+            문의하기
+          </NavLinkItem>
           <AuthenticationButton />
           <NavLinkItem to={ADMIN_ROUTES.MY_INFO} className={'nav-link-item'}>
             마이페이지
