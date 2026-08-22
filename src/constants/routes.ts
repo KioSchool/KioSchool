@@ -4,6 +4,7 @@ export const USER_ROUTES = {
   REGISTER: '/register',
   RESET_PASSWORD: '/reset-password',
   INFO: '/info',
+  CONTACT: '/contact',
   EMAIL_DOMAINS: '/email-domains',
 } as const;
 

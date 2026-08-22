@@ -44,6 +44,7 @@ import { ADMIN_ROUTES, ORDER_ROUTES, SUPER_ADMIN_ROUTES, TEST_ROUTES, USER_ROUTE
 import AdminOrderTimeline from '@pages/admin/order/AdminOrderTimeline';
 import AdminTableRealtime from '@pages/admin/table/AdminTableRealtime';
 import Info from '@pages/user/info/Info';
+import Contact from '@pages/user/contact/Contact';
 import PcOnlyLayout from '@components/common/layout/PcOnlyLayout';
 
 function App() {
@@ -73,6 +74,7 @@ function App() {
       <SentryRoutes>
         <Route path={USER_ROUTES.HOME} element={<Home />} />
         <Route path={USER_ROUTES.INFO} element={<Info />} />
+        <Route path={USER_ROUTES.CONTACT} element={<Contact />} />
 
         <Route path={ORDER_ROUTES.ORDER} element={<Order />} />
         <Route path={ORDER_ROUTES.ORDER_BASKET} element={<OrderBasket />} />
