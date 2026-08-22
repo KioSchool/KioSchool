@@ -26,16 +26,16 @@ export const Field = styled.label`
   ${colFlex()};
 `;
 
-export const FieldHeader = styled.div`
-  width: 100%;
-  gap: 8px;
-  ${rowFlex({ justify: 'space-between', align: 'center' })};
-`;
-
 export const FieldLabel = styled.span`
   color: #464a4d;
   font-size: 16px;
   font-weight: 700;
+`;
+
+export const CharacterCountRow = styled.div`
+  width: 100%;
+  min-height: 18px;
+  ${rowFlex({ justify: 'flex-end', align: 'center' })};
 `;
 
 export const CharacterCount = styled.span`

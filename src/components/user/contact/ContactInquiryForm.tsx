@@ -6,10 +6,10 @@ import type { CreateInquiryResponse, InquiryCategory } from '@@types/inquiry';
 import { getApiErrorMessage } from '@utils/apiError';
 import {
   CharacterCount,
+  CharacterCountRow,
   Checkbox,
   ErrorText,
   Field,
-  FieldHeader,
   FieldLabel,
   Form,
   Input,
@@ -130,12 +130,7 @@ function ContactInquiryForm() {
         </Select>
       </Field>
       <Field>
-        <FieldHeader>
-          <FieldLabel>제목</FieldLabel>
-          <CharacterCount>
-            {title.length}/{INQUIRY_TITLE_MAX_LENGTH}
-          </CharacterCount>
-        </FieldHeader>
+        <FieldLabel>제목</FieldLabel>
         <Input
           value={title}
           onChange={(event) => setTitle(event.target.value)}
@@ -143,14 +138,14 @@ function ContactInquiryForm() {
           placeholder="문의 제목을 입력해 주세요"
           required
         />
+        <CharacterCountRow>
+          <CharacterCount>
+            {title.length}/{INQUIRY_TITLE_MAX_LENGTH}
+          </CharacterCount>
+        </CharacterCountRow>
       </Field>
       <Field>
-        <FieldHeader>
-          <FieldLabel>문의 내용</FieldLabel>
-          <CharacterCount>
-            {content.length}/{INQUIRY_CONTENT_MAX_LENGTH}
-          </CharacterCount>
-        </FieldHeader>
+        <FieldLabel>문의 내용</FieldLabel>
         <Textarea
           value={content}
           onChange={(event) => setContent(event.target.value)}
@@ -158,6 +153,11 @@ function ContactInquiryForm() {
           placeholder="발생한 상황과 확인이 필요한 내용을 자세히 적어 주세요"
           required
         />
+        <CharacterCountRow>
+          <CharacterCount>
+            {content.length}/{INQUIRY_CONTENT_MAX_LENGTH}
+          </CharacterCount>
+        </CharacterCountRow>
       </Field>
       <Field>
         <FieldLabel>답변 받을 이메일</FieldLabel>
