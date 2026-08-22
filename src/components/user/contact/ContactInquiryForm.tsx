@@ -3,7 +3,6 @@ import NewCommonButton from '@components/common/button/NewCommonButton';
 import CustomCheckbox from '@components/common/checkbox/CustomCheckbox';
 import NewAppInput from '@components/common/input/NewAppInput';
 import NewAppTextarea from '@components/common/input/NewAppTextarea';
-import AppLabel from '@components/common/label/AppLabel';
 import SelectWithOptions from '@components/common/select/SelectWithOptions';
 import ContactImageUploader from '@components/user/contact/ContactImageUploader';
 import { INQUIRY_CATEGORY_OPTIONS, INQUIRY_CONTENT_MAX_LENGTH, INQUIRY_TITLE_MAX_LENGTH } from '@constants/data/inquiryData';
@@ -16,7 +15,9 @@ import {
   CharacterCountRow,
   ErrorText,
   Field,
+  FieldLabel,
   Form,
+  PrivacyContainer,
   SuccessCard,
   SuccessDescription,
   SuccessIcon,
@@ -117,9 +118,7 @@ function ContactInquiryForm() {
   return (
     <Form onSubmit={handleSubmit} noValidate>
       <Field>
-        <AppLabel htmlFor="inquiry-category" size={20}>
-          문의 유형
-        </AppLabel>
+        <FieldLabel htmlFor="inquiry-category">문의 유형</FieldLabel>
         <SelectWithOptions
           id="inquiry-category"
           options={INQUIRY_CATEGORY_SELECT_OPTIONS}
@@ -130,8 +129,9 @@ function ContactInquiryForm() {
         />
       </Field>
       <Field>
+        <FieldLabel htmlFor="inquiry-title">제목</FieldLabel>
         <NewAppInput
-          label="제목"
+          id="inquiry-title"
           width="100%"
           value={title}
           onChange={(event) => setTitle(event.target.value)}
@@ -146,8 +146,9 @@ function ContactInquiryForm() {
         </CharacterCountRow>
       </Field>
       <Field>
+        <FieldLabel htmlFor="inquiry-content">문의 내용</FieldLabel>
         <NewAppTextarea
-          label="문의 내용"
+          id="inquiry-content"
           width="100%"
           value={content}
           onChange={(event) => setContent(event.target.value)}
@@ -161,23 +162,28 @@ function ContactInquiryForm() {
           </CharacterCount>
         </CharacterCountRow>
       </Field>
-      <NewAppInput
-        label="답변 받을 이메일"
-        width="100%"
-        type="email"
-        value={replyEmail}
-        onChange={(event) => setReplyEmail(event.target.value)}
-        placeholder="example@email.com"
-        autoComplete="email"
-        required
-      />
+      <Field>
+        <FieldLabel htmlFor="inquiry-reply-email">답변 받을 이메일</FieldLabel>
+        <NewAppInput
+          id="inquiry-reply-email"
+          width="100%"
+          type="email"
+          value={replyEmail}
+          onChange={(event) => setReplyEmail(event.target.value)}
+          placeholder="example@email.com"
+          autoComplete="email"
+          required
+        />
+      </Field>
       <ContactImageUploader files={imageFiles} onFilesChange={setImageFiles} onValidationError={setImageError} />
       {imageError && <ErrorText role="alert">{imageError}</ErrorText>}
-      <CustomCheckbox
-        checked={privacyConsent}
-        onChange={setPrivacyConsent}
-        label={`문의 처리를 위한 이메일과 첨부파일 수집·이용에 동의합니다.\n수집한 정보는 문의 답변 완료 후 90일간 보관한 뒤 삭제합니다.`}
-      />
+      <PrivacyContainer>
+        <CustomCheckbox
+          checked={privacyConsent}
+          onChange={setPrivacyConsent}
+          label={`문의 처리를 위한 이메일과 첨부파일 수집·이용에 동의합니다.\n수집한 정보는 문의 답변 완료 후 90일간 보관한 뒤 삭제합니다.`}
+        />
+      </PrivacyContainer>
       {formError && <ErrorText role="alert">{formError}</ErrorText>}
       <ButtonRow>
         <NewCommonButton type="submit" disabled={isSubmitting}>

@@ -26,6 +26,12 @@ export const Field = styled.div`
   ${colFlex()};
 `;
 
+export const FieldLabel = styled.label`
+  color: #464a4d;
+  font-size: 16px;
+  font-weight: 700;
+`;
+
 export const CharacterCountRow = styled.div`
   width: 100%;
   min-height: 18px;
@@ -47,6 +53,14 @@ export const ErrorText = styled.p`
 export const ButtonRow = styled.div`
   width: 100%;
   ${rowFlex({ justify: 'center', align: 'center' })};
+`;
+
+export const PrivacyContainer = styled.div`
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  box-sizing: border-box;
+  background: ${Color.LIGHT_GREY};
 `;
 
 export const SuccessCard = styled.div`
