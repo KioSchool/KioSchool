@@ -32,7 +32,7 @@ const HiddenInput = styled.input`
 const Text = styled.span`
   font-size: 14px;
   color: #464a4d;
-  white-space: nowrap;
+  white-space: pre-line;
 `;
 
 interface CustomCheckboxProps {

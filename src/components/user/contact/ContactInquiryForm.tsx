@@ -1,30 +1,30 @@
 import { FormEvent, useState } from 'react';
+import NewCommonButton from '@components/common/button/NewCommonButton';
+import CustomCheckbox from '@components/common/checkbox/CustomCheckbox';
+import NewAppInput from '@components/common/input/NewAppInput';
+import NewAppTextarea from '@components/common/input/NewAppTextarea';
+import AppLabel from '@components/common/label/AppLabel';
+import SelectWithOptions from '@components/common/select/SelectWithOptions';
 import ContactImageUploader from '@components/user/contact/ContactImageUploader';
 import { INQUIRY_CATEGORY_OPTIONS, INQUIRY_CONTENT_MAX_LENGTH, INQUIRY_TITLE_MAX_LENGTH } from '@constants/data/inquiryData';
 import useInquiry from '@hooks/user/useInquiry';
 import type { CreateInquiryResponse, InquiryCategory } from '@@types/inquiry';
 import { getApiErrorMessage } from '@utils/apiError';
 import {
+  ButtonRow,
   CharacterCount,
   CharacterCountRow,
-  Checkbox,
   ErrorText,
   Field,
-  FieldLabel,
   Form,
-  Input,
-  NewInquiryButton,
-  PrivacyLabel,
-  Select,
-  SubmitButton,
   SuccessCard,
   SuccessDescription,
   SuccessIcon,
   SuccessTitle,
-  Textarea,
 } from './contactInquiryFormStyles';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const INQUIRY_CATEGORY_SELECT_OPTIONS = [{ id: '', name: '문의 유형을 선택해 주세요' }, ...INQUIRY_CATEGORY_OPTIONS];
 
 function ContactInquiryForm() {
   const { createInquiry } = useInquiry();
@@ -107,9 +107,9 @@ function ContactInquiryForm() {
           <br />
           입력하신 이메일로 답변을 보내드릴게요.
         </SuccessDescription>
-        <NewInquiryButton type="button" onClick={handleNewInquiry}>
+        <NewCommonButton type="button" size="sm" color="blue_gray" onClick={handleNewInquiry}>
           새 문의 작성하기
-        </NewInquiryButton>
+        </NewCommonButton>
       </SuccessCard>
     );
   }
@@ -117,21 +117,22 @@ function ContactInquiryForm() {
   return (
     <Form onSubmit={handleSubmit} noValidate>
       <Field>
-        <FieldLabel>문의 유형</FieldLabel>
-        <Select value={category} onChange={(event) => setCategory(event.target.value as InquiryCategory)} required>
-          <option value="" disabled>
-            문의 유형을 선택해 주세요
-          </option>
-          {INQUIRY_CATEGORY_OPTIONS.map((option) => (
-            <option key={option.id} value={option.id}>
-              {option.name}
-            </option>
-          ))}
-        </Select>
+        <AppLabel htmlFor="inquiry-category" size={20}>
+          문의 유형
+        </AppLabel>
+        <SelectWithOptions
+          id="inquiry-category"
+          options={INQUIRY_CATEGORY_SELECT_OPTIONS}
+          isUseDefaultOption={false}
+          width="100%"
+          value={category}
+          onChange={(event) => setCategory(event.target.value as InquiryCategory)}
+        />
       </Field>
       <Field>
-        <FieldLabel>제목</FieldLabel>
-        <Input
+        <NewAppInput
+          label="제목"
+          width="100%"
           value={title}
           onChange={(event) => setTitle(event.target.value)}
           maxLength={INQUIRY_TITLE_MAX_LENGTH}
@@ -145,8 +146,9 @@ function ContactInquiryForm() {
         </CharacterCountRow>
       </Field>
       <Field>
-        <FieldLabel>문의 내용</FieldLabel>
-        <Textarea
+        <NewAppTextarea
+          label="문의 내용"
+          width="100%"
           value={content}
           onChange={(event) => setContent(event.target.value)}
           maxLength={INQUIRY_CONTENT_MAX_LENGTH}
@@ -159,27 +161,29 @@ function ContactInquiryForm() {
           </CharacterCount>
         </CharacterCountRow>
       </Field>
-      <Field>
-        <FieldLabel>답변 받을 이메일</FieldLabel>
-        <Input
-          type="email"
-          value={replyEmail}
-          onChange={(event) => setReplyEmail(event.target.value)}
-          placeholder="example@email.com"
-          autoComplete="email"
-          required
-        />
-      </Field>
+      <NewAppInput
+        label="답변 받을 이메일"
+        width="100%"
+        type="email"
+        value={replyEmail}
+        onChange={(event) => setReplyEmail(event.target.value)}
+        placeholder="example@email.com"
+        autoComplete="email"
+        required
+      />
       <ContactImageUploader files={imageFiles} onFilesChange={setImageFiles} onValidationError={setImageError} />
       {imageError && <ErrorText role="alert">{imageError}</ErrorText>}
-      <PrivacyLabel>
-        <Checkbox type="checkbox" checked={privacyConsent} onChange={(event) => setPrivacyConsent(event.target.checked)} />
-        <span>문의 처리를 위한 이메일과 첨부파일 수집·이용에 동의합니다. 수집한 정보는 문의 답변 완료 후 90일간 보관한 뒤 삭제합니다.</span>
-      </PrivacyLabel>
+      <CustomCheckbox
+        checked={privacyConsent}
+        onChange={setPrivacyConsent}
+        label={`문의 처리를 위한 이메일과 첨부파일 수집·이용에 동의합니다.\n수집한 정보는 문의 답변 완료 후 90일간 보관한 뒤 삭제합니다.`}
+      />
       {formError && <ErrorText role="alert">{formError}</ErrorText>}
-      <SubmitButton type="submit" disabled={isSubmitting}>
-        {isSubmitting ? '접수 중...' : '문의 접수하기'}
-      </SubmitButton>
+      <ButtonRow>
+        <NewCommonButton type="submit" disabled={isSubmitting}>
+          {isSubmitting ? '접수 중...' : '문의 접수하기'}
+        </NewCommonButton>
+      </ButtonRow>
     </Form>
   );
 }

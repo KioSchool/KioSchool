@@ -1,6 +1,8 @@
 import { ChangeEvent, useEffect, useMemo, useRef } from 'react';
 import styled from '@emotion/styled';
 import { RiAddLine, RiCloseLine, RiImageAddLine } from '@remixicon/react';
+import NewCommonButton from '@components/common/button/NewCommonButton';
+import AppLabel from '@components/common/label/AppLabel';
 import {
   INQUIRY_ACCEPTED_IMAGE_TYPES,
   INQUIRY_IMAGE_ACCEPT_ATTRIBUTE,
@@ -11,6 +13,7 @@ import {
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
+import { ButtonRow } from './contactInquiryFormStyles';
 
 const Container = styled.div`
   width: 100%;
@@ -22,12 +25,6 @@ const Header = styled.div`
   width: 100%;
   gap: 8px;
   ${rowFlex({ justify: 'space-between', align: 'center' })};
-`;
-
-const Label = styled.span`
-  color: #464a4d;
-  font-size: 16px;
-  font-weight: 700;
 `;
 
 const LimitText = styled.span`
@@ -78,31 +75,6 @@ const RemoveButton = styled.button`
   color: ${Color.WHITE};
   cursor: pointer;
   ${rowFlex({ justify: 'center', align: 'center' })};
-`;
-
-const AddButton = styled.button`
-  min-height: 96px;
-  border: 1px dashed #c9c9c9;
-  border-radius: 14px;
-  background: ${Color.WHITE};
-  color: ${Color.GREY};
-  cursor: pointer;
-  gap: 6px;
-  ${colFlex({ justify: 'center', align: 'center' })};
-
-  &:hover:not(:disabled) {
-    border-color: ${Color.KIO_ORANGE};
-    color: ${Color.KIO_ORANGE};
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-  }
-`;
-
-const AddButtonText = styled.span`
-  font-size: 13px;
 `;
 
 const HelpText = styled.p`
@@ -166,7 +138,7 @@ function ContactImageUploader({ files, onFilesChange, onValidationError }: Conta
   return (
     <Container>
       <Header>
-        <Label>관련 이미지 (선택)</Label>
+        <AppLabel size={20}>관련 이미지 (선택)</AppLabel>
         <LimitText>
           {files.length}/{INQUIRY_IMAGE_MAX_COUNT}
         </LimitText>
@@ -184,10 +156,18 @@ function ContactImageUploader({ files, onFilesChange, onValidationError }: Conta
           ))}
         </PreviewList>
       )}
-      <AddButton type="button" onClick={handleAddClick} disabled={!canAddImage}>
-        {files.length === 0 ? <RiImageAddLine size={24} /> : <RiAddLine size={22} />}
-        <AddButtonText>{files.length === 0 ? '이미지 첨부하기' : '이미지 더 추가하기'}</AddButtonText>
-      </AddButton>
+      <ButtonRow>
+        <NewCommonButton
+          type="button"
+          size="sm"
+          color="blue_gray"
+          icon={files.length === 0 ? <RiImageAddLine size={20} /> : <RiAddLine size={18} />}
+          onClick={handleAddClick}
+          disabled={!canAddImage}
+        >
+          {files.length === 0 ? '이미지 첨부하기' : '이미지 더 추가하기'}
+        </NewCommonButton>
+      </ButtonRow>
       <HelpText>화면이나 결제 캡처에 비밀번호, 전체 계좌번호 등 민감한 정보가 포함되지 않도록 확인해 주세요.</HelpText>
     </Container>
   );
