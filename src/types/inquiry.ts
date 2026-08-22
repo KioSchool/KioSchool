@@ -1,9 +1,6 @@
-export type InquiryCategory = 'BUG' | 'UI' | 'PAYMENT' | 'EMAIL' | 'OTHER';
-
 export type InquiryStatus = 'PENDING' | 'ANSWERED';
 
 export interface CreateInquiryRequest {
-  category: InquiryCategory;
   title: string;
   content: string;
   replyEmail: string;
@@ -33,7 +30,6 @@ export interface InquiryReply {
 
 export interface InquiryListItem {
   id: number;
-  category: InquiryCategory;
   title: string;
   replyEmail: string;
   status: InquiryStatus;

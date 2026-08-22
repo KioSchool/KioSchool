@@ -3,11 +3,10 @@ import NewCommonButton from '@components/common/button/NewCommonButton';
 import CustomCheckbox from '@components/common/checkbox/CustomCheckbox';
 import NewAppInput from '@components/common/input/NewAppInput';
 import NewAppTextarea from '@components/common/input/NewAppTextarea';
-import SelectWithOptions from '@components/common/select/SelectWithOptions';
 import ContactImageUploader from '@components/user/contact/ContactImageUploader';
-import { INQUIRY_CATEGORY_OPTIONS, INQUIRY_CONTENT_MAX_LENGTH, INQUIRY_TITLE_MAX_LENGTH } from '@constants/data/inquiryData';
+import { INQUIRY_CONTENT_MAX_LENGTH, INQUIRY_TITLE_MAX_LENGTH } from '@constants/data/inquiryData';
 import useInquiry from '@hooks/user/useInquiry';
-import type { CreateInquiryResponse, InquiryCategory } from '@@types/inquiry';
+import type { CreateInquiryResponse } from '@@types/inquiry';
 import { getApiErrorMessage } from '@utils/apiError';
 import {
   ButtonRow,
@@ -25,11 +24,9 @@ import {
 } from './contactInquiryFormStyles';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const INQUIRY_CATEGORY_SELECT_OPTIONS = [{ id: '', name: '문의 유형을 선택해 주세요' }, ...INQUIRY_CATEGORY_OPTIONS];
 
 function ContactInquiryForm() {
   const { createInquiry } = useInquiry();
-  const [category, setCategory] = useState<InquiryCategory | ''>('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [replyEmail, setReplyEmail] = useState('');
@@ -41,7 +38,6 @@ function ContactInquiryForm() {
   const [receipt, setReceipt] = useState<CreateInquiryResponse | null>(null);
 
   const validateForm = () => {
-    if (!category) return '문의 유형을 선택해 주세요.';
     if (!title.trim()) return '문의 제목을 입력해 주세요.';
     if (!content.trim()) return '문의 내용을 입력해 주세요.';
     if (!replyEmail.trim()) return '답변 받을 이메일을 입력해 주세요.';
@@ -51,7 +47,6 @@ function ContactInquiryForm() {
   };
 
   const resetForm = () => {
-    setCategory('');
     setTitle('');
     setContent('');
     setReplyEmail('');
@@ -77,7 +72,6 @@ function ContactInquiryForm() {
     try {
       const response = await createInquiry(
         {
-          category: category as InquiryCategory,
           title: title.trim(),
           content: content.trim(),
           replyEmail: replyEmail.trim(),
@@ -117,17 +111,6 @@ function ContactInquiryForm() {
 
   return (
     <Form onSubmit={handleSubmit} noValidate>
-      <Field>
-        <FieldLabel htmlFor="inquiry-category">문의 유형</FieldLabel>
-        <SelectWithOptions
-          id="inquiry-category"
-          options={INQUIRY_CATEGORY_SELECT_OPTIONS}
-          isUseDefaultOption={false}
-          width="100%"
-          value={category}
-          onChange={(event) => setCategory(event.target.value as InquiryCategory)}
-        />
-      </Field>
       <Field>
         <FieldLabel htmlFor="inquiry-title">제목</FieldLabel>
         <NewAppInput
