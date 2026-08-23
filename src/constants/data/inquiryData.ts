@@ -7,5 +7,5 @@ const BYTES_PER_KILOBYTE = 1024;
 const KILOBYTES_PER_MEGABYTE = 1024;
 
 export const INQUIRY_IMAGE_MAX_SIZE_BYTES = INQUIRY_IMAGE_MAX_SIZE_MB * KILOBYTES_PER_MEGABYTE * BYTES_PER_KILOBYTE;
-export const INQUIRY_ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
+export const INQUIRY_ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png'] as const;
 export const INQUIRY_IMAGE_ACCEPT_ATTRIBUTE = INQUIRY_ACCEPTED_IMAGE_TYPES.join(',');
