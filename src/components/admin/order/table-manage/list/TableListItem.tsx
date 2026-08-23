@@ -1,119 +1,123 @@
 import { useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { css, keyframes } from '@emotion/react';
 
 import ProgressRing, { RING_SIZE_ROW_PX } from '@components/admin/order/table-manage/layout/TableLayoutCard/ProgressRing';
 import StatusBadge from '@components/admin/order/table-manage/common/StatusBadge/StatusBadge';
 import { TABLE_LIST_GRID_TEMPLATE } from '@constants/layout';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import { formatKoreanTime } from '@utils/formatDate';
 import { getTableStatus, TABLE_STATUS, TableStatus } from '@utils/tableStatus';
-import { formatLongDuration, getElapsedMs, getElapsedPercent, getTotalMs } from '@utils/tableTime';
-import { OrderSession, Table } from '@@types/index';
-
-const pulse = keyframes`
-  0% { opacity: 1; }
-  50% { opacity: 0.6; }
-  100% { opacity: 1; }
-`;
+import { formatSessionStartLabel, formatSessionTimeLabel, getElapsedPercent } from '@utils/tableTime';
+import { SessionOrderStats } from '@hooks/admin/useTableOrderStats';
+import { Table } from '@@types/index';
 
 const SELECTED_OUTLINE_PX = 2;
-const HOVER_BRIGHTNESS = 0.97;
+const STATUS_BAR_WIDTH_PX = 3;
 
-const STATUS_ROW_BACKGROUND: Record<TableStatus, string> = {
-  [TABLE_STATUS.EMPTY]: Color.LIGHT_GREY,
-  [TABLE_STATUS.USING]: Color.WHITE,
-  [TABLE_STATUS.WARNING]: Color.KIO_ORANGE_FAINT,
-  [TABLE_STATUS.EXCEEDED]: Color.LIGHT_RED,
-};
-
-const STATUS_TEXT_COLOR: Record<TableStatus, string> = {
-  [TABLE_STATUS.EMPTY]: Color.GREY,
-  [TABLE_STATUS.USING]: Color.BLACK,
-  [TABLE_STATUS.WARNING]: Color.BLACK,
+// 행은 흰 바탕을 유지하고 상태는 좌측 바·숫자색·칩으로만 말한다. 상태색으로 행 전체를 칠하면 정보가 아니라 소음이 된다.
+const STATUS_BAR_COLOR: Record<TableStatus, string> = {
+  [TABLE_STATUS.EMPTY]: 'transparent',
+  [TABLE_STATUS.USING]: 'transparent',
+  [TABLE_STATUS.WARNING]: Color.KIO_ORANGE,
   [TABLE_STATUS.EXCEEDED]: Color.RED,
 };
 
 const Row = styled.div<{ isSelected: boolean; status: TableStatus }>`
+  position: relative;
   display: grid;
   grid-template-columns: ${TABLE_LIST_GRID_TEMPLATE};
   align-items: center;
-  padding: 8px 10px;
-  border-bottom: 1px solid #e0e0e0;
-  background-color: ${({ status }) => STATUS_ROW_BACKGROUND[status]};
+  padding: 10px 12px;
+  border-bottom: 1px solid #e8eef2;
+  background-color: ${Color.WHITE};
   box-shadow: ${({ isSelected }) => (isSelected ? `inset 0 0 0 ${SELECTED_OUTLINE_PX}px ${Color.KIO_ORANGE}` : 'none')};
-  color: ${({ status }) => STATUS_TEXT_COLOR[status]};
   cursor: pointer;
   text-align: center;
+  transition: background-color 0.12s ease-in-out;
 
   &:hover {
-    filter: brightness(${HOVER_BRIGHTNESS});
+    background-color: ${Color.LIGHT_GREY};
   }
 
-  ${({ status }) =>
-    status === TABLE_STATUS.EXCEEDED &&
-    css`
-      animation: ${pulse} 2s infinite;
-    `}
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: ${STATUS_BAR_WIDTH_PX}px;
+    background-color: ${({ status }) => STATUS_BAR_COLOR[status]};
+  }
 `;
 
-const TableNumber = styled.div`
-  font-size: 18px;
-  font-weight: 700;
+const TableNumber = styled.div<{ status: TableStatus }>`
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: ${({ status }) => (status === TABLE_STATUS.EMPTY ? '#8d959c' : Color.GREY)};
 `;
 
 const UsageTimeCell = styled.div`
-  gap: 2px;
+  gap: 3px;
   text-align: left;
 
   ${colFlex({ justify: 'center' })};
 `;
 
-const MainTimeText = styled.div`
-  font-size: 14px;
-  font-weight: 600;
+const MainTimeText = styled.div<{ status: TableStatus }>`
+  font-size: 15px;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: ${Color.GREY};
+  color: ${({ status }) => {
+    if (status === TABLE_STATUS.EXCEEDED) return Color.RED;
+    if (status === TABLE_STATUS.EMPTY) return '#8d959c';
+    return Color.GREY;
+  }};
 `;
 
 const StartTimeText = styled.div`
   font-size: 11px;
+  color: #8d959c;
+`;
+
+const CountText = styled.div`
+  font-size: 13px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: #8d959c;
+`;
+
+const AmountText = styled.div`
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
   color: ${Color.GREY};
 `;
 
-const Text = styled.div``;
+const BadgeCell = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 
-function getUsageTimeLabel(session: OrderSession | null): string {
-  if (!session) return '미사용';
-  if (!session.expectedEndAt) return '사용중';
+function getOrderCountLabel(orderStats: SessionOrderStats | null): string {
+  if (!orderStats) return '—';
 
-  return `${formatLongDuration(getElapsedMs(session))} / ${formatLongDuration(getTotalMs(session))}`;
+  return `${orderStats.count}건`;
 }
 
-function getStartTimeLabel(session: OrderSession | null): string {
-  if (!session) return '—';
+function getOrderAmountLabel(orderStats: SessionOrderStats | null): string {
+  if (!orderStats) return '—';
 
-  return `${formatKoreanTime(session.createdAt)}부터`;
-}
-
-function getOrderCountLabel(session: OrderSession | null): string {
-  if (!session) return '—';
-
-  return `${session.orderCount}건`;
-}
-
-function getOrderAmountLabel(session: OrderSession | null): string {
-  if (!session) return '—';
-
-  return `${session.totalOrderPrice.toLocaleString()}원`;
+  return `${orderStats.amount.toLocaleString()}원`;
 }
 
 interface TableSessionItemProps {
   table: Table;
+  orderStats: SessionOrderStats | null;
 }
 
-function TableListItem({ table }: TableSessionItemProps) {
+function TableListItem({ table, orderStats }: TableSessionItemProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedTableNo = searchParams.get('tableNo');
   const isSelected = selectedTableNo === String(table.tableNumber);
@@ -127,20 +131,22 @@ function TableListItem({ table }: TableSessionItemProps) {
 
   return (
     <Row onClick={() => onClickTable(table.tableNumber)} isSelected={isSelected} status={status}>
-      <TableNumber>{table.tableNumber}</TableNumber>
+      <TableNumber status={status}>{table.tableNumber}</TableNumber>
       <ProgressRing
         size={RING_SIZE_ROW_PX}
         percent={getElapsedPercent(session)}
         fillColor={status === TABLE_STATUS.EXCEEDED ? Color.RED : Color.KIO_ORANGE}
-        holeColor={STATUS_ROW_BACKGROUND[status]}
+        holeColor={Color.WHITE}
       />
       <UsageTimeCell>
-        <MainTimeText>{getUsageTimeLabel(session)}</MainTimeText>
-        <StartTimeText>{getStartTimeLabel(session)}</StartTimeText>
+        <MainTimeText status={status}>{formatSessionTimeLabel(session)}</MainTimeText>
+        <StartTimeText>{formatSessionStartLabel(session) ?? '—'}</StartTimeText>
       </UsageTimeCell>
-      <Text>{getOrderCountLabel(session)}</Text>
-      <Text>{getOrderAmountLabel(session)}</Text>
-      <StatusBadge status={status} />
+      <CountText>{getOrderCountLabel(orderStats)}</CountText>
+      <AmountText>{getOrderAmountLabel(orderStats)}</AmountText>
+      <BadgeCell>
+        <StatusBadge status={status} />
+      </BadgeCell>
     </Row>
   );
 }

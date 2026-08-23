@@ -1,42 +1,46 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import { rowFlex, colFlex } from '@styles/flexStyles';
-import { TABLE_DETAIL_RING_PX } from '@constants/layout';
-import ProgressRing from '@components/admin/order/table-manage/layout/TableLayoutCard/ProgressRing';
-import { formatKoreanTime } from '@utils/formatDate';
+import { colFlex } from '@styles/flexStyles';
 import { TABLE_STATUS, TableStatus } from '@utils/tableStatus';
-import { formatLongDuration, getElapsedMs, getElapsedPercent, getTotalMs } from '@utils/tableTime';
+import { formatSessionStartLabel, formatSessionTimeLabel, getElapsedPercent } from '@utils/tableTime';
 import { OrderSession } from '@@types/index';
+
+const BAR_HEIGHT_PX = 6;
 
 const Container = styled.div`
   width: 100%;
-  gap: 12px;
-  ${rowFlex({ align: 'center' })};
-`;
-
-const TextColumn = styled.div`
-  gap: 4px;
+  gap: 8px;
   ${colFlex()};
 `;
 
-const StartTimeText = styled.div`
-  font-size: 13px;
-  color: ${Color.GREY};
-`;
-
-const ElapsedText = styled.div`
-  font-size: 15px;
+const MainTimeText = styled.div<{ status: TableStatus }>`
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
+  color: ${({ status }) => (status === TABLE_STATUS.EXCEEDED ? Color.RED : Color.GREY)};
 `;
 
-const ElapsedValue = styled.span`
-  font-weight: 700;
-  color: ${Color.BLACK};
+const BarTrack = styled.div`
+  width: 100%;
+  height: ${BAR_HEIGHT_PX}px;
+  border-radius: 999px;
+  overflow: hidden;
+  background-color: #e8eef2;
 `;
 
-const TotalValue = styled.span`
-  font-weight: 500;
-  color: ${Color.GREY};
+const BarFill = styled.div<{ percent: number; status: TableStatus }>`
+  width: ${({ percent }) => percent}%;
+  height: 100%;
+  border-radius: 999px;
+  background-color: ${({ status }) => (status === TABLE_STATUS.EXCEEDED ? Color.RED : Color.KIO_ORANGE)};
+  transition: width 0.3s ease-in-out;
+`;
+
+const MetaText = styled.div`
+  font-size: 12px;
+  color: #8d959c;
 `;
 
 interface TableUsageSummaryProps {
@@ -45,25 +49,13 @@ interface TableUsageSummaryProps {
 }
 
 function TableUsageSummary({ session, status }: TableUsageSummaryProps) {
-  const hasLimit = Boolean(session.expectedEndAt);
-  const elapsedLabel = formatLongDuration(getElapsedMs(session));
-  const totalLabel = hasLimit ? formatLongDuration(getTotalMs(session)) : null;
-
   return (
     <Container>
-      <ProgressRing
-        size={TABLE_DETAIL_RING_PX}
-        percent={getElapsedPercent(session)}
-        fillColor={status === TABLE_STATUS.EXCEEDED ? Color.RED : Color.KIO_ORANGE}
-        holeColor={Color.WHITE}
-      />
-      <TextColumn>
-        <StartTimeText>{`${formatKoreanTime(session.createdAt)}부터`}</StartTimeText>
-        <ElapsedText>
-          <ElapsedValue>{elapsedLabel}</ElapsedValue>
-          {totalLabel && <TotalValue> / {totalLabel}</TotalValue>}
-        </ElapsedText>
-      </TextColumn>
+      <MainTimeText status={status}>{formatSessionTimeLabel(session)}</MainTimeText>
+      <BarTrack>
+        <BarFill percent={getElapsedPercent(session)} status={status} />
+      </BarTrack>
+      <MetaText>{formatSessionStartLabel(session)}</MetaText>
     </Container>
   );
 }

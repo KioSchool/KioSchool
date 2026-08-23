@@ -21,11 +21,16 @@ const Button = styled.button`
   &:hover {
     background-color: ${Color.HEAVY_GREY};
   }
+
+  &:hover svg {
+    transform: rotate(90deg);
+  }
 `;
 
 const RefreshIcon = styled(RiRefreshLine)`
   width: 18px;
   height: 18px;
+  transition: transform 0.25s ease-in-out;
 `;
 
 interface TableRefreshButtonProps {

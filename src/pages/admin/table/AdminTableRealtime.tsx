@@ -12,7 +12,11 @@ import styled from '@emotion/styled';
 import { css, keyframes } from '@emotion/react';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import useAdminTableLayout, { parseConflictIndex, TablePositionUpdate } from '@hooks/admin/useAdminTableLayout';
-import useTableFilter from '@hooks/admin/useTableFilter';
+import useTableFilter, { TABLE_FILTER } from '@hooks/admin/useTableFilter';
+import useTableFlash from '@hooks/admin/useTableFlash';
+import useTableOrderStats from '@hooks/admin/useTableOrderStats';
+import useTableOrdersWebsocket from '@hooks/admin/useTableOrdersWebsocket';
+import useClockTick from '@hooks/common/useClockTick';
 import useQueryParam from '@hooks/common/useQueryParam';
 import { tableNoQueryParamConfig } from '@hooks/common/queryParamConfigs';
 import useIsMobile from '@hooks/useIsMobile';
@@ -20,7 +24,7 @@ import useTableOrders from '@hooks/admin/useTableOrders';
 import { Color } from '@resources/colors';
 import { colFlex, JustifyType, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
-import { TABLE_DETAIL_COLUMN_PX, TABLE_POLL_INTERVAL_MS, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
+import { TABLE_CLOCK_TICK_MS, TABLE_DETAIL_COLUMN_PX, TABLE_POLL_INTERVAL_MS, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
 import { getApiErrorMessage } from '@utils/apiError';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -28,7 +32,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { adminTablesAtom, adminTableViewModeAtom, adminWorkspaceAtom, TABLE_VIEW } from '@jotai/admin/atoms';
 import { externalSidebarAtom } from '@jotai/atoms';
-import { RIGHT_SIDEBAR_ACTION, Table, TablePosition } from '@@types/index';
+import { Order, RIGHT_SIDEBAR_ACTION, Table, TablePosition } from '@@types/index';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { RiSettings3Fill } from '@remixicon/react';
 import { ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardingData';
@@ -92,9 +96,13 @@ const ButtonHighlightWrapper = styled.div<{ animate: boolean }>`
 
 const FallbackContainer = styled.div`
   height: ${TABLE_VIEW_HEIGHT_PX}px;
-  border: 1px solid #ececec;
-  border-radius: 10px;
-  font-size: 1.5rem;
+  box-sizing: border-box;
+  border: 1px dashed ${Color.HEAVY_GREY};
+  border-radius: 16px;
+  padding: 0 24px;
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
   color: ${Color.GREY};
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
@@ -112,12 +120,19 @@ function AdminTableRealtime() {
   const location = useLocation();
   const setExternalSidebar = useSetAtom(externalSidebarAtom);
 
+  // 잔여 시간·상태색은 렌더 시점의 현재 시각으로 계산된다. 폴링이 멈춘 동안(편집 중·응답 지연)에도 표기가 굳지 않게 주기적으로 다시 그린다.
+  useClockTick(TABLE_CLOCK_TICK_MS);
+
   const tables = useAtomValue(adminTablesAtom);
   const setAdminTables = useSetAtom(adminTablesAtom);
   const selectedTable = tables.find((t) => t.tableNumber === Number(tableNo));
-  const { orders, totalOrderAmount } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
+  const { orders, totalOrderAmount, fetchOrders } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
   const { filterType, setFilterType, counts, filteredTables } = useTableFilter(tables);
-  const hasAnyPlacedTable = tables.some((table) => table.position != null);
+  const { flashingTableNumbers, flashTable } = useTableFlash();
+  const { statsBySessionId, applyOrder, refresh: refreshOrderStats } = useTableOrderStats(workspaceId);
+
+  // 배치 뷰에서 필터는 카드를 지우지 않고 흐리게만 한다. 지우면 홀의 공간 맥락이 깨진다. null이면 필터 없음.
+  const visibleTableNumbers = filterType === TABLE_FILTER.ALL ? null : new Set(filteredTables.map((table) => table.tableNumber));
 
   const [noticedTableNo, setNoticedTableNo] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -127,6 +142,25 @@ function AdminTableRealtime() {
   const fetchTables = () => {
     fetchWorkspaceTables(workspaceId);
   };
+
+  const handleOrderCreated = (order: Order) => {
+    applyOrder(order);
+    flashTable(order.tableNumber);
+    fetchTables();
+    if (order.tableNumber === selectedTable?.tableNumber) fetchOrders();
+  };
+
+  const handleOrderUpdated = (order: Order) => {
+    applyOrder(order);
+    if (order.tableNumber === selectedTable?.tableNumber) fetchOrders();
+  };
+
+  const handleManualRefresh = () => {
+    fetchTables();
+    refreshOrderStats();
+  };
+
+  useTableOrdersWebsocket(workspaceId, { onOrderCreated: handleOrderCreated, onOrderUpdated: handleOrderUpdated });
 
   useEffect(() => {
     fetchTables();
@@ -230,7 +264,7 @@ function AdminTableRealtime() {
               <TableFilterBar activeFilter={filterType} counts={counts} onChange={setFilterType} />
               <TopBarActions>
                 <ViewToggle />
-                <TableRefreshButton onClick={fetchTables} />
+                <TableRefreshButton onClick={handleManualRefresh} />
               </TopBarActions>
             </TopBarRow>
           )}
@@ -250,13 +284,16 @@ function AdminTableRealtime() {
           <Container>
             {viewMode === TABLE_VIEW.LAYOUT ? (
               <TableLayoutView
-                tables={filteredTables}
-                hasAnyPlacedTable={hasAnyPlacedTable}
+                tables={tables}
+                orderStatsBySessionId={statsBySessionId}
+                visibleTableNumbers={visibleTableNumbers}
                 selectedTableNumber={selectedTable?.tableNumber ?? null}
+                flashingTableNumbers={flashingTableNumbers}
                 onSelectTable={handleSelectTable}
+                onStartEdit={handleStartEdit}
               />
             ) : (
-              <AdminTableList tables={filteredTables} />
+              <AdminTableList tables={filteredTables} orderStatsBySessionId={statsBySessionId} />
             )}
             {selectedTable ? (
               <TableDetailPanel
@@ -268,7 +305,7 @@ function AdminTableRealtime() {
                 refetchTable={fetchTables}
               />
             ) : (
-              <FallbackContainer>테이블을 선택하여 상세 정보를 확인하세요.</FallbackContainer>
+              <FallbackContainer>테이블을 선택하면 상세 정보가 여기에 표시됩니다</FallbackContainer>
             )}
           </Container>
         )}

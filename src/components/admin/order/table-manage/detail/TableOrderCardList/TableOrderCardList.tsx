@@ -6,19 +6,18 @@ import { Order } from '@@types/index';
 
 const Container = styled.div`
   width: 100%;
-  gap: 8px;
+  gap: 6px;
   ${colFlex()};
 `;
 
 const SummaryLabel = styled.div`
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  color: ${Color.GREY};
+  color: #8d959c;
 `;
 
 const CardList = styled.div`
   width: 100%;
-  gap: 8px;
   ${colFlex()};
 `;
 

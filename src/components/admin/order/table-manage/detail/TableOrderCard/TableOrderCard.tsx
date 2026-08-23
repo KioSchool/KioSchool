@@ -9,11 +9,11 @@ import { Order, OrderProduct } from '@@types/index';
 const Card = styled.div`
   width: 100%;
   box-sizing: border-box;
-  padding: 10px 12px;
-  border: 1px solid #ececec;
-  border-radius: 8px;
+  padding: 10px 4px;
+  border-bottom: 1px dashed #e8eef2;
   cursor: pointer;
   gap: 4px;
+  transition: background-color 0.12s ease-in-out;
   ${colFlex()};
 
   &:hover {
@@ -22,14 +22,15 @@ const Card = styled.div`
 `;
 
 const OrderMeta = styled.div`
-  font-size: 12px;
-  color: ${Color.GREY};
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: #8d959c;
 `;
 
 const ProductSummary = styled.div`
   font-size: 14px;
   font-weight: 700;
-  color: ${Color.BLACK};
+  color: ${Color.GREY};
 `;
 
 const BottomRow = styled.div`
@@ -37,13 +38,14 @@ const BottomRow = styled.div`
 `;
 
 const CustomerName = styled.div`
-  font-size: 13px;
-  color: ${Color.GREY};
+  font-size: 12px;
+  color: #8d959c;
 `;
 
 const OrderAmount = styled.div`
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
   color: ${Color.GREY};
 `;
 

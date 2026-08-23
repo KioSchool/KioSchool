@@ -23,7 +23,7 @@ const Message = styled.p`
   margin: 0;
   font-size: 14px;
   font-weight: 500;
-  line-height: 1.5;
+  line-height: 1.6;
   color: ${Color.GREY};
   text-align: center;
 `;

@@ -19,9 +19,10 @@ const Panel = styled.div`
   width: 100%;
   height: ${TABLE_VIEW_HEIGHT_PX}px;
   box-sizing: border-box;
-  border: 1px solid #ececec;
-  border-radius: 10px;
+  border: 1px solid #e8eef2;
+  border-radius: 16px;
   overflow: hidden;
+  background-color: ${Color.WHITE};
   ${colFlex()};
 `;
 
@@ -30,8 +31,8 @@ const ScrollBody = styled.div`
   flex: 1;
   min-height: 0;
   box-sizing: border-box;
-  padding: 14px;
-  gap: 16px;
+  padding: 16px;
+  gap: 14px;
   overflow-y: auto;
   ${colFlex()};
 `;
@@ -40,24 +41,27 @@ const Divider = styled.div`
   width: 100%;
   height: 1px;
   flex-shrink: 0;
-  background-color: #ececec;
+  background-color: #e8eef2;
 `;
 
 const FooterButton = styled.button<{ variant: 'start' | 'end' }>`
   width: 100%;
-  height: 48px;
+  height: 52px;
   flex-shrink: 0;
   box-sizing: border-box;
   border: none;
+  border-top: ${({ variant }) => (variant === 'end' ? '1px solid #e8eef2' : 'none')};
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: -0.01em;
   cursor: pointer;
-  background-color: ${({ variant }) => (variant === 'end' ? Color.BLACK : Color.KIO_ORANGE)};
-  color: ${Color.WHITE};
+  background-color: ${({ variant }) => (variant === 'end' ? Color.WHITE : Color.KIO_ORANGE)};
+  color: ${({ variant }) => (variant === 'end' ? '#464a4d' : Color.WHITE)};
+  transition: background-color 0.15s ease-in-out;
   ${rowFlex({ justify: 'center', align: 'center' })};
 
   &:hover {
-    opacity: 0.9;
+    background-color: ${({ variant }) => (variant === 'end' ? '#fcfcfc' : '#ffaf70')};
   }
 `;
 

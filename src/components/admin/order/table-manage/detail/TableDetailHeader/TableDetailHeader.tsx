@@ -20,9 +20,10 @@ const TopRow = styled.div`
 `;
 
 const TableName = styled.div`
-  font-size: 18px;
-  font-weight: 700;
-  color: ${Color.BLACK};
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: ${Color.GREY};
 `;
 
 const QrButton = styled.button<{ isActive: boolean }>`
@@ -37,7 +38,12 @@ const QrButton = styled.button<{ isActive: boolean }>`
   font-weight: 700;
   cursor: pointer;
   gap: 4px;
+  transition: background-color 0.15s ease-in-out;
   ${rowFlex({ justify: 'center', align: 'center' })};
+
+  &:hover {
+    background-color: ${Color.LIGHT_GREY};
+  }
 `;
 
 interface TableDetailHeaderProps {

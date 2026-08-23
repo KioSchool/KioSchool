@@ -6,8 +6,18 @@ import { formatMinutesToTime } from '@utils/formatDate';
 
 const Container = styled.div`
   width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
   gap: 8px;
+  background-color: ${Color.LIGHT_GREY};
+  border-radius: 12px;
   ${colFlex()};
+`;
+
+const SectionLabel = styled.div`
+  font-size: 12px;
+  font-weight: 600;
+  color: #8d959c;
 `;
 
 const ButtonRow = styled.div`
@@ -18,15 +28,20 @@ const ButtonRow = styled.div`
 
 const StepButton = styled.button<{ variant: 'decrease' | 'increase' }>`
   flex: 1;
-  height: 36px;
+  height: 38px;
   border: none;
-  border-radius: 10px;
+  border-radius: 9px;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   background-color: ${({ variant }) => (variant === 'decrease' ? Color.KIO_ORANGE_FAINT : Color.KIO_ORANGE)};
   color: ${({ variant }) => (variant === 'decrease' ? Color.KIO_ORANGE : Color.WHITE)};
+  transition: opacity 0.15s ease-in-out;
   ${rowFlex({ justify: 'center', align: 'center' })};
+
+  &:hover:not(:disabled) {
+    opacity: 0.85;
+  }
 
   &:disabled {
     background-color: #e8eef2;
@@ -56,6 +71,7 @@ function TableSessionStepper({
 }: TableSessionStepperProps) {
   return (
     <Container>
+      <SectionLabel>이용 시간</SectionLabel>
       <NumberInput
         value={minutes}
         formatter={formatMinutesToTime}

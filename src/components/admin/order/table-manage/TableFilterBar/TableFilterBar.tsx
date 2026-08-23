@@ -13,27 +13,54 @@ const FILTER_LABEL: Record<TableFilterType, string> = {
   [TABLE_FILTER.EMPTY]: '미사용',
 };
 
+// 필터가 곧 범례다 — 세그먼트의 상태 도트가 카드·목록과 같은 색 언어를 가르친다.
+const FILTER_DOT_COLOR: Partial<Record<TableFilterType, string>> = {
+  [TABLE_FILTER.USING]: Color.GREEN,
+  [TABLE_FILTER.WARNING]: Color.KIO_ORANGE,
+  [TABLE_FILTER.EXCEEDED]: Color.RED,
+  [TABLE_FILTER.EMPTY]: Color.HEAVY_GREY,
+};
+
 const Container = styled.div`
   gap: 6px;
 
   ${rowFlex({ align: 'center' })};
 `;
 
-const FilterPill = styled.button<{ active: boolean }>`
-  flex-shrink: 0;
-  border: none;
+const Segment = styled.button<{ active: boolean }>`
+  height: 36px;
+  box-sizing: border-box;
+  padding: 0 14px;
+  border: 1.5px solid ${({ active }) => (active ? Color.KIO_ORANGE : '#e8eef2')};
   border-radius: 999px;
-  padding: 8px 14px;
-  background-color: ${({ active }) => (active ? Color.BLACK : Color.LIGHT_GREY)};
-  color: ${({ active }) => (active ? Color.WHITE : Color.GREY)};
-  font-size: 14px;
-  font-weight: ${({ active }) => (active ? 'bold' : 'normal')};
+  background-color: ${({ active }) => (active ? Color.KIO_ORANGE_FAINT : Color.WHITE)};
+  color: ${({ active }) => (active ? Color.KIO_ORANGE : Color.GREY)};
+  font-size: 13px;
+  font-weight: ${({ active }) => (active ? 700 : 500)};
   white-space: nowrap;
   cursor: pointer;
-  gap: 4px;
+  gap: 6px;
   transition: all 0.2s ease-in-out;
 
   ${rowFlex({ justify: 'center', align: 'center' })};
+
+  &:hover {
+    border-color: ${Color.KIO_ORANGE};
+  }
+`;
+
+const StatusDot = styled.span<{ color: string }>`
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  flex-shrink: 0;
+  background-color: ${({ color }) => color};
+`;
+
+const Count = styled.span<{ active: boolean }>`
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: ${({ active }) => (active ? Color.KIO_ORANGE : Color.GREY)};
 `;
 
 interface TableFilterBarProps {
@@ -45,11 +72,18 @@ interface TableFilterBarProps {
 function TableFilterBar({ activeFilter, counts, onChange }: TableFilterBarProps) {
   return (
     <Container>
-      {FILTER_ORDER.map((filter) => (
-        <FilterPill key={filter} active={activeFilter === filter} onClick={() => onChange(filter)}>
-          {counts[filter]} {FILTER_LABEL[filter]}
-        </FilterPill>
-      ))}
+      {FILTER_ORDER.map((filter) => {
+        const dotColor = FILTER_DOT_COLOR[filter];
+        const active = activeFilter === filter;
+
+        return (
+          <Segment key={filter} active={active} onClick={() => onChange(filter)}>
+            {dotColor && <StatusDot color={dotColor} />}
+            {FILTER_LABEL[filter]}
+            <Count active={active}>{counts[filter]}</Count>
+          </Segment>
+        );
+      })}
     </Container>
   );
 }

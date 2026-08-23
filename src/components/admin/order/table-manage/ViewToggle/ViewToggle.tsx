@@ -6,6 +6,8 @@ import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 
+const TOGGLE_BUTTON_SIZE_PX = 36;
+
 const Container = styled.div`
   background-color: ${Color.LIGHT_GREY};
   border-radius: 10px;
@@ -18,8 +20,6 @@ const Container = styled.div`
     display: none;
   }
 `;
-
-const TOGGLE_BUTTON_SIZE_PX = 36;
 
 const ToggleButton = styled.button<{ active: boolean }>`
   width: ${TOGGLE_BUTTON_SIZE_PX}px;

@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { css, keyframes } from '@emotion/react';
 import { Color } from '@resources/colors';
 import { TABLE_STATUS, TableStatus } from '@utils/tableStatus';
 
@@ -23,15 +24,44 @@ const STATUS_BADGE_BACKGROUND: Record<TableStatus, string> = {
   [TABLE_STATUS.EXCEEDED]: Color.LIGHT_RED,
 };
 
+const STATUS_DOT_COLOR: Record<TableStatus, string> = {
+  [TABLE_STATUS.EMPTY]: Color.HEAVY_GREY,
+  [TABLE_STATUS.USING]: Color.GREEN,
+  [TABLE_STATUS.WARNING]: Color.KIO_ORANGE,
+  [TABLE_STATUS.EXCEEDED]: Color.RED,
+};
+
+const dotPulse = keyframes`
+  0% { opacity: 1; }
+  50% { opacity: 0.35; }
+  100% { opacity: 1; }
+`;
+
 const Badge = styled.div<{ status: TableStatus }>`
-  color: ${({ status }) => STATUS_BADGE_TEXT_COLOR[status]};
-  font-size: 12px;
-  font-weight: 600;
-  padding: 4px 6px;
-  border: 1px solid ${({ status }) => STATUS_BADGE_TEXT_COLOR[status]};
-  border-radius: 13px;
-  background-color: ${({ status }) => STATUS_BADGE_BACKGROUND[status]};
   width: fit-content;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: ${({ status }) => STATUS_BADGE_TEXT_COLOR[status]};
+  background-color: ${({ status }) => STATUS_BADGE_BACKGROUND[status]};
+`;
+
+const Dot = styled.span<{ status: TableStatus }>`
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  flex-shrink: 0;
+  background-color: ${({ status }) => STATUS_DOT_COLOR[status]};
+
+  ${({ status }) =>
+    status === TABLE_STATUS.EXCEEDED &&
+    css`
+      animation: ${dotPulse} 1.4s infinite;
+    `}
 `;
 
 interface StatusBadgeProps {
@@ -39,7 +69,12 @@ interface StatusBadgeProps {
 }
 
 function StatusBadge({ status }: StatusBadgeProps) {
-  return <Badge status={status}>{STATUS_BADGE_LABEL[status]}</Badge>;
+  return (
+    <Badge status={status}>
+      <Dot status={status} />
+      {STATUS_BADGE_LABEL[status]}
+    </Badge>
+  );
 }
 
 export default StatusBadge;
