@@ -5,14 +5,14 @@ export const NAVBAR_HEIGHT = 65;
 export const NAVBAR_HEIGHT_MOBILE = 56;
 
 export const TABLE_GRID_SIZE = 15;
-export const TABLE_GRID_CELL_PX = 110;
+export const TABLE_GRID_CELL_PX = 72;
 export const TABLE_GRID_GAP_PX = 8;
 export const TABLE_GRID_PADDING_PX = 16;
+export const TABLE_CROP_MARGIN_CELLS = 1;
 
 export const TABLE_TRAY_COLUMN_PX = 260;
 export const TABLE_DETAIL_COLUMN_PX = 290;
 export const TABLE_VIEW_HEIGHT_PX = 600;
-export const TABLE_DETAIL_RING_PX = 48;
 
 export const TABLE_LIST_NUMBER_COLUMN_PX = 56;
 export const TABLE_LIST_RING_COLUMN_PX = 40;
@@ -23,7 +23,12 @@ export const TABLE_LIST_STATUS_COLUMN_PX = 64;
 export const TABLE_LIST_GRID_TEMPLATE = `${TABLE_LIST_NUMBER_COLUMN_PX}px ${TABLE_LIST_RING_COLUMN_PX}px 1fr ${TABLE_LIST_ORDER_COLUMN_PX}px ${TABLE_LIST_AMOUNT_COLUMN_PX}px ${TABLE_LIST_STATUS_COLUMN_PX}px`;
 
 export const TABLE_POLL_INTERVAL_MS = 15_000;
+export const TABLE_CLOCK_TICK_MS = 30_000;
+export const ORDER_FLASH_DURATION_MS = 2_400;
+
 export const DRAG_ACTIVATION_DISTANCE_PX = 5;
+export const TOUCH_DRAG_DELAY_MS = 250;
+export const TOUCH_DRAG_TOLERANCE_PX = 5;
 export const MAX_TABLE_COUNT = 100;
 
 export const TRAY_DROPPABLE_ID = 'tray';
