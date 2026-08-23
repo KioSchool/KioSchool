@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import PreviewContainer from '@components/common/container/PreviewContainer';
-import AppContactButton from '@components/common/button/AppContactButton';
+import AppFaqButton from '@components/common/button/AppFaqButton';
 import AppPopup from '@components/common/popup/AppPopup';
 import { popupDatas } from '@constants/data/popupData';
 import { useAtomValue, useSetAtom } from 'jotai';
@@ -113,7 +113,7 @@ function AdminWorkspace() {
           <PreviewContainer width={300} height={640} />
         </ContentContainer>
         <AppPopup popupDatas={popupDatas} />
-        <AppContactButton />
+        <AppFaqButton />
       </>
     ));
 
