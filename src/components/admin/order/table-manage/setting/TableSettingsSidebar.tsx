@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { adminWorkspaceAtom, adminTablesAtom } from '@jotai/admin/atoms';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import NewCommonButton from '@components/common/button/NewCommonButton';
+import SettingSection from '@components/admin/order/table-manage/setting/SettingSection/SettingSection';
 import { colFlex } from '@styles/flexStyles';
 import { getAdminWorkspacePath } from '@constants/routes';
 import { MAX_TABLE_COUNT } from '@constants/layout';
@@ -16,31 +17,20 @@ import NumberInput from '@components/common/input/NumberInput';
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  padding: 30px 0 70px 0;
-  gap: 8px;
-  position: relative;
+  box-sizing: border-box;
+  padding: 20px 0 24px 0;
+  gap: 16px;
   ${colFlex({ justify: 'start', align: 'start' })};
 `;
 
-const SectionLabel = styled.div`
-  font-size: 14px;
-  font-weight: 700;
-  color: #464a4d;
-`;
-
-const Divider = styled.div`
-  width: 100%;
-  height: 1px;
-  margin: 6px 0;
-  background-color: #e8eef2;
+const CountCaption = styled.div`
+  font-size: 11px;
+  color: #8d959c;
 `;
 
 const SaveButton = styled(NewCommonButton)`
   width: 100%;
-  max-width: 250px;
-  margin-top: 120px;
-  position: absolute;
-  bottom: 40px;
+  margin-top: auto;
 `;
 
 function TableSettingsSidebar() {
@@ -110,18 +100,17 @@ function TableSettingsSidebar() {
     <Container>
       <TableQRDownload workspaceId={workspaceId} workspaceName={workspace.name} tables={tables} />
 
-      <Divider />
-
-      <SectionLabel>테이블 개수</SectionLabel>
-      <NumberInput
-        value={tableCount}
-        formatter={(v) => `${v}개`}
-        onChange={handleTableCountChange}
-        onIncrement={handleTableCountPlus}
-        onDecrement={handleTableCountMinus}
-      />
-
-      <Divider />
+      <SettingSection label="테이블 개수">
+        <NumberInput
+          value={tableCount}
+          formatter={(v) => `${v}개`}
+          maxWidth="100%"
+          onChange={handleTableCountChange}
+          onIncrement={handleTableCountPlus}
+          onDecrement={handleTableCountMinus}
+        />
+        <CountCaption>최대 {MAX_TABLE_COUNT}개까지 만들 수 있어요</CountCaption>
+      </SettingSection>
 
       <TableTimeSetting
         isTimeLimited={isTimeLimited}
@@ -129,6 +118,7 @@ function TableSettingsSidebar() {
         onTimeLimitedChange={setIsTimeLimited}
         onMinutesChange={setTimeLimitMinutes}
       />
+
       <SaveButton size={'xs'} onClick={handleSave} disabled={!isDirty}>
         적용
       </SaveButton>

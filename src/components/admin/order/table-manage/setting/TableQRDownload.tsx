@@ -4,24 +4,35 @@ import QRCode from 'qrcode';
 import { QRCodeCanvas } from 'qrcode.react';
 import { downloadQRGrid } from '@utils/qrCode';
 import NewCommonButton from '@components/common/button/NewCommonButton';
-import { colFlex } from '@styles/flexStyles';
+import SettingSection from '@components/admin/order/table-manage/setting/SettingSection/SettingSection';
+import { Color } from '@resources/colors';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Table } from '@@types/index';
 
-const Container = styled.div`
+const Row = styled.div`
   width: 100%;
   gap: 8px;
-  ${colFlex({ justify: 'start', align: 'start' })};
+
+  ${rowFlex({ justify: 'space-between', align: 'center' })};
 `;
 
-const SectionLabel = styled.div`
-  font-size: 14px;
+const TextBlock = styled.div`
+  min-width: 0;
+  gap: 2px;
+
+  ${colFlex()};
+`;
+
+const RowTitle = styled.div`
+  font-size: 13px;
   font-weight: 700;
-  color: #464a4d;
+  color: ${Color.GREY};
 `;
 
-const DownloadButton = styled(NewCommonButton)`
-  width: 100%;
-  max-width: 250px;
+const RowCaption = styled.div`
+  font-size: 11px;
+  color: #8d959c;
+  word-break: keep-all;
 `;
 
 const QRContainer = styled.div`
@@ -64,17 +75,26 @@ function TableQRDownload({ workspaceId, workspaceName, tables }: TableQRDownload
 
   return (
     <>
-      <Container>
-        <SectionLabel>전체 QR</SectionLabel>
-        <DownloadButton size={'xs'} onClick={downloadAllQrCode}>
-          다운로드
-        </DownloadButton>
-
-        <SectionLabel>미리보기 QR</SectionLabel>
-        <DownloadButton size={'xs'} onClick={downloadPreviewQrCode}>
-          다운로드
-        </DownloadButton>
-      </Container>
+      <SettingSection label="QR 코드">
+        <Row>
+          <TextBlock>
+            <RowTitle>전체 QR</RowTitle>
+            <RowCaption>모든 테이블 QR 한 장</RowCaption>
+          </TextBlock>
+          <NewCommonButton size="xs" color="blue_gray" onClick={downloadAllQrCode}>
+            다운로드
+          </NewCommonButton>
+        </Row>
+        <Row>
+          <TextBlock>
+            <RowTitle>미리보기 QR</RowTitle>
+            <RowCaption>주문 화면 미리보기용</RowCaption>
+          </TextBlock>
+          <NewCommonButton size="xs" color="blue_gray" onClick={downloadPreviewQrCode}>
+            다운로드
+          </NewCommonButton>
+        </Row>
+      </SettingSection>
 
       <QRContainer ref={QRCodeContainerRef}>
         {tables.map((table) => (
