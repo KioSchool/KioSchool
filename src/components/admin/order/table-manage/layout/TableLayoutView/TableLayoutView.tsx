@@ -1,13 +1,13 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import styled from '@emotion/styled';
 import { Table } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import { TABLE_GRID_CELL_PX, TABLE_GRID_GAP_PX, TABLE_GRID_PADDING_PX, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
-import TableLayoutCanvas from '../TableLayoutCanvas/TableLayoutCanvas';
+import { TABLE_CROP_MARGIN_CELLS, TABLE_GRID_SIZE, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
+import NewCommonButton from '@components/common/button/NewCommonButton';
+import { getSessionOrderStats, SessionOrderStats } from '@hooks/admin/useTableOrderStats';
+import TableLayoutCanvas, { GridCropBounds } from '../TableLayoutCanvas/TableLayoutCanvas';
 import TableLayoutCard from '../TableLayoutCard/TableLayoutCard';
-
-const HALF = 2;
 
 const Container = styled.div`
   width: 100%;
@@ -19,73 +19,72 @@ const Container = styled.div`
 const EmptyState = styled.div`
   width: 100%;
   height: 100%;
-  border: 1px solid #ececec;
-  border-radius: 10px;
-  gap: 6px;
+  border: 1px solid #e8eef2;
+  border-radius: 16px;
+  gap: 8px;
   color: ${Color.GREY};
-  font-size: 1.1rem;
+  font-size: 16px;
+  font-weight: 700;
 
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
 const EmptyStateHint = styled.div`
-  font-size: 0.9rem;
-  color: ${Color.GREY};
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: #8d959c;
 `;
 
-function scrollToPlacedCenter(box: HTMLDivElement | null, placedTables: Table[]) {
-  if (!box || placedTables.length === 0) return;
-
+// 운영 모드는 배치 영역 + 여유 1칸만 그린다. 빈 격자를 볼 이유가 운영 중에는 없고, 홀 전체가 스크롤 없이 한눈에 들어와야 위치로 찾는다는 목적이 산다.
+function getCropBounds(placedTables: Table[]): GridCropBounds {
   const xs = placedTables.map((table) => table.position!.x);
   const ys = placedTables.map((table) => table.position!.y);
-  const centerX = (Math.min(...xs) + Math.max(...xs) + 1) / HALF;
-  const centerY = (Math.min(...ys) + Math.max(...ys) + 1) / HALF;
-  const step = TABLE_GRID_CELL_PX + TABLE_GRID_GAP_PX;
+  const maxIndex = TABLE_GRID_SIZE - 1;
 
-  box.scrollLeft = Math.max(0, TABLE_GRID_PADDING_PX + centerX * step - box.clientWidth / HALF);
-  box.scrollTop = Math.max(0, TABLE_GRID_PADDING_PX + centerY * step - box.clientHeight / HALF);
-}
-
-function getEmptyStateMessage(hasAnyPlacedTable: boolean): { title: string; hint: string | null } {
-  if (hasAnyPlacedTable) {
-    return { title: '조건에 맞는 테이블이 없습니다', hint: null };
-  }
-
-  return { title: '아직 배치된 테이블이 없습니다', hint: '상단의 「배치 편집」 버튼을 눌러 테이블을 배치해주세요' };
+  return {
+    minX: Math.max(0, Math.min(...xs) - TABLE_CROP_MARGIN_CELLS),
+    maxX: Math.min(maxIndex, Math.max(...xs) + TABLE_CROP_MARGIN_CELLS),
+    minY: Math.max(0, Math.min(...ys) - TABLE_CROP_MARGIN_CELLS),
+    maxY: Math.min(maxIndex, Math.max(...ys) + TABLE_CROP_MARGIN_CELLS),
+  };
 }
 
 interface TableLayoutViewProps {
   tables: Table[];
-  hasAnyPlacedTable: boolean;
+  orderStatsBySessionId: Map<number, SessionOrderStats>;
+  visibleTableNumbers: Set<number> | null;
   selectedTableNumber: number | null;
+  flashingTableNumbers: Set<number>;
   onSelectTable: (table: Table) => void;
+  onStartEdit: () => void;
 }
 
-function TableLayoutView({ tables, hasAnyPlacedTable, selectedTableNumber, onSelectTable }: TableLayoutViewProps) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const hasCenteredRef = useRef(false);
+function TableLayoutView({
+  tables,
+  orderStatsBySessionId,
+  visibleTableNumbers,
+  selectedTableNumber,
+  flashingTableNumbers,
+  onSelectTable,
+  onStartEdit,
+}: TableLayoutViewProps) {
   const placedTables = useMemo(() => tables.filter((table) => table.position != null), [tables]);
 
-  // 필터를 바꿀 때마다 캔버스를 재중심화하면 운영자가 보던 스크롤 위치를 잃는다 - 최초 1회만 중심 이동한다.
-  useEffect(() => {
-    if (hasCenteredRef.current || !scrollRef.current || placedTables.length === 0) return;
-
-    scrollToPlacedCenter(scrollRef.current, placedTables);
-    hasCenteredRef.current = true;
-  }, [placedTables]);
-
   if (placedTables.length === 0) {
-    const { title, hint } = getEmptyStateMessage(hasAnyPlacedTable);
-
     return (
       <Container>
         <EmptyState>
-          {title}
-          {hint && <EmptyStateHint>{hint}</EmptyStateHint>}
+          아직 배치된 테이블이 없습니다
+          <EmptyStateHint>실제 홀 모양대로 놓아두면 몇 번 테이블이 어디인지 바로 찾을 수 있어요</EmptyStateHint>
+          <NewCommonButton size="sm" onClick={onStartEdit}>
+            배치 편집
+          </NewCommonButton>
         </EmptyState>
       </Container>
     );
   }
+
+  const cropBounds = getCropBounds(placedTables);
 
   const tableAt = (x: number, y: number) => placedTables.find((table) => table.position?.x === x && table.position?.y === y);
 
@@ -93,12 +92,21 @@ function TableLayoutView({ tables, hasAnyPlacedTable, selectedTableNumber, onSel
     const table = tableAt(x, y);
     if (!table) return null;
 
-    return <TableLayoutCard table={table} isSelected={table.tableNumber === selectedTableNumber} onSelect={onSelectTable} />;
+    return (
+      <TableLayoutCard
+        table={table}
+        orderCount={getSessionOrderStats(table, orderStatsBySessionId)?.count ?? 0}
+        isSelected={table.tableNumber === selectedTableNumber}
+        isDimmed={visibleTableNumbers !== null && !visibleTableNumbers.has(table.tableNumber)}
+        isFlashing={flashingTableNumbers.has(table.tableNumber)}
+        onSelect={onSelectTable}
+      />
+    );
   };
 
   return (
     <Container>
-      <TableLayoutCanvas showGrid={false} renderCell={renderCell} scrollRef={scrollRef} />
+      <TableLayoutCanvas cropBounds={cropBounds} renderCell={renderCell} />
     </Container>
   );
 }

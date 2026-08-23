@@ -44,8 +44,9 @@ const meta = {
 export default meta;
 
 export const Empty = { args: { table: makeTable(1, null) } };
-export const Using = { args: { table: makeTable(2, 47) } };
-export const Warning = { args: { table: makeTable(3, 7) } };
-export const Exceeded = { args: { table: makeTable(4, -12) } };
-export const Selected = { args: { table: makeTable(5, 30), isSelected: true } };
+export const Using = { args: { table: makeTable(2, 47), orderCount: 3 } };
+export const Warning = { args: { table: makeTable(3, 7), orderCount: 3 } };
+export const Exceeded = { args: { table: makeTable(4, -12), orderCount: 3 } };
+export const Selected = { args: { table: makeTable(5, 30), orderCount: 3, isSelected: true } };
 export const WithHandle = { args: { table: makeTable(6, 30), showHandle: true } };
+export const Dimmed = { args: { table: makeTable(7, 30), orderCount: 3, isDimmed: true } };

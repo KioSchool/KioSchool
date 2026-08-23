@@ -8,20 +8,28 @@ import DraggableTableCard from '../DraggableTableCard/DraggableTableCard';
 
 const Container = styled.div<{ isOver: boolean }>`
   height: 100%;
-  border: 1px solid ${({ isOver }) => (isOver ? Color.KIO_ORANGE : '#ececec')};
-  border-radius: 10px;
+  box-sizing: border-box;
+  border: 1px solid ${({ isOver }) => (isOver ? Color.KIO_ORANGE : '#e8eef2')};
+  border-radius: 16px;
   background-color: ${({ isOver }) => (isOver ? Color.KIO_ORANGE_FAINT : Color.WHITE)};
   padding: 12px;
   gap: 10px;
   overflow-y: auto;
+  transition: border-color 0.15s ease-in-out, background-color 0.15s ease-in-out;
 
   ${colFlex()};
 `;
 
 const Title = styled.div`
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
+  color: #8d959c;
+`;
+
+const TitleCount = styled.span`
   color: ${Color.GREY};
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
 `;
 
 const CardList = styled.div`
@@ -50,7 +58,9 @@ function UnplacedTableTray({ tables }: UnplacedTableTrayProps) {
 
   return (
     <Container ref={setNodeRef} isOver={isOver}>
-      <Title>미배치 {tables.length}</Title>
+      <Title>
+        미배치 <TitleCount>{tables.length}</TitleCount>
+      </Title>
       {tables.length === 0 ? (
         <EmptyText>모든 테이블이 배치되었습니다</EmptyText>
       ) : (

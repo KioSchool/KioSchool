@@ -1,10 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import { pointerWithin, DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { pointerWithin, DndContext, DragEndEvent, DragOverlay, DragStartEvent, MouseSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { Table, TablePosition } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import { DRAG_ACTIVATION_DISTANCE_PX, TABLE_GRID_CELL_PX, TABLE_TRAY_COLUMN_PX, TABLE_VIEW_HEIGHT_PX, TRAY_DROPPABLE_ID } from '@constants/layout';
+import {
+  DRAG_ACTIVATION_DISTANCE_PX,
+  TABLE_GRID_CELL_PX,
+  TABLE_GRID_GAP_PX,
+  TABLE_GRID_PADDING_PX,
+  TABLE_TRAY_COLUMN_PX,
+  TABLE_VIEW_HEIGHT_PX,
+  TOUCH_DRAG_DELAY_MS,
+  TOUCH_DRAG_TOLERANCE_PX,
+  TRAY_DROPPABLE_ID,
+} from '@constants/layout';
 import useTableLayoutDraft from '@hooks/admin/useTableLayoutDraft';
 import { TablePositionUpdate } from '@hooks/admin/useAdminTableLayout';
 import TableLayoutCanvas from '../../TableLayoutCanvas/TableLayoutCanvas';
@@ -16,6 +26,7 @@ import EditorToolbar from '../EditorToolbar/EditorToolbar';
 
 const CONFLICT_OUTLINE_PX = 2;
 const CONFLICT_OUTLINE_OFFSET_PX = 2;
+const HALF = 2;
 
 const Frame = styled.div`
   width: 100%;
@@ -28,7 +39,7 @@ const Container = styled.div`
   height: ${TABLE_VIEW_HEIGHT_PX}px;
   display: grid;
   grid-template-columns: ${TABLE_TRAY_COLUMN_PX}px 1fr;
-  gap: 10px;
+  gap: 12px;
 `;
 
 const OverlayCard = styled.div`
@@ -54,6 +65,19 @@ function parseCellId(id: string | number): TablePosition | null {
   return matched ? { x: Number(matched[1]), y: Number(matched[2]) } : null;
 }
 
+function scrollToPlacedCenter(box: HTMLDivElement | null, positions: TablePosition[]) {
+  if (!box || positions.length === 0) return;
+
+  const xs = positions.map((position) => position.x);
+  const ys = positions.map((position) => position.y);
+  const centerX = (Math.min(...xs) + Math.max(...xs) + 1) / HALF;
+  const centerY = (Math.min(...ys) + Math.max(...ys) + 1) / HALF;
+  const step = TABLE_GRID_CELL_PX + TABLE_GRID_GAP_PX;
+
+  box.scrollLeft = Math.max(0, TABLE_GRID_PADDING_PX + centerX * step - box.clientWidth / HALF);
+  box.scrollTop = Math.max(0, TABLE_GRID_PADDING_PX + centerY * step - box.clientHeight / HALF);
+}
+
 interface TableLayoutEditorProps {
   tables: Table[];
   onExit: () => void;
@@ -66,8 +90,19 @@ interface TableLayoutEditorProps {
 function TableLayoutEditor({ tables, onExit, onSave, onPositionChange, isSaving, conflictedPosition }: TableLayoutEditorProps) {
   const { positionOf, place, resetAll, changes, isDirty } = useTableLayoutDraft(tables);
   const [activeTableId, setActiveTableId] = useState<number | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: DRAG_ACTIVATION_DISTANCE_PX } }));
+  // 마우스는 5px 이동으로, 터치는 250ms 홀드로 리프트한다 - 터치에서 즉시 리프트하면 캔버스 스크롤 제스처와 충돌한다.
+  const sensors = useSensors(
+    useSensor(MouseSensor, { activationConstraint: { distance: DRAG_ACTIVATION_DISTANCE_PX } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: TOUCH_DRAG_DELAY_MS, tolerance: TOUCH_DRAG_TOLERANCE_PX } }),
+  );
+
+  // 진입 시 1회, 이미 배치된 무리의 중심으로 스크롤한다 - 편집 중 재중심화하면 드래그하던 위치를 잃는다.
+  useEffect(() => {
+    const placedPositions = tables.filter((table) => table.position != null).map((table) => table.position!);
+    scrollToPlacedCenter(scrollRef.current, placedPositions);
+  }, []);
 
   const placedTables = tables.filter((table) => positionOf(table) !== null);
   const unplacedTables = tables.filter((table) => positionOf(table) === null);
@@ -135,7 +170,7 @@ function TableLayoutEditor({ tables, onExit, onSave, onPositionChange, isSaving,
       <DndContext sensors={sensors} collisionDetection={pointerWithin} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <Container>
           <UnplacedTableTray tables={unplacedTables} />
-          <TableLayoutCanvas showGrid renderCell={renderCell} />
+          <TableLayoutCanvas renderCell={renderCell} scrollRef={scrollRef} />
         </Container>
         <DragOverlay>
           {activeTable && (

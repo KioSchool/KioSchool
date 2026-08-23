@@ -1,4 +1,5 @@
 import TableLayoutCanvas from '@components/admin/order/table-manage/layout/TableLayoutCanvas/TableLayoutCanvas';
+import LayoutGridCell from '@components/admin/order/table-manage/layout/edit/LayoutGridCell/LayoutGridCell';
 
 const meta = {
   title: 'Components/Admin/TableManage/TableLayoutCanvas',
@@ -14,7 +15,8 @@ const meta = {
 
 export default meta;
 
-const renderNumberedCell = (x: number, y: number) => (x < 3 && y < 3 ? <div>{`${x},${y}`}</div> : null);
+const renderFloorCell = (x: number, y: number) => (x < 3 && y < 3 ? <div>{`${x},${y}`}</div> : null);
+const renderSocketCell = (x: number, y: number) => <LayoutGridCell x={x} y={y} isDragging={false} isConflicted={false} />;
 
-export const OperationMode = { args: { showGrid: false, renderCell: renderNumberedCell } };
-export const EditMode = { args: { showGrid: true, renderCell: renderNumberedCell } };
+export const OperationFloor = { args: { renderCell: renderFloorCell } };
+export const EditSockets = { args: { renderCell: renderSocketCell } };
