@@ -63,10 +63,15 @@ const UnplacedCount = styled.span`
   font-variant-numeric: tabular-nums;
 `;
 
+const UNPLACED_LIST_MAX_ROWS = 2;
+const UNPLACED_LIST_GAP_PX = 8;
+
 const UnplacedCardList = styled.div`
   width: 100%;
-  gap: 8px;
+  gap: ${UNPLACED_LIST_GAP_PX}px;
   flex-wrap: wrap;
+  max-height: ${UNPLACED_LIST_MAX_ROWS * TABLE_GRID_CELL_PX + (UNPLACED_LIST_MAX_ROWS - 1) * UNPLACED_LIST_GAP_PX}px;
+  overflow-y: auto;
 
   ${rowFlex()};
 `;
