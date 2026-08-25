@@ -13,6 +13,7 @@ import { useEffect, useMemo } from 'react';
 import useOrder from '@hooks/user/useOrder';
 import { API_ERROR_CODES } from '@constants/errorCodes';
 import { isApiErrorCode } from '@utils/apiError';
+import { calculateBasketTotalAmount, getBasketItemsWithProduct } from '@utils/orderBasket';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -76,9 +77,8 @@ function OrderBasket() {
     return _.keyBy(products, 'id');
   }, [products]);
 
-  const totalAmount = orderBasket.reduce((acc, cur) => {
-    return acc + productsMap[cur.productId].price * cur.quantity;
-  }, 0);
+  const basketItems = useMemo(() => getBasketItemsWithProduct(orderBasket, productsMap), [orderBasket, productsMap]);
+  const totalAmount = calculateBasketTotalAmount(orderBasket, productsMap);
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -88,11 +88,14 @@ function OrderBasket() {
 
   const { createOrder } = useOrder();
 
+  // 담긴 게 없으면 주문 화면으로 되돌린다.
+  // 상품 목록에서 사라진 항목만 남은 경우도 "보여줄 게 없는" 상태이므로 같이 처리한다.
+  // 이 화면은 상품을 직접 조회하지 않고 주문 화면이 채워둔 목록을 쓰므로, 로딩 중을 빈 목록으로 오인할 여지가 없다.
   useEffect(() => {
-    if (orderBasket.length === 0) {
+    if (basketItems.length === 0) {
       navigate(-1);
     }
-  }, [orderBasket.length, navigate]);
+  }, [basketItems.length, navigate]);
 
   const clearOrderBasket = () => {
     if (confirm('정말로 모두 삭제하시겠습니까?')) {
@@ -143,19 +146,18 @@ function OrderBasket() {
           <Button onClick={clearOrderBasket}>전체 삭제 </Button>
         </Header>
         <OrderBasketContainer className={'order-basket-content'}>
-          {orderBasket.map((basket, index) => {
-            const product = productsMap[basket.productId];
-            const isShowDivider = index !== orderBasket.length - 1;
+          {basketItems.map(({ basketItem, product }, index) => {
+            const isShowDivider = index !== basketItems.length - 1;
 
             return (
-              <ProductCounterBadgeContainer key={index}>
+              <ProductCounterBadgeContainer key={basketItem.productId}>
                 <ProductCounterBadge product={product} />
                 {isShowDivider && <HorizontalDivider />}
               </ProductCounterBadgeContainer>
             );
           })}
         </OrderBasketContainer>
-        <OrderButton showButton={orderBasket.length > 0} buttonLabel={`${totalAmount.toLocaleString()}원 주문하기`} onClick={navigateHandler} />
+        <OrderButton showButton={basketItems.length > 0} buttonLabel={`${totalAmount.toLocaleString()}원 주문하기`} onClick={navigateHandler} />
       </SubContainer>
     </Container>
   );
