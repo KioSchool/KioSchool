@@ -18,6 +18,7 @@ import usePreventRefresh from '@hooks/usePreventRefresh';
 import useTossPopup from '@hooks/user/useTossPopup';
 import { Account } from '@@types/index';
 import { defaultAccountValue } from '@@types/defaultValues';
+import { calculateBasketTotalAmount, getBasketItemsWithProduct } from '@utils/orderBasket';
 
 // 주문 대상이 사라진 경우. 장바구니를 비우고 주문 화면으로 되돌린다.
 const MISSING_ORDER_TARGET_CODES = [API_ERROR_CODES.NOT_FOUND_PRODUCT, API_ERROR_CODES.WORKSPACE_NOT_FOUND, API_ERROR_CODES.WORKSPACE_TABLE_NOT_FOUND] as const;
@@ -53,9 +54,8 @@ function OrderPay() {
   const products = useAtomValue(userProductsAtom);
   const [orderBasket, setOrderBasket] = useAtom(userOrderBasketAtom);
   const productsMap = _.keyBy(products, 'id');
-  const totalAmount = orderBasket.reduce((acc, cur) => {
-    return acc + productsMap[cur.productId].price * cur.quantity;
-  }, 0);
+  const basketItems = getBasketItemsWithProduct(orderBasket, productsMap);
+  const totalAmount = calculateBasketTotalAmount(orderBasket, productsMap);
 
   const navigate = useNavigate();
   const { createOrder } = useOrder();
@@ -191,7 +191,7 @@ function OrderPay() {
         </ContentsContainer>
       </SubContainer>
       <OrderButton
-        showButton={orderBasket.length > 0}
+        showButton={basketItems.length > 0}
         disabled={isSubmitting}
         buttonLabel={isSubmitting ? '주문 진행 중...' : `${totalAmount.toLocaleString()}원 · ${isTossPay ? '토스로 송금' : '계좌로 송금'}`}
         onClick={payOrder}
