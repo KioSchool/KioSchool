@@ -50,7 +50,7 @@ const FooterButton = styled.button<{ variant: 'start' | 'end' }>`
   flex-shrink: 0;
   box-sizing: border-box;
   border: none;
-  border-top: ${({ variant }) => (variant === 'end' ? '1px solid ${Color.BORDER_GREY}' : 'none')};
+  border-top: ${({ variant }) => (variant === 'end' ? `1px solid ${Color.BORDER_GREY}` : 'none')};
   font-size: 15px;
   font-weight: 800;
   letter-spacing: -0.01em;
@@ -70,11 +70,10 @@ interface TableDetailPanelProps {
   workspaceName: string;
   table: Table;
   orders: Order[];
-  totalOrderAmount: number;
   refetchTable: () => void;
 }
 
-function TableDetailPanel({ workspaceId, workspaceName, table, orders, totalOrderAmount, refetchTable }: TableDetailPanelProps) {
+function TableDetailPanel({ workspaceId, workspaceName, table, orders, refetchTable }: TableDetailPanelProps) {
   const status = getTableStatus(table);
   const session = table.orderSession;
   const workspace = useAtomValue(adminWorkspaceAtom);
@@ -120,7 +119,7 @@ function TableDetailPanel({ workspaceId, workspaceName, table, orders, totalOrde
                 disabled={isStepperDisabled}
               />
               <Divider />
-              <TableOrderCardList orders={orders} totalOrderAmount={totalOrderAmount} />
+              <TableOrderCardList orders={orders} />
             </>
           ) : (
             <TableInactivePanel />

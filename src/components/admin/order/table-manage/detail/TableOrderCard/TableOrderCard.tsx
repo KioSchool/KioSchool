@@ -4,21 +4,34 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { formatKoreanTime } from '@utils/formatDate';
 import useModal from '@hooks/useModal';
 import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
-import { Order, OrderProduct } from '@@types/index';
+import { Order, OrderProduct, OrderStatus } from '@@types/index';
 
-const Card = styled.div`
+const CANCELLED_OPACITY = 0.55;
+
+const Card = styled.div<{ isCancelled: boolean }>`
   width: 100%;
   box-sizing: border-box;
   padding: 10px 4px;
   border-bottom: 1px dashed ${Color.BORDER_GREY};
   cursor: pointer;
   gap: 4px;
+  opacity: ${({ isCancelled }) => (isCancelled ? CANCELLED_OPACITY : 1)};
   transition: background-color 0.12s ease-in-out;
   ${colFlex()};
 
   &:hover {
     background-color: ${Color.LIGHT_GREY};
   }
+`;
+
+const CancelledChip = styled.span`
+  margin-left: 6px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  background-color: ${Color.LIGHT_RED};
+  color: ${Color.RED};
 `;
 
 const OrderMeta = styled.div`
@@ -42,10 +55,11 @@ const CustomerName = styled.div`
   color: ${Color.MUTED_GREY};
 `;
 
-const OrderAmount = styled.div`
+const OrderAmount = styled.div<{ isCancelled: boolean }>`
   font-size: 14px;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
+  text-decoration: ${({ isCancelled }) => (isCancelled ? 'line-through' : 'none')};
   color: ${Color.GREY};
 `;
 
@@ -63,17 +77,19 @@ interface TableOrderCardProps {
 function TableOrderCard({ order }: TableOrderCardProps) {
   const { isModalOpen, openModal, closeModal } = useModal();
   const formattedTime = formatKoreanTime(order.createdAt) || '시간 없음';
+  const isCancelled = order.status === OrderStatus.CANCELLED;
 
   return (
     <>
-      <Card onClick={openModal}>
+      <Card isCancelled={isCancelled} onClick={openModal}>
         <OrderMeta>
           #{order.orderNumber} · {formattedTime}
+          {isCancelled && <CancelledChip>취소</CancelledChip>}
         </OrderMeta>
         <ProductSummary>{formatProductSummary(order.orderProducts)}</ProductSummary>
         <BottomRow>
           <CustomerName>{order.customerName}</CustomerName>
-          <OrderAmount>{order.totalPrice.toLocaleString()}원</OrderAmount>
+          <OrderAmount isCancelled={isCancelled}>{order.totalPrice.toLocaleString()}원</OrderAmount>
         </BottomRow>
       </Card>
       <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} readOnly />

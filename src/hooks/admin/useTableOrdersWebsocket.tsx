@@ -7,6 +7,8 @@ import { URLS } from '@constants/urls';
 interface TableOrdersWebsocketHandlers {
   onOrderCreated: (order: Order) => void;
   onOrderUpdated: (order: Order) => void;
+  /** 연결·재연결 시 호출. 끊긴 동안 놓친 주문을 재동기화하는 용도. */
+  onConnected?: () => void;
 }
 
 /**
@@ -33,6 +35,7 @@ function useTableOrdersWebsocket(workspaceId: string | undefined, handlers: Tabl
     let subscription: StompJs.StompSubscription | null = null;
 
     client.onConnect = () => {
+      handlersRef.current.onConnected?.();
       subscription = client.subscribe(`/sub/order/${workspaceId}`, (response) => {
         const { type, data }: OrderWebsocket = JSON.parse(response.body);
 
