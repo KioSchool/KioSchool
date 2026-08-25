@@ -19,7 +19,7 @@ const Panel = styled.div`
   width: 100%;
   height: ${TABLE_VIEW_HEIGHT_PX}px;
   box-sizing: border-box;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 16px;
   overflow: hidden;
   background-color: ${Color.WHITE};
@@ -41,7 +41,7 @@ const Divider = styled.div`
   width: 100%;
   height: 1px;
   flex-shrink: 0;
-  background-color: #e8eef2;
+  background-color: ${Color.BORDER_GREY};
 `;
 
 const FooterButton = styled.button<{ variant: 'start' | 'end' }>`
@@ -50,7 +50,7 @@ const FooterButton = styled.button<{ variant: 'start' | 'end' }>`
   flex-shrink: 0;
   box-sizing: border-box;
   border: none;
-  border-top: ${({ variant }) => (variant === 'end' ? '1px solid #e8eef2' : 'none')};
+  border-top: ${({ variant }) => (variant === 'end' ? '1px solid ${Color.BORDER_GREY}' : 'none')};
   font-size: 15px;
   font-weight: 800;
   letter-spacing: -0.01em;

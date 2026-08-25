@@ -31,7 +31,7 @@ const RowTitle = styled.div`
 
 const RowCaption = styled.div`
   font-size: 11px;
-  color: #8d959c;
+  color: ${Color.MUTED_GREY};
   word-break: keep-all;
 `;
 
@@ -74,28 +74,25 @@ function TableQRDownload({ workspaceId, workspaceName, tables }: TableQRDownload
   };
 
   return (
-    <>
-      <SettingSection label="QR 코드">
-        <Row>
-          <TextBlock>
-            <RowTitle>전체 QR</RowTitle>
-            <RowCaption>모든 테이블 QR 한 장</RowCaption>
-          </TextBlock>
-          <NewCommonButton size="xs" color="blue_gray" onClick={downloadAllQrCode}>
-            다운로드
-          </NewCommonButton>
-        </Row>
-        <Row>
-          <TextBlock>
-            <RowTitle>미리보기 QR</RowTitle>
-            <RowCaption>주문 화면 미리보기용</RowCaption>
-          </TextBlock>
-          <NewCommonButton size="xs" color="blue_gray" onClick={downloadPreviewQrCode}>
-            다운로드
-          </NewCommonButton>
-        </Row>
-      </SettingSection>
-
+    <SettingSection label="QR 코드">
+      <Row>
+        <TextBlock>
+          <RowTitle>전체 QR</RowTitle>
+          <RowCaption>모든 테이블 QR 한 장</RowCaption>
+        </TextBlock>
+        <NewCommonButton size="xs" color="blue_gray" onClick={downloadAllQrCode}>
+          다운로드
+        </NewCommonButton>
+      </Row>
+      <Row>
+        <TextBlock>
+          <RowTitle>미리보기 QR</RowTitle>
+          <RowCaption>주문 화면 미리보기용</RowCaption>
+        </TextBlock>
+        <NewCommonButton size="xs" color="blue_gray" onClick={downloadPreviewQrCode}>
+          다운로드
+        </NewCommonButton>
+      </Row>
       <QRContainer ref={QRCodeContainerRef}>
         {tables.map((table) => (
           <QRCodeCanvas
@@ -108,7 +105,7 @@ function TableQRDownload({ workspaceId, workspaceName, tables }: TableQRDownload
           />
         ))}
       </QRContainer>
-    </>
+    </SettingSection>
   );
 }
 

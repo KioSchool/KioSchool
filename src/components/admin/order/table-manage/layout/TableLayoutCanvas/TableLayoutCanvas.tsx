@@ -16,7 +16,7 @@ const ScrollArea = styled.div`
   width: 100%;
   height: 100%;
   overflow: auto;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 16px;
   background-color: ${Color.LIGHT_GREY};
   display: flex;

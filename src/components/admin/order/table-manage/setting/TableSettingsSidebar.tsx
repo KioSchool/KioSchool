@@ -13,6 +13,7 @@ import { getTableStatus, TABLE_STATUS } from '@utils/tableStatus';
 import TableTimeSetting from './TableTimeSetting';
 import TableQRDownload from './TableQRDownload';
 import NumberInput from '@components/common/input/NumberInput';
+import { Color } from '@resources/colors';
 
 const Container = styled.div`
   width: 100%;
@@ -25,7 +26,7 @@ const Container = styled.div`
 
 const CountCaption = styled.div`
   font-size: 11px;
-  color: #8d959c;
+  color: ${Color.MUTED_GREY};
 `;
 
 const SaveButton = styled(NewCommonButton)`

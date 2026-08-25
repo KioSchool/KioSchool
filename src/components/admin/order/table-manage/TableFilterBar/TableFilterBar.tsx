@@ -31,7 +31,7 @@ const Segment = styled.button<{ active: boolean }>`
   height: 36px;
   box-sizing: border-box;
   padding: 0 14px;
-  border: 1.5px solid ${({ active }) => (active ? Color.KIO_ORANGE : '#e8eef2')};
+  border: 1.5px solid ${({ active }) => (active ? Color.KIO_ORANGE : Color.BORDER_GREY)};
   border-radius: 999px;
   background-color: ${({ active }) => (active ? Color.KIO_ORANGE_FAINT : Color.WHITE)};
   color: ${({ active }) => (active ? Color.KIO_ORANGE : Color.GREY)};

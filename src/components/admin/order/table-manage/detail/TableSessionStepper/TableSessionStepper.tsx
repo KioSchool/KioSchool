@@ -17,7 +17,7 @@ const Container = styled.div`
 const SectionLabel = styled.div`
   font-size: 12px;
   font-weight: 600;
-  color: #8d959c;
+  color: ${Color.MUTED_GREY};
 `;
 
 const ButtonRow = styled.div`
@@ -44,7 +44,7 @@ const StepButton = styled.button<{ variant: 'decrease' | 'increase' }>`
   }
 
   &:disabled {
-    background-color: #e8eef2;
+    background-color: ${Color.BORDER_GREY};
     color: #d1d5d8;
     cursor: not-allowed;
   }

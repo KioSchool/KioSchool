@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 
+// DS 승격 후보: 뮤트 라벨 + 그룹 카드 래퍼. 설정성 지면 공통 메커니즘이라 두 번째 사용처가 생기면 승격을 검토한다.
 const Container = styled.div`
   width: 100%;
   gap: 8px;
@@ -13,7 +14,7 @@ const Container = styled.div`
 const Label = styled.div`
   font-size: 12px;
   font-weight: 600;
-  color: #8d959c;
+  color: ${Color.MUTED_GREY};
 `;
 
 const Card = styled.div`

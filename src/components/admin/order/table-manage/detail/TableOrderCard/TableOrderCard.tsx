@@ -10,7 +10,7 @@ const Card = styled.div`
   width: 100%;
   box-sizing: border-box;
   padding: 10px 4px;
-  border-bottom: 1px dashed #e8eef2;
+  border-bottom: 1px dashed ${Color.BORDER_GREY};
   cursor: pointer;
   gap: 4px;
   transition: background-color 0.12s ease-in-out;
@@ -24,7 +24,7 @@ const Card = styled.div`
 const OrderMeta = styled.div`
   font-size: 11px;
   font-variant-numeric: tabular-nums;
-  color: #8d959c;
+  color: ${Color.MUTED_GREY};
 `;
 
 const ProductSummary = styled.div`
@@ -39,7 +39,7 @@ const BottomRow = styled.div`
 
 const CustomerName = styled.div`
   font-size: 12px;
-  color: #8d959c;
+  color: ${Color.MUTED_GREY};
 `;
 
 const OrderAmount = styled.div`

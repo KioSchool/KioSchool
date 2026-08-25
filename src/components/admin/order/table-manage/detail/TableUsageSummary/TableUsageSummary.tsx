@@ -27,7 +27,7 @@ const BarTrack = styled.div`
   height: ${BAR_HEIGHT_PX}px;
   border-radius: 999px;
   overflow: hidden;
-  background-color: #e8eef2;
+  background-color: ${Color.BORDER_GREY};
 `;
 
 const BarFill = styled.div<{ percent: number; status: TableStatus }>`
@@ -40,7 +40,7 @@ const BarFill = styled.div<{ percent: number; status: TableStatus }>`
 
 const MetaText = styled.div`
   font-size: 12px;
-  color: #8d959c;
+  color: ${Color.MUTED_GREY};
 `;
 
 interface TableUsageSummaryProps {

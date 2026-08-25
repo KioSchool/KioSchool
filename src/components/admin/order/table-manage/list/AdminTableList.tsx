@@ -19,7 +19,7 @@ const ListContainer = styled.div`
 `;
 
 const ListWrapper = styled.div`
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 16px;
   overflow: hidden;
   flex: 1;
@@ -35,20 +35,20 @@ const Header = styled.div`
   padding: 0 12px;
   background-color: #f0f5f8;
   text-align: center;
-  border-bottom: 1px solid #e8eef2;
+  border-bottom: 1px solid ${Color.BORDER_GREY};
   height: 38px;
 `;
 
 const HeaderText = styled.div<{ clickable?: boolean }>`
   font-size: 12px;
   font-weight: 600;
-  color: #8d959c;
+  color: ${Color.MUTED_GREY};
   cursor: ${({ clickable }) => (clickable ? 'pointer' : 'default')};
   gap: 2px;
   ${rowFlex({ justify: 'center', align: 'center' })}
 
   &:hover {
-    color: ${({ clickable }) => (clickable ? Color.KIO_ORANGE : '#8d959c')};
+    color: ${({ clickable }) => (clickable ? Color.KIO_ORANGE : Color.MUTED_GREY)};
   }
 `;
 
@@ -105,12 +105,12 @@ const SORT_COMPARATORS: Record<SortType, (a: Table, b: Table) => number> = {
   [SORT_NUMBER]: compareByNumber,
 };
 
-interface TableSessionListProps {
+interface AdminTableListProps {
   tables: Table[];
   orderStatsBySessionId: Map<number, SessionOrderStats>;
 }
 
-function AdminTableList({ tables, orderStatsBySessionId }: TableSessionListProps) {
+function AdminTableList({ tables, orderStatsBySessionId }: AdminTableListProps) {
   const [sortType, setSortType] = useState<SortType>(SORT_STATUS);
 
   const sortedTables = [...tables].sort(SORT_COMPARATORS[sortType]);

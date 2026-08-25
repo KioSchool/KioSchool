@@ -6,7 +6,7 @@ import { Color } from '@resources/colors';
 import { getTableStatus, TABLE_STATUS, TableStatus } from '@utils/tableStatus';
 import { ceilToMinute, formatShortDuration, getElapsedMs, getElapsedPercent, getRemainingMs, hasTimeLimit } from '@utils/tableTime';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import ProgressRing from './ProgressRing';
+import ProgressRing from '@components/admin/order/table-manage/common/ProgressRing/ProgressRing';
 
 const SELECTED_OUTLINE_PX = 3;
 const SELECTED_OFFSET_PX = 2;
@@ -23,10 +23,10 @@ interface StatusStyle {
 
 // 상태 언어: 미사용은 바닥에 가라앉고(recessed), 사용중은 떠 있고(raised), 주의는 물들고, 초과는 소리친다.
 const STATUS_STYLE: Record<TableStatus, StatusStyle> = {
-  [TABLE_STATUS.EMPTY]: { background: '#f4f4f4', border: Color.HEAVY_GREY, shadow: 'none', number: '#8d959c', time: '#8d959c' },
+  [TABLE_STATUS.EMPTY]: { background: '#f4f4f4', border: Color.HEAVY_GREY, shadow: 'none', number: Color.MUTED_GREY, time: Color.MUTED_GREY },
   [TABLE_STATUS.USING]: {
     background: Color.WHITE,
-    border: '#e8eef2',
+    border: Color.BORDER_GREY,
     shadow: '0 2px 8px rgba(92, 92, 92, 0.12)',
     number: Color.GREY,
     time: Color.GREY,
@@ -74,8 +74,6 @@ const Container = styled.div<{ status: TableStatus; isSelected: boolean; isDimme
   outline: ${({ isSelected }) => (isSelected ? `${SELECTED_OUTLINE_PX}px solid ${Color.KIO_ORANGE}` : 'none')};
   outline-offset: ${SELECTED_OFFSET_PX}px;
 
-  ${colFlex()};
-
   ${({ status }) =>
     status === TABLE_STATUS.EXCEEDED &&
     css`
@@ -93,6 +91,8 @@ const Container = styled.div<{ status: TableStatus; isSelected: boolean; isDimme
         animation: ${orderFlash} 0.8s ease-out 3;
       }
     `}
+
+  ${colFlex()};
 `;
 
 const TopRow = styled.div`
@@ -129,7 +129,7 @@ const HandleIcon = styled(RiDraggable)`
   width: ${HANDLE_ICON_PX}px;
   height: ${HANDLE_ICON_PX}px;
   flex-shrink: 0;
-  color: #8d959c;
+  color: ${Color.MUTED_GREY};
 `;
 
 const Bottom = styled.div`

@@ -1,7 +1,7 @@
 import { useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 
-import ProgressRing, { RING_SIZE_ROW_PX } from '@components/admin/order/table-manage/layout/TableLayoutCard/ProgressRing';
+import ProgressRing, { RING_SIZE_ROW_PX } from '@components/admin/order/table-manage/common/ProgressRing/ProgressRing';
 import StatusBadge from '@components/admin/order/table-manage/common/StatusBadge/StatusBadge';
 import { TABLE_LIST_GRID_TEMPLATE } from '@constants/layout';
 import { Color } from '@resources/colors';
@@ -28,7 +28,7 @@ const Row = styled.div<{ isSelected: boolean; status: TableStatus }>`
   grid-template-columns: ${TABLE_LIST_GRID_TEMPLATE};
   align-items: center;
   padding: 10px 12px;
-  border-bottom: 1px solid #e8eef2;
+  border-bottom: 1px solid ${Color.BORDER_GREY};
   background-color: ${Color.WHITE};
   box-shadow: ${({ isSelected }) => (isSelected ? `inset 0 0 0 ${SELECTED_OUTLINE_PX}px ${Color.KIO_ORANGE}` : 'none')};
   cursor: pointer;
@@ -55,7 +55,7 @@ const TableNumber = styled.div<{ status: TableStatus }>`
   font-weight: 800;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
-  color: ${({ status }) => (status === TABLE_STATUS.EMPTY ? '#8d959c' : Color.GREY)};
+  color: ${({ status }) => (status === TABLE_STATUS.EMPTY ? Color.MUTED_GREY : Color.GREY)};
 `;
 
 const UsageTimeCell = styled.div`
@@ -71,21 +71,21 @@ const MainTimeText = styled.div<{ status: TableStatus }>`
   font-variant-numeric: tabular-nums;
   color: ${({ status }) => {
     if (status === TABLE_STATUS.EXCEEDED) return Color.RED;
-    if (status === TABLE_STATUS.EMPTY) return '#8d959c';
+    if (status === TABLE_STATUS.EMPTY) return Color.MUTED_GREY;
     return Color.GREY;
   }};
 `;
 
 const StartTimeText = styled.div`
   font-size: 11px;
-  color: #8d959c;
+  color: ${Color.MUTED_GREY};
 `;
 
 const CountText = styled.div`
   font-size: 13px;
   font-weight: 500;
   font-variant-numeric: tabular-nums;
-  color: #8d959c;
+  color: ${Color.MUTED_GREY};
 `;
 
 const AmountText = styled.div`
@@ -112,25 +112,25 @@ function getOrderAmountLabel(orderStats: SessionOrderStats | null): string {
   return `${orderStats.amount.toLocaleString()}원`;
 }
 
-interface TableSessionItemProps {
+interface TableListItemProps {
   table: Table;
   orderStats: SessionOrderStats | null;
 }
 
-function TableListItem({ table, orderStats }: TableSessionItemProps) {
+function TableListItem({ table, orderStats }: TableListItemProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedTableNo = searchParams.get('tableNo');
   const isSelected = selectedTableNo === String(table.tableNumber);
   const status = getTableStatus(table);
   const session = table.orderSession;
 
-  const onClickTable = (tableNumber: number) => {
+  const handleClickTable = (tableNumber: number) => {
     searchParams.set('tableNo', String(tableNumber));
     setSearchParams(searchParams, { replace: true });
   };
 
   return (
-    <Row onClick={() => onClickTable(table.tableNumber)} isSelected={isSelected} status={status}>
+    <Row onClick={() => handleClickTable(table.tableNumber)} isSelected={isSelected} status={status}>
       <TableNumber status={status}>{table.tableNumber}</TableNumber>
       <ProgressRing
         size={RING_SIZE_ROW_PX}

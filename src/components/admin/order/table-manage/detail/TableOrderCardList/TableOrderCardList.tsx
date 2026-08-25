@@ -13,7 +13,7 @@ const Container = styled.div`
 const SummaryLabel = styled.div`
   font-size: 12px;
   font-weight: 600;
-  color: #8d959c;
+  color: ${Color.MUTED_GREY};
 `;
 
 const CardList = styled.div`

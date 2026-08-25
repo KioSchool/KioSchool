@@ -9,7 +9,7 @@ import DraggableTableCard from '../DraggableTableCard/DraggableTableCard';
 const Container = styled.div<{ isOver: boolean }>`
   height: 100%;
   box-sizing: border-box;
-  border: 1px solid ${({ isOver }) => (isOver ? Color.KIO_ORANGE : '#e8eef2')};
+  border: 1px solid ${({ isOver }) => (isOver ? Color.KIO_ORANGE : Color.BORDER_GREY)};
   border-radius: 16px;
   background-color: ${({ isOver }) => (isOver ? Color.KIO_ORANGE_FAINT : Color.WHITE)};
   padding: 12px;
@@ -23,7 +23,7 @@ const Container = styled.div<{ isOver: boolean }>`
 const Title = styled.div`
   font-size: 12px;
   font-weight: 600;
-  color: #8d959c;
+  color: ${Color.MUTED_GREY};
 `;
 
 const TitleCount = styled.span`

@@ -19,7 +19,7 @@ const Container = styled.div`
 const EmptyState = styled.div`
   width: 100%;
   height: 100%;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 16px;
   gap: 8px;
   color: ${Color.GREY};
@@ -32,7 +32,7 @@ const EmptyState = styled.div`
 const EmptyStateHint = styled.div`
   margin-bottom: 14px;
   font-size: 13px;
-  color: #8d959c;
+  color: ${Color.MUTED_GREY};
 `;
 
 // 운영 모드는 배치 영역 + 여유 1칸만 그린다. 빈 격자를 볼 이유가 운영 중에는 없고, 홀 전체가 스크롤 없이 한눈에 들어와야 위치로 찾는다는 목적이 산다.

@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 
+// DS 승격 후보: 도메인 무관 원형 진행 표시. conic-gradient 기반이라 의존성이 없다.
+
 export const RING_SIZE_CARD_PX = 16;
 export const RING_SIZE_ROW_PX = 22;
 

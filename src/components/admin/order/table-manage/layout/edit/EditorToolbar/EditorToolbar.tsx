@@ -25,7 +25,7 @@ const Title = styled.div`
 
 const Caption = styled.div`
   font-size: 12px;
-  color: #8d959c;
+  color: ${Color.MUTED_GREY};
 `;
 
 const Actions = styled.div`
