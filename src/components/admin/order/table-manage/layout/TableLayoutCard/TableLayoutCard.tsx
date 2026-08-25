@@ -4,7 +4,7 @@ import { RiDraggable } from '@remixicon/react';
 import { Table } from '@@types/index';
 import { Color } from '@resources/colors';
 import { getTableStatus, TABLE_STATUS, TableStatus } from '@utils/tableStatus';
-import { ceilToMinute, formatShortDuration, getElapsedMs, getElapsedPercent, getRemainingMs, hasTimeLimit } from '@utils/tableTime';
+import { formatSessionTimeShortLabel, getElapsedPercent } from '@utils/tableTime';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import ProgressRing from '@components/admin/order/table-manage/common/ProgressRing/ProgressRing';
 
@@ -58,7 +58,7 @@ const orderFlash = keyframes`
   100% { box-shadow: 0 0 0 12px rgba(255, 145, 66, 0); }
 `;
 
-const Container = styled.div<{ status: TableStatus; isSelected: boolean; isDimmed: boolean; isFlashing: boolean; clickable: boolean }>`
+const Container = styled.div<{ status: TableStatus; isSelected: boolean; isDimmed: boolean; clickable: boolean }>`
   width: 100%;
   height: 100%;
   box-sizing: border-box;
@@ -80,19 +80,16 @@ const Container = styled.div<{ status: TableStatus; isSelected: boolean; isDimme
       animation: ${exceededPulse} 2s infinite;
     `}
 
-  ${({ isFlashing }) =>
-    isFlashing &&
-    css`
-      &::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        border-radius: 12px;
-        animation: ${orderFlash} 0.8s ease-out 3;
-      }
-    `}
-
   ${colFlex()};
+`;
+
+// 연속 주문에도 매번 다시 반짝이도록 flashSeq를 key로 받아 리마운트로 애니메이션을 재시작한다.
+const FlashOverlay = styled.span`
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  pointer-events: none;
+  animation: ${orderFlash} 0.8s ease-out 3;
 `;
 
 const TopRow = styled.div`
@@ -148,17 +145,6 @@ const TimeText = styled.span<{ status: TableStatus }>`
   color: ${({ status }) => STATUS_STYLE[status].time};
 `;
 
-function getTimeLabel(table: Table): string {
-  const session = table.orderSession;
-  if (!session) return '미사용';
-  if (!hasTimeLimit(session)) return formatShortDuration(getElapsedMs(session));
-
-  const remaining = getRemainingMs(session);
-  if (remaining <= 0) return `+${formatShortDuration(ceilToMinute(-remaining))}`;
-
-  return formatShortDuration(ceilToMinute(remaining));
-}
-
 function getRingColors(status: TableStatus): { fill: string; track: string } {
   if (status === TABLE_STATUS.EXCEEDED) return { fill: Color.WHITE, track: 'rgba(255, 255, 255, 0.35)' };
   return { fill: Color.KIO_ORANGE, track: Color.HEAVY_GREY };
@@ -169,27 +155,20 @@ interface TableLayoutCardProps {
   orderCount?: number;
   isSelected?: boolean;
   isDimmed?: boolean;
-  isFlashing?: boolean;
+  flashSeq?: number;
   showHandle?: boolean;
   onSelect?: (table: Table) => void;
 }
 
-function TableLayoutCard({
-  table,
-  orderCount = 0,
-  isSelected = false,
-  isDimmed = false,
-  isFlashing = false,
-  showHandle = false,
-  onSelect,
-}: TableLayoutCardProps) {
+function TableLayoutCard({ table, orderCount = 0, isSelected = false, isDimmed = false, flashSeq = 0, showHandle = false, onSelect }: TableLayoutCardProps) {
   const status = getTableStatus(table);
   const ringColors = getRingColors(status);
 
   const handleClick = () => onSelect?.(table);
 
   return (
-    <Container status={status} isSelected={isSelected} isDimmed={isDimmed} isFlashing={isFlashing} clickable={Boolean(onSelect)} onClick={handleClick}>
+    <Container status={status} isSelected={isSelected} isDimmed={isDimmed} clickable={Boolean(onSelect)} onClick={handleClick}>
+      {flashSeq > 0 && <FlashOverlay key={flashSeq} />}
       <TopRow>
         <TableNumber status={status}>{table.tableNumber}</TableNumber>
         {showHandle && <HandleIcon />}
@@ -202,7 +181,7 @@ function TableLayoutCard({
           trackColor={ringColors.track}
           holeColor={STATUS_STYLE[status].background}
         />
-        <TimeText status={status}>{getTimeLabel(table)}</TimeText>
+        <TimeText status={status}>{formatSessionTimeShortLabel(table.orderSession)}</TimeText>
       </Bottom>
     </Container>
   );

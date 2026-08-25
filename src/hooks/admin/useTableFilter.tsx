@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { getTableStatus, TABLE_STATUS, TableStatus } from '@utils/tableStatus';
 import { Table } from '@@types/index';
 
@@ -29,20 +29,18 @@ function matchesFilter(status: TableStatus, filter: TableFilterType): boolean {
 export default function useTableFilter(tables: Table[]) {
   const [filterType, setFilterType] = useState<TableFilterType>(TABLE_FILTER.ALL);
 
-  const statuses = useMemo(() => tables.map((table) => ({ table, status: getTableStatus(table) })), [tables]);
+  // 상태가 Date.now()에 의존하므로 memo하면 시계 틱 리렌더에서 카운트·필터 소속이 굳는다. 테이블은 최대 100개라 매 렌더 계산이 싸다.
+  const statuses = tables.map((table) => ({ table, status: getTableStatus(table) }));
 
-  const counts = useMemo<TableFilterCounts>(
-    () => ({
-      [TABLE_FILTER.ALL]: statuses.length,
-      [TABLE_FILTER.USING]: statuses.filter(({ status }) => status === TABLE_STATUS.USING).length,
-      [TABLE_FILTER.WARNING]: statuses.filter(({ status }) => status === TABLE_STATUS.WARNING).length,
-      [TABLE_FILTER.EXCEEDED]: statuses.filter(({ status }) => status === TABLE_STATUS.EXCEEDED).length,
-      [TABLE_FILTER.EMPTY]: statuses.filter(({ status }) => status === TABLE_STATUS.EMPTY).length,
-    }),
-    [statuses],
-  );
+  const counts: TableFilterCounts = {
+    [TABLE_FILTER.ALL]: statuses.length,
+    [TABLE_FILTER.USING]: statuses.filter(({ status }) => status === TABLE_STATUS.USING).length,
+    [TABLE_FILTER.WARNING]: statuses.filter(({ status }) => status === TABLE_STATUS.WARNING).length,
+    [TABLE_FILTER.EXCEEDED]: statuses.filter(({ status }) => status === TABLE_STATUS.EXCEEDED).length,
+    [TABLE_FILTER.EMPTY]: statuses.filter(({ status }) => status === TABLE_STATUS.EMPTY).length,
+  };
 
-  const filteredTables = useMemo(() => statuses.filter(({ status }) => matchesFilter(status, filterType)).map(({ table }) => table), [statuses, filterType]);
+  const filteredTables = statuses.filter(({ status }) => matchesFilter(status, filterType)).map(({ table }) => table);
 
   return { filterType, setFilterType, counts, filteredTables };
 }

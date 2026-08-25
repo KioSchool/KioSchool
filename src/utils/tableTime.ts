@@ -13,7 +13,8 @@ export function getElapsedMs(session: OrderSession | null): number {
   if (!session) return 0;
 
   const start = new Date(session.createdAt).getTime();
-  return Date.now() - start;
+  // 클라이언트 시계가 서버 createdAt보다 뒤면 음수가 나온다 - 게이지가 무효 CSS로 꽉 차 보이므로 0으로 막는다.
+  return Math.max(0, Date.now() - start);
 }
 
 /**
@@ -90,6 +91,19 @@ export function formatLongDuration(ms: number): string {
   }
 
   return `${minutes}분`;
+}
+
+/**
+ * 배치 카드용 짧은 시간 라벨. 잔여 "h:mm", 초과 "+h:mm", 무제한 세션은 경과.
+ */
+export function formatSessionTimeShortLabel(session: OrderSession | null): string {
+  if (!session) return '미사용';
+  if (!hasTimeLimit(session)) return formatShortDuration(getElapsedMs(session));
+
+  const remaining = getRemainingMs(session);
+  if (remaining <= 0) return `+${formatShortDuration(ceilToMinute(-remaining))}`;
+
+  return formatShortDuration(ceilToMinute(remaining));
 }
 
 /**

@@ -2,23 +2,23 @@ import { useEffect, useRef, useState } from 'react';
 import { ORDER_FLASH_DURATION_MS } from '@constants/layout';
 
 /**
- * 신규 주문이 들어온 테이블을 잠깐 강조하기 위한 집합.
- * 같은 테이블에 연달아 주문이 오면 타이머만 연장한다.
+ * 신규 주문이 들어온 테이블의 강조 시퀀스. 같은 테이블에 연달아 주문이 오면
+ * 시퀀스를 올려 카드의 플래시 애니메이션이 매번 다시 재생되게 하고, 제거 타이머는 연장한다.
  */
 function useTableFlash() {
-  const [flashingTableNumbers, setFlashingTableNumbers] = useState<Set<number>>(new Set());
+  const [flashSeqByTableNumber, setFlashSeqByTableNumber] = useState<Map<number, number>>(new Map());
   const timeoutsRef = useRef(new Map<number, number>());
 
   const flashTable = (tableNumber: number) => {
-    setFlashingTableNumbers((previous) => new Set(previous).add(tableNumber));
+    setFlashSeqByTableNumber((previous) => new Map(previous).set(tableNumber, (previous.get(tableNumber) ?? 0) + 1));
 
     const timeouts = timeoutsRef.current;
     window.clearTimeout(timeouts.get(tableNumber));
     timeouts.set(
       tableNumber,
       window.setTimeout(() => {
-        setFlashingTableNumbers((previous) => {
-          const next = new Set(previous);
+        setFlashSeqByTableNumber((previous) => {
+          const next = new Map(previous);
           next.delete(tableNumber);
           return next;
         });
@@ -32,7 +32,7 @@ function useTableFlash() {
     return () => timeouts.forEach((id) => window.clearTimeout(id));
   }, []);
 
-  return { flashingTableNumbers, flashTable };
+  return { flashSeqByTableNumber, flashTable };
 }
 
 export default useTableFlash;
