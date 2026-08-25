@@ -33,7 +33,7 @@ function useTableLayoutDraft(tables: Table[]) {
     draft.forEach((position, tableId) => {
       const table = tables.find((item) => item.id === tableId);
       if (!table) return;
-      if (isSamePosition(table.position, position)) return;
+      if (isSamePosition(table.position ?? null, position)) return;
 
       result.push({ tableId, position });
     });

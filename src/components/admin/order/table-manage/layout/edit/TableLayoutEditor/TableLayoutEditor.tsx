@@ -15,14 +15,15 @@ import {
   TOUCH_DRAG_TOLERANCE_PX,
   TRAY_DROPPABLE_ID,
 } from '@constants/layout';
+import useConfirm from '@hooks/useConfirm';
 import useTableLayoutDraft from '@hooks/admin/useTableLayoutDraft';
 import { TablePositionUpdate } from '@hooks/admin/useAdminTableLayout';
-import TableLayoutCanvas from '../../TableLayoutCanvas/TableLayoutCanvas';
-import TableLayoutCard from '../../TableLayoutCard/TableLayoutCard';
-import UnplacedTableTray from '../UnplacedTableTray/UnplacedTableTray';
-import DraggableTableCard from '../DraggableTableCard/DraggableTableCard';
-import LayoutGridCell from '../LayoutGridCell/LayoutGridCell';
-import EditorToolbar from '../EditorToolbar/EditorToolbar';
+import TableLayoutCanvas from '@components/admin/order/table-manage/layout/TableLayoutCanvas/TableLayoutCanvas';
+import TableLayoutCard from '@components/admin/order/table-manage/layout/TableLayoutCard/TableLayoutCard';
+import UnplacedTableTray from '@components/admin/order/table-manage/layout/edit/UnplacedTableTray/UnplacedTableTray';
+import DraggableTableCard from '@components/admin/order/table-manage/layout/edit/DraggableTableCard/DraggableTableCard';
+import LayoutGridCell from '@components/admin/order/table-manage/layout/edit/LayoutGridCell/LayoutGridCell';
+import EditorToolbar from '@components/admin/order/table-manage/layout/edit/EditorToolbar/EditorToolbar';
 
 const CONFLICT_OUTLINE_PX = 2;
 const CONFLICT_OUTLINE_OFFSET_PX = 2;
@@ -92,6 +93,19 @@ function TableLayoutEditor({ tables, onExit, onSave, onPositionChange, isSaving,
   const [activeTableId, setActiveTableId] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  const { ConfirmModal: ResetConfirmModal, confirm: confirmReset } = useConfirm({
+    title: '전체 초기화',
+    description: '모든 테이블의 배치를 취소합니다. 저장해야 반영됩니다.',
+    okText: '초기화',
+    cancelText: '취소',
+  });
+  const { ConfirmModal: ExitConfirmModal, confirm: confirmExit } = useConfirm({
+    title: '편집 나가기',
+    description: '저장하지 않은 변경이 있습니다. 나가시겠습니까?',
+    okText: '저장 안 하고 나가기',
+    cancelText: '계속 편집',
+  });
+
   // 마우스는 5px 이동으로, 터치는 250ms 홀드로 리프트한다 - 터치에서 즉시 리프트하면 캔버스 스크롤 제스처와 충돌한다.
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: DRAG_ACTIVATION_DISTANCE_PX } }),
@@ -107,6 +121,13 @@ function TableLayoutEditor({ tables, onExit, onSave, onPositionChange, isSaving,
   const placedTables = tables.filter((table) => positionOf(table) !== null);
   const unplacedTables = tables.filter((table) => positionOf(table) === null);
   const activeTable = tables.find((table) => table.id === activeTableId) ?? null;
+
+  const tableByCell = new Map(
+    placedTables.map((table) => {
+      const position = positionOf(table)!;
+      return [`${position.x}-${position.y}`, table];
+    }),
+  );
 
   const isConflictedCell = (x: number, y: number) => conflictedPosition !== null && conflictedPosition.x === x && conflictedPosition.y === y;
 
@@ -140,16 +161,20 @@ function TableLayoutEditor({ tables, onExit, onSave, onPositionChange, isSaving,
     onSave(changes);
   };
 
-  const handleExit = () => {
-    if (isDirty && !window.confirm('저장하지 않은 변경이 있습니다. 나가시겠습니까?')) return;
+  const handleResetAll = async () => {
+    if (!(await confirmReset())) return;
+
+    resetAll();
+    onPositionChange();
+  };
+
+  const handleExit = async () => {
+    if (isDirty && !(await confirmExit())) return;
     onExit();
   };
 
   const renderCell = (x: number, y: number) => {
-    const table = placedTables.find((item) => {
-      const position = positionOf(item);
-      return position?.x === x && position?.y === y;
-    });
+    const table = tableByCell.get(`${x}-${y}`);
 
     if (table) {
       if (!isConflictedCell(x, y)) return <DraggableTableCard table={table} />;
@@ -166,7 +191,7 @@ function TableLayoutEditor({ tables, onExit, onSave, onPositionChange, isSaving,
 
   return (
     <Frame>
-      <EditorToolbar changeCount={changes.length} isSaving={isSaving} onSave={handleSave} onResetAll={resetAll} onExit={handleExit} />
+      <EditorToolbar changeCount={changes.length} isSaving={isSaving} onSave={handleSave} onResetAll={handleResetAll} onExit={handleExit} />
       <DndContext sensors={sensors} collisionDetection={pointerWithin} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <Container>
           <UnplacedTableTray tables={unplacedTables} />
@@ -180,6 +205,8 @@ function TableLayoutEditor({ tables, onExit, onSave, onPositionChange, isSaving,
           )}
         </DragOverlay>
       </DndContext>
+      <ResetConfirmModal />
+      <ExitConfirmModal />
     </Frame>
   );
 }

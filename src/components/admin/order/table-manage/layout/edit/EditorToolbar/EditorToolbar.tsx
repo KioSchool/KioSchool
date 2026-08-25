@@ -43,11 +43,6 @@ interface EditorToolbarProps {
 }
 
 function EditorToolbar({ changeCount, isSaving, onSave, onResetAll, onExit }: EditorToolbarProps) {
-  const handleResetAll = () => {
-    if (!window.confirm('모든 테이블의 배치를 취소합니다. 저장해야 반영됩니다.')) return;
-    onResetAll();
-  };
-
   return (
     <Container>
       <TitleBlock>
@@ -55,7 +50,7 @@ function EditorToolbar({ changeCount, isSaving, onSave, onResetAll, onExit }: Ed
         <Caption>왼쪽 트레이의 테이블을 홀의 빈 칸에 끌어 놓으세요</Caption>
       </TitleBlock>
       <Actions>
-        <NewCommonButton size="sm" color="blue_gray" onClick={handleResetAll}>
+        <NewCommonButton size="sm" color="blue_gray" onClick={onResetAll}>
           전체 초기화
         </NewCommonButton>
         <NewCommonButton size="sm" color="kio_orange" disabled={changeCount === 0 || isSaving} onClick={onSave}>

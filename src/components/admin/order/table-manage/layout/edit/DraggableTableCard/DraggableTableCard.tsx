@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useDraggable } from '@dnd-kit/core';
 import { Table } from '@@types/index';
-import TableLayoutCard from '../../TableLayoutCard/TableLayoutCard';
+import TableLayoutCard from '@components/admin/order/table-manage/layout/TableLayoutCard/TableLayoutCard';
 
 const DRAGGING_OPACITY = 0.4;
 
@@ -10,7 +10,11 @@ const Wrapper = styled.div<{ isDragging: boolean }>`
   height: 100%;
   opacity: ${({ isDragging }) => (isDragging ? DRAGGING_OPACITY : 1)};
   cursor: grab;
+  /* 스크롤은 살리고(manipulation) iOS 250ms 홀드가 텍스트 선택·롱프레스 콜아웃으로 새지 않게 막는다. */
   touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 
   &:active {
     cursor: grabbing;
