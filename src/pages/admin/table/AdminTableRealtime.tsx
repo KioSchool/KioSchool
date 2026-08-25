@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { useAtomValue, useSetAtom } from 'jotai';
@@ -27,7 +27,7 @@ import useIsMobile from '@hooks/useIsMobile';
 import { TablePositionUpdate } from '@hooks/admin/useAdminTableLayout';
 import { adminTablesAtom, adminTableViewModeAtom, adminWorkspaceAtom, TABLE_VIEW } from '@jotai/admin/atoms';
 import { externalSidebarAtom } from '@jotai/atoms';
-import { TABLE_CLOCK_TICK_MS, TABLE_DETAIL_COLUMN_PX, TABLE_POLL_INTERVAL_MS, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
+import { ORDER_TABLES_REFRESH_DEBOUNCE_MS, TABLE_CLOCK_TICK_MS, TABLE_DETAIL_COLUMN_PX, TABLE_POLL_INTERVAL_MS, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
@@ -81,10 +81,10 @@ function AdminTableRealtime() {
   const tables = useAtomValue(adminTablesAtom);
   const setAdminTables = useSetAtom(adminTablesAtom);
   const selectedTable = tables.find((table) => table.tableNumber === Number(tableNo));
-  const { orders, totalOrderAmount, fetchOrders } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
+  const { orders, fetchOrders } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
   const { filterType, setFilterType, counts, filteredTables } = useTableFilter(tables);
-  const { flashingTableNumbers, flashTable } = useTableFlash();
-  const { statsBySessionId, applyOrder, refresh: refreshOrderStats } = useTableOrderStats(workspaceId);
+  const { flashSeqByTableNumber, flashTable } = useTableFlash();
+  const { statsBySessionId, applyOrder, refresh: refreshOrderStats } = useTableOrderStats(workspaceId, tables);
   const { isSaving: isSavingLayout, conflictedPosition, clearConflict, save: saveLayout } = useTableLayoutSave(workspaceId, setAdminTables);
 
   // 배치 뷰에서 필터는 카드를 지우지 않고 흐리게만 한다. 지우면 홀의 공간 맥락이 깨진다. null이면 필터 없음.
@@ -97,10 +97,24 @@ function AdminTableRealtime() {
     fetchWorkspaceTables(workspaceId);
   };
 
+  // 주문이 몰릴 때 건마다 테이블 전체를 다시 부르지 않도록 trailing 1회로 모은다.
+  const tablesRefreshTimerRef = useRef<number | null>(null);
+  const scheduleTablesRefresh = () => {
+    if (tablesRefreshTimerRef.current !== null) return;
+
+    tablesRefreshTimerRef.current = window.setTimeout(() => {
+      tablesRefreshTimerRef.current = null;
+      fetchTables();
+    }, ORDER_TABLES_REFRESH_DEBOUNCE_MS);
+  };
+
+  useEffect(() => () => window.clearTimeout(tablesRefreshTimerRef.current ?? undefined), []);
+
   const handleOrderCreated = (order: Order) => {
     applyOrder(order);
     flashTable(order.tableNumber);
-    fetchTables();
+    // 편집 중에는 폴링과 같은 이유로 tables 교체를 멈춘다 - 드래프트 밑에서 배열이 바뀌면 동시 편집 배치가 로컬 카드를 가린다. 나가기 시점에 fetchTables로 따라잡는다.
+    if (!isEditing) scheduleTablesRefresh();
     if (order.tableNumber === selectedTable?.tableNumber) fetchOrders();
   };
 
@@ -112,9 +126,11 @@ function AdminTableRealtime() {
   const handleManualRefresh = () => {
     fetchTables();
     refreshOrderStats();
+    fetchOrders();
   };
 
-  useTableOrdersWebsocket(workspaceId, { onOrderCreated: handleOrderCreated, onOrderUpdated: handleOrderUpdated });
+  // onConnected: 끊긴 동안 놓친 주문을 재연결 시점에 재동기화한다.
+  useTableOrdersWebsocket(workspaceId, { onOrderCreated: handleOrderCreated, onOrderUpdated: handleOrderUpdated, onConnected: refreshOrderStats });
 
   useEffect(() => {
     fetchTables();
@@ -150,7 +166,8 @@ function AdminTableRealtime() {
   };
 
   const handleSelectTable = (table: Table) => {
-    setTableNo(String(table.tableNumber));
+    // 목록 행 선택과 동일하게 히스토리를 쌓지 않는다 - 카드 탭마다 push하면 뒤로가기가 선택 이력을 되감는다.
+    setTableNo(String(table.tableNumber), { replace: true });
   };
 
   const handleStartEdit = () => {
@@ -204,7 +221,7 @@ function AdminTableRealtime() {
                 orderStatsBySessionId={statsBySessionId}
                 visibleTableNumbers={visibleTableNumbers}
                 selectedTableNumber={selectedTable?.tableNumber ?? null}
-                flashingTableNumbers={flashingTableNumbers}
+                flashSeqByTableNumber={flashSeqByTableNumber}
                 onSelectTable={handleSelectTable}
                 onStartEdit={handleStartEdit}
               />
@@ -212,14 +229,7 @@ function AdminTableRealtime() {
               <AdminTableList tables={filteredTables} orderStatsBySessionId={statsBySessionId} />
             )}
             {selectedTable ? (
-              <TableDetailPanel
-                workspaceId={workspaceId}
-                workspaceName={workspace.name}
-                table={selectedTable}
-                orders={orders}
-                totalOrderAmount={totalOrderAmount}
-                refetchTable={fetchTables}
-              />
+              <TableDetailPanel workspaceId={workspaceId} workspaceName={workspace.name} table={selectedTable} orders={orders} refetchTable={fetchTables} />
             ) : (
               <FallbackContainer>테이블을 선택하면 상세 정보가 여기에 표시됩니다</FallbackContainer>
             )}
