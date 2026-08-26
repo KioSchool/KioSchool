@@ -1,8 +1,8 @@
 import { useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 
-import ProgressRing, { RING_SIZE_ROW_PX } from '@components/admin/order/table-manage/common/ProgressRing/ProgressRing';
-import StatusBadge from '@components/admin/order/table-manage/common/StatusBadge/StatusBadge';
+import ProgressRing, { RING_SIZE_ROW_PX } from '@components/admin/order/table-manage/common/ProgressRing';
+import StatusBadge from '@components/admin/order/table-manage/common/StatusBadge';
 import { TABLE_LIST_GRID_TEMPLATE } from '@constants/layout';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';

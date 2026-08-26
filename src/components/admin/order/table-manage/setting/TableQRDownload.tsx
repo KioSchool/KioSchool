@@ -4,7 +4,7 @@ import QRCode from 'qrcode';
 import { QRCodeCanvas } from 'qrcode.react';
 import { downloadQRGrid } from '@utils/qrCode';
 import NewCommonButton from '@components/common/button/NewCommonButton';
-import SettingSection from '@components/admin/order/table-manage/setting/SettingSection/SettingSection';
+import SettingSection from './SettingSection';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Table } from '@@types/index';

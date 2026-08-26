@@ -1,5 +1,5 @@
-import TableLayoutCanvas from '@components/admin/order/table-manage/layout/TableLayoutCanvas/TableLayoutCanvas';
-import LayoutGridCell from '@components/admin/order/table-manage/layout/edit/LayoutGridCell/LayoutGridCell';
+import TableLayoutCanvas from './TableLayoutCanvas';
+import LayoutGridCell from '@components/admin/order/table-manage/layout/edit/LayoutGridCell';
 
 const meta = {
   title: 'Components/Admin/TableManage/TableLayoutCanvas',

@@ -6,11 +6,11 @@ import { TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
 import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { useTableSession } from '@hooks/admin/useTableSession';
 import { getTableStatus } from '@utils/tableStatus';
-import TableDetailHeader from '@components/admin/order/table-manage/detail/TableDetailHeader/TableDetailHeader';
-import TableUsageSummary from '@components/admin/order/table-manage/detail/TableUsageSummary/TableUsageSummary';
-import TableSessionStepper from '@components/admin/order/table-manage/detail/TableSessionStepper/TableSessionStepper';
-import TableOrderCardList from '@components/admin/order/table-manage/detail/TableOrderCardList/TableOrderCardList';
-import TableInactivePanel from '@components/admin/order/table-manage/detail/TableInactivePanel/TableInactivePanel';
+import TableDetailHeader from './TableDetailHeader';
+import TableUsageSummary from './TableUsageSummary';
+import TableSessionStepper from './TableSessionStepper';
+import TableOrderCardList from './TableOrderCardList';
+import TableInactivePanel from './TableInactivePanel';
 import { Order, Table } from '@@types/index';
 
 const FALLBACK_SESSION_LIMIT_MINUTES = 60;

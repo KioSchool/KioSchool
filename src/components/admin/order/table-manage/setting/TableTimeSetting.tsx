@@ -3,7 +3,7 @@ import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 import ToggleButton from '@components/common/toggle/ToggleButton';
 import NumberInput from '@components/common/input/NumberInput';
-import SettingSection from '@components/admin/order/table-manage/setting/SettingSection/SettingSection';
+import SettingSection from './SettingSection';
 import { formatMinutesToTime } from '@utils/formatDate';
 
 const ToggleRow = styled.div`

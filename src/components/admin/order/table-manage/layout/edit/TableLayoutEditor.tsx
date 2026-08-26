@@ -18,12 +18,12 @@ import {
 import useConfirm from '@hooks/useConfirm';
 import useTableLayoutDraft from '@hooks/admin/useTableLayoutDraft';
 import { TablePositionUpdate } from '@hooks/admin/useAdminTableLayout';
-import TableLayoutCanvas from '@components/admin/order/table-manage/layout/TableLayoutCanvas/TableLayoutCanvas';
-import TableLayoutCard from '@components/admin/order/table-manage/layout/TableLayoutCard/TableLayoutCard';
-import UnplacedTableTray from '@components/admin/order/table-manage/layout/edit/UnplacedTableTray/UnplacedTableTray';
-import DraggableTableCard from '@components/admin/order/table-manage/layout/edit/DraggableTableCard/DraggableTableCard';
-import LayoutGridCell from '@components/admin/order/table-manage/layout/edit/LayoutGridCell/LayoutGridCell';
-import EditorToolbar from '@components/admin/order/table-manage/layout/edit/EditorToolbar/EditorToolbar';
+import TableLayoutCanvas from '@components/admin/order/table-manage/layout/TableLayoutCanvas';
+import TableLayoutCard from '@components/admin/order/table-manage/layout/TableLayoutCard';
+import UnplacedTableTray from './UnplacedTableTray';
+import DraggableTableCard from './DraggableTableCard';
+import LayoutGridCell from './LayoutGridCell';
+import EditorToolbar from './EditorToolbar';
 
 const CONFLICT_OUTLINE_PX = 2;
 const CONFLICT_OUTLINE_OFFSET_PX = 2;

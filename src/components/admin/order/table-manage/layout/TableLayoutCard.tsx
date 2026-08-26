@@ -6,7 +6,7 @@ import { Color } from '@resources/colors';
 import { getTableStatus, TABLE_STATUS, TableStatus } from '@utils/tableStatus';
 import { formatSessionTimeShortLabel, getElapsedPercent } from '@utils/tableTime';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import ProgressRing from '@components/admin/order/table-manage/common/ProgressRing/ProgressRing';
+import ProgressRing from '@components/admin/order/table-manage/common/ProgressRing';
 
 const SELECTED_OUTLINE_PX = 3;
 const SELECTED_OFFSET_PX = 2;

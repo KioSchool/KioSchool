@@ -3,8 +3,8 @@ import { RiQrCodeLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import useModal from '@hooks/useModal';
-import StatusBadge from '@components/admin/order/table-manage/common/StatusBadge/StatusBadge';
-import TableQrModal from '@components/admin/order/table-manage/qrcode/TableQrModal/TableQrModal';
+import StatusBadge from '@components/admin/order/table-manage/common/StatusBadge';
+import TableQrModal from '@components/admin/order/table-manage/qrcode/TableQrModal';
 import { TableStatus } from '@utils/tableStatus';
 import { Table } from '@@types/index';
 

@@ -4,7 +4,7 @@ import { Table } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { TABLE_GRID_CELL_PX, TRAY_DROPPABLE_ID } from '@constants/layout';
-import DraggableTableCard from '@components/admin/order/table-manage/layout/edit/DraggableTableCard/DraggableTableCard';
+import DraggableTableCard from './DraggableTableCard';
 
 const Container = styled.div<{ isOver: boolean }>`
   height: 100%;

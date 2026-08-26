@@ -1,4 +1,4 @@
-import TableLayoutCard from '@components/admin/order/table-manage/layout/TableLayoutCard/TableLayoutCard';
+import TableLayoutCard from './TableLayoutCard';
 import { GHOST_TYPE, Table } from '@@types/index';
 import { TABLE_GRID_CELL_PX } from '@constants/layout';
 

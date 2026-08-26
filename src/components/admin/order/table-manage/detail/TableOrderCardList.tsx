@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import TableOrderCard from '@components/admin/order/table-manage/detail/TableOrderCard/TableOrderCard';
+import TableOrderCard from './TableOrderCard';
 import { Order, OrderStatus } from '@@types/index';
 
 const Container = styled.div`

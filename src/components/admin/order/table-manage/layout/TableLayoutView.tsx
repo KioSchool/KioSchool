@@ -6,8 +6,8 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { TABLE_CROP_MARGIN_CELLS, TABLE_GRID_CELL_PX, TABLE_GRID_SIZE, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { getSessionOrderStats, SessionOrderStats } from '@hooks/admin/useTableOrderStats';
-import TableLayoutCanvas, { GridCropBounds } from '@components/admin/order/table-manage/layout/TableLayoutCanvas/TableLayoutCanvas';
-import TableLayoutCard from '@components/admin/order/table-manage/layout/TableLayoutCard/TableLayoutCard';
+import TableLayoutCanvas, { GridCropBounds } from './TableLayoutCanvas';
+import TableLayoutCard from './TableLayoutCard';
 
 const Container = styled.div`
   width: 100%;

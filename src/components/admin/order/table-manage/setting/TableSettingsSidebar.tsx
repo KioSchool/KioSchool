@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { adminWorkspaceAtom, adminTablesAtom } from '@jotai/admin/atoms';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import NewCommonButton from '@components/common/button/NewCommonButton';
-import SettingSection from '@components/admin/order/table-manage/setting/SettingSection/SettingSection';
+import SettingSection from './SettingSection';
 import { colFlex } from '@styles/flexStyles';
 import { getAdminWorkspacePath } from '@constants/routes';
 import { MAX_TABLE_COUNT } from '@constants/layout';

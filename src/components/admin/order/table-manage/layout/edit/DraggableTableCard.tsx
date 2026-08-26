@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useDraggable } from '@dnd-kit/core';
 import { Table } from '@@types/index';
-import TableLayoutCard from '@components/admin/order/table-manage/layout/TableLayoutCard/TableLayoutCard';
+import TableLayoutCard from '@components/admin/order/table-manage/layout/TableLayoutCard';
 
 const DRAGGING_OPACITY = 0.4;
 
