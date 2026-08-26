@@ -21,7 +21,6 @@ interface StatusStyle {
   time: string;
 }
 
-// 상태 언어: 미사용은 바닥에 가라앉고(recessed), 사용중은 떠 있고(raised), 주의는 물들고, 초과는 소리친다.
 const STATUS_STYLE: Record<TableStatus, StatusStyle> = {
   [TABLE_STATUS.EMPTY]: { background: '#f4f4f4', border: Color.HEAVY_GREY, shadow: 'none', number: Color.MUTED_GREY, time: Color.MUTED_GREY },
   [TABLE_STATUS.USING]: {
@@ -83,7 +82,6 @@ const Container = styled.div<{ status: TableStatus; isSelected: boolean; isDimme
   ${colFlex()};
 `;
 
-// 연속 주문에도 매번 다시 반짝이도록 flashSeq를 key로 받아 리마운트로 애니메이션을 재시작한다.
 const FlashOverlay = styled.span`
   position: absolute;
   inset: 0;

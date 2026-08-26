@@ -6,11 +6,7 @@ export interface TablePositionUpdate {
   position: TablePosition | null;
 }
 
-/**
- * 409 응답의 errors[0].field 에서 요청 배열의 인덱스만 꺼낸다.
- * value 문자열("(3, 1)")은 파싱하지 않는다 — 서버가 표기를 바꾸면 조용히 깨진다.
- * 좌표는 우리가 보낸 payload에서 되찾는다.
- */
+// 409 errors[0].field는 "positions[i]" 형식 — 인덱스만 꺼내고 좌표는 우리 payload에서 되찾는다 (value 표기는 서버가 바꿀 수 있어 쓰지 않음)
 export function parseConflictIndex(error: unknown): number | null {
   const field = (error as { response?: { data?: { errors?: Array<{ field?: string }> } } })?.response?.data?.errors?.[0]?.field;
   const matched = field?.match(/positions\[(\d+)\]/);

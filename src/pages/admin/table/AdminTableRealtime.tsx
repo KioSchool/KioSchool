@@ -15,7 +15,7 @@ import OnboardingStepHint from '@components/admin/workspace/onboarding/Onboardin
 import { ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardingData';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import useTableFilter, { TABLE_FILTER } from '@hooks/admin/useTableFilter';
-import useTableFlash from '@hooks/admin/useTableFlash';
+import useNewOrderFlash from '@hooks/admin/useNewOrderFlash';
 import useTableLayoutSave from '@hooks/admin/useTableLayoutSave';
 import useTableOrders from '@hooks/admin/useTableOrders';
 import useTableOrderStats from '@hooks/admin/useTableOrderStats';
@@ -75,7 +75,7 @@ function AdminTableRealtime() {
   const location = useLocation();
   const setExternalSidebar = useSetAtom(externalSidebarAtom);
 
-  // 잔여 시간·상태색은 렌더 시점의 현재 시각으로 계산된다. 폴링이 멈춘 동안(편집 중·응답 지연)에도 표기가 굳지 않게 주기적으로 다시 그린다.
+  // 잔여 시간은 렌더 시점 계산이라 폴링이 멈춰도(편집 중) 주기적으로 다시 그린다
   useClockTick(TABLE_CLOCK_TICK_MS);
 
   const tables = useAtomValue(adminTablesAtom);
@@ -83,11 +83,10 @@ function AdminTableRealtime() {
   const selectedTable = tables.find((table) => table.tableNumber === Number(tableNo));
   const { orders, fetchOrders } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
   const { filterType, setFilterType, counts, filteredTables } = useTableFilter(tables);
-  const { flashSeqByTableNumber, flashTable } = useTableFlash();
+  const { flashSeqByTableNumber, flashNewOrder } = useNewOrderFlash();
   const { statsBySessionId, applyOrder, refresh: refreshOrderStats } = useTableOrderStats(workspaceId, tables);
   const { isSaving: isSavingLayout, conflictedPosition, clearConflict, save: saveLayout } = useTableLayoutSave(workspaceId, setAdminTables);
 
-  // 배치 뷰에서 필터는 카드를 지우지 않고 흐리게만 한다. 지우면 홀의 공간 맥락이 깨진다. null이면 필터 없음.
   const visibleTableNumbers = filterType === TABLE_FILTER.ALL ? null : new Set(filteredTables.map((table) => table.tableNumber));
 
   const [noticedTableNo, setNoticedTableNo] = useState<string | null>(null);
@@ -97,7 +96,6 @@ function AdminTableRealtime() {
     fetchWorkspaceTables(workspaceId);
   };
 
-  // 주문이 몰릴 때 건마다 테이블 전체를 다시 부르지 않도록 trailing 1회로 모은다.
   const tablesRefreshTimerRef = useRef<number | null>(null);
   const scheduleTablesRefresh = () => {
     if (tablesRefreshTimerRef.current !== null) return;
@@ -112,8 +110,8 @@ function AdminTableRealtime() {
 
   const handleOrderCreated = (order: Order) => {
     applyOrder(order);
-    flashTable(order.tableNumber);
-    // 편집 중에는 폴링과 같은 이유로 tables 교체를 멈춘다 - 드래프트 밑에서 배열이 바뀌면 동시 편집 배치가 로컬 카드를 가린다. 나가기 시점에 fetchTables로 따라잡는다.
+    flashNewOrder(order.tableNumber);
+    // 편집 중 tables가 교체되면 드래프트 밑에서 배열이 바뀌어 동시 편집 배치가 로컬 카드를 가린다
     if (!isEditing) scheduleTablesRefresh();
     if (order.tableNumber === selectedTable?.tableNumber) fetchOrders();
   };
@@ -129,7 +127,6 @@ function AdminTableRealtime() {
     fetchOrders();
   };
 
-  // onConnected: 끊긴 동안 놓친 주문을 재연결 시점에 재동기화한다.
   useTableOrdersWebsocket(workspaceId, { onOrderCreated: handleOrderCreated, onOrderUpdated: handleOrderUpdated, onConnected: refreshOrderStats });
 
   useEffect(() => {
@@ -166,7 +163,6 @@ function AdminTableRealtime() {
   };
 
   const handleSelectTable = (table: Table) => {
-    // 목록 행 선택과 동일하게 히스토리를 쌓지 않는다 - 카드 탭마다 push하면 뒤로가기가 선택 이력을 되감는다.
     setTableNo(String(table.tableNumber), { replace: true });
   };
 

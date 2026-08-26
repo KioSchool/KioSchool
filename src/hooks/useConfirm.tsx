@@ -90,8 +90,7 @@ function useConfirm({ title, description, okText, cancelText }: ConfirmProps) {
     handleClose();
   };
 
-  // 매 렌더 새 함수를 만들면 React가 다른 컴포넌트 타입으로 보고 열려 있는 모달을 리마운트한다.
-  // 폴링·틱으로 자주 리렌더되는 화면에서 클릭이 유실되므로 promise가 바뀔 때만 재생성한다.
+  // 매 렌더 새 컴포넌트 타입이 되면 열린 모달이 리마운트돼 클릭이 유실된다 — promise가 바뀔 때만 재생성
   const ConfirmModal = useCallback(() => {
     if (promise === null) return null;
 

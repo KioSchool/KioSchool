@@ -30,8 +30,6 @@ const Button = styled.button`
   }
 `;
 
-// 회전은 호버가 아니라 클릭(새로고침 실행) 시점에 돌아야 한다 - 터치 기기에는 호버가 없다.
-// 연타에도 매번 다시 돌도록 시퀀스를 key로 받아 리마운트로 애니메이션을 재시작한다.
 const RefreshIcon = styled(RiRefreshLine)<{ isSpinning: boolean }>`
   width: 18px;
   height: 18px;

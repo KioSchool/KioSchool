@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import { useDroppable } from '@dnd-kit/core';
 import { Color } from '@resources/colors';
 
-// 편집 모드의 빈 칸은 점선 격자 대신 "소켓" 타일로 그린다 — 놓을 수 있는 자리라는 어포던스가 면으로 보인다.
 const Slot = styled.div<{ isOver: boolean; isDragging: boolean; isConflicted: boolean }>`
   width: 100%;
   height: 100%;

@@ -88,6 +88,12 @@ interface TableLayoutEditorProps {
   conflictedPosition: TablePosition | null;
 }
 
+/**
+ * 배치 편집기. 서버 배치를 복사한 로컬 드래프트를 조작하고 저장 시 변경분만 벌크 PATCH로 보낸다.
+ * - 트레이(미배치) ↔ 캔버스(빈 칸)로만 드래그한다. 점유된 칸에는 놓을 수 없다.
+ * - 저장 전까지 서버에는 아무것도 반영되지 않는다. 나가기는 미저장 변경이 있으면 확인을 받는다.
+ * - 저장이 409(칸 충돌)로 실패하면 서버가 알려준 항목의 칸을 표시하고 드래프트는 유지한다.
+ */
 function TableLayoutEditor({ tables, onExit, onSave, onPositionChange, isSaving, conflictedPosition }: TableLayoutEditorProps) {
   const { positionOf, place, resetAll, changes, isDirty } = useTableLayoutDraft(tables);
   const [activeTableId, setActiveTableId] = useState<number | null>(null);
@@ -106,13 +112,13 @@ function TableLayoutEditor({ tables, onExit, onSave, onPositionChange, isSaving,
     cancelText: '계속 편집',
   });
 
-  // 마우스는 5px 이동으로, 터치는 250ms 홀드로 리프트한다 - 터치에서 즉시 리프트하면 캔버스 스크롤 제스처와 충돌한다.
+  // 터치는 홀드로 리프트해야 캔버스 스크롤 제스처와 충돌하지 않는다
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: DRAG_ACTIVATION_DISTANCE_PX } }),
     useSensor(TouchSensor, { activationConstraint: { delay: TOUCH_DRAG_DELAY_MS, tolerance: TOUCH_DRAG_TOLERANCE_PX } }),
   );
 
-  // 진입 시 1회, 이미 배치된 무리의 중심으로 스크롤한다 - 편집 중 재중심화하면 드래그하던 위치를 잃는다.
+  // 진입 시 1회만 — 편집 중 재중심화하면 드래그 위치를 잃는다
   useEffect(() => {
     const placedPositions = tables.filter((table) => table.position != null).map((table) => table.position!);
     scrollToPlacedCenter(scrollRef.current, placedPositions);

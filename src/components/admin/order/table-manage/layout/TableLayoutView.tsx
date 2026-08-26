@@ -81,7 +81,6 @@ const UnplacedCardSlot = styled.div`
   height: ${TABLE_GRID_CELL_PX}px;
 `;
 
-// 운영 모드는 배치 영역 + 여유 1칸만 그린다. 빈 격자를 볼 이유가 운영 중에는 없고, 홀 전체가 스크린 없이 한눈에 들어와야 위치로 찾는다는 목적이 산다.
 function getCropBounds(placedTables: Table[]): GridCropBounds {
   const xs = placedTables.map((table) => table.position!.x);
   const ys = placedTables.map((table) => table.position!.y);

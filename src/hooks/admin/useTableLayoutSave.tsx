@@ -11,10 +11,6 @@ function findConflictedPosition(error: unknown, changes: TablePositionUpdate[]):
   return changes[index]?.position ?? null;
 }
 
-/**
- * 배치 편집의 저장 플로우 캡슐화 — 벌크 저장 요청과 409 충돌 좌표 상태를 소유한다.
- * 편집 모드 종료 여부는 호출부 판단이므로 성공 여부만 반환한다.
- */
 function useTableLayoutSave(workspaceId: string | undefined, onSaved: (tables: Table[]) => void) {
   const { updateTablePositions } = useAdminTableLayout(workspaceId);
   const [isSaving, setIsSaving] = useState(false);

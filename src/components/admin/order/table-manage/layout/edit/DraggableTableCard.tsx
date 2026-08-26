@@ -10,7 +10,7 @@ const Wrapper = styled.div<{ isDragging: boolean }>`
   height: 100%;
   opacity: ${({ isDragging }) => (isDragging ? DRAGGING_OPACITY : 1)};
   cursor: grab;
-  /* 스크롤은 살리고(manipulation) iOS 250ms 홀드가 텍스트 선택·롱프레스 콜아웃으로 새지 않게 막는다. */
+  /* touch-action: none이면 카드 위에서 캔버스 스크롤이 막힌다 — 홀드 중 텍스트 선택만 막는다 */
   touch-action: manipulation;
   user-select: none;
   -webkit-user-select: none;
@@ -25,7 +25,6 @@ interface DraggableTableCardProps {
   table: Table;
 }
 
-// 카드 전체 면이 드래그 대상이다. 편집 모드에는 탭으로 여는 상세가 없으므로 제스처가 겹치지 않고, 터치에서 28px 핸들을 조준하는 것보다 실패율이 낮다.
 function DraggableTableCard({ table }: DraggableTableCardProps) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({ id: `table-${table.id}` });
 

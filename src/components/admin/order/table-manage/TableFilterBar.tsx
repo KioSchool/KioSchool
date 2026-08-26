@@ -14,7 +14,6 @@ const FILTER_LABEL: Record<TableFilterType, string> = {
   [TABLE_FILTER.EMPTY]: TABLE_STATUS_LABEL[TABLE_STATUS.EMPTY],
 };
 
-// 필터가 곧 범례다 — 세그먼트의 상태 도트가 카드·목록과 같은 색 언어를 가르친다.
 const FILTER_DOT_COLOR: Partial<Record<TableFilterType, string>> = {
   [TABLE_FILTER.USING]: Color.GREEN,
   [TABLE_FILTER.WARNING]: Color.KIO_ORANGE,

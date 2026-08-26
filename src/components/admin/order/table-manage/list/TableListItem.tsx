@@ -14,7 +14,6 @@ import { Table } from '@@types/index';
 const SELECTED_OUTLINE_PX = 2;
 const STATUS_BAR_WIDTH_PX = 3;
 
-// 행은 흰 바탕을 유지하고 상태는 좌측 바·숫자색·칩으로만 말한다. 상태색으로 행 전체를 칠하면 정보가 아니라 소음이 된다.
 const STATUS_BAR_COLOR: Record<TableStatus, string> = {
   [TABLE_STATUS.EMPTY]: 'transparent',
   [TABLE_STATUS.USING]: 'transparent',

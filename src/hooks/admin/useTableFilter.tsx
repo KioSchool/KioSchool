@@ -29,7 +29,7 @@ function matchesFilter(status: TableStatus, filter: TableFilterType): boolean {
 export default function useTableFilter(tables: Table[]) {
   const [filterType, setFilterType] = useState<TableFilterType>(TABLE_FILTER.ALL);
 
-  // 상태가 Date.now()에 의존하므로 memo하면 시계 틱 리렌더에서 카운트·필터 소속이 굳는다. 테이블은 최대 100개라 매 렌더 계산이 싸다.
+  // 상태가 Date.now()에 의존하므로 memo하면 시계 틱에서 카운트가 굳는다
   const statuses = tables.map((table) => ({ table, status: getTableStatus(table) }));
 
   const counts: TableFilterCounts = {
