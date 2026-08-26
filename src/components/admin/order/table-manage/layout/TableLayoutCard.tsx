@@ -73,8 +73,10 @@ const Container = styled.div<{ status: TableStatus; isSelected: boolean; isDimme
   outline: ${({ isSelected }) => (isSelected ? `${SELECTED_OUTLINE_PX}px solid ${Color.KIO_ORANGE}` : 'none')};
   outline-offset: ${SELECTED_OFFSET_PX}px;
 
-  ${({ status }) =>
+  // 펄스가 opacity를 애니메이션하므로 dim 중엔 꺼야 필터 흐림이 살아남는다
+  ${({ status, isDimmed }) =>
     status === TABLE_STATUS.EXCEEDED &&
+    !isDimmed &&
     css`
       animation: ${exceededPulse} 2s infinite;
     `}
