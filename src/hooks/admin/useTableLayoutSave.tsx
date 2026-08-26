@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import useAdminTableLayout, { parseConflictIndex, TablePositionUpdate } from '@hooks/admin/useAdminTableLayout';
-import { getApiErrorMessage } from '@utils/apiError';
+import useAdminTableLayout, { TablePositionUpdate } from '@hooks/admin/useAdminTableLayout';
+import { API_ERROR_CODES } from '@constants/errorCodes';
+import { getApiErrorMessage, getApiFieldErrors, isApiErrorCode } from '@utils/apiError';
 import { Table, TablePosition } from '@@types/index';
 
+// 409의 errors[0].index는 요청 positions 배열 인덱스 — 좌표는 서버 value 표기 대신 우리 payload에서 되찾는다
 function findConflictedPosition(error: unknown, changes: TablePositionUpdate[]): TablePosition | null {
-  const index = parseConflictIndex(error);
-  if (index === null) return null;
+  if (!isApiErrorCode(error, API_ERROR_CODES.TABLE_POSITION_CONFLICT)) return null;
+
+  const index = getApiFieldErrors(error)[0]?.index;
+  if (index === null || index === undefined) return null;
 
   return changes[index]?.position ?? null;
 }
