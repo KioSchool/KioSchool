@@ -4,7 +4,8 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { formatKoreanTime } from '@utils/formatDate';
 import useModal from '@hooks/useModal';
 import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
-import { Order, OrderProduct, OrderStatus } from '@@types/index';
+import { formatProductSummary } from '@utils/orderProduct';
+import { Order, OrderStatus } from '@@types/index';
 
 const CANCELLED_OPACITY = 0.55;
 
@@ -62,13 +63,6 @@ const OrderAmount = styled.div<{ isCancelled: boolean }>`
   text-decoration: ${({ isCancelled }) => (isCancelled ? 'line-through' : 'none')};
   color: ${Color.GREY};
 `;
-
-function formatProductSummary(orderProducts: OrderProduct[] | undefined): string {
-  if (!orderProducts || orderProducts.length === 0) return '상품 없음';
-  if (orderProducts.length === 1) return orderProducts[0].productName;
-
-  return `${orderProducts[0].productName} 외 ${orderProducts.length - 1}건`;
-}
 
 interface TableOrderCardProps {
   order: Order;

@@ -2,15 +2,16 @@ import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 import { TABLE_FILTER, TableFilterCounts, TableFilterType } from '@hooks/admin/useTableFilter';
+import { TABLE_STATUS, TABLE_STATUS_LABEL } from '@utils/tableStatus';
 
 const FILTER_ORDER: TableFilterType[] = [TABLE_FILTER.ALL, TABLE_FILTER.USING, TABLE_FILTER.WARNING, TABLE_FILTER.EXCEEDED, TABLE_FILTER.EMPTY];
 
 const FILTER_LABEL: Record<TableFilterType, string> = {
   [TABLE_FILTER.ALL]: '전체',
-  [TABLE_FILTER.USING]: '사용중',
-  [TABLE_FILTER.WARNING]: '주의',
-  [TABLE_FILTER.EXCEEDED]: '초과',
-  [TABLE_FILTER.EMPTY]: '미사용',
+  [TABLE_FILTER.USING]: TABLE_STATUS_LABEL[TABLE_STATUS.USING],
+  [TABLE_FILTER.WARNING]: TABLE_STATUS_LABEL[TABLE_STATUS.WARNING],
+  [TABLE_FILTER.EXCEEDED]: TABLE_STATUS_LABEL[TABLE_STATUS.EXCEEDED],
+  [TABLE_FILTER.EMPTY]: TABLE_STATUS_LABEL[TABLE_STATUS.EMPTY],
 };
 
 // 필터가 곧 범례다 — 세그먼트의 상태 도트가 카드·목록과 같은 색 언어를 가르친다.

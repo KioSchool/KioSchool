@@ -1,14 +1,7 @@
 import styled from '@emotion/styled';
 import { css, keyframes } from '@emotion/react';
 import { Color } from '@resources/colors';
-import { TABLE_STATUS, TableStatus } from '@utils/tableStatus';
-
-export const STATUS_BADGE_LABEL: Record<TableStatus, string> = {
-  [TABLE_STATUS.EMPTY]: '미사용',
-  [TABLE_STATUS.USING]: '사용중',
-  [TABLE_STATUS.WARNING]: '주의',
-  [TABLE_STATUS.EXCEEDED]: '초과',
-};
+import { TABLE_STATUS, TABLE_STATUS_LABEL, TableStatus } from '@utils/tableStatus';
 
 const STATUS_BADGE_TEXT_COLOR: Record<TableStatus, string> = {
   [TABLE_STATUS.EMPTY]: Color.GREY,
@@ -72,7 +65,7 @@ function StatusBadge({ status }: StatusBadgeProps) {
   return (
     <Badge status={status}>
       <Dot status={status} />
-      {STATUS_BADGE_LABEL[status]}
+      {TABLE_STATUS_LABEL[status]}
     </Badge>
   );
 }

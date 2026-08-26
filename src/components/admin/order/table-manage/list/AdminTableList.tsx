@@ -124,7 +124,7 @@ function AdminTableList({ tables, orderStatsBySessionId }: AdminTableListProps) 
       <ListWrapper>
         <Header>
           <HeaderText>테이블</HeaderText>
-          <HeaderText />
+          <HeaderText>진행</HeaderText>
           <HeaderText>사용 시간</HeaderText>
           <HeaderText>주문</HeaderText>
           <HeaderText>금액</HeaderText>

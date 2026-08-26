@@ -8,6 +8,7 @@ import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { MODAL_ROOT_KEY } from '@hooks/useModal';
 import { Table } from '@@types/index';
+import { downloadDataUrl } from '@utils/qrCode';
 
 const QR_DISPLAY_SIZE_PX = 220;
 const QR_DOWNLOAD_SIZE_PX = 480;
@@ -27,7 +28,7 @@ const Modal = styled.div`
   max-width: 92vw;
   box-sizing: border-box;
   background-color: ${Color.WHITE};
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 12px;
   box-shadow: 0 4px 20px 0 rgba(92, 92, 92, 0.05);
   padding: 20px;
@@ -152,10 +153,7 @@ function TableQrModal({ workspaceId, workspaceName, table, onClose }: TableQrMod
         errorCorrectionLevel: 'H',
         margin: QR_DOWNLOAD_MARGIN,
       });
-      const link = document.createElement('a');
-      link.href = dataUrl;
-      link.download = `테이블${table.tableNumber} QR코드.png`;
-      link.click();
+      downloadDataUrl(dataUrl, `테이블${table.tableNumber} QR코드.png`);
     } catch (error) {
       console.error(error);
       alert('QR 코드 생성에 실패했습니다.');

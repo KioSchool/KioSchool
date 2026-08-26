@@ -65,6 +65,13 @@ export function drawQRTiles(ctx: CanvasRenderingContext2D, qrCanvases: HTMLCanva
   });
 }
 
+export function downloadDataUrl(dataUrl: string, fileName: string) {
+  const link = document.createElement('a');
+  link.href = dataUrl;
+  link.download = fileName;
+  link.click();
+}
+
 export function triggerDownload(canvas: HTMLCanvasElement, fileName: string) {
   canvas.toBlob((blob) => {
     if (!blob) return alert('이미지 생성 실패');

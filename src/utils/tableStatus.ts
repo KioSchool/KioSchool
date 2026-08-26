@@ -9,6 +9,13 @@ export const TABLE_STATUS = {
 
 export type TableStatus = typeof TABLE_STATUS[keyof typeof TABLE_STATUS];
 
+export const TABLE_STATUS_LABEL: Record<TableStatus, string> = {
+  [TABLE_STATUS.EXCEEDED]: '초과',
+  [TABLE_STATUS.WARNING]: '주의',
+  [TABLE_STATUS.USING]: '사용중',
+  [TABLE_STATUS.EMPTY]: '미사용',
+};
+
 const MINUTES_TO_WARN = 10;
 const MS_PER_MINUTE = 60 * 1000;
 export const WARNING_THRESHOLD_MS = MINUTES_TO_WARN * MS_PER_MINUTE;

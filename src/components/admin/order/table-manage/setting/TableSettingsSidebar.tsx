@@ -63,7 +63,7 @@ function TableSettingsSidebar() {
     setTableCount(Math.min(MAX_TABLE_COUNT, Math.max(1, value)));
   };
 
-  const getStrandedTableNumbers = () =>
+  const getUsingTableNumbersOverCount = () =>
     tables.filter((table) => table.tableNumber > tableCount && getTableStatus(table) !== TABLE_STATUS.EMPTY).map((table) => table.tableNumber);
 
   const handleSave = async () => {
@@ -77,9 +77,9 @@ function TableSettingsSidebar() {
       return;
     }
 
-    const stranded = getStrandedTableNumbers();
-    if (stranded.length > 0) {
-      const confirmed = window.confirm(`${stranded.join(', ')}번 테이블이 사용 중입니다.\n계속하면 이 테이블들이 화면에서 사라집니다. 진행할까요?`);
+    const usingOverCount = getUsingTableNumbersOverCount();
+    if (usingOverCount.length > 0) {
+      const confirmed = window.confirm(`${usingOverCount.join(', ')}번 테이블이 사용 중입니다.\n계속하면 이 테이블들이 화면에서 사라집니다. 진행할까요?`);
       if (!confirmed) return;
     }
 

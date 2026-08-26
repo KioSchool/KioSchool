@@ -1,4 +1,4 @@
-﻿import NewAppTextarea from '@components/common/input/NewAppTextarea';
+﻿import NewAppTextarea from './NewAppTextarea';
 
 const meta = {
   title: 'Components/Common/Input/NewAppTextarea',

@@ -65,6 +65,20 @@ const FooterButton = styled.button<{ variant: 'start' | 'end' }>`
   }
 `;
 
+function getStepperMinutes({
+  isDisabled,
+  settingMinutes,
+  selectedMinutes,
+}: {
+  isDisabled: boolean;
+  settingMinutes: number | undefined;
+  selectedMinutes: number;
+}): number {
+  if (!isDisabled) return selectedMinutes;
+
+  return settingMinutes ?? FALLBACK_SESSION_LIMIT_MINUTES;
+}
+
 interface TableDetailPanelProps {
   workspaceId: string | undefined;
   workspaceName: string;
@@ -99,7 +113,11 @@ function TableDetailPanel({ workspaceId, workspaceName, table, orders, refetchTa
   });
 
   const isStepperDisabled = !session || !setting?.useOrderSessionTimeLimit;
-  const stepperMinutes = isStepperDisabled ? setting?.orderSessionTimeLimitMinutes ?? FALLBACK_SESSION_LIMIT_MINUTES : Number(selectedTimeLimit);
+  const stepperMinutes = getStepperMinutes({
+    isDisabled: isStepperDisabled,
+    settingMinutes: setting?.orderSessionTimeLimitMinutes,
+    selectedMinutes: Number(selectedTimeLimit),
+  });
 
   return (
     <>
