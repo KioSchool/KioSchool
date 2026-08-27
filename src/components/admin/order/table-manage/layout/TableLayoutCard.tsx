@@ -131,15 +131,18 @@ const HandleIcon = styled(RiDraggable)`
 
 const Bottom = styled.div`
   margin-top: auto;
-  gap: 5px;
+  min-width: 0;
+  gap: 4px;
 
   ${rowFlex({ align: 'center' })};
 `;
 
+// 카드 내용 폭 52px에서 링·간격을 뺀 36px 안에 "+10:30"(34.5px)까지 들어가야 한다
 const TimeText = styled.span<{ status: TableStatus }>`
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
   line-height: 1;
+  letter-spacing: -0.02em;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
   color: ${({ status }) => STATUS_STYLE[status].time};
