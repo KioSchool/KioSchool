@@ -62,7 +62,7 @@ const Container = styled.div<{ status: TableStatus; isSelected: boolean; isDimme
   height: 100%;
   box-sizing: border-box;
   border-radius: 12px;
-  padding: 8px 9px;
+  padding: 8px 6px;
   position: relative;
   cursor: ${({ clickable }) => (clickable ? 'pointer' : 'inherit')};
   opacity: ${({ isDimmed }) => (isDimmed ? DIMMED_OPACITY : 1)};
@@ -137,9 +137,9 @@ const Bottom = styled.div`
   ${rowFlex({ align: 'center' })};
 `;
 
-// 카드 내용 폭 52px에서 링·간격을 뺀 36px 안에 "+10:30"(34.5px)까지 들어가야 한다
+// 카드 내용 폭 58px에서 링·간격을 뺀 38px 안에 "+10:30"(약 37.7px)까지 들어가야 한다
 const TimeText = styled.span<{ status: TableStatus }>`
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.02em;

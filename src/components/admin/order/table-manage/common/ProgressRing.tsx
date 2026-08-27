@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 
-export const RING_SIZE_CARD_PX = 12;
+export const RING_SIZE_CARD_PX = 16;
 export const RING_SIZE_ROW_PX = 22;
 
 const THICKNESS_RATIO = 5;
