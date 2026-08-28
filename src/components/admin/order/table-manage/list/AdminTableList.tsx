@@ -14,7 +14,6 @@ import TableListItem from './TableListItem';
 const ListContainer = styled.div`
   height: ${TABLE_VIEW_HEIGHT_PX}px;
   gap: 10px;
-
   ${colFlex()};
 `;
 
@@ -24,7 +23,6 @@ const ListWrapper = styled.div`
   overflow: hidden;
   flex: 1;
   background-color: ${Color.WHITE};
-
   ${colFlex()};
 `;
 
@@ -56,6 +54,13 @@ const ListBody = styled.div`
   overflow-y: auto;
   height: 100%;
   flex: 1;
+`;
+
+const EmptyBody = styled.div`
+  height: 100%;
+  font-size: 14px;
+  color: ${Color.MUTED_GREY};
+  ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
 const ExpandIcon = styled(RiExpandUpDownFill)`
@@ -134,6 +139,7 @@ function AdminTableList({ tables, orderStatsBySessionId }: AdminTableListProps) 
           </HeaderText>
         </Header>
         <ListBody>
+          {sortedTables.length === 0 && <EmptyBody>조건에 맞는 테이블이 없습니다</EmptyBody>}
           {sortedTables.map((table) => (
             <TableListItem key={table.id} table={table} orderStats={getSessionOrderStats(table, orderStatsBySessionId)} />
           ))}
