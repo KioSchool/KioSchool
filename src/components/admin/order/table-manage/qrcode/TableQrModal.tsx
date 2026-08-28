@@ -101,23 +101,6 @@ const ActionButton = styled.button<{ primary?: boolean }>`
   }
 `;
 
-const UrlText = styled.div`
-  width: 100%;
-  box-sizing: border-box;
-  padding: 10px;
-  background-color: ${Color.LIGHT_GREY};
-  border-radius: 8px;
-  font-size: 11px;
-  line-height: 1.5;
-  word-break: break-all;
-  color: ${Color.GREY};
-`;
-
-const UrlValue = styled.span`
-  color: ${Color.KIO_ORANGE};
-  font-weight: 600;
-`;
-
 interface TableQrModalProps {
   workspaceId: string | undefined;
   workspaceName: string;
@@ -183,10 +166,6 @@ function TableQrModal({ workspaceId, workspaceName, table, onClose }: TableQrMod
             이미지 저장
           </ActionButton>
         </ActionColumn>
-        <UrlText>
-          {location.origin}/order?workspaceId=<UrlValue>{workspaceId}</UrlValue>&tableNo=<UrlValue>{table.tableNumber}</UrlValue>&tableHash=
-          <UrlValue>{table.tableHash}</UrlValue>
-        </UrlText>
       </Modal>
     </Overlay>
   );
