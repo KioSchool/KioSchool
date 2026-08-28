@@ -13,7 +13,6 @@ const Container = styled.div`
   border-radius: 10px;
   padding: 4px;
   gap: 4px;
-
   ${rowFlex({ align: 'center' })};
 
   ${mobileMediaQuery} {
@@ -31,7 +30,6 @@ const ToggleButton = styled.button<{ active: boolean }>`
   box-shadow: ${({ active }) => (active ? '0 2px 8px rgba(0, 0, 0, 0.1)' : 'none')};
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-
   ${rowFlex({ justify: 'center', align: 'center' })};
 `;
 
@@ -52,11 +50,11 @@ function ViewToggle() {
 
   return (
     <Container>
-      <ToggleButton active={viewMode === TABLE_VIEW.LAYOUT} aria-label="배치 보기" onClick={handleSelect(TABLE_VIEW.LAYOUT)}>
-        <GridIcon />
-      </ToggleButton>
       <ToggleButton active={viewMode === TABLE_VIEW.LIST} aria-label="목록 보기" onClick={handleSelect(TABLE_VIEW.LIST)}>
         <ListIcon />
+      </ToggleButton>
+      <ToggleButton active={viewMode === TABLE_VIEW.LAYOUT} aria-label="배치 보기" onClick={handleSelect(TABLE_VIEW.LAYOUT)}>
+        <GridIcon />
       </ToggleButton>
     </Container>
   );
