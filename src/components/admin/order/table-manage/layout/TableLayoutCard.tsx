@@ -10,6 +10,8 @@ import ProgressRing from '@components/admin/order/table-manage/common/ProgressRi
 
 const SELECTED_OUTLINE_PX = 3;
 const SELECTED_OFFSET_PX = 2;
+// 선택 아웃라인이 카드 밖으로 뻗는 폭 — overflow가 있는 부모는 이만큼 여유를 둬야 잘리지 않는다
+export const SELECTED_RING_PX = SELECTED_OUTLINE_PX + SELECTED_OFFSET_PX;
 const HANDLE_ICON_PX = 14;
 const DIMMED_OPACITY = 0.28;
 
@@ -80,7 +82,6 @@ const Container = styled.div<{ status: TableStatus; isSelected: boolean; isDimme
     css`
       animation: ${exceededPulse} 2s infinite;
     `}
-
   ${colFlex()};
 `;
 
@@ -94,7 +95,6 @@ const FlashOverlay = styled.span`
 
 const TopRow = styled.div`
   gap: 4px;
-
   ${rowFlex({ justify: 'space-between', align: 'start' })};
 `;
 
@@ -118,7 +118,6 @@ const OrderCountBadge = styled.span<{ status: TableStatus }>`
   font-variant-numeric: tabular-nums;
   background-color: ${({ status }) => (status === TABLE_STATUS.EXCEEDED ? Color.WHITE : Color.KIO_ORANGE)};
   color: ${({ status }) => (status === TABLE_STATUS.EXCEEDED ? Color.RED : Color.WHITE)};
-
   ${rowFlex({ justify: 'center', align: 'center' })};
 `;
 
@@ -133,7 +132,6 @@ const Bottom = styled.div`
   margin-top: auto;
   min-width: 0;
   gap: 4px;
-
   ${rowFlex({ align: 'center' })};
 `;
 
@@ -144,6 +142,9 @@ const TimeText = styled.span<{ status: TableStatus }>`
   line-height: 1;
   letter-spacing: -0.02em;
   white-space: nowrap;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-variant-numeric: tabular-nums;
   color: ${({ status }) => STATUS_STYLE[status].time};
 `;

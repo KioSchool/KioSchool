@@ -7,14 +7,13 @@ import { TABLE_CROP_MARGIN_CELLS, TABLE_GRID_CELL_PX, TABLE_GRID_SIZE, TABLE_VIE
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { getSessionOrderStats, SessionOrderStats } from '@hooks/admin/useTableOrderStats';
 import TableLayoutCanvas, { GridCropBounds } from './TableLayoutCanvas';
-import TableLayoutCard from './TableLayoutCard';
+import TableLayoutCard, { SELECTED_RING_PX } from './TableLayoutCard';
 
 const Container = styled.div`
   width: 100%;
   min-width: 0;
   height: ${TABLE_VIEW_HEIGHT_PX}px;
   gap: 10px;
-
   ${colFlex()};
 `;
 
@@ -33,7 +32,6 @@ const EmptyState = styled.div`
   color: ${Color.GREY};
   font-size: 16px;
   font-weight: 700;
-
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
@@ -47,7 +45,6 @@ const UnplacedSection = styled.div`
   width: 100%;
   flex-shrink: 0;
   gap: 6px;
-
   ${colFlex()};
 `;
 
@@ -67,12 +64,13 @@ const UNPLACED_LIST_MAX_ROWS = 2;
 const UNPLACED_LIST_GAP_PX = 8;
 
 const UnplacedCardList = styled.div`
-  width: 100%;
+  width: calc(100% + ${SELECTED_RING_PX * 2}px);
+  margin: -${SELECTED_RING_PX}px;
+  padding: ${SELECTED_RING_PX}px;
   gap: ${UNPLACED_LIST_GAP_PX}px;
   flex-wrap: wrap;
   max-height: ${UNPLACED_LIST_MAX_ROWS * TABLE_GRID_CELL_PX + (UNPLACED_LIST_MAX_ROWS - 1) * UNPLACED_LIST_GAP_PX}px;
   overflow-y: auto;
-
   ${rowFlex()};
 `;
 
@@ -142,7 +140,7 @@ function TableLayoutView({
         {placedTables.length === 0 ? (
           <EmptyState>
             아직 배치된 테이블이 없습니다
-            <EmptyStateHint>실제 홀 모양대로 놓아두면 몇 번 테이블이 어디인지 바로 찾을 수 있어요</EmptyStateHint>
+            <EmptyStateHint>실제 주점 테이블 배치대로 놓아두면 테이블 위치를 바로 찾을 수 있어요</EmptyStateHint>
             <NewCommonButton size="sm" onClick={onStartEdit}>
               배치 편집
             </NewCommonButton>
