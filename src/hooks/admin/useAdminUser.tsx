@@ -79,8 +79,8 @@ function useAdminUser() {
       });
   };
 
-  const registerAccount = async (bankId: number, accountNumber: string, accountHolder: string) => {
-    const body = { bankId, accountNumber, accountHolder };
+  const registerAccount = async (bankId: number, accountNumber: string) => {
+    const body = { bankId, accountNumber };
 
     return adminApi
       .post<User>('/account', body)
