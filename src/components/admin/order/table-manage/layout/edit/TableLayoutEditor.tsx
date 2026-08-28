@@ -31,16 +31,20 @@ const HALF = 2;
 
 const Frame = styled.div`
   width: 100%;
-
   ${colFlex()};
 `;
 
-const Container = styled.div`
+const SAVING_OPACITY = 0.6;
+
+const Container = styled.div<{ isSaving: boolean }>`
   width: 100%;
   height: ${TABLE_VIEW_HEIGHT_PX}px;
   display: grid;
   grid-template-columns: ${TABLE_TRAY_COLUMN_PX}px 1fr;
   gap: 12px;
+  pointer-events: ${({ isSaving }) => (isSaving ? 'none' : 'auto')};
+  opacity: ${({ isSaving }) => (isSaving ? SAVING_OPACITY : 1)};
+  transition: opacity 0.15s ease-in-out;
 `;
 
 const OverlayCard = styled.div`
@@ -199,7 +203,7 @@ function TableLayoutEditor({ tables, onExit, onSave, onPositionChange, isSaving,
     <Frame>
       <EditorToolbar changeCount={changes.length} isSaving={isSaving} onSave={handleSave} onResetAll={handleResetAll} onExit={handleExit} />
       <DndContext sensors={sensors} collisionDetection={pointerWithin} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-        <Container>
+        <Container isSaving={isSaving}>
           <UnplacedTableTray tables={unplacedTables} />
           <TableLayoutCanvas renderCell={renderCell} scrollRef={scrollRef} />
         </Container>
