@@ -30,6 +30,7 @@ export const ACCOUNT_INFO = {
   SECONDARY_BUTTON: '계좌 삭제',
   BANK_NAME_LABEL: '은행명',
   HOLDER_LABEL: '예금주',
+  HOLDER_HINT: '은행에 등록된 예금주명입니다. 손님에게 이대로 표시됩니다.',
   ACCOUNT_NUMBER_LABEL: '계좌번호',
 } as const;
 

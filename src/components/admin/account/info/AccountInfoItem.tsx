@@ -30,18 +30,26 @@ const ValueText = styled.span`
   font-weight: 400;
 `;
 
+const HintText = styled.span`
+  font-size: 12px;
+  color: #8b9096;
+  font-weight: 400;
+`;
+
 interface AccountInfoItemProps {
   label: string;
   value: string;
+  hint?: string;
 }
 
-function AccountInfoItem({ label, value }: AccountInfoItemProps) {
+function AccountInfoItem({ label, value, hint }: AccountInfoItemProps) {
   return (
     <AccountInfoRow>
       <InfoLabel>{label}</InfoLabel>
       <ValueBox>
         <ValueText>{value}</ValueText>
       </ValueBox>
+      {hint && <HintText>{hint}</HintText>}
     </AccountInfoRow>
   );
 }
