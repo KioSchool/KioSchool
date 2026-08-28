@@ -22,7 +22,6 @@ const Button = styled.button`
   color: ${Color.GREY};
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
-
   ${rowFlex({ justify: 'center', align: 'center' })};
 
   &:hover {

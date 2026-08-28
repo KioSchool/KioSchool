@@ -60,7 +60,6 @@ const TableNumber = styled.div<{ status: TableStatus }>`
 const UsageTimeCell = styled.div`
   gap: 3px;
   text-align: left;
-
   ${colFlex({ justify: 'center' })};
 `;
 

@@ -146,7 +146,7 @@ export default ExampleCard;
 - 색상: `Color` 객체 from `@resources/colors` (`Color.KIO_ORANGE`, `Color.GREY` 등)
 - 조건부 스타일: props 기반 — `color: ${({ disabled }) => disabled ? Color.GREY : Color.KIO_ORANGE}`
 - 반응형: `mobileMediaQuery` (768px), `tabletMediaQuery` (1200px) from `@styles/globalStyles`
-- **Styled 컴포넌트 내부 배치 순서**: 일반 CSS 속성 → `colFlex`/`rowFlex` → `mediaQuery` (import해서 사용하는 것들은 맨 아래에, flex → mediaQuery 순서)
+- **Styled 컴포넌트 내부 배치 순서**: 일반 CSS 속성 → `colFlex`/`rowFlex` → `mediaQuery` (import해서 사용하는 것들은 맨 아래에, flex → mediaQuery 순서). flex 믹스인 앞에 빈 줄을 두지 않는다
 - **inline style 사용 금지** — 레이아웃 스타일은 반드시 Styled 컴포넌트로 정의. framer-motion의 애니메이션 값(`y`, `scale` 등)만 예외 허용
 - **쌩 HTML 태그 JSX 직접 반환 금지** — 컴포넌트 최상위 반환값은 반드시 Styled 컴포넌트를 사용한다. 스타일이 없는 래퍼가 필요하면 `const Section = styled.div\`\`` 처럼 빈 styled 컴포넌트로 감싼다.
 - 폰트: LINE Seed Sans KR (글로벌 적용)

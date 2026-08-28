@@ -16,7 +16,6 @@ const Container = styled.div<{ isOver: boolean }>`
   gap: 10px;
   overflow-y: auto;
   transition: border-color 0.15s ease-in-out, background-color 0.15s ease-in-out;
-
   ${colFlex()};
 `;
 
@@ -35,7 +34,6 @@ const TitleCount = styled.span`
 const CardList = styled.div`
   gap: 8px;
   flex-wrap: wrap;
-
   ${rowFlex()};
 `;
 

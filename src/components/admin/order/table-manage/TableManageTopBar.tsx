@@ -14,7 +14,6 @@ const Container = styled.div`
   padding-top: 12px;
   padding-bottom: 24px;
   gap: 12px;
-
   ${colFlex()};
 `;
 
@@ -24,7 +23,6 @@ const Row = styled.div<{ justify?: JustifyType }>`
 
 const Actions = styled.div`
   gap: 8px;
-
   ${rowFlex({ align: 'center' })};
 `;
 

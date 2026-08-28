@@ -23,7 +23,6 @@ const FILTER_DOT_COLOR: Partial<Record<TableFilterType, string>> = {
 
 const Container = styled.div`
   gap: 6px;
-
   ${rowFlex({ align: 'center' })};
 `;
 
@@ -41,7 +40,6 @@ const Segment = styled.button<{ active: boolean }>`
   cursor: pointer;
   gap: 6px;
   transition: all 0.2s ease-in-out;
-
   ${rowFlex({ justify: 'center', align: 'center' })};
 
   &:hover {

@@ -12,14 +12,12 @@ import { Table } from '@@types/index';
 const Row = styled.div`
   width: 100%;
   gap: 8px;
-
   ${rowFlex({ justify: 'space-between', align: 'center' })};
 `;
 
 const TextBlock = styled.div`
   min-width: 0;
   gap: 2px;
-
   ${colFlex()};
 `;
 

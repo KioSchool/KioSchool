@@ -6,7 +6,6 @@ import { colFlex } from '@styles/flexStyles';
 const Container = styled.div`
   width: 100%;
   gap: 8px;
-
   ${colFlex()};
 `;
 
@@ -23,7 +22,6 @@ const Card = styled.div`
   gap: 10px;
   background-color: ${Color.LIGHT_GREY};
   border-radius: 12px;
-
   ${colFlex()};
 `;
 

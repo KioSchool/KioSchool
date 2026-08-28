@@ -9,7 +9,6 @@ import { formatMinutesToTime } from '@utils/formatDate';
 const ToggleRow = styled.div`
   width: 100%;
   gap: 8px;
-
   ${rowFlex({ justify: 'space-between', align: 'center' })};
 `;
 
