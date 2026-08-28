@@ -10,6 +10,7 @@ import { normalizeAccountNumber } from '@utils/formatNumber';
 import { useAtomValue, useSetAtom } from 'jotai';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
+import { ACCOUNT_INFO, ACCOUNT_REGISTER_RESULT } from '@constants/data/accountData';
 
 const Container = styled.div`
   width: 100%;
@@ -47,7 +48,6 @@ const SubmitContainer = styled.div`
 function RegisterAccount() {
   const { fetchBanks, registerAccount } = useAdminUser();
   const banks = useAtomValue(adminBanksAtom);
-  const accountHolderRef = useRef<HTMLInputElement>(null);
   const accountNumberRef = useRef<HTMLInputElement>(null);
   const [selectedBankId, setSelectedBankId] = useState<string>('');
 
@@ -79,25 +79,16 @@ function RegisterAccount() {
   const handleReset = () => {
     setSelectedBankId('');
 
-    if (accountHolderRef.current) {
-      accountHolderRef.current.value = '';
-    }
     if (accountNumberRef.current) {
       accountNumberRef.current.value = '';
     }
   };
 
   const registerHandler = async () => {
-    const accountHolder = accountHolderRef.current?.value;
     const accountNumber = normalizeAccountNumber(accountNumberRef.current?.value ?? '');
 
     if (selectedBankId === '') {
       alert('은행을 선택해주세요.');
-      return;
-    }
-
-    if (!accountHolder || accountHolder.trim() === '') {
-      alert('예금주명을 입력해주세요.');
       return;
     }
 
@@ -110,10 +101,12 @@ function RegisterAccount() {
       accountNumberRef.current.value = accountNumber;
     }
 
-    const response = await registerAccount(Number(selectedBankId), accountNumber, accountHolder);
+    const response = await registerAccount(Number(selectedBankId), accountNumber);
 
     if (response) {
-      alert('계좌 등록이 완료되었습니다.');
+      alert(
+        `${ACCOUNT_REGISTER_RESULT.TITLE}\n\n${ACCOUNT_INFO.HOLDER_LABEL}: ${response.account?.accountHolder ?? ''}\n\n${ACCOUNT_REGISTER_RESULT.CONFIRM_HINT}`,
+      );
       handleReset();
       closeSidebar();
     }
@@ -125,10 +118,6 @@ function RegisterAccount() {
         <InputColContainer>
           <InputLabel>은행명</InputLabel>
           <SelectWithOptions options={allBanks} isUseDefaultOption={false} onChange={handleSelect} width={'220px'} value={selectedBankId} />
-        </InputColContainer>
-        <InputColContainer>
-          <InputLabel>예금주</InputLabel>
-          <NewAppInput placeholder={'예금주명을 입력해주세요.'} type={'text'} ref={accountHolderRef} width={220} height={50} />
         </InputColContainer>
         <InputColContainer>
           <InputLabel>계좌번호</InputLabel>
