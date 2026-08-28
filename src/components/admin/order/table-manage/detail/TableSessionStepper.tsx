@@ -34,6 +34,7 @@ const StepButton = styled.button<{ variant: 'decrease' | 'increase' }>`
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
+  user-select: none;
   background-color: ${({ variant }) => (variant === 'decrease' ? Color.KIO_ORANGE_FAINT : Color.KIO_ORANGE)};
   color: ${({ variant }) => (variant === 'decrease' ? Color.KIO_ORANGE : Color.WHITE)};
   transition: opacity 0.15s ease-in-out;
