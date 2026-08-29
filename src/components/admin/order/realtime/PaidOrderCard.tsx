@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { Order } from '@@types/index';
 import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
-import OrderItemList from '@components/admin/order/realtime/OrderItemList';
+import OrderItemList from './OrderItemList';
 import { areOrdersEquivalent } from '@utils/memoCompareFunction';
 import useModal from '@hooks/useModal';
 import { extractMinFromDate } from '@utils/formatDate';

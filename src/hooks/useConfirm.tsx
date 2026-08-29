@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import NewCommonButton from '@components/common/button/NewCommonButton';
@@ -90,7 +90,8 @@ function useConfirm({ title, description, okText, cancelText }: ConfirmProps) {
     handleClose();
   };
 
-  const ConfirmModal = () => {
+  // 매 렌더 새 컴포넌트 타입이 되면 열린 모달이 리마운트돼 클릭이 유실된다 — promise가 바뀔 때만 재생성
+  const ConfirmModal = useCallback(() => {
     if (promise === null) return null;
 
     return (
@@ -114,7 +115,7 @@ function useConfirm({ title, description, okText, cancelText }: ConfirmProps) {
         </SubContainer>
       </Container>
     );
-  };
+  }, [promise, title, description, okText, cancelText]);
 
   return { ConfirmModal, confirm };
 }

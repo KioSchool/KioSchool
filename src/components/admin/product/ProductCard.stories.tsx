@@ -1,5 +1,5 @@
 import { ProductStatus } from '@@types/index';
-import ProductCard from '@components/admin/product/ProductCard';
+import ProductCard from './ProductCard';
 import { BrowserRouter } from 'react-router-dom';
 
 const meta = {

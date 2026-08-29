@@ -13,9 +13,7 @@ const InputContainer = styled.div<{ disabled?: boolean; maxWidth?: string }>`
   height: 28px;
   width: 100%;
   max-width: ${({ maxWidth }) => maxWidth || '250px'};
-  ::selection {
-    background: none;
-  }
+  user-select: none;
 
   ${rowFlex({ justify: 'space-between', align: 'center' })};
 `;
@@ -100,6 +98,11 @@ function NumberInput({ value, formatter, onChange, onIncrement, onDecrement, dis
     }
   };
 
+  // 아이콘 연타(더블클릭) 시 브라우저가 인접 텍스트를 선택하는 것을 막는다
+  const preventTextSelection = (e: React.MouseEvent) => {
+    e.preventDefault();
+  };
+
   const getDisplayValue = (): string => {
     if (isEditing) {
       return internalValue;
@@ -114,7 +117,7 @@ function NumberInput({ value, formatter, onChange, onIncrement, onDecrement, dis
 
   return (
     <InputContainer disabled={disabled} maxWidth={maxWidth}>
-      {onDecrement && <MinusButton disabled={disabled} onClick={disabled ? undefined : onDecrement} />}
+      {onDecrement && <MinusButton disabled={disabled} onMouseDown={preventTextSelection} onClick={disabled ? undefined : onDecrement} />}
       <Input
         type="text"
         value={getDisplayValue()}
@@ -125,7 +128,7 @@ function NumberInput({ value, formatter, onChange, onIncrement, onDecrement, dis
         disabled={disabled}
         readOnly={readOnly}
       />
-      {onIncrement && <PlusButton disabled={disabled} onClick={disabled ? undefined : onIncrement} />}
+      {onIncrement && <PlusButton disabled={disabled} onMouseDown={preventTextSelection} onClick={disabled ? undefined : onIncrement} />}
     </InputContainer>
   );
 }

@@ -5,40 +5,33 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { adminWorkspaceAtom, adminTablesAtom } from '@jotai/admin/atoms';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import NewCommonButton from '@components/common/button/NewCommonButton';
+import SettingSection from './SettingSection';
 import { colFlex } from '@styles/flexStyles';
 import { getAdminWorkspacePath } from '@constants/routes';
+import { MAX_TABLE_COUNT } from '@constants/layout';
+import { getTableStatus, TABLE_STATUS } from '@utils/tableStatus';
 import TableTimeSetting from './TableTimeSetting';
 import TableQRDownload from './TableQRDownload';
 import NumberInput from '@components/common/input/NumberInput';
+import { Color } from '@resources/colors';
 
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  padding: 30px 0 70px 0;
-  gap: 8px;
-  position: relative;
+  box-sizing: border-box;
+  padding: 20px 0 24px 0;
+  gap: 16px;
   ${colFlex({ justify: 'start', align: 'start' })};
 `;
 
-const SectionLabel = styled.div`
-  font-size: 14px;
-  font-weight: 700;
-  color: #464a4d;
-`;
-
-const Divider = styled.div`
-  width: 100%;
-  height: 1px;
-  margin: 6px 0;
-  background-color: #e8eef2;
+const CountCaption = styled.div`
+  font-size: 11px;
+  color: ${Color.MUTED_GREY};
 `;
 
 const SaveButton = styled(NewCommonButton)`
   width: 100%;
-  max-width: 250px;
-  margin-top: 120px;
-  position: absolute;
-  bottom: 40px;
+  margin-top: auto;
 `;
 
 function TableSettingsSidebar() {
@@ -63,12 +56,15 @@ function TableSettingsSidebar() {
   };
 
   const handleTableCountPlus = () => {
-    setTableCount(tableCount + 1);
+    setTableCount(Math.min(MAX_TABLE_COUNT, tableCount + 1));
   };
 
   const handleTableCountChange = (value: number) => {
-    setTableCount(Math.max(1, value));
+    setTableCount(Math.min(MAX_TABLE_COUNT, Math.max(1, value)));
   };
+
+  const getUsingTableNumbersOverCount = () =>
+    tables.filter((table) => table.tableNumber > tableCount && getTableStatus(table) !== TABLE_STATUS.EMPTY).map((table) => table.tableNumber);
 
   const handleSave = async () => {
     if (tableCount < 1) {
@@ -79,6 +75,12 @@ function TableSettingsSidebar() {
     if (isTimeLimited && (timeLimitMinutes === undefined || timeLimitMinutes < 1)) {
       alert('시간 제한은 1분 이상이어야 합니다.');
       return;
+    }
+
+    const usingOverCount = getUsingTableNumbersOverCount();
+    if (usingOverCount.length > 0) {
+      const confirmed = window.confirm(`${usingOverCount.join(', ')}번 테이블이 사용 중입니다.\n계속하면 이 테이블들이 화면에서 사라집니다. 진행할까요?`);
+      if (!confirmed) return;
     }
 
     const shouldRedirectToOnboarding = workspace.isOnboarding && tableCount >= 2 && Boolean(workspaceId);
@@ -99,18 +101,17 @@ function TableSettingsSidebar() {
     <Container>
       <TableQRDownload workspaceId={workspaceId} workspaceName={workspace.name} tables={tables} />
 
-      <Divider />
-
-      <SectionLabel>테이블 개수</SectionLabel>
-      <NumberInput
-        value={tableCount}
-        formatter={(v) => `${v}개`}
-        onChange={handleTableCountChange}
-        onIncrement={handleTableCountPlus}
-        onDecrement={handleTableCountMinus}
-      />
-
-      <Divider />
+      <SettingSection label="테이블 개수">
+        <NumberInput
+          value={tableCount}
+          formatter={(v) => `${v}개`}
+          maxWidth="100%"
+          onChange={handleTableCountChange}
+          onIncrement={handleTableCountPlus}
+          onDecrement={handleTableCountMinus}
+        />
+        <CountCaption>최대 {MAX_TABLE_COUNT}개까지 만들 수 있어요</CountCaption>
+      </SettingSection>
 
       <TableTimeSetting
         isTimeLimited={isTimeLimited}
@@ -118,6 +119,7 @@ function TableSettingsSidebar() {
         onTimeLimitedChange={setIsTimeLimited}
         onMinutesChange={setTimeLimitMinutes}
       />
+
       <SaveButton size={'xs'} onClick={handleSave} disabled={!isDirty}>
         적용
       </SaveButton>
