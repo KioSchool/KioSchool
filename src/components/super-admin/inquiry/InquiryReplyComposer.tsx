@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import NewAppInput from '@components/common/input/NewAppInput';
@@ -57,6 +57,12 @@ const PreviewTitle = styled.span`
   font-weight: 600;
 `;
 
+const PreviewSubject = styled.span`
+  color: ${Color.BLACK};
+  font-size: 14px;
+  font-weight: 600;
+`;
+
 const PreviewFrame = styled.iframe`
   width: 100%;
   height: 440px;
@@ -82,22 +88,17 @@ interface InquiryReplyComposerProps {
   onConflict: () => void | Promise<void>;
 }
 
-function createPreviewHtml(template: string, content: string): string {
-  const document = new DOMParser().parseFromString(template, 'text/html');
+function updatePreviewDocument(document: Document, content: string) {
   const contentElement = Array.from(document.querySelectorAll('*')).find((element) => element.getAttribute('th:text') === '${content}');
   const linkElement = Array.from(document.querySelectorAll('a')).find((element) => element.getAttribute('th:href') === '${baseUrl}');
 
   if (contentElement) {
-    contentElement.removeAttribute('th:text');
     contentElement.textContent = content;
   }
 
   if (linkElement) {
-    linkElement.removeAttribute('th:href');
     linkElement.href = URLS.EXTERNAL.KIO_SCHOOL;
   }
-
-  return `<!DOCTYPE html>${document.documentElement.outerHTML}`;
 }
 
 function InquiryReplyComposer({ inquiry, onReplyComplete, onConflict }: InquiryReplyComposerProps) {
@@ -105,10 +106,8 @@ function InquiryReplyComposer({ inquiry, onReplyComplete, onConflict }: InquiryR
   const [subject, setSubject] = useState('');
   const [content, setContent] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [previewErrorMessage, setPreviewErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [emailTemplate, setEmailTemplate] = useState('');
-  const previewHtml = useMemo(() => createPreviewHtml(emailTemplate, content), [content, emailTemplate]);
+  const previewFrameRef = useRef<HTMLIFrameElement>(null);
   const { ConfirmModal, confirm } = useConfirm({
     title: '답변을 발송할까요?',
     description: `${inquiry.replyEmail} 주소로 답변 이메일을 발송합니다.`,
@@ -116,15 +115,15 @@ function InquiryReplyComposer({ inquiry, onReplyComplete, onConflict }: InquiryR
     cancelText: '취소',
   });
 
+  const updatePreview = useCallback(() => {
+    const previewDocument = previewFrameRef.current?.contentDocument;
+    if (!previewDocument) return;
+    updatePreviewDocument(previewDocument, content);
+  }, [content]);
+
   useEffect(() => {
-    fetch(TEMPLATE_PATH)
-      .then((response) => {
-        if (!response.ok) throw new Error('문의 답변 이메일 템플릿을 불러오지 못했습니다.');
-        return response.text();
-      })
-      .then(setEmailTemplate)
-      .catch(() => setPreviewErrorMessage('이메일 미리보기를 불러오지 못했습니다. 발송 기능은 계속 사용할 수 있습니다.'));
-  }, []);
+    updatePreview();
+  }, [updatePreview]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -196,8 +195,8 @@ function InquiryReplyComposer({ inquiry, onReplyComplete, onConflict }: InquiryR
         </Field>
         <PreviewContainer>
           <PreviewTitle>이메일 미리보기</PreviewTitle>
-          {previewErrorMessage && <ErrorText role="alert">{previewErrorMessage}</ErrorText>}
-          {!previewErrorMessage && <PreviewFrame title="문의 답변 이메일 미리보기" sandbox="" srcDoc={previewHtml} />}
+          <PreviewSubject>메일 제목 : {subject || '제목을 입력해 주세요.'}</PreviewSubject>
+          <PreviewFrame ref={previewFrameRef} title="문의 답변 이메일 미리보기" sandbox="allow-same-origin" src={TEMPLATE_PATH} onLoad={updatePreview} />
         </PreviewContainer>
         {errorMessage && <ErrorText role="alert">{errorMessage}</ErrorText>}
         <ButtonRow>
