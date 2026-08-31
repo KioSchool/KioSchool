@@ -1,4 +1,4 @@
-export type InquiryStatus = 'PENDING' | 'ANSWERED';
+export type InquiryStatus = 'PENDING' | 'ANSWERED' | 'CLOSED';
 
 export interface CreateInquiryRequest {
   title: string;
@@ -10,7 +10,7 @@ export interface CreateInquiryRequest {
 export interface CreateInquiryResponse {
   id: number;
   status: InquiryStatus;
-  createdAt: string;
+  createdAt: string | null;
 }
 
 export interface InquiryImage {
@@ -19,7 +19,6 @@ export interface InquiryImage {
   contentType: string;
   size: number;
   accessUrl: string;
-  expiresAt: string;
 }
 
 export interface InquiryReply {
@@ -34,11 +33,21 @@ export interface InquiryListItem {
   replyEmail: string;
   status: InquiryStatus;
   imageCount: number;
-  createdAt: string;
+  createdAt: string | null;
 }
 
 export interface InquiryDetail extends InquiryListItem {
   content: string;
+  closedReason: string | null;
   images: InquiryImage[];
   reply: InquiryReply | null;
+}
+
+export interface ReplyInquiryRequest {
+  subject: string;
+  content: string;
+}
+
+export interface CloseInquiryRequest {
+  closedReason?: string;
 }
