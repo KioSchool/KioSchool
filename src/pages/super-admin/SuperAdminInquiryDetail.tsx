@@ -5,6 +5,7 @@ import AppContainer from '@components/common/container/AppContainer';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import PageHeader from '@components/common/page/PageHeader';
 import SuperAdminPageContainer from '@components/super-admin/SuperAdminPageContainer';
+import InquiryReplyComposer from '@components/super-admin/inquiry/InquiryReplyComposer';
 import { INQUIRY_STATUS_LABELS } from '@constants/data/inquiryData';
 import { API_ERROR_CODES } from '@constants/errorCodes';
 import { SUPER_ADMIN_ROUTES } from '@constants/routes';
@@ -312,11 +313,14 @@ function SuperAdminInquiryDetail() {
             )}
             {inquiry.status === 'CLOSED' && <EmptyText>답변 없이 종결된 문의입니다.</EmptyText>}
             {inquiry.status === 'PENDING' && (
-              <ActionRow>
-                <NewCommonButton type="button" size="xs" color="blue_gray" disabled={isClosing} onClick={handleClose}>
-                  {isClosing ? '종결 중...' : '문의 종결'}
-                </NewCommonButton>
-              </ActionRow>
+              <>
+                <InquiryReplyComposer inquiry={inquiry} onReplyComplete={setInquiry} onConflict={loadInquiry} />
+                <ActionRow>
+                  <NewCommonButton type="button" size="xs" color="blue_gray" disabled={isClosing} onClick={handleClose}>
+                    {isClosing ? '종결 중...' : '문의 종결'}
+                  </NewCommonButton>
+                </ActionRow>
+              </>
             )}
           </DetailCard>
         </Content>
