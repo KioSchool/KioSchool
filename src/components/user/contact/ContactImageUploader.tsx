@@ -136,7 +136,7 @@ function ContactImageUploader({ files, onFilesChange, onValidationError }: Conta
 
     const invalidTypeFile = selectedFiles.find((file) => !INQUIRY_ACCEPTED_IMAGE_TYPES.includes(file.type as typeof INQUIRY_ACCEPTED_IMAGE_TYPES[number]));
     if (invalidTypeFile) {
-      onValidationError('JPEG, PNG 형식의 이미지만 첨부할 수 있습니다.');
+      onValidationError('JPEG, PNG, WebP 형식의 이미지만 첨부할 수 있습니다.');
       return;
     }
 

@@ -100,7 +100,7 @@ function ContactInquiryForm() {
         <SuccessDescription>
           접수 번호는 #{receipt.id}입니다.
           <br />
-          입력하신 이메일로 답변을 보내드릴게요.
+          입력하신 이메일로 접수 확인 메일을 보내드릴게요.
         </SuccessDescription>
         <NewCommonButton type="button" size="sm" color="blue_gray" onClick={handleNewInquiry}>
           새 문의 작성하기
