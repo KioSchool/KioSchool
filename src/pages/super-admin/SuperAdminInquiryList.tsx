@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { Link, useSearchParams } from 'react-router-dom';
+import { match } from 'ts-pattern';
 import AppContainer from '@components/common/container/AppContainer';
 import Pagination from '@components/common/pagination/Pagination';
 import PageHeader from '@components/common/page/PageHeader';
@@ -32,13 +33,28 @@ const FilterRow = styled.div`
   ${rowFlex({ align: 'center' })}
 `;
 
+const getFilterBorderColor = (isActive: boolean) =>
+  match(isActive)
+    .with(true, () => Color.KIO_ORANGE)
+    .otherwise(() => Color.HEAVY_GREY);
+
+const getFilterBackground = (isActive: boolean) =>
+  match(isActive)
+    .with(true, () => Color.KIO_ORANGE_FAINT)
+    .otherwise(() => Color.WHITE);
+
+const getFilterColor = (isActive: boolean) =>
+  match(isActive)
+    .with(true, () => Color.KIO_ORANGE_DARK)
+    .otherwise(() => Color.GREY);
+
 const FilterButton = styled.button<{ isActive: boolean }>`
   min-height: 32px;
   padding: 0 12px;
-  border: 1px solid ${({ isActive }) => (isActive ? Color.KIO_ORANGE : Color.HEAVY_GREY)};
+  border: 1px solid ${({ isActive }) => getFilterBorderColor(isActive)};
   border-radius: 16px;
-  background: ${({ isActive }) => (isActive ? Color.KIO_ORANGE_FAINT : Color.WHITE)};
-  color: ${({ isActive }) => (isActive ? Color.KIO_ORANGE_DARK : Color.GREY)};
+  background: ${({ isActive }) => getFilterBackground(isActive)};
+  color: ${({ isActive }) => getFilterColor(isActive)};
   cursor: pointer;
   font-size: 13px;
   font-weight: 600;
@@ -149,7 +165,9 @@ function getInquiryStatus(value: string | null): InquiryStatus | undefined {
 }
 
 function formatInquiryDate(createdAt: string | null): string {
-  return createdAt ? formatKoreanDateTime(createdAt) : '-';
+  return match(createdAt)
+    .with(null, () => '-')
+    .otherwise((date) => formatKoreanDateTime(date));
 }
 
 function SuperAdminInquiryList() {

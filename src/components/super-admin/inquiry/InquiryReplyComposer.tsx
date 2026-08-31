@@ -1,5 +1,6 @@
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
+import { match } from 'ts-pattern';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import NewAppInput from '@components/common/input/NewAppInput';
 import NewAppTextarea from '@components/common/input/NewAppTextarea';
@@ -99,6 +100,12 @@ function updatePreviewDocument(document: Document, content: string) {
   if (linkElement) {
     linkElement.href = URLS.EXTERNAL.KIO_SCHOOL;
   }
+}
+
+function getReplyButtonText(isSubmitting: boolean): string {
+  return match(isSubmitting)
+    .with(true, () => '발송 중...')
+    .otherwise(() => '답변 이메일 발송');
 }
 
 function InquiryReplyComposer({ inquiry, onReplyComplete, onConflict }: InquiryReplyComposerProps) {
@@ -201,7 +208,7 @@ function InquiryReplyComposer({ inquiry, onReplyComplete, onConflict }: InquiryR
         {errorMessage && <ErrorText role="alert">{errorMessage}</ErrorText>}
         <ButtonRow>
           <NewCommonButton type="submit" size="xs" disabled={isSubmitting}>
-            {isSubmitting ? '발송 중...' : '답변 이메일 발송'}
+            {getReplyButtonText(isSubmitting)}
           </NewCommonButton>
         </ButtonRow>
       </Form>

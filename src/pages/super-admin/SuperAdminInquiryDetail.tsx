@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate, useParams } from 'react-router-dom';
+import { match } from 'ts-pattern';
 import AppContainer from '@components/common/container/AppContainer';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import PageHeader from '@components/common/page/PageHeader';
@@ -174,7 +175,15 @@ const MessageCard = styled.div`
 `;
 
 function formatInquiryDate(createdAt: string | null): string {
-  return createdAt ? formatKoreanDateTime(createdAt) : '-';
+  return match(createdAt)
+    .with(null, () => '-')
+    .otherwise((date) => formatKoreanDateTime(date));
+}
+
+function getCloseButtonText(isClosing: boolean): string {
+  return match(isClosing)
+    .with(true, () => '종결 중...')
+    .otherwise(() => '문의 종결');
 }
 
 function SuperAdminInquiryDetail() {
@@ -317,7 +326,7 @@ function SuperAdminInquiryDetail() {
                 <InquiryReplyComposer inquiry={inquiry} onReplyComplete={setInquiry} onConflict={loadInquiry} />
                 <ActionRow>
                   <NewCommonButton type="button" size="xs" color="blue_gray" disabled={isClosing} onClick={handleClose}>
-                    {isClosing ? '종결 중...' : '문의 종결'}
+                    {getCloseButtonText(isClosing)}
                   </NewCommonButton>
                 </ActionRow>
               </>
