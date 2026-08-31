@@ -1,5 +1,7 @@
 export const Color = {
   GREY: '#5c5c5c',
+  MUTED_GREY: '#8d959c',
+  BORDER_GREY: '#e8eef2',
   WHITE: 'white',
   BLACK: 'black',
   KIO_ORANGE: '#FF9142',

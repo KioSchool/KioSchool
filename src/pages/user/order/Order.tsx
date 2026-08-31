@@ -15,6 +15,7 @@ import WorkspaceNotice from '@components/user/order/WorkspaceNotice';
 import OrderProductContent from './OrderProductContent';
 import { useAtomValue } from 'jotai';
 import { userCategoriesAtom, userOrderBasketAtom, userProductsAtom, userWorkspaceAtom } from '@jotai/user/atoms';
+import { calculateBasketTotalAmount } from '@utils/orderBasket';
 
 const Container = styled.div`
   width: 100%;
@@ -70,9 +71,7 @@ function Order() {
   const { fetchCategories, fetchProducts } = useProduct(workspaceId);
   const navigate = useNavigate();
   const orderBasket = useAtomValue(userOrderBasketAtom);
-  const totalAmount = orderBasket.reduce((acc, cur) => {
-    return acc + productsMap[cur.productId].price * cur.quantity;
-  }, 0);
+  const totalAmount = calculateBasketTotalAmount(orderBasket, productsMap);
 
   const headerRef = useRef<HTMLDivElement>(null);
   const [showNavBar, setShowNavBar] = useState(false);

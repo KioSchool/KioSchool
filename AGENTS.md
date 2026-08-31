@@ -44,6 +44,8 @@ src/
 
 역할 기반으로 분리: `common/` → `admin/` → `user/` → `super-admin/`.
 
+**컴포넌트당 전용 폴더(`Xxx/Xxx.tsx`)를 만들지 않는다.** 기능 폴더(`detail/`, `layout/`) 바로 아래에 평면으로 두고, 스토리는 컴포넌트 옆에 `Xxx.stories.tsx`로 둔다.
+
 ## Naming Conventions
 
 | 대상 | 규칙 | 예시 |
@@ -62,9 +64,12 @@ src/
 | 인터페이스/타입 | PascalCase | `Order`, `ProductStatus` |
 | Enum 값 | SCREAMING_SNAKE_CASE | `ProductStatus.SOLD_OUT` |
 
+이름은 코드베이스에 이미 있는 도메인 어휘를 재사용한다 (`using`, `empty`, `exceeded` 등). 드문 영단어(`stranded` 등)로 새 개념을 만들지 않는다.
+
 ## Import Rules
 
 **Path alias 사용** — `@` alias를 우선한다. 상대 경로는 같은 디렉토리 내부에서만 허용.
+**같은 디렉토리 파일은 반드시 상대 경로(`./Xxx`)로 부른다** — alias로 부르지 않는다.
 
 ```
 @components/*  → src/components/*
@@ -125,7 +130,7 @@ export default ExampleCard;
 
 핵심 규칙:
 - **한 파일에 하나의 컴포넌트**만 선언. 파일이 ~200줄을 넘으면 분리를 검토
-- 분리된 파일들이 2개 이상이면 **하위 폴더로 그룹핑** (예: `hero/HeroSection.tsx`, `hero/HeroMockup.tsx`)
+- 분리된 파일들이 2개 이상이면 **기능 단위 하위 폴더로 그룹핑** (예: `hero/HeroSection.tsx`, `hero/HeroMockup.tsx`) — 컴포넌트 하나에 폴더 하나를 파지 않는다
 - **named function declaration** 사용 (`function Foo()`, `const Foo = () =>` 아님)
 - **default export** 사용
 - Styled 컴포넌트는 함수 선언 위에 정의
@@ -141,7 +146,7 @@ export default ExampleCard;
 - 색상: `Color` 객체 from `@resources/colors` (`Color.KIO_ORANGE`, `Color.GREY` 등)
 - 조건부 스타일: props 기반 — `color: ${({ disabled }) => disabled ? Color.GREY : Color.KIO_ORANGE}`
 - 반응형: `mobileMediaQuery` (768px), `tabletMediaQuery` (1200px) from `@styles/globalStyles`
-- **Styled 컴포넌트 내부 배치 순서**: 일반 CSS 속성 → `colFlex`/`rowFlex` → `mediaQuery` (import해서 사용하는 것들은 맨 아래에, flex → mediaQuery 순서)
+- **Styled 컴포넌트 내부 배치 순서**: 일반 CSS 속성 → `colFlex`/`rowFlex` → `mediaQuery` (import해서 사용하는 것들은 맨 아래에, flex → mediaQuery 순서). flex 믹스인 앞에 빈 줄을 두지 않는다
 - **inline style 사용 금지** — 레이아웃 스타일은 반드시 Styled 컴포넌트로 정의. framer-motion의 애니메이션 값(`y`, `scale` 등)만 예외 허용
 - **쌩 HTML 태그 JSX 직접 반환 금지** — 컴포넌트 최상위 반환값은 반드시 Styled 컴포넌트를 사용한다. 스타일이 없는 래퍼가 필요하면 `const Section = styled.div\`\`` 처럼 빈 styled 컴포넌트로 감싼다.
 - 폰트: LINE Seed Sans KR (글로벌 적용)
@@ -176,10 +181,20 @@ src/apis/
 - `withCredentials: true`, `timeout: 30000`
 - 인터셉터: 로딩 표시(500ms 디바운스), 에러 → Sentry 전송, 403/401 → 인증 에러 이벤트 발행
 - 사용: `useApi()` 훅에서 세 API 인스턴스를 반환
+- **에러 응답의 문자열 필드를 정규식으로 파싱하지 않는다.** 클라이언트가 값을 꺼내 써야 하면 백엔드에 구조화된 필드를 요청한다
 
 ## TypeScript Rules
 
 - **매직 넘버 금지** — 의미 있는 숫자 리터럴은 반드시 SCREAMING_SNAKE_CASE 상수로 추출한다. (예: `60` → `MINUTES_PER_HOUR`, `1440` → `MINUTES_PER_DAY`)
+- **삼항식 안에 `??`·`||`·또 다른 삼항을 결합하지 않는다.** 분기가 셋 이상이면 guard 절 함수나 중간 변수로 푼다
+- **상태/enum 상수의 표시 라벨은 상수를 정의한 util에 함께 둔다** (`TABLE_STATUS` ↔ `TABLE_STATUS_LABEL`). 컴포넌트마다 라벨 맵을 따로 만들지 않는다
+- **두 곳 이상에서 쓰는 순수 함수**(포맷터, 다운로드 헬퍼 등)는 컴포넌트에 두지 않고 `src/utils/`로 뺀다
+
+## Comments
+
+- 주석은 기본적으로 쓰지 않는다. 코드가 무엇을 하는지, 디자인 의도, 개인 워크플로 용어를 적지 않는다
+- 남기는 주석은 코드만으로 알 수 없는 **제약·함정·서버 계약("왜")**뿐이며 한 줄로 쓴다
+- 잘 바뀌지 않는 비즈니스 규칙 파일(편집기, 드래프트 등)만 상단 JSDoc 5줄 이내로 규칙을 요약한다
 
 ## Prettier / ESLint
 
@@ -190,6 +205,10 @@ ESLint:
 - `airbnb-typescript` + `prettier` 기반
 - `.tsx` 파일에서 JSX 허용
 - `noUnusedLocals`, `noUnusedParameters`, `noFallthroughCasesInSwitch` 활성화
+
+## Git / PR
+
+- 스크린샷·이미지 자산을 코드 브랜치에 커밋하지 않는다. PR 본문 첨부나 별도 브랜치로 참조한다
 
 ## Routes
 

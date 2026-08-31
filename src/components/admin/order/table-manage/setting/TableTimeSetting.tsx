@@ -1,26 +1,22 @@
 import styled from '@emotion/styled';
-import { colFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
+import { rowFlex } from '@styles/flexStyles';
 import ToggleButton from '@components/common/toggle/ToggleButton';
 import NumberInput from '@components/common/input/NumberInput';
+import SettingSection from './SettingSection';
 import { formatMinutesToTime } from '@utils/formatDate';
 
-const SectionLabel = styled.div`
-  font-size: 14px;
-  font-weight: 700;
-  color: #464a4d;
-`;
-
-const Divider = styled.div`
+const ToggleRow = styled.div`
   width: 100%;
-  height: 1px;
-  background-color: #e8eef2;
-  margin: 6px 0;
-`;
-
-const Container = styled.div`
   gap: 8px;
-  width: 100%;
-  ${colFlex({ justify: 'start', align: 'start' })};
+  ${rowFlex({ justify: 'space-between', align: 'center' })};
+`;
+
+const ToggleLabel = styled.div`
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: ${Color.GREY};
 `;
 
 interface TableTimeSettingProps {
@@ -44,22 +40,21 @@ function TableTimeSetting({ isTimeLimited, timeLimitMinutes, onTimeLimitedChange
   };
 
   return (
-    <Container>
-      <SectionLabel>테이블 시간 제한</SectionLabel>
-      <ToggleButton checked={isTimeLimited} onChange={onTimeLimitedChange} />
-
-      <Divider />
-
-      <SectionLabel>테이블 시간</SectionLabel>
+    <SettingSection label="이용 시간 제한">
+      <ToggleRow>
+        <ToggleLabel>시간 제한</ToggleLabel>
+        <ToggleButton checked={isTimeLimited} onChange={onTimeLimitedChange} />
+      </ToggleRow>
       <NumberInput
         value={timeLimitMinutes}
         formatter={formatMinutesToTime}
+        maxWidth="100%"
         onChange={handleValueChange}
         onIncrement={handleTimePlus}
         onDecrement={handleTimeMinus}
         disabled={!isTimeLimited}
       />
-    </Container>
+    </SettingSection>
   );
 }
 

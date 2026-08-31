@@ -1,104 +1,150 @@
 import { useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { keyframes } from '@emotion/react';
 
-import useFormattedTime from '@hooks/useFormattedTime';
+import ProgressRing, { RING_SIZE_ROW_PX } from '@components/admin/order/table-manage/common/ProgressRing';
+import StatusBadge from '@components/admin/order/table-manage/common/StatusBadge';
+import { TABLE_LIST_GRID_TEMPLATE } from '@constants/layout';
 import { Color } from '@resources/colors';
-import { formatRemainingTime } from '@utils/formatDate';
+import { colFlex } from '@styles/flexStyles';
+import { getTableStatus, TABLE_STATUS, TableStatus } from '@utils/tableStatus';
+import { formatSessionStartLabel, formatSessionTimeLabel, getElapsedPercent } from '@utils/tableTime';
+import { SessionOrderStats } from '@hooks/admin/useTableOrderStats';
 import { Table } from '@@types/index';
 
-type TimeStatus = 'selected' | 'expired' | 'warning' | 'normal';
+const SELECTED_OUTLINE_PX = 2;
+const STATUS_BAR_WIDTH_PX = 3;
 
-const WARNING_THRESHOLD_MS = 10 * 60 * 1000;
-
-const pulse = keyframes`
-  0% { opacity: 1; }
-  50% { opacity: 0.6; }
-  100% { opacity: 1; }
-`;
-
-const getTimeStatus = (isSelected: boolean, expectedEndAt: string | undefined, isUsing: boolean): TimeStatus => {
-  if (isSelected) return 'selected';
-  if (!isUsing || !expectedEndAt) return 'normal';
-
-  const remainingTime = new Date(expectedEndAt).getTime() - new Date().getTime();
-
-  if (remainingTime <= 0) return 'expired';
-  if (remainingTime <= WARNING_THRESHOLD_MS) return 'warning';
-
-  return 'normal';
+const STATUS_BAR_COLOR: Record<TableStatus, string> = {
+  [TABLE_STATUS.EMPTY]: 'transparent',
+  [TABLE_STATUS.USING]: 'transparent',
+  [TABLE_STATUS.WARNING]: Color.KIO_ORANGE,
+  [TABLE_STATUS.EXCEEDED]: Color.RED,
 };
 
-const TIME_STATUS_STYLES = {
-  selected: { background: Color.KIO_ORANGE, color: Color.WHITE },
-  expired: { background: Color.RED, color: Color.WHITE },
-  warning: { background: Color.LIGHT_RED, color: Color.GREY },
-  normal: { background: 'transparent', color: Color.GREY },
-};
-
-const Row = styled.div<{ isSelected: boolean; expectedEndAt?: string; isUsing: boolean }>`
+const Row = styled.div<{ isSelected: boolean; status: TableStatus }>`
+  position: relative;
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: ${TABLE_LIST_GRID_TEMPLATE};
   align-items: center;
-  padding: 5px 10px;
-  border-bottom: 1px solid #e0e0e0;
+  padding: 10px 12px;
+  border-bottom: 1px solid ${Color.BORDER_GREY};
+  background-color: ${Color.WHITE};
+  box-shadow: ${({ isSelected }) => (isSelected ? `inset 0 0 0 ${SELECTED_OUTLINE_PX}px ${Color.KIO_ORANGE}` : 'none')};
   cursor: pointer;
   text-align: center;
-  height: 30px;
-
-  ${({ isSelected, expectedEndAt, isUsing }) => {
-    const status = getTimeStatus(isSelected, expectedEndAt, isUsing);
-    const style = TIME_STATUS_STYLES[status];
-    return `
-      color: ${style.color};
-      background-color: ${style.background};
-      ${status === 'expired' && !isSelected ? `animation: ${pulse} 2s infinite;` : ''}
-    `;
-  }}
+  transition: background-color 0.12s ease-in-out;
 
   &:hover {
-    color: ${Color.WHITE};
-    background-color: ${Color.KIO_ORANGE};
+    background-color: ${Color.LIGHT_GREY};
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: ${STATUS_BAR_WIDTH_PX}px;
+    background-color: ${({ status }) => STATUS_BAR_COLOR[status]};
   }
 `;
 
-const Text = styled.div``;
-
-const StatusTag = styled.div<{ isUsing: boolean }>`
-  color: ${({ isUsing }) => (isUsing ? Color.GREEN : Color.GREY)};
-  font-size: 15px;
-  margin-left: 10px;
-  padding: 5px 10px;
-  border-radius: 13px;
-  background-color: ${({ isUsing }) => (isUsing ? '#e7f7ef' : Color.LIGHT_GREY)};
+const TableNumber = styled.div<{ status: TableStatus }>`
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: ${({ status }) => (status === TABLE_STATUS.EMPTY ? Color.MUTED_GREY : Color.GREY)};
 `;
 
-interface TableSessionItemProps {
-  expectedEndAt: string | undefined;
-  isUsing: boolean;
-  table: Table;
+const UsageTimeCell = styled.div`
+  gap: 3px;
+  text-align: left;
+  ${colFlex({ justify: 'center' })};
+`;
+
+const MainTimeText = styled.div<{ status: TableStatus }>`
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: ${({ status }) => {
+    if (status === TABLE_STATUS.EXCEEDED) return Color.RED;
+    if (status === TABLE_STATUS.EMPTY) return Color.MUTED_GREY;
+    return Color.GREY;
+  }};
+`;
+
+const StartTimeText = styled.div`
+  font-size: 11px;
+  color: ${Color.MUTED_GREY};
+`;
+
+const CountText = styled.div`
+  font-size: 13px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: ${Color.MUTED_GREY};
+`;
+
+const AmountText = styled.div`
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: ${Color.GREY};
+`;
+
+const BadgeCell = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+function getOrderCountLabel(orderStats: SessionOrderStats | null): string {
+  if (!orderStats) return '—';
+
+  return `${orderStats.count}건`;
 }
 
-function TableListItem({ expectedEndAt, isUsing, table }: TableSessionItemProps) {
-  const remainTime = useFormattedTime<string>({ date: expectedEndAt, formatter: formatRemainingTime });
+function getOrderAmountLabel(orderStats: SessionOrderStats | null): string {
+  if (!orderStats) return '—';
+
+  return `${orderStats.amount.toLocaleString()}원`;
+}
+
+interface TableListItemProps {
+  table: Table;
+  orderStats: SessionOrderStats | null;
+}
+
+function TableListItem({ table, orderStats }: TableListItemProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedTableNo = searchParams.get('tableNo');
+  const isSelected = selectedTableNo === String(table.tableNumber);
+  const status = getTableStatus(table);
+  const session = table.orderSession;
 
-  const onClickTable = (tableNumber: number) => {
+  const handleClickTable = (tableNumber: number) => {
     searchParams.set('tableNo', String(tableNumber));
     setSearchParams(searchParams, { replace: true });
   };
 
   return (
-    <Row
-      onClick={() => onClickTable(table.tableNumber)}
-      isSelected={selectedTableNo === String(table.tableNumber)}
-      expectedEndAt={expectedEndAt}
-      isUsing={isUsing}
-    >
-      <Text>{table.tableNumber}</Text>
-      <Text>{remainTime}</Text>
-      <StatusTag isUsing={isUsing}>{isUsing ? '사용중' : '종료됨'}</StatusTag>
+    <Row onClick={() => handleClickTable(table.tableNumber)} isSelected={isSelected} status={status}>
+      <TableNumber status={status}>{table.tableNumber}</TableNumber>
+      <ProgressRing
+        size={RING_SIZE_ROW_PX}
+        percent={getElapsedPercent(session)}
+        fillColor={status === TABLE_STATUS.EXCEEDED ? Color.RED : Color.KIO_ORANGE}
+        holeColor={Color.WHITE}
+      />
+      <UsageTimeCell>
+        <MainTimeText status={status}>{formatSessionTimeLabel(session)}</MainTimeText>
+        <StartTimeText>{formatSessionStartLabel(session) ?? '—'}</StartTimeText>
+      </UsageTimeCell>
+      <CountText>{getOrderCountLabel(orderStats)}</CountText>
+      <AmountText>{getOrderAmountLabel(orderStats)}</AmountText>
+      <BadgeCell>
+        <StatusBadge status={status} />
+      </BadgeCell>
     </Row>
   );
 }

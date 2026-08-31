@@ -54,7 +54,7 @@ function AccountInfo() {
     accountInfo && accountInfo.accountNumber ? (
       <DetailsWrapper>
         <AccountInfoItem label={ACCOUNT_INFO.BANK_NAME_LABEL} value={accountInfo.bankName} />
-        <AccountInfoItem label={ACCOUNT_INFO.HOLDER_LABEL} value={accountInfo.accountHolder} />
+        <AccountInfoItem label={ACCOUNT_INFO.HOLDER_LABEL} value={accountInfo.accountHolder} hint={ACCOUNT_INFO.HOLDER_HINT} />
         <AccountInfoItem label={ACCOUNT_INFO.ACCOUNT_NUMBER_LABEL} value={accountInfo.accountNumber} />
         <ConfirmModal />
       </DetailsWrapper>

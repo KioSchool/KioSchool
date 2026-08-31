@@ -29,7 +29,7 @@ function normalize<T>(config: AnyQueryParamConfig<T>): TypedQueryParamConfig<T> 
   };
 }
 
-function useQueryParam<T = string>(config: AnyQueryParamConfig<T>): { value: T; setValue: (next: T) => void } {
+function useQueryParam<T = string>(config: AnyQueryParamConfig<T>): { value: T; setValue: (next: T, options?: { replace?: boolean }) => void } {
   const [searchParams, setSearchParams] = useSearchParams();
   const [{ key, parse, serialize, getDefault }] = useState(() => normalize(config));
 
@@ -51,14 +51,14 @@ function useQueryParam<T = string>(config: AnyQueryParamConfig<T>): { value: T; 
   }, [parsed, key, serialize, getDefault, setSearchParams]);
 
   const setValue = useCallback(
-    (next: T) => {
+    (next: T, options?: { replace?: boolean }) => {
       setSearchParams(
         (prev) => {
           const params = new URLSearchParams(prev);
           params.set(key, serialize(next));
           return params;
         },
-        { replace: false },
+        { replace: options?.replace ?? false },
       );
     },
     [key, serialize, setSearchParams],
