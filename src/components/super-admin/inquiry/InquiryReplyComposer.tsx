@@ -21,12 +21,6 @@ const Container = styled.section`
   ${colFlex()}
 `;
 
-const SectionTitle = styled.h3`
-  margin: 0;
-  color: ${Color.GREY};
-  font-size: 13px;
-`;
-
 const Form = styled.form`
   width: 100%;
   gap: 12px;
@@ -168,7 +162,6 @@ function InquiryReplyComposer({ inquiry, onReplyComplete, onConflict }: InquiryR
   return (
     <Container>
       <ConfirmModal />
-      <SectionTitle>답변 작성</SectionTitle>
       <Form onSubmit={handleSubmit} noValidate>
         <Field>
           <FieldLabel htmlFor="inquiry-reply-subject">답변 제목</FieldLabel>

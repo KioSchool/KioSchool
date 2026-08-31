@@ -201,7 +201,6 @@ function SuperAdminInquiryList() {
               </FilterButton>
             ))}
           </FilterRow>
-          {isLoading && <MessageCard>문의 목록을 불러오는 중입니다.</MessageCard>}
           {errorMessage && <MessageCard role="alert">{errorMessage}</MessageCard>}
           {isEmpty && <MessageCard>조건에 맞는 문의가 없습니다.</MessageCard>}
           {!isLoading && !errorMessage && inquiries.content.length > 0 && (
