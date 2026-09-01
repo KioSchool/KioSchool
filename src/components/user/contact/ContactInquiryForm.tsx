@@ -165,6 +165,7 @@ function ContactInquiryForm() {
           checked={privacyConsent}
           onChange={setPrivacyConsent}
           label={`문의 처리를 위한 이메일과 첨부파일 수집·이용에 동의합니다.\n수집한 정보는 문의 답변 완료 후 90일간 보관한 뒤 삭제합니다.`}
+          whiteSpace="pre-line"
         />
       </PrivacyContainer>
       {formError && <ErrorText role="alert">{formError}</ErrorText>}
