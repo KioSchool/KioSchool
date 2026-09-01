@@ -198,6 +198,21 @@ function SuperAdminInquiryDetail() {
     }
   }, [fetchInquiry, numericInquiryId]);
 
+  const refreshInquiryAfterConflict = useCallback(
+    async (message: string) => {
+      setErrorMessage(message);
+
+      try {
+        const response = await fetchInquiry(numericInquiryId);
+        setInquiry(response);
+      } catch (error) {
+        const refreshErrorMessage = getApiErrorMessage(error, '최신 문의 상태를 불러오지 못했습니다. 새로고침 후 다시 확인해 주세요.');
+        setErrorMessage(`${message} ${refreshErrorMessage}`);
+      }
+    },
+    [fetchInquiry, numericInquiryId],
+  );
+
   useEffect(() => {
     loadInquiry();
   }, [loadInquiry]);
@@ -213,9 +228,11 @@ function SuperAdminInquiryDetail() {
       const response = await closeInquiry(inquiry.id);
       setInquiry(response);
     } catch (error) {
-      setErrorMessage(getApiErrorMessage(error, '문의를 종결하지 못했습니다.'));
+      const nextErrorMessage = getApiErrorMessage(error, '문의를 종결하지 못했습니다.');
       if (isApiErrorCode(error, API_ERROR_CODES.INQUIRY_ALREADY_ANSWERED, API_ERROR_CODES.INQUIRY_ALREADY_CLOSED)) {
-        loadInquiry();
+        await refreshInquiryAfterConflict(nextErrorMessage);
+      } else {
+        setErrorMessage(nextErrorMessage);
       }
     } finally {
       setIsClosing(false);
@@ -299,7 +316,7 @@ function SuperAdminInquiryDetail() {
             {inquiry.status === 'CLOSED' && <EmptyText>답변 없이 종결된 문의입니다.</EmptyText>}
             {inquiry.status === 'PENDING' && (
               <>
-                <InquiryReplyComposer inquiry={inquiry} onReplyComplete={setInquiry} onConflict={loadInquiry} />
+                <InquiryReplyComposer inquiry={inquiry} onReplyComplete={setInquiry} onConflict={refreshInquiryAfterConflict} />
                 <ActionRow>
                   <NewCommonButton type="button" size="xs" color="blue_gray" disabled={isClosing} onClick={handleClose}>
                     {getCloseButtonText(isClosing)}

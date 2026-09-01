@@ -86,7 +86,7 @@ const ButtonRow = styled.div`
 interface InquiryReplyComposerProps {
   inquiry: InquiryDetail;
   onReplyComplete: (inquiry: InquiryDetail) => void;
-  onConflict: () => void | Promise<void>;
+  onConflict: (message: string) => Promise<void>;
 }
 
 function updatePreviewDocument(document: Document, content: string) {
@@ -156,9 +156,11 @@ function InquiryReplyComposer({ inquiry, onReplyComplete, onConflict }: InquiryR
       const response = await replyInquiry(inquiry.id, { subject: subject.trim(), content: content.trim() });
       onReplyComplete(response);
     } catch (error) {
-      setErrorMessage(getApiErrorMessage(error, '답변 이메일을 발송하지 못했습니다.'));
+      const nextErrorMessage = getApiErrorMessage(error, '답변 이메일을 발송하지 못했습니다.');
       if (isApiErrorCode(error, API_ERROR_CODES.INQUIRY_ALREADY_ANSWERED, API_ERROR_CODES.INQUIRY_ALREADY_CLOSED)) {
-        onConflict();
+        await onConflict(nextErrorMessage);
+      } else {
+        setErrorMessage(nextErrorMessage);
       }
     } finally {
       setIsSubmitting(false);
