@@ -5,6 +5,7 @@ import { match } from 'ts-pattern';
 import AppContainer from '@components/common/container/AppContainer';
 import Pagination from '@components/common/pagination/Pagination';
 import PageHeader from '@components/common/page/PageHeader';
+import InquiryStatusBadge from '@components/super-admin/inquiry/InquiryStatusBadge';
 import SuperAdminPageContainer from '@components/super-admin/SuperAdminPageContainer';
 import { INQUIRY_STATUSES, INQUIRY_STATUS_LABELS } from '@constants/data/inquiryData';
 import { getSuperAdminInquiryPath } from '@constants/routes';
@@ -16,7 +17,7 @@ import type { PaginationResponse } from '@@types/index';
 import type { InquiryListItem, InquiryStatus } from '@@types/inquiry';
 import { defaultPaginationValue } from '@@types/defaultValues';
 import { getApiErrorMessage } from '@utils/apiError';
-import { formatKoreanDateTime } from '@utils/formatNumber';
+import { formatNullableKoreanDateTime } from '@utils/formatNumber';
 
 const PAGE_SIZE = 20;
 
@@ -130,26 +131,6 @@ const ImageCount = styled.span`
   white-space: nowrap;
 `;
 
-const StatusBadge = styled.span<{ status: InquiryStatus }>`
-  min-width: 64px;
-  padding: 4px 8px;
-  border-radius: 12px;
-  background: ${({ status }) => {
-    if (status === 'PENDING') return '#fff1e6';
-    if (status === 'ANSWERED') return '#e8f7ee';
-    return '#f1f3f5';
-  }};
-  color: ${({ status }) => {
-    if (status === 'PENDING') return Color.KIO_ORANGE_DARK;
-    if (status === 'ANSWERED') return '#20884a';
-    return Color.GREY;
-  }};
-  font-size: 12px;
-  font-weight: 700;
-  text-align: center;
-  white-space: nowrap;
-`;
-
 const MessageCard = styled.div`
   width: 100%;
   box-sizing: border-box;
@@ -162,12 +143,6 @@ const MessageCard = styled.div`
 
 function getInquiryStatus(value: string | null): InquiryStatus | undefined {
   return INQUIRY_STATUSES.find((status) => status === value);
-}
-
-function formatInquiryDate(createdAt: string | null): string {
-  return match(createdAt)
-    .with(null, () => '-')
-    .otherwise((date) => formatKoreanDateTime(date));
 }
 
 function SuperAdminInquiryList() {
@@ -228,12 +203,12 @@ function SuperAdminInquiryList() {
                   <InquiryInfo>
                     <InquiryTitle>{inquiry.title}</InquiryTitle>
                     <InquiryMeta>
-                      {inquiry.replyEmail} · {formatInquiryDate(inquiry.createdAt)}
+                      {inquiry.replyEmail} · {formatNullableKoreanDateTime(inquiry.createdAt)}
                     </InquiryMeta>
                   </InquiryInfo>
                   <InquirySide>
                     <ImageCount>첨부 {inquiry.imageCount}장</ImageCount>
-                    <StatusBadge status={inquiry.status}>{INQUIRY_STATUS_LABELS[inquiry.status]}</StatusBadge>
+                    <InquiryStatusBadge status={inquiry.status} />
                   </InquirySide>
                 </InquiryLink>
               ))}

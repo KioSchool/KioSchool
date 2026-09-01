@@ -1,3 +1,4 @@
+import { Color } from '@resources/colors';
 import type { InquiryStatus } from '@@types/inquiry';
 
 export const INQUIRY_TITLE_MAX_LENGTH = 100;
@@ -17,4 +18,10 @@ export const INQUIRY_STATUS_LABELS: Record<InquiryStatus, string> = {
   PENDING: '답변 대기',
   ANSWERED: '답변 완료',
   CLOSED: '종결',
+};
+
+export const INQUIRY_STATUS_PALETTE: Record<InquiryStatus, { bg: string; text: string }> = {
+  PENDING: { bg: Color.KIO_ORANGE_FAINT, text: Color.KIO_ORANGE_DARK },
+  ANSWERED: { bg: Color.GREEN_FAINT, text: Color.GREEN },
+  CLOSED: { bg: Color.LIGHT_GREY, text: Color.GREY },
 };

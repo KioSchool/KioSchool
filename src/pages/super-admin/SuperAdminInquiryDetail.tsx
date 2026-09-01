@@ -5,9 +5,9 @@ import { match } from 'ts-pattern';
 import AppContainer from '@components/common/container/AppContainer';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import PageHeader from '@components/common/page/PageHeader';
+import InquiryStatusBadge from '@components/super-admin/inquiry/InquiryStatusBadge';
 import SuperAdminPageContainer from '@components/super-admin/SuperAdminPageContainer';
 import InquiryReplyComposer from '@components/super-admin/inquiry/InquiryReplyComposer';
-import { INQUIRY_STATUS_LABELS } from '@constants/data/inquiryData';
 import { API_ERROR_CODES } from '@constants/errorCodes';
 import { SUPER_ADMIN_ROUTES } from '@constants/routes';
 import useSuperAdminInquiry from '@hooks/super-admin/useSuperAdminInquiry';
@@ -15,9 +15,9 @@ import useConfirm from '@hooks/useConfirm';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
-import type { InquiryDetail, InquiryStatus } from '@@types/inquiry';
+import type { InquiryDetail } from '@@types/inquiry';
 import { getApiErrorMessage, isApiErrorCode } from '@utils/apiError';
-import { formatKoreanDateTime } from '@utils/formatNumber';
+import { formatKoreanDateTime, formatNullableKoreanDateTime } from '@utils/formatNumber';
 
 const Content = styled.div`
   width: 100%;
@@ -49,24 +49,6 @@ const Title = styled.h2`
   margin: 0;
   color: ${Color.BLACK};
   font-size: 20px;
-`;
-
-const StatusBadge = styled.span<{ status: InquiryStatus }>`
-  flex-shrink: 0;
-  padding: 5px 10px;
-  border-radius: 12px;
-  background: ${({ status }) => {
-    if (status === 'PENDING') return '#fff1e6';
-    if (status === 'ANSWERED') return '#e8f7ee';
-    return '#f1f3f5';
-  }};
-  color: ${({ status }) => {
-    if (status === 'PENDING') return Color.KIO_ORANGE_DARK;
-    if (status === 'ANSWERED') return '#20884a';
-    return Color.GREY;
-  }};
-  font-size: 12px;
-  font-weight: 700;
 `;
 
 const InfoList = styled.dl`
@@ -174,12 +156,6 @@ const MessageCard = styled.div`
   ${colFlex({ align: 'center' })}
 `;
 
-function formatInquiryDate(createdAt: string | null): string {
-  return match(createdAt)
-    .with(null, () => '-')
-    .otherwise((date) => formatKoreanDateTime(date));
-}
-
 function getCloseButtonText(isClosing: boolean): string {
   return match(isClosing)
     .with(true, () => '종결 중...')
@@ -285,7 +261,7 @@ function SuperAdminInquiryDetail() {
           <DetailCard>
             <HeaderRow>
               <Title>{inquiry.title}</Title>
-              <StatusBadge status={inquiry.status}>{INQUIRY_STATUS_LABELS[inquiry.status]}</StatusBadge>
+              <InquiryStatusBadge status={inquiry.status} />
             </HeaderRow>
             <InfoList>
               <InfoRow>
@@ -294,7 +270,7 @@ function SuperAdminInquiryDetail() {
               </InfoRow>
               <InfoRow>
                 <InfoLabel>접수 일시</InfoLabel>
-                <InfoValue>{formatInquiryDate(inquiry.createdAt)}</InfoValue>
+                <InfoValue>{formatNullableKoreanDateTime(inquiry.createdAt)}</InfoValue>
               </InfoRow>
             </InfoList>
             <Section>
