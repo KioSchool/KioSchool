@@ -1,13 +1,14 @@
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
-import { RiGithubFill, RiInstagramLine } from '@remixicon/react';
+import { RiCustomerService2Line, RiGithubFill } from '@remixicon/react';
 import { Link } from 'react-router-dom';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { URLS } from '@constants/urls';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { captionTypography, headingTypography, subheadingTypography } from '@styles/landingTypography';
 import { Color } from '@resources/colors';
-import { ADMIN_ROUTES } from '@constants/routes';
+import { ADMIN_ROUTES, USER_ROUTES } from '@constants/routes';
 import useMarketingLoginStatus from '@hooks/useMarketingLoginStatus';
 
 const Container = styled.div`
@@ -78,7 +79,7 @@ const ContactLinkRow = styled.div`
   ${rowFlex({ justify: 'center', align: 'center' })};
 `;
 
-const ContactLink = styled.a`
+const contactLinkStyle = css`
   padding: 10px 20px;
   background: #f2f4f6;
   color: #3c3530;
@@ -94,6 +95,14 @@ const ContactLink = styled.a`
     background: ${Color.KIO_ORANGE};
     color: ${Color.WHITE};
   }
+`;
+
+const ContactLink = styled.a`
+  ${contactLinkStyle};
+`;
+
+const InternalContactLink = styled(Link)`
+  ${contactLinkStyle};
 `;
 
 function InfoCtaSection() {
@@ -117,10 +126,10 @@ function InfoCtaSection() {
             <RiGithubFill size={16} />
             키오스쿨 GitHub
           </ContactLink>
-          <ContactLink href={URLS.EXTERNAL.INSTAGRAM} target="_blank" rel="noopener noreferrer" aria-label="키오스쿨 인스타그램으로 문의하기">
-            <RiInstagramLine size={16} />
+          <InternalContactLink to={USER_ROUTES.CONTACT} aria-label="키오스쿨 문의창구로 이동">
+            <RiCustomerService2Line size={16} />
             키오스쿨 문의하기
-          </ContactLink>
+          </InternalContactLink>
         </ContactLinkRow>
       </ContentWrapper>
     </Container>

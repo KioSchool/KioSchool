@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { captionTypography, displayHeadingTypography, subheadingTypography } from '@styles/landingTypography';
-import { URLS } from '@constants/urls';
-import { ADMIN_ROUTES } from '@constants/routes';
+import { ADMIN_ROUTES, USER_ROUTES } from '@constants/routes';
 import { Color } from '@resources/colors';
 import useMarketingLoginStatus from '@hooks/useMarketingLoginStatus';
 
@@ -109,7 +108,7 @@ const PrimaryButton = styled(Link)`
   }
 `;
 
-const SecondaryButton = styled.a`
+const SecondaryButton = styled(Link)`
   padding: 18px 48px;
   background: transparent;
   color: #6b7684;
@@ -167,9 +166,7 @@ function InfoHeroSection() {
         </FeatureList>
         <CtaRow>
           <PrimaryButton to={ADMIN_ROUTES.HOME}>{isLoggedIn ? '어드민 홈으로' : '무료로 시작하기'}</PrimaryButton>
-          <SecondaryButton href={URLS.EXTERNAL.INSTAGRAM} target="_blank" rel="noopener noreferrer">
-            문의하기
-          </SecondaryButton>
+          <SecondaryButton to={USER_ROUTES.CONTACT}>문의하기</SecondaryButton>
         </CtaRow>
         <Reassurance>별도 장비 없이 바로 도입할 수 있어요</Reassurance>
       </ContentWrapper>

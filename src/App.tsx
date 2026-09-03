@@ -30,6 +30,8 @@ import SuperAdminAccountStatus from '@pages/super-admin/SuperAdminAccountStatus'
 import SuperAdminOrders from '@pages/super-admin/SuperAdminOrders';
 import SuperAdminFestivalCalendar from '@pages/super-admin/SuperAdminFestivalCalendar';
 import SuperAdminCache from '@pages/super-admin/SuperAdminCache';
+import SuperAdminInquiryList from '@pages/super-admin/SuperAdminInquiryList';
+import SuperAdminInquiryDetail from '@pages/super-admin/SuperAdminInquiryDetail';
 import { ToastContainer } from 'react-toastify';
 import useNetworkStatusNotifier from '@hooks/useNetworkStatusNotifier';
 import useServerHealth from '@hooks/useServerHealth';
@@ -44,6 +46,7 @@ import { ADMIN_ROUTES, ORDER_ROUTES, SUPER_ADMIN_ROUTES, TEST_ROUTES, USER_ROUTE
 import AdminOrderTimeline from '@pages/admin/order/AdminOrderTimeline';
 import AdminTableRealtime from '@pages/admin/table/AdminTableRealtime';
 import Info from '@pages/user/info/Info';
+import Contact from '@pages/user/contact/Contact';
 import PcOnlyLayout from '@components/common/layout/PcOnlyLayout';
 
 function App() {
@@ -73,6 +76,7 @@ function App() {
       <SentryRoutes>
         <Route path={USER_ROUTES.HOME} element={<Home />} />
         <Route path={USER_ROUTES.INFO} element={<Info />} />
+        <Route path={USER_ROUTES.CONTACT} element={<Contact />} />
 
         <Route path={ORDER_ROUTES.ORDER} element={<Order />} />
         <Route path={ORDER_ROUTES.ORDER_BASKET} element={<OrderBasket />} />
@@ -90,6 +94,8 @@ function App() {
         <Route path={SUPER_ADMIN_ROUTES.ORDERS} element={<SuperAdminOrders />} />
         <Route path={SUPER_ADMIN_ROUTES.FESTIVAL_CALENDAR} element={<SuperAdminFestivalCalendar />} />
         <Route path={SUPER_ADMIN_ROUTES.CACHE} element={<SuperAdminCache />} />
+        <Route path={SUPER_ADMIN_ROUTES.INQUIRIES} element={<SuperAdminInquiryList />} />
+        <Route path={SUPER_ADMIN_ROUTES.INQUIRY_DETAIL} element={<SuperAdminInquiryDetail />} />
 
         <Route path={USER_ROUTES.LOGIN} element={<Login />} />
         <Route path={ADMIN_ROUTES.MY_INFO} element={<AdminMyInfo />} />

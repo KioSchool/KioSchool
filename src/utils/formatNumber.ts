@@ -25,3 +25,8 @@ export function formatKoreanDateTime(iso: string): string {
   const d = new Date(iso);
   return `${formatKoreanDate(iso)} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
 }
+
+export function formatNullableKoreanDateTime(iso: string | null): string {
+  if (iso === null) return '-';
+  return formatKoreanDateTime(iso);
+}
