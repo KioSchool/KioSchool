@@ -1,20 +1,25 @@
-import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { match } from 'ts-pattern';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import NewAppInput from '@components/common/input/NewAppInput';
 import NewAppTextarea from '@components/common/input/NewAppTextarea';
-import { INQUIRY_REPLY_CONTENT_MAX_LENGTH, INQUIRY_REPLY_SUBJECT_MAX_LENGTH } from '@constants/data/inquiryData';
+import {
+  DEFAULT_INQUIRY_REPLY_CONTENT,
+  DEFAULT_INQUIRY_REPLY_CONTENT_CURSOR_POSITION,
+  DEFAULT_INQUIRY_REPLY_SUBJECT,
+  INQUIRY_REPLY_CONTENT_MAX_LENGTH,
+  INQUIRY_REPLY_SUBJECT_MAX_LENGTH,
+} from '@constants/data/inquiryData';
 import { API_ERROR_CODES } from '@constants/errorCodes';
 import { URLS } from '@constants/urls';
 import useSuperAdminInquiry from '@hooks/super-admin/useSuperAdminInquiry';
 import useConfirm from '@hooks/useConfirm';
 import { Color } from '@resources/colors';
+import inquiryReplyEmailTemplate from '@resources/templates/inquiryReplyEmail.html?raw';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import type { InquiryDetail } from '@@types/inquiry';
 import { getApiErrorMessage, isApiErrorCode } from '@utils/apiError';
-
-const TEMPLATE_PATH = '/templates/inquiryReplyEmail.html';
 
 const Container = styled.section`
   width: 100%;
@@ -89,17 +94,22 @@ interface InquiryReplyComposerProps {
   onConflict: (message: string) => Promise<void>;
 }
 
-function updatePreviewDocument(document: Document, content: string) {
+function createPreviewHtml(content: string): string {
+  const document = new DOMParser().parseFromString(inquiryReplyEmailTemplate, 'text/html');
   const contentElement = Array.from(document.querySelectorAll('*')).find((element) => element.getAttribute('th:text') === '${content}');
   const linkElement = Array.from(document.querySelectorAll('a')).find((element) => element.getAttribute('th:href') === '${baseUrl}');
 
   if (contentElement) {
+    contentElement.removeAttribute('th:text');
     contentElement.textContent = content;
   }
 
   if (linkElement) {
+    linkElement.removeAttribute('th:href');
     linkElement.href = URLS.EXTERNAL.KIO_SCHOOL;
   }
+
+  return `<!DOCTYPE html>${document.documentElement.outerHTML}`;
 }
 
 function getReplyButtonText(isSubmitting: boolean): string {
@@ -110,11 +120,12 @@ function getReplyButtonText(isSubmitting: boolean): string {
 
 function InquiryReplyComposer({ inquiry, onReplyComplete, onConflict }: InquiryReplyComposerProps) {
   const { replyInquiry } = useSuperAdminInquiry();
-  const [subject, setSubject] = useState('');
-  const [content, setContent] = useState('');
+  const [subject, setSubject] = useState(DEFAULT_INQUIRY_REPLY_SUBJECT);
+  const [content, setContent] = useState(DEFAULT_INQUIRY_REPLY_CONTENT);
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const previewFrameRef = useRef<HTMLIFrameElement>(null);
+  const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const previewHtml = useMemo(() => createPreviewHtml(content), [content]);
   const { ConfirmModal, confirm } = useConfirm({
     title: '답변을 발송할까요?',
     description: `${inquiry.replyEmail} 주소로 답변 이메일을 발송합니다.`,
@@ -122,15 +133,13 @@ function InquiryReplyComposer({ inquiry, onReplyComplete, onConflict }: InquiryR
     cancelText: '취소',
   });
 
-  const updatePreview = useCallback(() => {
-    const previewDocument = previewFrameRef.current?.contentDocument;
-    if (!previewDocument) return;
-    updatePreviewDocument(previewDocument, content);
-  }, [content]);
-
   useEffect(() => {
-    updatePreview();
-  }, [updatePreview]);
+    const contentTextarea = contentTextareaRef.current;
+    if (!contentTextarea) return;
+
+    contentTextarea.focus({ preventScroll: true });
+    contentTextarea.setSelectionRange(DEFAULT_INQUIRY_REPLY_CONTENT_CURSOR_POSITION, DEFAULT_INQUIRY_REPLY_CONTENT_CURSOR_POSITION);
+  }, []);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -189,6 +198,7 @@ function InquiryReplyComposer({ inquiry, onReplyComplete, onConflict }: InquiryR
         <Field>
           <FieldLabel htmlFor="inquiry-reply-content">답변 내용</FieldLabel>
           <NewAppTextarea
+            ref={contentTextareaRef}
             id="inquiry-reply-content"
             width="100%"
             height={180}
@@ -205,7 +215,7 @@ function InquiryReplyComposer({ inquiry, onReplyComplete, onConflict }: InquiryR
         <PreviewContainer>
           <PreviewTitle>이메일 미리보기</PreviewTitle>
           <PreviewSubject>메일 제목 : {subject || '제목을 입력해 주세요.'}</PreviewSubject>
-          <PreviewFrame ref={previewFrameRef} title="문의 답변 이메일 미리보기" sandbox="allow-same-origin" src={TEMPLATE_PATH} onLoad={updatePreview} />
+          <PreviewFrame title="문의 답변 이메일 미리보기" sandbox="" srcDoc={previewHtml} />
         </PreviewContainer>
         {errorMessage && <ErrorText role="alert">{errorMessage}</ErrorText>}
         <ButtonRow>
