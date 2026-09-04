@@ -1,10 +1,16 @@
-import { FormEvent, useMemo, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { match } from 'ts-pattern';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import NewAppInput from '@components/common/input/NewAppInput';
 import NewAppTextarea from '@components/common/input/NewAppTextarea';
-import { DEFAULT_INQUIRY_REPLY_SUBJECT, INQUIRY_REPLY_CONTENT_MAX_LENGTH, INQUIRY_REPLY_SUBJECT_MAX_LENGTH } from '@constants/data/inquiryData';
+import {
+  DEFAULT_INQUIRY_REPLY_CONTENT,
+  DEFAULT_INQUIRY_REPLY_CONTENT_CURSOR_POSITION,
+  DEFAULT_INQUIRY_REPLY_SUBJECT,
+  INQUIRY_REPLY_CONTENT_MAX_LENGTH,
+  INQUIRY_REPLY_SUBJECT_MAX_LENGTH,
+} from '@constants/data/inquiryData';
 import { API_ERROR_CODES } from '@constants/errorCodes';
 import { URLS } from '@constants/urls';
 import useSuperAdminInquiry from '@hooks/super-admin/useSuperAdminInquiry';
@@ -115,9 +121,10 @@ function getReplyButtonText(isSubmitting: boolean): string {
 function InquiryReplyComposer({ inquiry, onReplyComplete, onConflict }: InquiryReplyComposerProps) {
   const { replyInquiry } = useSuperAdminInquiry();
   const [subject, setSubject] = useState(DEFAULT_INQUIRY_REPLY_SUBJECT);
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState(DEFAULT_INQUIRY_REPLY_CONTENT);
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
   const previewHtml = useMemo(() => createPreviewHtml(content), [content]);
   const { ConfirmModal, confirm } = useConfirm({
     title: '답변을 발송할까요?',
@@ -125,6 +132,14 @@ function InquiryReplyComposer({ inquiry, onReplyComplete, onConflict }: InquiryR
     okText: '발송하기',
     cancelText: '취소',
   });
+
+  useEffect(() => {
+    const contentTextarea = contentTextareaRef.current;
+    if (!contentTextarea) return;
+
+    contentTextarea.focus({ preventScroll: true });
+    contentTextarea.setSelectionRange(DEFAULT_INQUIRY_REPLY_CONTENT_CURSOR_POSITION, DEFAULT_INQUIRY_REPLY_CONTENT_CURSOR_POSITION);
+  }, []);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -183,6 +198,7 @@ function InquiryReplyComposer({ inquiry, onReplyComplete, onConflict }: InquiryR
         <Field>
           <FieldLabel htmlFor="inquiry-reply-content">답변 내용</FieldLabel>
           <NewAppTextarea
+            ref={contentTextareaRef}
             id="inquiry-reply-content"
             width="100%"
             height={180}
