@@ -4,7 +4,7 @@ import { match } from 'ts-pattern';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import NewAppInput from '@components/common/input/NewAppInput';
 import NewAppTextarea from '@components/common/input/NewAppTextarea';
-import { INQUIRY_REPLY_CONTENT_MAX_LENGTH, INQUIRY_REPLY_SUBJECT_MAX_LENGTH } from '@constants/data/inquiryData';
+import { DEFAULT_INQUIRY_REPLY_SUBJECT, INQUIRY_REPLY_CONTENT_MAX_LENGTH, INQUIRY_REPLY_SUBJECT_MAX_LENGTH } from '@constants/data/inquiryData';
 import { API_ERROR_CODES } from '@constants/errorCodes';
 import { URLS } from '@constants/urls';
 import useSuperAdminInquiry from '@hooks/super-admin/useSuperAdminInquiry';
@@ -114,7 +114,7 @@ function getReplyButtonText(isSubmitting: boolean): string {
 
 function InquiryReplyComposer({ inquiry, onReplyComplete, onConflict }: InquiryReplyComposerProps) {
   const { replyInquiry } = useSuperAdminInquiry();
-  const [subject, setSubject] = useState('');
+  const [subject, setSubject] = useState(DEFAULT_INQUIRY_REPLY_SUBJECT);
   const [content, setContent] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);

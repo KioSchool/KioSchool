@@ -5,6 +5,7 @@ export const INQUIRY_TITLE_MAX_LENGTH = 100;
 export const INQUIRY_CONTENT_MAX_LENGTH = 2000;
 export const INQUIRY_REPLY_SUBJECT_MAX_LENGTH = 150;
 export const INQUIRY_REPLY_CONTENT_MAX_LENGTH = 5000;
+export const DEFAULT_INQUIRY_REPLY_SUBJECT = '[키오스쿨] 문의하신 내용에 답변드립니다';
 export const INQUIRY_IMAGE_MAX_COUNT = 5;
 export const INQUIRY_IMAGE_MAX_SIZE_MB = 5;
 
