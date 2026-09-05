@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import useApi from '@hooks/useApi';
 import { ADMIN_ROUTES } from '@constants/routes';
+import { trackEvent } from '@utils/analytics';
+import { GA_EVENT } from '@constants/analytics';
 
 function useAuthentication() {
   const { userApi } = useApi();
@@ -30,6 +32,7 @@ function useAuthentication() {
       })
       .then(() => {
         localStorage.setItem('isLoggedIn', 'true');
+        trackEvent(GA_EVENT.LOGIN, {});
         navigate(redirectTo ?? ADMIN_ROUTES.HOME);
       })
       .catch(() => {
