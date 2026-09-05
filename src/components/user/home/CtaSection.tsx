@@ -10,6 +10,8 @@ import { captionTypography, headingTypography, subheadingTypography } from '@sty
 import { ADMIN_ROUTES, USER_ROUTES } from '@constants/routes';
 import useMarketingLoginStatus from '@hooks/useMarketingLoginStatus';
 import useMouseGlow, { MouseGlow } from './useMouseGlow';
+import { trackEvent } from '@utils/analytics';
+import { GA_EVENT } from '@constants/analytics';
 
 const Container = styled.div`
   position: relative;
@@ -202,7 +204,12 @@ function CtaSection() {
           transition={{ duration: 0.4, ease: 'easeOut', delay: 0.2 }}
         >
           <CtaRow>
-            <CtaButton to={ADMIN_ROUTES.HOME}>{isLoggedIn ? '어드민 홈으로' : '무료로 시작하기'}</CtaButton>
+            <CtaButton
+              to={ADMIN_ROUTES.HOME}
+              onClick={() => trackEvent(GA_EVENT.CTA_CLICK, { location: 'cta_section', label: isLoggedIn ? '어드민 홈으로' : '무료로 시작하기' })}
+            >
+              {isLoggedIn ? '어드민 홈으로' : '무료로 시작하기'}
+            </CtaButton>
             <SecondaryButton to={USER_ROUTES.INFO}>서비스 알아보기</SecondaryButton>
           </CtaRow>
           <Reassurance>별도 비용 없이 시작할 수 있어요</Reassurance>
