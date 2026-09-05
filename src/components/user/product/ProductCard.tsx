@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Product, ProductStatus } from '@@types/index';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
@@ -8,6 +9,9 @@ import { RiAddLine, RiSubtractLine } from '@remixicon/react';
 import { css } from '@emotion/react';
 import { userOrderBasketAtom } from '@jotai/user/atoms';
 import { useSetAtom } from 'jotai';
+import { trackEvent } from '@utils/analytics';
+import { GA_EVENT } from '@constants/analytics';
+import { productToGaItem } from '@utils/orderBasket';
 
 const PRODUCT_IMAGE_SIZE = 110;
 
@@ -154,8 +158,14 @@ function ProductCard({ product, quantity }: ProductCardProps) {
   const isOpened = quantity > 0;
   const setOrderBasket = useSetAtom(userOrderBasketAtom);
   const [imgError, setImgError] = useState(false);
+  const [searchParams] = useSearchParams();
+  const isPreview = searchParams.get('preview') === 'true';
 
   const handleAddProduct = () => {
+    if (!isPreview) {
+      trackEvent(GA_EVENT.ADD_TO_CART, { items: [{ ...productToGaItem(product), quantity: 1 }] });
+    }
+
     setOrderBasket((prev) => {
       const existingItem = prev.find((basketProduct) => basketProduct.productId === product.id);
 
@@ -172,6 +182,12 @@ function ProductCard({ product, quantity }: ProductCardProps) {
   };
 
   const handleRemoveProduct = () => {
+    if (quantity === 0) return;
+
+    if (!isPreview) {
+      trackEvent(GA_EVENT.REMOVE_FROM_CART, { items: [{ ...productToGaItem(product), quantity: 1 }] });
+    }
+
     setOrderBasket((prev) => {
       const existingItem = prev.find((basketProduct) => basketProduct.productId === product.id);
 

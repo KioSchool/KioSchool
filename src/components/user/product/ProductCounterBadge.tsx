@@ -6,6 +6,9 @@ import { RiAddLine, RiCloseCircleFill, RiSubtractLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import { userOrderBasketAtom } from '@jotai/user/atoms';
 import { useAtom } from 'jotai';
+import { trackEvent } from '@utils/analytics';
+import { GA_EVENT } from '@constants/analytics';
+import { productToGaItem } from '@utils/orderBasket';
 
 const Container = styled.div`
   width: 100%;
@@ -98,37 +101,43 @@ function ProductCounterBadge({ product }: ProductCounterBadgeProps) {
   const quantity = orderBasket.find((basketProduct) => basketProduct.productId === product.id)?.quantity || 0;
 
   const plusQuantity = () => {
-    setOrderBasket((prev) => {
-      const index = prev.findIndex((basketProduct) => basketProduct.productId === product.id);
-      return prev.map((basketProduct, i) => {
-        if (i === index) {
-          return { ...basketProduct, quantity: basketProduct.quantity + 1, productPrice: basketProduct.productPrice + product.price };
-        }
-        return basketProduct;
-      });
-    });
+    trackEvent(GA_EVENT.ADD_TO_CART, { items: [{ ...productToGaItem(product), quantity: 1 }] });
+
+    setOrderBasket((prev) =>
+      prev.map((basketProduct) =>
+        basketProduct.productId === product.id
+          ? { ...basketProduct, quantity: basketProduct.quantity + 1, productPrice: basketProduct.productPrice + product.price }
+          : basketProduct,
+      ),
+    );
   };
 
   const minusQuantity = () => {
-    setOrderBasket((prev) => {
-      const index = prev.findIndex((basketProduct) => basketProduct.productId === product.id);
-      if (prev[index].quantity === 1) {
-        return confirm('정말로 삭제하시겠습니까?') ? prev.filter((basketProduct) => basketProduct.productId !== product.id) : prev;
-      }
+    const isRemovingLastUnit = quantity === 1;
 
-      return prev.map((basketProduct, i) => {
-        if (i === index) {
-          return { ...basketProduct, quantity: basketProduct.quantity - 1, productPrice: basketProduct.productPrice - product.price };
-        }
-        return basketProduct;
-      });
-    });
+    if (isRemovingLastUnit && !confirm('정말로 삭제하시겠습니까?')) return;
+
+    trackEvent(GA_EVENT.REMOVE_FROM_CART, { items: [{ ...productToGaItem(product), quantity: 1 }] });
+
+    if (isRemovingLastUnit) {
+      setOrderBasket((prev) => prev.filter((basketProduct) => basketProduct.productId !== product.id));
+      return;
+    }
+
+    setOrderBasket((prev) =>
+      prev.map((basketProduct) =>
+        basketProduct.productId === product.id
+          ? { ...basketProduct, quantity: basketProduct.quantity - 1, productPrice: basketProduct.productPrice - product.price }
+          : basketProduct,
+      ),
+    );
   };
 
   const handleDeleteProduct = () => {
-    if (confirm('정말로 삭제하시겠습니까?')) {
-      setOrderBasket((prev) => prev.filter((basketProduct) => basketProduct.productId !== product.id));
-    }
+    if (!confirm('정말로 삭제하시겠습니까?')) return;
+
+    trackEvent(GA_EVENT.REMOVE_FROM_CART, { items: [{ ...productToGaItem(product), quantity }] });
+    setOrderBasket((prev) => prev.filter((basketProduct) => basketProduct.productId !== product.id));
   };
 
   return (
