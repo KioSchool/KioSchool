@@ -15,16 +15,6 @@ function useAnalytics() {
   const previousPathnameRef = useRef<string | null>(null);
 
   useEffect(() => {
-    if (previousPathnameRef.current === pathname) return;
-
-    previousPathnameRef.current = pathname;
-
-    if (deriveRole(pathname) === 'super-admin') return;
-
-    trackPageView(normalizePagePath(pathname));
-  }, [pathname]);
-
-  useEffect(() => {
     const role = deriveRole(pathname);
     if (role === 'super-admin') return;
 
@@ -37,6 +27,16 @@ function useAnalytics() {
       workspace_id: workspaceId && workspaceId > 0 ? workspaceId : null,
     });
   }, [pathname, adminUser.id, adminWorkspace.id, userWorkspace.id]);
+
+  useEffect(() => {
+    if (previousPathnameRef.current === pathname) return;
+
+    previousPathnameRef.current = pathname;
+
+    if (deriveRole(pathname) === 'super-admin') return;
+
+    trackPageView(normalizePagePath(pathname));
+  }, [pathname]);
 }
 
 export default useAnalytics;

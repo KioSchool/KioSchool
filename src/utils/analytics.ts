@@ -12,8 +12,12 @@ export function initAnalytics(gaId: string, environment: ImportMetaEnv['VITE_ENV
   document.head.appendChild(script);
 
   window.dataLayer = window.dataLayer || [];
-  window.gtag = function gtag(...args: unknown[]) {
-    window.dataLayer.push(args);
+  // gtag.js only recognizes dataLayer entries pushed as an `arguments` object
+  // (Object.prototype.toString.call === "[object Arguments]"), never a plain
+  // Array — this is Google's own documented snippet form, not incidental.
+  window.gtag = function gtag() {
+    // eslint-disable-next-line prefer-rest-params
+    window.dataLayer.push(arguments);
   };
 
   window.gtag('js', new Date());
@@ -34,9 +38,17 @@ export function initAnalytics(gaId: string, environment: ImportMetaEnv['VITE_ENV
 export function trackPageView(pagePath: string): void {
   if (!isInitialized) return;
 
+  const pageLocation = `${window.location.origin}${pagePath}`;
+
+  // `gtag('set', ...)` persists these fields for every subsequent event on
+  // this page, not just this one — without it, ecommerce events fired later
+  // on the same page fall back to `document.location.href`, which leaks the
+  // real query string (including `tableHash`, an order-auth token) to GA4.
+  window.gtag('set', { page_location: pageLocation, page_path: pagePath, page_title: document.title });
+
   window.gtag('event', 'page_view', {
     page_path: pagePath,
-    page_location: `${window.location.origin}${pagePath}`,
+    page_location: pageLocation,
     page_title: document.title,
   });
 }
