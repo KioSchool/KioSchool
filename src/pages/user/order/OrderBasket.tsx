@@ -125,6 +125,8 @@ function OrderBasket() {
 
   const navigateHandler = () => {
     if (totalAmount === 0) {
+      trackEvent(GA_EVENT.BEGIN_CHECKOUT, { items: basketToGaItems(orderBasket, productsMap), value: totalAmount, currency: GA_CURRENCY });
+
       createOrder(workspaceId, tableHash, orderBasket, '0원 주문')
         .then((res) => {
           navigate({

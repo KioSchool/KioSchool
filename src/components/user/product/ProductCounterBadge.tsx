@@ -7,7 +7,7 @@ import { Color } from '@resources/colors';
 import { userOrderBasketAtom } from '@jotai/user/atoms';
 import { useAtom } from 'jotai';
 import { trackEvent } from '@utils/analytics';
-import { GA_EVENT } from '@constants/analytics';
+import { GA_CURRENCY, GA_EVENT } from '@constants/analytics';
 import { productToGaItem } from '@utils/orderBasket';
 
 const Container = styled.div`
@@ -101,7 +101,7 @@ function ProductCounterBadge({ product }: ProductCounterBadgeProps) {
   const quantity = orderBasket.find((basketProduct) => basketProduct.productId === product.id)?.quantity || 0;
 
   const plusQuantity = () => {
-    trackEvent(GA_EVENT.ADD_TO_CART, { items: [{ ...productToGaItem(product), quantity: 1 }] });
+    trackEvent(GA_EVENT.ADD_TO_CART, { items: [{ ...productToGaItem(product), quantity: 1 }], value: product.price, currency: GA_CURRENCY });
 
     setOrderBasket((prev) =>
       prev.map((basketProduct) =>
@@ -117,7 +117,7 @@ function ProductCounterBadge({ product }: ProductCounterBadgeProps) {
 
     if (isRemovingLastUnit && !confirm('정말로 삭제하시겠습니까?')) return;
 
-    trackEvent(GA_EVENT.REMOVE_FROM_CART, { items: [{ ...productToGaItem(product), quantity: 1 }] });
+    trackEvent(GA_EVENT.REMOVE_FROM_CART, { items: [{ ...productToGaItem(product), quantity: 1 }], value: product.price, currency: GA_CURRENCY });
 
     if (isRemovingLastUnit) {
       setOrderBasket((prev) => prev.filter((basketProduct) => basketProduct.productId !== product.id));
@@ -136,7 +136,7 @@ function ProductCounterBadge({ product }: ProductCounterBadgeProps) {
   const handleDeleteProduct = () => {
     if (!confirm('정말로 삭제하시겠습니까?')) return;
 
-    trackEvent(GA_EVENT.REMOVE_FROM_CART, { items: [{ ...productToGaItem(product), quantity }] });
+    trackEvent(GA_EVENT.REMOVE_FROM_CART, { items: [{ ...productToGaItem(product), quantity }], value: product.price * quantity, currency: GA_CURRENCY });
     setOrderBasket((prev) => prev.filter((basketProduct) => basketProduct.productId !== product.id));
   };
 

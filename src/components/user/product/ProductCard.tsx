@@ -10,7 +10,7 @@ import { css } from '@emotion/react';
 import { userOrderBasketAtom } from '@jotai/user/atoms';
 import { useSetAtom } from 'jotai';
 import { trackEvent } from '@utils/analytics';
-import { GA_EVENT } from '@constants/analytics';
+import { GA_CURRENCY, GA_EVENT } from '@constants/analytics';
 import { productToGaItem } from '@utils/orderBasket';
 
 const PRODUCT_IMAGE_SIZE = 110;
@@ -163,7 +163,7 @@ function ProductCard({ product, quantity }: ProductCardProps) {
 
   const handleAddProduct = () => {
     if (!isPreview) {
-      trackEvent(GA_EVENT.ADD_TO_CART, { items: [{ ...productToGaItem(product), quantity: 1 }] });
+      trackEvent(GA_EVENT.ADD_TO_CART, { items: [{ ...productToGaItem(product), quantity: 1 }], value: product.price, currency: GA_CURRENCY });
     }
 
     setOrderBasket((prev) => {
@@ -185,7 +185,7 @@ function ProductCard({ product, quantity }: ProductCardProps) {
     if (quantity === 0) return;
 
     if (!isPreview) {
-      trackEvent(GA_EVENT.REMOVE_FROM_CART, { items: [{ ...productToGaItem(product), quantity: 1 }] });
+      trackEvent(GA_EVENT.REMOVE_FROM_CART, { items: [{ ...productToGaItem(product), quantity: 1 }], value: product.price, currency: GA_CURRENCY });
     }
 
     setOrderBasket((prev) => {
