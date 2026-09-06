@@ -109,9 +109,10 @@ function OrderBasket() {
   }, [basketItems.length, orderBasket, productsMap, totalAmount]);
 
   const clearOrderBasket = () => {
-    if (confirm('정말로 모두 삭제하시겠습니까?')) {
-      setOrderBasket([]);
-    }
+    if (!confirm('정말로 모두 삭제하시겠습니까?')) return;
+
+    trackEvent(GA_EVENT.REMOVE_FROM_CART, { items: basketToGaItems(orderBasket, productsMap), value: totalAmount, currency: GA_CURRENCY });
+    setOrderBasket([]);
   };
 
   const errorHandler = (error: unknown) => {
