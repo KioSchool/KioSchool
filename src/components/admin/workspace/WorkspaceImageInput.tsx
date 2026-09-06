@@ -24,6 +24,7 @@ const ImageContent = styled.img<{ objectPosition: string }>`
   object-fit: cover;
   object-position: ${({ objectPosition }) => objectPosition};
   ${BaseImageStyle}
+  cursor: pointer;
 `;
 
 const DummyContent = styled.div`
@@ -92,9 +93,13 @@ const WorkspaceImageInput = forwardRef<HTMLInputElement, WorkspaceImageInputProp
             );
           }
 
+          if (!previewUrl) {
+            return <SlotContainer key={`slot-${index}`} />;
+          }
+
           return (
             <SlotContainer key={`slot-${index}`}>
-              <ImageContent src={previewUrl ?? ''} objectPosition={toObjectPosition(slot.focalPoint)} onClick={() => handleAdjustPosition(index)} />
+              <ImageContent src={previewUrl} objectPosition={toObjectPosition(slot.focalPoint)} onClick={() => handleAdjustPosition(index)} />
               <ActionContainer>
                 <ActionButton type="button" onClick={() => handleAdjustPosition(index)}>
                   위치 조정
