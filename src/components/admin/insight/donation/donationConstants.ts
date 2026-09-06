@@ -4,25 +4,13 @@ import c3OShipping from '@resources/image/donation/c3-o-shipping.webp';
 import c4IFlag from '@resources/image/donation/c4-i-flag.webp';
 import c5KCoffee from '@resources/image/donation/c5-k-coffee.webp';
 import c6TrioCheers from '@resources/image/donation/c6-trio-cheers.webp';
+import { buildDonationTossUrl, MIN_DONATION_AMOUNT } from '@utils/donation';
 
-export const MIN_AMOUNT = 1000;
+export { buildDonationTossUrl };
+export const MIN_AMOUNT = MIN_DONATION_AMOUNT;
 export const DEFAULT_AMOUNT = 30000;
 
 export const CUSTOM_AMOUNT_SENTINEL = 0;
-
-const TOSS_BANK_NAME = '토스뱅크';
-const TOSS_ACCOUNT_NO = '100127738116';
-
-export function buildDonationTossUrl(amount?: number): string {
-  const params = new URLSearchParams();
-  params.set('bank', TOSS_BANK_NAME);
-  params.set('accountNo', TOSS_ACCOUNT_NO);
-  params.set('origin', 'qr');
-  if (amount && amount > 0) {
-    params.set('amount', String(amount));
-  }
-  return `supertoss://send?${params.toString()}`;
-}
 
 export type PresetCharacter = 'K' | 'I' | 'O' | 'CUSTOM';
 
