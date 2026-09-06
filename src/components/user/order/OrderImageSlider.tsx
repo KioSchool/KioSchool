@@ -6,6 +6,8 @@ import { WorkspaceImage } from '@@types/index';
 import SelectedSnapDisplay from '@components/common/slider/SliderSelectedSnapDisplay';
 import useSelectedSnapDisplay from '@hooks/useSelectedSnapDisplay';
 import defaultWorkspaceImage from '@resources/image/defaultWorkspaceImage.png';
+import { DEFAULT_FOCAL_POINT, ORDER_IMAGE_HEIGHT_PX } from '@constants/data/workspaceImageData';
+import { toObjectPosition } from '@utils/imageFocalPoint';
 
 const Container = styled.div`
   max-width: 48rem;
@@ -22,12 +24,13 @@ const ImageContainer = styled.div`
   touch-action: pan-y pinch-zoom;
 `;
 
-const ImageContent = styled.img`
+const ImageContent = styled.img<{ objectPosition: string }>`
   object-fit: cover;
+  object-position: ${({ objectPosition }) => objectPosition};
   transform: translate3d(0, 0, 0);
   flex: 0 0 100%;
   width: 100%;
-  height: 200px;
+  height: ${ORDER_IMAGE_HEIGHT_PX}px;
 `;
 
 interface OrderImageSliderProps {
@@ -43,7 +46,7 @@ function OrderImageSlider({ images }: OrderImageSliderProps) {
       <Container>
         <EmblaViewport ref={emblaRef}>
           <ImageContainer>
-            <ImageContent src={defaultWorkspaceImage} alt={'kioLogo'} />
+            <ImageContent src={defaultWorkspaceImage} alt={'kioLogo'} objectPosition={toObjectPosition(DEFAULT_FOCAL_POINT)} />
           </ImageContainer>
           <SelectedSnapDisplay selectedSnap={selectedSnap} snapCount={snapCount} />
         </EmblaViewport>
@@ -54,7 +57,11 @@ function OrderImageSlider({ images }: OrderImageSliderProps) {
   return (
     <Container>
       <EmblaViewport ref={emblaRef}>
-        <ImageContainer>{images.map((img, index) => (img ? <ImageContent key={img.id} src={img.url} alt={`Slide ${index + 1}`} /> : null))}</ImageContainer>
+        <ImageContainer>
+          {images.map((img, index) =>
+            img ? <ImageContent key={img.id} src={img.url} alt={`Slide ${index + 1}`} objectPosition={toObjectPosition(img.focalPoint)} /> : null,
+          )}
+        </ImageContainer>
         <SelectedSnapDisplay selectedSnap={selectedSnap} snapCount={snapCount} />
       </EmblaViewport>
     </Container>
