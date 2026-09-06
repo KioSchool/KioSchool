@@ -123,11 +123,22 @@ export interface Workspace {
   memo: string;
 }
 
+export interface FocalPoint {
+  x: number;
+  y: number;
+}
+
 export interface WorkspaceImage {
   url: string;
   id: number;
+  focalPoint: FocalPoint;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface WorkspaceImageSlot {
+  image: WorkspaceImage | File | null;
+  focalPoint: FocalPoint;
 }
 
 export interface WorkspaceSetting {
