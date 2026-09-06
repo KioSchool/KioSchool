@@ -1,4 +1,5 @@
 import type { GaEventName } from '@constants/analytics';
+import { normalizePagePath } from '@utils/analyticsPath';
 
 let isInitialized = false;
 
@@ -38,30 +39,34 @@ export function initAnalytics(gaId: string, environment: ImportMetaEnv['VITE_ENV
 export function trackPageView(pagePath: string): void {
   if (!isInitialized) return;
 
-  const pageLocation = `${window.location.origin}${pagePath}`;
-
-  // `gtag('set', ...)` persists these fields for every subsequent event on
-  // this page, not just this one — without it, ecommerce events fired later
-  // on the same page fall back to `document.location.href`, which leaks the
-  // real query string (including `tableHash`, an order-auth token) to GA4.
-  window.gtag('set', { page_location: pageLocation, page_path: pagePath, page_title: document.title });
-
   window.gtag('event', 'page_view', {
     page_path: pagePath,
-    page_location: pageLocation,
+    page_location: `${window.location.origin}${pagePath}`,
     page_title: document.title,
   });
 }
 
+/**
+ * 부모(App)의 `useAnalytics` effect가 자식 페이지 컴포넌트의 effect보다 늦게 실행되므로
+ * (React는 effect를 자식→부모 순으로 실행한다), 이전에 `gtag('set', ...)`으로 지속시킨
+ * page_location에 의존할 수 없다. 매 이벤트마다 `window.location`에서 직접 다시 계산해
+ * 순서와 무관하게 항상 현재 페이지 위치가 실리도록 한다.
+ */
 export function trackEvent(eventName: GaEventName, params: Record<string, unknown>): void {
   if (!isInitialized) return;
 
-  window.gtag('event', eventName, params);
+  const pagePath = normalizePagePath(window.location.pathname);
+
+  window.gtag('event', eventName, {
+    ...params,
+    page_path: pagePath,
+    page_location: `${window.location.origin}${pagePath}`,
+  });
 }
 
 export function setAnalyticsUser(userId: string | null, properties: Record<string, unknown>): void {
   if (!isInitialized) return;
 
-  window.gtag('set', 'user_id', userId ?? undefined);
+  window.gtag('set', 'user_id', userId);
   window.gtag('set', 'user_properties', properties);
 }

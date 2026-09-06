@@ -16,3 +16,23 @@ export function normalizePagePath(pathname: string): string {
   const matchedTemplate = ALL_ROUTE_TEMPLATES.find((template) => matchPath(template, pathname) !== null);
   return matchedTemplate ?? UNMATCHED_PAGE_PATH;
 }
+
+export function extractAdminWorkspaceId(pathname: string): number | undefined {
+  const templatesWithWorkspaceId = Object.values(ADMIN_ROUTES).filter((template) => template.includes(':workspaceId'));
+
+  for (const template of templatesWithWorkspaceId) {
+    const match = matchPath(template, pathname);
+    const rawId = match?.params.workspaceId;
+    if (rawId) {
+      const id = Number(rawId);
+      if (!Number.isNaN(id)) return id;
+    }
+  }
+
+  return undefined;
+}
+
+export function extractGuestWorkspaceId(search: string): number | undefined {
+  const id = Number(new URLSearchParams(search).get('workspaceId'));
+  return id > 0 ? id : undefined;
+}
