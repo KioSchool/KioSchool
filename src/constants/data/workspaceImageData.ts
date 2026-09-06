@@ -8,3 +8,6 @@ export const ORDER_IMAGE_HEIGHT_PX = 200;
 
 // 손님이 주문 화면을 여는 대부분의 환경이 휴대폰이라, 편집 프레임을 모바일 폭에 맞춘다.
 export const POSITION_EDITOR_FRAME_WIDTH_PX = 375;
+
+export const WORKSPACE_IMAGE_MAX_SIZE_MB = 2;
+export const WORKSPACE_IMAGE_MAX_SIZE_BYTES = WORKSPACE_IMAGE_MAX_SIZE_MB * 1024 * 1024;
