@@ -1,4 +1,15 @@
 import useApi from '@hooks/useApi';
+import { AcquisitionChannel } from '@utils/acquisitionChannel';
+
+export interface RegisterPayload {
+  id: string;
+  password: string;
+  name: string;
+  email: string;
+  acquisitionChannel: AcquisitionChannel | null;
+  acquisitionChannelEtc: string | null;
+  acquisitionContext: string | null;
+}
 
 function useRegister() {
   const { userApi } = useApi();
@@ -14,14 +25,9 @@ function useRegister() {
       });
   };
 
-  const registerUser = async (id: string, password: string, name: string, email: string): Promise<true | string> => {
+  const registerUser = async (payload: RegisterPayload): Promise<true | string> => {
     return userApi
-      .post('/register', {
-        id,
-        password,
-        name,
-        email,
-      })
+      .post('/register', payload)
       .then(() => true as const)
       .catch((error) => error.response?.data?.message ?? '회원가입 실패: 알 수 없는 오류가 발생했습니다.');
   };
