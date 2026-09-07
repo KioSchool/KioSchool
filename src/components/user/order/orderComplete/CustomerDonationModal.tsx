@@ -1,21 +1,44 @@
+// 후원 모달 디자인 탐색용 변형(shell × visual). 팀이 Storybook에서 비교해 하나를 고르면
+// 진 브랜치(선택 안 된 shell/visual 분기와 donation/ 하위 컴포넌트)는 삭제된다.
+// 프로덕션(OrderComplete.tsx)은 계속 기본값(shell='center', visual='plain')만 쓴다.
+import { MouseEvent } from 'react';
 import { createPortal } from 'react-dom';
 import styled from '@emotion/styled';
+import { motion } from 'framer-motion';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { MODAL_ROOT_KEY } from '@hooks/useModal';
 import { DONATION_ACCOUNT } from '@utils/donation';
 import { DONATION_AMOUNT_OPTIONS, DONATION_COUNT_DISPLAY_MIN, DONATION_DESTINATION_NOTE } from '@constants/data/customerDonationCopy';
-import useCustomerDonationModal from '@hooks/user/useCustomerDonationModal';
+import useCustomerDonationModal, { DonationMethod } from '@hooks/user/useCustomerDonationModal';
+import DonationVisualHeader, { DonationVisual } from './donation/DonationVisualHeader';
+import DonationAccountBox from './donation/DonationAccountBox';
 
-const Overlay = styled.div`
+type DonationShell = 'center' | 'sheet';
+
+interface MethodOption {
+  value: DonationMethod;
+  label: string;
+}
+
+const DONATION_METHOD_OPTIONS: readonly MethodOption[] = [
+  { value: 'toss', label: '토스' },
+  { value: 'account', label: '계좌이체' },
+];
+
+const SHEET_INITIAL = { y: '100%' };
+const SHEET_ANIMATE = { y: 0 };
+const SHEET_TRANSITION = { duration: 0.25, ease: 'easeOut' } as const;
+
+const Overlay = styled.div<{ sheet: boolean }>`
   position: fixed;
   inset: 0;
   background: rgba(70, 74, 77, 0.35);
   z-index: 3000;
-  ${rowFlex({ justify: 'center', align: 'center' })};
+  ${({ sheet }) => rowFlex({ justify: 'center', align: sheet ? 'flex-end' : 'center' })};
 `;
 
-const Panel = styled.div`
+const CenterPanel = styled.div`
   width: 340px;
   max-width: 92vw;
   max-height: 88vh;
@@ -27,6 +50,28 @@ const Panel = styled.div`
   position: relative;
   gap: 14px;
   ${colFlex({ justify: 'start', align: 'stretch' })};
+`;
+
+const SheetPanel = styled(motion.div)`
+  width: 100%;
+  max-width: 480px;
+  max-height: 88vh;
+  box-sizing: border-box;
+  padding: 20px;
+  background: ${Color.WHITE};
+  border-radius: 16px 16px 0 0;
+  overflow-y: auto;
+  position: relative;
+  gap: 14px;
+  ${colFlex({ justify: 'start', align: 'stretch' })};
+`;
+
+const HandleBar = styled.div`
+  width: 34px;
+  height: 4px;
+  border-radius: 2px;
+  background: ${Color.HEAVY_GREY};
+  margin: 0 auto 12px;
 `;
 
 const DismissButton = styled.button`
@@ -44,42 +89,23 @@ const DismissButton = styled.button`
   cursor: pointer;
 `;
 
-const Headline = styled.div`
-  padding-right: 24px;
-  font-size: 16px;
-  font-weight: 600;
-  color: ${Color.BLACK};
-  line-height: 1.45;
-  word-break: keep-all;
-`;
-
-const SubLineGroup = styled.div`
-  gap: 6px;
-  ${colFlex({ justify: 'start', align: 'stretch' })};
-`;
-
-const SubLine = styled.div`
-  font-size: 13px;
-  color: ${Color.GREY};
-  line-height: 1.65;
-  word-break: keep-all;
-`;
-
-const CountLine = styled.div`
-  padding: 8px 10px;
-  border-radius: 8px;
-  background: ${Color.LIGHT_GREY};
-  font-size: 12px;
-  color: ${Color.GREY};
+const DestinationNote = styled.div`
+  font-size: 11px;
+  color: ${Color.MUTED_GREY};
   text-align: center;
 `;
 
-const AmountRow = styled.div`
+const Divider = styled.div`
+  height: 0.5px;
+  background: ${Color.HEAVY_GREY};
+`;
+
+const ChipRow = styled.div`
   gap: 6px;
   ${rowFlex({ justify: 'space-between', align: 'center' })};
 `;
 
-const AmountChip = styled.button<{ selected: boolean }>`
+const Chip = styled.button<{ selected: boolean }>`
   flex: 1;
   padding: 10px 0;
   border: ${({ selected }) => (selected ? `2px solid ${Color.KIO_ORANGE}` : `0.5px solid ${Color.HEAVY_GREY}`)};
@@ -102,45 +128,16 @@ const DonateAnchor = styled.a`
   text-decoration: none;
 `;
 
-const AccountToggle = styled.button`
-  padding: 4px;
-  border: none;
-  background: none;
-  color: ${Color.GREY};
-  font-size: 12px;
-  text-decoration: underline;
-  cursor: pointer;
-`;
-
-const AccountBox = styled.div`
+const DonateButton = styled.button`
   padding: 12px;
-  border: 0.5px solid ${Color.HEAVY_GREY};
+  border: none;
   border-radius: 8px;
-  gap: 6px;
-  ${colFlex({ justify: 'start', align: 'stretch' })};
-`;
-
-const AccountRow = styled.div`
-  font-size: 13px;
-  color: ${Color.BLACK};
-`;
-
-const CopyButton = styled.button`
-  margin-top: 4px;
-  padding: 8px;
-  border: 0.5px solid ${Color.KIO_ORANGE};
-  border-radius: 8px;
-  background: ${Color.WHITE};
-  color: ${Color.KIO_ORANGE};
-  font-size: 13px;
+  background: ${Color.KIO_ORANGE};
+  color: ${Color.WHITE};
+  font-size: 14px;
   font-weight: 600;
-  cursor: pointer;
-`;
-
-const DestinationNote = styled.div`
-  font-size: 11px;
-  color: ${Color.MUTED_GREY};
   text-align: center;
+  cursor: pointer;
 `;
 
 const LaterButton = styled.button`
@@ -181,13 +178,17 @@ interface CustomerDonationModalProps {
   orderId: string | null;
   workspaceId: string | null;
   eligible: boolean;
+  shell?: DonationShell;
+  visual?: DonationVisual;
+  initialTodayCount?: number;
 }
 
-function CustomerDonationModal({ orderId, workspaceId, eligible }: CustomerDonationModalProps) {
-  const { shouldRender, view, copy, amount, todayCount, donationUrl, isAccountOpen, selectAmount, toggleAccount, donate, dismiss } = useCustomerDonationModal({
+function CustomerDonationModal({ orderId, workspaceId, eligible, shell = 'center', visual = 'plain', initialTodayCount }: CustomerDonationModalProps) {
+  const { shouldRender, view, copy, amount, todayCount, donationUrl, method, selectAmount, selectMethod, donate, dismiss } = useCustomerDonationModal({
     orderId,
     workspaceId,
     eligible,
+    initialTodayCount,
   });
 
   const modalRoot = typeof document !== 'undefined' ? document.getElementById(MODAL_ROOT_KEY) : null;
@@ -195,53 +196,48 @@ function CustomerDonationModal({ orderId, workspaceId, eligible }: CustomerDonat
 
   const showCount = todayCount != null && todayCount >= DONATION_COUNT_DISPLAY_MIN;
 
-  const handleCopyAccount = () => {
+  const handleAccountDonate = () => {
     navigator.clipboard?.writeText(DONATION_ACCOUNT.accountNo).catch(() => undefined);
-    donate('account');
+    donate();
   };
 
-  const accountBlock = (
-    <AccountBox>
-      <AccountRow>{DONATION_ACCOUNT.bankName}</AccountRow>
-      <AccountRow>{DONATION_ACCOUNT.accountNo}</AccountRow>
-      <AccountRow>{DONATION_ACCOUNT.holderName}</AccountRow>
-    </AccountBox>
-  );
+  const stopPropagation = (event: MouseEvent) => event.stopPropagation();
+
+  const primaryAction =
+    method === 'toss' ? (
+      <DonateAnchor href={donationUrl} onClick={donate}>
+        토스로 {amount.toLocaleString()}원 보내기
+      </DonateAnchor>
+    ) : (
+      <DonateButton type="button" onClick={handleAccountDonate}>
+        계좌번호 복사하기
+      </DonateButton>
+    );
 
   const donateView = (
     <>
       <DismissButton type="button" aria-label="후원 안내 닫기" onClick={dismiss}>
         ✕
       </DismissButton>
-      <Headline>{copy.headline}</Headline>
-      <SubLineGroup>
-        {copy.subLines.map((line) => (
-          <SubLine key={line}>{line}</SubLine>
-        ))}
-      </SubLineGroup>
-      {showCount && <CountLine>오늘 {todayCount}명이 키오스쿨과 함께했어요</CountLine>}
-      <AmountRow>
-        {DONATION_AMOUNT_OPTIONS.map((option) => (
-          <AmountChip key={option} type="button" selected={option === amount} onClick={() => selectAmount(option)}>
-            {option.toLocaleString()}원
-          </AmountChip>
-        ))}
-      </AmountRow>
-      <DonateAnchor href={donationUrl} onClick={() => donate('toss')}>
-        토스로 {amount.toLocaleString()}원 보내기
-      </DonateAnchor>
-      <AccountToggle type="button" onClick={toggleAccount}>
-        토스 없이 계좌로 보내기
-      </AccountToggle>
-      {isAccountOpen && (
-        <>
-          {accountBlock}
-          <CopyButton type="button" onClick={handleCopyAccount}>
-            계좌번호 복사
-          </CopyButton>
-        </>
-      )}
+      <DonationVisualHeader visual={visual} copy={copy} amount={amount} todayCount={todayCount} />
       <DestinationNote>{DONATION_DESTINATION_NOTE}</DestinationNote>
+      <Divider />
+      <ChipRow>
+        {DONATION_AMOUNT_OPTIONS.map((option) => (
+          <Chip key={option} type="button" selected={option === amount} onClick={() => selectAmount(option)}>
+            {option.toLocaleString()}원
+          </Chip>
+        ))}
+      </ChipRow>
+      <ChipRow>
+        {DONATION_METHOD_OPTIONS.map((option) => (
+          <Chip key={option.value} type="button" selected={option.value === method} onClick={() => selectMethod(option.value)}>
+            {option.label}
+          </Chip>
+        ))}
+      </ChipRow>
+      {method === 'account' && <DonationAccountBox />}
+      {primaryAction}
       <LaterButton type="button" onClick={dismiss}>
         다음에
       </LaterButton>
@@ -252,18 +248,38 @@ function CustomerDonationModal({ orderId, workspaceId, eligible }: CustomerDonat
     <>
       <ThanksTitle>고마워요!</ThanksTitle>
       <ThanksBody>{showCount ? `오늘 ${todayCount}명이 키오스쿨과 함께했어요.` : '여러분 덕에 키오스쿨이 굴러가요.'}</ThanksBody>
-      {isAccountOpen && accountBlock}
+      {method === 'account' && <DonationAccountBox />}
       <CloseButton type="button" onClick={dismiss}>
         닫기
       </CloseButton>
     </>
   );
 
+  const content = view === 'donate' ? donateView : thanksView;
+
+  if (shell === 'sheet') {
+    return createPortal(
+      <Overlay sheet onClick={dismiss}>
+        <SheetPanel
+          className={'customer-donation-modal'}
+          onClick={stopPropagation}
+          initial={SHEET_INITIAL}
+          animate={SHEET_ANIMATE}
+          transition={SHEET_TRANSITION}
+        >
+          <HandleBar />
+          {content}
+        </SheetPanel>
+      </Overlay>,
+      modalRoot,
+    );
+  }
+
   return createPortal(
-    <Overlay onClick={dismiss}>
-      <Panel className={'customer-donation-modal'} onClick={(event) => event.stopPropagation()}>
-        {view === 'donate' ? donateView : thanksView}
-      </Panel>
+    <Overlay sheet={false} onClick={dismiss}>
+      <CenterPanel className={'customer-donation-modal'} onClick={stopPropagation}>
+        {content}
+      </CenterPanel>
     </Overlay>,
     modalRoot,
   );
