@@ -116,12 +116,19 @@ function TableLayoutView({
 
   const tableByCell = new Map(placedTables.map((table) => [`${table.position!.x}-${table.position!.y}`, table]));
 
+  // 방금 상태를 바꾼(=선택된) 테이블까지 흐려지면 오류로 보인다 — 선택 테이블은 필터 dim에서 제외
+  const isDimmedByFilter = (table: Table) => {
+    if (visibleTableNumbers === null) return false;
+    if (table.tableNumber === selectedTableNumber) return false;
+    return !visibleTableNumbers.has(table.tableNumber);
+  };
+
   const renderCard = (table: Table) => (
     <TableLayoutCard
       table={table}
       orderCount={getSessionOrderStats(table, orderStatsBySessionId)?.count ?? 0}
       isSelected={table.tableNumber === selectedTableNumber}
-      isDimmed={visibleTableNumbers !== null && !visibleTableNumbers.has(table.tableNumber)}
+      isDimmed={isDimmedByFilter(table)}
       flashSeq={flashSeqByTableNumber.get(table.tableNumber) ?? 0}
       onSelect={onSelectTable}
     />
