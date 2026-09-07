@@ -12,7 +12,7 @@ import AcquisitionChannelOption from './AcquisitionChannelOption';
 const Container = styled.div`
   width: 100%;
   max-width: 480px;
-  gap: 24px;
+  gap: 16px;
   ${colFlex({ align: 'center' })}
 
   ${mobileMediaQuery} {
@@ -31,7 +31,7 @@ const OptionList = styled.div`
 const ActionArea = styled.div`
   width: 100%;
   padding-top: 4px;
-  gap: 14px;
+  gap: 10px;
   ${colFlex({ align: 'center' })}
 `;
 
@@ -59,9 +59,13 @@ const SecondaryActionsDivider = styled.span`
   color: ${OnboardingColor.EYEBROW_TEXT};
 `;
 
-const ErrorMessage = styled.div`
+const ErrorMessageContainer = styled.div`
   width: 100%;
-  min-height: 20px;
+  height: 20px;
+  ${colFlex({ justify: 'center', align: 'center' })}
+`;
+
+const ErrorMessage = styled.div`
   font-size: 13px;
   font-weight: 500;
   color: ${Color.KIO_ORANGE};
@@ -114,7 +118,7 @@ function AcquisitionChannelStep({ onSubmit, onSkip, onBack, isSubmitting, errorM
         )}
       </OptionList>
 
-      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      <ErrorMessageContainer>{errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}</ErrorMessageContainer>
 
       <ActionArea>
         <NewCommonButton type="button" size={'sm'} disabled={!selectedChannel || isSubmitting} onClick={handleSubmit}>

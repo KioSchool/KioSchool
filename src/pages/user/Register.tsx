@@ -11,9 +11,23 @@ import { AcquisitionChannel } from '@utils/acquisitionChannel';
 import { readAcquisitionContext } from '@utils/acquisitionContext';
 import { trackEvent } from '@utils/analytics';
 
-const FormSection = styled.div``;
+const FormSection = styled.div`
+  width: 100%;
+  ${colFlex({ align: 'center' })}
 
-const AcquisitionSection = styled.div``;
+  &[hidden] {
+    display: none;
+  }
+`;
+
+const AcquisitionSection = styled.div`
+  width: 100%;
+  ${colFlex({ align: 'center' })}
+
+  &[hidden] {
+    display: none;
+  }
+`;
 
 type RegisterStep = 'form' | 'acquisition';
 

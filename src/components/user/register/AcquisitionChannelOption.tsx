@@ -5,7 +5,7 @@ import { AcquisitionChannel, ACQUISITION_CHANNEL_LABEL } from '@utils/acquisitio
 
 const OptionLabel = styled.label<{ isSelected: boolean }>`
   width: 100%;
-  padding: 14px 16px;
+  padding: 11px 16px;
   box-sizing: border-box;
   border: 1.5px solid ${({ isSelected }) => (isSelected ? Color.KIO_ORANGE : OnboardingColor.STEP_IDLE_BORDER)};
   border-radius: 12px;
