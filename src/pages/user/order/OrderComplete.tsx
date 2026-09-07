@@ -18,7 +18,7 @@ import { Order, OrderStatus } from '@@types/index';
 import { ORDER_ROUTES } from '@constants/routes';
 import { isOverOneDay } from '@utils/formatDate';
 import useWorkspace from '@hooks/user/useWorkspace';
-import CustomerDonationCard from '@components/user/order/orderComplete/CustomerDonationCard';
+import CustomerDonationModal from '@components/user/order/orderComplete/CustomerDonationModal';
 
 const Container = styled.div`
   width: 100%;
@@ -245,7 +245,7 @@ function OrderComplete() {
             <ContentTitle>{order.totalPrice.toLocaleString()}원</ContentTitle>
           </OrderPriceContainer>
         </ContentsContainer>
-        <CustomerDonationCard orderId={orderId} workspaceId={workspaceId} eligible={isDonationEligible} />
+        <CustomerDonationModal orderId={orderId} workspaceId={workspaceId} eligible={isDonationEligible} />
       </SubContainer>
       <OrderButton
         showButton={true}
