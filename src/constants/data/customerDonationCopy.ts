@@ -82,3 +82,7 @@ export function pickCopyVariant(orderId: string | null): DonationCopy {
   const index = Math.abs(Math.trunc(numericId)) % CUSTOMER_DONATION_COPIES.length;
   return CUSTOMER_DONATION_COPIES[index];
 }
+
+// 게이지(visual='gauge') 기준. "오늘 N명" 대비 목표 인원 — 금액이 아니라 인원 단위인 이유는
+// 딥링크라 실제 송금을 관측할 수 없어 금액으로 표기하면 사실이 아니게 되기 때문이다.
+export const DONATION_DAILY_GOAL_COUNT = 20;
