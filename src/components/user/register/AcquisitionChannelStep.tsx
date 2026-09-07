@@ -4,7 +4,7 @@ import NewAppInput from '@components/common/input/NewAppInput';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import OnboardingHeader from '@components/onboarding/OnboardingHeader';
 import { Color, OnboardingColor } from '@resources/colors';
-import { colFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { ACQUISITION_CHANNEL, ACQUISITION_CHANNEL_ETC_MAX_LENGTH, ACQUISITION_CHANNEL_ORDER, AcquisitionChannel } from '@utils/acquisitionChannel';
 import AcquisitionChannelOption from './AcquisitionChannelOption';
@@ -35,6 +35,11 @@ const ActionArea = styled.div`
   ${colFlex({ align: 'center' })}
 `;
 
+const SecondaryActions = styled.div`
+  gap: 8px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
+`;
+
 const SkipButton = styled.button`
   border: none;
   background: none;
@@ -49,6 +54,11 @@ const SkipButton = styled.button`
   }
 `;
 
+const SecondaryActionsDivider = styled.span`
+  font-size: 13px;
+  color: ${OnboardingColor.EYEBROW_TEXT};
+`;
+
 const ErrorMessage = styled.div`
   width: 100%;
   min-height: 20px;
@@ -61,11 +71,12 @@ const ErrorMessage = styled.div`
 interface AcquisitionChannelStepProps {
   onSubmit: (channel: AcquisitionChannel, channelEtc: string | null) => void;
   onSkip: () => void;
+  onBack: () => void;
   isSubmitting: boolean;
   errorMessage?: string;
 }
 
-function AcquisitionChannelStep({ onSubmit, onSkip, isSubmitting, errorMessage }: AcquisitionChannelStepProps) {
+function AcquisitionChannelStep({ onSubmit, onSkip, onBack, isSubmitting, errorMessage }: AcquisitionChannelStepProps) {
   const [selectedChannel, setSelectedChannel] = useState<AcquisitionChannel | null>(null);
   const [channelEtcInput, setChannelEtcInput] = useState('');
 
@@ -109,9 +120,15 @@ function AcquisitionChannelStep({ onSubmit, onSkip, isSubmitting, errorMessage }
         <NewCommonButton type="button" size={'sm'} disabled={!selectedChannel || isSubmitting} onClick={handleSubmit}>
           가입 완료
         </NewCommonButton>
-        <SkipButton type="button" disabled={isSubmitting} onClick={onSkip}>
-          건너뛰고 가입하기
-        </SkipButton>
+        <SecondaryActions>
+          <SkipButton type="button" disabled={isSubmitting} onClick={onBack}>
+            이전으로
+          </SkipButton>
+          <SecondaryActionsDivider>·</SecondaryActionsDivider>
+          <SkipButton type="button" disabled={isSubmitting} onClick={onSkip}>
+            건너뛰고 가입하기
+          </SkipButton>
+        </SecondaryActions>
       </ActionArea>
     </Container>
   );

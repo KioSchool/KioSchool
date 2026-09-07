@@ -9,13 +9,13 @@ const meta = {
 export default meta;
 
 export const Default = {
-  args: { onSubmit: () => {}, onSkip: () => {}, isSubmitting: false },
+  args: { onSubmit: () => {}, onSkip: () => {}, onBack: () => {}, isSubmitting: false },
 };
 
 export const Submitting = {
-  args: { onSubmit: () => {}, onSkip: () => {}, isSubmitting: true },
+  args: { onSubmit: () => {}, onSkip: () => {}, onBack: () => {}, isSubmitting: true },
 };
 
 export const WithError = {
-  args: { onSubmit: () => {}, onSkip: () => {}, isSubmitting: false, errorMessage: '이미 가입된 이메일입니다.' },
+  args: { onSubmit: () => {}, onSkip: () => {}, onBack: () => {}, isSubmitting: false, errorMessage: '이미 가입된 이메일입니다.' },
 };

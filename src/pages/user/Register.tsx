@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { match } from 'ts-pattern';
+import styled from '@emotion/styled';
 import AppContainer from '@components/common/container/AppContainer';
 import AcquisitionChannelStep from '@components/user/register/AcquisitionChannelStep';
 import RegisterForm, { PendingRegistration } from '@components/user/register/RegisterForm';
@@ -10,6 +10,10 @@ import { colFlex } from '@styles/flexStyles';
 import { AcquisitionChannel } from '@utils/acquisitionChannel';
 import { readAcquisitionContext } from '@utils/acquisitionContext';
 import { trackEvent } from '@utils/analytics';
+
+const FormSection = styled.div``;
+
+const AcquisitionSection = styled.div``;
 
 type RegisterStep = 'form' | 'acquisition';
 
@@ -61,19 +65,25 @@ function Register() {
     submitRegistration(null, null);
   };
 
+  const handleBack = () => {
+    setSubmitErrorMessage('');
+    setStep('form');
+  };
+
   return (
     <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} useTitle={false} useFullHeight={true}>
-      {match(step)
-        .with('form', () => <RegisterForm onSubmit={handleFormSubmit} />)
-        .with('acquisition', () => (
-          <AcquisitionChannelStep
-            onSubmit={handleAcquisitionSubmit}
-            onSkip={handleAcquisitionSkip}
-            isSubmitting={isSubmitting}
-            errorMessage={submitErrorMessage}
-          />
-        ))
-        .exhaustive()}
+      <FormSection hidden={step !== 'form'}>
+        <RegisterForm onSubmit={handleFormSubmit} />
+      </FormSection>
+      <AcquisitionSection hidden={step !== 'acquisition'}>
+        <AcquisitionChannelStep
+          onSubmit={handleAcquisitionSubmit}
+          onSkip={handleAcquisitionSkip}
+          onBack={handleBack}
+          isSubmitting={isSubmitting}
+          errorMessage={submitErrorMessage}
+        />
+      </AcquisitionSection>
     </AppContainer>
   );
 }
