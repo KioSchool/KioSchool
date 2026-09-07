@@ -7,14 +7,14 @@ const OptionLabel = styled.label<{ isSelected: boolean }>`
   width: 100%;
   padding: 11px 16px;
   box-sizing: border-box;
-  border: 1.5px solid ${({ isSelected }) => (isSelected ? Color.KIO_ORANGE : OnboardingColor.STEP_IDLE_BORDER)};
+  border: 1.5px solid ${({ isSelected }) => (isSelected ? Color.KIO_ORANGE : OnboardingColor.STEP_INACTIVE_BORDER)};
   border-radius: 12px;
   background: ${({ isSelected }) => (isSelected ? OnboardingColor.STEP_ACTIVE_BG : Color.WHITE)};
   cursor: pointer;
   font-size: 15px;
-  color: ${OnboardingColor.BODY_TEXT};
+  color: ${({ isSelected }) => (isSelected ? OnboardingColor.TITLE_TEXT : OnboardingColor.SUBTLE_TEXT)};
   gap: 10px;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, color 0.15s;
   ${rowFlex({ justify: 'start', align: 'center' })}
 
   &:hover {
@@ -26,7 +26,7 @@ const Radio = styled.input`
   appearance: none;
   margin: 0;
   flex-shrink: 0;
-  border: max(2px, 0.1em) solid ${Color.GREY};
+  border: max(2px, 0.1em) solid ${OnboardingColor.STEP_IDLE_BORDER};
   border-radius: 50%;
   width: 1.15em;
   height: 1.15em;

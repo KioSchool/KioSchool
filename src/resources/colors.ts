@@ -26,6 +26,8 @@ export const OnboardingColor = {
   EYEBROW_TEXT: '#8d959c',
   TITLE_TEXT: '#25282b',
   BODY_TEXT: '#4f565b',
+  // 본문보다 옅되 읽어야 하는 텍스트용. 흰 배경 대비 4.91:1로 WCAG AA를 넘는 가장 옅은 값이다
+  SUBTLE_TEXT: '#697278',
   MUTED_TEXT: '#7b858c',
   STEP_ACTIVE_BORDER: '#ffd7b8',
   STEP_ACTIVE_BG: '#fffaf5',

@@ -274,7 +274,7 @@ function RegisterForm({ onSubmit }: RegisterFormProps) {
           )}
         </EmailContainer>
         <ErrorMessageContainer>{errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}</ErrorMessageContainer>
-        <NewCommonButton size={'sm'}>회원가입</NewCommonButton>
+        <NewCommonButton size={'sm'}>다음</NewCommonButton>
       </FormContainer>
       <LinkLabel text={'로그인하기'} href={USER_ROUTES.LOGIN} style={{ marginTop: '20px' }} />
     </>

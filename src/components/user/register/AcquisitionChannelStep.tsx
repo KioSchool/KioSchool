@@ -2,7 +2,6 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import NewAppInput from '@components/common/input/NewAppInput';
 import NewCommonButton from '@components/common/button/NewCommonButton';
-import OnboardingHeader from '@components/onboarding/OnboardingHeader';
 import { Color, OnboardingColor } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
@@ -20,6 +19,26 @@ const Container = styled.div`
     padding: 0 16px;
     box-sizing: border-box;
   }
+`;
+
+const HeaderArea = styled.div`
+  width: 100%;
+  gap: 6px;
+  ${colFlex({ align: 'start' })}
+`;
+
+const Title = styled.h1`
+  margin: 0;
+  color: ${OnboardingColor.TITLE_TEXT};
+  font-size: 18px;
+  line-height: 1.2;
+`;
+
+const Description = styled.p`
+  margin: 0;
+  color: ${OnboardingColor.SUBTLE_TEXT};
+  font-size: 14px;
+  line-height: 1.7;
 `;
 
 const OptionList = styled.div`
@@ -95,11 +114,10 @@ function AcquisitionChannelStep({ onSubmit, onSkip, onBack, isSubmitting, errorM
 
   return (
     <Container>
-      <OnboardingHeader
-        eyebrow="LAST STEP"
-        title="키오스쿨을 어떻게 알게 되셨나요?"
-        description="더 나은 서비스를 만드는 데 큰 도움이 됩니다. 하나만 골라주세요."
-      />
+      <HeaderArea>
+        <Title>키오스쿨을 어떻게 알게 되셨나요?</Title>
+        <Description>더 나은 서비스를 만드는 데 큰 도움이 됩니다. 하나만 골라주세요.</Description>
+      </HeaderArea>
 
       <OptionList>
         {ACQUISITION_CHANNEL_ORDER.map((channel) => (
