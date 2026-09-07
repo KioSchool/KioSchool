@@ -32,6 +32,8 @@ if (gaId) {
     window.dataLayer.push(arguments);
   }
   // @ts-ignore
+  window.gtag = gtag;
+  // @ts-ignore
   gtag('js', new Date());
   // @ts-ignore
   gtag('config', gaId);
