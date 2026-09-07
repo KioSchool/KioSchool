@@ -1,5 +1,10 @@
 const ACQUISITION_CONTEXT_STORAGE_KEY = 'kioschool_acquisition_context';
 const ACQUISITION_CONTEXT_MAX_LENGTH = 500;
+const ACQUISITION_ENTRY_VALUE_MAX_LENGTH = 80;
+
+function sanitizeEntryValue(value: string): string {
+  return value.replace(/[^\w.\-/:]/g, '').slice(0, ACQUISITION_ENTRY_VALUE_MAX_LENGTH);
+}
 
 function getReferrerOrigin(): string | null {
   if (!document.referrer) return null;
@@ -29,21 +34,22 @@ export function captureAcquisitionContext(): void {
     const params = new URLSearchParams(window.location.search);
     const entries: string[] = [];
 
-    const source = params.get('utm_source');
+    const source = sanitizeEntryValue(params.get('utm_source') ?? '');
     if (source) entries.push(`source=${source}`);
 
-    const medium = params.get('utm_medium');
+    const medium = sanitizeEntryValue(params.get('utm_medium') ?? '');
     if (medium) entries.push(`medium=${medium}`);
 
-    const campaign = params.get('utm_campaign');
+    const campaign = sanitizeEntryValue(params.get('utm_campaign') ?? '');
     if (campaign) entries.push(`campaign=${campaign}`);
 
     const referrerOrigin = getReferrerOrigin();
-    if (referrerOrigin) entries.push(`ref=${referrerOrigin}`);
+    const sanitizedReferrerOrigin = referrerOrigin ? sanitizeEntryValue(referrerOrigin) : '';
+    if (sanitizedReferrerOrigin) entries.push(`ref=${sanitizedReferrerOrigin}`);
 
     if (entries.length === 0) return;
 
-    entries.push(`landing=${window.location.pathname}`);
+    entries.push(`landing=${sanitizeEntryValue(window.location.pathname)}`);
     localStorage.setItem(ACQUISITION_CONTEXT_STORAGE_KEY, truncateAtSeparator(entries.join('&')));
   } catch {
     // 시크릿 모드 등에서 localStorage 접근이 막혀도 회원가입은 막히면 안 된다
