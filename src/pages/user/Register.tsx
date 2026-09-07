@@ -31,6 +31,8 @@ const AcquisitionSection = styled.div`
 
 type RegisterStep = 'form' | 'acquisition';
 
+const REGISTRATION_FAILURE_RECOVERY_GUIDE = '이전으로 돌아가 이메일 인증을 다시 해주세요.';
+
 function Register() {
   const navigate = useNavigate();
   const { registerUser } = useRegister();
@@ -71,7 +73,7 @@ function Register() {
 
     if (result !== true) {
       setIsSubmitting(false);
-      setSubmitErrorMessage(result);
+      setSubmitErrorMessage(`${result} ${REGISTRATION_FAILURE_RECOVERY_GUIDE}`);
       return;
     }
 

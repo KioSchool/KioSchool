@@ -249,6 +249,10 @@ function RegisterForm({ onSubmit }: RegisterFormProps) {
             type={'email'}
             id={'userEmail'}
             ref={userEmailInputRef}
+            onChange={() => {
+              setIsVerified(false);
+              setIsCodeSent(false);
+            }}
             label={'이메일 주소'}
             placeholder={'인증코드를 받을 이메일을 입력해주세요.'}
             linkProps={{ text: '회원가입 가능한 이메일 확인하기', url: '/email-domains' }}
