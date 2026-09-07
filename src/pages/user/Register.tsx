@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import AppContainer from '@components/common/container/AppContainer';
@@ -7,7 +7,7 @@ import RegisterForm, { PendingRegistration } from '@components/user/register/Reg
 import useRegister from '@hooks/user/useRegister';
 import { USER_ROUTES } from '@constants/routes';
 import { colFlex } from '@styles/flexStyles';
-import { AcquisitionChannel } from '@utils/acquisitionChannel';
+import { ACQUISITION_CHANNEL_NONE, AcquisitionChannel } from '@utils/acquisitionChannel';
 import { readAcquisitionContext } from '@utils/acquisitionContext';
 import { trackEvent } from '@utils/analytics';
 
@@ -40,14 +40,24 @@ function Register() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitErrorMessage, setSubmitErrorMessage] = useState('');
 
+  const hasTrackedStepViewRef = useRef(false);
+
   const handleFormSubmit = (values: PendingRegistration) => {
     setPendingRegistration(values);
     setStep('acquisition');
-    trackEvent('signup_acquisition_step_view');
+
+    if (!hasTrackedStepViewRef.current) {
+      hasTrackedStepViewRef.current = true;
+      trackEvent('signup_acquisition_step_view');
+    }
   };
 
-  const submitRegistration = async (channel: AcquisitionChannel | null, channelEtc: string | null) => {
+  const submitRegistration = async (channel: AcquisitionChannel | null, channelEtc: string | null, isSkip: boolean) => {
     if (!pendingRegistration || isSubmitting) return;
+
+    if (isSkip) {
+      trackEvent('signup_acquisition_skipped');
+    }
 
     setIsSubmitting(true);
     setSubmitErrorMessage('');
@@ -65,18 +75,17 @@ function Register() {
       return;
     }
 
-    trackEvent('signup_completed', { channel: channel ?? 'NONE' });
+    trackEvent('signup_completed', { channel: channel ?? ACQUISITION_CHANNEL_NONE });
     localStorage.setItem('isLoggedIn', 'true');
     navigate(USER_ROUTES.HOME);
   };
 
   const handleAcquisitionSubmit = (channel: AcquisitionChannel, channelEtc: string | null) => {
-    submitRegistration(channel, channelEtc);
+    submitRegistration(channel, channelEtc, false);
   };
 
   const handleAcquisitionSkip = () => {
-    trackEvent('signup_acquisition_skipped');
-    submitRegistration(null, null);
+    submitRegistration(null, null, true);
   };
 
   const handleBack = () => {
