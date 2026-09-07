@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import NewAppInput from '@components/common/input/NewAppInput';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { Color, OnboardingColor } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
@@ -43,13 +42,34 @@ const Description = styled.p`
 
 const OptionList = styled.div`
   width: 100%;
-  gap: 8px;
+  gap: 7px;
   ${colFlex()}
+`;
+
+const EtcInput = styled.input`
+  width: 100%;
+  padding: 7px 10px;
+  box-sizing: border-box;
+  border: 1px solid ${OnboardingColor.STEP_IDLE_BORDER};
+  border-radius: 8px;
+  background: ${Color.WHITE};
+  color: ${OnboardingColor.TITLE_TEXT};
+  font-family: inherit;
+  font-size: 14px;
+
+  &::placeholder {
+    color: ${OnboardingColor.MUTED_TEXT};
+  }
+
+  &:focus {
+    outline: none;
+    border-color: ${Color.KIO_ORANGE};
+  }
 `;
 
 const ActionArea = styled.div`
   width: 100%;
-  padding-top: 4px;
+  padding-top: 2px;
   gap: 10px;
   ${colFlex({ align: 'center' })}
 `;
@@ -121,19 +141,18 @@ function AcquisitionChannelStep({ onSubmit, onSkip, onBack, isSubmitting, errorM
 
       <OptionList>
         {ACQUISITION_CHANNEL_ORDER.map((channel) => (
-          <AcquisitionChannelOption key={channel} channel={channel} isSelected={selectedChannel === channel} onSelect={setSelectedChannel} />
+          <AcquisitionChannelOption key={channel} channel={channel} isSelected={selectedChannel === channel} onSelect={setSelectedChannel}>
+            {channel === ACQUISITION_CHANNEL.ETC && isEtcSelected && (
+              <EtcInput
+                id="acquisitionChannelEtc"
+                placeholder="어떻게 알게 되셨는지 알려주세요."
+                maxLength={ACQUISITION_CHANNEL_ETC_MAX_LENGTH}
+                value={channelEtcInput}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => setChannelEtcInput(event.target.value)}
+              />
+            )}
+          </AcquisitionChannelOption>
         ))}
-
-        {isEtcSelected && (
-          <NewAppInput
-            id="acquisitionChannelEtc"
-            placeholder="어떻게 알게 되셨는지 알려주세요."
-            width={'100%'}
-            maxLength={ACQUISITION_CHANNEL_ETC_MAX_LENGTH}
-            value={channelEtcInput}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => setChannelEtcInput(event.target.value)}
-          />
-        )}
       </OptionList>
 
       <ErrorMessageContainer>{errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}</ErrorMessageContainer>
