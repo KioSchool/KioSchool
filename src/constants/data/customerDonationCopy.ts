@@ -35,6 +35,33 @@ export const DONATION_COPY_CANDIDATES: readonly DonationCopy[] = [
   },
 ];
 
+/**
+ * 톤을 바꾼(유쾌·감성·후킹) 후보군. 담백 계열이 참여율이 안 나오면 이쪽으로 A/B.
+ * 이모지·느낌표·명령형이 섞여 있어 톤 리스크가 있으니, 실제 노출 전 팀 눈으로 확인할 것.
+ */
+export const DONATION_COPY_DIVERSE_CANDIDATES: readonly DonationCopy[] = [
+  {
+    id: 'E', // 가치/효용 강조
+    headline: '목 터져라 "저기요!" 안 하셔도 돼서 편하셨죠? 😉',
+    subLines: ['주점은 무료로 쓰고, 서버비만 후원으로 받아요.', '1,000원 팁으로 개발자들을 응원해주세요!'],
+  },
+  {
+    id: 'F', // 솔직/감성 어필
+    headline: '대학생 개발자들의 통장이 텅 비어갑니다 🥲',
+    subLines: ['서버비는 만든 학생들이 사비로 나눠 내고 있어요.', '1,000원만 보태주시면 하루 서버비가 해결돼요.'],
+  },
+  {
+    id: 'G', // 유쾌/재치 (라임)
+    headline: '서빙은 저희가 할게요, 서버비는 누가 낼래? 🙋‍♂️',
+    subLines: ['학생들이 밤새서 만들고 무료로 풀었어요.', '서버가 꺼지지 않게 1,000원부터 후원 가능해요.'],
+  },
+  {
+    id: 'H', // 후킹 (궁금증 유발)
+    headline: '방금 주문하신 서비스, 사실 "전면 무료"입니다 🤫',
+    subLines: ['키오스쿨은 대학생들이 만들어 무료로 배포했어요.', '부담 없이 1,000원으로 서버비 달성률을 채워주세요!'],
+  },
+];
+
 export const DONATION_AMOUNT_OPTIONS: readonly number[] = [1000, 2000, 5000];
 
 export const DEFAULT_DONATION_AMOUNT = 1000;
