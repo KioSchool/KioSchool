@@ -4,7 +4,7 @@
 import { MouseEvent } from 'react';
 import { createPortal } from 'react-dom';
 import styled from '@emotion/styled';
-import { motion } from 'framer-motion';
+import { keyframes } from '@emotion/react';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { MODAL_ROOT_KEY } from '@hooks/useModal';
@@ -26,9 +26,12 @@ const DONATION_METHOD_OPTIONS: readonly MethodOption[] = [
   { value: 'account', label: '계좌이체' },
 ];
 
-const SHEET_INITIAL = { y: '100%' };
-const SHEET_ANIMATE = { y: 0 };
-const SHEET_TRANSITION = { duration: 0.25, ease: 'easeOut' } as const;
+// framer-motion으로 하면 StrictMode 이중 마운트 때 애니메이션이 첫 프레임에서 취소돼
+// 시트가 화면 밖에 걸린 채 멈춘다. CSS 키프레임은 중단 개념이 없어 항상 끝까지 도달한다.
+const slideUp = keyframes`
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+`;
 
 const Overlay = styled.div<{ sheet: boolean }>`
   position: fixed;
@@ -52,7 +55,7 @@ const CenterPanel = styled.div`
   ${colFlex({ justify: 'start', align: 'stretch' })};
 `;
 
-const SheetPanel = styled(motion.div)`
+const SheetPanel = styled.div`
   width: 100%;
   max-width: 480px;
   max-height: 88vh;
@@ -63,6 +66,7 @@ const SheetPanel = styled(motion.div)`
   overflow-y: auto;
   position: relative;
   gap: 14px;
+  animation: ${slideUp} 0.25s ease-out;
   ${colFlex({ justify: 'start', align: 'stretch' })};
 `;
 
@@ -260,13 +264,7 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, shell = 'center
   if (shell === 'sheet') {
     return createPortal(
       <Overlay sheet onClick={dismiss}>
-        <SheetPanel
-          className={'customer-donation-modal'}
-          onClick={stopPropagation}
-          initial={SHEET_INITIAL}
-          animate={SHEET_ANIMATE}
-          transition={SHEET_TRANSITION}
-        >
+        <SheetPanel className={'customer-donation-modal'} onClick={stopPropagation}>
           <HandleBar />
           {content}
         </SheetPanel>
