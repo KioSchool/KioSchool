@@ -1,7 +1,7 @@
 ﻿import { ChangeEvent, useEffect, useReducer } from 'react';
 import styled from '@emotion/styled';
-import { useAtomValue } from 'jotai';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { useAtomValue } from 'jotai';
 import { adminCategoriesAtom } from '@jotai/admin/atoms';
 import { ProductActionType, ProductStateType } from '@@types/index';
 import { defaultProductEditValue } from '@@types/defaultValues';
@@ -39,14 +39,6 @@ const InputColContainer = styled.div`
   width: 100%;
   gap: 4px;
   ${colFlex({ justify: 'center', align: 'center' })};
-`;
-
-const ProductNamePreview = styled.div`
-  width: 100%;
-  min-width: 0;
-  font-size: 14px;
-  line-height: 1.5;
-  overflow-wrap: anywhere;
 `;
 
 const SubmitContainer = styled.div`
@@ -197,7 +189,6 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
             }}
             width={'100%'}
           />
-          {isEditMode && state.name && <ProductNamePreview>전체 상품명: {state.name}</ProductNamePreview>}
         </InputColContainer>
 
         <InputColContainer>
