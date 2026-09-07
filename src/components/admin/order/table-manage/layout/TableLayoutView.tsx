@@ -2,12 +2,13 @@ import { useMemo } from 'react';
 import styled from '@emotion/styled';
 import { Table } from '@@types/index';
 import { Color } from '@resources/colors';
-import { colFlex, rowFlex } from '@styles/flexStyles';
-import { TABLE_CROP_MARGIN_CELLS, TABLE_GRID_CELL_PX, TABLE_GRID_SIZE, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
+import { colFlex } from '@styles/flexStyles';
+import { TABLE_CROP_MARGIN_CELLS, TABLE_GRID_SIZE, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { getSessionOrderStats, SessionOrderStats } from '@hooks/admin/useTableOrderStats';
 import TableLayoutCanvas, { GridCropBounds } from './TableLayoutCanvas';
-import TableLayoutCard, { SELECTED_RING_PX } from './TableLayoutCard';
+import TableLayoutCard from './TableLayoutCard';
+import UnplacedTableStrip from './UnplacedTableStrip';
 
 const Container = styled.div`
   width: 100%;
@@ -39,44 +40,6 @@ const EmptyStateHint = styled.div`
   margin-bottom: 14px;
   font-size: 13px;
   color: ${Color.MUTED_GREY};
-`;
-
-const UnplacedSection = styled.div`
-  width: 100%;
-  flex-shrink: 0;
-  gap: 6px;
-  ${colFlex()};
-`;
-
-const UnplacedLabel = styled.div`
-  font-size: 12px;
-  font-weight: 600;
-  color: ${Color.MUTED_GREY};
-`;
-
-const UnplacedCount = styled.span`
-  color: ${Color.GREY};
-  font-weight: 800;
-  font-variant-numeric: tabular-nums;
-`;
-
-const UNPLACED_LIST_MAX_ROWS = 2;
-const UNPLACED_LIST_GAP_PX = 8;
-
-const UnplacedCardList = styled.div`
-  width: calc(100% + ${SELECTED_RING_PX * 2}px);
-  margin: -${SELECTED_RING_PX}px;
-  padding: ${SELECTED_RING_PX}px;
-  gap: ${UNPLACED_LIST_GAP_PX}px;
-  flex-wrap: wrap;
-  max-height: ${UNPLACED_LIST_MAX_ROWS * TABLE_GRID_CELL_PX + (UNPLACED_LIST_MAX_ROWS - 1) * UNPLACED_LIST_GAP_PX}px;
-  overflow-y: auto;
-  ${rowFlex()};
-`;
-
-const UnplacedCardSlot = styled.div`
-  width: ${TABLE_GRID_CELL_PX}px;
-  height: ${TABLE_GRID_CELL_PX}px;
 `;
 
 function getCropBounds(placedTables: Table[]): GridCropBounds {
@@ -156,18 +119,13 @@ function TableLayoutView({
           <TableLayoutCanvas cropBounds={getCropBounds(placedTables)} renderCell={renderCell} />
         )}
       </CanvasArea>
-      {unplacedTables.length > 0 && (
-        <UnplacedSection>
-          <UnplacedLabel>
-            미배치 <UnplacedCount>{unplacedTables.length}</UnplacedCount>
-          </UnplacedLabel>
-          <UnplacedCardList>
-            {unplacedTables.map((table) => (
-              <UnplacedCardSlot key={table.id}>{renderCard(table)}</UnplacedCardSlot>
-            ))}
-          </UnplacedCardList>
-        </UnplacedSection>
-      )}
+      <UnplacedTableStrip
+        tables={unplacedTables}
+        selectedTableNumber={selectedTableNumber}
+        showEditButton={placedTables.length > 0}
+        onStartEdit={onStartEdit}
+        renderCard={renderCard}
+      />
     </Container>
   );
 }

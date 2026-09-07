@@ -195,13 +195,11 @@ function AdminTableRealtime() {
       <>
         <OnboardingStepHint step={ONBOARDING_STEP.TABLES} width="1000px" />
         <TableManageTopBar
-          showEditEntry={viewMode === TABLE_VIEW.LAYOUT && !isEditing}
           showFilters={!isEditing}
           highlightSettings={needsTablesOnboarding}
           filterType={filterType}
           filterCounts={counts}
           onChangeFilter={setFilterType}
-          onStartEdit={handleStartEdit}
           onOpenSettings={handleOpenSettings}
           onRefresh={handleManualRefresh}
         />
