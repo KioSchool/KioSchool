@@ -116,7 +116,7 @@ interface AdminTableListProps {
 }
 
 function AdminTableList({ tables, orderStatsBySessionId }: AdminTableListProps) {
-  const [sortType, setSortType] = useState<SortType>(SORT_STATUS);
+  const [sortType, setSortType] = useState<SortType>(SORT_NUMBER);
 
   const sortedTables = [...tables].sort(SORT_COMPARATORS[sortType]);
 
