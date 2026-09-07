@@ -34,6 +34,8 @@ import { mobileMediaQuery } from '@styles/globalStyles';
 import { isOnboardingStepCompleted } from '@utils/onboarding';
 import { Order, RIGHT_SIDEBAR_ACTION, Table } from '@@types/index';
 
+const UNPLACED_NOTICE_TOAST_ID = 'unplaced-table-notice';
+
 const Container = styled.div`
   width: 95%;
   height: 100%;
@@ -149,7 +151,12 @@ function AdminTableRealtime() {
     if (!selectedTable || selectedTable.position != null) return;
     if (noticedTableNo === tableNo) return;
 
-    toast.info(`${selectedTable.tableNumber}번 테이블은 아직 배치되지 않았습니다.`);
+    const message = `${selectedTable.tableNumber}번 테이블은 아직 배치되지 않았습니다.`;
+    if (toast.isActive(UNPLACED_NOTICE_TOAST_ID)) {
+      toast.update(UNPLACED_NOTICE_TOAST_ID, { render: message });
+    } else {
+      toast.info(message, { toastId: UNPLACED_NOTICE_TOAST_ID });
+    }
     setNoticedTableNo(tableNo);
   }, [viewMode, selectedTable, tableNo, noticedTableNo]);
 
