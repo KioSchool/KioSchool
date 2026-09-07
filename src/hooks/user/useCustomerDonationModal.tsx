@@ -16,7 +16,9 @@ const TODAY_COUNT_ENDPOINT = '/donations/customer-clicks/today-count';
 const RECORD_CLICK_ENDPOINT = '/donations/customer-clicks';
 
 type DonationView = 'donate' | 'thanks';
-type DonationMethod = 'toss' | 'account';
+export type DonationMethod = 'toss' | 'account';
+
+const DEFAULT_DONATION_METHOD: DonationMethod = 'toss';
 
 interface TodayCountResponse {
   todayCount: number;
@@ -26,6 +28,7 @@ interface UseCustomerDonationModalParams {
   orderId: string | null;
   workspaceId: string | null;
   eligible: boolean;
+  initialTodayCount?: number;
 }
 
 interface UseCustomerDonationModalResult {
@@ -35,22 +38,22 @@ interface UseCustomerDonationModalResult {
   amount: number;
   todayCount: number | null;
   donationUrl: string;
-  isAccountOpen: boolean;
+  method: DonationMethod;
   selectAmount: (next: number) => void;
-  toggleAccount: () => void;
-  donate: (method: DonationMethod) => void;
+  selectMethod: (next: DonationMethod) => void;
+  donate: () => void;
   dismiss: () => void;
 }
 
-function useCustomerDonationModal({ orderId, workspaceId, eligible }: UseCustomerDonationModalParams): UseCustomerDonationModalResult {
+function useCustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCount }: UseCustomerDonationModalParams): UseCustomerDonationModalResult {
   const { userApi } = useApi();
   const [dismissedAt, setDismissedAt] = useAtom(donationCardDismissedAtAtom);
   const [dismissedAtOnMount] = useState(() => dismissedAt);
   const [hidden, setHidden] = useState(false);
   const [view, setView] = useState<DonationView>('donate');
   const [amount, setAmount] = useState<number>(DEFAULT_DONATION_AMOUNT);
-  const [isAccountOpen, setIsAccountOpen] = useState(false);
-  const [todayCount, setTodayCount] = useState<number | null>(null);
+  const [method, setMethod] = useState<DonationMethod>(DEFAULT_DONATION_METHOD);
+  const [todayCount, setTodayCount] = useState<number | null>(initialTodayCount ?? null);
   const viewReportedRef = useRef(false);
   const recordedRef = useRef(false);
 
@@ -72,24 +75,24 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible }: UseCustome
     userApi
       .get<TodayCountResponse>(TODAY_COUNT_ENDPOINT)
       .then((res) => setTodayCount(res.data.todayCount))
-      .catch(() => setTodayCount(null));
+      .catch(() => setTodayCount(initialTodayCount ?? null));
 
     return () => {
       document.body.style.overflow = 'auto';
     };
-  }, [shouldRender, copy.id, workspaceIdParam, userApi]);
+  }, [shouldRender, copy.id, workspaceIdParam, userApi, initialTodayCount]);
 
   const selectAmount = (next: number) => {
     setAmount(next);
   };
 
-  const toggleAccount = () => {
-    setIsAccountOpen((prev) => !prev);
+  const selectMethod = (next: DonationMethod) => {
+    setMethod(next);
   };
 
   // 토스 경로는 앵커 기본 동작으로 딥링크가 열린다. 계좌 경로는 복사 버튼에서 호출된다.
   // 세션당 1회만 POST하고, 어느 경로든 감사 뷰로 전환한다.
-  const donate = (method: DonationMethod) => {
+  const donate = () => {
     reportDonationCardEvent('donation_card_click', { variant: copy.id, amount, workspace_id: workspaceIdParam, method });
     setDismissedAt(Date.now());
     setView('thanks');
@@ -120,9 +123,9 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible }: UseCustome
     amount,
     todayCount,
     donationUrl: buildDonationTossUrl(amount),
-    isAccountOpen,
+    method,
     selectAmount,
-    toggleAccount,
+    selectMethod,
     donate,
     dismiss,
   };
