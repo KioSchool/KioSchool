@@ -2,6 +2,21 @@ export interface DonationCopy {
   id: string;
   headline: string;
   subLines: readonly string[];
+  /** 주 버튼 문구. `{amount}`가 선택 금액(천 단위 콤마)으로 치환된다. 없으면 기본 문구를 쓴다. */
+  ctaTemplate?: string;
+}
+
+export const DEFAULT_DONATION_CTA_TEMPLATE = '토스로 {amount}원 보내기';
+
+const AMOUNT_PLACEHOLDER = /\{amount\}/g;
+
+/** 헤드라인·본문·버튼 어디서든 `{amount}`를 선택 금액으로 치환한다. */
+export function fillDonationAmount(text: string, amount: number): string {
+  return text.replace(AMOUNT_PLACEHOLDER, amount.toLocaleString());
+}
+
+export function buildDonationCtaLabel(copy: DonationCopy, amount: number): string {
+  return fillDonationAmount(copy.ctaTemplate ?? DEFAULT_DONATION_CTA_TEMPLATE, amount);
 }
 
 /**
@@ -86,3 +101,43 @@ export function pickCopyVariant(orderId: string | null): DonationCopy {
 // 게이지(visual='gauge') 기준. "오늘 N명" 대비 목표 인원 — 금액이 아니라 인원 단위인 이유는
 // 딥링크라 실제 송금을 관측할 수 없어 금액으로 표기하면 사실이 아니게 되기 때문이다.
 export const DONATION_DAILY_GOAL_COUNT = 20;
+
+/**
+ * 설득 원리별 후보군. 헤드라인·본문뿐 아니라 주 버튼 문구까지 세트로 바뀐다.
+ */
+export const DONATION_COPY_PERSUASION_CANDIDATES: readonly DonationCopy[] = [
+  {
+    id: 'I', // 상호성 — 이미 받은 혜택(대기 시간 감소)을 상기
+    headline: '오늘 줄 서는 시간, 얼마나 아끼셨나요? ⏱️',
+    subLines: [
+      '북적이는 축제, 테이블에서 편하게 주문하신 시간의 가치를 학생 개발팀에게 돌려주시면 어떨까요?',
+      '보내주신 마음은 전액 쾌적한 서버 유지비로 쓰입니다.',
+    ],
+    ctaTemplate: '아낀 시간만큼 {amount}원 팁 보내기',
+  },
+  {
+    id: 'J', // 솔직함과 유머 — 심리적 장벽 낮추기
+    headline: '저희... 서버비가 부족해요 🥲',
+    subLines: ['여러분의 편안한 축제를 위해 밤낮없이 만들었지만, 쏟아지는 주문에 서버비가 감당이 안 되고 있습니다(흑흑).', '개발팀의 지갑을 구해주세요!'],
+    ctaTemplate: '학생팀 지갑에 {amount}원 심폐소생술',
+  },
+  {
+    id: 'K', // 앵커링 — 일상 물건에 빗대 체감 비용 낮추기
+    headline: '편의점 생수 한 병 값으로 응원하기',
+    subLines: ['단돈 {amount}원이면 키오스쿨을 만든 학생 개발자들이 다음 축제에서도 더 멋진 서비스를 제공할 수 있는 든든한 서버 유지비가 됩니다.'],
+    ctaTemplate: '생수 한 병 값({amount}원) 후원하기',
+  },
+];
+
+/** Storybook에서 전 문구를 넘겨보기 위한 통합 목록. 프로덕션 노출은 CUSTOMER_DONATION_COPIES만. */
+export const DONATION_COPY_LIBRARY: readonly DonationCopy[] = [
+  ...CUSTOMER_DONATION_COPIES,
+  ...DONATION_COPY_CANDIDATES,
+  ...DONATION_COPY_DIVERSE_CANDIDATES,
+  ...DONATION_COPY_PERSUASION_CANDIDATES,
+];
+
+export function findDonationCopyById(id: string | undefined): DonationCopy | undefined {
+  if (!id) return undefined;
+  return DONATION_COPY_LIBRARY.find((copy) => copy.id === id);
+}

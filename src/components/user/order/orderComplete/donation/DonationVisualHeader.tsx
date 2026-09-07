@@ -2,7 +2,7 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { DonationCopy, DONATION_COUNT_DISPLAY_MIN, DONATION_DAILY_GOAL_COUNT } from '@constants/data/customerDonationCopy';
+import { DonationCopy, DONATION_COUNT_DISPLAY_MIN, DONATION_DAILY_GOAL_COUNT, fillDonationAmount } from '@constants/data/customerDonationCopy';
 import c1KCoding from '@resources/image/donation/c1-k-coding.webp';
 import c2IPainting from '@resources/image/donation/c2-i-painting.webp';
 import c5KCoffee from '@resources/image/donation/c5-k-coffee.webp';
@@ -116,10 +116,11 @@ interface DonationVisualHeaderProps {
 }
 
 function DonationVisualHeader({ visual, copy, amount, todayCount }: DonationVisualHeaderProps) {
+  const headlineText = fillDonationAmount(copy.headline, amount);
   const subLines = (
     <SubLineGroup>
       {copy.subLines.map((line) => (
-        <SubLine key={line}>{line}</SubLine>
+        <SubLine key={line}>{fillDonationAmount(line, amount)}</SubLine>
       ))}
     </SubLineGroup>
   );
@@ -132,7 +133,7 @@ function DonationVisualHeader({ visual, copy, amount, todayCount }: DonationVisu
     return (
       <Container>
         <CharacterImage src={characterSrc} alt="키오스쿨 마스코트 캐릭터" />
-        <Headline>{copy.headline}</Headline>
+        <Headline>{headlineText}</Headline>
         {subLines}
         {countLine}
       </Container>
@@ -140,7 +141,7 @@ function DonationVisualHeader({ visual, copy, amount, todayCount }: DonationVisu
   }
 
   if (visual === 'gauge') {
-    const gaugeHeadline = todayCount != null ? `오늘 ${todayCount}명이 보탰어요` : copy.headline;
+    const gaugeHeadline = todayCount != null ? `오늘 ${todayCount}명이 보탰어요` : headlineText;
     const rawPercent = ((todayCount ?? 0) / DONATION_DAILY_GOAL_COUNT) * GAUGE_FULL_PERCENT;
     const fillPercent = Math.min(GAUGE_FULL_PERCENT, rawPercent);
     return (
@@ -162,7 +163,7 @@ function DonationVisualHeader({ visual, copy, amount, todayCount }: DonationVisu
           <BubbleColumn>
             <BubbleLabel>키오스쿨 만든 학생</BubbleLabel>
             <SpeechBubble>
-              <Headline>{copy.headline}</Headline>
+              <Headline>{headlineText}</Headline>
               {subLines}
             </SpeechBubble>
           </BubbleColumn>
@@ -174,7 +175,7 @@ function DonationVisualHeader({ visual, copy, amount, todayCount }: DonationVisu
 
   return (
     <Container>
-      <Headline>{copy.headline}</Headline>
+      <Headline>{headlineText}</Headline>
       {subLines}
       {countLine}
     </Container>

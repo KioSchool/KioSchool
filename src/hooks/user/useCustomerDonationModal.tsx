@@ -4,7 +4,7 @@ import { donationCardDismissedAtAtom } from '@jotai/user/atoms';
 import useApi from '@hooks/useApi';
 import { buildDonationTossUrl } from '@utils/donation';
 import { reportDonationCardEvent } from '@utils/donationCardAnalytics';
-import { DEFAULT_DONATION_AMOUNT, DonationCopy, pickCopyVariant } from '@constants/data/customerDonationCopy';
+import { DEFAULT_DONATION_AMOUNT, DonationCopy, findDonationCopyById, pickCopyVariant } from '@constants/data/customerDonationCopy';
 
 const HOURS_PER_DAY = 24;
 const MINUTES_PER_HOUR = 60;
@@ -29,6 +29,7 @@ interface UseCustomerDonationModalParams {
   workspaceId: string | null;
   eligible: boolean;
   initialTodayCount?: number;
+  copyId?: string;
 }
 
 interface UseCustomerDonationModalResult {
@@ -45,7 +46,13 @@ interface UseCustomerDonationModalResult {
   dismiss: () => void;
 }
 
-function useCustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCount }: UseCustomerDonationModalParams): UseCustomerDonationModalResult {
+function useCustomerDonationModal({
+  orderId,
+  workspaceId,
+  eligible,
+  initialTodayCount,
+  copyId,
+}: UseCustomerDonationModalParams): UseCustomerDonationModalResult {
   const { userApi } = useApi();
   const [dismissedAt, setDismissedAt] = useAtom(donationCardDismissedAtAtom);
   const [dismissedAtOnMount] = useState(() => dismissedAt);
@@ -57,7 +64,8 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
   const viewReportedRef = useRef(false);
   const recordedRef = useRef(false);
 
-  const copy = pickCopyVariant(orderId);
+  // copyId는 Storybook에서 특정 문구를 강제로 띄우기 위한 것. 프로덕션은 orderId 기반 배정을 쓴다.
+  const copy = findDonationCopyById(copyId) ?? pickCopyVariant(orderId);
   const blockedByStorage = Date.now() - dismissedAtOnMount < DISMISS_DURATION_MS;
   const shouldRender = eligible && !blockedByStorage && !hidden;
   const workspaceIdParam = workspaceId ?? '';

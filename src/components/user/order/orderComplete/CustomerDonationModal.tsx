@@ -9,7 +9,7 @@ import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { MODAL_ROOT_KEY } from '@hooks/useModal';
 import { DONATION_ACCOUNT } from '@utils/donation';
-import { DONATION_AMOUNT_OPTIONS, DONATION_COUNT_DISPLAY_MIN, DONATION_DESTINATION_NOTE } from '@constants/data/customerDonationCopy';
+import { buildDonationCtaLabel, DONATION_AMOUNT_OPTIONS, DONATION_COUNT_DISPLAY_MIN, DONATION_DESTINATION_NOTE } from '@constants/data/customerDonationCopy';
 import useCustomerDonationModal, { DonationMethod } from '@hooks/user/useCustomerDonationModal';
 import DonationVisualHeader, { DonationVisual } from './donation/DonationVisualHeader';
 import DonationAccountBox from './donation/DonationAccountBox';
@@ -185,14 +185,16 @@ interface CustomerDonationModalProps {
   shell?: DonationShell;
   visual?: DonationVisual;
   initialTodayCount?: number;
+  copyId?: string;
 }
 
-function CustomerDonationModal({ orderId, workspaceId, eligible, shell = 'center', visual = 'plain', initialTodayCount }: CustomerDonationModalProps) {
+function CustomerDonationModal({ orderId, workspaceId, eligible, shell = 'center', visual = 'plain', initialTodayCount, copyId }: CustomerDonationModalProps) {
   const { shouldRender, view, copy, amount, todayCount, donationUrl, method, selectAmount, selectMethod, donate, dismiss } = useCustomerDonationModal({
     orderId,
     workspaceId,
     eligible,
     initialTodayCount,
+    copyId,
   });
 
   const modalRoot = typeof document !== 'undefined' ? document.getElementById(MODAL_ROOT_KEY) : null;
@@ -210,7 +212,7 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, shell = 'center
   const primaryAction =
     method === 'toss' ? (
       <DonateAnchor href={donationUrl} onClick={donate}>
-        토스로 {amount.toLocaleString()}원 보내기
+        {buildDonationCtaLabel(copy, amount)}
       </DonateAnchor>
     ) : (
       <DonateButton type="button" onClick={handleAccountDonate}>
