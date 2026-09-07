@@ -35,6 +35,7 @@ import { isOnboardingStepCompleted } from '@utils/onboarding';
 import { Order, RIGHT_SIDEBAR_ACTION, Table } from '@@types/index';
 
 const UNPLACED_NOTICE_TOAST_ID = 'unplaced-table-notice';
+const NEW_ORDER_TOAST_ID_PREFIX = 'new-order-table-';
 
 const Container = styled.div`
   width: 95%;
@@ -110,9 +111,28 @@ function AdminTableRealtime() {
 
   useEffect(() => () => window.clearTimeout(tablesRefreshTimerRef.current ?? undefined), []);
 
+  // 미배치(스트립 접힘)·필터 제외로 카드가 화면에 없는 테이블은 플래시가 보이지 않는다
+  const isTableOnScreen = (tableNumber: number) => {
+    if (tableNumber === selectedTable?.tableNumber) return true;
+
+    const table = tables.find((item) => item.tableNumber === tableNumber);
+    if (!table) return false;
+    if (visibleTableNumbers !== null && !visibleTableNumbers.has(tableNumber)) return false;
+    if (viewMode === TABLE_VIEW.LAYOUT && table.position == null) return false;
+    return true;
+  };
+
+  const notifyHiddenTableOrder = (tableNumber: number) => {
+    toast.info(`${tableNumber}번 테이블에 새 주문이 들어왔습니다.`, {
+      toastId: `${NEW_ORDER_TOAST_ID_PREFIX}${tableNumber}`,
+      onClick: () => setTableNo(String(tableNumber), { replace: true }),
+    });
+  };
+
   const handleOrderCreated = (order: Order) => {
     applyOrder(order);
     flashNewOrder(order.tableNumber);
+    if (!isTableOnScreen(order.tableNumber)) notifyHiddenTableOrder(order.tableNumber);
     // 편집 중 tables가 교체되면 드래프트 밑에서 배열이 바뀌어 동시 편집 배치가 로컬 카드를 가린다
     if (!isEditing) scheduleTablesRefresh();
     if (order.tableNumber === selectedTable?.tableNumber) fetchOrders();
