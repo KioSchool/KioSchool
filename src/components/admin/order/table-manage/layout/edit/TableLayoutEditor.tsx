@@ -103,12 +103,6 @@ function TableLayoutEditor({ tables, onExit, onSave, onPositionChange, isSaving,
   const [activeTableId, setActiveTableId] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const { ConfirmModal: ResetConfirmModal, confirm: confirmReset } = useConfirm({
-    title: '전체 초기화',
-    description: '모든 테이블의 배치를 취소합니다. 저장해야 반영됩니다.',
-    okText: '초기화',
-    cancelText: '취소',
-  });
   const { ConfirmModal: ExitConfirmModal, confirm: confirmExit } = useConfirm({
     title: '편집 나가기',
     description: '저장하지 않은 변경이 있습니다. 나가시겠습니까?',
@@ -171,9 +165,7 @@ function TableLayoutEditor({ tables, onExit, onSave, onPositionChange, isSaving,
     onSave(changes);
   };
 
-  const handleResetAll = async () => {
-    if (!(await confirmReset())) return;
-
+  const handleResetAll = () => {
     resetAll();
     onPositionChange();
   };
@@ -215,7 +207,6 @@ function TableLayoutEditor({ tables, onExit, onSave, onPositionChange, isSaving,
           )}
         </DragOverlay>
       </DndContext>
-      <ResetConfirmModal />
       <ExitConfirmModal />
     </Frame>
   );
