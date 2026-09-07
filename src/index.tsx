@@ -11,9 +11,11 @@ import { URLS } from '@constants/urls';
 import type { SentryEnvironment } from '@constants/sentry';
 import { SENTRY_CONFIG } from '@constants/sentry';
 import { isReportableError } from '@utils/sentryErrorFilter';
+import { captureAcquisitionContext } from '@utils/acquisitionContext';
 
 const environment = import.meta.env.VITE_ENVIRONMENT as SentryEnvironment;
 const gaId = import.meta.env.VITE_GA_ID;
+captureAcquisitionContext();
 
 const sentryRates = SENTRY_CONFIG.RATES_BY_ENV[environment] ?? SENTRY_CONFIG.RATES_BY_ENV.production;
 
