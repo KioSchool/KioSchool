@@ -61,7 +61,7 @@ const SecondaryActionsDivider = styled.span`
 
 const ErrorMessageContainer = styled.div`
   width: 100%;
-  height: 20px;
+  min-height: 20px;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
