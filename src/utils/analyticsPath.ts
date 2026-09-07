@@ -25,7 +25,7 @@ export function extractAdminWorkspaceId(pathname: string): number | undefined {
     const rawId = match?.params.workspaceId;
     if (rawId) {
       const id = Number(rawId);
-      if (!Number.isNaN(id)) return id;
+      if (Number.isInteger(id) && id > 0) return id;
     }
   }
 
