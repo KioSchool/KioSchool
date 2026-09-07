@@ -40,6 +40,9 @@ export const DONATION_AMOUNT_OPTIONS: readonly number[] = [1000, 2000, 5000];
 
 export const DEFAULT_DONATION_AMOUNT = 1000;
 
+// 오늘 카운트가 이 값 미만이면 카운터 줄을 숨긴다.
+export const DONATION_COUNT_DISPLAY_MIN = 1;
+
 // 손님이 주점 팁으로 오해하면 주점 신뢰 사고로 번진다. 문구 변형과 무관하게 항상 노출한다.
 export const DONATION_DESTINATION_NOTE = '주점이 아니라 키오스쿨로 가요';
 

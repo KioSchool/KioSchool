@@ -13,3 +13,10 @@ export function buildDonationTossUrl(amount?: number): string {
   }
   return `supertoss://send?${params.toString()}`;
 }
+
+// 손님 계좌이체 폴백용. 토스 딥링크와 같은 계좌.
+export const DONATION_ACCOUNT = {
+  bankName: '토스뱅크',
+  accountNo: '100127738116',
+  holderName: '박지인(모임통장)',
+} as const;
