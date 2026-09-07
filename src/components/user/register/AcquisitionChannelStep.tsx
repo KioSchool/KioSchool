@@ -48,14 +48,16 @@ const OptionList = styled.div`
 
 const EtcInput = styled.input`
   width: 100%;
-  padding: 7px 10px;
+  padding: 4px 2px;
   box-sizing: border-box;
-  border: 1px solid ${OnboardingColor.STEP_IDLE_BORDER};
-  border-radius: 8px;
-  background: ${Color.WHITE};
+  border: none;
+  border-bottom: 1px solid ${OnboardingColor.STEP_IDLE_BORDER};
+  border-radius: 0;
+  background: transparent;
   color: ${OnboardingColor.TITLE_TEXT};
   font-family: inherit;
   font-size: 14px;
+  transition: border-bottom-color 0.15s;
 
   &::placeholder {
     color: ${OnboardingColor.MUTED_TEXT};
@@ -63,7 +65,7 @@ const EtcInput = styled.input`
 
   &:focus {
     outline: none;
-    border-color: ${Color.KIO_ORANGE};
+    border-bottom-color: ${Color.KIO_ORANGE};
   }
 `;
 

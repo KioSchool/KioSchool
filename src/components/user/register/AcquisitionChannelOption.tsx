@@ -9,7 +9,7 @@ const OptionCard = styled.div<{ isSelected: boolean }>`
   box-sizing: border-box;
   border: 1.5px solid ${({ isSelected }) => (isSelected ? Color.KIO_ORANGE : OnboardingColor.STEP_INACTIVE_BORDER)};
   border-radius: 12px;
-  background: ${({ isSelected }) => (isSelected ? OnboardingColor.STEP_ACTIVE_BG : Color.WHITE)};
+  background: ${Color.WHITE};
   color: ${({ isSelected }) => (isSelected ? OnboardingColor.TITLE_TEXT : OnboardingColor.SUBTLE_TEXT)};
   transition: border-color 0.15s, color 0.15s;
   ${colFlex()}
