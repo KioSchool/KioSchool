@@ -123,7 +123,7 @@ function InfoCtaSection() {
         <Subtitle>가입부터 주점 운영까지, 3분이면 준비 끝</Subtitle>
         <CtaButton
           to={ADMIN_ROUTES.HOME}
-          onClick={() => trackEvent(GA_EVENT.CTA_CLICK, { location: 'info_cta', label: isLoggedIn ? '어드민 홈으로' : '무료로 시작하기' })}
+          onClick={() => trackEvent(GA_EVENT.CTA_CLICK, { location: 'info_cta', label: isLoggedIn ? 'admin_home' : 'start_free' })}
         >
           {isLoggedIn ? '어드민 홈으로' : '무료로 시작하기'}
         </CtaButton>

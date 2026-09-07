@@ -206,7 +206,7 @@ function CtaSection() {
           <CtaRow>
             <CtaButton
               to={ADMIN_ROUTES.HOME}
-              onClick={() => trackEvent(GA_EVENT.CTA_CLICK, { location: 'cta_section', label: isLoggedIn ? '어드민 홈으로' : '무료로 시작하기' })}
+              onClick={() => trackEvent(GA_EVENT.CTA_CLICK, { location: 'cta_section', label: isLoggedIn ? 'admin_home' : 'start_free' })}
             >
               {isLoggedIn ? '어드민 홈으로' : '무료로 시작하기'}
             </CtaButton>
