@@ -18,6 +18,7 @@ import { Order, OrderStatus } from '@@types/index';
 import { ORDER_ROUTES } from '@constants/routes';
 import { isOverOneDay } from '@utils/formatDate';
 import useWorkspace from '@hooks/user/useWorkspace';
+import CustomerDonationCard from '@components/user/order/orderComplete/CustomerDonationCard';
 
 const Container = styled.div`
   width: 100%;
@@ -132,6 +133,8 @@ function OrderComplete() {
     return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 ${ampm} ${hour}시 ${date.getMinutes()}분`;
   };
 
+  const isDonationEligible = order.status !== OrderStatus.CANCELLED;
+
   useBlockPopState();
 
   const fetchIntervalTime = 60000;
@@ -242,6 +245,7 @@ function OrderComplete() {
             <ContentTitle>{order.totalPrice.toLocaleString()}원</ContentTitle>
           </OrderPriceContainer>
         </ContentsContainer>
+        <CustomerDonationCard orderId={orderId} workspaceId={workspaceId} eligible={isDonationEligible} />
       </SubContainer>
       <OrderButton
         showButton={true}
