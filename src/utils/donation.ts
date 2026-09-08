@@ -1,4 +1,13 @@
+import { DONATION_COUNT_EMPTY_TEXT } from '@constants/data/customerDonationCopy';
+
 export const MIN_DONATION_AMOUNT = 1000;
+
+// todayCount가 null이면(조회 실패·미해결) 아무것도 그리지 않는다 — 추측하지 않는다.
+export function resolveDonationCountText(todayCount: number | null): string | null {
+  if (todayCount == null) return null;
+  if (todayCount === 0) return DONATION_COUNT_EMPTY_TEXT;
+  return `오늘 ${todayCount}명이 응원해줬어요`;
+}
 
 const TOSS_BANK_NAME = '토스뱅크';
 const TOSS_ACCOUNT_NO = '100127738116';

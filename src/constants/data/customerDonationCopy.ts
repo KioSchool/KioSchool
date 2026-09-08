@@ -26,59 +26,15 @@ export function buildDonationCtaLabel(copy: DonationCopy, amount: number): strin
 
 /**
  * 노출되는 변형은 이 배열에만 담는다. 배열을 바꿔 배포하는 것만으로 문구를 교체한다 (백엔드 변경 없음).
- * 지금은 단일 변형(A, 담백·서버비 어필). 문구 확정 후 두 번째 변형을 추가해 A/B를 시작한다.
+ * 지금은 단일 변형(앵커링 — 일상 물건 값에 빗대 체감 비용을 낮춘다).
  */
 export const CUSTOMER_DONATION_COPIES: readonly DonationCopy[] = [
   {
-    id: 'A',
-    headline: '편하게 주문하셨나요?',
-    subLines: ['이 주문 시스템, 학생들이 만들어서 운영해요.', '서버비가 매달 나가서 {amount}원씩 받고 있어요.'],
-  },
-];
-
-/** 문구 후보. 확정되면 CUSTOMER_DONATION_COPIES에 넣는다. */
-export const DONATION_COPY_CANDIDATES: readonly DonationCopy[] = [
-  {
-    id: 'B',
-    headline: '편하게 주문하셨나요?',
-    subLines: ['서버비는 만든 학생들이 나눠 내고 있어요.', '{amount}원이면 하루치가 나와요.'],
-  },
-  {
-    id: 'C',
-    headline: '편하게 주문하셨나요?',
-    subLines: ['주점은 무료로 쓰고, 서버비만 후원으로 받아요.', '1,000원부터 가능해요.'],
-  },
-  {
-    id: 'D',
-    headline: '편하게 주문하셨나요?',
-    subLines: ['학생들이 만들어서 무료로 풀었어요.', '서버비는 손님 후원으로 충당하고 있어요.'],
-  },
-];
-
-/**
- * 톤을 바꾼(유쾌·감성·후킹) 후보군. 담백 계열이 참여율이 안 나오면 이쪽으로 A/B.
- * 이모지·느낌표·명령형이 섞여 있어 톤 리스크가 있으니, 실제 노출 전 팀 눈으로 확인할 것.
- */
-export const DONATION_COPY_DIVERSE_CANDIDATES: readonly DonationCopy[] = [
-  {
-    id: 'E', // 가치/효용 강조
-    headline: '목 터져라 "저기요!" 안 하셔도 돼서 편하셨죠? 😉',
-    subLines: ['주점은 무료로 쓰고, 서버비만 후원으로 받아요.', '{amount}원 팁으로 개발자들을 응원해주세요!'],
-  },
-  {
-    id: 'F', // 솔직/감성 어필
-    headline: '대학생 개발자들의 통장이 텅 비어갑니다 🥲',
-    subLines: ['서버비는 만든 학생들이 사비로 나눠 내고 있어요.', '{amount}원만 보태주시면 하루 서버비가 해결돼요.'],
-  },
-  {
-    id: 'G', // 유쾌/재치 (라임)
-    headline: '주문은 저희가 받을게요, 서버비는 어쩌죠? 🙋‍♂️',
-    subLines: ['학생들이 밤새서 만들고 무료로 풀었어요.', '서버가 꺼지지 않게 1,000원부터 후원 가능해요.'],
-  },
-  {
-    id: 'H', // 후킹 (궁금증 유발)
-    headline: '이 주문 앱, 주점은 공짜로 쓰고 있어요 🤫',
-    subLines: ['키오스쿨은 대학생들이 만들어 무료로 배포했어요.', '부담 없이 {amount}원으로 서버비 달성률을 채워주세요!'],
+    id: 'anchor',
+    headline: '{anchor} 값이면 돼요',
+    subLines: ['키오스쿨은 학생들이 만들어서 무료로 운영해요.', '{anchor} 값 {amount}원이면 다음 축제까지 서버가 버텨요.'],
+    amountAnchors: { 1000: '편의점 생수 한 병', 2000: '삼각김밥 한 개', 5000: '커피 한 잔' },
+    ctaTemplate: '{anchor} 값({amount}원) 보내기',
   },
 ];
 
@@ -86,8 +42,8 @@ export const DONATION_AMOUNT_OPTIONS: readonly number[] = [1000, 2000, 5000];
 
 export const DEFAULT_DONATION_AMOUNT = 1000;
 
-// 오늘 카운트가 이 값 미만이면 카운터 줄을 숨긴다.
-export const DONATION_COUNT_DISPLAY_MIN = 1;
+// 오늘 후원자가 0명일 때 카운터 줄에 대신 노출한다.
+export const DONATION_COUNT_EMPTY_TEXT = '오늘의 첫 응원을 기다리고 있어요';
 
 // 손님이 주점 팁으로 오해하면 주점 신뢰 사고로 번진다. 문구 변형과 무관하게 항상 노출한다.
 export const DONATION_DESTINATION_NOTE = '주점이 아니라, 이 주문 앱을 만든 키오스쿨로 가요';
@@ -101,46 +57,4 @@ export function pickCopyVariant(orderId: string | null): DonationCopy {
   if (!Number.isFinite(numericId)) return CUSTOMER_DONATION_COPIES[0];
   const index = Math.abs(Math.trunc(numericId)) % CUSTOMER_DONATION_COPIES.length;
   return CUSTOMER_DONATION_COPIES[index];
-}
-
-// 게이지(visual='gauge') 기준. "오늘 N명" 대비 목표 인원 — 금액이 아니라 인원 단위인 이유는
-// 딥링크라 실제 송금을 관측할 수 없어 금액으로 표기하면 사실이 아니게 되기 때문이다.
-export const DONATION_DAILY_GOAL_COUNT = 20;
-
-/**
- * 설득 원리별 후보군. 헤드라인·본문뿐 아니라 주 버튼 문구까지 세트로 바뀐다.
- */
-export const DONATION_COPY_PERSUASION_CANDIDATES: readonly DonationCopy[] = [
-  {
-    id: 'I', // 상호성 — 이미 받은 혜택(대기 시간 감소)을 상기
-    headline: '오늘 줄 서는 시간, 얼마나 아끼셨나요? ⏱️',
-    subLines: ['덜 기다린 그 시간만큼, 만든 학생팀에 조금만 돌려주시면 어떨까요?', '보내주신 마음은 전액 쾌적한 서버 유지비로 쓰입니다.'],
-    ctaTemplate: '아낀 시간만큼 {amount}원 팁 보내기',
-  },
-  {
-    id: 'J', // 솔직함과 유머 — 심리적 장벽 낮추기
-    headline: '저희... 서버비가 부족해요 🥲',
-    subLines: ['여러분의 편안한 축제를 위해 밤낮없이 만들었지만, 쏟아지는 주문에 서버비가 감당이 안 되고 있어요.', '개발팀의 지갑을 구해주세요!'],
-    ctaTemplate: '학생팀에 {amount}원 수혈하기',
-  },
-  {
-    id: 'K', // 앵커링 — 일상 물건에 빗대 체감 비용 낮추기
-    headline: '{anchor} 값으로 응원하기',
-    subLines: ['단돈 {amount}원, {anchor} 값이면 키오스쿨을 만든 학생 개발자들이 다음 축제에서도 더 멋진 서비스를 준비할 든든한 서버 유지비가 돼요.'],
-    amountAnchors: { 1000: '편의점 생수 한 병', 2000: '자판기 커피 한 잔', 5000: '편의점 김밥 한 줄' },
-    ctaTemplate: '{anchor} 값({amount}원) 후원하기',
-  },
-];
-
-/** Storybook에서 전 문구를 넘겨보기 위한 통합 목록. 프로덕션 노출은 CUSTOMER_DONATION_COPIES만. */
-export const DONATION_COPY_LIBRARY: readonly DonationCopy[] = [
-  ...CUSTOMER_DONATION_COPIES,
-  ...DONATION_COPY_CANDIDATES,
-  ...DONATION_COPY_DIVERSE_CANDIDATES,
-  ...DONATION_COPY_PERSUASION_CANDIDATES,
-];
-
-export function findDonationCopyById(id: string | undefined): DonationCopy | undefined {
-  if (!id) return undefined;
-  return DONATION_COPY_LIBRARY.find((copy) => copy.id === id);
 }
