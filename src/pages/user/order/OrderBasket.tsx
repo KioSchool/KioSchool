@@ -9,11 +9,13 @@ import { Color } from '@resources/colors';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import { userOrderBasketAtom, userProductsAtom, userWorkspaceAtom } from '@jotai/user/atoms';
 import { useAtom, useAtomValue } from 'jotai';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import useOrder from '@hooks/user/useOrder';
 import { API_ERROR_CODES } from '@constants/errorCodes';
 import { isApiErrorCode } from '@utils/apiError';
-import { calculateBasketTotalAmount, getBasketItemsWithProduct } from '@utils/orderBasket';
+import { basketToGaItems, calculateBasketTotalAmount, getBasketItemsWithProduct } from '@utils/orderBasket';
+import { trackEvent } from '@utils/analytics';
+import { GA_CURRENCY, GA_EVENT } from '@constants/analytics';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -97,10 +99,20 @@ function OrderBasket() {
     }
   }, [basketItems.length, navigate]);
 
+  const hasTrackedViewCartRef = useRef(false);
+
+  useEffect(() => {
+    if (hasTrackedViewCartRef.current || basketItems.length === 0) return;
+
+    hasTrackedViewCartRef.current = true;
+    trackEvent(GA_EVENT.VIEW_CART, { items: basketToGaItems(orderBasket, productsMap), value: totalAmount, currency: GA_CURRENCY });
+  }, [basketItems.length, orderBasket, productsMap, totalAmount]);
+
   const clearOrderBasket = () => {
-    if (confirm('정말로 모두 삭제하시겠습니까?')) {
-      setOrderBasket([]);
-    }
+    if (!confirm('정말로 모두 삭제하시겠습니까?')) return;
+
+    trackEvent(GA_EVENT.REMOVE_FROM_CART, { items: basketToGaItems(orderBasket, productsMap), value: totalAmount, currency: GA_CURRENCY });
+    setOrderBasket([]);
   };
 
   const errorHandler = (error: unknown) => {
@@ -114,6 +126,8 @@ function OrderBasket() {
 
   const navigateHandler = () => {
     if (totalAmount === 0) {
+      trackEvent(GA_EVENT.BEGIN_CHECKOUT, { items: basketToGaItems(orderBasket, productsMap), value: totalAmount, currency: GA_CURRENCY });
+
       createOrder(workspaceId, tableHash, orderBasket, '0원 주문')
         .then((res) => {
           navigate({

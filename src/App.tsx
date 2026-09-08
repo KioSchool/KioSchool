@@ -37,6 +37,7 @@ import useNetworkStatusNotifier from '@hooks/useNetworkStatusNotifier';
 import useServerHealth from '@hooks/useServerHealth';
 import useScrollToTop from '@hooks/useScrollToTop';
 import useSentryContext from '@hooks/common/useSentryContext';
+import useAnalytics from '@hooks/common/useAnalytics';
 import ServerErrorFallback from '@components/common/fallback/ServerErrorFallback';
 import OrderWait from '@pages/user/order/OrderWait';
 import AdminTotalOrder from '@pages/admin/order/AdminTotalOrder';
@@ -51,6 +52,7 @@ import PcOnlyLayout from '@components/common/layout/PcOnlyLayout';
 
 function App() {
   useSentryContext();
+  useAnalytics();
   useNetworkStatusNotifier();
   useScrollToTop();
   const { isServerHealthy, isChecking, error, manualRetry } = useServerHealth();
