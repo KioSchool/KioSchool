@@ -45,22 +45,8 @@ const meta: Meta<typeof CustomerDonationModal> = {
 export default meta;
 type Story = StoryObj<typeof CustomerDonationModal>;
 
-// 자동으로 열린다. orderId % 3 == 2 → 담백 문구. (기본 args의 orderId '1000' 유지)
+// 자동으로 열린다. 캐릭터 + 앵커링 문구 + "오늘 12명이 응원해줬어요".
 export const 기본: Story = {};
-
-// pickCopyVariant는 orderId % CUSTOMER_DONATION_COPIES.length로 배정한다.
-// 1002%3=0 앵커링 / 1000%3=1 상호성 / 1001%3=2 담백.
-export const 문구_앵커링: Story = {
-  args: { orderId: '1002' },
-};
-
-export const 문구_상호성: Story = {
-  args: { orderId: '1000' },
-};
-
-export const 문구_담백: Story = {
-  args: { orderId: '1001' },
-};
 
 // 오늘 후원자 0명 → DONATION_COUNT_EMPTY_TEXT를 카운터 자리에 노출.
 export const 카운터_없음: Story = {

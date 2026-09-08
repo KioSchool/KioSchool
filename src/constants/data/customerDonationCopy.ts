@@ -34,11 +34,8 @@ export function buildDonationCtaLabel(copy: DonationCopy, amount: number): strin
 }
 
 /**
- * 노출되는 변형은 이 배열에만 담는다. 배열을 바꿔 배포하는 것만으로 A/B를 조정한다 (백엔드 변경 없음).
- * `pickCopyVariant`가 `orderId % length`로 균등 분배하고, 모든 GA 이벤트에 `variant: copy.id`가 실린다.
- * → GA4에서 variant별 donation_card_view / _click / _dismiss를 비교하면 클릭률·닫기율이 나온다.
- *
- * 현재 3-way: 앵커링(비용 재구성) vs 상호성(받은 혜택 상기) vs 담백(사실만).
+ * 노출되는 변형은 이 배열에만 담는다. 배열을 바꿔 배포하는 것만으로 문구를 교체한다 (백엔드 변경 없음).
+ * 지금은 단일 변형(앵커링 — 일상 물건 값에 빗대 체감 비용을 낮춘다).
  */
 export const CUSTOMER_DONATION_COPIES: readonly DonationCopy[] = [
   {
@@ -47,18 +44,6 @@ export const CUSTOMER_DONATION_COPIES: readonly DonationCopy[] = [
     subLines: ['키오스쿨은 학생들이 만들어서 무료로 운영해요.', '{anchor} 값 {amount}원이면 서버가 {duration} 버텨요.'],
     amountAnchors: { 1000: '편의점 생수 한 병', 2000: '삼각김밥 한 개', 5000: '커피 한 잔' },
     amountDurations: { 1000: '하루', 2000: '사흘', 5000: '한 주' },
-    ctaTemplate: '{amount}원 보내기',
-  },
-  {
-    id: 'reciprocity',
-    headline: '이번엔 손 들고 안 부르셨죠?',
-    subLines: ['북적이는 축제에서 자리에 앉은 채로 주문했잖아요.', '이 주문 앱 만든 학생들에게 {amount}원이면 큰 힘이에요.'],
-    ctaTemplate: '{amount}원 보내기',
-  },
-  {
-    id: 'plain',
-    headline: '편하게 주문하셨나요?',
-    subLines: ['이 주문 시스템, 학생들이 만들어서 무료로 운영해요.', '서버비가 매달 나가서 {amount}원씩 받고 있어요.'],
     ctaTemplate: '{amount}원 보내기',
   },
 ];
