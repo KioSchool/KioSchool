@@ -6,27 +6,21 @@ export interface DonationCopy {
   ctaTemplate?: string;
   /** 금액별 비유 대상. 헤드라인·본문·CTA의 `{anchor}`를 치환한다. */
   amountAnchors?: Readonly<Record<number, string>>;
-  /** 금액별 지속 기간. 본문의 `{duration}`을 치환한다. */
-  amountDurations?: Readonly<Record<number, string>>;
 }
 
 export const DEFAULT_DONATION_CTA_TEMPLATE = '{amount}원 보내기';
 
 const AMOUNT_PLACEHOLDER = /\{amount\}/g;
 const ANCHOR_PLACEHOLDER = /\{anchor\}/g;
-const DURATION_PLACEHOLDER = /\{duration\}/g;
 const AMOUNT_MAP_FALLBACK = 1000;
 
 function pickAmountValue(map: Readonly<Record<number, string>> | undefined, amount: number): string {
   return map?.[amount] ?? map?.[AMOUNT_MAP_FALLBACK] ?? '';
 }
 
-/** 헤드라인·본문·버튼 어디서든 `{amount}`·`{anchor}`·`{duration}`을 선택 금액 기준으로 치환한다. */
-export function fillDonationAmount(text: string, amount: number, copy?: Pick<DonationCopy, 'amountAnchors' | 'amountDurations'>): string {
-  return text
-    .replace(AMOUNT_PLACEHOLDER, amount.toLocaleString())
-    .replace(ANCHOR_PLACEHOLDER, pickAmountValue(copy?.amountAnchors, amount))
-    .replace(DURATION_PLACEHOLDER, pickAmountValue(copy?.amountDurations, amount));
+/** 헤드라인·본문·버튼 어디서든 `{amount}`·`{anchor}`를 선택 금액 기준으로 치환한다. */
+export function fillDonationAmount(text: string, amount: number, copy?: Pick<DonationCopy, 'amountAnchors'>): string {
+  return text.replace(AMOUNT_PLACEHOLDER, amount.toLocaleString()).replace(ANCHOR_PLACEHOLDER, pickAmountValue(copy?.amountAnchors, amount));
 }
 
 export function buildDonationCtaLabel(copy: DonationCopy, amount: number): string {
@@ -41,9 +35,12 @@ export const CUSTOMER_DONATION_COPIES: readonly DonationCopy[] = [
   {
     id: 'anchor',
     headline: '{anchor} 값으로 응원하기',
-    subLines: ['키오스쿨은 학생들이 만들어서 무료로 운영해요.', '{anchor} 값 {amount}원이면 서버가 {duration} 버텨요.'],
+    subLines: [
+      '무료 주문 앱 키오스쿨이 멈추지 않고 돌아가도록 작은 힘을 보태주세요.',
+      '대학 축제를 더 편하게! 키오스쿨을 만든 학생들에게 응원을 보내주세요.',
+      '보내주신 마음은 전액 서버 유지비로 소중하게 사용됩니다.',
+    ],
     amountAnchors: { 1000: '편의점 생수 한 병', 2000: '삼각김밥 한 개', 5000: '커피 한 잔' },
-    amountDurations: { 1000: '하루', 2000: '사흘', 5000: '한 주' },
     ctaTemplate: '{amount}원 보내기',
   },
 ];
@@ -54,9 +51,6 @@ export const DEFAULT_DONATION_AMOUNT = 1000;
 
 // 오늘 후원자가 0명일 때 카운터 줄에 대신 노출한다.
 export const DONATION_COUNT_EMPTY_TEXT = '오늘의 첫 응원을 기다리고 있어요';
-
-// 손님이 주점 팁으로 오해하면 주점 신뢰 사고로 번진다. 문구 변형과 무관하게 항상 노출한다.
-export const DONATION_DESTINATION_NOTE = '주점이 아니라, 이 주문 앱을 만든 키오스쿨로 가요';
 
 /**
  * orderId 기반 결정적 배정. 리렌더에 흔들리지 않고 저장소가 필요 없으며,
