@@ -2,7 +2,13 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { DonationCopy, DONATION_COUNT_DISPLAY_MIN, DONATION_DAILY_GOAL_COUNT, fillDonationAmount } from '@constants/data/customerDonationCopy';
+import {
+  DonationCopy,
+  DONATION_COUNT_DISPLAY_MIN,
+  DONATION_DAILY_GOAL_COUNT,
+  DONATION_DESTINATION_NOTE,
+  fillDonationAmount,
+} from '@constants/data/customerDonationCopy';
 import c1KCoding from '@resources/image/donation/c1-k-coding.webp';
 import c2IPainting from '@resources/image/donation/c2-i-painting.webp';
 import c5KCoffee from '@resources/image/donation/c5-k-coffee.webp';
@@ -14,6 +20,7 @@ const CHARACTER_IMAGE_HEIGHT_PX = 96;
 const AVATAR_SIZE_PX = 32;
 const GAUGE_TRACK_HEIGHT_PX = 7;
 const GAUGE_FULL_PERCENT = 100;
+const BUBBLE_LABEL_RESERVE_PX = 24;
 
 const DEFAULT_CHARACTER = c1KCoding;
 const AMOUNT_CHARACTERS: Record<number, string> = {
@@ -29,16 +36,34 @@ const Container = styled.div`
 
 const CharacterImage = styled.img`
   height: ${CHARACTER_IMAGE_HEIGHT_PX}px;
+  align-self: flex-start;
   object-fit: contain;
 `;
 
+const HeadGroup = styled.div`
+  gap: 6px;
+  ${colFlex({ justify: 'start', align: 'stretch' })};
+`;
+
 const Headline = styled.div`
-  padding-right: 24px;
-  font-size: 16px;
-  font-weight: 600;
-  color: ${Color.BLACK};
-  line-height: 1.45;
+  font-size: 19px;
+  font-weight: 700;
+  color: ${Color.TEXT_STRONG};
+  line-height: 1.4;
   word-break: keep-all;
+`;
+
+const DestinationNote = styled.div`
+  font-size: 13px;
+  font-weight: 600;
+  color: ${Color.KIO_ORANGE_DARK};
+  line-height: 1.5;
+  word-break: keep-all;
+`;
+
+const BodyGroup = styled.div`
+  gap: 2px;
+  ${colFlex({ justify: 'start', align: 'stretch' })};
 `;
 
 const SubLineGroup = styled.div`
@@ -48,7 +73,8 @@ const SubLineGroup = styled.div`
 
 const SubLine = styled.div`
   font-size: 13px;
-  color: ${Color.GREY};
+  font-weight: 400;
+  color: ${Color.TEXT_BODY};
   line-height: 1.65;
   word-break: keep-all;
 `;
@@ -58,8 +84,31 @@ const CountLine = styled.div`
   border-radius: 8px;
   background: ${Color.LIGHT_GREY};
   font-size: 12px;
-  color: ${Color.GREY};
+  color: ${Color.TEXT_BODY};
   text-align: center;
+`;
+
+const GaugeBlock = styled.div`
+  gap: 6px;
+  ${colFlex({ justify: 'start', align: 'stretch' })};
+`;
+
+const GaugeStatusRow = styled.div`
+  ${rowFlex({ justify: 'space-between', align: 'baseline' })};
+`;
+
+const GaugeStatusLabel = styled.div`
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: ${Color.MUTED_GREY};
+`;
+
+const GaugeStatusValue = styled.div`
+  font-size: 13px;
+  font-weight: 700;
+  color: ${Color.TEXT_STRONG};
+  font-variant-numeric: tabular-nums;
 `;
 
 const GaugeTrack = styled.div`
@@ -96,6 +145,7 @@ const BubbleColumn = styled.div`
 `;
 
 const BubbleLabel = styled.div`
+  padding-right: ${BUBBLE_LABEL_RESERVE_PX}px;
   font-size: 11px;
   color: ${Color.MUTED_GREY};
 `;
@@ -116,41 +166,59 @@ interface DonationVisualHeaderProps {
 }
 
 function DonationVisualHeader({ visual, copy, amount, todayCount }: DonationVisualHeaderProps) {
-  const headlineText = fillDonationAmount(copy.headline, amount);
+  const headlineText = fillDonationAmount(copy.headline, amount, copy.amountAnchors);
+  const destinationNote = <DestinationNote>{DONATION_DESTINATION_NOTE}</DestinationNote>;
   const subLines = (
     <SubLineGroup>
       {copy.subLines.map((line) => (
-        <SubLine key={line}>{fillDonationAmount(line, amount)}</SubLine>
+        <SubLine key={line}>{fillDonationAmount(line, amount, copy.amountAnchors)}</SubLine>
       ))}
     </SubLineGroup>
   );
 
   const showCount = todayCount != null && todayCount >= DONATION_COUNT_DISPLAY_MIN;
-  const countLine = showCount ? <CountLine>오늘 {todayCount}명이 키오스쿨과 함께했어요</CountLine> : null;
+  const countLine = showCount ? <CountLine>오늘 {todayCount}명이 보탰어요</CountLine> : null;
 
   if (visual === 'character') {
     const characterSrc = AMOUNT_CHARACTERS[amount] ?? DEFAULT_CHARACTER;
     return (
       <Container>
         <CharacterImage src={characterSrc} alt="키오스쿨 마스코트 캐릭터" />
-        <Headline>{headlineText}</Headline>
-        {subLines}
-        {countLine}
+        <HeadGroup>
+          <Headline>{headlineText}</Headline>
+          {destinationNote}
+        </HeadGroup>
+        <BodyGroup>
+          {subLines}
+          {countLine}
+        </BodyGroup>
       </Container>
     );
   }
 
   if (visual === 'gauge') {
-    const gaugeHeadline = todayCount != null ? `오늘 ${todayCount}명이 보탰어요` : headlineText;
     const rawPercent = ((todayCount ?? 0) / DONATION_DAILY_GOAL_COUNT) * GAUGE_FULL_PERCENT;
     const fillPercent = Math.min(GAUGE_FULL_PERCENT, rawPercent);
     return (
       <Container>
-        <Headline>{gaugeHeadline}</Headline>
-        <GaugeTrack>
-          <GaugeFill percent={fillPercent} />
-        </GaugeTrack>
+        <HeadGroup>
+          <Headline>{headlineText}</Headline>
+          {destinationNote}
+        </HeadGroup>
         {subLines}
+        {todayCount != null && (
+          <GaugeBlock>
+            <GaugeStatusRow>
+              <GaugeStatusLabel>오늘 보탠 사람</GaugeStatusLabel>
+              <GaugeStatusValue>
+                {todayCount}명 · {DONATION_DAILY_GOAL_COUNT}명
+              </GaugeStatusValue>
+            </GaugeStatusRow>
+            <GaugeTrack>
+              <GaugeFill percent={fillPercent} />
+            </GaugeTrack>
+          </GaugeBlock>
+        )}
       </Container>
     );
   }
@@ -164,6 +232,7 @@ function DonationVisualHeader({ visual, copy, amount, todayCount }: DonationVisu
             <BubbleLabel>키오스쿨 만든 학생</BubbleLabel>
             <SpeechBubble>
               <Headline>{headlineText}</Headline>
+              {destinationNote}
               {subLines}
             </SpeechBubble>
           </BubbleColumn>
@@ -175,9 +244,14 @@ function DonationVisualHeader({ visual, copy, amount, todayCount }: DonationVisu
 
   return (
     <Container>
-      <Headline>{headlineText}</Headline>
-      {subLines}
-      {countLine}
+      <HeadGroup>
+        <Headline>{headlineText}</Headline>
+        {destinationNote}
+      </HeadGroup>
+      <BodyGroup>
+        {subLines}
+        {countLine}
+      </BodyGroup>
     </Container>
   );
 }

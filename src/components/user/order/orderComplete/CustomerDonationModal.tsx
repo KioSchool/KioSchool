@@ -9,7 +9,7 @@ import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { MODAL_ROOT_KEY } from '@hooks/useModal';
 import { DONATION_ACCOUNT } from '@utils/donation';
-import { buildDonationCtaLabel, DONATION_AMOUNT_OPTIONS, DONATION_COUNT_DISPLAY_MIN, DONATION_DESTINATION_NOTE } from '@constants/data/customerDonationCopy';
+import { buildDonationCtaLabel, DONATION_AMOUNT_OPTIONS, DONATION_COUNT_DISPLAY_MIN } from '@constants/data/customerDonationCopy';
 import useCustomerDonationModal, { DonationMethod } from '@hooks/user/useCustomerDonationModal';
 import DonationVisualHeader, { DonationVisual } from './donation/DonationVisualHeader';
 import DonationAccountBox from './donation/DonationAccountBox';
@@ -88,20 +88,44 @@ const DismissButton = styled.button`
   border: none;
   background: none;
   color: ${Color.MUTED_GREY};
-  font-size: 16px;
+  font-size: 14px;
+  font-weight: 400;
   line-height: 1;
   cursor: pointer;
 `;
 
-const DestinationNote = styled.div`
+const BrandBadge = styled.div`
+  align-self: flex-start;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: ${Color.KIO_ORANGE_FAINT};
+  color: ${Color.KIO_ORANGE_DARK};
   font-size: 11px;
-  color: ${Color.MUTED_GREY};
-  text-align: center;
+  font-weight: 700;
 `;
 
 const Divider = styled.div`
   height: 0.5px;
   background: ${Color.HEAVY_GREY};
+`;
+
+const FieldGroup = styled.div`
+  gap: 6px;
+  ${colFlex({ justify: 'start', align: 'stretch' })};
+`;
+
+const FieldLabel = styled.div`
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: ${Color.MUTED_GREY};
+`;
+
+const FieldHint = styled.div`
+  font-size: 13px;
+  font-weight: 400;
+  color: ${Color.TEXT_BODY};
+  line-height: 1.65;
 `;
 
 const ChipRow = styled.div`
@@ -112,12 +136,12 @@ const ChipRow = styled.div`
 const Chip = styled.button<{ selected: boolean }>`
   flex: 1;
   padding: 10px 0;
-  border: ${({ selected }) => (selected ? `2px solid ${Color.KIO_ORANGE}` : `0.5px solid ${Color.HEAVY_GREY}`)};
+  border: 1px solid ${({ selected }) => (selected ? Color.KIO_ORANGE : Color.HEAVY_GREY)};
   border-radius: 8px;
-  background: ${Color.WHITE};
-  color: ${({ selected }) => (selected ? Color.KIO_ORANGE : Color.GREY)};
-  font-size: 13px;
-  font-weight: ${({ selected }) => (selected ? 600 : 400)};
+  background: ${({ selected }) => (selected ? Color.KIO_ORANGE_FAINT : Color.WHITE)};
+  color: ${({ selected }) => (selected ? Color.KIO_ORANGE_DARK : Color.GREY)};
+  font-size: 14px;
+  font-weight: ${({ selected }) => (selected ? 700 : 400)};
   cursor: pointer;
 `;
 
@@ -126,8 +150,8 @@ const DonateAnchor = styled.a`
   border-radius: 8px;
   background: ${Color.KIO_ORANGE};
   color: ${Color.WHITE};
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
   text-align: center;
   text-decoration: none;
 `;
@@ -138,8 +162,8 @@ const DonateButton = styled.button`
   border-radius: 8px;
   background: ${Color.KIO_ORANGE};
   color: ${Color.WHITE};
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
   text-align: center;
   cursor: pointer;
 `;
@@ -154,15 +178,16 @@ const LaterButton = styled.button`
 `;
 
 const ThanksTitle = styled.div`
-  font-size: 16px;
-  font-weight: 600;
-  color: ${Color.BLACK};
+  font-size: 19px;
+  font-weight: 700;
+  color: ${Color.TEXT_STRONG};
   text-align: center;
 `;
 
 const ThanksBody = styled.div`
   font-size: 13px;
-  color: ${Color.GREY};
+  font-weight: 400;
+  color: ${Color.TEXT_BODY};
   text-align: center;
   line-height: 1.65;
 `;
@@ -173,8 +198,8 @@ const CloseButton = styled.button`
   background: ${Color.KIO_ORANGE};
   color: ${Color.WHITE};
   border: none;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
   cursor: pointer;
 `;
 
@@ -201,6 +226,7 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, shell = 'center
   if (!shouldRender || !modalRoot) return null;
 
   const showCount = todayCount != null && todayCount >= DONATION_COUNT_DISPLAY_MIN;
+  const isAccountMethod = method === 'account';
 
   const handleAccountDonate = () => {
     navigator.clipboard?.writeText(DONATION_ACCOUNT.accountNo).catch(() => undefined);
@@ -209,40 +235,51 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, shell = 'center
 
   const stopPropagation = (event: MouseEvent) => event.stopPropagation();
 
-  const primaryAction =
-    method === 'toss' ? (
-      <DonateAnchor href={donationUrl} onClick={donate}>
-        {buildDonationCtaLabel(copy, amount)}
-      </DonateAnchor>
-    ) : (
-      <DonateButton type="button" onClick={handleAccountDonate}>
-        계좌번호 복사하기
-      </DonateButton>
-    );
+  const primaryAction = isAccountMethod ? (
+    <DonateButton type="button" onClick={handleAccountDonate}>
+      계좌번호 복사하기
+    </DonateButton>
+  ) : (
+    <DonateAnchor href={donationUrl} onClick={donate}>
+      {buildDonationCtaLabel(copy, amount)}
+    </DonateAnchor>
+  );
 
   const donateView = (
     <>
       <DismissButton type="button" aria-label="후원 안내 닫기" onClick={dismiss}>
         ✕
       </DismissButton>
+      <BrandBadge>키오스쿨</BrandBadge>
       <DonationVisualHeader visual={visual} copy={copy} amount={amount} todayCount={todayCount} />
-      <DestinationNote>{DONATION_DESTINATION_NOTE}</DestinationNote>
       <Divider />
-      <ChipRow>
-        {DONATION_AMOUNT_OPTIONS.map((option) => (
-          <Chip key={option} type="button" selected={option === amount} onClick={() => selectAmount(option)}>
-            {option.toLocaleString()}원
-          </Chip>
-        ))}
-      </ChipRow>
-      <ChipRow>
-        {DONATION_METHOD_OPTIONS.map((option) => (
-          <Chip key={option.value} type="button" selected={option.value === method} onClick={() => selectMethod(option.value)}>
-            {option.label}
-          </Chip>
-        ))}
-      </ChipRow>
-      {method === 'account' && <DonationAccountBox />}
+      <FieldGroup>
+        <FieldLabel>보내는 방법</FieldLabel>
+        <ChipRow>
+          {DONATION_METHOD_OPTIONS.map((option) => (
+            <Chip key={option.value} type="button" selected={option.value === method} onClick={() => selectMethod(option.value)}>
+              {option.label}
+            </Chip>
+          ))}
+        </ChipRow>
+      </FieldGroup>
+      {isAccountMethod ? (
+        <FieldGroup>
+          <FieldHint>원하시는 만큼 직접 입력해 주세요</FieldHint>
+        </FieldGroup>
+      ) : (
+        <FieldGroup>
+          <FieldLabel>얼마를 보낼까요</FieldLabel>
+          <ChipRow>
+            {DONATION_AMOUNT_OPTIONS.map((option) => (
+              <Chip key={option} type="button" selected={option === amount} onClick={() => selectAmount(option)}>
+                {option.toLocaleString()}원
+              </Chip>
+            ))}
+          </ChipRow>
+        </FieldGroup>
+      )}
+      {isAccountMethod && <DonationAccountBox />}
       {primaryAction}
       <LaterButton type="button" onClick={dismiss}>
         다음에
@@ -253,8 +290,8 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, shell = 'center
   const thanksView = (
     <>
       <ThanksTitle>고마워요!</ThanksTitle>
-      <ThanksBody>{showCount ? `오늘 ${todayCount}명이 키오스쿨과 함께했어요.` : '여러분 덕에 키오스쿨이 굴러가요.'}</ThanksBody>
-      {method === 'account' && <DonationAccountBox />}
+      <ThanksBody>{showCount ? `오늘 ${todayCount}명이 보탰어요.` : '여러분 덕에 키오스쿨이 굴러가요.'}</ThanksBody>
+      {isAccountMethod && <DonationAccountBox />}
       <CloseButton type="button" onClick={dismiss}>
         닫기
       </CloseButton>

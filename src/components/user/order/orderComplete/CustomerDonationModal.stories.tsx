@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { screen, userEvent } from '@storybook/test';
 import { DONATION_COPY_LIBRARY } from '@constants/data/customerDonationCopy';
 import CustomerDonationModal from './CustomerDonationModal';
 
@@ -74,6 +75,15 @@ export const 기준선_중앙_담백: Story = {
 
 export const 게이지_초반_2명: Story = {
   args: { shell: 'center', visual: 'gauge', initialTodayCount: 2 },
+};
+
+// 계좌이체 경로: method 상태는 훅 내부라 args로 못 넣는다. play에서 세그먼트를 눌러 도달시킨다.
+export const 계좌이체: Story = {
+  args: { shell: 'sheet', visual: 'plain' },
+  play: async () => {
+    const segment = await screen.findByRole('button', { name: '계좌이체' });
+    await userEvent.click(segment);
+  },
 };
 
 export const NotEligible: Story = {
