@@ -11,9 +11,11 @@ export const removeAndPushEmpty = (slots: WorkspaceImageSlot[], index: number): 
 };
 
 export const initWorkspaceImageSlots = (workspaceImages: Array<WorkspaceImage>): WorkspaceImageSlot[] => {
+  // adminWorkspaceAtom은 localStorage에 영속화된다. 이 기능 배포 전에 캐시된 워크스페이스는
+  // focalPoint 필드 자체가 없어 undefined로 들어오므로, 초기화 시점에 기본값으로 보정한다.
   const slots: WorkspaceImageSlot[] = workspaceImages.map((image) => ({
     image,
-    focalPoint: image.focalPoint,
+    focalPoint: image.focalPoint ?? DEFAULT_FOCAL_POINT,
   }));
 
   while (slots.length < WORKSPACE_IMAGE_SLOT_COUNT) {
