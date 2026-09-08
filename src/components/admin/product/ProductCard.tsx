@@ -1,7 +1,7 @@
-import { Product, ProductStatus } from '@@types/index';
 import styled from '@emotion/styled';
-import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useParams } from 'react-router-dom';
+import { Product, ProductStatus } from '@@types/index';
+import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { colFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import SelectWithProductStatus from './SelectWithProductStatus';
@@ -26,6 +26,12 @@ const Container = styled.div<{ isSellable: boolean | null }>`
 `;
 
 const Title = styled.div`
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
   line-height: 24px;
   font-size: 16px;
   font-weight: 700;
@@ -44,6 +50,8 @@ const ContentContainer = styled.div<{ showStatusSelector: boolean }>`
 `;
 
 const TextContainer = styled.div<{ isSellable: boolean | null }>`
+  width: 100%;
+  min-width: 0;
   color: ${(props) => (props.isSellable ? '#464a4d' : '#B2B2B2')};
   padding-bottom: 12px;
   ${colFlex({ justify: 'center', align: 'center' })}

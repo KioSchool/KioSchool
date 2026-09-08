@@ -11,10 +11,13 @@ const ListWrapper = styled.div`
 
 const ItemWrapper = styled.div`
   width: 100%;
+  gap: 8px;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const RankInfo = styled.div`
+  flex: 1;
+  min-width: 0;
   gap: 8px;
   ${rowFlex({ align: 'center' })}
 `;
@@ -22,6 +25,7 @@ const RankInfo = styled.div`
 const RankCircle = styled.div<{ rank: number }>`
   width: 23px;
   height: 23px;
+  flex-shrink: 0;
   border-radius: 50%;
   font-size: 12px;
   font-weight: 700;
@@ -32,11 +36,17 @@ const RankCircle = styled.div<{ rank: number }>`
 `;
 
 const Name = styled.div`
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   font-size: 14px;
   color: #5b5e65;
 `;
 
 const Value = styled.div`
+  flex-shrink: 0;
+  white-space: nowrap;
   font-size: 14px;
   color: #5b5e65;
   text-align: right;

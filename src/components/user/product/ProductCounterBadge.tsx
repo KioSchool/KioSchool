@@ -12,14 +12,16 @@ import { productToGaItem } from '@utils/orderBasket';
 
 const Container = styled.div`
   width: 100%;
-  height: 90px;
+  min-height: 90px;
+  gap: 12px;
   box-sizing: border-box;
   border-radius: 28px;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const ProductDetailsWrapper = styled.div`
-  width: auto;
+  flex: 1;
+  min-width: 0;
   gap: 10px;
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
@@ -27,18 +29,22 @@ const ProductDetailsWrapper = styled.div`
 const ProductImage = styled.img`
   width: 70px;
   height: 70px;
+  flex-shrink: 0;
   object-fit: cover;
   border-radius: 4px;
   border: 0.3px solid #939393;
 `;
 
 const ProductInfoContainer = styled.div`
-  width: 130px;
+  flex: 1;
+  min-width: 0;
   gap: 8px;
   ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
 const ProductLabels = styled.div`
+  width: 100%;
+  min-width: 0;
   gap: 2px;
   ${colFlex()}
 `;
@@ -46,12 +52,20 @@ const ProductLabels = styled.div`
 const StyledLabel = styled.div<{ size?: number }>`
   font-size: ${({ size }) => size || 13}px;
   font-weight: 600;
+  white-space: nowrap;
+`;
+
+const ProductName = styled.div`
+  font-size: 15px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
 `;
 
 const QuantityControl = styled.div`
   box-sizing: border-box;
   padding: 0 3px;
   width: 88px;
+  max-width: 100%;
   height: 25px;
   border-radius: 4px;
   background: ${Color.LIGHT_GREY};
@@ -64,7 +78,9 @@ const QuantityLabel = styled.div`
 `;
 
 const ProductActions = styled.div`
-  height: 100%;
+  align-self: stretch;
+  flex-shrink: 0;
+  white-space: nowrap;
   ${colFlex({ justify: 'space-between', align: 'end' })}
 `;
 
@@ -146,7 +162,7 @@ function ProductCounterBadge({ product }: ProductCounterBadgeProps) {
         <ProductImage src={product.imageUrl} alt={product.name} />
         <ProductInfoContainer>
           <ProductLabels>
-            <StyledLabel size={15}>{product.name}</StyledLabel>
+            <ProductName>{product.name}</ProductName>
             <StyledLabel>{product.price.toLocaleString()}원</StyledLabel>
           </ProductLabels>
           <QuantityControl>
