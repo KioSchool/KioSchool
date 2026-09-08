@@ -199,6 +199,9 @@ function DonationVisualHeader({ visual, copy, amount, todayCount }: DonationVisu
   if (visual === 'gauge') {
     const rawPercent = ((todayCount ?? 0) / DONATION_DAILY_GOAL_COUNT) * GAUGE_FULL_PERCENT;
     const fillPercent = Math.min(GAUGE_FULL_PERCENT, rawPercent);
+    // 목표를 넘기면 "25명 · 20명"이 되어 오류처럼 읽힌다. 넘긴 뒤엔 목표치 대신 달성을 보여준다.
+    const goalReached = (todayCount ?? 0) >= DONATION_DAILY_GOAL_COUNT;
+    const gaugeStatusValue = goalReached ? `${todayCount}명 · 목표 달성` : `${todayCount}명 · ${DONATION_DAILY_GOAL_COUNT}명`;
     return (
       <Container>
         <HeadGroup>
@@ -210,9 +213,7 @@ function DonationVisualHeader({ visual, copy, amount, todayCount }: DonationVisu
           <GaugeBlock>
             <GaugeStatusRow>
               <GaugeStatusLabel>오늘 보탠 사람</GaugeStatusLabel>
-              <GaugeStatusValue>
-                {todayCount}명 · {DONATION_DAILY_GOAL_COUNT}명
-              </GaugeStatusValue>
+              <GaugeStatusValue>{gaugeStatusValue}</GaugeStatusValue>
             </GaugeStatusRow>
             <GaugeTrack>
               <GaugeFill percent={fillPercent} />
