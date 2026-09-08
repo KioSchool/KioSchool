@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import { DonationCopy, fillDonationAmount } from '@constants/data/customerDonationCopy';
+import { DonationCopy, DONATION_DESTINATION_NOTE, fillDonationAmount } from '@constants/data/customerDonationCopy';
 import { resolveDonationCountText } from '@utils/donation';
 import c1KCoding from '@resources/image/donation/c1-k-coding.webp';
 import c2IPainting from '@resources/image/donation/c2-i-painting.webp';
@@ -29,11 +29,24 @@ const CharacterImage = styled.img`
   object-fit: contain;
 `;
 
+const HeadGroup = styled.div`
+  gap: 6px;
+  ${colFlex({ justify: 'start', align: 'stretch' })};
+`;
+
 const Headline = styled.div`
   font-size: 19px;
   font-weight: 700;
   color: ${Color.TEXT_STRONG};
   line-height: 1.4;
+  word-break: keep-all;
+`;
+
+const DestinationNote = styled.div`
+  font-size: 13px;
+  font-weight: 600;
+  color: ${Color.KIO_ORANGE_DARK};
+  line-height: 1.5;
   word-break: keep-all;
 `;
 
@@ -79,7 +92,10 @@ function DonationVisualHeader({ copy, amount, todayCount }: DonationVisualHeader
   return (
     <Container>
       <CharacterImage src={characterSrc} alt="키오스쿨 마스코트 캐릭터" />
-      <Headline>{headlineText}</Headline>
+      <HeadGroup>
+        <Headline>{headlineText}</Headline>
+        <DestinationNote>{DONATION_DESTINATION_NOTE}</DestinationNote>
+      </HeadGroup>
       <BodyGroup>
         <SubLineGroup>
           {copy.subLines.map((line) => (
