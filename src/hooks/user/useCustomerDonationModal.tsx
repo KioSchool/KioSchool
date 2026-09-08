@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { useAtom } from 'jotai';
-import { donationCardDismissedAtAtom } from '@jotai/user/atoms';
+import { donationCardDismissedAtAtom, donationDonatedAtAtom } from '@jotai/user/atoms';
 import useApi from '@hooks/useApi';
 import { buildDonationTossUrl } from '@utils/donation';
 import { reportDonationCardEvent } from '@utils/donationCardAnalytics';
-import { DEFAULT_DONATION_AMOUNT, DonationCopy, findDonationCopyById, pickCopyVariant } from '@constants/data/customerDonationCopy';
+import { DEFAULT_DONATION_AMOUNT, DonationCopy, pickCopyVariant } from '@constants/data/customerDonationCopy';
 
 const HOURS_PER_DAY = 24;
 const MINUTES_PER_HOUR = 60;
@@ -35,11 +35,11 @@ interface UseCustomerDonationModalParams {
   workspaceId: string | null;
   eligible: boolean;
   initialTodayCount?: number;
-  copyId?: string;
 }
 
 interface UseCustomerDonationModalResult {
-  shouldRender: boolean;
+  isOpen: boolean;
+  hasDonated: boolean;
   view: DonationView;
   copy: DonationCopy;
   amount: number;
@@ -48,36 +48,43 @@ interface UseCustomerDonationModalResult {
   method: DonationMethod;
   selectAmount: (next: number) => void;
   selectMethod: (next: DonationMethod) => void;
+  open: () => void;
   donate: () => void;
   dismiss: () => void;
 }
 
-function useCustomerDonationModal({
-  orderId,
-  workspaceId,
-  eligible,
-  initialTodayCount,
-  copyId,
-}: UseCustomerDonationModalParams): UseCustomerDonationModalResult {
+function useCustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCount }: UseCustomerDonationModalParams): UseCustomerDonationModalResult {
   const { userApi } = useApi();
   const [dismissedAt, setDismissedAt] = useAtom(donationCardDismissedAtAtom);
+  const [donatedAt, setDonatedAt] = useAtom(donationDonatedAtAtom);
   const [dismissedAtOnMount] = useState(() => dismissedAt);
-  const [hidden, setHidden] = useState(false);
+  const [hasDonatedOnMount] = useState(() => donatedAt > 0);
+  const [isOpen, setIsOpen] = useState(false);
   const [view, setView] = useState<DonationView>('donate');
   const [amount, setAmount] = useState<number>(DEFAULT_DONATION_AMOUNT);
   const [method, setMethod] = useState<DonationMethod>(DEFAULT_DONATION_METHOD);
   const [todayCount, setTodayCount] = useState<number | null>(initialTodayCount ?? null);
+  const autoOpenedRef = useRef(false);
   const viewReportedRef = useRef(false);
   const recordedRef = useRef(false);
 
-  // copyId는 Storybook에서 특정 문구를 강제로 띄우기 위한 것. 프로덕션은 orderId 기반 배정을 쓴다.
-  const copy = findDonationCopyById(copyId) ?? pickCopyVariant(orderId);
-  const blockedByStorage = Date.now() - dismissedAtOnMount < DISMISS_DURATION_MS;
-  const shouldRender = eligible && !blockedByStorage && !hidden;
+  const copy = pickCopyVariant(orderId);
+  const hasDonated = donatedAt > 0;
   const workspaceIdParam = workspaceId ?? '';
 
+  // 자동 오픈은 마운트 1회, 마운트 시점 스냅샷으로만 판단한다 — 세션 중 dismiss/donate가 재오픈을 유발하지 않게.
   useEffect(() => {
-    if (!shouldRender) return;
+    if (autoOpenedRef.current) return;
+    autoOpenedRef.current = true;
+
+    const dismissedWithin24h = Date.now() - dismissedAtOnMount < DISMISS_DURATION_MS;
+    if (eligible && !dismissedWithin24h && !hasDonatedOnMount) {
+      setIsOpen(true);
+    }
+  }, [eligible, dismissedAtOnMount, hasDonatedOnMount]);
+
+  useEffect(() => {
+    if (!isOpen) return undefined;
 
     document.body.style.overflow = 'hidden';
 
@@ -94,7 +101,7 @@ function useCustomerDonationModal({
     return () => {
       document.body.style.overflow = 'auto';
     };
-  }, [shouldRender, copy.id, workspaceIdParam, userApi, initialTodayCount]);
+  }, [isOpen, copy.id, workspaceIdParam, userApi, initialTodayCount]);
 
   const selectAmount = (next: number) => {
     setAmount(next);
@@ -104,6 +111,12 @@ function useCustomerDonationModal({
     setMethod(next);
   };
 
+  // 24h 차단·후원 이력과 무관하게 강제로 연다. 재후원을 위해 뷰를 'donate'로 되돌린다.
+  const open = () => {
+    setView('donate');
+    setIsOpen(true);
+  };
+
   // 토스 경로는 앵커 기본 동작으로 딥링크가 열린다. 계좌 경로는 복사 버튼에서 호출된다.
   // 세션당 1회만 POST하고, 어느 경로든 감사 뷰로 전환한다.
   const donate = () => {
@@ -111,6 +124,7 @@ function useCustomerDonationModal({
     const recordedAmount = method === 'account' ? null : amount;
 
     reportDonationCardEvent('donation_card_click', { variant: copy.id, amount: recordedAmount, workspace_id: workspaceIdParam, method });
+    setDonatedAt(Date.now());
     setDismissedAt(Date.now());
     setView('thanks');
 
@@ -132,11 +146,12 @@ function useCustomerDonationModal({
   const dismiss = () => {
     reportDonationCardEvent('donation_card_dismiss', { variant: copy.id, workspace_id: workspaceIdParam });
     setDismissedAt(Date.now());
-    setHidden(true);
+    setIsOpen(false);
   };
 
   return {
-    shouldRender,
+    isOpen,
+    hasDonated,
     view,
     copy,
     amount,
@@ -145,6 +160,7 @@ function useCustomerDonationModal({
     method,
     selectAmount,
     selectMethod,
+    open,
     donate,
     dismiss,
   };
