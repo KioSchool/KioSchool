@@ -24,6 +24,12 @@ interface TodayCountResponse {
   todayCount: number;
 }
 
+interface RecordClickBody {
+  workspaceId: number | null;
+  variant: string;
+  amount: number | null;
+}
+
 interface UseCustomerDonationModalParams {
   orderId: string | null;
   workspaceId: string | null;
@@ -101,19 +107,24 @@ function useCustomerDonationModal({
   // 토스 경로는 앵커 기본 동작으로 딥링크가 열린다. 계좌 경로는 복사 버튼에서 호출된다.
   // 세션당 1회만 POST하고, 어느 경로든 감사 뷰로 전환한다.
   const donate = () => {
-    reportDonationCardEvent('donation_card_click', { variant: copy.id, amount, workspace_id: workspaceIdParam, method });
+    // 계좌이체는 손님이 자기 뱅킹 앱에서 금액을 직접 입력한다. 우리가 관측할 수 없으니 null로 기록한다.
+    const recordedAmount = method === 'account' ? null : amount;
+
+    reportDonationCardEvent('donation_card_click', { variant: copy.id, amount: recordedAmount, workspace_id: workspaceIdParam, method });
     setDismissedAt(Date.now());
     setView('thanks');
 
     if (recordedRef.current) return;
     recordedRef.current = true;
 
+    const body: RecordClickBody = {
+      workspaceId: workspaceId ? Number(workspaceId) : null,
+      variant: copy.id,
+      amount: recordedAmount,
+    };
+
     userApi
-      .post<TodayCountResponse>(RECORD_CLICK_ENDPOINT, {
-        workspaceId: workspaceId ? Number(workspaceId) : null,
-        variant: copy.id,
-        amount,
-      })
+      .post<TodayCountResponse>(RECORD_CLICK_ENDPOINT, body)
       .then((res) => setTodayCount(res.data.todayCount))
       .catch(() => undefined);
   };

@@ -1,28 +1,69 @@
 // 후원 모달 디자인 탐색용. 팀이 방향을 정하면 진 브랜치는 삭제된다.
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
-import { colFlex } from '@styles/flexStyles';
-import { DONATION_ACCOUNT } from '@utils/donation';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import { DONATION_ACCOUNT, formatDonationAccountNo } from '@utils/donation';
 
 const Box = styled.div`
   padding: 12px;
   border: 0.5px solid ${Color.HEAVY_GREY};
   border-radius: 8px;
-  gap: 6px;
+  gap: 12px;
   ${colFlex({ justify: 'start', align: 'stretch' })};
 `;
 
-const Row = styled.div`
+const InfoRow = styled.div`
+  width: 100%;
+  gap: 8px;
   font-size: 13px;
-  color: ${Color.BLACK};
+  font-weight: 400;
+  ${rowFlex({ justify: 'space-between', align: 'flex-start' })};
+`;
+
+const Key = styled.div`
+  flex-shrink: 0;
+  color: ${Color.TEXT_BODY};
+  ${rowFlex({ justify: 'end', align: 'center' })};
+`;
+
+const Value = styled.div`
+  gap: 2px;
+  font-weight: 700;
+  color: ${Color.TEXT_STRONG};
+  text-align: right;
+  ${colFlex({ justify: 'start', align: 'flex-end' })};
+`;
+
+const AccountNo = styled.span`
+  font-variant-numeric: tabular-nums;
+`;
+
+const HolderNote = styled.span`
+  font-size: 11px;
+  font-weight: 400;
+  color: ${Color.MUTED_GREY};
 `;
 
 function DonationAccountBox() {
   return (
     <Box>
-      <Row>{DONATION_ACCOUNT.bankName}</Row>
-      <Row>{DONATION_ACCOUNT.accountNo}</Row>
-      <Row>{DONATION_ACCOUNT.holderName}</Row>
+      <InfoRow>
+        <Key>은행</Key>
+        <Value>{DONATION_ACCOUNT.bankName}</Value>
+      </InfoRow>
+      <InfoRow>
+        <Key>계좌번호</Key>
+        <Value>
+          <AccountNo>{formatDonationAccountNo(DONATION_ACCOUNT.accountNo)}</AccountNo>
+        </Value>
+      </InfoRow>
+      <InfoRow>
+        <Key>예금주</Key>
+        <Value>
+          {DONATION_ACCOUNT.holderName}
+          <HolderNote>{DONATION_ACCOUNT.holderNote}</HolderNote>
+        </Value>
+      </InfoRow>
     </Box>
   );
 }
