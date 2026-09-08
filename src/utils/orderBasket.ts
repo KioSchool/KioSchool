@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { OrderProductBase, Product } from '@@types/index';
+import { OrderProduct, OrderProductBase, Product } from '@@types/index';
 
 /**
  * `_.keyBy(products, 'id')` 의 결과 타입.
@@ -37,3 +37,34 @@ export const getBasketItemsWithProduct = (orderBasket: OrderProductBase[], produ
 /** 상품 목록에서 사라진 항목은 합계에서 제외한다. */
 export const calculateBasketTotalAmount = (orderBasket: OrderProductBase[], productsMap: ProductsMap): number =>
   getBasketItemsWithProduct(orderBasket, productsMap).reduce((acc, { basketItem, product }) => acc + product.price * basketItem.quantity, 0);
+
+export interface GaItem {
+  item_id: string;
+  item_name: string;
+  price: number;
+  quantity?: number;
+}
+
+export const productToGaItem = (product: Product): GaItem => ({
+  item_id: String(product.id),
+  item_name: product.name,
+  price: product.price,
+});
+
+export const productsToGaItems = (products: Product[]): GaItem[] => products.map(productToGaItem);
+
+/** 단가는 `basketItem.productPrice`가 아니라 조인된 `product.price`에서 읽는다 — 전자는 수량 변경 시 누적되는 라인 합계다. */
+export const basketToGaItems = (orderBasket: OrderProductBase[], productsMap: ProductsMap): GaItem[] =>
+  getBasketItemsWithProduct(orderBasket, productsMap).map(({ basketItem, product }) => ({
+    ...productToGaItem(product),
+    quantity: basketItem.quantity,
+  }));
+
+/** 서버 응답(`Order.orderProducts`)에서 직접 만든다. `productPrice`는 서버가 항상 단가로 채운다(백엔드 `OrderFacade.kt`의 `productPrice = product.price` 참고). */
+export const orderResponseToGaItems = (orderProducts: OrderProduct[]): GaItem[] =>
+  orderProducts.map((orderProduct) => ({
+    item_id: String(orderProduct.productId),
+    item_name: orderProduct.productName,
+    price: orderProduct.productPrice,
+    quantity: orderProduct.quantity,
+  }));

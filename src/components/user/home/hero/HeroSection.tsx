@@ -9,6 +9,8 @@ import { Color } from '@resources/colors';
 import { ADMIN_ROUTES, USER_ROUTES } from '@constants/routes';
 import useMarketingLoginStatus from '@hooks/useMarketingLoginStatus';
 import useMouseGlow, { MouseGlow } from '@components/user/home/useMouseGlow';
+import { trackEvent } from '@utils/analytics';
+import { GA_EVENT } from '@constants/analytics';
 import cloud1 from '@resources/image/home/cloud1.png';
 import cloud2 from '@resources/image/home/cloud2.png';
 import HeroMockup from './HeroMockup';
@@ -187,7 +189,12 @@ function HeroSection() {
           이 대신할게요
         </SubCopy>
         <CtaRow>
-          <CtaButton to={ADMIN_ROUTES.HOME}>{isLoggedIn ? '어드민 홈으로' : '무료로 시작하기'}</CtaButton>
+          <CtaButton
+            to={ADMIN_ROUTES.HOME}
+            onClick={() => trackEvent(GA_EVENT.CTA_CLICK, { location: 'hero', label: isLoggedIn ? 'admin_home' : 'start_free' })}
+          >
+            {isLoggedIn ? '어드민 홈으로' : '무료로 시작하기'}
+          </CtaButton>
           <SecondaryButton to={USER_ROUTES.INFO}>서비스 알아보기</SecondaryButton>
         </CtaRow>
       </ContentWrapper>

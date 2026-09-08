@@ -4,14 +4,7 @@ import { useLocation } from 'react-router-dom';
 import * as Sentry from '@sentry/react';
 import { adminUserAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { userWorkspaceAtom } from '@jotai/user/atoms';
-
-type Role = 'admin' | 'super-admin' | 'guest';
-
-function deriveRole(pathname: string): Role {
-  if (pathname.startsWith('/super-admin')) return 'super-admin';
-  if (pathname.startsWith('/admin')) return 'admin';
-  return 'guest';
-}
+import { deriveRole } from '@utils/role';
 
 function useSentryContext() {
   const { pathname } = useLocation();

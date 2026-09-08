@@ -1,4 +1,6 @@
 import useApi from '@hooks/useApi';
+import { trackEvent } from '@utils/analytics';
+import { GA_EVENT } from '@constants/analytics';
 
 function useRegister() {
   const { userApi } = useApi();
@@ -22,7 +24,10 @@ function useRegister() {
         name,
         email,
       })
-      .then(() => true as const)
+      .then(() => {
+        trackEvent(GA_EVENT.SIGN_UP, {});
+        return true as const;
+      })
       .catch((error) => error.response?.data?.message ?? '회원가입 실패: 알 수 없는 오류가 발생했습니다.');
   };
 
