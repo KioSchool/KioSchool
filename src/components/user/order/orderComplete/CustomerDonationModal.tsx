@@ -46,16 +46,22 @@ const CenterPanel = styled.div`
   ${colFlex({ justify: 'start', align: 'stretch' })};
 `;
 
-const DonationTrigger = styled.button<{ hasDonated: boolean }>`
+// 주문 완료 화면의 주 CTA는 하단 고정 "더 주문하기"다. 후원 재진입은 그것과 경쟁하지 않는
+// 보조 어포던스라, 꽉 찬 채움 버튼이 아니라 가운데 정렬 아웃라인 pill로 둔다.
+const DonationTriggerRow = styled.div`
   width: 100%;
-  padding: 13px;
+  padding: 2px 0;
+  ${rowFlex({ justify: 'center', align: 'center' })};
+`;
+
+const DonationTrigger = styled.button<{ hasDonated: boolean }>`
+  padding: 9px 18px;
   border: 1px solid ${({ hasDonated }) => (hasDonated ? Color.KIO_ORANGE_FAINT : Color.KIO_ORANGE)};
-  border-radius: 8px;
-  background: ${({ hasDonated }) => (hasDonated ? Color.KIO_ORANGE_FAINT : Color.KIO_ORANGE)};
-  color: ${({ hasDonated }) => (hasDonated ? Color.KIO_ORANGE_DARK : Color.WHITE)};
-  font-size: 15px;
-  font-weight: 700;
-  text-align: center;
+  border-radius: 999px;
+  background: ${({ hasDonated }) => (hasDonated ? Color.KIO_ORANGE_FAINT : Color.WHITE)};
+  color: ${Color.KIO_ORANGE_DARK};
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
 `;
 
@@ -268,9 +274,11 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
 
   return (
     <>
-      <DonationTrigger type="button" hasDonated={hasDonated} onClick={open}>
-        {hasDonated ? TRIGGER_LABEL_DONATED : TRIGGER_LABEL_DEFAULT}
-      </DonationTrigger>
+      <DonationTriggerRow>
+        <DonationTrigger type="button" hasDonated={hasDonated} onClick={open}>
+          {hasDonated ? TRIGGER_LABEL_DONATED : TRIGGER_LABEL_DEFAULT}
+        </DonationTrigger>
+      </DonationTriggerRow>
       {isOpen &&
         modalRoot &&
         createPortal(
