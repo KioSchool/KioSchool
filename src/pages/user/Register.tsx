@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import AppContainer from '@components/common/container/AppContainer';
 import AcquisitionChannelStep from '@components/user/register/AcquisitionChannelStep';
-import RegisterForm, { PendingRegistration } from '@components/user/register/RegisterForm';
-import useRegister from '@hooks/user/useRegister';
+import RegisterForm from '@components/user/register/RegisterForm';
+import useRegister, { RegisterPayload } from '@hooks/user/useRegister';
 import { USER_ROUTES } from '@constants/routes';
 import { colFlex } from '@styles/flexStyles';
 import { ACQUISITION_CHANNEL_NONE, AcquisitionChannel } from '@utils/acquisitionChannel';
@@ -35,16 +35,16 @@ const REGISTRATION_FAILURE_RECOVERY_GUIDE = '이전으로 돌아가 이메일 �
 
 function Register() {
   const navigate = useNavigate();
-  const { registerUser } = useRegister();
+  const { registerUser, saveAcquisitionSurvey } = useRegister();
 
   const [step, setStep] = useState<RegisterStep>('form');
-  const [pendingRegistration, setPendingRegistration] = useState<PendingRegistration | null>(null);
+  const [pendingRegistration, setPendingRegistration] = useState<RegisterPayload | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitErrorMessage, setSubmitErrorMessage] = useState('');
 
   const hasTrackedStepViewRef = useRef(false);
 
-  const handleFormSubmit = (values: PendingRegistration) => {
+  const handleFormSubmit = (values: RegisterPayload) => {
     setPendingRegistration(values);
     setStep('acquisition');
 
@@ -64,18 +64,19 @@ function Register() {
     setIsSubmitting(true);
     setSubmitErrorMessage('');
 
-    const result = await registerUser({
-      ...pendingRegistration,
-      acquisitionChannel: channel,
-      acquisitionChannelEtc: channelEtc,
-      acquisitionContext: readAcquisitionContext(),
-    });
+    const result = await registerUser(pendingRegistration);
 
     if (result !== true) {
       setIsSubmitting(false);
       setSubmitErrorMessage(`${result} ${REGISTRATION_FAILURE_RECOVERY_GUIDE}`);
       return;
     }
+
+    await saveAcquisitionSurvey({
+      channel,
+      channelEtc,
+      context: readAcquisitionContext(),
+    });
 
     trackEvent('signup_completed', { channel: channel ?? ACQUISITION_CHANNEL_NONE });
     localStorage.setItem('isLoggedIn', 'true');

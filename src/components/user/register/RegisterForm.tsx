@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
-import useRegister from '@hooks/user/useRegister';
+import useRegister, { RegisterPayload } from '@hooks/user/useRegister';
 import NewAppInput from '@components/common/input/NewAppInput';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { Color } from '@resources/colors';
@@ -35,15 +35,8 @@ const ErrorMessage = styled.div`
   color: ${Color.KIO_ORANGE};
 `;
 
-export interface PendingRegistration {
-  id: string;
-  password: string;
-  name: string;
-  email: string;
-}
-
 interface RegisterFormProps {
-  onSubmit: (values: PendingRegistration) => void;
+  onSubmit: (values: RegisterPayload) => void;
 }
 
 function RegisterForm({ onSubmit }: RegisterFormProps) {

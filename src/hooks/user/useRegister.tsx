@@ -6,13 +6,16 @@ export interface RegisterPayload {
   password: string;
   name: string;
   email: string;
-  acquisitionChannel: AcquisitionChannel | null;
-  acquisitionChannelEtc: string | null;
-  acquisitionContext: string | null;
+}
+
+interface AcquisitionSurveyPayload {
+  channel: AcquisitionChannel | null;
+  channelEtc: string | null;
+  context: string | null;
 }
 
 function useRegister() {
-  const { userApi } = useApi();
+  const { userApi, adminApi } = useApi();
 
   const checkDuplicateId = async (id: string) => {
     return userApi
@@ -30,6 +33,15 @@ function useRegister() {
       .post('/register', payload)
       .then(() => true as const)
       .catch((error) => error.response?.data?.message ?? '회원가입 실패: 알 수 없는 오류가 발생했습니다.');
+  };
+
+  const saveAcquisitionSurvey = async (payload: AcquisitionSurveyPayload): Promise<void> => {
+    return adminApi
+      .post('/user/acquisition', payload)
+      .then(() => undefined)
+      .catch((e) => {
+        console.warn('acquisition survey save failed', e);
+      });
   };
 
   const sendVerifyMail = async (email: string): Promise<boolean | string> => {
@@ -63,7 +75,7 @@ function useRegister() {
       });
   };
 
-  return { checkDuplicateId, registerUser, sendVerifyMail, verifyUser };
+  return { checkDuplicateId, registerUser, saveAcquisitionSurvey, sendVerifyMail, verifyUser };
 }
 
 export default useRegister;
