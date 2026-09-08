@@ -55,8 +55,18 @@ export const DEFAULT_DONATION_AMOUNT = 1000;
 // 오늘 후원자가 0명일 때 카운터 줄에 대신 노출한다.
 export const DONATION_COUNT_EMPTY_TEXT = '오늘의 첫 응원을 기다리고 있어요';
 
-// 손님이 주점 팁으로 오해하면 주점 신뢰 사고로 번진다. 문구 변형과 무관하게 항상 노출한다.
-export const DONATION_DESTINATION_NOTE = '주점이 아니라, 이 주문 앱을 만든 키오스쿨로 가요';
+// 헤드라인 아래 주황 슬롯에 노출한다. orderId로 3개를 균등 로테이션한다.
+export const DONATION_NOTE_MESSAGES: readonly string[] = [
+  '무료 주문 앱 키오스쿨이 멈추지 않고 돌아가도록 작은 힘을 보태주세요.',
+  '대학 축제를 더 편하게! 키오스쿨을 만든 학생들에게 응원을 보내주세요.',
+  '보내주신 마음은 전액 키오스쿨 서버 유지비로 소중하게 사용됩니다.',
+];
+
+export function donationNoteIndex(orderId: string | null): number {
+  const numericId = Number(orderId);
+  if (!Number.isFinite(numericId)) return 0;
+  return Math.abs(Math.trunc(numericId)) % DONATION_NOTE_MESSAGES.length;
+}
 
 /**
  * orderId 기반 결정적 배정. 리렌더에 흔들리지 않고 저장소가 필요 없으며,

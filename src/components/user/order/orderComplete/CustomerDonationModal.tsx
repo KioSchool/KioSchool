@@ -189,7 +189,7 @@ interface CustomerDonationModalProps {
 }
 
 function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCount }: CustomerDonationModalProps) {
-  const { isOpen, open, hasDonated, view, copy, amount, todayCount, donationUrl, method, selectAmount, selectMethod, donate, dismiss } =
+  const { isOpen, open, hasDonated, view, copy, note, amount, todayCount, donationUrl, method, selectAmount, selectMethod, donate, dismiss } =
     useCustomerDonationModal({
       orderId,
       workspaceId,
@@ -226,7 +226,7 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
         ✕
       </DismissButton>
       <BrandBadge>키오스쿨</BrandBadge>
-      <DonationVisualHeader copy={copy} amount={amount} todayCount={todayCount} />
+      <DonationVisualHeader copy={copy} note={note} amount={amount} todayCount={todayCount} />
       <Divider />
       <FieldGroup>
         <FieldLabel>보내는 방법</FieldLabel>

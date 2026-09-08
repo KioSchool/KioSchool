@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import { DonationCopy, DONATION_DESTINATION_NOTE, fillDonationAmount } from '@constants/data/customerDonationCopy';
+import { DonationCopy, fillDonationAmount } from '@constants/data/customerDonationCopy';
 import { resolveDonationCountText } from '@utils/donation';
 import c1KCoding from '@resources/image/donation/c1-k-coding.webp';
 import c2IPainting from '@resources/image/donation/c2-i-painting.webp';
@@ -80,11 +80,12 @@ const CountLine = styled.div`
 
 interface DonationVisualHeaderProps {
   copy: DonationCopy;
+  note: string;
   amount: number;
   todayCount: number | null;
 }
 
-function DonationVisualHeader({ copy, amount, todayCount }: DonationVisualHeaderProps) {
+function DonationVisualHeader({ copy, note, amount, todayCount }: DonationVisualHeaderProps) {
   const headlineText = fillDonationAmount(copy.headline, amount, copy);
   const characterSrc = AMOUNT_CHARACTERS[amount] ?? DEFAULT_CHARACTER;
   const countText = resolveDonationCountText(todayCount);
@@ -94,7 +95,7 @@ function DonationVisualHeader({ copy, amount, todayCount }: DonationVisualHeader
       <CharacterImage src={characterSrc} alt="키오스쿨 마스코트 캐릭터" />
       <HeadGroup>
         <Headline>{headlineText}</Headline>
-        <DestinationNote>{DONATION_DESTINATION_NOTE}</DestinationNote>
+        <DestinationNote>{note}</DestinationNote>
       </HeadGroup>
       <BodyGroup>
         <SubLineGroup>

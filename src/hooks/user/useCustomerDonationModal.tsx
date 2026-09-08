@@ -4,7 +4,7 @@ import { donationCardDismissedAtAtom, donationDonatedAtAtom } from '@jotai/user/
 import useApi from '@hooks/useApi';
 import { buildDonationTossUrl } from '@utils/donation';
 import { reportDonationCardEvent } from '@utils/donationCardAnalytics';
-import { DEFAULT_DONATION_AMOUNT, DonationCopy, pickCopyVariant } from '@constants/data/customerDonationCopy';
+import { DEFAULT_DONATION_AMOUNT, DONATION_NOTE_MESSAGES, DonationCopy, donationNoteIndex, pickCopyVariant } from '@constants/data/customerDonationCopy';
 
 const HOURS_PER_DAY = 24;
 const MINUTES_PER_HOUR = 60;
@@ -42,6 +42,7 @@ interface UseCustomerDonationModalResult {
   hasDonated: boolean;
   view: DonationView;
   copy: DonationCopy;
+  note: string;
   amount: number;
   todayCount: number | null;
   donationUrl: string;
@@ -69,6 +70,8 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
   const recordedRef = useRef(false);
 
   const copy = pickCopyVariant(orderId);
+  const noteIndex = donationNoteIndex(orderId);
+  const note = DONATION_NOTE_MESSAGES[noteIndex];
   const hasDonated = donatedAt > 0;
   const workspaceIdParam = workspaceId ?? '';
 
@@ -90,7 +93,7 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
 
     if (!viewReportedRef.current) {
       viewReportedRef.current = true;
-      reportDonationCardEvent('donation_card_view', { variant: copy.id, workspace_id: workspaceIdParam });
+      reportDonationCardEvent('donation_card_view', { variant: copy.id, note_index: noteIndex, workspace_id: workspaceIdParam });
     }
 
     userApi
@@ -101,7 +104,7 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
     return () => {
       document.body.style.overflow = 'auto';
     };
-  }, [isOpen, copy.id, workspaceIdParam, userApi, initialTodayCount]);
+  }, [isOpen, copy.id, noteIndex, workspaceIdParam, userApi, initialTodayCount]);
 
   const selectAmount = (next: number) => {
     setAmount(next);
@@ -123,7 +126,7 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
     // 계좌이체는 손님이 자기 뱅킹 앱에서 금액을 직접 입력한다. 우리가 관측할 수 없으니 null로 기록한다.
     const recordedAmount = method === 'account' ? null : amount;
 
-    reportDonationCardEvent('donation_card_click', { variant: copy.id, amount: recordedAmount, workspace_id: workspaceIdParam, method });
+    reportDonationCardEvent('donation_card_click', { variant: copy.id, note_index: noteIndex, amount: recordedAmount, workspace_id: workspaceIdParam, method });
     setDonatedAt(Date.now());
     setDismissedAt(Date.now());
     setView('thanks');
@@ -144,7 +147,7 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
   };
 
   const dismiss = () => {
-    reportDonationCardEvent('donation_card_dismiss', { variant: copy.id, workspace_id: workspaceIdParam });
+    reportDonationCardEvent('donation_card_dismiss', { variant: copy.id, note_index: noteIndex, workspace_id: workspaceIdParam });
     setDismissedAt(Date.now());
     setIsOpen(false);
   };
@@ -154,6 +157,7 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
     hasDonated,
     view,
     copy,
+    note,
     amount,
     todayCount,
     donationUrl: buildDonationTossUrl(amount),
