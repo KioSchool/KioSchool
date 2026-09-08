@@ -4,19 +4,24 @@ export interface DonationCopy {
   subLines: readonly string[];
   /** 주 버튼 문구. `{amount}`가 선택 금액(천 단위 콤마)으로 치환된다. 없으면 기본 문구를 쓴다. */
   ctaTemplate?: string;
+  /** 금액별 비유 대상. 헤드라인·본문·CTA의 `{anchor}`를 치환한다. */
+  amountAnchors?: Readonly<Record<number, string>>;
 }
 
 export const DEFAULT_DONATION_CTA_TEMPLATE = '토스로 {amount}원 보내기';
 
 const AMOUNT_PLACEHOLDER = /\{amount\}/g;
+const ANCHOR_PLACEHOLDER = /\{anchor\}/g;
+const ANCHOR_FALLBACK_AMOUNT = 1000;
 
-/** 헤드라인·본문·버튼 어디서든 `{amount}`를 선택 금액으로 치환한다. */
-export function fillDonationAmount(text: string, amount: number): string {
-  return text.replace(AMOUNT_PLACEHOLDER, amount.toLocaleString());
+/** 헤드라인·본문·버튼 어디서든 `{amount}`를 선택 금액으로, `{anchor}`를 금액별 비유로 치환한다. */
+export function fillDonationAmount(text: string, amount: number, amountAnchors?: Readonly<Record<number, string>>): string {
+  const anchor = amountAnchors?.[amount] ?? amountAnchors?.[ANCHOR_FALLBACK_AMOUNT] ?? '';
+  return text.replace(AMOUNT_PLACEHOLDER, amount.toLocaleString()).replace(ANCHOR_PLACEHOLDER, anchor);
 }
 
 export function buildDonationCtaLabel(copy: DonationCopy, amount: number): string {
-  return fillDonationAmount(copy.ctaTemplate ?? DEFAULT_DONATION_CTA_TEMPLATE, amount);
+  return fillDonationAmount(copy.ctaTemplate ?? DEFAULT_DONATION_CTA_TEMPLATE, amount, copy.amountAnchors);
 }
 
 /**
@@ -27,7 +32,7 @@ export const CUSTOMER_DONATION_COPIES: readonly DonationCopy[] = [
   {
     id: 'A',
     headline: '편하게 주문하셨나요?',
-    subLines: ['이 주문 시스템, 학생들이 만들어서 운영해요.', '서버비가 매달 나가서 1,000원씩 받고 있어요.'],
+    subLines: ['이 주문 시스템, 학생들이 만들어서 운영해요.', '서버비가 매달 나가서 {amount}원씩 받고 있어요.'],
   },
 ];
 
@@ -36,7 +41,7 @@ export const DONATION_COPY_CANDIDATES: readonly DonationCopy[] = [
   {
     id: 'B',
     headline: '편하게 주문하셨나요?',
-    subLines: ['서버비는 만든 학생들이 나눠 내고 있어요.', '1,000원이면 하루치가 나와요.'],
+    subLines: ['서버비는 만든 학생들이 나눠 내고 있어요.', '{amount}원이면 하루치가 나와요.'],
   },
   {
     id: 'C',
@@ -58,22 +63,22 @@ export const DONATION_COPY_DIVERSE_CANDIDATES: readonly DonationCopy[] = [
   {
     id: 'E', // 가치/효용 강조
     headline: '목 터져라 "저기요!" 안 하셔도 돼서 편하셨죠? 😉',
-    subLines: ['주점은 무료로 쓰고, 서버비만 후원으로 받아요.', '1,000원 팁으로 개발자들을 응원해주세요!'],
+    subLines: ['주점은 무료로 쓰고, 서버비만 후원으로 받아요.', '{amount}원 팁으로 개발자들을 응원해주세요!'],
   },
   {
     id: 'F', // 솔직/감성 어필
     headline: '대학생 개발자들의 통장이 텅 비어갑니다 🥲',
-    subLines: ['서버비는 만든 학생들이 사비로 나눠 내고 있어요.', '1,000원만 보태주시면 하루 서버비가 해결돼요.'],
+    subLines: ['서버비는 만든 학생들이 사비로 나눠 내고 있어요.', '{amount}원만 보태주시면 하루 서버비가 해결돼요.'],
   },
   {
     id: 'G', // 유쾌/재치 (라임)
-    headline: '서빙은 저희가 할게요, 서버비는 누가 낼래? 🙋‍♂️',
+    headline: '주문은 저희가 받을게요, 서버비는 어쩌죠? 🙋‍♂️',
     subLines: ['학생들이 밤새서 만들고 무료로 풀었어요.', '서버가 꺼지지 않게 1,000원부터 후원 가능해요.'],
   },
   {
     id: 'H', // 후킹 (궁금증 유발)
-    headline: '방금 주문하신 서비스, 사실 "전면 무료"입니다 🤫',
-    subLines: ['키오스쿨은 대학생들이 만들어 무료로 배포했어요.', '부담 없이 1,000원으로 서버비 달성률을 채워주세요!'],
+    headline: '이 주문 앱, 주점은 공짜로 쓰고 있어요 🤫',
+    subLines: ['키오스쿨은 대학생들이 만들어 무료로 배포했어요.', '부담 없이 {amount}원으로 서버비 달성률을 채워주세요!'],
   },
 ];
 
@@ -85,7 +90,7 @@ export const DEFAULT_DONATION_AMOUNT = 1000;
 export const DONATION_COUNT_DISPLAY_MIN = 1;
 
 // 손님이 주점 팁으로 오해하면 주점 신뢰 사고로 번진다. 문구 변형과 무관하게 항상 노출한다.
-export const DONATION_DESTINATION_NOTE = '주점이 아니라 키오스쿨로 가요';
+export const DONATION_DESTINATION_NOTE = '주점이 아니라, 이 주문 앱을 만든 키오스쿨로 가요';
 
 /**
  * orderId 기반 결정적 배정. 리렌더에 흔들리지 않고 저장소가 필요 없으며,
@@ -109,23 +114,21 @@ export const DONATION_COPY_PERSUASION_CANDIDATES: readonly DonationCopy[] = [
   {
     id: 'I', // 상호성 — 이미 받은 혜택(대기 시간 감소)을 상기
     headline: '오늘 줄 서는 시간, 얼마나 아끼셨나요? ⏱️',
-    subLines: [
-      '북적이는 축제, 테이블에서 편하게 주문하신 시간의 가치를 학생 개발팀에게 돌려주시면 어떨까요?',
-      '보내주신 마음은 전액 쾌적한 서버 유지비로 쓰입니다.',
-    ],
+    subLines: ['덜 기다린 그 시간만큼, 만든 학생팀에 조금만 돌려주시면 어떨까요?', '보내주신 마음은 전액 쾌적한 서버 유지비로 쓰입니다.'],
     ctaTemplate: '아낀 시간만큼 {amount}원 팁 보내기',
   },
   {
     id: 'J', // 솔직함과 유머 — 심리적 장벽 낮추기
     headline: '저희... 서버비가 부족해요 🥲',
-    subLines: ['여러분의 편안한 축제를 위해 밤낮없이 만들었지만, 쏟아지는 주문에 서버비가 감당이 안 되고 있습니다(흑흑).', '개발팀의 지갑을 구해주세요!'],
-    ctaTemplate: '학생팀 지갑에 {amount}원 심폐소생술',
+    subLines: ['여러분의 편안한 축제를 위해 밤낮없이 만들었지만, 쏟아지는 주문에 서버비가 감당이 안 되고 있어요.', '개발팀의 지갑을 구해주세요!'],
+    ctaTemplate: '학생팀에 {amount}원 수혈하기',
   },
   {
     id: 'K', // 앵커링 — 일상 물건에 빗대 체감 비용 낮추기
-    headline: '편의점 생수 한 병 값으로 응원하기',
-    subLines: ['단돈 {amount}원이면 키오스쿨을 만든 학생 개발자들이 다음 축제에서도 더 멋진 서비스를 제공할 수 있는 든든한 서버 유지비가 됩니다.'],
-    ctaTemplate: '생수 한 병 값({amount}원) 후원하기',
+    headline: '{anchor} 값으로 응원하기',
+    subLines: ['단돈 {amount}원, {anchor} 값이면 키오스쿨을 만든 학생 개발자들이 다음 축제에서도 더 멋진 서비스를 준비할 든든한 서버 유지비가 돼요.'],
+    amountAnchors: { 1000: '편의점 생수 한 병', 2000: '자판기 커피 한 잔', 5000: '편의점 김밥 한 줄' },
+    ctaTemplate: '{anchor} 값({amount}원) 후원하기',
   },
 ];
 

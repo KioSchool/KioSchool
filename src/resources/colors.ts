@@ -12,6 +12,9 @@ export const Color = {
   LIGHT_RED: '#FFEBEB',
   BLUE: '#46ADFF',
 
+  TEXT_STRONG: '#25282b',
+  TEXT_BODY: '#6b737a',
+
   KIO_ORANGE_FAINT: '#FFF3E7',
   GREEN_FAINT: '#EDF9F1',
   BLUE_FAINT: '#E8F5FF',
