@@ -19,7 +19,7 @@ export function getSessionOrderStats(table: Table, statsBySessionId: Map<number,
   return statsBySessionId.get(session.id) ?? { count: session.orderCount, amount: session.totalOrderPrice };
 }
 
-// 응답 대기 중 WebSocket으로 반영한 더 새 상태를 스냅샷으로 되돌리지 않는다
+// 늦게 도착한 스냅샷이 더 새 갱신을 되돌리지 않게 updatedAt 기준으로 병합한다
 function mergeOrders(previous: Map<number, Order>, incoming: Order[]): Map<number, Order> {
   const next = new Map(previous);
 
@@ -78,10 +78,6 @@ function useTableOrderStats(workspaceId: string | undefined, tables: Table[]) {
     refresh();
   }, [tables.length, refresh]);
 
-  const applyOrder = (order: Order) => {
-    setOrdersById((previous) => mergeOrders(previous, [order]));
-  };
-
   const statsBySessionId = useMemo(() => {
     const stats = new Map<number, SessionOrderStats>();
 
@@ -96,7 +92,7 @@ function useTableOrderStats(workspaceId: string | undefined, tables: Table[]) {
     return stats;
   }, [ordersById]);
 
-  return { statsBySessionId, applyOrder, refresh };
+  return { statsBySessionId, refresh };
 }
 
 export default useTableOrderStats;

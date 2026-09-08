@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { useAtomValue, useSetAtom } from 'jotai';
@@ -15,11 +15,9 @@ import OnboardingStepHint from '@components/admin/workspace/onboarding/Onboardin
 import { ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardingData';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import useTableFilter, { TABLE_FILTER } from '@hooks/admin/useTableFilter';
-import useNewOrderFlash from '@hooks/admin/useNewOrderFlash';
 import useTableLayoutSave from '@hooks/admin/useTableLayoutSave';
 import useTableOrders from '@hooks/admin/useTableOrders';
 import useTableOrderStats from '@hooks/admin/useTableOrderStats';
-import useTableOrdersWebsocket from '@hooks/admin/useTableOrdersWebsocket';
 import useClockTick from '@hooks/common/useClockTick';
 import useQueryParam from '@hooks/common/useQueryParam';
 import { tableNoQueryParamConfig } from '@hooks/common/queryParamConfigs';
@@ -27,12 +25,12 @@ import useIsMobile from '@hooks/useIsMobile';
 import { TablePositionUpdate } from '@hooks/admin/useAdminTableLayout';
 import { adminTablesAtom, adminTableViewModeAtom, adminWorkspaceAtom, TABLE_VIEW } from '@jotai/admin/atoms';
 import { externalSidebarAtom } from '@jotai/atoms';
-import { ORDER_TABLES_REFRESH_DEBOUNCE_MS, TABLE_CLOCK_TICK_MS, TABLE_DETAIL_COLUMN_PX, TABLE_POLL_INTERVAL_MS, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
+import { TABLE_CLOCK_TICK_MS, TABLE_DETAIL_COLUMN_PX, TABLE_POLL_INTERVAL_MS, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { isOnboardingStepCompleted } from '@utils/onboarding';
-import { Order, RIGHT_SIDEBAR_ACTION, Table } from '@@types/index';
+import { RIGHT_SIDEBAR_ACTION, Table } from '@@types/index';
 
 const UNPLACED_NOTICE_TOAST_ID = 'unplaced-table-notice';
 
@@ -85,8 +83,7 @@ function AdminTableRealtime() {
   const selectedTable = tables.find((table) => table.tableNumber === Number(tableNo));
   const { orders, fetchOrders } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
   const { filterType, setFilterType, counts, filteredTables } = useTableFilter(tables);
-  const { flashSeqByTableNumber, flashNewOrder } = useNewOrderFlash();
-  const { statsBySessionId, applyOrder, refresh: refreshOrderStats } = useTableOrderStats(workspaceId, tables);
+  const { statsBySessionId, refresh: refreshOrderStats } = useTableOrderStats(workspaceId, tables);
   const { isSaving: isSavingLayout, conflictedPosition, clearConflict, save: saveLayout } = useTableLayoutSave(workspaceId, setAdminTables);
 
   const visibleTableNumbers = filterType === TABLE_FILTER.ALL ? null : new Set(filteredTables.map((table) => table.tableNumber));
@@ -98,38 +95,11 @@ function AdminTableRealtime() {
     fetchWorkspaceTables(workspaceId);
   };
 
-  const tablesRefreshTimerRef = useRef<number | null>(null);
-  const scheduleTablesRefresh = () => {
-    if (tablesRefreshTimerRef.current !== null) return;
-
-    tablesRefreshTimerRef.current = window.setTimeout(() => {
-      tablesRefreshTimerRef.current = null;
-      fetchTables();
-    }, ORDER_TABLES_REFRESH_DEBOUNCE_MS);
-  };
-
-  useEffect(() => () => window.clearTimeout(tablesRefreshTimerRef.current ?? undefined), []);
-
-  const handleOrderCreated = (order: Order) => {
-    applyOrder(order);
-    flashNewOrder(order.tableNumber);
-    // 편집 중 tables가 교체되면 드래프트 밑에서 배열이 바뀌어 동시 편집 배치가 로컬 카드를 가린다
-    if (!isEditing) scheduleTablesRefresh();
-    if (order.tableNumber === selectedTable?.tableNumber) fetchOrders();
-  };
-
-  const handleOrderUpdated = (order: Order) => {
-    applyOrder(order);
-    if (order.tableNumber === selectedTable?.tableNumber) fetchOrders();
-  };
-
   const handleManualRefresh = () => {
     fetchTables();
     refreshOrderStats();
     fetchOrders();
   };
-
-  useTableOrdersWebsocket(workspaceId, { onOrderCreated: handleOrderCreated, onOrderUpdated: handleOrderUpdated, onConnected: refreshOrderStats });
 
   useEffect(() => {
     fetchTables();
@@ -141,6 +111,7 @@ function AdminTableRealtime() {
     const timer = setInterval(() => {
       if (document.hidden) return;
       fetchTables();
+      refreshOrderStats();
     }, TABLE_POLL_INTERVAL_MS);
 
     return () => clearInterval(timer);
@@ -222,7 +193,6 @@ function AdminTableRealtime() {
                 orderStatsBySessionId={statsBySessionId}
                 visibleTableNumbers={visibleTableNumbers}
                 selectedTableNumber={selectedTable?.tableNumber ?? null}
-                flashSeqByTableNumber={flashSeqByTableNumber}
                 onSelectTable={handleSelectTable}
                 onStartEdit={handleStartEdit}
               />

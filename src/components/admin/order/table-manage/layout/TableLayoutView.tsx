@@ -60,20 +60,11 @@ interface TableLayoutViewProps {
   orderStatsBySessionId: Map<number, SessionOrderStats>;
   visibleTableNumbers: Set<number> | null;
   selectedTableNumber: number | null;
-  flashSeqByTableNumber: Map<number, number>;
   onSelectTable: (table: Table) => void;
   onStartEdit: () => void;
 }
 
-function TableLayoutView({
-  tables,
-  orderStatsBySessionId,
-  visibleTableNumbers,
-  selectedTableNumber,
-  flashSeqByTableNumber,
-  onSelectTable,
-  onStartEdit,
-}: TableLayoutViewProps) {
+function TableLayoutView({ tables, orderStatsBySessionId, visibleTableNumbers, selectedTableNumber, onSelectTable, onStartEdit }: TableLayoutViewProps) {
   const placedTables = useMemo(() => tables.filter((table) => table.position != null), [tables]);
   const unplacedTables = useMemo(() => tables.filter((table) => table.position == null), [tables]);
 
@@ -92,7 +83,6 @@ function TableLayoutView({
       orderCount={getSessionOrderStats(table, orderStatsBySessionId)?.count ?? 0}
       isSelected={table.tableNumber === selectedTableNumber}
       isDimmed={isDimmedByFilter(table)}
-      flashSeq={flashSeqByTableNumber.get(table.tableNumber) ?? 0}
       onSelect={onSelectTable}
     />
   );
