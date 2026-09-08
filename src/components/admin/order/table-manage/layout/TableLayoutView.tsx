@@ -109,13 +109,7 @@ function TableLayoutView({ tables, orderStatsBySessionId, visibleTableNumbers, s
           <TableLayoutCanvas cropBounds={getCropBounds(placedTables)} renderCell={renderCell} />
         )}
       </CanvasArea>
-      <UnplacedTableStrip
-        tables={unplacedTables}
-        selectedTableNumber={selectedTableNumber}
-        showEditButton={placedTables.length > 0}
-        onStartEdit={onStartEdit}
-        renderCard={renderCard}
-      />
+      <UnplacedTableStrip tables={unplacedTables} selectedTableNumber={selectedTableNumber} renderCard={renderCard} />
     </Container>
   );
 }

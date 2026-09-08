@@ -7,7 +7,7 @@ import TableRefreshButton from './TableRefreshButton';
 import ViewToggle from './ViewToggle';
 import { TableFilterCounts, TableFilterType } from '@hooks/admin/useTableFilter';
 import { Color } from '@resources/colors';
-import { colFlex, JustifyType, rowFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
   width: 95%;
@@ -17,9 +17,11 @@ const Container = styled.div`
   ${colFlex()};
 `;
 
-const Row = styled.div<{ justify?: JustifyType }>`
-  ${({ justify }) => rowFlex({ justify: justify ?? 'space-between', align: 'center' })};
+const Row = styled.div`
+  ${rowFlex({ justify: 'space-between', align: 'center' })};
 `;
+
+const Spacer = styled.div``;
 
 const Actions = styled.div`
   gap: 8px;
@@ -28,7 +30,7 @@ const Actions = styled.div`
 
 const SettingIcon = styled(RiSettings3Fill)`
   margin-right: 10px;
-  color: ${Color.WHITE};
+  color: ${Color.GREY};
 `;
 
 const buttonPulseAnimation = keyframes`
@@ -47,36 +49,47 @@ const ButtonHighlightWrapper = styled.div<{ animate: boolean }>`
 `;
 
 interface TableManageTopBarProps {
+  showEditEntry: boolean;
   showFilters: boolean;
   highlightSettings: boolean;
   filterType: TableFilterType;
   filterCounts: TableFilterCounts;
   onChangeFilter: (filter: TableFilterType) => void;
+  onStartEdit: () => void;
   onOpenSettings: () => void;
   onRefresh: () => void;
 }
 
-function TableManageTopBar({ showFilters, highlightSettings, filterType, filterCounts, onChangeFilter, onOpenSettings, onRefresh }: TableManageTopBarProps) {
+function TableManageTopBar({
+  showEditEntry,
+  showFilters,
+  highlightSettings,
+  filterType,
+  filterCounts,
+  onChangeFilter,
+  onStartEdit,
+  onOpenSettings,
+  onRefresh,
+}: TableManageTopBarProps) {
   return (
     <Container>
-      <Row justify="flex-end">
+      <Row>
+        {showFilters ? <TableFilterBar activeFilter={filterType} counts={filterCounts} onChange={onChangeFilter} /> : <Spacer />}
         <Actions>
+          {showFilters && <ViewToggle />}
+          {showEditEntry && (
+            <NewCommonButton size="sm" color="blue_gray" onClick={onStartEdit}>
+              배치 편집
+            </NewCommonButton>
+          )}
           <ButtonHighlightWrapper animate={highlightSettings}>
-            <NewCommonButton size="sm" icon={<SettingIcon />} onClick={onOpenSettings}>
+            <NewCommonButton size="sm" color="blue_gray" icon={<SettingIcon />} onClick={onOpenSettings}>
               테이블 설정
             </NewCommonButton>
           </ButtonHighlightWrapper>
+          {showFilters && <TableRefreshButton onClick={onRefresh} />}
         </Actions>
       </Row>
-      {showFilters && (
-        <Row>
-          <TableFilterBar activeFilter={filterType} counts={filterCounts} onChange={onChangeFilter} />
-          <Actions>
-            <ViewToggle />
-            <TableRefreshButton onClick={onRefresh} />
-          </Actions>
-        </Row>
-      )}
     </Container>
   );
 }
