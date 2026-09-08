@@ -69,11 +69,12 @@ const SubLine = styled.div`
 `;
 
 const CountLine = styled.div`
-  padding: 8px 10px;
+  padding: 9px 12px;
   border-radius: 8px;
-  background: ${Color.LIGHT_GREY};
-  font-size: 12px;
-  color: ${Color.TEXT_BODY};
+  background: ${Color.KIO_ORANGE_FAINT};
+  font-size: 13px;
+  font-weight: 600;
+  color: ${Color.KIO_ORANGE_DARK};
   text-align: center;
 `;
 
@@ -84,7 +85,7 @@ interface DonationVisualHeaderProps {
 }
 
 function DonationVisualHeader({ copy, amount, todayCount }: DonationVisualHeaderProps) {
-  const headlineText = fillDonationAmount(copy.headline, amount, copy.amountAnchors);
+  const headlineText = fillDonationAmount(copy.headline, amount, copy);
   const characterSrc = AMOUNT_CHARACTERS[amount] ?? DEFAULT_CHARACTER;
   const countText = resolveDonationCountText(todayCount);
 
@@ -98,7 +99,7 @@ function DonationVisualHeader({ copy, amount, todayCount }: DonationVisualHeader
       <BodyGroup>
         <SubLineGroup>
           {copy.subLines.map((line) => (
-            <SubLine key={line}>{fillDonationAmount(line, amount, copy.amountAnchors)}</SubLine>
+            <SubLine key={line}>{fillDonationAmount(line, amount, copy)}</SubLine>
           ))}
         </SubLineGroup>
         {countText && <CountLine>{countText}</CountLine>}

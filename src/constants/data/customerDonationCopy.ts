@@ -6,22 +6,31 @@ export interface DonationCopy {
   ctaTemplate?: string;
   /** 금액별 비유 대상. 헤드라인·본문·CTA의 `{anchor}`를 치환한다. */
   amountAnchors?: Readonly<Record<number, string>>;
+  /** 금액별 지속 기간. 본문의 `{duration}`을 치환한다. */
+  amountDurations?: Readonly<Record<number, string>>;
 }
 
-export const DEFAULT_DONATION_CTA_TEMPLATE = '토스로 {amount}원 보내기';
+export const DEFAULT_DONATION_CTA_TEMPLATE = '{amount}원 보내기';
 
 const AMOUNT_PLACEHOLDER = /\{amount\}/g;
 const ANCHOR_PLACEHOLDER = /\{anchor\}/g;
-const ANCHOR_FALLBACK_AMOUNT = 1000;
+const DURATION_PLACEHOLDER = /\{duration\}/g;
+const AMOUNT_MAP_FALLBACK = 1000;
 
-/** 헤드라인·본문·버튼 어디서든 `{amount}`를 선택 금액으로, `{anchor}`를 금액별 비유로 치환한다. */
-export function fillDonationAmount(text: string, amount: number, amountAnchors?: Readonly<Record<number, string>>): string {
-  const anchor = amountAnchors?.[amount] ?? amountAnchors?.[ANCHOR_FALLBACK_AMOUNT] ?? '';
-  return text.replace(AMOUNT_PLACEHOLDER, amount.toLocaleString()).replace(ANCHOR_PLACEHOLDER, anchor);
+function pickAmountValue(map: Readonly<Record<number, string>> | undefined, amount: number): string {
+  return map?.[amount] ?? map?.[AMOUNT_MAP_FALLBACK] ?? '';
+}
+
+/** 헤드라인·본문·버튼 어디서든 `{amount}`·`{anchor}`·`{duration}`을 선택 금액 기준으로 치환한다. */
+export function fillDonationAmount(text: string, amount: number, copy?: Pick<DonationCopy, 'amountAnchors' | 'amountDurations'>): string {
+  return text
+    .replace(AMOUNT_PLACEHOLDER, amount.toLocaleString())
+    .replace(ANCHOR_PLACEHOLDER, pickAmountValue(copy?.amountAnchors, amount))
+    .replace(DURATION_PLACEHOLDER, pickAmountValue(copy?.amountDurations, amount));
 }
 
 export function buildDonationCtaLabel(copy: DonationCopy, amount: number): string {
-  return fillDonationAmount(copy.ctaTemplate ?? DEFAULT_DONATION_CTA_TEMPLATE, amount, copy.amountAnchors);
+  return fillDonationAmount(copy.ctaTemplate ?? DEFAULT_DONATION_CTA_TEMPLATE, amount, copy);
 }
 
 /**
@@ -31,10 +40,11 @@ export function buildDonationCtaLabel(copy: DonationCopy, amount: number): strin
 export const CUSTOMER_DONATION_COPIES: readonly DonationCopy[] = [
   {
     id: 'anchor',
-    headline: '{anchor} 값이면 돼요',
-    subLines: ['키오스쿨은 학생들이 만들어서 무료로 운영해요.', '{anchor} 값 {amount}원이면 다음 축제까지 서버가 버텨요.'],
+    headline: '{anchor} 값으로 응원하기',
+    subLines: ['키오스쿨은 학생들이 만들어서 무료로 운영해요.', '{anchor} 값 {amount}원이면 서버가 {duration} 버텨요.'],
     amountAnchors: { 1000: '편의점 생수 한 병', 2000: '삼각김밥 한 개', 5000: '커피 한 잔' },
-    ctaTemplate: '{anchor} 값({amount}원) 보내기',
+    amountDurations: { 1000: '하루', 2000: '사흘', 5000: '한 주' },
+    ctaTemplate: '{amount}원 보내기',
   },
 ];
 
