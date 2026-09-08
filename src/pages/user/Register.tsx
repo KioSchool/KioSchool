@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import useRegister from '@hooks/user/useRegister';
+import { getApiErrorMessage } from '@utils/apiError';
 import AppContainer from '@components/common/container/AppContainer';
 import NewAppInput from '@components/common/input/NewAppInput';
 import NewCommonButton from '@components/common/button/NewCommonButton';
@@ -109,7 +110,16 @@ function Register() {
       return;
     }
 
-    const isDuplicated = await checkDuplicateId(userId);
+    let isDuplicated: boolean;
+    try {
+      isDuplicated = await checkDuplicateId(userId);
+    } catch (error) {
+      // 확인 요청 실패를 "사용 가능"으로 오판하지 않는다. 실패는 실패로 보여주고 다음 단계로 못 가게 막는다.
+      setErrorMessage(getApiErrorMessage(error, '아이디 중복 확인에 실패했습니다. 잠시 후 다시 시도해 주세요.'));
+      setIsAbleId(false);
+      return;
+    }
+
     if (isDuplicated) {
       setErrorMessage('이미 사용중인 ID입니다.');
       setIsAbleId(false);
