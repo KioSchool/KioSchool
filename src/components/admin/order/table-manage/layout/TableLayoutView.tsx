@@ -96,6 +96,7 @@ function TableLayoutView({ tables, orderStatsBySessionId, visibleTableNumbers, s
 
   return (
     <Container>
+      <UnplacedTableStrip tables={unplacedTables} selectedTableNumber={selectedTableNumber} renderCard={renderCard} />
       <CanvasArea>
         {placedTables.length === 0 ? (
           <EmptyState>
@@ -109,7 +110,6 @@ function TableLayoutView({ tables, orderStatsBySessionId, visibleTableNumbers, s
           <TableLayoutCanvas cropBounds={getCropBounds(placedTables)} renderCell={renderCell} />
         )}
       </CanvasArea>
-      <UnplacedTableStrip tables={unplacedTables} selectedTableNumber={selectedTableNumber} renderCard={renderCard} />
     </Container>
   );
 }
