@@ -9,18 +9,29 @@ export function resolveDonationCountText(todayCount: number | null): string | nu
   return `오늘 ${todayCount}명이 응원해줬어요`;
 }
 
-// 감사 화면 카운트 문구. todayCount는 방금 본인 POST로 +1된 값 = 오늘 몇 번째 후원자인지.
-// count가 null이면 숫자 강조 없이 suffix만 노출한다(오늘 첫 후원자).
+// 감사 화면 카운트 문구.
+// 방금 후원(justDonated): rank는 그 POST 응답값 = 오늘 내 후원 순번. 그 시점의 사실이라 이후로 안 변한다.
+// 재진입(recap): 순번은 더 이상 신뢰할 수 없다. 서수를 버리고 지금까지 오늘 함께한 총 후원자 수만 보여준다.
 export interface ThanksCountParts {
   prefix: string;
   count: number | null;
   suffix: string;
 }
 
-export function resolveThanksCount(todayCount: number | null): ThanksCountParts | null {
-  if (todayCount == null) return null;
-  if (todayCount <= 1) return { prefix: '오늘 ', count: null, suffix: '첫 번째 후원자님이에요' };
-  return { prefix: '오늘 ', count: todayCount, suffix: '번째 후원자님이에요' };
+export interface ThanksCountInput {
+  justDonated: boolean;
+  rank: number | null;
+  todayCount: number | null;
+}
+
+export function resolveThanksCount({ justDonated, rank, todayCount }: ThanksCountInput): ThanksCountParts | null {
+  if (justDonated) {
+    if (rank == null) return null;
+    if (rank <= 1) return { prefix: '오늘 ', count: null, suffix: '첫 번째 후원자님이에요' };
+    return { prefix: '오늘 ', count: rank, suffix: '번째 후원자님이에요' };
+  }
+  if (todayCount == null || todayCount <= 0) return null;
+  return { prefix: '오늘 ', count: todayCount, suffix: '명이 함께하고 있어요' };
 }
 
 const TOSS_BANK_NAME = '토스뱅크';

@@ -49,6 +49,7 @@ interface UseCustomerDonationModalResult {
   note: string;
   amount: number;
   todayCount: number | null;
+  donationRank: number | null;
   donationUrl: string;
   method: DonationMethod;
   selectAmount: (next: number) => void;
@@ -71,6 +72,8 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
   const [amount, setAmount] = useState<number>(DEFAULT_DONATION_AMOUNT);
   const [method, setMethod] = useState<DonationMethod>(DEFAULT_DONATION_METHOD);
   const [todayCount, setTodayCount] = useState<number | null>(initialTodayCount ?? null);
+  // 방금 후원 시 POST 응답으로 고정하는 내 순번. 이후 GET(총계)이 덮지 못하게 todayCount와 분리한다. (스토리 시드로 initialTodayCount 재사용)
+  const [donationRank, setDonationRank] = useState<number | null>(initialTodayCount ?? null);
   const autoOpenedRef = useRef(false);
   const viewReportedRef = useRef(false);
   const recordedRef = useRef(false);
@@ -153,13 +156,18 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
 
     userApi
       .post<TodayCountResponse>(RECORD_CLICK_ENDPOINT, body)
-      .then((res) => setTodayCount(res.data.todayCount))
+      .then((res) => {
+        setTodayCount(res.data.todayCount);
+        setDonationRank(res.data.todayCount);
+      })
       .catch(() => undefined);
   };
 
   // 감사 화면에서 "더 응원하기". 세션 내 두 번째 후원도 별도 클릭으로 집계되도록 recordedRef를 푼다.
+  // 순번은 다음 POST 응답으로 다시 채운다 — 실패 시 옛 순번을 보여주지 않도록 비운다.
   const donateAgain = () => {
     setJustDonated(false);
+    setDonationRank(null);
     recordedRef.current = false;
     setView('donate');
   };
@@ -182,6 +190,7 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
     note,
     amount,
     todayCount,
+    donationRank,
     donationUrl: buildDonationTossUrl(amount),
     method,
     selectAmount,

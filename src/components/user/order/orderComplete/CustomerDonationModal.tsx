@@ -320,6 +320,7 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
     note,
     amount,
     todayCount,
+    donationRank,
     donationUrl,
     method,
     selectAmount,
@@ -338,7 +339,7 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
   if (!eligible) return null;
 
   const isAccountMethod = method === 'account';
-  const thanksCount = resolveThanksCount(todayCount);
+  const thanksCount = resolveThanksCount({ justDonated, rank: donationRank, todayCount });
 
   const handleAccountDonate = () => {
     navigator.clipboard?.writeText(DONATION_ACCOUNT.accountNo).catch(() => undefined);
