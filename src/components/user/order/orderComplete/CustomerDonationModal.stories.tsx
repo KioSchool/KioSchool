@@ -69,7 +69,7 @@ export const 후원_완료_트리거: Story = {
 // 토스로 보낸 직후 감사 화면 (축하 + 임팩트 + N번째).
 export const 감사_토스: Story = {
   play: async () => {
-    const send = await screen.findByRole('link', { name: /원 보내기$/ });
+    const send = await screen.findByRole('button', { name: /원 보내기$/ });
     await userEvent.click(send);
   },
 };

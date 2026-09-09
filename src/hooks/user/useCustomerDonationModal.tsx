@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useAtom } from 'jotai';
 import { donationCardDismissedAtAtom, donationDonatedAtAtom } from '@jotai/user/atoms';
 import useApi from '@hooks/useApi';
-import { buildDonationTossUrl } from '@utils/donation';
 import { reportDonationCardEvent } from '@utils/donationCardAnalytics';
 import { DEFAULT_DONATION_AMOUNT, DONATION_NOTE_MESSAGES, DonationCopy, donationNoteIndex, pickCopyVariant } from '@constants/data/customerDonationCopy';
 
@@ -50,7 +49,6 @@ interface UseCustomerDonationModalResult {
   amount: number;
   todayCount: number | null;
   donationRank: number | null;
-  donationUrl: string;
   method: DonationMethod;
   selectAmount: (next: number) => void;
   selectMethod: (next: DonationMethod) => void;
@@ -191,7 +189,6 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
     amount,
     todayCount,
     donationRank,
-    donationUrl: buildDonationTossUrl(amount),
     method,
     selectAmount,
     selectMethod,

@@ -4,9 +4,10 @@ import { keyframes } from '@emotion/react';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { MODAL_ROOT_KEY } from '@hooks/useModal';
-import { DONATION_ACCOUNT, resolveThanksCount } from '@utils/donation';
+import { buildDonationTossUrl, DONATION_ACCOUNT, resolveThanksCount } from '@utils/donation';
 import { buildDonationCtaLabel, DONATION_AMOUNT_OPTIONS } from '@constants/data/customerDonationCopy';
 import useCustomerDonationModal, { DonationMethod } from '@hooks/user/useCustomerDonationModal';
+import useTossPopup from '@hooks/user/useTossPopup';
 import thanksCharacter from '@resources/image/donation/good.webp';
 import DonationVisualHeader from './donation/DonationVisualHeader';
 import DonationAccountBox from './donation/DonationAccountBox';
@@ -130,17 +131,6 @@ const Chip = styled.button<{ selected: boolean }>`
   font-size: 14px;
   font-weight: ${({ selected }) => (selected ? 700 : 400)};
   cursor: pointer;
-`;
-
-const DonateAnchor = styled.a`
-  padding: 12px;
-  border-radius: 8px;
-  background: ${Color.KIO_ORANGE};
-  color: ${Color.WHITE};
-  font-size: 16px;
-  font-weight: 700;
-  text-align: center;
-  text-decoration: none;
 `;
 
 const DonateButton = styled.button`
@@ -321,7 +311,6 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
     amount,
     todayCount,
     donationRank,
-    donationUrl,
     method,
     selectAmount,
     selectMethod,
@@ -334,6 +323,7 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
     eligible,
     initialTodayCount,
   });
+  const { openTossPopupSync } = useTossPopup();
 
   const modalRoot = typeof document !== 'undefined' ? document.getElementById(MODAL_ROOT_KEY) : null;
   if (!eligible) return null;
@@ -346,14 +336,21 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
     donate();
   };
 
+  // 결제 플로우(useTossPopup)와 동일하게 새 창으로 딥링크를 연다. a[href] 동일 탭 이동은
+  // 토스 미설치 시 주문완료 화면을 날려버리고 데스크톱에선 아무 반응이 없다.
+  const handleTossDonate = () => {
+    openTossPopupSync({ tossAccountUrl: buildDonationTossUrl(), amount });
+    donate();
+  };
+
   const primaryAction = isAccountMethod ? (
     <DonateButton type="button" onClick={handleAccountDonate}>
       계좌번호 복사하기
     </DonateButton>
   ) : (
-    <DonateAnchor href={donationUrl} onClick={donate}>
+    <DonateButton type="button" onClick={handleTossDonate}>
       {buildDonationCtaLabel(copy, amount)}
-    </DonateAnchor>
+    </DonateButton>
   );
 
   const donateView = (
