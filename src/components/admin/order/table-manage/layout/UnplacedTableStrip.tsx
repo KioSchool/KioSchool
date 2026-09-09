@@ -5,6 +5,7 @@ import { Table } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { TABLE_GRID_CELL_PX } from '@constants/layout';
+import NewCommonButton from '@components/common/button/NewCommonButton';
 import { SELECTED_RING_PX } from './TableLayoutCard';
 
 const LIST_MAX_ROWS = 2;
@@ -18,8 +19,14 @@ const Container = styled.div`
   ${colFlex()};
 `;
 
+const HeaderRow = styled.div`
+  width: 100%;
+  ${rowFlex({ justify: 'space-between', align: 'center' })};
+`;
+
+const Spacer = styled.div``;
+
 const ToggleButton = styled.button`
-  align-self: flex-start;
   padding: 0;
   border: none;
   background: none;
@@ -67,10 +74,12 @@ const CardSlot = styled.div`
 interface UnplacedTableStripProps {
   tables: Table[];
   selectedTableNumber: number | null;
+  showEditButton: boolean;
+  onStartEdit: () => void;
   renderCard: (table: Table) => ReactNode;
 }
 
-function UnplacedTableStrip({ tables, selectedTableNumber, renderCard }: UnplacedTableStripProps) {
+function UnplacedTableStrip({ tables, selectedTableNumber, showEditButton, onStartEdit, renderCard }: UnplacedTableStripProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const hasUnplaced = tables.length > 0;
@@ -85,15 +94,26 @@ function UnplacedTableStrip({ tables, selectedTableNumber, renderCard }: Unplace
     setIsExpanded((prev) => !prev);
   };
 
-  if (!hasUnplaced) return null;
+  if (!hasUnplaced && !showEditButton) return null;
 
   return (
     <Container>
-      <ToggleButton type="button" onClick={handleToggleExpand}>
-        미배치 <Count>{tables.length}</Count>
-        {isExpanded ? <CollapseIcon /> : <ExpandIcon />}
-      </ToggleButton>
-      {isExpanded && (
+      <HeaderRow>
+        {hasUnplaced ? (
+          <ToggleButton type="button" onClick={handleToggleExpand}>
+            미배치 <Count>{tables.length}</Count>
+            {isExpanded ? <CollapseIcon /> : <ExpandIcon />}
+          </ToggleButton>
+        ) : (
+          <Spacer />
+        )}
+        {showEditButton && (
+          <NewCommonButton size="sm" color="blue_gray" onClick={onStartEdit}>
+            배치 편집
+          </NewCommonButton>
+        )}
+      </HeaderRow>
+      {hasUnplaced && isExpanded && (
         <CardList>
           {tables.map((table) => (
             <CardSlot key={table.id}>{renderCard(table)}</CardSlot>

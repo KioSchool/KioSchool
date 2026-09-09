@@ -49,44 +49,27 @@ const ButtonHighlightWrapper = styled.div<{ animate: boolean }>`
 `;
 
 interface TableManageTopBarProps {
-  showEditEntry: boolean;
   showFilters: boolean;
   highlightSettings: boolean;
   filterType: TableFilterType;
   filterCounts: TableFilterCounts;
   onChangeFilter: (filter: TableFilterType) => void;
-  onStartEdit: () => void;
   onOpenSettings: () => void;
   onRefresh: () => void;
 }
 
-function TableManageTopBar({
-  showEditEntry,
-  showFilters,
-  highlightSettings,
-  filterType,
-  filterCounts,
-  onChangeFilter,
-  onStartEdit,
-  onOpenSettings,
-  onRefresh,
-}: TableManageTopBarProps) {
+function TableManageTopBar({ showFilters, highlightSettings, filterType, filterCounts, onChangeFilter, onOpenSettings, onRefresh }: TableManageTopBarProps) {
   return (
     <Container>
       <Row>
         {showFilters ? <TableFilterBar activeFilter={filterType} counts={filterCounts} onChange={onChangeFilter} /> : <Spacer />}
         <Actions>
-          {showFilters && <ViewToggle />}
-          {showEditEntry && (
-            <NewCommonButton size="sm" color="blue_gray" onClick={onStartEdit}>
-              배치 편집
-            </NewCommonButton>
-          )}
           <ButtonHighlightWrapper animate={highlightSettings}>
             <NewCommonButton size="sm" color="blue_gray" icon={<SettingIcon />} onClick={onOpenSettings}>
               테이블 설정
             </NewCommonButton>
           </ButtonHighlightWrapper>
+          {showFilters && <ViewToggle />}
           {showFilters && <TableRefreshButton onClick={onRefresh} />}
         </Actions>
       </Row>

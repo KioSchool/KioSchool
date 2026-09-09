@@ -96,7 +96,13 @@ function TableLayoutView({ tables, orderStatsBySessionId, visibleTableNumbers, s
 
   return (
     <Container>
-      <UnplacedTableStrip tables={unplacedTables} selectedTableNumber={selectedTableNumber} renderCard={renderCard} />
+      <UnplacedTableStrip
+        tables={unplacedTables}
+        selectedTableNumber={selectedTableNumber}
+        showEditButton={placedTables.length > 0}
+        onStartEdit={onStartEdit}
+        renderCard={renderCard}
+      />
       <CanvasArea>
         {placedTables.length === 0 ? (
           <EmptyState>
