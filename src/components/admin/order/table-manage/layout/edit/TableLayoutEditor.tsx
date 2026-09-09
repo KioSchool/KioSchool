@@ -200,10 +200,10 @@ function TableLayoutEditor({ tables, onExit, onSave, onPositionChange, isSaving,
 
   return (
     <Frame>
-      <EditorToolbar changeCount={changes.length} isSaving={isSaving} onSave={handleSave} onResetAll={handleResetAll} onExit={handleExit} />
+      <EditorToolbar changeCount={changes.length} isSaving={isSaving} onSave={handleSave} onExit={handleExit} />
       <DndContext sensors={sensors} collisionDetection={pointerWithin} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <Container isSaving={isSaving}>
-          <UnplacedTableTray tables={unplacedTables} />
+          <UnplacedTableTray tables={unplacedTables} onResetAll={handleResetAll} />
           <CanvasArea>
             <TableLayoutCanvas renderCell={renderCell} scrollRef={scrollRef} />
           </CanvasArea>

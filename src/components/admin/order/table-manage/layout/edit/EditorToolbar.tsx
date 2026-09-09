@@ -31,35 +31,14 @@ const Actions = styled.div`
   ${rowFlex({ align: 'center' })};
 `;
 
-const ResetTextButton = styled.button`
-  padding: 0 8px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 600;
-  color: ${Color.MUTED_GREY};
-
-  &:hover:not(:disabled) {
-    color: ${Color.GREY};
-  }
-
-  &:disabled {
-    color: ${Color.HEAVY_GREY};
-    cursor: not-allowed;
-  }
-`;
-
 interface EditorToolbarProps {
   changeCount: number;
   isSaving: boolean;
   onSave: () => void;
-  onResetAll: () => void;
   onExit: () => void;
 }
 
-function EditorToolbar({ changeCount, isSaving, onSave, onResetAll, onExit }: EditorToolbarProps) {
+function EditorToolbar({ changeCount, isSaving, onSave, onExit }: EditorToolbarProps) {
   return (
     <Container>
       <TitleBlock>
@@ -67,9 +46,6 @@ function EditorToolbar({ changeCount, isSaving, onSave, onResetAll, onExit }: Ed
         <Caption>빈 칸에 끌어 놓으세요</Caption>
       </TitleBlock>
       <Actions>
-        <ResetTextButton type="button" disabled={isSaving} onClick={onResetAll}>
-          전체 초기화
-        </ResetTextButton>
         <NewCommonButton size="sm" color="blue_gray" disabled={isSaving} onClick={onExit}>
           나가기
         </NewCommonButton>
