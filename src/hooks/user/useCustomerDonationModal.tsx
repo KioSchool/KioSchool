@@ -20,8 +20,9 @@ export type DonationMethod = 'toss' | 'account';
 
 const DEFAULT_DONATION_METHOD: DonationMethod = 'toss';
 
-interface TodayCountResponse {
+interface DonationCountResponse {
   todayCount: number;
+  totalCount: number;
 }
 
 interface RecordClickBody {
@@ -38,6 +39,7 @@ interface UseCustomerDonationModalParams {
   workspaceId: string | null;
   eligible: boolean;
   initialTodayCount?: number;
+  initialTotalCount?: number;
 }
 
 interface UseCustomerDonationModalResult {
@@ -49,6 +51,7 @@ interface UseCustomerDonationModalResult {
   note: string;
   amount: number;
   todayCount: number | null;
+  totalCount: number | null;
   donationUrl: string;
   method: DonationMethod;
   selectAmount: (next: number) => void;
@@ -59,7 +62,13 @@ interface UseCustomerDonationModalResult {
   dismiss: () => void;
 }
 
-function useCustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCount }: UseCustomerDonationModalParams): UseCustomerDonationModalResult {
+function useCustomerDonationModal({
+  orderId,
+  workspaceId,
+  eligible,
+  initialTodayCount,
+  initialTotalCount,
+}: UseCustomerDonationModalParams): UseCustomerDonationModalResult {
   const { userApi } = useApi();
   const [dismissedAt, setDismissedAt] = useAtom(donationCardDismissedAtAtom);
   const [donatedAt, setDonatedAt] = useAtom(donationDonatedAtAtom);
@@ -71,6 +80,7 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
   const [amount, setAmount] = useState<number>(DEFAULT_DONATION_AMOUNT);
   const [method, setMethod] = useState<DonationMethod>(DEFAULT_DONATION_METHOD);
   const [todayCount, setTodayCount] = useState<number | null>(initialTodayCount ?? null);
+  const [totalCount, setTotalCount] = useState<number | null>(initialTotalCount ?? null);
   const autoOpenedRef = useRef(false);
   const viewReportedRef = useRef(false);
   const recordedRef = useRef(false);
@@ -103,14 +113,20 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
     }
 
     userApi
-      .get<TodayCountResponse>(TODAY_COUNT_ENDPOINT)
-      .then((res) => setTodayCount(res.data.todayCount))
-      .catch(() => setTodayCount(initialTodayCount ?? null));
+      .get<DonationCountResponse>(TODAY_COUNT_ENDPOINT)
+      .then((res) => {
+        setTodayCount(res.data.todayCount);
+        setTotalCount(res.data.totalCount);
+      })
+      .catch(() => {
+        setTodayCount(initialTodayCount ?? null);
+        setTotalCount(initialTotalCount ?? null);
+      });
 
     return () => {
       document.body.style.overflow = 'auto';
     };
-  }, [isOpen, copy.id, noteIndex, workspaceIdParam, userApi, initialTodayCount]);
+  }, [isOpen, copy.id, noteIndex, workspaceIdParam, userApi, initialTodayCount, initialTotalCount]);
 
   const selectAmount = (next: number) => {
     setAmount(next);
@@ -152,8 +168,11 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
     };
 
     userApi
-      .post<TodayCountResponse>(RECORD_CLICK_ENDPOINT, body)
-      .then((res) => setTodayCount(res.data.todayCount))
+      .post<DonationCountResponse>(RECORD_CLICK_ENDPOINT, body)
+      .then((res) => {
+        setTodayCount(res.data.todayCount);
+        setTotalCount(res.data.totalCount);
+      })
       .catch(() => undefined);
   };
 
@@ -182,6 +201,7 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
     note,
     amount,
     todayCount,
+    totalCount,
     donationUrl: buildDonationTossUrl(amount),
     method,
     selectAmount,
