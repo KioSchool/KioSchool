@@ -1,5 +1,5 @@
 import useApi from '@hooks/useApi';
-import { Workspace } from '@@types/index';
+import { FocalPoint, Workspace } from '@@types/index';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { adminTablesAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
@@ -101,21 +101,19 @@ function useAdminWorkspace() {
     });
   };
 
-  const createFormData = (parameter: any, files: Array<File | null>) => {
+  const createFormData = (parameter: any, files: Array<File>) => {
     const data = new FormData();
     data.append('body', new Blob([JSON.stringify(parameter)], { type: 'application/json' }));
 
     files.forEach((file) => {
-      if (file) {
-        data.append('imageFiles', file, file.name);
-      }
+      data.append('imageFiles', file, file.name);
     });
 
     return data;
   };
 
-  const updateWorkspaceImage = (workspaceId: number, imageIds: Array<number | null>, imageFiles: Array<File | null>) => {
-    const data = createFormData({ workspaceId, imageIds }, imageFiles);
+  const updateWorkspaceImage = (workspaceId: number, imageIds: Array<number | null>, focalPoints: Array<FocalPoint>, imageFiles: Array<File>) => {
+    const data = createFormData({ workspaceId, imageIds, focalPoints }, imageFiles);
 
     return adminApi.put<Workspace>('/workspace/image', data);
   };
@@ -126,14 +124,15 @@ function useAdminWorkspace() {
     description: string,
     notice: string | undefined,
     imageIds: Array<number | null>,
-    imageFiles: Array<File | null>,
+    focalPoints: Array<FocalPoint>,
+    imageFiles: Array<File>,
   ) => {
-    const updateWorkspaceInfoResult = updateWorkspaceInfo(workspaceId, name, description, notice);
-    const updateWorkspaceImageResult = updateWorkspaceImage(workspaceId, imageIds, imageFiles);
-
-    Promise.all([updateWorkspaceInfoResult, updateWorkspaceImageResult])
-      .then(([infoResponse]) => {
-        setAdminWorkspace(infoResponse.data);
+    // 이미지 업데이트가 워크스페이스를 다시 읽고 저장하므로, 정보 저장이 먼저 커밋되어야
+    // 이미지 저장이 그 결과를 덮어쓰지 않는다. 이미지 응답이 최종 상태다 — 정보 응답은 버린다.
+    updateWorkspaceInfo(workspaceId, name, description, notice)
+      .then(() => updateWorkspaceImage(workspaceId, imageIds, focalPoints, imageFiles))
+      .then((imageResponse) => {
+        setAdminWorkspace(imageResponse.data);
         navigate(getAdminWorkspacePath(workspaceId));
       })
       .catch((error) => {
