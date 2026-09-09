@@ -326,7 +326,7 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
   ) : (
     <>
       <ThanksCharacter src={thanksCharacter} alt="키오스쿨 마스코트" />
-      <ThanksTitle>{justDonated ? '정말 고마워요 🎉' : '이미 응원해주셨어요'}</ThanksTitle>
+      <ThanksTitle>정말 고마워요 🎉</ThanksTitle>
       {justDonated && <ThanksImpact>{impactText}</ThanksImpact>}
       {thanksCountText && <ThanksCount>{thanksCountText}</ThanksCount>}
       <SecondaryButton type="button" onClick={donateAgain}>
