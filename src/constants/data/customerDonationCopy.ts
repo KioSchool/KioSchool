@@ -50,7 +50,7 @@ export const CUSTOMER_DONATION_COPIES: readonly DonationCopy[] = [
 
 export const DONATION_AMOUNT_OPTIONS: readonly number[] = [1000, 2000, 5000];
 
-export const DEFAULT_DONATION_AMOUNT = 1000;
+export const DEFAULT_DONATION_AMOUNT = 2000;
 
 // 오늘 후원자가 0명일 때 카운터 줄에 대신 노출한다.
 export const DONATION_COUNT_EMPTY_TEXT = '오늘의 첫 응원을 기다리고 있어요';
