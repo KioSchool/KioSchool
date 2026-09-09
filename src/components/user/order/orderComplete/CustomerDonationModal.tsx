@@ -1,10 +1,11 @@
 import { createPortal } from 'react-dom';
 import styled from '@emotion/styled';
+import { keyframes } from '@emotion/react';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { MODAL_ROOT_KEY } from '@hooks/useModal';
 import { DONATION_ACCOUNT, resolveThanksCountText } from '@utils/donation';
-import { buildDonationCtaLabel, DONATION_AMOUNT_OPTIONS, fillDonationAmount } from '@constants/data/customerDonationCopy';
+import { buildDonationCtaLabel, DONATION_AMOUNT_OPTIONS } from '@constants/data/customerDonationCopy';
 import useCustomerDonationModal, { DonationMethod } from '@hooks/user/useCustomerDonationModal';
 import thanksCharacter from '@resources/image/donation/good.webp';
 import DonationVisualHeader from './donation/DonationVisualHeader';
@@ -162,23 +163,105 @@ const ThanksTitle = styled.div`
 `;
 
 const THANKS_CHARACTER_HEIGHT_PX = 96;
+const CONFETTI_COUNT = 12;
+
+const popIn = keyframes`
+  0% { transform: scale(0.6); opacity: 0; }
+  70% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+`;
+
+const confettiFall = keyframes`
+  0% { transform: translateY(-14px) rotate(0deg); opacity: 0; }
+  12% { opacity: 1; }
+  100% { transform: translateY(96px) rotate(320deg); opacity: 0; }
+`;
 
 const ThanksCharacter = styled.img`
   align-self: center;
   height: ${THANKS_CHARACTER_HEIGHT_PX}px;
   object-fit: contain;
+  animation: ${popIn} 0.42s cubic-bezier(0.34, 1.4, 0.64, 1) both;
 `;
 
-const ThanksImpact = styled.div`
-  padding: 9px 12px;
-  border-radius: 8px;
-  background: ${Color.KIO_ORANGE_FAINT};
-  font-size: 13px;
-  font-weight: 600;
-  color: ${Color.KIO_ORANGE_DARK};
-  text-align: center;
-  line-height: 1.5;
-  word-break: keep-all;
+const Confetti = styled.div`
+  position: absolute;
+  top: 6px;
+  left: 0;
+  right: 0;
+  height: 0;
+  z-index: 1;
+  pointer-events: none;
+`;
+
+const ConfettiPiece = styled.i`
+  position: absolute;
+  top: 0;
+  width: 6px;
+  height: 10px;
+  border-radius: 1px;
+  animation: ${confettiFall} 900ms ease-in forwards;
+
+  &:nth-of-type(1) {
+    left: 6%;
+    background: ${Color.KIO_ORANGE};
+    animation-delay: 0ms;
+  }
+  &:nth-of-type(2) {
+    left: 15%;
+    background: ${Color.GREEN};
+    animation-delay: 90ms;
+  }
+  &:nth-of-type(3) {
+    left: 24%;
+    background: ${Color.BLUE};
+    animation-delay: 30ms;
+  }
+  &:nth-of-type(4) {
+    left: 33%;
+    background: ${Color.KIO_ORANGE_DARK};
+    animation-delay: 150ms;
+  }
+  &:nth-of-type(5) {
+    left: 42%;
+    background: ${Color.RED};
+    animation-delay: 60ms;
+  }
+  &:nth-of-type(6) {
+    left: 50%;
+    background: ${Color.KIO_ORANGE};
+    animation-delay: 180ms;
+  }
+  &:nth-of-type(7) {
+    left: 58%;
+    background: ${Color.GREEN};
+    animation-delay: 10ms;
+  }
+  &:nth-of-type(8) {
+    left: 66%;
+    background: ${Color.BLUE};
+    animation-delay: 120ms;
+  }
+  &:nth-of-type(9) {
+    left: 75%;
+    background: ${Color.KIO_ORANGE_DARK};
+    animation-delay: 45ms;
+  }
+  &:nth-of-type(10) {
+    left: 84%;
+    background: ${Color.RED};
+    animation-delay: 165ms;
+  }
+  &:nth-of-type(11) {
+    left: 90%;
+    background: ${Color.KIO_ORANGE};
+    animation-delay: 75ms;
+  }
+  &:nth-of-type(12) {
+    left: 96%;
+    background: ${Color.GREEN};
+    animation-delay: 135ms;
+  }
 `;
 
 const ThanksCount = styled.div`
@@ -246,7 +329,6 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
   if (!eligible) return null;
 
   const isAccountMethod = method === 'account';
-  const impactText = fillDonationAmount('{anchor} 값 {amount}원으로 서버가 {duration} 더 버텨요', amount, copy);
   const thanksCountText = resolveThanksCountText(todayCount, justDonated);
 
   const handleAccountDonate = () => {
@@ -305,9 +387,15 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
 
   const thanksView = (
     <>
+      {justDonated && (
+        <Confetti aria-hidden>
+          {Array.from({ length: CONFETTI_COUNT }).map((_, index) => (
+            <ConfettiPiece key={index} />
+          ))}
+        </Confetti>
+      )}
       <ThanksCharacter src={thanksCharacter} alt="키오스쿨 마스코트" />
       <ThanksTitle>정말 고마워요 🎉</ThanksTitle>
-      {justDonated && <ThanksImpact>{impactText}</ThanksImpact>}
       {thanksCountText && <ThanksCount>{thanksCountText}</ThanksCount>}
       <SecondaryButton type="button" onClick={donateAgain}>
         더 응원하기
