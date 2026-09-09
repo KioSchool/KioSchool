@@ -188,16 +188,6 @@ const ThanksCount = styled.div`
   text-align: center;
 `;
 
-const ThanksGuide = styled.div`
-  font-size: 13px;
-  font-weight: 400;
-  color: ${Color.TEXT_BODY};
-  text-align: center;
-  line-height: 1.7;
-  white-space: pre-line;
-  word-break: keep-all;
-`;
-
 const SecondaryButton = styled.button`
   padding: 12px;
   border: 1px solid ${Color.KIO_ORANGE};
@@ -313,17 +303,7 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
     </>
   );
 
-  const thanksView = isAccountMethod ? (
-    <>
-      <ThanksCharacter src={thanksCharacter} alt="키오스쿨 마스코트" />
-      <ThanksTitle>계좌번호를 복사했어요</ThanksTitle>
-      <DonationAccountBox />
-      <ThanksGuide>{'뱅킹 앱에 붙여넣어 보내주시면 돼요.\n키오스쿨을 지켜주셔서 고마워요.'}</ThanksGuide>
-      <CloseButton type="button" onClick={dismiss}>
-        닫기
-      </CloseButton>
-    </>
-  ) : (
+  const thanksView = (
     <>
       <ThanksCharacter src={thanksCharacter} alt="키오스쿨 마스코트" />
       <ThanksTitle>정말 고마워요 🎉</ThanksTitle>
