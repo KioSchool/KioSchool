@@ -8,7 +8,7 @@ import c2IPainting from '@resources/image/donation/c2-i-painting.webp';
 import c4IFlag from '@resources/image/donation/c4-i-flag.webp';
 import c5KCoffee from '@resources/image/donation/c5-k-coffee.webp';
 
-const CHARACTER_IMAGE_HEIGHT_PX = 96;
+const CHARACTER_IMAGE_HEIGHT_PX = 112;
 
 // TODO(후속): 생수/삼각김밥/커피에 맞는 전용 일러스트로 교체
 const AMOUNT_CHARACTERS: Record<number, string> = {
@@ -25,7 +25,7 @@ const Container = styled.div`
 
 const CharacterImage = styled.img`
   height: ${CHARACTER_IMAGE_HEIGHT_PX}px;
-  align-self: flex-start;
+  align-self: center;
   object-fit: contain;
 `;
 
