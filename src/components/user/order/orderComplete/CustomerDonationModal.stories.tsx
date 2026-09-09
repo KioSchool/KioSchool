@@ -38,7 +38,7 @@ const meta: Meta<typeof CustomerDonationModal> = {
   title: 'user/order/CustomerDonationModal',
   component: CustomerDonationModal,
   parameters: { viewport: { defaultViewport: 'iphone12' } },
-  args: { orderId: '1000', workspaceId: '1', eligible: true, initialTodayCount: 12, initialTotalCount: 8201 },
+  args: { orderId: '1000', workspaceId: '1', eligible: true, initialTodayCount: 12 },
   decorators: [withStore({})],
 };
 

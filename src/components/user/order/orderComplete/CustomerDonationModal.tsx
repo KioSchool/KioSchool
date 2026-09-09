@@ -307,10 +307,9 @@ interface CustomerDonationModalProps {
   workspaceId: string | null;
   eligible: boolean;
   initialTodayCount?: number;
-  initialTotalCount?: number;
 }
 
-function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCount, initialTotalCount }: CustomerDonationModalProps) {
+function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCount }: CustomerDonationModalProps) {
   const {
     isOpen,
     open,
@@ -321,7 +320,6 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
     note,
     amount,
     todayCount,
-    totalCount,
     donationUrl,
     method,
     selectAmount,
@@ -334,14 +332,13 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
     workspaceId,
     eligible,
     initialTodayCount,
-    initialTotalCount,
   });
 
   const modalRoot = typeof document !== 'undefined' ? document.getElementById(MODAL_ROOT_KEY) : null;
   if (!eligible) return null;
 
   const isAccountMethod = method === 'account';
-  const thanksCount = resolveThanksCount(totalCount, justDonated);
+  const thanksCount = resolveThanksCount(todayCount, justDonated);
 
   const handleAccountDonate = () => {
     navigator.clipboard?.writeText(DONATION_ACCOUNT.accountNo).catch(() => undefined);
@@ -410,8 +407,7 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
       <ThanksTitle>정말 고마워요 🎉</ThanksTitle>
       {thanksCount && (
         <ThanksCount>
-          {thanksCount.prefix}
-          <ThanksCountNumber>{thanksCount.count.toLocaleString()}</ThanksCountNumber>
+          오늘<ThanksCountNumber>{thanksCount.count}</ThanksCountNumber>
           {thanksCount.suffix}
         </ThanksCount>
       )}
