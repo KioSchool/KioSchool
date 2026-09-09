@@ -46,10 +46,6 @@ const Container = styled.div`
   }
 `;
 
-const EditorArea = styled.div`
-  width: 95%;
-`;
-
 const FallbackContainer = styled.div`
   height: ${TABLE_VIEW_HEIGHT_PX}px;
   box-sizing: border-box;
@@ -161,6 +157,35 @@ function AdminTableRealtime() {
 
   const needsTablesOnboarding = workspace.isOnboarding && !isOnboardingStepCompleted(workspace, ONBOARDING_STEP.TABLES);
 
+  // 편집도 좌측 영역만 인라인 교체한다 — 우측 상세 구역까지 갈아엎으면 별도 페이지로 이동한 느낌을 준다
+  const renderMainColumn = () => {
+    if (viewMode !== TABLE_VIEW.LAYOUT) return <AdminTableList tables={filteredTables} orderStatsBySessionId={statsBySessionId} />;
+
+    if (isEditing) {
+      return (
+        <TableLayoutEditor
+          tables={tables}
+          onExit={handleExitEdit}
+          onSave={handleSaveLayout}
+          onPositionChange={clearConflict}
+          isSaving={isSavingLayout}
+          conflictedPosition={conflictedPosition}
+        />
+      );
+    }
+
+    return (
+      <TableLayoutView
+        tables={tables}
+        orderStatsBySessionId={statsBySessionId}
+        visibleTableNumbers={visibleTableNumbers}
+        selectedTableNumber={selectedTable?.tableNumber ?? null}
+        onSelectTable={handleSelectTable}
+        onStartEdit={handleStartEdit}
+      />
+    );
+  };
+
   return (
     <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })}>
       <>
@@ -174,38 +199,14 @@ function AdminTableRealtime() {
           onOpenSettings={handleOpenSettings}
           onRefresh={handleManualRefresh}
         />
-        {isEditing ? (
-          <EditorArea>
-            <TableLayoutEditor
-              tables={tables}
-              onExit={handleExitEdit}
-              onSave={handleSaveLayout}
-              onPositionChange={clearConflict}
-              isSaving={isSavingLayout}
-              conflictedPosition={conflictedPosition}
-            />
-          </EditorArea>
-        ) : (
-          <Container>
-            {viewMode === TABLE_VIEW.LAYOUT ? (
-              <TableLayoutView
-                tables={tables}
-                orderStatsBySessionId={statsBySessionId}
-                visibleTableNumbers={visibleTableNumbers}
-                selectedTableNumber={selectedTable?.tableNumber ?? null}
-                onSelectTable={handleSelectTable}
-                onStartEdit={handleStartEdit}
-              />
-            ) : (
-              <AdminTableList tables={filteredTables} orderStatsBySessionId={statsBySessionId} />
-            )}
-            {selectedTable ? (
-              <TableDetailPanel workspaceId={workspaceId} workspaceName={workspace.name} table={selectedTable} orders={orders} refetchTable={fetchTables} />
-            ) : (
-              <FallbackContainer>테이블을 선택하면 상세 정보가 여기에 표시됩니다</FallbackContainer>
-            )}
-          </Container>
-        )}
+        <Container>
+          {renderMainColumn()}
+          {selectedTable ? (
+            <TableDetailPanel workspaceId={workspaceId} workspaceName={workspace.name} table={selectedTable} orders={orders} refetchTable={fetchTables} />
+          ) : (
+            <FallbackContainer>테이블을 선택하면 상세 정보가 여기에 표시됩니다</FallbackContainer>
+          )}
+        </Container>
         <RightSidebarModal useExternalControl={{ location }} />
       </>
     </AppContainer>

@@ -30,6 +30,7 @@ const HALF = 2;
 
 const Frame = styled.div`
   width: 100%;
+  height: ${TABLE_VIEW_HEIGHT_PX}px;
   ${colFlex()};
 `;
 
@@ -37,7 +38,8 @@ const SAVING_OPACITY = 0.6;
 
 const Container = styled.div<{ isSaving: boolean }>`
   width: 100%;
-  height: ${TABLE_VIEW_HEIGHT_PX}px;
+  flex: 1;
+  min-height: 0;
   gap: 12px;
   pointer-events: ${({ isSaving }) => (isSaving ? 'none' : 'auto')};
   opacity: ${({ isSaving }) => (isSaving ? SAVING_OPACITY : 1)};
