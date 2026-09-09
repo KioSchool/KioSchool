@@ -28,6 +28,7 @@ export const DONATION_ACCOUNT = {
   bankName: '토스뱅크',
   accountNo: '100127738116',
   holderName: '박지인(모임통장)',
+  holderNote: '키오스쿨 운영팀 모임통장',
 } as const;
 
 const ACCOUNT_NO_GROUP_SIZE = 4;
