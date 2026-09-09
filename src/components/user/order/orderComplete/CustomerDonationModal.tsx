@@ -1,4 +1,3 @@
-import { MouseEvent } from 'react';
 import { createPortal } from 'react-dom';
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
@@ -208,8 +207,6 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
     donate();
   };
 
-  const stopPropagation = (event: MouseEvent) => event.stopPropagation();
-
   const primaryAction = isAccountMethod ? (
     <DonateButton type="button" onClick={handleAccountDonate}>
       계좌번호 복사하기
@@ -282,10 +279,9 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
       {isOpen &&
         modalRoot &&
         createPortal(
-          <Overlay onClick={dismiss}>
-            <CenterPanel className={'customer-donation-modal'} onClick={stopPropagation}>
-              {content}
-            </CenterPanel>
+          // 배경(회색 영역) 클릭으로는 안 닫는다. ✕ 버튼으로만 닫힌다.
+          <Overlay>
+            <CenterPanel className={'customer-donation-modal'}>{content}</CenterPanel>
           </Overlay>,
           modalRoot,
         )}
