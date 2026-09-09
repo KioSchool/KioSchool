@@ -108,7 +108,7 @@ function UnplacedTableStrip({ tables, selectedTableNumber, showEditButton, onSta
           <Spacer />
         )}
         {showEditButton && (
-          <NewCommonButton size="sm" color="blue_gray" onClick={onStartEdit}>
+          <NewCommonButton size="xs" color="blue_gray" onClick={onStartEdit}>
             배치 편집
           </NewCommonButton>
         )}
