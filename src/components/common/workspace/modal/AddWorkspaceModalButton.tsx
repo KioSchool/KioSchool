@@ -3,12 +3,13 @@ import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
 import { createPortal } from 'react-dom';
 import { RiAddFill } from '@remixicon/react';
+import { Color } from '@resources/colors';
 
 const PlusIcon = styled(RiAddFill)`
   width: 34px;
   height: 34px;
   transition: transform 0.1s ease;
-  color: #e8eef2;
+  color: ${Color.GREY};
   &:hover {
     transform: scale(1.2);
   }
