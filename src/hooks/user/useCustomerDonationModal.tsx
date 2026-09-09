@@ -44,6 +44,7 @@ interface UseCustomerDonationModalResult {
   isOpen: boolean;
   hasDonated: boolean;
   view: DonationView;
+  justDonated: boolean;
   copy: DonationCopy;
   note: string;
   amount: number;
@@ -54,6 +55,7 @@ interface UseCustomerDonationModalResult {
   selectMethod: (next: DonationMethod) => void;
   open: () => void;
   donate: () => void;
+  donateAgain: () => void;
   dismiss: () => void;
 }
 
@@ -65,6 +67,7 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
   const [hasDonatedOnMount] = useState(() => donatedAt > 0);
   const [isOpen, setIsOpen] = useState(false);
   const [view, setView] = useState<DonationView>('donate');
+  const [justDonated, setJustDonated] = useState(false);
   const [amount, setAmount] = useState<number>(DEFAULT_DONATION_AMOUNT);
   const [method, setMethod] = useState<DonationMethod>(DEFAULT_DONATION_METHOD);
   const [todayCount, setTodayCount] = useState<number | null>(initialTodayCount ?? null);
@@ -117,9 +120,10 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
     setMethod(next);
   };
 
-  // 24h 차단·후원 이력과 무관하게 강제로 연다. 재후원을 위해 뷰를 'donate'로 되돌린다.
+  // 24h 차단·후원 이력과 무관하게 강제로 연다. 이미 후원한 재방문자는 폼이 아니라 감사 recap으로 보낸다.
   const open = () => {
-    setView('donate');
+    setJustDonated(false);
+    setView(hasDonated ? 'thanks' : 'donate');
     setIsOpen(true);
   };
 
@@ -132,6 +136,7 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
     reportDonationCardEvent('donation_card_click', { variant: copy.id, note_index: noteIndex, amount: recordedAmount, workspace_id: workspaceIdParam, method });
     setDonatedAt(Date.now());
     setDismissedAt(Date.now());
+    setJustDonated(true);
     setView('thanks');
 
     if (recordedRef.current) return;
@@ -152,8 +157,18 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
       .catch(() => undefined);
   };
 
+  // 감사 화면에서 "더 응원하기". 세션 내 두 번째 후원도 별도 클릭으로 집계되도록 recordedRef를 푼다.
+  const donateAgain = () => {
+    setJustDonated(false);
+    recordedRef.current = false;
+    setView('donate');
+  };
+
+  // GA donation_card_dismiss는 '요청' 화면을 닫을 때만 이탈로 본다. 감사 화면 닫기는 이탈이 아니다.
   const dismiss = () => {
-    reportDonationCardEvent('donation_card_dismiss', { variant: copy.id, note_index: noteIndex, workspace_id: workspaceIdParam });
+    if (view === 'donate') {
+      reportDonationCardEvent('donation_card_dismiss', { variant: copy.id, note_index: noteIndex, workspace_id: workspaceIdParam });
+    }
     setDismissedAt(Date.now());
     setIsOpen(false);
   };
@@ -162,6 +177,7 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
     isOpen,
     hasDonated,
     view,
+    justDonated,
     copy,
     note,
     amount,
@@ -172,6 +188,7 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
     selectMethod,
     open,
     donate,
+    donateAgain,
     dismiss,
   };
 }

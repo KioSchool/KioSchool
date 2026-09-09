@@ -3,9 +3,10 @@ import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { MODAL_ROOT_KEY } from '@hooks/useModal';
-import { DONATION_ACCOUNT, resolveDonationCountText } from '@utils/donation';
-import { buildDonationCtaLabel, DONATION_AMOUNT_OPTIONS } from '@constants/data/customerDonationCopy';
+import { DONATION_ACCOUNT, resolveThanksCountText } from '@utils/donation';
+import { buildDonationCtaLabel, DONATION_AMOUNT_OPTIONS, fillDonationAmount } from '@constants/data/customerDonationCopy';
 import useCustomerDonationModal, { DonationMethod } from '@hooks/user/useCustomerDonationModal';
+import thanksCharacter from '@resources/image/donation/good.webp';
 import DonationVisualHeader from './donation/DonationVisualHeader';
 import DonationAccountBox from './donation/DonationAccountBox';
 
@@ -21,7 +22,6 @@ const DONATION_METHOD_OPTIONS: readonly MethodOption[] = [
 
 const TRIGGER_LABEL_DEFAULT = '🙌 키오스쿨 응원하기';
 const TRIGGER_LABEL_DONATED = '✓ 응원해주셔서 고마워요';
-const THANKS_FALLBACK_TEXT = '여러분 덕에 키오스쿨이 굴러가요.';
 
 const Overlay = styled.div`
   position: fixed;
@@ -161,12 +161,52 @@ const ThanksTitle = styled.div`
   text-align: center;
 `;
 
-const ThanksBody = styled.div`
+const THANKS_CHARACTER_HEIGHT_PX = 96;
+
+const ThanksCharacter = styled.img`
+  align-self: center;
+  height: ${THANKS_CHARACTER_HEIGHT_PX}px;
+  object-fit: contain;
+`;
+
+const ThanksImpact = styled.div`
+  padding: 9px 12px;
+  border-radius: 8px;
+  background: ${Color.KIO_ORANGE_FAINT};
+  font-size: 13px;
+  font-weight: 600;
+  color: ${Color.KIO_ORANGE_DARK};
+  text-align: center;
+  line-height: 1.5;
+  word-break: keep-all;
+`;
+
+const ThanksCount = styled.div`
+  font-size: 12px;
+  font-weight: 400;
+  color: ${Color.TEXT_BODY};
+  text-align: center;
+`;
+
+const ThanksGuide = styled.div`
   font-size: 13px;
   font-weight: 400;
   color: ${Color.TEXT_BODY};
   text-align: center;
-  line-height: 1.65;
+  line-height: 1.7;
+  white-space: pre-line;
+  word-break: keep-all;
+`;
+
+const SecondaryButton = styled.button`
+  padding: 12px;
+  border: 1px solid ${Color.KIO_ORANGE};
+  border-radius: 8px;
+  background: ${Color.WHITE};
+  color: ${Color.KIO_ORANGE_DARK};
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
 `;
 
 const CloseButton = styled.button`
@@ -188,19 +228,36 @@ interface CustomerDonationModalProps {
 }
 
 function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCount }: CustomerDonationModalProps) {
-  const { isOpen, open, hasDonated, view, copy, note, amount, todayCount, donationUrl, method, selectAmount, selectMethod, donate, dismiss } =
-    useCustomerDonationModal({
-      orderId,
-      workspaceId,
-      eligible,
-      initialTodayCount,
-    });
+  const {
+    isOpen,
+    open,
+    hasDonated,
+    view,
+    justDonated,
+    copy,
+    note,
+    amount,
+    todayCount,
+    donationUrl,
+    method,
+    selectAmount,
+    selectMethod,
+    donate,
+    donateAgain,
+    dismiss,
+  } = useCustomerDonationModal({
+    orderId,
+    workspaceId,
+    eligible,
+    initialTodayCount,
+  });
 
   const modalRoot = typeof document !== 'undefined' ? document.getElementById(MODAL_ROOT_KEY) : null;
   if (!eligible) return null;
 
-  const countText = resolveDonationCountText(todayCount);
   const isAccountMethod = method === 'account';
+  const impactText = fillDonationAmount('{anchor} 값 {amount}원으로 서버가 {duration} 더 버텨요', amount, copy);
+  const thanksCountText = resolveThanksCountText(todayCount, justDonated);
 
   const handleAccountDonate = () => {
     navigator.clipboard?.writeText(DONATION_ACCOUNT.accountNo).catch(() => undefined);
@@ -256,11 +313,25 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
     </>
   );
 
-  const thanksView = (
+  const thanksView = isAccountMethod ? (
     <>
-      <ThanksTitle>고마워요!</ThanksTitle>
-      <ThanksBody>{countText ?? THANKS_FALLBACK_TEXT}</ThanksBody>
-      {isAccountMethod && <DonationAccountBox />}
+      <ThanksCharacter src={thanksCharacter} alt="키오스쿨 마스코트" />
+      <ThanksTitle>계좌번호를 복사했어요</ThanksTitle>
+      <DonationAccountBox />
+      <ThanksGuide>{'뱅킹 앱에 붙여넣어 보내주시면 돼요.\n키오스쿨을 지켜주셔서 고마워요.'}</ThanksGuide>
+      <CloseButton type="button" onClick={dismiss}>
+        닫기
+      </CloseButton>
+    </>
+  ) : (
+    <>
+      <ThanksCharacter src={thanksCharacter} alt="키오스쿨 마스코트" />
+      <ThanksTitle>{justDonated ? '정말 고마워요 🎉' : '이미 응원해주셨어요'}</ThanksTitle>
+      {justDonated && <ThanksImpact>{impactText}</ThanksImpact>}
+      {thanksCountText && <ThanksCount>{thanksCountText}</ThanksCount>}
+      <SecondaryButton type="button" onClick={donateAgain}>
+        더 응원하기
+      </SecondaryButton>
       <CloseButton type="button" onClick={dismiss}>
         닫기
       </CloseButton>

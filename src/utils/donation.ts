@@ -9,6 +9,13 @@ export function resolveDonationCountText(todayCount: number | null): string | nu
   return `오늘 ${todayCount}명이 응원해줬어요`;
 }
 
+// 감사 화면 카운트 문구. 방금 후원한 사람은 "N번째", 재방문 recap은 "N명 함께".
+export function resolveThanksCountText(todayCount: number | null, justDonated: boolean): string | null {
+  if (todayCount == null) return null;
+  if (justDonated) return `오늘 ${todayCount}번째 응원이에요`;
+  return `오늘 ${todayCount}명이 함께했어요`;
+}
+
 const TOSS_BANK_NAME = '토스뱅크';
 const TOSS_ACCOUNT_NO = '100127738116';
 

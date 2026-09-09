@@ -66,6 +66,30 @@ export const 후원_완료_트리거: Story = {
   decorators: [withStore({ donatedAt: 1_700_000_000_000 })],
 };
 
+// 토스로 보낸 직후 감사 화면 (축하 + 임팩트 + N번째).
+export const 감사_토스: Story = {
+  play: async () => {
+    const send = await screen.findByRole('link', { name: /원 보내기$/ });
+    await userEvent.click(send);
+  },
+};
+
+// 계좌번호 복사 직후 감사 화면 (계좌 유지 + 안내, "고마워요!" 아님).
+export const 감사_계좌: Story = {
+  play: async () => {
+    await userEvent.click(await screen.findByRole('button', { name: '계좌이체' }));
+    await userEvent.click(await screen.findByRole('button', { name: '계좌번호 복사하기' }));
+  },
+};
+
+// 이미 후원한 사람이 ✓ 트리거를 눌렀을 때 → 폼이 아니라 recap 감사 화면.
+export const 후원_완료_리캡: Story = {
+  decorators: [withStore({ donatedAt: 1_700_000_000_000 })],
+  play: async () => {
+    await userEvent.click(await screen.findByRole('button', { name: '✓ 응원해주셔서 고마워요' }));
+  },
+};
+
 export const NotEligible: Story = {
   args: { eligible: false },
 };
