@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
 import useAdminUser from '@hooks/admin/useAdminUser';
+import useAcquisitionSurvey from '@hooks/admin/useAcquisitionSurvey';
 import AppContainer from '@components/common/container/AppContainer';
 import AddWorkspace from '@components/common/workspace/AddWorkspace';
 import WorkspaceContent from '@components/admin/workspace/WorkspaceContent';
 import HomeOnboarding from '@components/admin/home/HomeOnboarding';
+import AcquisitionSurvey from '@components/admin/acquisition/AcquisitionSurvey';
 import AppPopup from '@components/common/popup/AppPopup';
 import { POPUP_CLOSE_MODE, PopupData } from '@constants/data/popupData';
 import { colFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
-import { adminUserAtom, adminWorkspacesAtom } from '@jotai/admin/atoms';
+import { adminAcquisitionSurveyAnsweredAtom, adminUserAtom, adminWorkspacesAtom } from '@jotai/admin/atoms';
 import AppFaqButton from '@components/common/button/AppFaqButton';
 import styled from '@emotion/styled';
 import OrderQRNoticePopupContent from '@components/admin/home/OrderQRNoticePopupContent';
@@ -45,8 +47,10 @@ const ADMIN_HOME_POPUP_DATAS: PopupData[] = [
 
 function AdminHome() {
   const { fetchWorkspaces, fetchAdminUser } = useAdminUser();
+  const { fetchIsAnswered } = useAcquisitionSurvey();
   const workspaces = useAtomValue(adminWorkspacesAtom);
   const user = useAtomValue(adminUserAtom);
+  const isAcquisitionSurveyAnswered = useAtomValue(adminAcquisitionSurveyAnsweredAtom);
   const [isAdminUserLoading, setIsAdminUserLoading] = useState(true);
   const addWorkspaceNumber = 3 - workspaces.length;
   const isAccountRegistered = !!user.account?.accountNumber;
@@ -56,22 +60,33 @@ function AdminHome() {
     fetchAdminUser().finally(() => {
       setIsAdminUserLoading(false);
     });
+
+    // 세션 내 재진입 시 다시 묻지 않도록 아톰에 한 번만 채운다.
+    if (isAcquisitionSurveyAnswered === null) fetchIsAnswered();
   }, []);
 
-  const pageContent = isAdminUserLoading ? (
-    <LoadingContainer>계정 정보를 불러오는 중입니다.</LoadingContainer>
-  ) : !isAccountRegistered ? (
-    <HomeOnboarding />
-  ) : (
-    <Container>
-      <WorkspaceContent workspaces={workspaces}>
-        {Array.from({ length: addWorkspaceNumber }).map((_, i) => (
-          <AddWorkspace key={i} workspaces={workspaces} />
-        ))}
-      </WorkspaceContent>
-      <AppFaqButton />
-    </Container>
-  );
+  const getPageContent = () => {
+    if (isAdminUserLoading || isAcquisitionSurveyAnswered === null) {
+      return <LoadingContainer>계정 정보를 불러오는 중입니다.</LoadingContainer>;
+    }
+
+    if (!isAcquisitionSurveyAnswered) return <AcquisitionSurvey />;
+
+    if (!isAccountRegistered) return <HomeOnboarding />;
+
+    return (
+      <Container>
+        <WorkspaceContent workspaces={workspaces}>
+          {Array.from({ length: addWorkspaceNumber }).map((_, i) => (
+            <AddWorkspace key={i} workspaces={workspaces} />
+          ))}
+        </WorkspaceContent>
+        <AppFaqButton />
+      </Container>
+    );
+  };
+
+  const pageContent = getPageContent();
 
   return (
     <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} customGap={'30px'}>

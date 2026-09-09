@@ -28,6 +28,9 @@ export const adminTableViewModeAtom = atomWithStorage<TableView>('adminTableView
 
 export const adminUserAtom = atom<User>(defaultUserValue);
 
+// null은 '아직 확인 전'이다. false여야만 설문을 띄운다.
+export const adminAcquisitionSurveyAnsweredAtom = atom<boolean | null>(null);
+
 export const adminUserAccountAtom = atom((get) => {
   const userInfo = get(adminUserAtom);
   const userAccount = userInfo.account;

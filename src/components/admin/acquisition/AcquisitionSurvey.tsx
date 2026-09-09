@@ -1,22 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import NewCommonButton from '@components/common/button/NewCommonButton';
+import { GA_EVENT } from '@constants/analytics';
+import useAcquisitionSurvey from '@hooks/admin/useAcquisitionSurvey';
 import { Color, OnboardingColor } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { ACQUISITION_CHANNEL, ACQUISITION_CHANNEL_ETC_MAX_LENGTH, ACQUISITION_CHANNEL_ORDER, AcquisitionChannel } from '@utils/acquisitionChannel';
-import AcquisitionChannelOption from './AcquisitionChannelOption';
+import { trackEvent } from '@utils/analytics';
+import AcquisitionSurveyOption from './AcquisitionSurveyOption';
 
 const Container = styled.div`
   width: 100%;
   max-width: 480px;
+  padding: 12px 0 48px;
+  box-sizing: border-box;
   gap: 16px;
   ${colFlex({ align: 'center' })}
 
   ${mobileMediaQuery} {
     max-width: 100%;
-    padding: 0 16px;
-    box-sizing: border-box;
+    padding: 12px 16px 48px;
   }
 `;
 
@@ -76,11 +80,6 @@ const ActionArea = styled.div`
   ${colFlex({ align: 'center' })}
 `;
 
-const SecondaryActions = styled.div`
-  gap: 8px;
-  ${rowFlex({ justify: 'center', align: 'center' })}
-`;
-
 const SkipButton = styled.button`
   border: none;
   background: none;
@@ -93,11 +92,8 @@ const SkipButton = styled.button`
   &:disabled {
     cursor: not-allowed;
   }
-`;
 
-const SecondaryActionsDivider = styled.span`
-  font-size: 13px;
-  color: ${OnboardingColor.EYEBROW_TEXT};
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const ErrorMessageContainer = styled.div`
@@ -113,25 +109,54 @@ const ErrorMessage = styled.div`
   text-align: center;
 `;
 
-interface AcquisitionChannelStepProps {
-  onSubmit: (channel: AcquisitionChannel, channelEtc: string | null) => void;
-  onSkip: () => void;
-  onBack: () => void;
-  isSubmitting: boolean;
-  errorMessage?: string;
-}
+const SUBMIT_FAILURE_MESSAGE = '저장하지 못했습니다. 잠시 후 다시 시도해주세요.';
 
-function AcquisitionChannelStep({ onSubmit, onSkip, onBack, isSubmitting, errorMessage }: AcquisitionChannelStepProps) {
+function AcquisitionSurvey() {
+  const { saveSurvey, markAnswered } = useAcquisitionSurvey();
+
   const [selectedChannel, setSelectedChannel] = useState<AcquisitionChannel | null>(null);
   const [channelEtcInput, setChannelEtcInput] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const hasTrackedViewRef = useRef(false);
+
+  useEffect(() => {
+    if (hasTrackedViewRef.current) return;
+
+    hasTrackedViewRef.current = true;
+    trackEvent(GA_EVENT.ACQUISITION_SURVEY_VIEW, {});
+  }, []);
 
   const isEtcSelected = selectedChannel === ACQUISITION_CHANNEL.ETC;
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!selectedChannel || isSubmitting) return;
 
+    setIsSubmitting(true);
+    setErrorMessage('');
+
     const trimmedEtc = channelEtcInput.trim();
-    onSubmit(selectedChannel, isEtcSelected && trimmedEtc ? trimmedEtc : null);
+    const isSaved = await saveSurvey(selectedChannel, isEtcSelected && trimmedEtc ? trimmedEtc : null);
+
+    if (!isSaved) {
+      setIsSubmitting(false);
+      setErrorMessage(SUBMIT_FAILURE_MESSAGE);
+      return;
+    }
+
+    trackEvent(GA_EVENT.ACQUISITION_SURVEY_ANSWERED, { channel: selectedChannel });
+    markAnswered();
+  };
+
+  // 저장에 실패해도 통과시킨다. 답하지 않겠다는 유저를 실패한 요청 때문에 홈에 못 들어가게 둘 수는 없다.
+  const handleSkip = async () => {
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    trackEvent(GA_EVENT.ACQUISITION_SURVEY_SKIPPED, {});
+    await saveSurvey(null, null);
+    markAnswered();
   };
 
   return (
@@ -143,7 +168,7 @@ function AcquisitionChannelStep({ onSubmit, onSkip, onBack, isSubmitting, errorM
 
       <OptionList>
         {ACQUISITION_CHANNEL_ORDER.map((channel) => (
-          <AcquisitionChannelOption key={channel} channel={channel} isSelected={selectedChannel === channel} onSelect={setSelectedChannel}>
+          <AcquisitionSurveyOption key={channel} channel={channel} isSelected={selectedChannel === channel} onSelect={setSelectedChannel}>
             {channel === ACQUISITION_CHANNEL.ETC && isEtcSelected && (
               <EtcInput
                 id="acquisitionChannelEtc"
@@ -153,7 +178,7 @@ function AcquisitionChannelStep({ onSubmit, onSkip, onBack, isSubmitting, errorM
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => setChannelEtcInput(event.target.value)}
               />
             )}
-          </AcquisitionChannelOption>
+          </AcquisitionSurveyOption>
         ))}
       </OptionList>
 
@@ -161,20 +186,14 @@ function AcquisitionChannelStep({ onSubmit, onSkip, onBack, isSubmitting, errorM
 
       <ActionArea>
         <NewCommonButton type="button" size={'sm'} disabled={!selectedChannel || isSubmitting} onClick={handleSubmit}>
-          가입 완료
+          완료
         </NewCommonButton>
-        <SecondaryActions>
-          <SkipButton type="button" disabled={isSubmitting} onClick={onBack}>
-            이전으로
-          </SkipButton>
-          <SecondaryActionsDivider>·</SecondaryActionsDivider>
-          <SkipButton type="button" disabled={isSubmitting} onClick={onSkip}>
-            건너뛰고 가입하기
-          </SkipButton>
-        </SecondaryActions>
+        <SkipButton type="button" disabled={isSubmitting} onClick={handleSkip}>
+          건너뛰기
+        </SkipButton>
       </ActionArea>
     </Container>
   );
 }
 
-export default AcquisitionChannelStep;
+export default AcquisitionSurvey;

@@ -49,14 +49,14 @@ const Radio = styled.input`
   }
 `;
 
-interface AcquisitionChannelOptionProps {
+interface AcquisitionSurveyOptionProps {
   channel: AcquisitionChannel;
   isSelected: boolean;
   onSelect: (channel: AcquisitionChannel) => void;
   children?: ReactNode;
 }
 
-function AcquisitionChannelOption({ channel, isSelected, onSelect, children }: AcquisitionChannelOptionProps) {
+function AcquisitionSurveyOption({ channel, isSelected, onSelect, children }: AcquisitionSurveyOptionProps) {
   return (
     <OptionCard isSelected={isSelected}>
       <OptionLabel htmlFor={channel}>
@@ -68,4 +68,4 @@ function AcquisitionChannelOption({ channel, isSelected, onSelect, children }: A
   );
 }
 
-export default AcquisitionChannelOption;
+export default AcquisitionSurveyOption;
