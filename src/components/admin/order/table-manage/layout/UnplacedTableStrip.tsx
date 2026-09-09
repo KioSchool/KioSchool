@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { RiArrowDownSLine, RiArrowUpSLine } from '@remixicon/react';
+import { RiArrowDownSLine, RiArrowUpSLine, RiDragMove2Fill } from '@remixicon/react';
 import { Table } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
@@ -25,6 +25,12 @@ const HeaderRow = styled.div`
 `;
 
 const Spacer = styled.div``;
+
+const EditIcon = styled(RiDragMove2Fill)`
+  width: 14px;
+  height: 14px;
+  color: ${Color.GREY};
+`;
 
 const ToggleButton = styled.button`
   padding: 0;
@@ -108,7 +114,7 @@ function UnplacedTableStrip({ tables, selectedTableNumber, showEditButton, onSta
           <Spacer />
         )}
         {showEditButton && (
-          <NewCommonButton size="xs" color="blue_gray" onClick={onStartEdit}>
+          <NewCommonButton size="xs" color="blue_gray" icon={<EditIcon />} onClick={onStartEdit}>
             배치 편집
           </NewCommonButton>
         )}
