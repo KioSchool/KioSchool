@@ -338,7 +338,7 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
   if (!eligible) return null;
 
   const isAccountMethod = method === 'account';
-  const thanksCount = resolveThanksCount(todayCount, justDonated);
+  const thanksCount = resolveThanksCount(todayCount);
 
   const handleAccountDonate = () => {
     navigator.clipboard?.writeText(DONATION_ACCOUNT.accountNo).catch(() => undefined);
@@ -407,7 +407,8 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
       <ThanksTitle>정말 고마워요 🎉</ThanksTitle>
       {thanksCount && (
         <ThanksCount>
-          오늘<ThanksCountNumber>{thanksCount.count}</ThanksCountNumber>
+          {thanksCount.prefix}
+          {thanksCount.count != null && <ThanksCountNumber>{thanksCount.count.toLocaleString()}</ThanksCountNumber>}
           {thanksCount.suffix}
         </ThanksCount>
       )}
