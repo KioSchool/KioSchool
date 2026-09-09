@@ -10,7 +10,6 @@ export const TABLE_GRID_GAP_PX = 8;
 export const TABLE_GRID_PADDING_PX = 16;
 export const TABLE_CROP_MARGIN_CELLS = 1;
 
-export const TABLE_TRAY_COLUMN_PX = 260;
 export const TABLE_DETAIL_COLUMN_PX = 290;
 export const TABLE_VIEW_HEIGHT_PX = 600;
 

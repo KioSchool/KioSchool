@@ -9,7 +9,6 @@ import {
   TABLE_GRID_CELL_PX,
   TABLE_GRID_GAP_PX,
   TABLE_GRID_PADDING_PX,
-  TABLE_TRAY_COLUMN_PX,
   TABLE_VIEW_HEIGHT_PX,
   TOUCH_DRAG_DELAY_MS,
   TOUCH_DRAG_TOLERANCE_PX,
@@ -39,12 +38,17 @@ const SAVING_OPACITY = 0.6;
 const Container = styled.div<{ isSaving: boolean }>`
   width: 100%;
   height: ${TABLE_VIEW_HEIGHT_PX}px;
-  display: grid;
-  grid-template-columns: ${TABLE_TRAY_COLUMN_PX}px 1fr;
   gap: 12px;
   pointer-events: ${({ isSaving }) => (isSaving ? 'none' : 'auto')};
   opacity: ${({ isSaving }) => (isSaving ? SAVING_OPACITY : 1)};
   transition: opacity 0.15s ease-in-out;
+  ${colFlex()};
+`;
+
+const CanvasArea = styled.div`
+  width: 100%;
+  flex: 1;
+  min-height: 0;
 `;
 
 const OverlayCard = styled.div`
@@ -197,7 +201,9 @@ function TableLayoutEditor({ tables, onExit, onSave, onPositionChange, isSaving,
       <DndContext sensors={sensors} collisionDetection={pointerWithin} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <Container isSaving={isSaving}>
           <UnplacedTableTray tables={unplacedTables} />
-          <TableLayoutCanvas renderCell={renderCell} scrollRef={scrollRef} />
+          <CanvasArea>
+            <TableLayoutCanvas renderCell={renderCell} scrollRef={scrollRef} />
+          </CanvasArea>
         </Container>
         <DragOverlay>
           {activeTable && (

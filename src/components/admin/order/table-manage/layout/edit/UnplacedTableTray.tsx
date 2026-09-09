@@ -7,14 +7,14 @@ import { TABLE_GRID_CELL_PX, TRAY_DROPPABLE_ID } from '@constants/layout';
 import DraggableTableCard from './DraggableTableCard';
 
 const Container = styled.div<{ isOver: boolean }>`
-  height: 100%;
+  width: 100%;
+  flex-shrink: 0;
   box-sizing: border-box;
   border: 1px solid ${({ isOver }) => (isOver ? Color.KIO_ORANGE : Color.BORDER_GREY)};
   border-radius: 16px;
   background-color: ${({ isOver }) => (isOver ? Color.KIO_ORANGE_FAINT : Color.WHITE)};
   padding: 12px;
   gap: 10px;
-  overflow-y: auto;
   transition: border-color 0.15s ease-in-out, background-color 0.15s ease-in-out;
   ${colFlex()};
 `;
@@ -31,9 +31,14 @@ const TitleCount = styled.span`
   font-variant-numeric: tabular-nums;
 `;
 
+const TRAY_MAX_ROWS = 2;
+const TRAY_LIST_GAP_PX = 8;
+
 const CardList = styled.div`
-  gap: 8px;
+  gap: ${TRAY_LIST_GAP_PX}px;
   flex-wrap: wrap;
+  max-height: ${TRAY_MAX_ROWS * TABLE_GRID_CELL_PX + (TRAY_MAX_ROWS - 1) * TRAY_LIST_GAP_PX}px;
+  overflow-y: auto;
   ${rowFlex()};
 `;
 
