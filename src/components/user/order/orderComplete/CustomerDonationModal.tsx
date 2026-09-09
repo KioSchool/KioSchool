@@ -4,7 +4,7 @@ import { keyframes } from '@emotion/react';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { MODAL_ROOT_KEY } from '@hooks/useModal';
-import { DONATION_ACCOUNT, resolveThanksCountText } from '@utils/donation';
+import { DONATION_ACCOUNT, resolveThanksCount } from '@utils/donation';
 import { buildDonationCtaLabel, DONATION_AMOUNT_OPTIONS } from '@constants/data/customerDonationCopy';
 import useCustomerDonationModal, { DonationMethod } from '@hooks/user/useCustomerDonationModal';
 import thanksCharacter from '@resources/image/donation/good.webp';
@@ -265,10 +265,19 @@ const ConfettiPiece = styled.i`
 `;
 
 const ThanksCount = styled.div`
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   color: ${Color.TEXT_BODY};
   text-align: center;
+  line-height: 1.3;
+`;
+
+const ThanksCountNumber = styled.strong`
+  font-size: 30px;
+  font-weight: 700;
+  color: ${Color.KIO_ORANGE};
+  font-variant-numeric: tabular-nums;
+  margin: 0 3px;
 `;
 
 const SecondaryButton = styled.button`
@@ -329,7 +338,7 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
   if (!eligible) return null;
 
   const isAccountMethod = method === 'account';
-  const thanksCountText = resolveThanksCountText(todayCount, justDonated);
+  const thanksCount = resolveThanksCount(todayCount, justDonated);
 
   const handleAccountDonate = () => {
     navigator.clipboard?.writeText(DONATION_ACCOUNT.accountNo).catch(() => undefined);
@@ -396,7 +405,12 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
       )}
       <ThanksCharacter src={thanksCharacter} alt="키오스쿨 마스코트" />
       <ThanksTitle>정말 고마워요 🎉</ThanksTitle>
-      {thanksCountText && <ThanksCount>{thanksCountText}</ThanksCount>}
+      {thanksCount && (
+        <ThanksCount>
+          오늘<ThanksCountNumber>{thanksCount.count}</ThanksCountNumber>
+          {thanksCount.suffix}
+        </ThanksCount>
+      )}
       <SecondaryButton type="button" onClick={donateAgain}>
         더 응원하기
       </SecondaryButton>

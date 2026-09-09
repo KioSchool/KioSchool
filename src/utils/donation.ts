@@ -10,10 +10,16 @@ export function resolveDonationCountText(todayCount: number | null): string | nu
 }
 
 // 감사 화면 카운트 문구. 방금 후원한 사람은 "N번째", 재방문 recap은 "N명 함께".
-export function resolveThanksCountText(todayCount: number | null, justDonated: boolean): string | null {
+// 감사 화면에서 숫자를 크게 강조한다. 숫자와 앞뒤 문구를 분리해 반환한다.
+export interface ThanksCountParts {
+  count: number;
+  suffix: string;
+}
+
+export function resolveThanksCount(todayCount: number | null, justDonated: boolean): ThanksCountParts | null {
   if (todayCount == null) return null;
-  if (justDonated) return `오늘 ${todayCount}번째 응원이에요`;
-  return `오늘 ${todayCount}명이 함께했어요`;
+  if (justDonated) return { count: todayCount, suffix: '번째 응원이에요' };
+  return { count: todayCount, suffix: '명이 함께했어요' };
 }
 
 const TOSS_BANK_NAME = '토스뱅크';
