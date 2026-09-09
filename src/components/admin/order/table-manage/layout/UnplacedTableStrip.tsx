@@ -29,7 +29,7 @@ const Spacer = styled.div``;
 const EditIcon = styled(RiDragMove2Fill)`
   width: 14px;
   height: 14px;
-  color: ${Color.GREY};
+  color: ${Color.KIO_ORANGE};
 `;
 
 const ToggleButton = styled.button`
@@ -114,7 +114,13 @@ function UnplacedTableStrip({ tables, selectedTableNumber, showEditButton, onSta
           <Spacer />
         )}
         {showEditButton && (
-          <NewCommonButton size="xs" color="blue_gray" icon={<EditIcon />} onClick={onStartEdit}>
+          <NewCommonButton
+            size="xs"
+            color="blue_gray"
+            customColors={{ color: Color.KIO_ORANGE, border: `1px solid ${Color.KIO_ORANGE}`, hoverBackground: Color.KIO_ORANGE_FAINT }}
+            icon={<EditIcon />}
+            onClick={onStartEdit}
+          >
             배치 편집
           </NewCommonButton>
         )}
