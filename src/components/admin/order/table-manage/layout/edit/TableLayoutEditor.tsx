@@ -30,6 +30,7 @@ const HALF = 2;
 
 const Frame = styled.div`
   width: 100%;
+  min-width: 0;
   height: ${TABLE_VIEW_HEIGHT_PX}px;
   ${colFlex()};
 `;
