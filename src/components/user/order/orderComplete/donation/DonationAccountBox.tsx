@@ -38,12 +38,6 @@ const AccountNo = styled.span`
   font-variant-numeric: tabular-nums;
 `;
 
-const HolderNote = styled.span`
-  font-size: 11px;
-  font-weight: 400;
-  color: ${Color.MUTED_GREY};
-`;
-
 function DonationAccountBox() {
   return (
     <Box>
@@ -59,10 +53,7 @@ function DonationAccountBox() {
       </InfoRow>
       <InfoRow>
         <Key>예금주</Key>
-        <Value>
-          {DONATION_ACCOUNT.holderName}
-          <HolderNote>{DONATION_ACCOUNT.holderNote}</HolderNote>
-        </Value>
+        <Value>{DONATION_ACCOUNT.holderName}</Value>
       </InfoRow>
     </Box>
   );
