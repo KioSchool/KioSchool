@@ -8,6 +8,8 @@ import { INQUIRY_CONTENT_MAX_LENGTH, INQUIRY_TITLE_MAX_LENGTH } from '@constants
 import useInquiry from '@hooks/user/useInquiry';
 import type { CreateInquiryResponse } from '@@types/inquiry';
 import { getApiErrorMessage } from '@utils/apiError';
+import { trackEvent } from '@utils/analytics';
+import { GA_EVENT } from '@constants/analytics';
 import {
   ButtonRow,
   CharacterCount,
@@ -80,6 +82,7 @@ function ContactInquiryForm() {
         imageFiles,
       );
       setReceipt(response);
+      trackEvent(GA_EVENT.INQUIRY_SUBMITTED, {});
       resetForm();
     } catch (error) {
       setFormError(getApiErrorMessage(error, '문의를 접수하지 못했습니다. 잠시 후 다시 시도해 주세요.'));

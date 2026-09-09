@@ -10,6 +10,8 @@ import { captionTypography, headingTypography, subheadingTypography } from '@sty
 import { Color } from '@resources/colors';
 import { ADMIN_ROUTES, USER_ROUTES } from '@constants/routes';
 import useMarketingLoginStatus from '@hooks/useMarketingLoginStatus';
+import { trackEvent } from '@utils/analytics';
+import { GA_EVENT } from '@constants/analytics';
 
 const Container = styled.div`
   width: 100%;
@@ -119,7 +121,12 @@ function InfoCtaSection() {
         <CtaDivider />
         <Title>이번 축제, 키오스쿨과 함께하세요</Title>
         <Subtitle>가입부터 주점 운영까지, 3분이면 준비 끝</Subtitle>
-        <CtaButton to={ADMIN_ROUTES.HOME}>{isLoggedIn ? '어드민 홈으로' : '무료로 시작하기'}</CtaButton>
+        <CtaButton
+          to={ADMIN_ROUTES.HOME}
+          onClick={() => trackEvent(GA_EVENT.CTA_CLICK, { location: 'info_cta', label: isLoggedIn ? 'admin_home' : 'start_free' })}
+        >
+          {isLoggedIn ? '어드민 홈으로' : '무료로 시작하기'}
+        </CtaButton>
         <Reassurance>별도 비용 없이 시작할 수 있어요</Reassurance>
         <ContactLinkRow>
           <ContactLink href={URLS.EXTERNAL.GITHUB} target="_blank" rel="noopener noreferrer" aria-label="키오스쿨 GitHub 저장소 보기">

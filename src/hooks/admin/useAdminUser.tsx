@@ -1,5 +1,7 @@
 import useApi from '@hooks/useApi';
 import { User, Workspace } from '@@types/index';
+import { trackEvent } from '@utils/analytics';
+import { GA_EVENT } from '@constants/analytics';
 import { useNavigate } from 'react-router-dom';
 import useAuthentication from '@hooks/useAuthentication';
 import { useSetAtom } from 'jotai';
@@ -30,9 +32,10 @@ function useAdminUser() {
 
   const createWorkspaces = (name: string, description: string) => {
     adminApi
-      .post('/workspace', { name, description })
+      .post<Workspace>('/workspace', { name, description })
       .then((res) => {
         setWorkspaces((prev) => [...prev, res.data]);
+        trackEvent(GA_EVENT.WORKSPACE_CREATED, { workspace_id: res.data.id });
       })
       .catch((error) => alert(error.response.data.message));
   };

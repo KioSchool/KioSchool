@@ -31,5 +31,3 @@ export const ACQUISITION_CHANNEL_ORDER: AcquisitionChannel[] = [
 ];
 
 export const ACQUISITION_CHANNEL_ETC_MAX_LENGTH = 100;
-
-export const ACQUISITION_CHANNEL_NONE = 'NONE';

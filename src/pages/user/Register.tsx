@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import AppContainer from '@components/common/container/AppContainer';
 import AcquisitionChannelStep from '@components/user/register/AcquisitionChannelStep';
-import RegisterForm from '@components/user/register/RegisterForm';
-import useRegister, { RegisterPayload } from '@hooks/user/useRegister';
+import RegisterForm, { RegisterFormValues } from '@components/user/register/RegisterForm';
+import useRegister from '@hooks/user/useRegister';
+import { GA_EVENT } from '@constants/analytics';
 import { USER_ROUTES } from '@constants/routes';
 import { colFlex } from '@styles/flexStyles';
-import { ACQUISITION_CHANNEL_NONE, AcquisitionChannel } from '@utils/acquisitionChannel';
+import { AcquisitionChannel } from '@utils/acquisitionChannel';
 import { readAcquisitionContext } from '@utils/acquisitionContext';
 import { trackEvent } from '@utils/analytics';
 
@@ -38,19 +39,19 @@ function Register() {
   const { registerUser, saveAcquisitionSurvey } = useRegister();
 
   const [step, setStep] = useState<RegisterStep>('form');
-  const [pendingRegistration, setPendingRegistration] = useState<RegisterPayload | null>(null);
+  const [pendingRegistration, setPendingRegistration] = useState<RegisterFormValues | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitErrorMessage, setSubmitErrorMessage] = useState('');
 
   const hasTrackedStepViewRef = useRef(false);
 
-  const handleFormSubmit = (values: RegisterPayload) => {
+  const handleFormSubmit = (values: RegisterFormValues) => {
     setPendingRegistration(values);
     setStep('acquisition');
 
     if (!hasTrackedStepViewRef.current) {
       hasTrackedStepViewRef.current = true;
-      trackEvent('signup_acquisition_step_view');
+      trackEvent(GA_EVENT.SIGNUP_ACQUISITION_STEP_VIEW, {});
     }
   };
 
@@ -58,13 +59,14 @@ function Register() {
     if (!pendingRegistration || isSubmitting) return;
 
     if (isSkip) {
-      trackEvent('signup_acquisition_skipped');
+      trackEvent(GA_EVENT.SIGNUP_ACQUISITION_SKIPPED, {});
     }
 
     setIsSubmitting(true);
     setSubmitErrorMessage('');
 
-    const result = await registerUser(pendingRegistration);
+    const { id, password, name, email } = pendingRegistration;
+    const result = await registerUser(id, password, name, email);
 
     if (result !== true) {
       setIsSubmitting(false);
@@ -78,7 +80,6 @@ function Register() {
       context: readAcquisitionContext(),
     });
 
-    trackEvent('signup_completed', { channel: channel ?? ACQUISITION_CHANNEL_NONE });
     localStorage.setItem('isLoggedIn', 'true');
     navigate(USER_ROUTES.HOME);
   };

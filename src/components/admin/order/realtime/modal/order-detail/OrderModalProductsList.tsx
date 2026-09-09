@@ -19,21 +19,29 @@ const OrderProductContainer = styled.div`
 
 const ProductContainer = styled.div`
   width: 100%;
+  gap: 12px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const ProductLeftContainer = styled.div`
+  flex: 1 1 220px;
+  min-width: 0;
   gap: 12px;
   ${rowFlex({ align: 'center' })}
 `;
 
 const ProducDescription = styled.div`
+  flex: 1;
+  min-width: 0;
   height: 100%;
   gap: 4px;
   ${colFlex({ align: 'start' })}
 `;
 
 const ProductRightContainer = styled.div`
+  margin-left: auto;
   gap: 10px;
   flex-shrink: 0;
   ${rowFlex()};
@@ -42,6 +50,7 @@ const ProductRightContainer = styled.div`
 const ProductImage = styled.img`
   width: 68px;
   height: 68px;
+  flex-shrink: 0;
   border-radius: 8px;
   border: 1px solid #e8eef2;
   object-fit: cover;
@@ -52,27 +61,33 @@ const ProductImage = styled.img`
 const CheckIcon = styled(RiCheckboxCircleFill)`
   width: 15px;
   height: 15px;
+  flex-shrink: 0;
   color: ${Color.KIO_ORANGE};
   ${rowFlex({ align: 'center' })}
 `;
 
 const ProductNameContainer = styled.div`
+  width: 100%;
+  min-width: 0;
   gap: 4px;
   user-select: none;
-  ${rowFlex({ justify: 'center', align: 'center' })}
+  ${rowFlex({ align: 'center' })}
 `;
 
 const ProductNameLabel = styled.div<{ isServed: boolean }>`
+  min-width: 0;
   font-size: 15px;
   font-weight: 700;
   color: ${(props) => props.isServed && Color.KIO_ORANGE};
   user-select: none;
-  ${rowFlex({ justify: 'center' })}
+  overflow-wrap: anywhere;
 `;
 
 const ProductQuantityLabel = styled.div`
+  max-width: 100%;
   font-size: 12px;
   user-select: none;
+  overflow-wrap: anywhere;
 `;
 
 interface OrderModalProductListProps {
@@ -102,8 +117,8 @@ function OrderModalProductList({ orderProducts, productMap, isPaidStatus, onIncr
                 <ProductQuantityLabel>{`${orderProduct.quantity}개 · ${orderProduct.totalPrice.toLocaleString()}원`}</ProductQuantityLabel>
               </ProducDescription>
             </ProductLeftContainer>
-            <ProductRightContainer>
-              {isPaidStatus && (
+            {isPaidStatus && (
+              <ProductRightContainer>
                 <OrderModalProductButtons
                   servedCount={orderProduct.servedCount}
                   quantity={orderProduct.quantity}
@@ -111,8 +126,8 @@ function OrderModalProductList({ orderProducts, productMap, isPaidStatus, onIncr
                   onIncrease={() => onIncrease(orderProduct)}
                   onDecrease={() => onDecrease(orderProduct)}
                 />
-              )}
-            </ProductRightContainer>
+              </ProductRightContainer>
+            )}
           </ProductContainer>
         );
       })}

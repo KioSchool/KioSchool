@@ -15,7 +15,9 @@ import WorkspaceNotice from '@components/user/order/WorkspaceNotice';
 import OrderProductContent from './OrderProductContent';
 import { useAtomValue } from 'jotai';
 import { userCategoriesAtom, userOrderBasketAtom, userProductsAtom, userWorkspaceAtom } from '@jotai/user/atoms';
-import { calculateBasketTotalAmount } from '@utils/orderBasket';
+import { calculateBasketTotalAmount, productsToGaItems } from '@utils/orderBasket';
+import { trackEvent } from '@utils/analytics';
+import { GA_EVENT } from '@constants/analytics';
 
 const Container = styled.div`
   width: 100%;
@@ -95,6 +97,15 @@ function Order() {
 
     return () => window.removeEventListener('scroll', updateStickyNavBarVisibility);
   }, []);
+
+  const hasTrackedViewItemListRef = useRef(false);
+
+  useEffect(() => {
+    if (isPreview || hasTrackedViewItemListRef.current || sellableProducts.length === 0) return;
+
+    hasTrackedViewItemListRef.current = true;
+    trackEvent(GA_EVENT.VIEW_ITEM_LIST, { items: productsToGaItems(sellableProducts) });
+  }, [isPreview, sellableProducts]);
 
   return (
     <Container className={'order-container'}>

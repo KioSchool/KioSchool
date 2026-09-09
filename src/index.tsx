@@ -11,33 +11,16 @@ import { URLS } from '@constants/urls';
 import type { SentryEnvironment } from '@constants/sentry';
 import { SENTRY_CONFIG } from '@constants/sentry';
 import { isReportableError } from '@utils/sentryErrorFilter';
+import { initAnalytics } from '@utils/analytics';
 import { captureAcquisitionContext } from '@utils/acquisitionContext';
 
 const environment = import.meta.env.VITE_ENVIRONMENT as SentryEnvironment;
 const gaId = import.meta.env.VITE_GA_ID;
-captureAcquisitionContext();
 
 const sentryRates = SENTRY_CONFIG.RATES_BY_ENV[environment] ?? SENTRY_CONFIG.RATES_BY_ENV.production;
 
-if (gaId) {
-  const script = document.createElement('script');
-  script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
-  document.head.appendChild(script);
-
-  // @ts-ignore
-  window.dataLayer = window.dataLayer || [];
-  function gtag() {
-    // @ts-ignore
-    window.dataLayer.push(arguments);
-  }
-  // @ts-ignore
-  window.gtag = gtag;
-  // @ts-ignore
-  gtag('js', new Date());
-  // @ts-ignore
-  gtag('config', gaId);
-}
+initAnalytics(gaId, environment);
+captureAcquisitionContext();
 
 Sentry.init({
   dsn: URLS.SENTRY_DSN,
