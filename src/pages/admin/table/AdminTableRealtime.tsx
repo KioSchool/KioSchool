@@ -186,6 +186,13 @@ function AdminTableRealtime() {
     );
   };
 
+  const renderDetailColumn = () => {
+    if (isEditing) return <FallbackContainer>배치 편집 중에는 테이블 상세를 확인할 수 없습니다</FallbackContainer>;
+    if (!selectedTable) return <FallbackContainer>테이블을 선택하면 상세 정보가 여기에 표시됩니다</FallbackContainer>;
+
+    return <TableDetailPanel workspaceId={workspaceId} workspaceName={workspace.name} table={selectedTable} orders={orders} refetchTable={fetchTables} />;
+  };
+
   return (
     <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })}>
       <>
@@ -201,11 +208,7 @@ function AdminTableRealtime() {
         />
         <Container>
           {renderMainColumn()}
-          {selectedTable ? (
-            <TableDetailPanel workspaceId={workspaceId} workspaceName={workspace.name} table={selectedTable} orders={orders} refetchTable={fetchTables} />
-          ) : (
-            <FallbackContainer>테이블을 선택하면 상세 정보가 여기에 표시됩니다</FallbackContainer>
-          )}
+          {renderDetailColumn()}
         </Container>
         <RightSidebarModal useExternalControl={{ location }} />
       </>
