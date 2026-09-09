@@ -25,8 +25,11 @@ interface TodayCountResponse {
 }
 
 interface RecordClickBody {
+  orderId: number | null;
   workspaceId: number | null;
   variant: string;
+  method: DonationMethod;
+  noteIndex: number;
   amount: number | null;
 }
 
@@ -135,8 +138,11 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
     recordedRef.current = true;
 
     const body: RecordClickBody = {
+      orderId: orderId ? Number(orderId) : null,
       workspaceId: workspaceId ? Number(workspaceId) : null,
       variant: copy.id,
+      method,
+      noteIndex,
       amount: recordedAmount,
     };
 
