@@ -94,7 +94,7 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
   }, [eligible, dismissedAtOnMount, hasDonatedOnMount]);
 
   useEffect(() => {
-    if (!isOpen) return undefined;
+    if (!isOpen || !eligible) return undefined;
 
     document.body.style.overflow = 'hidden';
 
@@ -111,7 +111,7 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
     return () => {
       document.body.style.overflow = 'auto';
     };
-  }, [isOpen, copy.id, noteIndex, workspaceIdParam, userApi, initialTodayCount]);
+  }, [isOpen, eligible, copy.id, noteIndex, workspaceIdParam, userApi, initialTodayCount]);
 
   const selectAmount = (next: number) => {
     setAmount(next);
