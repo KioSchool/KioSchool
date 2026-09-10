@@ -84,7 +84,7 @@ function AdminWorkspace() {
 
     updateWorkspaceOnboarding(workspace.id, false)
       .then(() => {
-        trackEvent(GA_EVENT.ONBOARDING_COMPLETED, { workspace_id: workspace.id, method: 'auto' });
+        trackEvent(GA_EVENT.ONBOARDING_COMPLETED, { workspace_id: workspace.id, completion_method: 'auto' });
       })
       .finally(() => {
         isAutoCompletingOnboardingRef.current = false;
@@ -96,7 +96,7 @@ function AdminWorkspace() {
     if (!userInput) return;
 
     return updateWorkspaceOnboarding(workspace.id, false).then((result) => {
-      trackEvent(GA_EVENT.ONBOARDING_COMPLETED, { workspace_id: workspace.id, method: 'skip' });
+      trackEvent(GA_EVENT.ONBOARDING_COMPLETED, { workspace_id: workspace.id, completion_method: 'skip' });
       return result;
     });
   };
