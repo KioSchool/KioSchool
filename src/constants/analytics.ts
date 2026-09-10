@@ -11,6 +11,9 @@ export const GA_EVENT = {
   ONBOARDING_COMPLETED: 'onboarding_completed',
   INQUIRY_SUBMITTED: 'inquiry_submitted',
   CTA_CLICK: 'cta_click',
+  ACQUISITION_SURVEY_VIEW: 'acquisition_survey_view',
+  ACQUISITION_SURVEY_SKIPPED: 'acquisition_survey_skipped',
+  ACQUISITION_SURVEY_ANSWERED: 'acquisition_survey_answered',
 } as const;
 
 export type GaEventName = typeof GA_EVENT[keyof typeof GA_EVENT];

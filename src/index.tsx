@@ -12,6 +12,7 @@ import type { SentryEnvironment } from '@constants/sentry';
 import { SENTRY_CONFIG } from '@constants/sentry';
 import { isReportableError } from '@utils/sentryErrorFilter';
 import { initAnalytics } from '@utils/analytics';
+import { captureAcquisitionContext } from '@utils/acquisitionContext';
 
 const environment = import.meta.env.VITE_ENVIRONMENT as SentryEnvironment;
 const gaId = import.meta.env.VITE_GA_ID;
@@ -19,6 +20,7 @@ const gaId = import.meta.env.VITE_GA_ID;
 const sentryRates = SENTRY_CONFIG.RATES_BY_ENV[environment] ?? SENTRY_CONFIG.RATES_BY_ENV.production;
 
 initAnalytics(gaId, environment);
+captureAcquisitionContext();
 
 Sentry.init({
   dsn: URLS.SENTRY_DSN,
