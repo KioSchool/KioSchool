@@ -4,10 +4,10 @@ import { keyframes } from '@emotion/react';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { MODAL_ROOT_KEY } from '@hooks/useModal';
-import { buildDonationTossUrl, DONATION_ACCOUNT, resolveThanksCount } from '@utils/donation';
+import { resolveThanksCount } from '@utils/donation';
 import { buildDonationCtaLabel, DONATION_AMOUNT_OPTIONS } from '@constants/data/customerDonationCopy';
 import useCustomerDonationModal, { DonationMethod } from '@hooks/user/useCustomerDonationModal';
-import useTossPopup from '@hooks/user/useTossPopup';
+import useCustomerDonationAction from '@hooks/user/useCustomerDonationAction';
 import thanksCharacter from '@resources/image/donation/good.webp';
 import DonationVisualHeader from './donation/DonationVisualHeader';
 import DonationAccountBox from './donation/DonationAccountBox';
@@ -131,6 +131,11 @@ const Chip = styled.button<{ selected: boolean }>`
   font-size: 14px;
   font-weight: ${({ selected }) => (selected ? 700 : 400)};
   cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 `;
 
 const DonateButton = styled.button`
@@ -143,6 +148,18 @@ const DonateButton = styled.button`
   font-weight: 700;
   text-align: center;
   cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+`;
+
+const ActionError = styled.p`
+  margin: 0;
+  color: ${Color.RED};
+  font-size: 13px;
+  line-height: 1.5;
 `;
 
 const ThanksTitle = styled.div`
@@ -323,7 +340,12 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
     eligible,
     initialTodayCount,
   });
-  const { openTossPopupSync } = useTossPopup();
+  const { errorMessage, isCopying, handleAccountDonate, handleTossDonate } = useCustomerDonationAction({
+    isActive: isOpen && eligible && view === 'donate',
+    method,
+    amount,
+    onDonate: donate,
+  });
 
   const modalRoot = typeof document !== 'undefined' ? document.getElementById(MODAL_ROOT_KEY) : null;
   if (!eligible) return null;
@@ -331,21 +353,9 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
   const isAccountMethod = method === 'account';
   const thanksCount = resolveThanksCount({ justDonated, rank: donationRank, todayCount });
 
-  const handleAccountDonate = () => {
-    navigator.clipboard?.writeText(DONATION_ACCOUNT.accountNo).catch(() => undefined);
-    donate();
-  };
-
-  // 결제 플로우(useTossPopup)와 동일하게 새 창으로 딥링크를 연다. a[href] 동일 탭 이동은
-  // 토스 미설치 시 주문완료 화면을 날려버리고 데스크톱에선 아무 반응이 없다.
-  const handleTossDonate = () => {
-    openTossPopupSync({ tossAccountUrl: buildDonationTossUrl(), amount });
-    donate();
-  };
-
   const primaryAction = isAccountMethod ? (
-    <DonateButton type="button" onClick={handleAccountDonate}>
-      계좌번호 복사하기
+    <DonateButton type="button" onClick={handleAccountDonate} disabled={isCopying} aria-busy={isCopying}>
+      {isCopying ? '복사 중…' : '계좌번호 복사하기'}
     </DonateButton>
   ) : (
     <DonateButton type="button" onClick={handleTossDonate}>
@@ -365,7 +375,7 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
         <FieldLabel>보내는 방법</FieldLabel>
         <ChipRow>
           {DONATION_METHOD_OPTIONS.map((option) => (
-            <Chip key={option.value} type="button" selected={option.value === method} onClick={() => selectMethod(option.value)}>
+            <Chip key={option.value} type="button" selected={option.value === method} onClick={() => selectMethod(option.value)} disabled={isCopying}>
               {option.label}
             </Chip>
           ))}
@@ -388,6 +398,7 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
         </FieldGroup>
       )}
       {isAccountMethod && <DonationAccountBox />}
+      {errorMessage && <ActionError role="alert">{errorMessage}</ActionError>}
       {primaryAction}
     </>
   );
