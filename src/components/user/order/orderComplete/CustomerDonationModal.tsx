@@ -398,7 +398,7 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
         </FieldGroup>
       ) : (
         <FieldGroup>
-          <FieldLabel>얼마를 보낼까요</FieldLabel>
+          <FieldLabel>원하는 후원 금액</FieldLabel>
           <ChipRow>
             {DONATION_AMOUNT_OPTIONS.map((option) => (
               <Chip key={option} type="button" selected={option === amount} aria-pressed={option === amount} onClick={() => selectAmount(option)}>

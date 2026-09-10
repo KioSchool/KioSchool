@@ -37,7 +37,7 @@ const Headline = styled.div`
   font-size: 19px;
   font-weight: 700;
   color: ${Color.TEXT_STRONG};
-  line-height: 1.4;
+  line-height: 1.1;
   word-break: keep-all;
 `;
 
@@ -47,15 +47,15 @@ const DestinationNote = styled.div`
   color: ${Color.KIO_ORANGE_DARK};
   line-height: 1.5;
   word-break: keep-all;
+  white-space: pre-wrap;
 `;
 
 const BodyGroup = styled.div`
-  gap: 2px;
+  gap: 12px;
   ${colFlex({ justify: 'start', align: 'stretch' })};
 `;
 
 const SubLineGroup = styled.div`
-  gap: 6px;
   ${colFlex({ justify: 'start', align: 'stretch' })};
 `;
 
@@ -100,7 +100,7 @@ function DonationVisualHeader({ copy, note, amount, todayCount, titleId }: Donat
       <BodyGroup>
         <SubLineGroup>
           {copy.subLines.map((line) => (
-            <SubLine key={line}>{fillDonationAmount(line, amount, copy)}</SubLine>
+            <SubLine key={line} dangerouslySetInnerHTML={{ __html: fillDonationAmount(line, amount, copy) }} />
           ))}
         </SubLineGroup>
         {countText && <CountLine>{countText}</CountLine>}

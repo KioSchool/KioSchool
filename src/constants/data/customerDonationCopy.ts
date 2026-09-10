@@ -41,7 +41,7 @@ export const CUSTOMER_DONATION_COPIES: readonly DonationCopy[] = [
   {
     id: 'anchor',
     headline: '{anchor} 값으로 응원하기',
-    subLines: ['키오스쿨은 학생들이 만들어서 무료로 운영해요.', '{anchor} 값 {amount}원이면 서버가 {duration} 버텨요.'],
+    subLines: ['키오스쿨은 학생들이 만들어서 무료로 운영해요.', '{anchor} 값 <strong>{amount}원</strong>이면 서버가 <strong>{duration}</strong> 버텨요.'],
     amountAnchors: { 1000: '편의점 생수 한 병', 2000: '삼각김밥 한 개', 5000: '커피 한 잔' },
     amountDurations: { 1000: '하루', 2000: '사흘', 5000: '한 주' },
     ctaTemplate: '{amount}원 보내기',
@@ -57,9 +57,9 @@ export const DONATION_COUNT_EMPTY_TEXT = '오늘의 첫 응원을 기다리고 �
 
 // 헤드라인 아래 주황 슬롯에 노출한다. orderId로 3개를 균등 로테이션한다.
 export const DONATION_NOTE_MESSAGES: readonly string[] = [
-  '무료 주문 앱 키오스쿨이 멈추지 않고 돌아가도록 작은 힘을 보태주세요.',
-  '대학 축제를 더 편하게! 키오스쿨을 만든 학생들에게 응원을 보내주세요.',
-  '보내주신 마음은 전액 키오스쿨 서버 유지비로 소중하게 사용됩니다.',
+  '무료 주문 앱 키오스쿨이 멈추지 않고 돌아가도록\n작은 힘을 보태주세요.',
+  '대학 축제를 더 편하게!\n키오스쿨을 만든 학생들에게 응원을 보내주세요.',
+  '보내주신 마음은 \n전액 키오스쿨 서버 유지비로 소중하게 사용됩니다.',
 ];
 
 export function donationNoteIndex(orderId: string | null): number {
