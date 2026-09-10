@@ -70,6 +70,8 @@ export function setupApiInterceptors(
   const pendingTimers = new Map<InternalAxiosRequestConfig, NodeJS.Timeout>();
 
   const handleRequestStart = (config: InternalAxiosRequestConfig) => {
+    if (config.skipGlobalLoading) return config;
+
     const timerId = setTimeout(() => {
       loadingManager.increment();
       pendingTimers.delete(config);
@@ -81,6 +83,8 @@ export function setupApiInterceptors(
   };
 
   const cleanupRequest = (config: InternalAxiosRequestConfig) => {
+    if (config.skipGlobalLoading) return;
+
     const timerId = pendingTimers.get(config);
 
     if (timerId) {
