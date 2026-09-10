@@ -133,7 +133,7 @@ function OrderComplete() {
     return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 ${ampm} ${hour}시 ${date.getMinutes()}분`;
   };
 
-  const isDonationEligible = order.status !== OrderStatus.CANCELLED;
+  const isDonationEligible = order.id !== defaultUserOrderValue.id && order.id === Number(orderId) && order.status !== OrderStatus.CANCELLED;
 
   useBlockPopState();
 
@@ -245,7 +245,7 @@ function OrderComplete() {
             <ContentTitle>{order.totalPrice.toLocaleString()}원</ContentTitle>
           </OrderPriceContainer>
         </ContentsContainer>
-        <CustomerDonationModal orderId={orderId} workspaceId={workspaceId} eligible={isDonationEligible} />
+        <CustomerDonationModal key={orderId} orderId={orderId} workspaceId={workspaceId} eligible={isDonationEligible} />
       </SubContainer>
       <OrderButton
         showButton={true}

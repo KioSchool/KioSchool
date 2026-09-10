@@ -82,13 +82,12 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
   const hasDonated = donatedAt > 0;
   const workspaceIdParam = workspaceId ?? '';
 
-  // 자동 오픈은 마운트 1회, 마운트 시점 스냅샷으로만 판단한다 — 세션 중 dismiss/donate가 재오픈을 유발하지 않게.
   useEffect(() => {
-    if (autoOpenedRef.current) return;
+    if (!eligible || autoOpenedRef.current) return;
     autoOpenedRef.current = true;
 
     const dismissedWithin24h = Date.now() - dismissedAtOnMount < DISMISS_DURATION_MS;
-    if (eligible && !dismissedWithin24h && !hasDonatedOnMount) {
+    if (!dismissedWithin24h && !hasDonatedOnMount) {
       setIsOpen(true);
     }
   }, [eligible, dismissedAtOnMount, hasDonatedOnMount]);
