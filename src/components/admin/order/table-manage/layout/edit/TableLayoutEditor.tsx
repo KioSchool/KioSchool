@@ -9,7 +9,6 @@ import {
   TABLE_GRID_CELL_PX,
   TABLE_GRID_GAP_PX,
   TABLE_GRID_PADDING_PX,
-  TABLE_TRAY_COLUMN_PX,
   TABLE_VIEW_HEIGHT_PX,
   TOUCH_DRAG_DELAY_MS,
   TOUCH_DRAG_TOLERANCE_PX,
@@ -31,6 +30,8 @@ const HALF = 2;
 
 const Frame = styled.div`
   width: 100%;
+  min-width: 0;
+  height: ${TABLE_VIEW_HEIGHT_PX}px;
   ${colFlex()};
 `;
 
@@ -38,13 +39,19 @@ const SAVING_OPACITY = 0.6;
 
 const Container = styled.div<{ isSaving: boolean }>`
   width: 100%;
-  height: ${TABLE_VIEW_HEIGHT_PX}px;
-  display: grid;
-  grid-template-columns: ${TABLE_TRAY_COLUMN_PX}px 1fr;
+  flex: 1;
+  min-height: 0;
   gap: 12px;
   pointer-events: ${({ isSaving }) => (isSaving ? 'none' : 'auto')};
   opacity: ${({ isSaving }) => (isSaving ? SAVING_OPACITY : 1)};
   transition: opacity 0.15s ease-in-out;
+  ${colFlex()};
+`;
+
+const CanvasArea = styled.div`
+  width: 100%;
+  flex: 1;
+  min-height: 0;
 `;
 
 const OverlayCard = styled.div`
@@ -103,12 +110,6 @@ function TableLayoutEditor({ tables, onExit, onSave, onPositionChange, isSaving,
   const [activeTableId, setActiveTableId] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const { ConfirmModal: ResetConfirmModal, confirm: confirmReset } = useConfirm({
-    title: '전체 초기화',
-    description: '모든 테이블의 배치를 취소합니다. 저장해야 반영됩니다.',
-    okText: '초기화',
-    cancelText: '취소',
-  });
   const { ConfirmModal: ExitConfirmModal, confirm: confirmExit } = useConfirm({
     title: '편집 나가기',
     description: '저장하지 않은 변경이 있습니다. 나가시겠습니까?',
@@ -171,9 +172,7 @@ function TableLayoutEditor({ tables, onExit, onSave, onPositionChange, isSaving,
     onSave(changes);
   };
 
-  const handleResetAll = async () => {
-    if (!(await confirmReset())) return;
-
+  const handleResetAll = () => {
     resetAll();
     onPositionChange();
   };
@@ -201,11 +200,13 @@ function TableLayoutEditor({ tables, onExit, onSave, onPositionChange, isSaving,
 
   return (
     <Frame>
-      <EditorToolbar changeCount={changes.length} isSaving={isSaving} onSave={handleSave} onResetAll={handleResetAll} onExit={handleExit} />
+      <EditorToolbar changeCount={changes.length} isSaving={isSaving} onSave={handleSave} onExit={handleExit} />
       <DndContext sensors={sensors} collisionDetection={pointerWithin} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <Container isSaving={isSaving}>
-          <UnplacedTableTray tables={unplacedTables} />
-          <TableLayoutCanvas renderCell={renderCell} scrollRef={scrollRef} />
+          <UnplacedTableTray tables={unplacedTables} onResetAll={handleResetAll} />
+          <CanvasArea>
+            <TableLayoutCanvas renderCell={renderCell} scrollRef={scrollRef} />
+          </CanvasArea>
         </Container>
         <DragOverlay>
           {activeTable && (
@@ -215,7 +216,6 @@ function TableLayoutEditor({ tables, onExit, onSave, onPositionChange, isSaving,
           )}
         </DragOverlay>
       </DndContext>
-      <ResetConfirmModal />
       <ExitConfirmModal />
     </Frame>
   );

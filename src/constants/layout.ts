@@ -10,7 +10,6 @@ export const TABLE_GRID_GAP_PX = 8;
 export const TABLE_GRID_PADDING_PX = 16;
 export const TABLE_CROP_MARGIN_CELLS = 1;
 
-export const TABLE_TRAY_COLUMN_PX = 260;
 export const TABLE_DETAIL_COLUMN_PX = 290;
 export const TABLE_VIEW_HEIGHT_PX = 600;
 
@@ -24,8 +23,6 @@ export const TABLE_LIST_GRID_TEMPLATE = `${TABLE_LIST_NUMBER_COLUMN_PX}px ${TABL
 
 export const TABLE_POLL_INTERVAL_MS = 15_000;
 export const TABLE_CLOCK_TICK_MS = 30_000;
-export const ORDER_FLASH_DURATION_MS = 2_400;
-export const ORDER_TABLES_REFRESH_DEBOUNCE_MS = 1_000;
 
 export const DRAG_ACTIVATION_DISTANCE_PX = 5;
 export const TOUCH_DRAG_DELAY_MS = 250;

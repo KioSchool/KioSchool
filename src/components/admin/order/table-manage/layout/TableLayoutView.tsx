@@ -2,12 +2,13 @@ import { useMemo } from 'react';
 import styled from '@emotion/styled';
 import { Table } from '@@types/index';
 import { Color } from '@resources/colors';
-import { colFlex, rowFlex } from '@styles/flexStyles';
-import { TABLE_CROP_MARGIN_CELLS, TABLE_GRID_CELL_PX, TABLE_GRID_SIZE, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
+import { colFlex } from '@styles/flexStyles';
+import { TABLE_CROP_MARGIN_CELLS, TABLE_GRID_SIZE, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { getSessionOrderStats, SessionOrderStats } from '@hooks/admin/useTableOrderStats';
 import TableLayoutCanvas, { GridCropBounds } from './TableLayoutCanvas';
-import TableLayoutCard, { SELECTED_RING_PX } from './TableLayoutCard';
+import TableLayoutCard from './TableLayoutCard';
+import UnplacedTableStrip from './UnplacedTableStrip';
 
 const Container = styled.div`
   width: 100%;
@@ -41,44 +42,6 @@ const EmptyStateHint = styled.div`
   color: ${Color.MUTED_GREY};
 `;
 
-const UnplacedSection = styled.div`
-  width: 100%;
-  flex-shrink: 0;
-  gap: 6px;
-  ${colFlex()};
-`;
-
-const UnplacedLabel = styled.div`
-  font-size: 12px;
-  font-weight: 600;
-  color: ${Color.MUTED_GREY};
-`;
-
-const UnplacedCount = styled.span`
-  color: ${Color.GREY};
-  font-weight: 800;
-  font-variant-numeric: tabular-nums;
-`;
-
-const UNPLACED_LIST_MAX_ROWS = 2;
-const UNPLACED_LIST_GAP_PX = 8;
-
-const UnplacedCardList = styled.div`
-  width: calc(100% + ${SELECTED_RING_PX * 2}px);
-  margin: -${SELECTED_RING_PX}px;
-  padding: ${SELECTED_RING_PX}px;
-  gap: ${UNPLACED_LIST_GAP_PX}px;
-  flex-wrap: wrap;
-  max-height: ${UNPLACED_LIST_MAX_ROWS * TABLE_GRID_CELL_PX + (UNPLACED_LIST_MAX_ROWS - 1) * UNPLACED_LIST_GAP_PX}px;
-  overflow-y: auto;
-  ${rowFlex()};
-`;
-
-const UnplacedCardSlot = styled.div`
-  width: ${TABLE_GRID_CELL_PX}px;
-  height: ${TABLE_GRID_CELL_PX}px;
-`;
-
 function getCropBounds(placedTables: Table[]): GridCropBounds {
   const xs = placedTables.map((table) => table.position!.x);
   const ys = placedTables.map((table) => table.position!.y);
@@ -97,32 +60,29 @@ interface TableLayoutViewProps {
   orderStatsBySessionId: Map<number, SessionOrderStats>;
   visibleTableNumbers: Set<number> | null;
   selectedTableNumber: number | null;
-  flashSeqByTableNumber: Map<number, number>;
   onSelectTable: (table: Table) => void;
   onStartEdit: () => void;
 }
 
-function TableLayoutView({
-  tables,
-  orderStatsBySessionId,
-  visibleTableNumbers,
-  selectedTableNumber,
-  flashSeqByTableNumber,
-  onSelectTable,
-  onStartEdit,
-}: TableLayoutViewProps) {
+function TableLayoutView({ tables, orderStatsBySessionId, visibleTableNumbers, selectedTableNumber, onSelectTable, onStartEdit }: TableLayoutViewProps) {
   const placedTables = useMemo(() => tables.filter((table) => table.position != null), [tables]);
   const unplacedTables = useMemo(() => tables.filter((table) => table.position == null), [tables]);
 
   const tableByCell = new Map(placedTables.map((table) => [`${table.position!.x}-${table.position!.y}`, table]));
+
+  // 방금 상태를 바꾼(=선택된) 테이블까지 흐려지면 오류로 보인다 — 선택 테이블은 필터 dim에서 제외
+  const isDimmedByFilter = (table: Table) => {
+    if (visibleTableNumbers === null) return false;
+    if (table.tableNumber === selectedTableNumber) return false;
+    return !visibleTableNumbers.has(table.tableNumber);
+  };
 
   const renderCard = (table: Table) => (
     <TableLayoutCard
       table={table}
       orderCount={getSessionOrderStats(table, orderStatsBySessionId)?.count ?? 0}
       isSelected={table.tableNumber === selectedTableNumber}
-      isDimmed={visibleTableNumbers !== null && !visibleTableNumbers.has(table.tableNumber)}
-      flashSeq={flashSeqByTableNumber.get(table.tableNumber) ?? 0}
+      isDimmed={isDimmedByFilter(table)}
       onSelect={onSelectTable}
     />
   );
@@ -136,6 +96,13 @@ function TableLayoutView({
 
   return (
     <Container>
+      <UnplacedTableStrip
+        tables={unplacedTables}
+        selectedTableNumber={selectedTableNumber}
+        showEditButton={placedTables.length > 0}
+        onStartEdit={onStartEdit}
+        renderCard={renderCard}
+      />
       <CanvasArea>
         {placedTables.length === 0 ? (
           <EmptyState>
@@ -149,18 +116,6 @@ function TableLayoutView({
           <TableLayoutCanvas cropBounds={getCropBounds(placedTables)} renderCell={renderCell} />
         )}
       </CanvasArea>
-      {unplacedTables.length > 0 && (
-        <UnplacedSection>
-          <UnplacedLabel>
-            미배치 <UnplacedCount>{unplacedTables.length}</UnplacedCount>
-          </UnplacedLabel>
-          <UnplacedCardList>
-            {unplacedTables.map((table) => (
-              <UnplacedCardSlot key={table.id}>{renderCard(table)}</UnplacedCardSlot>
-            ))}
-          </UnplacedCardList>
-        </UnplacedSection>
-      )}
     </Container>
   );
 }

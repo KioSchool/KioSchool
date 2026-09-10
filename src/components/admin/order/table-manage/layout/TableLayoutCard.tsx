@@ -54,11 +54,6 @@ const exceededPulse = keyframes`
   100% { opacity: 1; }
 `;
 
-const orderFlash = keyframes`
-  0% { box-shadow: 0 0 0 0 rgba(255, 145, 66, 0.75); }
-  100% { box-shadow: 0 0 0 12px rgba(255, 145, 66, 0); }
-`;
-
 const Container = styled.div<{ status: TableStatus; isSelected: boolean; isDimmed: boolean; clickable: boolean }>`
   width: 100%;
   height: 100%;
@@ -83,14 +78,6 @@ const Container = styled.div<{ status: TableStatus; isSelected: boolean; isDimme
       animation: ${exceededPulse} 2s infinite;
     `}
   ${colFlex()};
-`;
-
-const FlashOverlay = styled.span`
-  position: absolute;
-  inset: 0;
-  border-radius: 12px;
-  pointer-events: none;
-  animation: ${orderFlash} 0.8s ease-out 3;
 `;
 
 const TopRow = styled.div`
@@ -159,12 +146,11 @@ interface TableLayoutCardProps {
   orderCount?: number;
   isSelected?: boolean;
   isDimmed?: boolean;
-  flashSeq?: number;
   showHandle?: boolean;
   onSelect?: (table: Table) => void;
 }
 
-function TableLayoutCard({ table, orderCount = 0, isSelected = false, isDimmed = false, flashSeq = 0, showHandle = false, onSelect }: TableLayoutCardProps) {
+function TableLayoutCard({ table, orderCount = 0, isSelected = false, isDimmed = false, showHandle = false, onSelect }: TableLayoutCardProps) {
   const status = getTableStatus(table);
   const ringColors = getRingColors(status);
 
@@ -172,7 +158,6 @@ function TableLayoutCard({ table, orderCount = 0, isSelected = false, isDimmed =
 
   return (
     <Container status={status} isSelected={isSelected} isDimmed={isDimmed} clickable={Boolean(onSelect)} onClick={handleClick}>
-      {flashSeq > 0 && <FlashOverlay key={flashSeq} />}
       <TopRow>
         <TableNumber status={status}>{table.tableNumber}</TableNumber>
         {showHandle && <HandleIcon />}
