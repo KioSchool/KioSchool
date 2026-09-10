@@ -136,7 +136,13 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
     // 계좌이체는 손님이 자기 뱅킹 앱에서 금액을 직접 입력한다. 우리가 관측할 수 없으니 null로 기록한다.
     const recordedAmount = method === 'account' ? null : amount;
 
-    reportDonationCardEvent('donation_card_click', { variant: copy.id, note_index: noteIndex, amount: recordedAmount, workspace_id: workspaceIdParam, method });
+    reportDonationCardEvent('donation_card_click', {
+      variant: copy.id,
+      note_index: noteIndex,
+      amount: recordedAmount,
+      workspace_id: workspaceIdParam,
+      donation_method: method,
+    });
     setDonatedAt(Date.now());
     setDismissedAt(Date.now());
     setJustDonated(true);
