@@ -1,9 +1,9 @@
-import { createPortal } from 'react-dom';
+import { useId } from 'react';
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
+import Modal from '@mui/material/Modal';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { MODAL_ROOT_KEY } from '@hooks/useModal';
 import { resolveThanksCount } from '@utils/donation';
 import { buildDonationCtaLabel, DONATION_AMOUNT_OPTIONS } from '@constants/data/customerDonationCopy';
 import useCustomerDonationModal, { DonationMethod } from '@hooks/user/useCustomerDonationModal';
@@ -25,7 +25,11 @@ const DONATION_METHOD_OPTIONS: readonly MethodOption[] = [
 const TRIGGER_LABEL_DEFAULT = '🙌 키오스쿨 응원하기';
 const TRIGGER_LABEL_DONATED = '✓ 응원해주셔서 고마워요';
 
-const Overlay = styled.div`
+const Container = styled.div`
+  width: 100%;
+`;
+
+const Overlay = styled(Modal)`
   position: fixed;
   inset: 0;
   background: rgba(70, 74, 77, 0.35);
@@ -347,7 +351,7 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
     onDonate: donate,
   });
 
-  const modalRoot = typeof document !== 'undefined' ? document.getElementById(MODAL_ROOT_KEY) : null;
+  const dialogTitleId = useId();
   if (!eligible) return null;
 
   const isAccountMethod = method === 'account';
@@ -369,13 +373,20 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
         ✕
       </DismissButton>
       <BrandBadge>키오스쿨</BrandBadge>
-      <DonationVisualHeader copy={copy} note={note} amount={amount} todayCount={todayCount} />
+      <DonationVisualHeader copy={copy} note={note} amount={amount} todayCount={todayCount} titleId={dialogTitleId} />
       <Divider />
       <FieldGroup>
         <FieldLabel>보내는 방법</FieldLabel>
         <ChipRow>
           {DONATION_METHOD_OPTIONS.map((option) => (
-            <Chip key={option.value} type="button" selected={option.value === method} onClick={() => selectMethod(option.value)} disabled={isCopying}>
+            <Chip
+              key={option.value}
+              type="button"
+              selected={option.value === method}
+              aria-pressed={option.value === method}
+              onClick={() => selectMethod(option.value)}
+              disabled={isCopying}
+            >
               {option.label}
             </Chip>
           ))}
@@ -390,7 +401,7 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
           <FieldLabel>얼마를 보낼까요</FieldLabel>
           <ChipRow>
             {DONATION_AMOUNT_OPTIONS.map((option) => (
-              <Chip key={option} type="button" selected={option === amount} onClick={() => selectAmount(option)}>
+              <Chip key={option} type="button" selected={option === amount} aria-pressed={option === amount} onClick={() => selectAmount(option)}>
                 {option.toLocaleString()}원
               </Chip>
             ))}
@@ -413,7 +424,7 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
         </Confetti>
       )}
       <ThanksCharacter src={thanksCharacter} alt="키오스쿨 마스코트" />
-      <ThanksTitle>정말 고마워요 🎉</ThanksTitle>
+      <ThanksTitle id={dialogTitleId}>정말 고마워요 🎉</ThanksTitle>
       {thanksCount && (
         <ThanksCount>
           {thanksCount.prefix}
@@ -433,22 +444,18 @@ function CustomerDonationModal({ orderId, workspaceId, eligible, initialTodayCou
   const content = view === 'donate' ? donateView : thanksView;
 
   return (
-    <>
+    <Container>
       <DonationTriggerRow>
         <DonationTrigger type="button" hasDonated={hasDonated} onClick={open}>
           {hasDonated ? TRIGGER_LABEL_DONATED : TRIGGER_LABEL_DEFAULT}
         </DonationTrigger>
       </DonationTriggerRow>
-      {isOpen &&
-        modalRoot &&
-        createPortal(
-          // 배경(회색 영역) 클릭으로는 안 닫는다. ✕ 버튼으로만 닫힌다.
-          <Overlay>
-            <CenterPanel className={'customer-donation-modal'}>{content}</CenterPanel>
-          </Overlay>,
-          modalRoot,
-        )}
-    </>
+      <Overlay open={isOpen} onClose={dismiss} hideBackdrop>
+        <CenterPanel className={'customer-donation-modal'} role="dialog" aria-modal="true" aria-labelledby={dialogTitleId} tabIndex={-1}>
+          {content}
+        </CenterPanel>
+      </Overlay>
+    </Container>
   );
 }
 

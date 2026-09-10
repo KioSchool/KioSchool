@@ -95,7 +95,7 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
   useEffect(() => {
     if (!isOpen || !eligible) return undefined;
 
-    document.body.style.overflow = 'hidden';
+    const controller = new AbortController();
 
     if (!viewReportedRef.current) {
       viewReportedRef.current = true;
@@ -103,12 +103,16 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
     }
 
     userApi
-      .get<TodayCountResponse>(TODAY_COUNT_ENDPOINT, { skipGlobalLoading: true })
-      .then((res) => setTodayCount(res.data.todayCount))
-      .catch(() => setTodayCount(initialTodayCount ?? null));
+      .get<TodayCountResponse>(TODAY_COUNT_ENDPOINT, { skipGlobalLoading: true, signal: controller.signal })
+      .then((res) => {
+        if (!controller.signal.aborted) setTodayCount(res.data.todayCount);
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) setTodayCount(initialTodayCount ?? null);
+      });
 
     return () => {
-      document.body.style.overflow = 'auto';
+      controller.abort();
     };
   }, [isOpen, eligible, copy.id, noteIndex, workspaceIdParam, userApi, initialTodayCount]);
 

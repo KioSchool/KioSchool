@@ -82,9 +82,10 @@ interface DonationVisualHeaderProps {
   note: string;
   amount: number;
   todayCount: number | null;
+  titleId?: string;
 }
 
-function DonationVisualHeader({ copy, note, amount, todayCount }: DonationVisualHeaderProps) {
+function DonationVisualHeader({ copy, note, amount, todayCount, titleId }: DonationVisualHeaderProps) {
   const headlineText = fillDonationAmount(copy.headline, amount, copy);
   const characterSrc = AMOUNT_CHARACTERS[amount] ?? DEFAULT_CHARACTER;
   const countText = resolveDonationCountText(todayCount);
@@ -93,7 +94,7 @@ function DonationVisualHeader({ copy, note, amount, todayCount }: DonationVisual
     <Container>
       <CharacterImage src={characterSrc} alt="키오스쿨 마스코트 캐릭터" />
       <HeadGroup>
-        <Headline>{headlineText}</Headline>
+        <Headline id={titleId}>{headlineText}</Headline>
         <DestinationNote>{note}</DestinationNote>
       </HeadGroup>
       <BodyGroup>
