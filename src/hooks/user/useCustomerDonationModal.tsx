@@ -104,7 +104,7 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
     }
 
     userApi
-      .get<TodayCountResponse>(TODAY_COUNT_ENDPOINT)
+      .get<TodayCountResponse>(TODAY_COUNT_ENDPOINT, { skipGlobalLoading: true })
       .then((res) => setTodayCount(res.data.todayCount))
       .catch(() => setTodayCount(initialTodayCount ?? null));
 
@@ -153,7 +153,7 @@ function useCustomerDonationModal({ orderId, workspaceId, eligible, initialToday
     };
 
     userApi
-      .post<TodayCountResponse>(RECORD_CLICK_ENDPOINT, body)
+      .post<TodayCountResponse>(RECORD_CLICK_ENDPOINT, body, { skipGlobalLoading: true })
       .then((res) => {
         setTodayCount(res.data.todayCount);
         setDonationRank(res.data.todayCount);
