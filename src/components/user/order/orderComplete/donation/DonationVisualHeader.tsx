@@ -4,17 +4,16 @@ import { colFlex } from '@styles/flexStyles';
 import { DonationCopy, fillDonationAmount } from '@constants/data/customerDonationCopy';
 import { resolveDonationCountText } from '@utils/donation';
 import c1KCoding from '@resources/image/donation/c1-k-coding.webp';
-import c2IPainting from '@resources/image/donation/c2-i-painting.webp';
-import c4IFlag from '@resources/image/donation/c4-i-flag.webp';
-import c5KCoffee from '@resources/image/donation/c5-k-coffee.webp';
+import c7KWater from '@resources/image/donation/c7-k-water.webp';
+import c8KRiceBall from '@resources/image/donation/c8-k-rice-ball.webp';
+import c9KCoffee from '@resources/image/donation/c9-k-coffee.webp';
 
 const CHARACTER_IMAGE_HEIGHT_PX = 112;
 
-// TODO(후속): 생수/삼각김밥/커피에 맞는 전용 일러스트로 교체
 const AMOUNT_CHARACTERS: Record<number, string> = {
-  1000: c4IFlag,
-  2000: c2IPainting,
-  5000: c5KCoffee,
+  1000: c7KWater,
+  2000: c8KRiceBall,
+  5000: c9KCoffee,
 };
 const DEFAULT_CHARACTER = c1KCoding;
 
