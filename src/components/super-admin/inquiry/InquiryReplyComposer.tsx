@@ -94,15 +94,22 @@ interface InquiryReplyComposerProps {
   onConflict: (message: string) => Promise<void>;
 }
 
-function createPreviewHtml(content: string): string {
+function createPreviewHtml(content: string, inquiryTitle: string, inquiryContent: string): string {
   const document = new DOMParser().parseFromString(inquiryReplyEmailTemplate, 'text/html');
-  const contentElement = Array.from(document.querySelectorAll('*')).find((element) => element.getAttribute('th:text') === '${content}');
+  const textValues: Record<string, string> = {
+    '${content}': content.trim(),
+    '${inquiryTitle}': inquiryTitle,
+    '${inquiryContent}': inquiryContent,
+  };
   const linkElement = Array.from(document.querySelectorAll('a')).find((element) => element.getAttribute('th:href') === '${baseUrl}');
 
-  if (contentElement) {
-    contentElement.removeAttribute('th:text');
-    contentElement.textContent = content;
-  }
+  document.querySelectorAll('*').forEach((element) => {
+    const expression = element.getAttribute('th:text');
+    if (!expression || !Object.prototype.hasOwnProperty.call(textValues, expression)) return;
+
+    element.removeAttribute('th:text');
+    element.textContent = textValues[expression];
+  });
 
   if (linkElement) {
     linkElement.removeAttribute('th:href');
@@ -125,7 +132,7 @@ function InquiryReplyComposer({ inquiry, onReplyComplete, onConflict }: InquiryR
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
-  const previewHtml = useMemo(() => createPreviewHtml(content), [content]);
+  const previewHtml = useMemo(() => createPreviewHtml(content, inquiry.title, inquiry.content), [content, inquiry.title, inquiry.content]);
   const { ConfirmModal, confirm } = useConfirm({
     title: '답변을 발송할까요?',
     description: `${inquiry.replyEmail} 주소로 답변 이메일을 발송합니다.`,
