@@ -13,7 +13,10 @@ const Ring = styled.div<{ size: number; percent: number; fillColor: string; trac
   border-radius: 50%;
   flex-shrink: 0;
   position: relative;
-  background: ${({ percent, fillColor, trackColor }) => `conic-gradient(${fillColor} ${percent}%, ${trackColor} 0)`};
+  background: ${({ percent, fillColor, trackColor }) => {
+    if (percent === FULL_PERCENT) return fillColor;
+    return `conic-gradient(${fillColor} ${percent}%, ${trackColor} 0)`;
+  }};
 `;
 
 const Hole = styled.div<{ size: number; holeColor: string }>`
