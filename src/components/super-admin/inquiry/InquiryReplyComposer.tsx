@@ -9,6 +9,7 @@ import {
   DEFAULT_INQUIRY_REPLY_CONTENT_CURSOR_POSITION,
   DEFAULT_INQUIRY_REPLY_SUBJECT,
   INQUIRY_REPLY_CONTENT_MAX_LENGTH,
+  INQUIRY_REPLY_ORIGINAL_CONTENT_NOTICE,
   INQUIRY_REPLY_SUBJECT_MAX_LENGTH,
 } from '@constants/data/inquiryData';
 import { API_ERROR_CODES } from '@constants/errorCodes';
@@ -67,6 +68,13 @@ const PreviewSubject = styled.span`
   color: ${Color.BLACK};
   font-size: 14px;
   font-weight: 600;
+`;
+
+const PreviewNotice = styled.p`
+  margin: 0;
+  color: ${Color.GREY};
+  font-size: 13px;
+  line-height: 1.6;
 `;
 
 const PreviewFrame = styled.iframe`
@@ -135,7 +143,7 @@ function InquiryReplyComposer({ inquiry, onReplyComplete, onConflict }: InquiryR
   const previewHtml = useMemo(() => createPreviewHtml(content, inquiry.title, inquiry.content), [content, inquiry.title, inquiry.content]);
   const { ConfirmModal, confirm } = useConfirm({
     title: '답변을 발송할까요?',
-    description: `${inquiry.replyEmail} 주소로 답변 이메일을 발송합니다.`,
+    description: `${inquiry.replyEmail} 주소로 답변 이메일을 발송합니다. ${INQUIRY_REPLY_ORIGINAL_CONTENT_NOTICE}`,
     okText: '발송하기',
     cancelText: '취소',
   });
@@ -221,6 +229,7 @@ function InquiryReplyComposer({ inquiry, onReplyComplete, onConflict }: InquiryR
         </Field>
         <PreviewContainer>
           <PreviewTitle>이메일 미리보기</PreviewTitle>
+          <PreviewNotice>{INQUIRY_REPLY_ORIGINAL_CONTENT_NOTICE}</PreviewNotice>
           <PreviewSubject>메일 제목 : {subject || '제목을 입력해 주세요.'}</PreviewSubject>
           <PreviewFrame title="문의 답변 이메일 미리보기" sandbox="" srcDoc={previewHtml} />
         </PreviewContainer>
