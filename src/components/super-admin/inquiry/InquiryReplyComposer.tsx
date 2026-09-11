@@ -9,6 +9,7 @@ import {
   DEFAULT_INQUIRY_REPLY_CONTENT_CURSOR_POSITION,
   DEFAULT_INQUIRY_REPLY_SUBJECT,
   INQUIRY_REPLY_CONTENT_MAX_LENGTH,
+  INQUIRY_REPLY_ORIGINAL_CONTENT_NOTICE,
   INQUIRY_REPLY_SUBJECT_MAX_LENGTH,
 } from '@constants/data/inquiryData';
 import { API_ERROR_CODES } from '@constants/errorCodes';
@@ -69,6 +70,13 @@ const PreviewSubject = styled.span`
   font-weight: 600;
 `;
 
+const PreviewNotice = styled.p`
+  margin: 0;
+  color: ${Color.GREY};
+  font-size: 13px;
+  line-height: 1.6;
+`;
+
 const PreviewFrame = styled.iframe`
   width: 100%;
   height: 440px;
@@ -94,15 +102,22 @@ interface InquiryReplyComposerProps {
   onConflict: (message: string) => Promise<void>;
 }
 
-function createPreviewHtml(content: string): string {
+function createPreviewHtml(content: string, inquiryTitle: string, inquiryContent: string): string {
   const document = new DOMParser().parseFromString(inquiryReplyEmailTemplate, 'text/html');
-  const contentElement = Array.from(document.querySelectorAll('*')).find((element) => element.getAttribute('th:text') === '${content}');
+  const textValues: Record<string, string> = {
+    '${content}': content.trim(),
+    '${inquiryTitle}': inquiryTitle,
+    '${inquiryContent}': inquiryContent,
+  };
   const linkElement = Array.from(document.querySelectorAll('a')).find((element) => element.getAttribute('th:href') === '${baseUrl}');
 
-  if (contentElement) {
-    contentElement.removeAttribute('th:text');
-    contentElement.textContent = content;
-  }
+  document.querySelectorAll('*').forEach((element) => {
+    const expression = element.getAttribute('th:text');
+    if (!expression || !Object.prototype.hasOwnProperty.call(textValues, expression)) return;
+
+    element.removeAttribute('th:text');
+    element.textContent = textValues[expression];
+  });
 
   if (linkElement) {
     linkElement.removeAttribute('th:href');
@@ -125,10 +140,10 @@ function InquiryReplyComposer({ inquiry, onReplyComplete, onConflict }: InquiryR
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
-  const previewHtml = useMemo(() => createPreviewHtml(content), [content]);
+  const previewHtml = useMemo(() => createPreviewHtml(content, inquiry.title, inquiry.content), [content, inquiry.title, inquiry.content]);
   const { ConfirmModal, confirm } = useConfirm({
     title: '답변을 발송할까요?',
-    description: `${inquiry.replyEmail} 주소로 답변 이메일을 발송합니다.`,
+    description: `${inquiry.replyEmail} 주소로 답변 이메일을 발송합니다. ${INQUIRY_REPLY_ORIGINAL_CONTENT_NOTICE}`,
     okText: '발송하기',
     cancelText: '취소',
   });
@@ -214,6 +229,7 @@ function InquiryReplyComposer({ inquiry, onReplyComplete, onConflict }: InquiryR
         </Field>
         <PreviewContainer>
           <PreviewTitle>이메일 미리보기</PreviewTitle>
+          <PreviewNotice>{INQUIRY_REPLY_ORIGINAL_CONTENT_NOTICE}</PreviewNotice>
           <PreviewSubject>메일 제목 : {subject || '제목을 입력해 주세요.'}</PreviewSubject>
           <PreviewFrame title="문의 답변 이메일 미리보기" sandbox="" srcDoc={previewHtml} />
         </PreviewContainer>
