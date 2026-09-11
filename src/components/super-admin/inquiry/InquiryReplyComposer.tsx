@@ -1,0 +1,247 @@
+import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
+import styled from '@emotion/styled';
+import { match } from 'ts-pattern';
+import NewCommonButton from '@components/common/button/NewCommonButton';
+import NewAppInput from '@components/common/input/NewAppInput';
+import NewAppTextarea from '@components/common/input/NewAppTextarea';
+import {
+  DEFAULT_INQUIRY_REPLY_CONTENT,
+  DEFAULT_INQUIRY_REPLY_CONTENT_CURSOR_POSITION,
+  DEFAULT_INQUIRY_REPLY_SUBJECT,
+  INQUIRY_REPLY_CONTENT_MAX_LENGTH,
+  INQUIRY_REPLY_ORIGINAL_CONTENT_NOTICE,
+  INQUIRY_REPLY_SUBJECT_MAX_LENGTH,
+} from '@constants/data/inquiryData';
+import { API_ERROR_CODES } from '@constants/errorCodes';
+import { URLS } from '@constants/urls';
+import useSuperAdminInquiry from '@hooks/super-admin/useSuperAdminInquiry';
+import useConfirm from '@hooks/useConfirm';
+import { Color } from '@resources/colors';
+import inquiryReplyEmailTemplate from '@resources/templates/inquiryReplyEmail.html?raw';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import type { InquiryDetail } from '@@types/inquiry';
+import { getApiErrorMessage, isApiErrorCode } from '@utils/apiError';
+
+const Container = styled.section`
+  width: 100%;
+  gap: 14px;
+  ${colFlex()}
+`;
+
+const Form = styled.form`
+  width: 100%;
+  gap: 12px;
+  ${colFlex()}
+`;
+
+const Field = styled.div`
+  width: 100%;
+  gap: 6px;
+  ${colFlex()}
+`;
+
+const FieldLabel = styled.label`
+  color: ${Color.GREY};
+  font-size: 13px;
+  font-weight: 600;
+`;
+
+const CharacterCount = styled.span`
+  align-self: flex-end;
+  color: ${Color.GREY};
+  font-size: 12px;
+`;
+
+const PreviewContainer = styled.div`
+  width: 100%;
+  gap: 8px;
+  ${colFlex()}
+`;
+
+const PreviewTitle = styled.span`
+  color: ${Color.GREY};
+  font-size: 13px;
+  font-weight: 600;
+`;
+
+const PreviewSubject = styled.span`
+  color: ${Color.BLACK};
+  font-size: 14px;
+  font-weight: 600;
+`;
+
+const PreviewNotice = styled.p`
+  margin: 0;
+  color: ${Color.GREY};
+  font-size: 13px;
+  line-height: 1.6;
+`;
+
+const PreviewFrame = styled.iframe`
+  width: 100%;
+  height: 440px;
+  box-sizing: border-box;
+  border: 1px solid #e8eef2;
+  border-radius: 8px;
+  background: #f6f7f9;
+`;
+
+const ErrorText = styled.span`
+  color: #d32f2f;
+  font-size: 13px;
+`;
+
+const ButtonRow = styled.div`
+  width: 100%;
+  ${rowFlex({ justify: 'flex-end' })}
+`;
+
+interface InquiryReplyComposerProps {
+  inquiry: InquiryDetail;
+  onReplyComplete: (inquiry: InquiryDetail) => void;
+  onConflict: (message: string) => Promise<void>;
+}
+
+function createPreviewHtml(content: string, inquiryTitle: string, inquiryContent: string): string {
+  const document = new DOMParser().parseFromString(inquiryReplyEmailTemplate, 'text/html');
+  const textValues: Record<string, string> = {
+    '${content}': content.trim(),
+    '${inquiryTitle}': inquiryTitle,
+    '${inquiryContent}': inquiryContent,
+  };
+  const linkElement = Array.from(document.querySelectorAll('a')).find((element) => element.getAttribute('th:href') === '${baseUrl}');
+
+  document.querySelectorAll('*').forEach((element) => {
+    const expression = element.getAttribute('th:text');
+    if (!expression || !Object.prototype.hasOwnProperty.call(textValues, expression)) return;
+
+    element.removeAttribute('th:text');
+    element.textContent = textValues[expression];
+  });
+
+  if (linkElement) {
+    linkElement.removeAttribute('th:href');
+    linkElement.href = URLS.EXTERNAL.KIO_SCHOOL;
+  }
+
+  return `<!DOCTYPE html>${document.documentElement.outerHTML}`;
+}
+
+function getReplyButtonText(isSubmitting: boolean): string {
+  return match(isSubmitting)
+    .with(true, () => '발송 중...')
+    .otherwise(() => '답변 이메일 발송');
+}
+
+function InquiryReplyComposer({ inquiry, onReplyComplete, onConflict }: InquiryReplyComposerProps) {
+  const { replyInquiry } = useSuperAdminInquiry();
+  const [subject, setSubject] = useState(DEFAULT_INQUIRY_REPLY_SUBJECT);
+  const [content, setContent] = useState(DEFAULT_INQUIRY_REPLY_CONTENT);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const previewHtml = useMemo(() => createPreviewHtml(content, inquiry.title, inquiry.content), [content, inquiry.title, inquiry.content]);
+  const { ConfirmModal, confirm } = useConfirm({
+    title: '답변을 발송할까요?',
+    description: `${inquiry.replyEmail} 주소로 답변 이메일을 발송합니다. ${INQUIRY_REPLY_ORIGINAL_CONTENT_NOTICE}`,
+    okText: '발송하기',
+    cancelText: '취소',
+  });
+
+  useEffect(() => {
+    const contentTextarea = contentTextareaRef.current;
+    if (!contentTextarea) return;
+
+    contentTextarea.focus({ preventScroll: true });
+    contentTextarea.setSelectionRange(DEFAULT_INQUIRY_REPLY_CONTENT_CURSOR_POSITION, DEFAULT_INQUIRY_REPLY_CONTENT_CURSOR_POSITION);
+  }, []);
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (isSubmitting) return;
+
+    if (!subject.trim()) {
+      setErrorMessage('답변 제목을 입력해 주세요.');
+      return;
+    }
+
+    if (!content.trim()) {
+      setErrorMessage('답변 내용을 입력해 주세요.');
+      return;
+    }
+
+    const isConfirmed = await confirm();
+    if (!isConfirmed) return;
+
+    setIsSubmitting(true);
+    setErrorMessage('');
+
+    try {
+      const response = await replyInquiry(inquiry.id, { subject: subject.trim(), content: content.trim() });
+      onReplyComplete(response);
+    } catch (error) {
+      const nextErrorMessage = getApiErrorMessage(error, '답변 이메일을 발송하지 못했습니다.');
+      if (isApiErrorCode(error, API_ERROR_CODES.INQUIRY_ALREADY_ANSWERED, API_ERROR_CODES.INQUIRY_ALREADY_CLOSED)) {
+        await onConflict(nextErrorMessage);
+      } else {
+        setErrorMessage(nextErrorMessage);
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <Container>
+      <ConfirmModal />
+      <Form onSubmit={handleSubmit} noValidate>
+        <Field>
+          <FieldLabel htmlFor="inquiry-reply-subject">답변 제목</FieldLabel>
+          <NewAppInput
+            id="inquiry-reply-subject"
+            width="100%"
+            value={subject}
+            maxLength={INQUIRY_REPLY_SUBJECT_MAX_LENGTH}
+            placeholder="답변 이메일 제목을 입력해 주세요"
+            onChange={(event) => setSubject(event.target.value)}
+            required
+          />
+          <CharacterCount>
+            {subject.length}/{INQUIRY_REPLY_SUBJECT_MAX_LENGTH}
+          </CharacterCount>
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="inquiry-reply-content">답변 내용</FieldLabel>
+          <NewAppTextarea
+            ref={contentTextareaRef}
+            id="inquiry-reply-content"
+            width="100%"
+            height={180}
+            value={content}
+            maxLength={INQUIRY_REPLY_CONTENT_MAX_LENGTH}
+            placeholder="고객에게 전달할 답변을 입력해 주세요"
+            onChange={(event) => setContent(event.target.value)}
+            required
+          />
+          <CharacterCount>
+            {content.length}/{INQUIRY_REPLY_CONTENT_MAX_LENGTH}
+          </CharacterCount>
+        </Field>
+        <PreviewContainer>
+          <PreviewTitle>이메일 미리보기</PreviewTitle>
+          <PreviewNotice>{INQUIRY_REPLY_ORIGINAL_CONTENT_NOTICE}</PreviewNotice>
+          <PreviewSubject>메일 제목 : {subject || '제목을 입력해 주세요.'}</PreviewSubject>
+          <PreviewFrame title="문의 답변 이메일 미리보기" sandbox="" srcDoc={previewHtml} />
+        </PreviewContainer>
+        {errorMessage && <ErrorText role="alert">{errorMessage}</ErrorText>}
+        <ButtonRow>
+          <NewCommonButton type="submit" size="xs" disabled={isSubmitting}>
+            {getReplyButtonText(isSubmitting)}
+          </NewCommonButton>
+        </ButtonRow>
+      </Form>
+    </Container>
+  );
+}
+
+export default InquiryReplyComposer;

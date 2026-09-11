@@ -4,6 +4,7 @@ export const USER_ROUTES = {
   REGISTER: '/register',
   RESET_PASSWORD: '/reset-password',
   INFO: '/info',
+  CONTACT: '/contact',
   EMAIL_DOMAINS: '/email-domains',
 } as const;
 
@@ -44,6 +45,8 @@ export const SUPER_ADMIN_ROUTES = {
   ACCOUNT_STATUS: '/super-admin/account-status',
   FESTIVAL_CALENDAR: '/super-admin/festival-calendar',
   CACHE: '/super-admin/cache',
+  INQUIRIES: '/super-admin/inquiries',
+  INQUIRY_DETAIL: '/super-admin/inquiries/:inquiryId',
 } as const;
 
 export const TEST_ROUTES = {
@@ -58,3 +61,5 @@ export function getSuperAdminOrdersPath(query?: { workspaceId?: number }): strin
   if (!query?.workspaceId) return SUPER_ADMIN_ROUTES.ORDERS;
   return `${SUPER_ADMIN_ROUTES.ORDERS}?workspaceId=${query.workspaceId}`;
 }
+
+export const getSuperAdminInquiryPath = (inquiryId: string | number) => `/super-admin/inquiries/${inquiryId}`;

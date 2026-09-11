@@ -2,7 +2,7 @@ import { ProductCategory } from '@@types/index';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import useConfirm from '@hooks/useConfirm';
 import { useParams } from 'react-router-dom';
-import CategoryItem from '@components/admin/product-category/CategoryItem';
+import CategoryItem from './CategoryItem';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import styled from '@emotion/styled';

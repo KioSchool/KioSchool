@@ -29,24 +29,25 @@ const HiddenInput = styled.input`
   pointer-events: none;
 `;
 
-const Text = styled.span`
+const Text = styled.span<{ $whiteSpace: 'nowrap' | 'pre-line' }>`
   font-size: 14px;
   color: #464a4d;
-  white-space: nowrap;
+  white-space: ${({ $whiteSpace }) => $whiteSpace};
 `;
 
 interface CustomCheckboxProps {
   checked: boolean;
   onChange: (checked: boolean) => void;
   label: string;
+  whiteSpace?: 'nowrap' | 'pre-line';
 }
 
-function CustomCheckbox({ checked, onChange, label }: CustomCheckboxProps) {
+function CustomCheckbox({ checked, onChange, label, whiteSpace = 'nowrap' }: CustomCheckboxProps) {
   return (
     <Label>
       <HiddenInput type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} />
       <Box checked={checked}>{checked && <RiCheckLine size={16} color={Color.WHITE} />}</Box>
-      <Text>{label}</Text>
+      <Text $whiteSpace={whiteSpace}>{label}</Text>
     </Label>
   );
 }

@@ -1,4 +1,5 @@
 import { API_ERROR_CODES, ApiErrorCode } from '@constants/errorCodes';
+import { HEALTH_CHECK_PATH } from '@constants/network';
 
 type SentryEnvironment = 'local' | 'dev' | 'production';
 
@@ -16,7 +17,7 @@ const RATES_BY_ENV: Record<
 };
 
 // URL 부분 일치 시 Sentry 전송 차단. 폴링/헬스체크 등 의도된 실패 가능 endpoint 추가.
-const IGNORED_URL_PATTERNS: readonly string[] = ['/actuator/health'];
+const IGNORED_URL_PATTERNS: readonly string[] = [HEALTH_CHECK_PATH];
 
 /**
  * 백엔드 `ErrorCode` 중에서도 Sentry로 계속 보고할 code.

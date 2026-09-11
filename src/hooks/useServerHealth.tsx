@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { userApi } from '../apis/userApi';
+import { HEALTH_CHECK_PATH } from '@constants/network';
 
 interface ServerHealthStatus {
   isServerHealthy: boolean;
@@ -18,7 +19,7 @@ function useServerHealth() {
     try {
       setStatus((prev) => ({ ...prev, isChecking: true }));
 
-      await userApi.get('/actuator/health', {
+      await userApi.get(HEALTH_CHECK_PATH, {
         timeout: 10000,
         validateStatus: (statusCode) => statusCode < 500,
       });

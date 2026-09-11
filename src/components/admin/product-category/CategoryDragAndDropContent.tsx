@@ -4,10 +4,10 @@ import { useParams } from 'react-router-dom';
 import { adminCategoriesAtom } from '@jotai/admin/atoms';
 import { useAtom } from 'jotai';
 import { defaultCategory } from '@constants/data/categoryData';
-import CategoryItem from '@components/admin/product-category/CategoryItem';
+import CategoryItem from './CategoryItem';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
-import CategoryDraggableContents from '@components/admin/product-category/CategoryDraggableContents';
+import CategoryDraggableContents from './CategoryDraggableContents';
 import { closestCenter, DndContext, DragEndEvent, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 

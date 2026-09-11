@@ -1,4 +1,4 @@
-import SelectWithOptions, { SelectWithOptionsProps } from '@components/common/select/SelectWithOptions';
+import SelectWithOptions, { SelectWithOptionsProps } from './SelectWithOptions';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';

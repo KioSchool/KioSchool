@@ -1,4 +1,4 @@
-import NewCommonButton from '@components/common/button/NewCommonButton';
+import NewCommonButton from './NewCommonButton';
 
 const meta = {
   title: 'Components/Common/Button/NewCommonButton',

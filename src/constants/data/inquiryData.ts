@@ -1,0 +1,34 @@
+import { Color } from '@resources/colors';
+import type { InquiryStatus } from '@@types/inquiry';
+
+const DEFAULT_INQUIRY_REPLY_CONTENT_PREFIX = '안녕하세요. 키오스쿨팀입니다.\n\n';
+const DEFAULT_INQUIRY_REPLY_CONTENT_SUFFIX = '\n\n감사합니다.\n\n키오스쿨 드림.';
+
+export const INQUIRY_TITLE_MAX_LENGTH = 100;
+export const INQUIRY_CONTENT_MAX_LENGTH = 2000;
+export const INQUIRY_REPLY_SUBJECT_MAX_LENGTH = 150;
+export const INQUIRY_REPLY_CONTENT_MAX_LENGTH = 5000;
+export const DEFAULT_INQUIRY_REPLY_SUBJECT = '[키오스쿨] 문의하신 내용에 답변드립니다';
+export const INQUIRY_REPLY_ORIGINAL_CONTENT_NOTICE = '문의 제목과 원문이 답변 이메일에 함께 발송됩니다.';
+export const DEFAULT_INQUIRY_REPLY_CONTENT = `${DEFAULT_INQUIRY_REPLY_CONTENT_PREFIX}${DEFAULT_INQUIRY_REPLY_CONTENT_SUFFIX}`;
+export const DEFAULT_INQUIRY_REPLY_CONTENT_CURSOR_POSITION = DEFAULT_INQUIRY_REPLY_CONTENT_PREFIX.length;
+export const INQUIRY_IMAGE_MAX_COUNT = 5;
+export const INQUIRY_IMAGE_MAX_SIZE_MB = 5;
+
+export const INQUIRY_IMAGE_MAX_SIZE_BYTES = INQUIRY_IMAGE_MAX_SIZE_MB * 1024 * 1024;
+export const INQUIRY_ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
+export const INQUIRY_IMAGE_ACCEPT_ATTRIBUTE = INQUIRY_ACCEPTED_IMAGE_TYPES.join(',');
+
+export const INQUIRY_STATUSES: InquiryStatus[] = ['PENDING', 'ANSWERED', 'CLOSED'];
+
+export const INQUIRY_STATUS_LABELS: Record<InquiryStatus, string> = {
+  PENDING: '답변 대기',
+  ANSWERED: '답변 완료',
+  CLOSED: '종결',
+};
+
+export const INQUIRY_STATUS_PALETTE: Record<InquiryStatus, { bg: string; text: string }> = {
+  PENDING: { bg: Color.KIO_ORANGE_FAINT, text: Color.KIO_ORANGE_DARK },
+  ANSWERED: { bg: Color.GREEN_FAINT, text: Color.GREEN },
+  CLOSED: { bg: Color.LIGHT_GREY, text: Color.GREY },
+};

@@ -16,6 +16,8 @@ import AdminWorkspaceOnboarding from '@components/admin/workspace/onboarding/Adm
 import { isWorkspaceOnboardingCompleted } from '@utils/onboarding';
 import useConfirm from '@hooks/useConfirm';
 import { match } from 'ts-pattern';
+import { trackEvent } from '@utils/analytics';
+import { GA_EVENT } from '@constants/analytics';
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -80,16 +82,23 @@ function AdminWorkspace() {
 
     isAutoCompletingOnboardingRef.current = true;
 
-    updateWorkspaceOnboarding(workspace.id, false).finally(() => {
-      isAutoCompletingOnboardingRef.current = false;
-    });
+    updateWorkspaceOnboarding(workspace.id, false)
+      .then(() => {
+        trackEvent(GA_EVENT.ONBOARDING_COMPLETED, { workspace_id: workspace.id, completion_method: 'auto' });
+      })
+      .finally(() => {
+        isAutoCompletingOnboardingRef.current = false;
+      });
   }, [hasWorkspaceAccess, isOnboardingCompleted, isWorkspaceLoading, updateWorkspaceOnboarding, workspace.id, workspace.isOnboarding]);
 
   const handleSkipOnboarding = async () => {
     const userInput = await confirm();
     if (!userInput) return;
 
-    return updateWorkspaceOnboarding(workspace.id, false);
+    return updateWorkspaceOnboarding(workspace.id, false).then((result) => {
+      trackEvent(GA_EVENT.ONBOARDING_COMPLETED, { workspace_id: workspace.id, completion_method: 'skip' });
+      return result;
+    });
   };
 
   const isOnboardingVisible = hasWorkspaceAccess && !isWorkspaceLoading && workspace.isOnboarding && !isOnboardingCompleted;

@@ -6,6 +6,7 @@ export const ROUTES_PATH_KR_MAP = {
   [USER_ROUTES.REGISTER]: '회원가입',
   [USER_ROUTES.RESET_PASSWORD]: '비밀번호 재설정',
   [USER_ROUTES.INFO]: '서비스 안내',
+  [USER_ROUTES.CONTACT]: '문의하기',
   [USER_ROUTES.EMAIL_DOMAINS]: '이메일 도메인 목록',
 
   [ORDER_ROUTES.ORDER]: '주문하기',

@@ -2,9 +2,11 @@ import { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } 
 import * as Sentry from '@sentry/react';
 import { match } from 'ts-pattern';
 import { SENTRY_CONFIG } from '@constants/sentry';
+import { NETWORK_BLOCKED_EVENT } from '@constants/network';
 import { getApiErrorCode, isAxiosCancel, requiresGlobalLogout } from './apiError';
 import { loadingManager } from './loadingManager';
 import { isReportableError } from './sentryErrorFilter';
+import { isNetworkFailure, NetworkProbeResult, probeNetwork } from './networkProbe';
 
 const TIMEOUT_BEFORE_SHOW_LOADING = 500;
 
@@ -36,12 +38,14 @@ function suppressUnhandled<T>(error: T): Promise<never> {
   return rejection;
 }
 
-function reportToSentry(error: AxiosError) {
+function reportToSentry(error: AxiosError, networkProbe?: NetworkProbeResult) {
   Sentry.captureException(error, {
     tags: {
       errorType: 'apiError',
       errorCode: getApiErrorCode(error) ?? 'NO_CODE',
       statusCode: error.response?.status ?? 0,
+      // status 0의 실패 계층. 브라우저가 원인을 숨기므로 프로브로 추정한 값이다.
+      ...(networkProbe ? { networkProbe } : {}),
     },
     extra: {
       url: error.config?.url ?? '',
@@ -66,6 +70,8 @@ export function setupApiInterceptors(
   const pendingTimers = new Map<InternalAxiosRequestConfig, NodeJS.Timeout>();
 
   const handleRequestStart = (config: InternalAxiosRequestConfig) => {
+    if (config.skipGlobalLoading) return config;
+
     const timerId = setTimeout(() => {
       loadingManager.increment();
       pendingTimers.delete(config);
@@ -77,6 +83,8 @@ export function setupApiInterceptors(
   };
 
   const cleanupRequest = (config: InternalAxiosRequestConfig) => {
+    if (config.skipGlobalLoading) return;
+
     const timerId = pendingTimers.get(config);
 
     if (timerId) {
@@ -106,11 +114,16 @@ export function setupApiInterceptors(
     return response;
   };
 
-  const handleResponseError = (error: AxiosError): Promise<never> => {
+  const handleResponseError = async (error: AxiosError): Promise<never> => {
     if (error.config) cleanupRequest(error.config);
 
     // 로그아웃은 Sentry 보고 여부와 독립된 판단이므로 분류 전에 처리한다.
     if (requiresGlobalLogout(error)) handleAuthError();
+
+    // status 0은 브라우저가 원인을 숨기므로 실패 계층을 직접 재서 Sentry 태그와 사용자 안내에 쓴다.
+    // 같은 이벤트에 태그를 실으려고 보고 전에 기다린다. 대기 상한은 프로브 타임아웃(2초).
+    const networkProbe = isNetworkFailure(error) ? await probeNetwork() : undefined;
+    if (networkProbe === 'blocked_request') window.dispatchEvent(new CustomEvent(NETWORK_BLOCKED_EVENT));
 
     return (
       match(categorize(error))
@@ -119,7 +132,7 @@ export function setupApiInterceptors(
         // 예상된 에러: Sentry 미보고, 호출자에겐 reject 전달(UI가 메시지 표시).
         .with('expected', () => suppressUnhandled(error))
         .with('normal', () => {
-          reportToSentry(error);
+          reportToSentry(error, networkProbe);
           return Promise.reject<never>(error);
         })
         .exhaustive()

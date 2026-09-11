@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_ERROR_CODES, ApiErrorCode, SESSION_INVALID_ERROR_CODES } from '@constants/errorCodes';
-import type { ApiErrorBody } from '@@types/apiError';
+import type { ApiErrorBody, ApiFieldError } from '@@types/apiError';
 
 const KNOWN_API_ERROR_CODES: readonly string[] = Object.values(API_ERROR_CODES);
 
@@ -44,6 +44,13 @@ export function getApiErrorMessage(error: unknown, fallback: string): string {
 
   const message = error.response?.data?.message;
   return typeof message === 'string' && message.length > 0 ? message : fallback;
+}
+
+/** 백엔드가 내려준 필드 단위 에러 목록. 없으면 빈 배열. */
+export function getApiFieldErrors(error: unknown): ApiFieldError[] {
+  if (!axios.isAxiosError<ApiErrorBody>(error)) return [];
+
+  return error.response?.data?.errors ?? [];
 }
 
 /**

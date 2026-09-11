@@ -1,4 +1,4 @@
-import NewAppInput from '@components/common/input/NewAppInput';
+import NewAppInput from './NewAppInput';
 
 const meta = {
   title: 'Components/Common/Input/NewAppInput',

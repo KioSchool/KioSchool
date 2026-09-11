@@ -1,5 +1,7 @@
 export const Color = {
   GREY: '#5c5c5c',
+  MUTED_GREY: '#8d959c',
+  BORDER_GREY: '#e8eef2',
   WHITE: 'white',
   BLACK: 'black',
   KIO_ORANGE: '#FF9142',
@@ -9,6 +11,9 @@ export const Color = {
   RED: '#FF5A5A',
   LIGHT_RED: '#FFEBEB',
   BLUE: '#46ADFF',
+
+  TEXT_STRONG: '#25282b',
+  TEXT_BODY: '#6b737a',
 
   KIO_ORANGE_FAINT: '#FFF3E7',
   GREEN_FAINT: '#EDF9F1',
@@ -24,6 +29,8 @@ export const OnboardingColor = {
   EYEBROW_TEXT: '#8d959c',
   TITLE_TEXT: '#25282b',
   BODY_TEXT: '#4f565b',
+  // 본문보다 옅되 읽어야 하는 텍스트용. 흰 배경 대비 4.91:1로 WCAG AA를 넘는 가장 옅은 값이다
+  SUBTLE_TEXT: '#697278',
   MUTED_TEXT: '#7b858c',
   STEP_ACTIVE_BORDER: '#ffd7b8',
   STEP_ACTIVE_BG: '#fffaf5',

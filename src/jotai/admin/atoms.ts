@@ -15,7 +15,27 @@ export const adminWorkspaceAtom = atomWithStorage<Workspace>('adminWorkspace', d
   getOnInit: true,
 });
 
+export const TABLE_VIEW = {
+  LAYOUT: 'LAYOUT',
+  LIST: 'LIST',
+} as const;
+
+export type TableView = typeof TABLE_VIEW[keyof typeof TABLE_VIEW];
+
+export const adminTableViewModeAtom = atomWithStorage<TableView>('adminTableViewMode', TABLE_VIEW.LIST, undefined, {
+  getOnInit: true,
+});
+
 export const adminUserAtom = atom<User>(defaultUserValue);
+
+interface AcquisitionSurveyState {
+  userId: number;
+  isAnswered: boolean;
+}
+
+// userId를 함께 들고 있어야 같은 탭에서 계정을 바꿨을 때 앞 사람의 응답 여부가 남지 않는다.
+// null은 '아직 확인 전'이다.
+export const adminAcquisitionSurveyAtom = atom<AcquisitionSurveyState | null>(null);
 
 export const adminUserAccountAtom = atom((get) => {
   const userInfo = get(adminUserAtom);

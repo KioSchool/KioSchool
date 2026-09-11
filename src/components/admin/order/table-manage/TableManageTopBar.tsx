@@ -1,0 +1,80 @@
+import styled from '@emotion/styled';
+import { css, keyframes } from '@emotion/react';
+import { RiSettings3Fill } from '@remixicon/react';
+import NewCommonButton from '@components/common/button/NewCommonButton';
+import TableFilterBar from './TableFilterBar';
+import TableRefreshButton from './TableRefreshButton';
+import ViewToggle from './ViewToggle';
+import { TableFilterCounts, TableFilterType } from '@hooks/admin/useTableFilter';
+import { Color } from '@resources/colors';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+
+const Container = styled.div`
+  width: 95%;
+  padding-top: 12px;
+  padding-bottom: 24px;
+  gap: 12px;
+  ${colFlex()};
+`;
+
+const Row = styled.div`
+  ${rowFlex({ justify: 'space-between', align: 'center' })};
+`;
+
+const Spacer = styled.div``;
+
+const Actions = styled.div`
+  gap: 8px;
+  ${rowFlex({ align: 'center' })};
+`;
+
+const SettingIcon = styled(RiSettings3Fill)`
+  margin-right: 10px;
+  color: ${Color.GREY};
+`;
+
+const buttonPulseAnimation = keyframes`
+  0% { box-shadow: 0 0 0 0 rgba(255, 145, 66, 0.45); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 145, 66, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 145, 66, 0); }
+`;
+
+const ButtonHighlightWrapper = styled.div<{ animate: boolean }>`
+  border-radius: 40px;
+  ${({ animate }) =>
+    animate &&
+    css`
+      animation: ${buttonPulseAnimation} 1.8s ease-out infinite;
+    `}
+`;
+
+interface TableManageTopBarProps {
+  showFilters: boolean;
+  highlightSettings: boolean;
+  filterType: TableFilterType;
+  filterCounts: TableFilterCounts;
+  onChangeFilter: (filter: TableFilterType) => void;
+  onOpenSettings: () => void;
+  onRefresh: () => void;
+}
+
+function TableManageTopBar({ showFilters, highlightSettings, filterType, filterCounts, onChangeFilter, onOpenSettings, onRefresh }: TableManageTopBarProps) {
+  return (
+    <Container>
+      <Row>
+        {showFilters ? <TableFilterBar activeFilter={filterType} counts={filterCounts} onChange={onChangeFilter} /> : <Spacer />}
+        <Actions>
+          <ButtonHighlightWrapper animate={highlightSettings}>
+            <NewCommonButton size="sm" color="blue_gray" icon={<SettingIcon />} onClick={onOpenSettings}>
+              테이블 설정
+            </NewCommonButton>
+          </ButtonHighlightWrapper>
+          {showFilters && <ViewToggle />}
+          {showFilters && <TableRefreshButton onClick={onRefresh} />}
+        </Actions>
+      </Row>
+    </Container>
+  );
+}
+
+export default TableManageTopBar;

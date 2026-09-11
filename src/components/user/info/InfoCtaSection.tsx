@@ -1,14 +1,17 @@
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
-import { RiGithubFill, RiInstagramLine } from '@remixicon/react';
+import { RiCustomerService2Line, RiGithubFill } from '@remixicon/react';
 import { Link } from 'react-router-dom';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { URLS } from '@constants/urls';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { captionTypography, headingTypography, subheadingTypography } from '@styles/landingTypography';
 import { Color } from '@resources/colors';
-import { ADMIN_ROUTES } from '@constants/routes';
+import { ADMIN_ROUTES, USER_ROUTES } from '@constants/routes';
 import useMarketingLoginStatus from '@hooks/useMarketingLoginStatus';
+import { trackEvent } from '@utils/analytics';
+import { GA_EVENT } from '@constants/analytics';
 
 const Container = styled.div`
   width: 100%;
@@ -78,7 +81,7 @@ const ContactLinkRow = styled.div`
   ${rowFlex({ justify: 'center', align: 'center' })};
 `;
 
-const ContactLink = styled.a`
+const contactLinkStyle = css`
   padding: 10px 20px;
   background: #f2f4f6;
   color: #3c3530;
@@ -96,6 +99,14 @@ const ContactLink = styled.a`
   }
 `;
 
+const ContactLink = styled.a`
+  ${contactLinkStyle};
+`;
+
+const InternalContactLink = styled(Link)`
+  ${contactLinkStyle};
+`;
+
 function InfoCtaSection() {
   const isLoggedIn = useMarketingLoginStatus();
 
@@ -110,17 +121,22 @@ function InfoCtaSection() {
         <CtaDivider />
         <Title>이번 축제, 키오스쿨과 함께하세요</Title>
         <Subtitle>가입부터 주점 운영까지, 3분이면 준비 끝</Subtitle>
-        <CtaButton to={ADMIN_ROUTES.HOME}>{isLoggedIn ? '어드민 홈으로' : '무료로 시작하기'}</CtaButton>
+        <CtaButton
+          to={ADMIN_ROUTES.HOME}
+          onClick={() => trackEvent(GA_EVENT.CTA_CLICK, { location: 'info_cta', label: isLoggedIn ? 'admin_home' : 'start_free' })}
+        >
+          {isLoggedIn ? '어드민 홈으로' : '무료로 시작하기'}
+        </CtaButton>
         <Reassurance>별도 비용 없이 시작할 수 있어요</Reassurance>
         <ContactLinkRow>
           <ContactLink href={URLS.EXTERNAL.GITHUB} target="_blank" rel="noopener noreferrer" aria-label="키오스쿨 GitHub 저장소 보기">
             <RiGithubFill size={16} />
             키오스쿨 GitHub
           </ContactLink>
-          <ContactLink href={URLS.EXTERNAL.INSTAGRAM} target="_blank" rel="noopener noreferrer" aria-label="키오스쿨 인스타그램으로 문의하기">
-            <RiInstagramLine size={16} />
+          <InternalContactLink to={USER_ROUTES.CONTACT} aria-label="키오스쿨 문의창구로 이동">
+            <RiCustomerService2Line size={16} />
             키오스쿨 문의하기
-          </ContactLink>
+          </InternalContactLink>
         </ContactLinkRow>
       </ContentWrapper>
     </Container>

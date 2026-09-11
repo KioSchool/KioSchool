@@ -1,126 +1,131 @@
+import { useEffect, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
+import styled from '@emotion/styled';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { toast } from 'react-toastify';
 import AdminTableList from '@components/admin/order/table-manage/list/AdminTableList';
-import AdminTableOrderList from '@components/admin/order/table-manage/list/AdminTableOrderList';
-import TableQRCode from '@components/admin/order/table-manage/qrcode/TableQRCode';
-import TableElapsedTimer from '@components/admin/order/table-manage/timer/TableElapsedTimer';
-import TableSessionControler from '@components/admin/order/table-manage/timer/TableSessionControler';
-import TableOrderAmount from '@components/admin/order/table-manage/TableOrderAmount';
-import InactiveTableView from '@components/admin/order/table-manage/InactiveTableView';
+import TableLayoutView from '@components/admin/order/table-manage/layout/TableLayoutView';
+import TableLayoutEditor from '@components/admin/order/table-manage/layout/edit/TableLayoutEditor';
+import TableDetailPanel from '@components/admin/order/table-manage/detail/TableDetailPanel';
+import TableManageTopBar from '@components/admin/order/table-manage/TableManageTopBar';
 import TableSettingsSidebar from '@components/admin/order/table-manage/setting/TableSettingsSidebar';
 import AppContainer from '@components/common/container/AppContainer';
 import RightSidebarModal from '@components/common/modal/RightSidebarModal';
-import styled from '@emotion/styled';
-import { css, keyframes } from '@emotion/react';
+import OnboardingStepHint from '@components/admin/workspace/onboarding/OnboardingStepHint';
+import { ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardingData';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
+import useTableFilter, { TABLE_FILTER } from '@hooks/admin/useTableFilter';
+import useTableLayoutSave from '@hooks/admin/useTableLayoutSave';
+import useTableOrders from '@hooks/admin/useTableOrders';
+import useTableOrderStats from '@hooks/admin/useTableOrderStats';
+import useClockTick from '@hooks/common/useClockTick';
 import useQueryParam from '@hooks/common/useQueryParam';
 import { tableNoQueryParamConfig } from '@hooks/common/queryParamConfigs';
-import useTableOrders from '@hooks/admin/useTableOrders';
-import { Color } from '@resources/colors';
-import { colFlex, rowFlex } from '@styles/flexStyles';
-import { useEffect } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
-import { useAtomValue, useSetAtom } from 'jotai';
-import { adminTablesAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
+import useIsMobile from '@hooks/useIsMobile';
+import { TablePositionUpdate } from '@hooks/admin/useAdminTableLayout';
+import { adminTablesAtom, adminTableViewModeAtom, adminWorkspaceAtom, TABLE_VIEW } from '@jotai/admin/atoms';
 import { externalSidebarAtom } from '@jotai/atoms';
-import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
-import NewCommonButton from '@components/common/button/NewCommonButton';
-import { RiSettings3Fill } from '@remixicon/react';
-import { ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardingData';
+import { TABLE_CLOCK_TICK_MS, TABLE_DETAIL_COLUMN_PX, TABLE_POLL_INTERVAL_MS, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
+import { Color } from '@resources/colors';
+import { colFlex } from '@styles/flexStyles';
+import { mobileMediaQuery } from '@styles/globalStyles';
 import { isOnboardingStepCompleted } from '@utils/onboarding';
-import OnboardingStepHint from '@components/admin/workspace/onboarding/OnboardingStepHint';
+import { RIGHT_SIDEBAR_ACTION, Table } from '@@types/index';
+
+const UNPLACED_NOTICE_TOAST_ID = 'unplaced-table-notice';
 
 const Container = styled.div`
   width: 95%;
   height: 100%;
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr ${TABLE_DETAIL_COLUMN_PX}px;
   gap: 10px;
-`;
 
-const DetailWrapper = styled.div`
-  position: relative;
-  height: 600px;
-`;
-
-const TableDetail = styled.div`
-  height: 100%;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  gap: 5px;
-`;
-
-const DetailHeader = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5px;
-  height: 320px;
-`;
-
-const RightColumn = styled.div`
-  gap: 12px;
-  ${colFlex()};
-`;
-
-const TopCards = styled.div`
-  gap: 5px;
-  ${rowFlex({ justify: 'space-between' })};
-`;
-
-const SettingIcon = styled(RiSettings3Fill)`
-  margin-right: 10px;
-  color: ${Color.WHITE};
-`;
-
-const SettingsButtonContainer = styled.div`
-  width: 1000px;
-  padding-top: 12px;
-  padding-bottom: 24px;
-  ${colFlex({ align: 'end' })};
-`;
-
-const buttonPulseAnimation = keyframes`
-  0% { box-shadow: 0 0 0 0 rgba(255, 145, 66, 0.45); }
-  70% { box-shadow: 0 0 0 10px rgba(255, 145, 66, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(255, 145, 66, 0); }
-`;
-
-const ButtonHighlightWrapper = styled.div<{ animate: boolean }>`
-  border-radius: 40px;
-  ${({ animate }) =>
-    animate &&
-    css`
-      animation: ${buttonPulseAnimation} 1.8s ease-out infinite;
-    `}
+  ${mobileMediaQuery} {
+    grid-template-columns: 1fr 2fr;
+  }
 `;
 
 const FallbackContainer = styled.div`
-  height: 600px;
-  border: 1px solid #ececec;
-  border-radius: 10px;
-  font-size: 1.5rem;
+  height: ${TABLE_VIEW_HEIGHT_PX}px;
+  box-sizing: border-box;
+  border: 1px dashed ${Color.HEAVY_GREY};
+  border-radius: 16px;
+  padding: 0 24px;
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
   color: ${Color.GREY};
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 
 function AdminTableRealtime() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { value: tableNo } = useQueryParam(tableNoQueryParamConfig);
+  const { value: tableNo, setValue: setTableNo } = useQueryParam(tableNoQueryParamConfig);
   const { fetchWorkspaceTables } = useAdminWorkspace();
   const workspace = useAtomValue(adminWorkspaceAtom);
+  const storedViewMode = useAtomValue(adminTableViewModeAtom);
+  const isMobile = useIsMobile();
+  const viewMode = isMobile ? TABLE_VIEW.LIST : storedViewMode;
 
   const location = useLocation();
   const setExternalSidebar = useSetAtom(externalSidebarAtom);
 
+  // 잔여 시간은 렌더 시점 계산이라 폴링이 멈춰도(편집 중) 주기적으로 다시 그린다
+  useClockTick(TABLE_CLOCK_TICK_MS);
+
   const tables = useAtomValue(adminTablesAtom);
-  const selectedTable = tables.find((t) => t.tableNumber === Number(tableNo));
-  const { orders, totalOrderAmount, fetchOrders, isLoading: isOrdersLoading } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
+  const setAdminTables = useSetAtom(adminTablesAtom);
+  const selectedTable = tables.find((table) => table.tableNumber === Number(tableNo));
+  const { orders, fetchOrders } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
+  const { filterType, setFilterType, counts, filteredTables } = useTableFilter(tables);
+  const { statsBySessionId, refresh: refreshOrderStats } = useTableOrderStats(workspaceId, tables);
+  const { isSaving: isSavingLayout, conflictedPosition, clearConflict, save: saveLayout } = useTableLayoutSave(workspaceId, setAdminTables);
+
+  const visibleTableNumbers = filterType === TABLE_FILTER.ALL ? null : new Set(filteredTables.map((table) => table.tableNumber));
+
+  const [noticedTableNo, setNoticedTableNo] = useState<string | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   const fetchTables = () => {
     fetchWorkspaceTables(workspaceId);
   };
 
+  const handleManualRefresh = () => {
+    fetchTables();
+    refreshOrderStats();
+    fetchOrders();
+  };
+
   useEffect(() => {
     fetchTables();
   }, [workspace.tableCount]);
+
+  useEffect(() => {
+    if (isEditing) return undefined;
+
+    const timer = setInterval(() => {
+      if (document.hidden) return;
+      fetchTables();
+      refreshOrderStats();
+    }, TABLE_POLL_INTERVAL_MS);
+
+    return () => clearInterval(timer);
+  }, [isEditing, workspaceId]);
+
+  useEffect(() => {
+    if (viewMode !== TABLE_VIEW.LAYOUT) return;
+    if (!selectedTable || selectedTable.position != null) return;
+    if (noticedTableNo === tableNo) return;
+
+    const message = `${selectedTable.tableNumber}번 테이블은 아직 배치되지 않았습니다.`;
+    if (toast.isActive(UNPLACED_NOTICE_TOAST_ID)) {
+      toast.update(UNPLACED_NOTICE_TOAST_ID, { render: message });
+    } else {
+      toast.info(message, { toastId: UNPLACED_NOTICE_TOAST_ID });
+    }
+    setNoticedTableNo(tableNo);
+  }, [viewMode, selectedTable, tableNo, noticedTableNo]);
 
   const handleOpenSettings = () => {
     setExternalSidebar({
@@ -131,55 +136,79 @@ function AdminTableRealtime() {
     });
   };
 
+  const handleSelectTable = (table: Table) => {
+    setTableNo(String(table.tableNumber), { replace: true });
+  };
+
+  const handleStartEdit = () => {
+    clearConflict();
+    setIsEditing(true);
+  };
+
+  const handleExitEdit = () => {
+    setIsEditing(false);
+    fetchTables();
+  };
+
+  const handleSaveLayout = async (changes: TablePositionUpdate[]) => {
+    const saved = await saveLayout(changes);
+    if (saved) setIsEditing(false);
+  };
+
   const needsTablesOnboarding = workspace.isOnboarding && !isOnboardingStepCompleted(workspace, ONBOARDING_STEP.TABLES);
+
+  // 편집도 좌측 영역만 인라인 교체한다 — 우측 상세 구역까지 갈아엎으면 별도 페이지로 이동한 느낌을 준다
+  const renderMainColumn = () => {
+    if (viewMode !== TABLE_VIEW.LAYOUT) return <AdminTableList tables={filteredTables} orderStatsBySessionId={statsBySessionId} />;
+
+    if (isEditing) {
+      return (
+        <TableLayoutEditor
+          tables={tables}
+          onExit={handleExitEdit}
+          onSave={handleSaveLayout}
+          onPositionChange={clearConflict}
+          isSaving={isSavingLayout}
+          conflictedPosition={conflictedPosition}
+        />
+      );
+    }
+
+    return (
+      <TableLayoutView
+        tables={tables}
+        orderStatsBySessionId={statsBySessionId}
+        visibleTableNumbers={visibleTableNumbers}
+        selectedTableNumber={selectedTable?.tableNumber ?? null}
+        onSelectTable={handleSelectTable}
+        onStartEdit={handleStartEdit}
+      />
+    );
+  };
+
+  const renderDetailColumn = () => {
+    if (isEditing) return <FallbackContainer>배치 편집 중에는 테이블 상세를 확인할 수 없습니다</FallbackContainer>;
+    if (!selectedTable) return <FallbackContainer>테이블을 선택하면 상세 정보가 여기에 표시됩니다</FallbackContainer>;
+
+    return <TableDetailPanel workspaceId={workspaceId} workspaceName={workspace.name} table={selectedTable} orders={orders} refetchTable={fetchTables} />;
+  };
 
   return (
     <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })}>
       <>
         <OnboardingStepHint step={ONBOARDING_STEP.TABLES} width="1000px" />
-        <SettingsButtonContainer>
-          <ButtonHighlightWrapper animate={needsTablesOnboarding}>
-            <NewCommonButton size="sm" icon={<SettingIcon />} onClick={handleOpenSettings}>
-              테이블 설정
-            </NewCommonButton>
-          </ButtonHighlightWrapper>
-        </SettingsButtonContainer>
+        <TableManageTopBar
+          showFilters={!isEditing}
+          highlightSettings={needsTablesOnboarding}
+          filterType={filterType}
+          filterCounts={counts}
+          onChangeFilter={setFilterType}
+          onOpenSettings={handleOpenSettings}
+          onRefresh={handleManualRefresh}
+        />
         <Container>
-          <AdminTableList tables={tables} />
-          {selectedTable ? (
-            <DetailWrapper>
-              <TableDetail>
-                <DetailHeader>
-                  <TableElapsedTimer
-                    orderSession={selectedTable.orderSession}
-                    workspaceId={workspaceId}
-                    tableNumber={selectedTable.tableNumber}
-                    refetchTable={fetchTables}
-                  />
-                  <RightColumn>
-                    <TopCards>
-                      <TableQRCode workspaceId={workspaceId} selectedTable={selectedTable} />
-                      <TableOrderAmount totalOrderAmount={totalOrderAmount} />
-                    </TopCards>
-                    <TableSessionControler
-                      workspaceId={workspaceId}
-                      orderSessionId={selectedTable.orderSession?.id}
-                      currentExpectedEndAt={selectedTable.orderSession?.expectedEndAt}
-                      tableNumber={selectedTable.tableNumber}
-                      refetchTable={fetchTables}
-                      tables={tables}
-                    />
-                  </RightColumn>
-                </DetailHeader>
-                <AdminTableOrderList orders={orders} onRefresh={fetchOrders} isLoading={isOrdersLoading} />
-              </TableDetail>
-              {!selectedTable.orderSession && (
-                <InactiveTableView workspaceId={workspaceId} tableNumber={selectedTable.tableNumber} refetchTable={fetchTables} />
-              )}
-            </DetailWrapper>
-          ) : (
-            <FallbackContainer>테이블을 선택하여 상세 정보를 확인하세요.</FallbackContainer>
-          )}
+          {renderMainColumn()}
+          {renderDetailColumn()}
         </Container>
         <RightSidebarModal useExternalControl={{ location }} />
       </>

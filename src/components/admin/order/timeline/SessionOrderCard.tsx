@@ -9,6 +9,7 @@ import defaultProductImage from '@resources/image/defaultWorkspaceImage.png';
 
 const Card = styled.div`
   width: 100%;
+  box-sizing: border-box;
   border: 1px solid ${TIMELINE_COLORS.BORDER_CARD};
   border-radius: 10px;
   background: ${Color.WHITE};
@@ -18,6 +19,7 @@ const Card = styled.div`
 
 const Header = styled.div`
   width: 100%;
+  gap: 8px;
   padding: 12px 16px;
   box-sizing: border-box;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
@@ -26,6 +28,7 @@ const Header = styled.div`
 const HeaderLeft = styled.div`
   gap: 2px;
   min-width: 0;
+  overflow-wrap: anywhere;
   ${colFlex()}
 `;
 
@@ -85,16 +88,23 @@ const ProductImage = styled.img`
 const ProductInfo = styled.div`
   flex: 1;
   min-width: 0;
+  flex-wrap: wrap;
+  gap: 4px 8px;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const ProductName = styled.span`
+  flex: 1 1 120px;
+  min-width: 0;
+  overflow-wrap: anywhere;
   font-size: 13px;
   font-weight: 600;
   color: ${TIMELINE_COLORS.TEXT_PRIMARY};
 `;
 
 const ProductDetail = styled.span`
+  margin-left: auto;
+  white-space: nowrap;
   font-size: 12px;
   font-weight: 600;
   color: ${TIMELINE_COLORS.TEXT_SECONDARY};

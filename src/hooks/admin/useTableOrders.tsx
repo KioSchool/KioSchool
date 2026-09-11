@@ -28,7 +28,5 @@ export default function useTableOrders(workspaceId: string | undefined, orderSes
     return () => clearInterval(intervalId);
   }, [fetchOrders]);
 
-  const totalOrderAmount = orders.reduce((sum, order) => sum + order.totalPrice, 0);
-
-  return { orders, totalOrderAmount, fetchOrders, isLoading };
+  return { orders, fetchOrders, isLoading };
 }

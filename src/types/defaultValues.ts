@@ -1,3 +1,5 @@
+import { DEFAULT_FOCAL_POINT } from '@constants/data/workspaceImageData';
+
 import {
   Account,
   Bank,
@@ -29,6 +31,7 @@ export const defaultCategoryValue: ProductCategory = {
 export const defaultImageValue: WorkspaceImage = {
   url: '',
   id: 0,
+  focalPoint: DEFAULT_FOCAL_POINT,
   createdAt: '',
   updatedAt: '',
 };

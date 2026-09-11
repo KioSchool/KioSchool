@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import WorkspaceContent from './WorkspaceContent';
 import { Workspace, UserRole, Product, ProductStatus } from '@@types/index';
 import { defaultWorkspaceSetting } from '@@types/defaultValues';
+import { DEFAULT_FOCAL_POINT } from '@constants/data/workspaceImageData';
 import { adminWorkspacesAtom } from '@jotai/admin/atoms';
 import { Provider } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
@@ -81,6 +82,7 @@ const createMockWorkspace = (id: number, name: string, description: string, prod
     {
       id: 1,
       url: 'https://via.placeholder.com/300',
+      focalPoint: DEFAULT_FOCAL_POINT,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     },
