@@ -94,23 +94,23 @@ function useOrdersWebsocket(workspaceId: string | undefined) {
     };
 
     client.onConnect = () => {
-      if (!subscription) {
-        subscription = client.subscribe(destination, (response) => {
-          // 메시지 수신 = 파이프가 실제로 살아있다는 확실한 신호. 다음 실패를 새 버스트로 취급한다.
-          lastFailureAt.current = 0;
-          failureCount.current = 0;
+      // 재접속 때마다 매번 새로 구독한다. 서버는 재접속 후 이전 구독을 기억하지 못하므로
+      // 여기서 다시 구독하지 않으면 연결만 살아있고 주문 메시지를 못 받는다(구독 유실).
+      subscription = client.subscribe(destination, (response) => {
+        // 메시지 수신 = 파이프가 실제로 살아있다는 확실한 신호. 다음 실패를 새 버스트로 취급한다.
+        lastFailureAt.current = 0;
+        failureCount.current = 0;
 
-          const orderWebsocket: OrderWebsocket = JSON.parse(response.body);
-          const order = orderWebsocket.data;
+        const orderWebsocket: OrderWebsocket = JSON.parse(response.body);
+        const order = orderWebsocket.data;
 
-          if (orderWebsocket.type === 'CREATED') {
-            playOrderCreateAudio();
-            addOrder(order);
-          } else if (orderWebsocket.type === 'UPDATED') {
-            updateOrder(order);
-          }
-        });
-      }
+        if (orderWebsocket.type === 'CREATED') {
+          playOrderCreateAudio();
+          addOrder(order);
+        } else if (orderWebsocket.type === 'UPDATED') {
+          updateOrder(order);
+        }
+      });
     };
 
     client.onWebSocketError = (error) => {
