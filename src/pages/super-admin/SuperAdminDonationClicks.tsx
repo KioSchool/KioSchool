@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Location, useLocation } from 'react-router-dom';
 import { useSetAtom } from 'jotai';
 import { match } from 'ts-pattern';
@@ -79,16 +79,27 @@ function SuperAdminDonationClicks() {
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth() + 1);
   const [stats, setStats] = useState<CustomerDonationClickStats | null>(null);
+  const [reloadKey, setReloadKey] = useState(0);
+  const loadedMonthRef = useRef<string | null>(null);
   const { fetchClickStats } = useSuperAdminDonationClicks();
   const setExternalSidebar = useSetAtom(externalSidebarAtom);
   const location = useLocation();
 
   useEffect(() => {
-    setStats(null);
     const startDate = formatDateToYmd(new Date(year, month - 1, 1));
     const endDate = formatDateToYmd(new Date(year, month, 0));
-    fetchClickStats(startDate, endDate).then(setStats);
-  }, [year, month, fetchClickStats]);
+    // 사이드바에서 입금 확인을 바꿔 같은 달을 다시 불러올 때 달력을 로딩 화면으로 지우면 열린 사이드바 뒤가 깜빡인다.
+    const isSameMonthReload = loadedMonthRef.current === startDate;
+    loadedMonthRef.current = startDate;
+    if (!isSameMonthReload) setStats(null);
+
+    fetchClickStats(startDate, endDate).then((next) => {
+      if (loadedMonthRef.current !== startDate) return;
+      if (next || !isSameMonthReload) setStats(next);
+    });
+  }, [year, month, reloadKey, fetchClickStats]);
+
+  const reloadMonth = useCallback(() => setReloadKey((key) => key + 1), []);
 
   const handlePrevMonth = () => {
     if (month === FIRST_MONTH) {
@@ -114,7 +125,7 @@ function SuperAdminDonationClicks() {
       location,
       title: point.date,
       subtitle: `클릭 ${formatNumber(point.clicks)}회 · 토스 ${formatCurrency(point.amountSum)}`,
-      content: <DonationClickDayDetail key={point.date} date={point.date} />,
+      content: <DonationClickDayDetail key={point.date} date={point.date} onDepositChange={reloadMonth} />,
     });
   };
 
@@ -123,7 +134,7 @@ function SuperAdminDonationClicks() {
       <SuperAdminPageContainer>
         <PageHeader
           title="후원 클릭 현황"
-          description="주문 완료 화면 후원 모달의 송금 버튼 클릭을 달력에서 확인합니다. 날짜는 영업일(09:00 ~ 익일 08:59) 기준이며, 날짜를 누르면 그날의 상세를 봅니다."
+          description="주문 완료 화면 후원 모달의 송금 버튼 클릭을 달력에서 확인합니다. 날짜는 영업일(09:00 ~ 익일 08:59) 기준이며, 날짜를 누르면 그날의 클릭 목록에서 실제 입금을 확인 표시할 수 있습니다."
         />
         {match(stats)
           .with(null, () => <LoadingText>후원 클릭 현황 불러오는 중...</LoadingText>)

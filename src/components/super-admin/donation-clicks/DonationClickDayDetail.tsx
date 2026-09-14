@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { match } from 'ts-pattern';
 import styled from '@emotion/styled';
 import useSuperAdminDonationClicks from '@hooks/super-admin/useSuperAdminDonationClicks';
@@ -8,6 +8,7 @@ import { colFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { formatCurrency, formatNumber, formatPercent } from '@utils/formatNumber';
 import DonationClickBreakdownSection from './DonationClickBreakdownSection';
+import DonationClickItemList from './DonationClickItemList';
 import DonationClickWorkspaceSection from './DonationClickWorkspaceSection';
 
 const Container = styled.div`
@@ -54,17 +55,27 @@ const LoadingText = styled.div`
   padding: 40px 0;
 `;
 
+const DepositValue = styled(SummaryValue)`
+  color: ${Color.GREEN};
+`;
+
 interface DonationClickDayDetailProps {
   date: string;
+  onDepositChange: () => void;
 }
 
-function DonationClickDayDetail({ date }: DonationClickDayDetailProps) {
+function DonationClickDayDetail({ date, onDepositChange }: DonationClickDayDetailProps) {
   const [stats, setStats] = useState<CustomerDonationClickStats | null>(null);
   const { fetchClickStats } = useSuperAdminDonationClicks();
 
   useEffect(() => {
     fetchClickStats(date, date).then(setStats);
   }, [date, fetchClickStats]);
+
+  const handleDepositChange = useCallback(() => {
+    fetchClickStats(date, date).then((next) => next && setStats(next));
+    onDepositChange();
+  }, [date, fetchClickStats, onDepositChange]);
 
   return match(stats)
     .with(null, () => <LoadingText>불러오는 중...</LoadingText>)
@@ -89,7 +100,18 @@ function DonationClickDayDetail({ date }: DonationClickDayDetailProps) {
             <SummaryLabel>토스 클릭 금액 합계</SummaryLabel>
             <SummaryValue>{formatCurrency(data.summary.clickedAmountSum)}</SummaryValue>
           </SummaryItem>
+          <SummaryItem>
+            <SummaryLabel>실제 입금 합계</SummaryLabel>
+            <DepositValue>{formatCurrency(data.summary.depositAmountSum)}</DepositValue>
+          </SummaryItem>
+          <SummaryItem>
+            <SummaryLabel>입금 확인 주문 / 고유 주문</SummaryLabel>
+            <SummaryValue>
+              {formatNumber(data.summary.depositedOrders)} / {formatNumber(data.summary.uniqueOrders)}건 ({formatPercent(data.summary.depositRatePerOrder)})
+            </SummaryValue>
+          </SummaryItem>
         </DaySummary>
+        <DonationClickItemList date={date} onDepositChange={handleDepositChange} />
         <DonationClickBreakdownSection stats={data} />
         <DonationClickWorkspaceSection items={data.topWorkspaces} />
       </Container>

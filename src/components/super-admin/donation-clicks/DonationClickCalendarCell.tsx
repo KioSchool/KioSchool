@@ -65,6 +65,11 @@ const Amount = styled.div`
   text-overflow: ellipsis;
 `;
 
+const DepositAmount = styled(Amount)`
+  color: ${Color.GREEN};
+  font-weight: 700;
+`;
+
 interface DonationClickCalendarCellProps {
   day: number | null;
   isToday: boolean;
@@ -89,6 +94,9 @@ function DonationClickCalendarCell({ day, isToday, point, onClick }: DonationCli
         <>
           <ClickTag>클릭 {formatNumber(point.clicks)}회</ClickTag>
           <Amount title={`토스 클릭 금액 ${formatCurrency(point.amountSum)}`}>토스 {formatCurrency(point.amountSum)}</Amount>
+          {point.depositAmountSum > 0 && (
+            <DepositAmount title={`실제 입금 ${formatCurrency(point.depositAmountSum)}`}>입금 {formatCurrency(point.depositAmountSum)}</DepositAmount>
+          )}
         </>
       )}
     </Cell>
