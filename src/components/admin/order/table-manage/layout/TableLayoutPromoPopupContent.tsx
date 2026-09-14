@@ -1,12 +1,15 @@
 import styled from '@emotion/styled';
 import { useSetAtom } from 'jotai';
+import { useParams } from 'react-router-dom';
 import { RiLayoutGridFill } from '@remixicon/react';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import usePopup from '@hooks/usePopup';
 import { adminTableViewModeAtom, TABLE_VIEW } from '@jotai/admin/atoms';
+import { GA_EVENT, TABLE_LAYOUT_VIEW_SOURCE } from '@constants/analytics';
 import { POPUP_CLOSE_MODE } from '@constants/data/popupData';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
+import { trackEvent } from '@utils/analytics';
 
 export const TABLE_LAYOUT_PROMO_POPUP_ID = 3;
 
@@ -76,10 +79,12 @@ const CtaIcon = styled(RiLayoutGridFill)`
 `;
 
 function TableLayoutPromoPopupContent() {
+  const { workspaceId } = useParams<{ workspaceId: string }>();
   const setViewMode = useSetAtom(adminTableViewModeAtom);
   const { closePopup } = usePopup();
 
   const handleClickCta = () => {
+    trackEvent(GA_EVENT.TABLE_LAYOUT_VIEW, { source: TABLE_LAYOUT_VIEW_SOURCE.PROMO_POPUP, workspace_id: workspaceId });
     setViewMode(TABLE_VIEW.LAYOUT);
     closePopup(TABLE_LAYOUT_PROMO_POPUP_ID, POPUP_CLOSE_MODE.FOREVER);
   };

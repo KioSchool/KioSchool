@@ -17,8 +17,16 @@ export const GA_EVENT = {
   ACQUISITION_SURVEY_VIEW: 'acquisition_survey_view',
   ACQUISITION_SURVEY_SKIPPED: 'acquisition_survey_skipped',
   ACQUISITION_SURVEY_ANSWERED: 'acquisition_survey_answered',
+  TABLE_LAYOUT_VIEW: 'table_layout_view',
+  TABLE_LAYOUT_EDIT_START: 'table_layout_edit_start',
+  TABLE_LAYOUT_SAVED: 'table_layout_saved',
 } as const;
 
 export type GaEventName = typeof GA_EVENT[keyof typeof GA_EVENT];
+
+export const TABLE_LAYOUT_VIEW_SOURCE = {
+  TOGGLE: 'toggle',
+  PROMO_POPUP: 'promo_popup',
+} as const;
 
 export const GA_CURRENCY = 'KRW';

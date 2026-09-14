@@ -1,10 +1,13 @@
 import styled from '@emotion/styled';
 import { useAtom } from 'jotai';
+import { useParams } from 'react-router-dom';
 import { RiLayoutGridFill, RiListUnordered } from '@remixicon/react';
 import { adminTableViewModeAtom, TABLE_VIEW, TableView } from '@jotai/admin/atoms';
+import { GA_EVENT, TABLE_LAYOUT_VIEW_SOURCE } from '@constants/analytics';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
+import { trackEvent } from '@utils/analytics';
 
 const TOGGLE_BUTTON_SIZE_PX = 36;
 
@@ -44,9 +47,15 @@ const ListIcon = styled(RiListUnordered)`
 `;
 
 function ViewToggle() {
+  const { workspaceId } = useParams<{ workspaceId: string }>();
   const [viewMode, setViewMode] = useAtom(adminTableViewModeAtom);
 
-  const handleSelect = (view: TableView) => () => setViewMode(view);
+  const handleSelect = (view: TableView) => () => {
+    if (view === TABLE_VIEW.LAYOUT && viewMode !== TABLE_VIEW.LAYOUT) {
+      trackEvent(GA_EVENT.TABLE_LAYOUT_VIEW, { source: TABLE_LAYOUT_VIEW_SOURCE.TOGGLE, workspace_id: workspaceId });
+    }
+    setViewMode(view);
+  };
 
   return (
     <Container>

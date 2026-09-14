@@ -28,10 +28,12 @@ import { TablePositionUpdate } from '@hooks/admin/useAdminTableLayout';
 import { adminTablesAtom, adminTableViewModeAtom, adminWorkspaceAtom, TABLE_VIEW } from '@jotai/admin/atoms';
 import { externalSidebarAtom } from '@jotai/atoms';
 import { TABLE_CLOCK_TICK_MS, TABLE_DETAIL_COLUMN_PX, TABLE_POLL_INTERVAL_MS, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
+import { GA_EVENT } from '@constants/analytics';
 import { POPUP_CLOSE_MODE, PopupData } from '@constants/data/popupData';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
+import { trackEvent } from '@utils/analytics';
 import { isOnboardingStepCompleted } from '@utils/onboarding';
 import { RIGHT_SIDEBAR_ACTION, Table } from '@@types/index';
 
@@ -161,6 +163,7 @@ function AdminTableRealtime() {
   };
 
   const handleStartEdit = () => {
+    trackEvent(GA_EVENT.TABLE_LAYOUT_EDIT_START, { workspace_id: workspaceId });
     clearConflict();
     setIsEditing(true);
   };
@@ -172,7 +175,10 @@ function AdminTableRealtime() {
 
   const handleSaveLayout = async (changes: TablePositionUpdate[]) => {
     const saved = await saveLayout(changes);
-    if (saved) setIsEditing(false);
+    if (!saved) return;
+
+    trackEvent(GA_EVENT.TABLE_LAYOUT_SAVED, { workspace_id: workspaceId, table_count: changes.length });
+    setIsEditing(false);
   };
 
   const needsTablesOnboarding = workspace.isOnboarding && !isOnboardingStepCompleted(workspace, ONBOARDING_STEP.TABLES);
