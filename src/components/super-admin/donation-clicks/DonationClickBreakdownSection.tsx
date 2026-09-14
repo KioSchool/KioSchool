@@ -4,22 +4,15 @@ import RatioBarList from '@components/super-admin/dashboard/RatioBarList';
 import SectionTitle from '@components/super-admin/dashboard/SectionTitle';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import { mobileMediaQuery } from '@styles/globalStyles';
 import { DONATION_CLICK_AXIS_LABEL, DonationClickAxis, resolveDonationClickBucketLabel } from '@utils/donationClickStats';
 
 const NULL_KEY = 'null';
 
 const Section = styled.div``;
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-
-  ${mobileMediaQuery} {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 8px;
-  }
+const AxisList = styled.div`
+  gap: 16px;
+  ${colFlex()}
 `;
 
 const Axis = styled.div`
@@ -56,15 +49,15 @@ function DonationClickBreakdownSection({ stats }: DonationClickBreakdownSectionP
 
   return (
     <Section>
-      <SectionTitle>클릭 분해</SectionTitle>
-      <Grid>
+      <SectionTitle>클릭 분포</SectionTitle>
+      <AxisList>
         {axes.map(({ axis, buckets }) => (
           <Axis key={axis}>
             <AxisTitle>{DONATION_CLICK_AXIS_LABEL[axis]}</AxisTitle>
             <RatioBarList items={toItems(axis, buckets)} unit="회" />
           </Axis>
         ))}
-      </Grid>
+      </AxisList>
     </Section>
   );
 }
