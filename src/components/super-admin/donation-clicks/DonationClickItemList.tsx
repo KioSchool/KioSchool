@@ -47,7 +47,10 @@ function DonationClickItemList({ date, onDepositChange }: DonationClickItemListP
   }, [date, fetchClickItems]);
 
   const replaceItem = (updated: DonationClickItem) => {
-    setItems((prev) => (Array.isArray(prev) ? prev.map((item) => (item.id === updated.id ? updated : item)) : prev));
+    setItems((prev) => {
+      if (!Array.isArray(prev)) return prev;
+      return prev.map((item) => (item.id === updated.id ? updated : item));
+    });
     onDepositChange();
   };
 
