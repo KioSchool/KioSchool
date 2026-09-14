@@ -5,13 +5,19 @@ import useSuperAdminDonationClicks from '@hooks/super-admin/useSuperAdminDonatio
 import { CustomerDonationClickStats } from '@@types/donationClick';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
+import { mobileMediaQuery } from '@styles/globalStyles';
 import { formatCurrency, formatNumber, formatPercent } from '@utils/formatNumber';
 import DonationClickBreakdownSection from './DonationClickBreakdownSection';
 import DonationClickWorkspaceSection from './DonationClickWorkspaceSection';
 
 const Container = styled.div`
   gap: 20px;
+  padding-bottom: 24px;
   ${colFlex()}
+
+  ${mobileMediaQuery} {
+    padding-bottom: 0;
+  }
 `;
 
 const DaySummary = styled.div`
