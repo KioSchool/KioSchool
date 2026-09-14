@@ -13,6 +13,7 @@ export const GA_EVENT = {
   WORKSPACE_CREATED: 'workspace_created',
   ONBOARDING_COMPLETED: 'onboarding_completed',
   INQUIRY_SUBMITTED: 'inquiry_submitted',
+  INQUIRY_CAPTCHA_FAILED: 'inquiry_captcha_failed',
   CTA_CLICK: 'cta_click',
   ACQUISITION_SURVEY_VIEW: 'acquisition_survey_view',
   ACQUISITION_SURVEY_SKIPPED: 'acquisition_survey_skipped',
