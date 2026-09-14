@@ -85,7 +85,7 @@ function SuperAdminAcquisitionSurvey() {
       <SuperAdminPageContainer>
         <PageHeader
           title="유입 경로 설문"
-          description="회원가입 직후 설문으로 수집한 유입 경로와 자유 서술 응답을 확인합니다."
+          description="어드민 홈 설문으로 수집한 유입 경로와 유입 추적값(UTM·referrer)을 확인합니다."
           actions={<SurveyCsvDownloadButton disabled={surveyedCount === 0} fetchAllResponses={fetchAllResponses} />}
         />
         {match(summary)

@@ -1,4 +1,4 @@
-import { RiChat3Line, RiCheckboxCircleLine, RiSkipForwardLine, RiUserUnfollowLine } from '@remixicon/react';
+import { RiCheckboxCircleLine, RiLinkM, RiSkipForwardLine, RiUserUnfollowLine } from '@remixicon/react';
 import styled from '@emotion/styled';
 import { AcquisitionSurveySummary } from '@@types/acquisitionSurvey';
 import ProgressIndicator from '@components/super-admin/dashboard/ProgressIndicator';
@@ -39,7 +39,7 @@ function SurveyResponseRateSection({ summary }: SurveyResponseRateSectionProps) 
           footer={
             <>
               <ProgressIndicator rate={summary.responseRate} />
-              <Caption>설문을 본 사람 중 {formatPercent(summary.responseRate)} 응답</Caption>
+              <Caption>완료·건너뜀 중 응답 {formatPercent(summary.responseRate)}</Caption>
             </>
           }
         />
@@ -60,16 +60,17 @@ function SurveyResponseRateSection({ summary }: SurveyResponseRateSectionProps) 
           }
           label="미응답"
           value={formatNumber(summary.notAskedCount)}
-          footer={<Caption>설문 배포 이전 가입자 포함 · 전체 {formatNumber(summary.totalUsers)}명</Caption>}
+          footer={<Caption>아직 설문을 완료·건너뛰지 않은 유저 · 전체 {formatNumber(summary.totalUsers)}명</Caption>}
         />
         <StatCard
           icon={
             <StatCardIcon>
-              <RiChat3Line size={ICON_SIZE} />
+              <RiLinkM size={ICON_SIZE} />
             </StatCardIcon>
           }
-          label="자유 서술 작성"
+          label="유입 추적값 수집"
           value={formatNumber(summary.contextCount)}
+          footer={<Caption>UTM 파라미터나 외부 유입 사이트가 기록된 응답</Caption>}
         />
       </StatGrid>
     </Section>

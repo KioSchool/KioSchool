@@ -4,10 +4,11 @@ import styled from '@emotion/styled';
 import { AcquisitionSurveyResponse } from '@@types/acquisitionSurvey';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
+import { ACQUISITION_CONTEXT_KEYS, ACQUISITION_CONTEXT_KEY_LABEL, parseAcquisitionContext } from '@utils/acquisitionContext';
 import { exportToCsv } from '@utils/csv';
 import { formatNullableKoreanDateTime } from '@utils/formatNumber';
 
-const CSV_HEADERS = ['응답일시', '이메일', '유입 경로', '기타 직접 입력', '자유 서술'];
+const CSV_HEADERS = ['응답일시', '이메일', '유입 경로', '기타 직접 입력', ...ACQUISITION_CONTEXT_KEYS.map((key) => ACQUISITION_CONTEXT_KEY_LABEL[key])];
 const CSV_FILE_NAME = '유입경로_설문응답.csv';
 const SKIPPED_LABEL = '건너뜀';
 
@@ -47,13 +48,16 @@ function SurveyCsvDownloadButton({ disabled, fetchAllResponses }: SurveyCsvDownl
     setIsDownloading(false);
     if (!responses) return;
 
-    const rows = responses.map((response) => [
-      formatNullableKoreanDateTime(response.answeredAt),
-      response.userEmail,
-      response.channelLabel ?? SKIPPED_LABEL,
-      response.channelEtc ?? '',
-      response.context ?? '',
-    ]);
+    const rows = responses.map((response) => {
+      const context = parseAcquisitionContext(response.context);
+      return [
+        formatNullableKoreanDateTime(response.answeredAt),
+        response.userEmail,
+        response.channelLabel ?? SKIPPED_LABEL,
+        response.channelEtc ?? '',
+        ...ACQUISITION_CONTEXT_KEYS.map((key) => context[key] ?? ''),
+      ];
+    });
     exportToCsv(CSV_FILE_NAME, CSV_HEADERS, rows);
   };
 

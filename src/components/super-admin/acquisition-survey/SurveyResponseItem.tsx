@@ -4,6 +4,7 @@ import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { formatNullableKoreanDateTime } from '@utils/formatNumber';
+import SurveyContextTags from './SurveyContextTags';
 
 const Row = styled.div`
   width: 100%;
@@ -56,17 +57,6 @@ const AnsweredAt = styled.div`
   }
 `;
 
-const Context = styled.div`
-  font-size: 13px;
-  color: ${Color.BLACK};
-  line-height: 1.5;
-  white-space: pre-wrap;
-  word-break: break-word;
-  background: ${Color.LIGHT_GREY};
-  border-radius: 8px;
-  padding: 10px 12px;
-`;
-
 const SKIPPED_LABEL = '건너뜀';
 
 interface SurveyResponseItemProps {
@@ -84,7 +74,7 @@ function SurveyResponseItem({ response }: SurveyResponseItemProps) {
         {response.channelEtc && <ChannelEtc>{response.channelEtc}</ChannelEtc>}
         <AnsweredAt>{formatNullableKoreanDateTime(response.answeredAt)}</AnsweredAt>
       </Header>
-      {response.context && <Context>{response.context}</Context>}
+      {response.context && <SurveyContextTags context={response.context} />}
     </Row>
   );
 }
