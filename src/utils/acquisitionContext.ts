@@ -1,6 +1,20 @@
 const ACQUISITION_CONTEXT_STORAGE_KEY = 'kioschool_acquisition_context';
 const ACQUISITION_CONTEXT_MAX_LENGTH = 500;
 const ACQUISITION_ENTRY_VALUE_MAX_LENGTH = 80;
+const ACQUISITION_ENTRY_SEPARATOR = '&';
+const ACQUISITION_KEY_VALUE_SEPARATOR = '=';
+
+export const ACQUISITION_CONTEXT_KEYS = ['source', 'medium', 'campaign', 'ref', 'landing'] as const;
+
+export type AcquisitionContextKey = typeof ACQUISITION_CONTEXT_KEYS[number];
+
+export const ACQUISITION_CONTEXT_KEY_LABEL: Record<AcquisitionContextKey, string> = {
+  source: 'UTM source',
+  medium: 'UTM medium',
+  campaign: 'UTM campaign',
+  ref: '유입 사이트',
+  landing: '첫 방문 경로',
+};
 
 function sanitizeEntryValue(value: string): string {
   return value.replace(/[^\w.\-/:]/g, '').slice(0, ACQUISITION_ENTRY_VALUE_MAX_LENGTH);
@@ -62,4 +76,23 @@ export function readAcquisitionContext(): string | null {
   } catch {
     return null;
   }
+}
+
+function isAcquisitionContextKey(key: string): key is AcquisitionContextKey {
+  return (ACQUISITION_CONTEXT_KEYS as readonly string[]).includes(key);
+}
+
+export function parseAcquisitionContext(context: string | null): Partial<Record<AcquisitionContextKey, string>> {
+  if (!context) return {};
+
+  const parsed: Partial<Record<AcquisitionContextKey, string>> = {};
+  context.split(ACQUISITION_ENTRY_SEPARATOR).forEach((entry) => {
+    const separatorIndex = entry.indexOf(ACQUISITION_KEY_VALUE_SEPARATOR);
+    if (separatorIndex === -1) return;
+
+    const key = entry.slice(0, separatorIndex);
+    if (!isAcquisitionContextKey(key)) return;
+    parsed[key] = entry.slice(separatorIndex + 1);
+  });
+  return parsed;
 }
