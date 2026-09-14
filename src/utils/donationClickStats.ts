@@ -32,6 +32,25 @@ function resolveMethodLabel(key: string): string {
   return key;
 }
 
+export function resolveDonationMethodLabel(method: string | null): string {
+  if (method === null) return UNRECORDED_LABEL;
+  return resolveMethodLabel(method);
+}
+
+const TIME_START_INDEX = 11;
+const HOUR_END_INDEX = 13;
+const TIME_END_INDEX = 16;
+const BUSINESS_DAY_START_HOUR = 9;
+const NEXT_DAY_SUFFIX = ' (익일)';
+
+// 서버 LocalDateTime은 오프셋 없는 KST라 Date로 파싱하지 않고 HH:mm을 그대로 잘라 쓴다.
+export function formatDonationClickTime(createdAt: string | null): string {
+  if (!createdAt) return '-';
+  const time = createdAt.slice(TIME_START_INDEX, TIME_END_INDEX);
+  const hour = Number(createdAt.slice(TIME_START_INDEX, HOUR_END_INDEX));
+  return hour < BUSINESS_DAY_START_HOUR ? `${time}${NEXT_DAY_SUFFIX}` : time;
+}
+
 export function resolveDonationClickBucketLabel(axis: DonationClickAxis, key: string | null): string {
   if (key === null && axis === 'amount') return UNKNOWN_AMOUNT_LABEL;
   if (key === null) return UNRECORDED_LABEL;

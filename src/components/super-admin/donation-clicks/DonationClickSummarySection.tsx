@@ -1,4 +1,4 @@
-import { RiCalendarCheckLine, RiCursorLine, RiMoneyDollarCircleLine, RiPercentLine, RiReceiptLine } from '@remixicon/react';
+import { RiBankLine, RiCalendarCheckLine, RiCursorLine, RiMoneyDollarCircleLine, RiPercentLine, RiReceiptLine } from '@remixicon/react';
 import styled from '@emotion/styled';
 import { DonationClickSummary } from '@@types/donationClick';
 import StatCard from '@components/super-admin/dashboard/StatCard';
@@ -57,6 +57,21 @@ function DonationClickSummarySection({ summary, busiestDate }: DonationClickSumm
         label="토스 클릭 금액 합계"
         value={formatCurrency(summary.clickedAmountSum)}
         footer={<Caption>계좌이체는 금액을 알 수 없어 제외 · 송금 시도 기준이며 실제 입금액이 아닙니다</Caption>}
+      />
+      <StatCard
+        icon={
+          <StatCardIcon>
+            <RiBankLine size={ICON_SIZE} />
+          </StatCardIcon>
+        }
+        label="실제 입금"
+        value={formatCurrency(summary.depositAmountSum)}
+        footer={
+          <Caption>
+            입금 확인 {formatNumber(summary.depositedOrders)}건 · 클릭한 주문의 {formatPercent(summary.depositRatePerOrder)} · 슈퍼어드민이 확인 표시한 건만
+            집계됩니다
+          </Caption>
+        }
       />
       <StatCard
         icon={
