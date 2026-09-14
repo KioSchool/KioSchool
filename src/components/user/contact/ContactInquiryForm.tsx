@@ -3,6 +3,7 @@ import NewCommonButton from '@components/common/button/NewCommonButton';
 import CustomCheckbox from '@components/common/checkbox/CustomCheckbox';
 import NewAppInput from '@components/common/input/NewAppInput';
 import NewAppTextarea from '@components/common/input/NewAppTextarea';
+import ContactCaptcha from '@components/user/contact/ContactCaptcha';
 import ContactImageUploader from '@components/user/contact/ContactImageUploader';
 import { INQUIRY_CONTENT_MAX_LENGTH, INQUIRY_TITLE_MAX_LENGTH } from '@constants/data/inquiryData';
 import useInquiry from '@hooks/user/useInquiry';
@@ -26,6 +27,7 @@ import {
 } from './contactInquiryFormStyles';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY;
 
 function ContactInquiryForm() {
   const { createInquiry } = useInquiry();
@@ -34,6 +36,8 @@ function ContactInquiryForm() {
   const [replyEmail, setReplyEmail] = useState('');
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [privacyConsent, setPrivacyConsent] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState('');
+  const [captchaResetKey, setCaptchaResetKey] = useState(0);
   const [formError, setFormError] = useState('');
   const [imageError, setImageError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -45,6 +49,7 @@ function ContactInquiryForm() {
     if (!replyEmail.trim()) return '답변 받을 이메일을 입력해 주세요.';
     if (!EMAIL_PATTERN.test(replyEmail.trim())) return '올바른 이메일 주소를 입력해 주세요.';
     if (!privacyConsent) return '개인정보 수집 및 이용에 동의해 주세요.';
+    if (TURNSTILE_SITE_KEY && !captchaToken) return '자동 입력 방지 확인을 완료해 주세요.';
     return '';
   };
 
@@ -54,6 +59,7 @@ function ContactInquiryForm() {
     setReplyEmail('');
     setImageFiles([]);
     setPrivacyConsent(false);
+    setCaptchaToken('');
     setFormError('');
     setImageError('');
   };
@@ -78,6 +84,7 @@ function ContactInquiryForm() {
           content: content.trim(),
           replyEmail: replyEmail.trim(),
           privacyConsent: true,
+          captchaToken: captchaToken || undefined,
         },
         imageFiles,
       );
@@ -86,6 +93,7 @@ function ContactInquiryForm() {
       resetForm();
     } catch (error) {
       setFormError(getApiErrorMessage(error, '문의를 접수하지 못했습니다. 잠시 후 다시 시도해 주세요.'));
+      setCaptchaResetKey((key) => key + 1);
     } finally {
       setIsSubmitting(false);
     }
@@ -171,6 +179,7 @@ function ContactInquiryForm() {
           whiteSpace="pre-line"
         />
       </PrivacyContainer>
+      {TURNSTILE_SITE_KEY && <ContactCaptcha siteKey={TURNSTILE_SITE_KEY} resetKey={captchaResetKey} onTokenChange={setCaptchaToken} />}
       {formError && <ErrorText role="alert">{formError}</ErrorText>}
       <ButtonRow>
         <NewCommonButton type="submit" disabled={isSubmitting}>

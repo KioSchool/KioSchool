@@ -5,6 +5,7 @@ export interface CreateInquiryRequest {
   content: string;
   replyEmail: string;
   privacyConsent: true;
+  captchaToken?: string;
 }
 
 export interface CreateInquiryResponse {
