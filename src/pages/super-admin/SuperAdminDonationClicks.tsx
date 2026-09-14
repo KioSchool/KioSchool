@@ -113,7 +113,7 @@ function SuperAdminDonationClicks() {
       action: RIGHT_SIDEBAR_ACTION.OPEN,
       location,
       title: point.date,
-      subtitle: `클릭 ${formatNumber(point.clicks)}회 · ${formatCurrency(point.amountSum)}`,
+      subtitle: `클릭 ${formatNumber(point.clicks)}회 · 토스 ${formatCurrency(point.amountSum)}`,
       content: <DonationClickDayDetail key={point.date} date={point.date} />,
     });
   };

@@ -88,7 +88,7 @@ function DonationClickCalendarCell({ day, isToday, point, onClick }: DonationCli
       {hasClicks && point && (
         <>
           <ClickTag>클릭 {formatNumber(point.clicks)}회</ClickTag>
-          <Amount title={formatCurrency(point.amountSum)}>{formatCurrency(point.amountSum)}</Amount>
+          <Amount title={`토스 클릭 금액 ${formatCurrency(point.amountSum)}`}>토스 {formatCurrency(point.amountSum)}</Amount>
         </>
       )}
     </Cell>

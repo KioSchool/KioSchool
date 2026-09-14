@@ -80,7 +80,7 @@ function DonationClickDayDetail({ date }: DonationClickDayDetailProps) {
             </SummaryValue>
           </SummaryItem>
           <SummaryItem>
-            <SummaryLabel>클릭 금액 합계</SummaryLabel>
+            <SummaryLabel>토스 클릭 금액 합계</SummaryLabel>
             <SummaryValue>{formatCurrency(data.summary.clickedAmountSum)}</SummaryValue>
           </SummaryItem>
         </DaySummary>

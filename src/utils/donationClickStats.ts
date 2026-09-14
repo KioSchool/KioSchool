@@ -16,6 +16,8 @@ export const DONATION_METHOD_LABEL: Record<string, string> = {
 };
 
 const UNRECORDED_LABEL = '미기록';
+// 계좌이체는 손님이 뱅킹 앱에서 금액을 직접 입력해 amount가 null로 기록된다.
+const UNKNOWN_AMOUNT_LABEL = '계좌이체 (금액 알 수 없음)';
 const NOTE_LINE_BREAK = '\n';
 
 function resolveNoteLabel(key: string): string {
@@ -31,6 +33,7 @@ function resolveMethodLabel(key: string): string {
 }
 
 export function resolveDonationClickBucketLabel(axis: DonationClickAxis, key: string | null): string {
+  if (key === null && axis === 'amount') return UNKNOWN_AMOUNT_LABEL;
   if (key === null) return UNRECORDED_LABEL;
   return match(axis)
     .with('amount', () => formatCurrency(Number(key)))

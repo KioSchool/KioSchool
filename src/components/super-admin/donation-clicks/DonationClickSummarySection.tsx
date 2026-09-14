@@ -54,9 +54,9 @@ function DonationClickSummarySection({ summary, busiestDate }: DonationClickSumm
             <RiMoneyDollarCircleLine size={ICON_SIZE} />
           </StatCardIcon>
         }
-        label="클릭 금액 합계"
+        label="토스 클릭 금액 합계"
         value={formatCurrency(summary.clickedAmountSum)}
-        footer={<Caption>송금 시도 기준이며 실제 입금액이 아닙니다</Caption>}
+        footer={<Caption>계좌이체는 금액을 알 수 없어 제외 · 송금 시도 기준이며 실제 입금액이 아닙니다</Caption>}
       />
       <StatCard
         icon={
@@ -66,6 +66,7 @@ function DonationClickSummarySection({ summary, busiestDate }: DonationClickSumm
         }
         label="평균 선택 금액"
         value={formatCurrency(summary.averageAmount)}
+        footer={<Caption>토스 클릭 기준</Caption>}
       />
       <StatCard
         icon={
