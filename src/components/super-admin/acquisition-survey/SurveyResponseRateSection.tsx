@@ -34,12 +34,15 @@ function SurveyResponseRateSection({ summary }: SurveyResponseRateSectionProps) 
               <RiCheckboxCircleLine size={ICON_SIZE} />
             </StatCardIcon>
           }
-          label="응답"
+          label="응답 수"
           value={formatNumber(summary.answeredCount)}
           footer={
             <>
-              <ProgressIndicator rate={summary.responseRate} />
-              <Caption>완료·건너뜀 중 응답 {formatPercent(summary.responseRate)}</Caption>
+              <ProgressIndicator rate={summary.surveyedRate} />
+              <Caption>
+                응답·건너뜀 {formatNumber(summary.answeredCount + summary.skippedCount)}명 / 전체 {formatNumber(summary.totalUsers)}명 ·{' '}
+                {formatPercent(summary.surveyedRate)}
+              </Caption>
             </>
           }
         />

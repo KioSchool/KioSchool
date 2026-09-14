@@ -12,7 +12,7 @@ export interface AcquisitionSurveySummary {
   answeredCount: number;
   skippedCount: number;
   notAskedCount: number;
-  responseRate: number;
+  surveyedRate: number;
   contextCount: number;
   channels: AcquisitionChannelStat[];
 }

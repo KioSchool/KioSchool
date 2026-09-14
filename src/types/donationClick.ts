@@ -35,7 +35,6 @@ export interface CustomerDonationClickStats {
   daily: DonationClickDailyPoint[];
   byAmount: DonationClickBucket[];
   byMethod: DonationClickBucket[];
-  byVariant: DonationClickBucket[];
   byNoteIndex: DonationClickBucket[];
   topWorkspaces: DonationClickWorkspaceItem[];
 }

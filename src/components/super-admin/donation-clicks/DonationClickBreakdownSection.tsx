@@ -52,7 +52,6 @@ function DonationClickBreakdownSection({ stats }: DonationClickBreakdownSectionP
     { axis: 'amount', buckets: stats.byAmount },
     { axis: 'method', buckets: stats.byMethod },
     { axis: 'noteIndex', buckets: stats.byNoteIndex },
-    { axis: 'variant', buckets: stats.byVariant },
   ];
 
   return (
