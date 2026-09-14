@@ -5,6 +5,10 @@ export interface DonationClickSummary {
   averageAmount: number;
   ordersInRange: number;
   clickRatePerOrder: number;
+  depositedClicks: number;
+  depositedOrders: number;
+  depositAmountSum: number;
+  depositRatePerOrder: number;
 }
 
 export interface DonationClickDailyPoint {
@@ -12,6 +16,7 @@ export interface DonationClickDailyPoint {
   clicks: number;
   uniqueOrders: number;
   amountSum: number;
+  depositAmountSum: number;
 }
 
 export interface DonationClickBucket {
@@ -26,6 +31,7 @@ export interface DonationClickWorkspaceItem {
   clicks: number;
   uniqueOrders: number;
   amountSum: number;
+  depositAmountSum: number;
 }
 
 export interface CustomerDonationClickStats {
@@ -37,4 +43,17 @@ export interface CustomerDonationClickStats {
   byMethod: DonationClickBucket[];
   byNoteIndex: DonationClickBucket[];
   topWorkspaces: DonationClickWorkspaceItem[];
+}
+
+export interface DonationClickItem {
+  id: number;
+  createdAt: string | null;
+  orderId: number | null;
+  workspaceId: number | null;
+  workspaceName: string | null;
+  method: string | null;
+  amount: number | null;
+  depositAmount: number | null;
+  depositConfirmedAt: string | null;
+  depositMemo: string | null;
 }

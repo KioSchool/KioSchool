@@ -97,6 +97,7 @@ function DonationClickWorkspaceSection({ items }: DonationClickWorkspaceSectionP
             <Name>{item.workspaceName ?? DELETED_WORKSPACE_LABEL}</Name>
             <Meta>
               주문 {formatNumber(item.uniqueOrders)}건 · 토스 {formatCurrency(item.amountSum)}
+              {item.depositAmountSum > 0 && ` · 입금 ${formatCurrency(item.depositAmountSum)}`}
             </Meta>
             <Clicks>{formatNumber(item.clicks)}회</Clicks>
           </Row>
