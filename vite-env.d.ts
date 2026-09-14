@@ -9,9 +9,15 @@ interface ImportMetaEnv {
 
 interface TurnstileRenderOptions {
   sitekey: string;
+  execution: 'render' | 'execute';
+  appearance: 'always' | 'execute' | 'interaction-only';
+  retry: 'auto' | 'never';
   callback: (token: string) => void;
-  'expired-callback': () => void;
   'error-callback': () => void;
+  'timeout-callback': () => void;
+  'unsupported-callback': () => void;
+  'before-interactive-callback': () => void;
+  'after-interactive-callback': () => void;
 }
 
 interface ImportMeta {
@@ -23,6 +29,7 @@ interface Window {
   gtag: (...args: unknown[]) => void;
   turnstile?: {
     render: (container: HTMLElement, options: TurnstileRenderOptions) => string;
+    execute: (widgetId: string) => void;
     reset: (widgetId: string) => void;
     remove: (widgetId: string) => void;
   };

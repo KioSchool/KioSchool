@@ -3,16 +3,21 @@ import NewCommonButton from '@components/common/button/NewCommonButton';
 import CustomCheckbox from '@components/common/checkbox/CustomCheckbox';
 import NewAppInput from '@components/common/input/NewAppInput';
 import NewAppTextarea from '@components/common/input/NewAppTextarea';
-import ContactCaptcha from '@components/user/contact/ContactCaptcha';
+import ContactCaptchaNotice from '@components/user/contact/ContactCaptchaNotice';
 import ContactImageUploader from '@components/user/contact/ContactImageUploader';
 import { INQUIRY_CONTENT_MAX_LENGTH, INQUIRY_TITLE_MAX_LENGTH } from '@constants/data/inquiryData';
 import useInquiry from '@hooks/user/useInquiry';
+import useTurnstile from '@hooks/user/useTurnstile';
 import type { CreateInquiryResponse } from '@@types/inquiry';
-import { getApiErrorMessage } from '@utils/apiError';
+import { getApiErrorMessage, isApiErrorCode } from '@utils/apiError';
 import { trackEvent } from '@utils/analytics';
 import { GA_EVENT } from '@constants/analytics';
+import { API_ERROR_CODES } from '@constants/errorCodes';
+import { CaptchaFailureReason, getCaptchaFailureReason } from '@utils/turnstile';
 import {
   ButtonRow,
+  CaptchaHint,
+  CaptchaSlot,
   CharacterCount,
   CharacterCountRow,
   ErrorText,
@@ -31,13 +36,13 @@ const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY;
 
 function ContactInquiryForm() {
   const { createInquiry } = useInquiry();
+  const { slotRef: captchaSlotRef, getToken: getCaptchaToken, isInteractionRequired: isCaptchaInteractionRequired } = useTurnstile(TURNSTILE_SITE_KEY);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [replyEmail, setReplyEmail] = useState('');
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [privacyConsent, setPrivacyConsent] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState('');
-  const [captchaResetKey, setCaptchaResetKey] = useState(0);
+  const [captchaFailureReason, setCaptchaFailureReason] = useState<CaptchaFailureReason | null>(null);
   const [formError, setFormError] = useState('');
   const [imageError, setImageError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,7 +54,6 @@ function ContactInquiryForm() {
     if (!replyEmail.trim()) return '답변 받을 이메일을 입력해 주세요.';
     if (!EMAIL_PATTERN.test(replyEmail.trim())) return '올바른 이메일 주소를 입력해 주세요.';
     if (!privacyConsent) return '개인정보 수집 및 이용에 동의해 주세요.';
-    if (TURNSTILE_SITE_KEY && !captchaToken) return '자동 입력 방지 확인을 완료해 주세요.';
     return '';
   };
 
@@ -59,9 +63,26 @@ function ContactInquiryForm() {
     setReplyEmail('');
     setImageFiles([]);
     setPrivacyConsent(false);
-    setCaptchaToken('');
+    setCaptchaFailureReason(null);
     setFormError('');
     setImageError('');
+  };
+
+  const submitInquiry = async (): Promise<CreateInquiryResponse> => {
+    const request = {
+      title: title.trim(),
+      content: content.trim(),
+      replyEmail: replyEmail.trim(),
+      privacyConsent: true as const,
+    };
+
+    try {
+      return await createInquiry({ ...request, captchaToken: await getCaptchaToken() }, imageFiles);
+    } catch (error) {
+      // 토큰 만료·재사용 같은 일시적 거절일 수 있어 새 토큰으로 한 번만 다시 보낸다
+      if (!isApiErrorCode(error, API_ERROR_CODES.CAPTCHA_VERIFICATION_FAILED)) throw error;
+      return createInquiry({ ...request, captchaToken: await getCaptchaToken() }, imageFiles);
+    }
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -75,25 +96,22 @@ function ContactInquiryForm() {
     }
 
     setFormError('');
+    setCaptchaFailureReason(null);
     setIsSubmitting(true);
 
     try {
-      const response = await createInquiry(
-        {
-          title: title.trim(),
-          content: content.trim(),
-          replyEmail: replyEmail.trim(),
-          privacyConsent: true,
-          captchaToken: captchaToken || undefined,
-        },
-        imageFiles,
-      );
+      const response = await submitInquiry();
       setReceipt(response);
       trackEvent(GA_EVENT.INQUIRY_SUBMITTED, {});
       resetForm();
     } catch (error) {
+      const failureReason = getCaptchaFailureReason(error);
+      if (failureReason) {
+        setCaptchaFailureReason(failureReason);
+        trackEvent(GA_EVENT.INQUIRY_CAPTCHA_FAILED, { reason: failureReason });
+        return;
+      }
       setFormError(getApiErrorMessage(error, '문의를 접수하지 못했습니다. 잠시 후 다시 시도해 주세요.'));
-      setCaptchaResetKey((key) => key + 1);
     } finally {
       setIsSubmitting(false);
     }
@@ -179,7 +197,9 @@ function ContactInquiryForm() {
           whiteSpace="pre-line"
         />
       </PrivacyContainer>
-      {TURNSTILE_SITE_KEY && <ContactCaptcha siteKey={TURNSTILE_SITE_KEY} resetKey={captchaResetKey} onTokenChange={setCaptchaToken} />}
+      <CaptchaSlot ref={captchaSlotRef} />
+      {isCaptchaInteractionRequired && <CaptchaHint aria-live="polite">위 보안 확인 체크박스를 눌러 주세요.</CaptchaHint>}
+      {captchaFailureReason && <ContactCaptchaNotice reason={captchaFailureReason} />}
       {formError && <ErrorText role="alert">{formError}</ErrorText>}
       <ButtonRow>
         <NewCommonButton type="submit" disabled={isSubmitting}>

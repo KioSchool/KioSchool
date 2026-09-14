@@ -50,6 +50,20 @@ export const ErrorText = styled.p`
   line-height: 1.5;
 `;
 
+export const CaptchaSlot = styled.div`
+  width: 100%;
+  ${rowFlex({ justify: 'center', align: 'center' })};
+`;
+
+export const CaptchaHint = styled.p`
+  margin: -8px 0 0;
+  width: 100%;
+  color: ${Color.KIO_ORANGE};
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+`;
+
 export const ButtonRow = styled.div`
   width: 100%;
   ${rowFlex({ justify: 'center', align: 'center' })};
