@@ -31,6 +31,8 @@ export const isOverOneDay = (dateString: string | undefined): boolean => {
   return isBefore(createdAtDate, oneDayAgo);
 };
 
+export const formatDateToYmd = (date: Date): string => format(date, 'yyyy-MM-dd');
+
 export const dateConverter = (date: Date | null): string => {
   if (!date || !isValid(date)) return '';
 

@@ -27,6 +27,8 @@ import AdminWorkspaceEdit from '@pages/admin/AdminWorkspaceEdit';
 import SuperAdminBank from '@pages/super-admin/SuperAdminBank';
 import SuperAdminDashboard from '@pages/super-admin/SuperAdminDashboard';
 import SuperAdminAccountStatus from '@pages/super-admin/SuperAdminAccountStatus';
+import SuperAdminAcquisitionSurvey from '@pages/super-admin/SuperAdminAcquisitionSurvey';
+import SuperAdminDonationClicks from '@pages/super-admin/SuperAdminDonationClicks';
 import SuperAdminOrders from '@pages/super-admin/SuperAdminOrders';
 import SuperAdminFestivalCalendar from '@pages/super-admin/SuperAdminFestivalCalendar';
 import SuperAdminCache from '@pages/super-admin/SuperAdminCache';
@@ -98,6 +100,8 @@ function App() {
         <Route path={SUPER_ADMIN_ROUTES.CACHE} element={<SuperAdminCache />} />
         <Route path={SUPER_ADMIN_ROUTES.INQUIRIES} element={<SuperAdminInquiryList />} />
         <Route path={SUPER_ADMIN_ROUTES.INQUIRY_DETAIL} element={<SuperAdminInquiryDetail />} />
+        <Route path={SUPER_ADMIN_ROUTES.ACQUISITION_SURVEY} element={<SuperAdminAcquisitionSurvey />} />
+        <Route path={SUPER_ADMIN_ROUTES.DONATION_CLICKS} element={<SuperAdminDonationClicks />} />
 
         <Route path={USER_ROUTES.LOGIN} element={<Login />} />
         <Route path={ADMIN_ROUTES.MY_INFO} element={<AdminMyInfo />} />

@@ -47,6 +47,8 @@ export const SUPER_ADMIN_ROUTES = {
   CACHE: '/super-admin/cache',
   INQUIRIES: '/super-admin/inquiries',
   INQUIRY_DETAIL: '/super-admin/inquiries/:inquiryId',
+  ACQUISITION_SURVEY: '/super-admin/acquisition-survey',
+  DONATION_CLICKS: '/super-admin/donation-clicks',
 } as const;
 
 export const TEST_ROUTES = {
