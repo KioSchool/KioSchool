@@ -13,6 +13,8 @@ export const superAdminNavData: SideNavCategory[] = [
       { name: '서비스 현황 대시보드', path: stripPrefix(SUPER_ADMIN_ROUTES.DASHBOARD) },
       { name: '계좌 연동 현황', path: stripPrefix(SUPER_ADMIN_ROUTES.ACCOUNT_STATUS) },
       { name: '축제 달력', path: stripPrefix(SUPER_ADMIN_ROUTES.FESTIVAL_CALENDAR) },
+      { name: '유입 경로 설문', path: stripPrefix(SUPER_ADMIN_ROUTES.ACQUISITION_SURVEY) },
+      { name: '후원 클릭 현황', path: stripPrefix(SUPER_ADMIN_ROUTES.DONATION_CLICKS) },
     ],
   },
   {
