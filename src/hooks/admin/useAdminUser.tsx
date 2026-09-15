@@ -1,6 +1,7 @@
 import useApi from '@hooks/useApi';
 import { User, Workspace } from '@@types/index';
 import { trackEvent } from '@utils/analytics';
+import { getApiErrorMessage } from '@utils/apiError';
 import { GA_EVENT } from '@constants/analytics';
 import { useNavigate } from 'react-router-dom';
 import useAuthentication from '@hooks/useAuthentication';
@@ -37,7 +38,7 @@ function useAdminUser() {
         setWorkspaces((prev) => [...prev, res.data]);
         trackEvent(GA_EVENT.WORKSPACE_CREATED, { workspace_id: res.data.id });
       })
-      .catch((error) => alert(error.response.data.message));
+      .catch((error) => alert(getApiErrorMessage(error, '주점을 생성하지 못했습니다. 잠시 후 다시 시도해 주세요.')));
   };
 
   const leaveWorkspace = (workspaceId: number) => {
@@ -58,7 +59,7 @@ function useAdminUser() {
         return res.data;
       })
       .catch((error) => {
-        alert(error.response.data.message);
+        alert(getApiErrorMessage(error, '계좌 정보를 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.'));
       });
   };
 
@@ -78,7 +79,7 @@ function useAdminUser() {
       .get('/banks')
       .then((res) => setBanks(res.data))
       .catch((error) => {
-        alert(error.response.data.message);
+        alert(getApiErrorMessage(error, '은행 목록을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.'));
       });
   };
 
@@ -92,7 +93,7 @@ function useAdminUser() {
         return res.data;
       })
       .catch((error) => {
-        alert(error.response.data.message);
+        alert(getApiErrorMessage(error, '계좌를 등록하지 못했습니다. 잠시 후 다시 시도해 주세요.'));
       });
   };
 
@@ -104,7 +105,7 @@ function useAdminUser() {
         alert('계좌 삭제가 완료되었습니다.');
       })
       .catch((error) => {
-        alert(error.response.data.message);
+        alert(getApiErrorMessage(error, '계좌를 삭제하지 못했습니다. 잠시 후 다시 시도해 주세요.'));
       });
   };
 
@@ -116,7 +117,7 @@ function useAdminUser() {
         alert('Toss QR 정보 삭제가 완료되었습니다.');
       })
       .catch((error) => {
-        alert(error.response.data.message);
+        alert(getApiErrorMessage(error, 'Toss QR 정보를 삭제하지 못했습니다. 잠시 후 다시 시도해 주세요.'));
       });
   };
 
@@ -128,7 +129,7 @@ function useAdminUser() {
         alert('토스 계좌가 자동으로 등록되었습니다.');
       })
       .catch((error) => {
-        alert(error.response.data.message);
+        alert(getApiErrorMessage(error, '토스 계좌를 자동으로 등록하지 못했습니다. 잠시 후 다시 시도해 주세요.'));
       });
   };
 

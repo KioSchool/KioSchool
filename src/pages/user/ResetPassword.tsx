@@ -9,6 +9,7 @@ import NewCommonButton from '@components/common/button/NewCommonButton';
 import LinkLabel from '@components/common/label/LinkLabel';
 import { Color } from '@resources/colors';
 import { USER_ROUTES } from '@constants/routes';
+import { getApiErrorMessage } from '@utils/apiError';
 
 const ErrorContainer = styled.div`
   height: 30px;
@@ -42,7 +43,7 @@ function ResetPassword() {
       .then(() => {
         alert('비밀번호 재설정 링크를 전송했습니다. 회원가입 하신 이메일을 확인해주세요.');
       })
-      .catch((error) => alert(error.response.data.message));
+      .catch((error) => alert(getApiErrorMessage(error, '비밀번호 재설정 링크를 전송하지 못했습니다. 잠시 후 다시 시도해 주세요.')));
   };
 
   if (!code) {
