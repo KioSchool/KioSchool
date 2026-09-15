@@ -32,6 +32,11 @@ const Email = styled.div`
   word-break: break-all;
 `;
 
+const SchoolName = styled.span`
+  font-size: 12px;
+  color: ${Color.GREY};
+`;
+
 const ChannelChip = styled.span<{ skipped: boolean }>`
   padding: 2px 8px;
   border-radius: 10px;
@@ -70,6 +75,7 @@ function SurveyResponseItem({ response }: SurveyResponseItemProps) {
     <Row>
       <Header>
         <Email>{response.userEmail}</Email>
+        <SchoolName>{response.schoolName}</SchoolName>
         <ChannelChip skipped={isSkipped}>{isSkipped ? SKIPPED_LABEL : response.channelLabel}</ChannelChip>
         {response.channelEtc && <ChannelEtc>{response.channelEtc}</ChannelEtc>}
         <AnsweredAt>{formatNullableKoreanDateTime(response.answeredAt)}</AnsweredAt>

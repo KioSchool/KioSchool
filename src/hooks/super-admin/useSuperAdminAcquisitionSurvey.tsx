@@ -18,9 +18,11 @@ function useSuperAdminAcquisitionSurvey() {
   }, [superAdminApi]);
 
   const fetchResponses = useCallback(
-    (page: number, size: number, channel: AcquisitionChannel | null): Promise<PaginationResponse<AcquisitionSurveyResponse> | null> => {
+    (page: number, size: number, channel: AcquisitionChannel | null, school: string | null): Promise<PaginationResponse<AcquisitionSurveyResponse> | null> => {
       return superAdminApi
-        .get<PaginationResponse<AcquisitionSurveyResponse>>('/users/acquisition-survey/responses', { params: { page, size, channel: channel ?? undefined } })
+        .get<PaginationResponse<AcquisitionSurveyResponse>>('/users/acquisition-survey/responses', {
+          params: { page, size, channel: channel ?? undefined, school: school ?? undefined },
+        })
         .then((res) => res.data)
         .catch((error) => {
           console.error(error);
