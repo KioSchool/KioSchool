@@ -15,5 +15,11 @@ export const HEALTH_CHECK_PATH = '/actuator/health';
 /** 프로브 타임아웃. 헬스체크 GET은 평시 수백 ms 안에 끝나므로 2초를 넘기면 호스트 불통으로 본다. */
 export const NETWORK_PROBE_TIMEOUT_MS = 2000;
 
+/** API 요청 기본 타임아웃. 이보다 오래 걸리면 서버가 막힌 것으로 보고 빨리 실패시킨다. */
+export const API_TIMEOUT_MS = 10000;
+
+/** multipart 업로드는 느린 모바일 회선에서 전송 자체가 길어 기본 타임아웃과 따로 둔다. */
+export const UPLOAD_TIMEOUT_MS = 15000;
+
 /** 같은 실패가 연타로 들어올 때(버튼 반복 클릭) 프로브 결과를 재사용하는 시간. */
 export const NETWORK_PROBE_CACHE_MS = 10000;
