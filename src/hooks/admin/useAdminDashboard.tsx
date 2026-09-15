@@ -16,7 +16,7 @@ function useAdminDashboard() {
         setAdminDashboard(res.data);
       })
       .catch((error) => {
-        console.error(error.response.data.message);
+        console.error('Failed to fetch dashboard:', error);
       });
   };
 
