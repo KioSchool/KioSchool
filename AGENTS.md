@@ -178,7 +178,7 @@ src/apis/
 ```
 
 - 각 매니저: private `AxiosInstance` + `AbortController`
-- `withCredentials: true`, `timeout: 30000`
+- `withCredentials: true`, `timeout: API_TIMEOUT_MS`(10초). `FormData` 요청은 인터셉터가 `UPLOAD_TIMEOUT_MS`(15초)로 올린다
 - 인터셉터: 로딩 표시(500ms 디바운스), 에러 → Sentry 전송, 403/401 → 인증 에러 이벤트 발행
 - 사용: `useApi()` 훅에서 세 API 인스턴스를 반환
 - **에러 응답의 문자열 필드를 정규식으로 파싱하지 않는다.** 클라이언트가 값을 꺼내 써야 하면 백엔드에 구조화된 필드를 요청한다
