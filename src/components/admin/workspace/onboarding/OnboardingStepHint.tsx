@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useAtomValue } from 'jotai';
-import { adminWorkspaceAtom } from '@jotai/admin/atoms';
+import { adminTablesAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { OnboardingColor } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { isOnboardingStepCompleted } from '@utils/onboarding';
@@ -56,11 +56,18 @@ interface OnboardingStepHintProps {
 
 function OnboardingStepHint({ step, width = '100%' }: OnboardingStepHintProps) {
   const workspace = useAtomValue(adminWorkspaceAtom);
-  const copy = STEP_HINT_COPY[step];
+  const tables = useAtomValue(adminTablesAtom);
+  const copy =
+    step === ONBOARDING_STEP.TABLES && workspace.tableCount >= 2
+      ? {
+          title: '모든 테이블을 배치해주세요',
+          description: '상단에서 배치 보기를 선택한 뒤 ‘배치 편집’에서 실제 주점의 테이블 위치를 저장해주세요.',
+        }
+      : STEP_HINT_COPY[step];
 
   if (!copy) return null;
   if (!workspace.isOnboarding) return null;
-  if (isOnboardingStepCompleted(workspace, step)) return null;
+  if (isOnboardingStepCompleted(workspace, step, tables)) return null;
 
   return (
     <Banner width={width}>

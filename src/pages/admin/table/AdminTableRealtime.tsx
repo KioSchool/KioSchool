@@ -181,7 +181,7 @@ function AdminTableRealtime() {
     setIsEditing(false);
   };
 
-  const needsTablesOnboarding = workspace.isOnboarding && !isOnboardingStepCompleted(workspace, ONBOARDING_STEP.TABLES);
+  const needsTablesOnboarding = workspace.isOnboarding && !isOnboardingStepCompleted(workspace, ONBOARDING_STEP.TABLES, tables) && workspace.tableCount < 2;
 
   // 편집도 좌측 영역만 인라인 교체한다 — 우측 상세 구역까지 갈아엎으면 별도 페이지로 이동한 느낌을 준다
   const renderMainColumn = () => {
