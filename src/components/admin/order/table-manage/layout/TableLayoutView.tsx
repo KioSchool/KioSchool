@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { keyframes } from '@emotion/react';
+import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Table } from '@@types/index';
 import { Color } from '@resources/colors';
@@ -51,7 +51,11 @@ const buttonPulseAnimation = keyframes`
 
 const EditButtonHighlight = styled.div<{ animate: boolean }>`
   border-radius: 40px;
-  animation: ${({ animate }) => (animate ? `${buttonPulseAnimation} 1.8s ease-out infinite` : 'none')};
+  ${({ animate }) =>
+    animate &&
+    css`
+      animation: ${buttonPulseAnimation} 1.8s ease-out infinite;
+    `}
 `;
 
 function getCropBounds(placedTables: Table[]): GridCropBounds {

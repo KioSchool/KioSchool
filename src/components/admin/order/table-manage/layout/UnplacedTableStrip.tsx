@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react';
-import { keyframes } from '@emotion/react';
+import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { RiArrowDownSLine, RiArrowUpSLine, RiDragMove2Fill } from '@remixicon/react';
 import { Table } from '@@types/index';
@@ -35,7 +35,11 @@ const Spacer = styled.div``;
 
 const EditButtonHighlight = styled.div<{ animate: boolean }>`
   border-radius: 40px;
-  animation: ${({ animate }) => (animate ? `${buttonPulseAnimation} 1.8s ease-out infinite` : 'none')};
+  ${({ animate }) =>
+    animate &&
+    css`
+      animation: ${buttonPulseAnimation} 1.8s ease-out infinite;
+    `}
 `;
 
 const EditIcon = styled(RiDragMove2Fill)`
