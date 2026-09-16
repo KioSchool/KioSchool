@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { toast } from 'react-toastify';
@@ -30,6 +30,7 @@ import { externalSidebarAtom } from '@jotai/atoms';
 import { TABLE_CLOCK_TICK_MS, TABLE_DETAIL_COLUMN_PX, TABLE_POLL_INTERVAL_MS, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
 import { GA_EVENT } from '@constants/analytics';
 import { POPUP_CLOSE_MODE, PopupData } from '@constants/data/popupData';
+import { getAdminWorkspacePath } from '@constants/routes';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
@@ -90,6 +91,7 @@ function AdminTableRealtime() {
   const isMobile = useIsMobile();
 
   const location = useLocation();
+  const navigate = useNavigate();
   const setExternalSidebar = useSetAtom(externalSidebarAtom);
 
   // 잔여 시간은 렌더 시점 계산이라 폴링이 멈춰도(편집 중) 주기적으로 다시 그린다
@@ -177,11 +179,22 @@ function AdminTableRealtime() {
   };
 
   const handleSaveLayout = async (changes: TablePositionUpdate[]) => {
+    const changedPositionByTableId = new Map(changes.map(({ tableId, position }) => [tableId, position]));
+    const completesTableOnboarding =
+      workspace.isOnboarding &&
+      workspace.tableCount >= 2 &&
+      tables.length === workspace.tableCount &&
+      tables.every((table) => (changedPositionByTableId.has(table.id) ? changedPositionByTableId.get(table.id) : table.position) != null);
+
     const saved = await saveLayout(changes);
     if (!saved) return;
 
     trackEvent(GA_EVENT.TABLE_LAYOUT_SAVED, { workspace_id: workspaceId, table_count: changes.length });
     setIsEditing(false);
+
+    if (completesTableOnboarding) {
+      navigate(getAdminWorkspacePath(workspace.id));
+    }
   };
 
   // 편집도 좌측 영역만 인라인 교체한다 — 우측 상세 구역까지 갈아엎으면 별도 페이지로 이동한 느낌을 준다
