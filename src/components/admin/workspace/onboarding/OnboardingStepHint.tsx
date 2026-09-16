@@ -18,7 +18,7 @@ const STEP_HINT_COPY: Partial<Record<OnboardingStep, StepHintCopy>> = {
   },
   [ONBOARDING_STEP.TABLES]: {
     title: '테이블 설정과 배치를 완료해주세요',
-    description: '테이블을 2개 이상 추가한 뒤 모든 테이블의 배치를 저장해야 온보딩을 완료할 수 있습니다.',
+    description: '테이블을 2개 이상 추가한 뒤 테이블을 1개 이상 배치하고 저장해야 온보딩을 완료할 수 있습니다.',
   },
   [ONBOARDING_STEP.MENU]: {
     title: '상품을 1개 이상 등록해주세요',
@@ -60,8 +60,8 @@ function OnboardingStepHint({ step, width = '100%' }: OnboardingStepHintProps) {
   const copy =
     step === ONBOARDING_STEP.TABLES && workspace.tableCount >= 2
       ? {
-          title: '테이블 배치를 완료해주세요',
-          description: '상단에서 배치 보기를 선택한 뒤 ‘배치 편집’에서 모든 테이블을 배치하고 저장해주세요. 배치 저장까지 완료해야 다음 단계로 넘어갑니다.',
+          title: '테이블을 1개 이상 배치해주세요',
+          description: '상단에서 배치 보기를 선택한 뒤 ‘배치 편집’에서 테이블을 1개 이상 배치하고 저장해주세요.',
         }
       : STEP_HINT_COPY[step];
 

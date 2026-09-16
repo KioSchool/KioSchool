@@ -19,8 +19,8 @@ export const ONBOARDING_STEP_CARDS: StepCardItem[] = [
     step: ONBOARDING_STEP.TABLES,
     stepNumber: 2,
     title: '테이블 설정 및 배치',
-    description: '테이블을 2개 이상 만든 뒤, 실제 주점 배치에 맞게 모든 테이블을 배치하고 저장해야 이 단계가 완료됩니다.',
-    hint: '‘실시간 테이블 관리’로 이동해 테이블 수를 설정하고 배치를 저장해주세요. 완료할 작업의 버튼을 화면에서 안내합니다.',
+    description: '테이블을 2개 이상 만든 뒤, 실제 주점 배치에 맞게 테이블을 1개 이상 배치하고 저장하면 이 단계가 완료됩니다.',
+    hint: '‘실시간 테이블 관리’로 이동해 테이블 수를 설정하고 배치 기능을 사용해보세요. 완료할 작업의 버튼을 화면에서 안내합니다.',
   },
   {
     step: ONBOARDING_STEP.MENU,

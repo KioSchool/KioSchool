@@ -184,7 +184,7 @@ function AdminTableRealtime() {
       workspace.isOnboarding &&
       workspace.tableCount >= 2 &&
       tables.length === workspace.tableCount &&
-      tables.every((table) => (changedPositionByTableId.has(table.id) ? changedPositionByTableId.get(table.id) : table.position) != null);
+      tables.some((table) => (changedPositionByTableId.has(table.id) ? changedPositionByTableId.get(table.id) : table.position) != null);
 
     const saved = await saveLayout(changes);
     if (!saved) return;
