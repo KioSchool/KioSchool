@@ -20,7 +20,7 @@ function hasWorkspaceTablesCompleted(workspace: Workspace, tables?: Table[]): bo
   if (workspace.tableCount < 2) return false;
   if (!tables) return true;
 
-  return tables.length === workspace.tableCount && tables.every((table) => table.position !== null);
+  return tables.length === workspace.tableCount && tables.every((table) => table.position != null);
 }
 
 function getAdminWorkspaceRoute(pathTemplate: string, workspaceId: number, query?: Record<string, string>) {
