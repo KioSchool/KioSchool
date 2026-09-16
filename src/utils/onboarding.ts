@@ -1,4 +1,4 @@
-import { Workspace } from '@@types/index';
+import { Table, Workspace } from '@@types/index';
 import { ONBOARDING_STEP, OnboardingStep, OnboardingStepDefinition, StepActionItem } from '@components/admin/workspace/onboarding/onboardingData';
 import { ROUTES_PATH_KR_MAP } from '@constants/data/urlMapData';
 import { ADMIN_ROUTES } from '@constants/routes';
@@ -14,6 +14,13 @@ function hasWorkspaceInfoCompleted(workspace: Workspace): boolean {
   const hasWorkspaceImage = workspace.images.some((image) => Boolean(image.url));
 
   return Boolean(workspace.name.trim()) && Boolean(workspace.description.trim()) && hasWorkspaceImage;
+}
+
+function hasWorkspaceTablesCompleted(workspace: Workspace, tables?: Table[]): boolean {
+  if (workspace.tableCount < 2) return false;
+  if (!tables) return true;
+
+  return tables.length === workspace.tableCount && tables.every((table) => table.position !== null);
 }
 
 function getAdminWorkspaceRoute(pathTemplate: string, workspaceId: number, query?: Record<string, string>) {
@@ -54,14 +61,14 @@ export function getOnboardingStepActions(workspaceId: number): Record<Onboarding
   };
 }
 
-export function getIncompleteOnboardingSteps(workspace: Workspace): OnboardingStep[] {
+export function getIncompleteOnboardingSteps(workspace: Workspace, tables?: Table[]): OnboardingStep[] {
   const incompleteSteps: OnboardingStep[] = [];
 
   if (!hasWorkspaceInfoCompleted(workspace)) {
     incompleteSteps.push(ONBOARDING_STEP.INFO);
   }
 
-  if (workspace.tableCount < 2) {
+  if (!hasWorkspaceTablesCompleted(workspace, tables)) {
     incompleteSteps.push(ONBOARDING_STEP.TABLES);
   }
 
@@ -72,25 +79,25 @@ export function getIncompleteOnboardingSteps(workspace: Workspace): OnboardingSt
   return incompleteSteps;
 }
 
-export function getInitialOnboardingStep(workspace: Workspace): OnboardingStep {
-  const [firstIncompleteStep] = getIncompleteOnboardingSteps(workspace);
+export function getInitialOnboardingStep(workspace: Workspace, tables?: Table[]): OnboardingStep {
+  const [firstIncompleteStep] = getIncompleteOnboardingSteps(workspace, tables);
 
   return firstIncompleteStep ?? ONBOARDING_STEP.COMPLETE;
 }
 
-export function isWorkspaceOnboardingCompleted(workspace: Workspace): boolean {
-  return getInitialOnboardingStep(workspace) === ONBOARDING_STEP.COMPLETE;
+export function isWorkspaceOnboardingCompleted(workspace: Workspace, tables?: Table[]): boolean {
+  return getInitialOnboardingStep(workspace, tables) === ONBOARDING_STEP.COMPLETE;
 }
 
-export function isOnboardingStepCompleted(workspace: Workspace, step: OnboardingStep): boolean {
+export function isOnboardingStepCompleted(workspace: Workspace, step: OnboardingStep, tables?: Table[]): boolean {
   switch (step) {
     case ONBOARDING_STEP.INFO:
       return hasWorkspaceInfoCompleted(workspace);
     case ONBOARDING_STEP.TABLES:
-      return workspace.tableCount >= 2;
+      return hasWorkspaceTablesCompleted(workspace, tables);
     case ONBOARDING_STEP.MENU:
       return workspace.products.length > 0;
     case ONBOARDING_STEP.COMPLETE:
-      return isWorkspaceOnboardingCompleted(workspace);
+      return isWorkspaceOnboardingCompleted(workspace, tables);
   }
 }
