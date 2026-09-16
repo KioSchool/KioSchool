@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
 import { adminWorkspaceAtom, adminTablesAtom } from '@jotai/admin/atoms';
 import { externalSidebarAtom } from '@jotai/atoms';
@@ -10,6 +10,7 @@ import NewCommonButton from '@components/common/button/NewCommonButton';
 import SettingSection from './SettingSection';
 import { colFlex } from '@styles/flexStyles';
 import { MAX_TABLE_COUNT } from '@constants/layout';
+import { getAdminWorkspacePath } from '@constants/routes';
 import { getTableStatus, TABLE_STATUS } from '@utils/tableStatus';
 import TableTimeSetting from './TableTimeSetting';
 import TableQRDownload from './TableQRDownload';
@@ -41,6 +42,7 @@ function TableSettingsSidebar() {
   const tables = useAtomValue(adminTablesAtom);
   const setExternalSidebar = useSetAtom(externalSidebarAtom);
   const { updateWorkspaceTableCount, updateWorkspaceOrderSetting } = useAdminWorkspace();
+  const navigate = useNavigate();
 
   const [tableCount, setTableCount] = useState(workspace.tableCount || 1);
   const [isTimeLimited, setIsTimeLimited] = useState(workspace.workspaceSetting?.useOrderSessionTimeLimit ?? false);
@@ -83,10 +85,17 @@ function TableSettingsSidebar() {
       if (!confirmed) return;
     }
 
+    const hasPlacedRemainingTable = tables.some((table) => table.tableNumber <= tableCount && table.position != null);
     const shouldContinueTableOnboarding = workspace.isOnboarding && tableCount >= 2;
+    const shouldReturnToOnboarding = shouldContinueTableOnboarding && hasPlacedRemainingTable;
 
     try {
       await Promise.all([updateWorkspaceTableCount(workspaceId, tableCount), updateWorkspaceOrderSetting(workspaceId, isTimeLimited, timeLimitMinutes)]);
+
+      if (shouldReturnToOnboarding) {
+        navigate(getAdminWorkspacePath(workspace.id));
+        return;
+      }
 
       if (shouldContinueTableOnboarding) {
         setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE });
