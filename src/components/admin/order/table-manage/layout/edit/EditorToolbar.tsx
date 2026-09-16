@@ -35,7 +35,7 @@ interface EditorToolbarProps {
   changeCount: number;
   isSaving: boolean;
   onSave: () => void;
-  onExit?: () => void;
+  onExit: () => void;
 }
 
 function EditorToolbar({ changeCount, isSaving, onSave, onExit }: EditorToolbarProps) {
@@ -46,11 +46,9 @@ function EditorToolbar({ changeCount, isSaving, onSave, onExit }: EditorToolbarP
         <Caption>빈 칸에 끌어 놓으세요</Caption>
       </TitleBlock>
       <Actions>
-        {onExit ? (
-          <NewCommonButton size="sm" color="blue_gray" disabled={isSaving} onClick={onExit}>
-            나가기
-          </NewCommonButton>
-        ) : null}
+        <NewCommonButton size="sm" color="blue_gray" disabled={isSaving} onClick={onExit}>
+          나가기
+        </NewCommonButton>
         <NewCommonButton size="sm" color="kio_orange" disabled={changeCount === 0 || isSaving} onClick={onSave}>
           {changeCount > 0 ? `저장 (${changeCount})` : '저장'}
         </NewCommonButton>

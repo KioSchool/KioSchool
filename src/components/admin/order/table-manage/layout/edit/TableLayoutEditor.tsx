@@ -92,7 +92,7 @@ function scrollToPlacedCenter(box: HTMLDivElement | null, positions: TablePositi
 
 interface TableLayoutEditorProps {
   tables: Table[];
-  onExit?: () => void;
+  onExit: () => void;
   onSave: (changes: TablePositionUpdate[]) => void;
   onPositionChange: () => void;
   isSaving: boolean;
@@ -178,7 +178,6 @@ function TableLayoutEditor({ tables, onExit, onSave, onPositionChange, isSaving,
   };
 
   const handleExit = async () => {
-    if (!onExit) return;
     if (isDirty && !(await confirmExit())) return;
     onExit();
   };
@@ -201,7 +200,7 @@ function TableLayoutEditor({ tables, onExit, onSave, onPositionChange, isSaving,
 
   return (
     <Frame>
-      <EditorToolbar changeCount={changes.length} isSaving={isSaving} onSave={handleSave} onExit={onExit ? handleExit : undefined} />
+      <EditorToolbar changeCount={changes.length} isSaving={isSaving} onSave={handleSave} onExit={handleExit} />
       <DndContext sensors={sensors} collisionDetection={pointerWithin} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <Container isSaving={isSaving}>
           <UnplacedTableTray tables={unplacedTables} onResetAll={handleResetAll} />
