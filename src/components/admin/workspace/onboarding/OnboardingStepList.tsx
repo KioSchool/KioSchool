@@ -3,8 +3,9 @@ import styled from '@emotion/styled';
 import { Table, Workspace } from '@@types/index';
 import { colFlex } from '@styles/flexStyles';
 import { getOnboardingStepActions, isOnboardingStepCompleted } from '@utils/onboarding';
+import OnboardingTableLayout from './OnboardingTableLayout';
 import OnboardingStepCard from './step-list/OnboardingStepCard';
-import { ONBOARDING_STEP_CARDS, OnboardingStep } from './onboardingData';
+import { ONBOARDING_STEP, ONBOARDING_STEP_CARDS, OnboardingStep } from './onboardingData';
 
 const Container = styled.div`
   width: 100%;
@@ -30,7 +31,9 @@ function OnboardingStepList({ workspace, tables, currentStep }: OnboardingStepLi
         const active = item.step === currentStep;
 
         return (
-          <OnboardingStepCard key={item.step} item={item} actions={stepActionsMap[item.step]} active={active} completed={completed} onActionClick={navigate} />
+          <OnboardingStepCard key={item.step} item={item} actions={stepActionsMap[item.step]} active={active} completed={completed} onActionClick={navigate}>
+            {item.step === ONBOARDING_STEP.TABLES ? <OnboardingTableLayout workspace={workspace} tables={tables} /> : null}
+          </OnboardingStepCard>
         );
       })}
     </Container>

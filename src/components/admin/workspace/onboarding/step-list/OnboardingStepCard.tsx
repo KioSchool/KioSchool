@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { RiCheckLine } from '@remixicon/react';
@@ -143,9 +144,10 @@ interface OnboardingStepCardProps {
   active: boolean;
   completed: boolean;
   onActionClick: (path: string) => void;
+  children?: ReactNode;
 }
 
-function OnboardingStepCard({ item, actions, active, completed, onActionClick }: OnboardingStepCardProps) {
+function OnboardingStepCard({ item, actions, active, completed, onActionClick, children }: OnboardingStepCardProps) {
   const cardVariant = match(active)
     .with(true, () => 'active' as const)
     .otherwise(() => 'inactive' as const);
@@ -189,6 +191,7 @@ function OnboardingStepCard({ item, actions, active, completed, onActionClick }:
               </NewCommonButton>
             ))}
           </StepActions>
+          {children}
         </StepBodyColumn>
       ) : null}
     </Container>
