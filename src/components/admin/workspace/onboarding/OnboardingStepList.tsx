@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { Workspace } from '@@types/index';
+import { Table, Workspace } from '@@types/index';
 import { colFlex } from '@styles/flexStyles';
 import { getOnboardingStepActions, isOnboardingStepCompleted } from '@utils/onboarding';
 import OnboardingStepCard from './step-list/OnboardingStepCard';
@@ -14,10 +14,11 @@ const Container = styled.div`
 
 interface OnboardingStepListProps {
   workspace: Workspace;
+  tables: Table[];
   currentStep: OnboardingStep;
 }
 
-function OnboardingStepList({ workspace, currentStep }: OnboardingStepListProps) {
+function OnboardingStepList({ workspace, tables, currentStep }: OnboardingStepListProps) {
   const navigate = useNavigate();
 
   const stepActionsMap = getOnboardingStepActions(workspace.id);
@@ -25,7 +26,7 @@ function OnboardingStepList({ workspace, currentStep }: OnboardingStepListProps)
   return (
     <Container>
       {ONBOARDING_STEP_CARDS.map((item) => {
-        const completed = isOnboardingStepCompleted(workspace, item.step);
+        const completed = isOnboardingStepCompleted(workspace, item.step, tables);
         const active = item.step === currentStep;
 
         return (

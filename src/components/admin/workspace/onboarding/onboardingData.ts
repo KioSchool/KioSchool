@@ -18,9 +18,9 @@ export const ONBOARDING_STEP_CARDS: StepCardItem[] = [
   {
     step: ONBOARDING_STEP.TABLES,
     stepNumber: 2,
-    title: '테이블 설정',
-    description: '실시간 테이블 관리 화면에서 테이블 수를 정하고 주문 시스템 준비를 합니다. 최소 2개 이상 테이블을 설정해야 이 단계가 완료됩니다.',
-    hint: '테이블 설정 이후 주문 QR 코드 생성과 실시간 테이블 현황 확인이 가능해집니다.',
+    title: '테이블 설정 및 배치',
+    description: '테이블을 2개 이상 만든 뒤, 실제 주점 배치에 맞게 테이블을 1개 이상 배치하고 저장하면 이 단계가 완료됩니다.',
+    hint: '‘실시간 테이블 관리’로 이동해 테이블 수를 설정하고 배치 기능을 사용해보세요. 완료할 작업의 버튼을 화면에서 안내합니다.',
   },
   {
     step: ONBOARDING_STEP.MENU,

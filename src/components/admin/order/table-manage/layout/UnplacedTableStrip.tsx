@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { RiArrowDownSLine, RiArrowUpSLine, RiDragMove2Fill } from '@remixicon/react';
 import { Table } from '@@types/index';
+import OnboardingActionHighlight from '@components/admin/order/table-manage/common/OnboardingActionHighlight';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { TABLE_GRID_CELL_PX } from '@constants/layout';
@@ -81,11 +82,12 @@ interface UnplacedTableStripProps {
   tables: Table[];
   selectedTableNumber: number | null;
   showEditButton: boolean;
+  highlightEditButton: boolean;
   onStartEdit: () => void;
   renderCard: (table: Table) => ReactNode;
 }
 
-function UnplacedTableStrip({ tables, selectedTableNumber, showEditButton, onStartEdit, renderCard }: UnplacedTableStripProps) {
+function UnplacedTableStrip({ tables, selectedTableNumber, showEditButton, highlightEditButton, onStartEdit, renderCard }: UnplacedTableStripProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const hasUnplaced = tables.length > 0;
@@ -114,15 +116,17 @@ function UnplacedTableStrip({ tables, selectedTableNumber, showEditButton, onSta
           <Spacer />
         )}
         {showEditButton && (
-          <NewCommonButton
-            size="xs"
-            color="blue_gray"
-            customColors={{ color: Color.KIO_ORANGE, border: `1px solid ${Color.KIO_ORANGE}`, hoverBackground: Color.KIO_ORANGE_FAINT }}
-            icon={<EditIcon />}
-            onClick={onStartEdit}
-          >
-            배치 편집
-          </NewCommonButton>
+          <OnboardingActionHighlight active={highlightEditButton}>
+            <NewCommonButton
+              size="xs"
+              color="blue_gray"
+              customColors={{ color: Color.KIO_ORANGE, border: `1px solid ${Color.KIO_ORANGE}`, hoverBackground: Color.KIO_ORANGE_FAINT }}
+              icon={<EditIcon />}
+              onClick={onStartEdit}
+            >
+              배치 편집
+            </NewCommonButton>
+          </OnboardingActionHighlight>
         )}
       </HeaderRow>
       {hasUnplaced && isExpanded && (

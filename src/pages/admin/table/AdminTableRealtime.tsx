@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { toast } from 'react-toastify';
@@ -30,6 +30,7 @@ import { externalSidebarAtom } from '@jotai/atoms';
 import { TABLE_CLOCK_TICK_MS, TABLE_DETAIL_COLUMN_PX, TABLE_POLL_INTERVAL_MS, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
 import { GA_EVENT } from '@constants/analytics';
 import { POPUP_CLOSE_MODE, PopupData } from '@constants/data/popupData';
+import { getAdminWorkspacePath } from '@constants/routes';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
@@ -88,9 +89,9 @@ function AdminTableRealtime() {
   const workspace = useAtomValue(adminWorkspaceAtom);
   const storedViewMode = useAtomValue(adminTableViewModeAtom);
   const isMobile = useIsMobile();
-  const viewMode = isMobile ? TABLE_VIEW.LIST : storedViewMode;
 
   const location = useLocation();
+  const navigate = useNavigate();
   const setExternalSidebar = useSetAtom(externalSidebarAtom);
 
   // 잔여 시간은 렌더 시점 계산이라 폴링이 멈춰도(편집 중) 주기적으로 다시 그린다
@@ -98,6 +99,10 @@ function AdminTableRealtime() {
 
   const tables = useAtomValue(adminTablesAtom);
   const setAdminTables = useSetAtom(adminTablesAtom);
+  const isTablesOnboardingCompleted = isOnboardingStepCompleted(workspace, ONBOARDING_STEP.TABLES, tables);
+  const needsTablesOnboarding = workspace.isOnboarding && !isTablesOnboardingCompleted && workspace.tableCount < 2;
+  const needsTableLayoutOnboarding = workspace.isOnboarding && !isTablesOnboardingCompleted && workspace.tableCount >= 2;
+  const viewMode = isMobile ? TABLE_VIEW.LIST : storedViewMode;
   const selectedTable = tables.find((table) => table.tableNumber === Number(tableNo));
   const { orders, fetchOrders } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
   const { filterType, setFilterType, counts, filteredTables } = useTableFilter(tables);
@@ -174,14 +179,23 @@ function AdminTableRealtime() {
   };
 
   const handleSaveLayout = async (changes: TablePositionUpdate[]) => {
+    const changedPositionByTableId = new Map(changes.map(({ tableId, position }) => [tableId, position]));
+    const completesTableOnboarding =
+      workspace.isOnboarding &&
+      workspace.tableCount >= 2 &&
+      tables.length === workspace.tableCount &&
+      tables.some((table) => (changedPositionByTableId.has(table.id) ? changedPositionByTableId.get(table.id) : table.position) != null);
+
     const saved = await saveLayout(changes);
     if (!saved) return;
 
     trackEvent(GA_EVENT.TABLE_LAYOUT_SAVED, { workspace_id: workspaceId, table_count: changes.length });
     setIsEditing(false);
-  };
 
-  const needsTablesOnboarding = workspace.isOnboarding && !isOnboardingStepCompleted(workspace, ONBOARDING_STEP.TABLES);
+    if (completesTableOnboarding) {
+      navigate(getAdminWorkspacePath(workspace.id));
+    }
+  };
 
   // 편집도 좌측 영역만 인라인 교체한다 — 우측 상세 구역까지 갈아엎으면 별도 페이지로 이동한 느낌을 준다
   const renderMainColumn = () => {
@@ -208,6 +222,7 @@ function AdminTableRealtime() {
         selectedTableNumber={selectedTable?.tableNumber ?? null}
         onSelectTable={handleSelectTable}
         onStartEdit={handleStartEdit}
+        highlightEditButton={needsTableLayoutOnboarding}
       />
     );
   };
@@ -226,6 +241,7 @@ function AdminTableRealtime() {
         <TableManageTopBar
           showFilters={!isEditing}
           highlightSettings={needsTablesOnboarding}
+          highlightLayout={needsTableLayoutOnboarding && viewMode !== TABLE_VIEW.LAYOUT}
           filterType={filterType}
           filterCounts={counts}
           onChangeFilter={setFilterType}

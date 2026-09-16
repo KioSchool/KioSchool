@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useAtomValue } from 'jotai';
-import { adminWorkspaceAtom } from '@jotai/admin/atoms';
+import { adminTablesAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { OnboardingColor } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { isOnboardingStepCompleted } from '@utils/onboarding';
@@ -17,8 +17,8 @@ const STEP_HINT_COPY: Partial<Record<OnboardingStep, StepHintCopy>> = {
     description: '주점명, 대표 사진, 주점 설명을 모두 등록한 뒤 ‘편집 완료’ 버튼을 눌러주세요.',
   },
   [ONBOARDING_STEP.TABLES]: {
-    title: '테이블이 2개 이상 필요합니다',
-    description: '온보딩을 완료하려면 우측 상단의 ‘테이블 설정’ 버튼에서 테이블을 추가해주세요.',
+    title: '테이블 설정과 배치를 완료해주세요',
+    description: '테이블을 2개 이상 추가한 뒤 테이블을 1개 이상 배치하고 저장해야 온보딩을 완료할 수 있습니다.',
   },
   [ONBOARDING_STEP.MENU]: {
     title: '상품을 1개 이상 등록해주세요',
@@ -56,11 +56,18 @@ interface OnboardingStepHintProps {
 
 function OnboardingStepHint({ step, width = '100%' }: OnboardingStepHintProps) {
   const workspace = useAtomValue(adminWorkspaceAtom);
-  const copy = STEP_HINT_COPY[step];
+  const tables = useAtomValue(adminTablesAtom);
+  const copy =
+    step === ONBOARDING_STEP.TABLES && workspace.tableCount >= 2
+      ? {
+          title: '테이블을 1개 이상 배치해주세요',
+          description: '상단에서 배치 보기를 선택한 뒤 ‘배치 편집’에서 테이블을 1개 이상 배치하고 저장해주세요.',
+        }
+      : STEP_HINT_COPY[step];
 
   if (!copy) return null;
   if (!workspace.isOnboarding) return null;
-  if (isOnboardingStepCompleted(workspace, step)) return null;
+  if (isOnboardingStepCompleted(workspace, step, tables)) return null;
 
   return (
     <Banner width={width}>

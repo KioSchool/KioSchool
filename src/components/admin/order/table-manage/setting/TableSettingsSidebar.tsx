@@ -1,13 +1,14 @@
 import styled from '@emotion/styled';
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
 import { adminWorkspaceAtom, adminTablesAtom } from '@jotai/admin/atoms';
+import { externalSidebarAtom } from '@jotai/atoms';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import SettingSection from './SettingSection';
 import { colFlex } from '@styles/flexStyles';
-import { getAdminWorkspacePath } from '@constants/routes';
 import { MAX_TABLE_COUNT } from '@constants/layout';
 import { getTableStatus, TABLE_STATUS } from '@utils/tableStatus';
 import TableTimeSetting from './TableTimeSetting';
@@ -38,9 +39,8 @@ function TableSettingsSidebar() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const workspace = useAtomValue(adminWorkspaceAtom);
   const tables = useAtomValue(adminTablesAtom);
+  const setExternalSidebar = useSetAtom(externalSidebarAtom);
   const { updateWorkspaceTableCount, updateWorkspaceOrderSetting } = useAdminWorkspace();
-
-  const navigate = useNavigate();
 
   const [tableCount, setTableCount] = useState(workspace.tableCount || 1);
   const [isTimeLimited, setIsTimeLimited] = useState(workspace.workspaceSetting?.useOrderSessionTimeLimit ?? false);
@@ -83,13 +83,13 @@ function TableSettingsSidebar() {
       if (!confirmed) return;
     }
 
-    const shouldRedirectToOnboarding = workspace.isOnboarding && tableCount >= 2 && Boolean(workspaceId);
+    const shouldContinueTableOnboarding = workspace.isOnboarding && tableCount >= 2;
 
     try {
       await Promise.all([updateWorkspaceTableCount(workspaceId, tableCount), updateWorkspaceOrderSetting(workspaceId, isTimeLimited, timeLimitMinutes)]);
 
-      if (shouldRedirectToOnboarding) {
-        navigate(getAdminWorkspacePath(Number(workspaceId)));
+      if (shouldContinueTableOnboarding) {
+        setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE });
       }
     } catch (error) {
       console.error('설정 저장 실패:', error);

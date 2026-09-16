@@ -9,7 +9,7 @@ import AppFaqButton from '@components/common/button/AppFaqButton';
 import AppPopup from '@components/common/popup/AppPopup';
 import { popupDatas } from '@constants/data/popupData';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { adminWorkspaceAtom } from '@jotai/admin/atoms';
+import { adminTablesAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { sideNavIsOpenAtom } from '@jotai/atoms';
 import AdminDashboard from '@components/admin/workspace/dashboard/AdminDashboard';
 import AdminWorkspaceOnboarding from '@components/admin/workspace/onboarding/AdminWorkspaceOnboarding';
@@ -35,8 +35,10 @@ const LoadingContainer = styled.div`
 
 function AdminWorkspace() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { updateWorkspaceOnboarding, fetchWorkspaceAccess } = useAdminWorkspace();
+  const { updateWorkspaceOnboarding, fetchWorkspaceAccess, fetchWorkspaceTables } = useAdminWorkspace();
   const workspace = useAtomValue(adminWorkspaceAtom);
+  const tables = useAtomValue(adminTablesAtom);
+  const setAdminTables = useSetAtom(adminTablesAtom);
   const setSideNavIsOpen = useSetAtom(sideNavIsOpenAtom);
   const [isWorkspaceLoading, setIsWorkspaceLoading] = useState(true);
   const [hasWorkspaceAccess, setHasWorkspaceAccess] = useState(false);
@@ -51,11 +53,14 @@ function AdminWorkspace() {
   const handleLoadWorkspace = () => {
     setIsWorkspaceLoading(true);
     setHasWorkspaceAccess(false);
+    setAdminTables([]);
 
     return fetchWorkspaceAccess(workspaceId, workspace.id)
       .then((isAccessibleWorkspace) => {
         setHasWorkspaceAccess(isAccessibleWorkspace);
-        return isAccessibleWorkspace;
+        if (!isAccessibleWorkspace) return false;
+
+        return fetchWorkspaceTables(workspaceId).then(() => true);
       })
       .finally(() => {
         setIsWorkspaceLoading(false);
@@ -66,7 +71,7 @@ function AdminWorkspace() {
     handleLoadWorkspace().catch(() => undefined);
   }, [workspaceId]);
 
-  const isOnboardingCompleted = isWorkspaceOnboardingCompleted(workspace);
+  const isOnboardingCompleted = isWorkspaceOnboardingCompleted(workspace, tables);
 
   useEffect(() => {
     if (
@@ -113,7 +118,7 @@ function AdminWorkspace() {
     .with({ isWorkspaceLoading: true }, () => <LoadingContainer>워크스페이스 정보를 불러오는 중입니다.</LoadingContainer>)
     .with({ hasWorkspaceAccess: false }, () => <LoadingContainer>워크스페이스 접근 권한을 확인하는 중입니다.</LoadingContainer>)
     .with({ isOnboardingVisible: true }, () => (
-      <AdminWorkspaceOnboarding workspace={workspace} onRefreshStatus={handleLoadWorkspace} onSkipOnboarding={handleSkipOnboarding} />
+      <AdminWorkspaceOnboarding workspace={workspace} tables={tables} onRefreshStatus={handleLoadWorkspace} onSkipOnboarding={handleSkipOnboarding} />
     ))
     .otherwise(() => (
       <>
