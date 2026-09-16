@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Table } from '@@types/index';
+import OnboardingActionHighlight from '@components/admin/order/table-manage/common/OnboardingActionHighlight';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { TABLE_CROP_MARGIN_CELLS, TABLE_GRID_SIZE, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
@@ -41,21 +41,6 @@ const EmptyStateHint = styled.div`
   margin-bottom: 14px;
   font-size: 13px;
   color: ${Color.MUTED_GREY};
-`;
-
-const buttonPulseAnimation = keyframes`
-  0% { box-shadow: 0 0 0 0 rgba(255, 145, 66, 0.45); }
-  70% { box-shadow: 0 0 0 10px rgba(255, 145, 66, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(255, 145, 66, 0); }
-`;
-
-const EditButtonHighlight = styled.div<{ animate: boolean }>`
-  border-radius: 40px;
-  ${({ animate }) =>
-    animate &&
-    css`
-      animation: ${buttonPulseAnimation} 1.8s ease-out infinite;
-    `}
 `;
 
 function getCropBounds(placedTables: Table[]): GridCropBounds {
@@ -134,11 +119,11 @@ function TableLayoutView({
           <EmptyState>
             아직 배치된 테이블이 없습니다
             <EmptyStateHint>실제 주점 테이블 배치대로 놓아두면 테이블 위치를 바로 찾을 수 있어요</EmptyStateHint>
-            <EditButtonHighlight animate={highlightEditButton}>
+            <OnboardingActionHighlight active={highlightEditButton}>
               <NewCommonButton size="sm" onClick={onStartEdit}>
                 배치 편집
               </NewCommonButton>
-            </EditButtonHighlight>
+            </OnboardingActionHighlight>
           </EmptyState>
         ) : (
           <TableLayoutCanvas cropBounds={getCropBounds(placedTables)} renderCell={renderCell} />

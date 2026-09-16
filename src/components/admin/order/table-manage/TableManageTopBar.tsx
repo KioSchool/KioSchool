@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import { css, keyframes } from '@emotion/react';
 import { RiSettings3Fill } from '@remixicon/react';
+import OnboardingActionHighlight from '@components/admin/order/table-manage/common/OnboardingActionHighlight';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import TableFilterBar from './TableFilterBar';
 import TableRefreshButton from './TableRefreshButton';
@@ -33,21 +33,6 @@ const SettingIcon = styled(RiSettings3Fill)`
   color: ${Color.GREY};
 `;
 
-const buttonPulseAnimation = keyframes`
-  0% { box-shadow: 0 0 0 0 rgba(255, 145, 66, 0.45); }
-  70% { box-shadow: 0 0 0 10px rgba(255, 145, 66, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(255, 145, 66, 0); }
-`;
-
-const ButtonHighlightWrapper = styled.div<{ animate: boolean }>`
-  border-radius: 40px;
-  ${({ animate }) =>
-    animate &&
-    css`
-      animation: ${buttonPulseAnimation} 1.8s ease-out infinite;
-    `}
-`;
-
 interface TableManageTopBarProps {
   showFilters: boolean;
   highlightSettings: boolean;
@@ -74,15 +59,15 @@ function TableManageTopBar({
       <Row>
         {showFilters ? <TableFilterBar activeFilter={filterType} counts={filterCounts} onChange={onChangeFilter} /> : <Spacer />}
         <Actions>
-          <ButtonHighlightWrapper animate={highlightSettings}>
+          <OnboardingActionHighlight active={highlightSettings}>
             <NewCommonButton size="sm" color="blue_gray" icon={<SettingIcon />} onClick={onOpenSettings}>
               테이블 설정
             </NewCommonButton>
-          </ButtonHighlightWrapper>
+          </OnboardingActionHighlight>
           {showFilters && (
-            <ButtonHighlightWrapper animate={highlightLayout}>
+            <OnboardingActionHighlight active={highlightLayout}>
               <ViewToggle />
-            </ButtonHighlightWrapper>
+            </OnboardingActionHighlight>
           )}
           {showFilters && <TableRefreshButton onClick={onRefresh} />}
         </Actions>
