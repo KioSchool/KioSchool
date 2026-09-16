@@ -88,7 +88,6 @@ function AdminTableRealtime() {
   const workspace = useAtomValue(adminWorkspaceAtom);
   const storedViewMode = useAtomValue(adminTableViewModeAtom);
   const isMobile = useIsMobile();
-  const viewMode = isMobile ? TABLE_VIEW.LIST : storedViewMode;
 
   const location = useLocation();
   const setExternalSidebar = useSetAtom(externalSidebarAtom);
@@ -98,6 +97,10 @@ function AdminTableRealtime() {
 
   const tables = useAtomValue(adminTablesAtom);
   const setAdminTables = useSetAtom(adminTablesAtom);
+  const isTablesOnboardingCompleted = isOnboardingStepCompleted(workspace, ONBOARDING_STEP.TABLES, tables);
+  const needsTablesOnboarding = workspace.isOnboarding && !isTablesOnboardingCompleted && workspace.tableCount < 2;
+  const needsTableLayoutOnboarding = workspace.isOnboarding && !isTablesOnboardingCompleted && workspace.tableCount >= 2;
+  const viewMode = isMobile && !needsTableLayoutOnboarding ? TABLE_VIEW.LIST : storedViewMode;
   const selectedTable = tables.find((table) => table.tableNumber === Number(tableNo));
   const { orders, fetchOrders } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
   const { filterType, setFilterType, counts, filteredTables } = useTableFilter(tables);
@@ -181,8 +184,6 @@ function AdminTableRealtime() {
     setIsEditing(false);
   };
 
-  const needsTablesOnboarding = workspace.isOnboarding && !isOnboardingStepCompleted(workspace, ONBOARDING_STEP.TABLES, tables) && workspace.tableCount < 2;
-
   // 편집도 좌측 영역만 인라인 교체한다 — 우측 상세 구역까지 갈아엎으면 별도 페이지로 이동한 느낌을 준다
   const renderMainColumn = () => {
     if (viewMode !== TABLE_VIEW.LAYOUT) return <AdminTableList tables={filteredTables} orderStatsBySessionId={statsBySessionId} />;
@@ -226,6 +227,8 @@ function AdminTableRealtime() {
         <TableManageTopBar
           showFilters={!isEditing}
           highlightSettings={needsTablesOnboarding}
+          highlightLayout={needsTableLayoutOnboarding && viewMode !== TABLE_VIEW.LAYOUT}
+          showLayoutOnMobile={needsTableLayoutOnboarding}
           filterType={filterType}
           filterCounts={counts}
           onChangeFilter={setFilterType}

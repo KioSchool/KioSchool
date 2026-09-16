@@ -11,7 +11,7 @@ import { trackEvent } from '@utils/analytics';
 
 const TOGGLE_BUTTON_SIZE_PX = 36;
 
-const Container = styled.div`
+const Container = styled.div<{ showOnMobile: boolean }>`
   background-color: ${Color.LIGHT_GREY};
   border-radius: 10px;
   padding: 4px;
@@ -19,7 +19,7 @@ const Container = styled.div`
   ${rowFlex({ align: 'center' })};
 
   ${mobileMediaQuery} {
-    display: none;
+    display: ${({ showOnMobile }) => (showOnMobile ? 'flex' : 'none')};
   }
 `;
 
@@ -46,7 +46,11 @@ const ListIcon = styled(RiListUnordered)`
   height: 16px;
 `;
 
-function ViewToggle() {
+interface ViewToggleProps {
+  showOnMobile: boolean;
+}
+
+function ViewToggle({ showOnMobile }: ViewToggleProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const [viewMode, setViewMode] = useAtom(adminTableViewModeAtom);
 
@@ -58,7 +62,7 @@ function ViewToggle() {
   };
 
   return (
-    <Container>
+    <Container showOnMobile={showOnMobile}>
       <ToggleButton active={viewMode === TABLE_VIEW.LIST} aria-label="목록 보기" onClick={handleSelect(TABLE_VIEW.LIST)}>
         <ListIcon />
       </ToggleButton>

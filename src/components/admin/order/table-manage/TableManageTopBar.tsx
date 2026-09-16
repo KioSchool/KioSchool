@@ -51,6 +51,8 @@ const ButtonHighlightWrapper = styled.div<{ animate: boolean }>`
 interface TableManageTopBarProps {
   showFilters: boolean;
   highlightSettings: boolean;
+  highlightLayout: boolean;
+  showLayoutOnMobile: boolean;
   filterType: TableFilterType;
   filterCounts: TableFilterCounts;
   onChangeFilter: (filter: TableFilterType) => void;
@@ -58,7 +60,17 @@ interface TableManageTopBarProps {
   onRefresh: () => void;
 }
 
-function TableManageTopBar({ showFilters, highlightSettings, filterType, filterCounts, onChangeFilter, onOpenSettings, onRefresh }: TableManageTopBarProps) {
+function TableManageTopBar({
+  showFilters,
+  highlightSettings,
+  highlightLayout,
+  showLayoutOnMobile,
+  filterType,
+  filterCounts,
+  onChangeFilter,
+  onOpenSettings,
+  onRefresh,
+}: TableManageTopBarProps) {
   return (
     <Container>
       <Row>
@@ -69,7 +81,11 @@ function TableManageTopBar({ showFilters, highlightSettings, filterType, filterC
               테이블 설정
             </NewCommonButton>
           </ButtonHighlightWrapper>
-          {showFilters && <ViewToggle />}
+          {showFilters && (
+            <ButtonHighlightWrapper animate={highlightLayout}>
+              <ViewToggle showOnMobile={showLayoutOnMobile} />
+            </ButtonHighlightWrapper>
+          )}
           {showFilters && <TableRefreshButton onClick={onRefresh} />}
         </Actions>
       </Row>
