@@ -102,7 +102,7 @@ function AdminTableRealtime() {
   const isTablesOnboardingCompleted = isOnboardingStepCompleted(workspace, ONBOARDING_STEP.TABLES, tables);
   const needsTablesOnboarding = workspace.isOnboarding && !isTablesOnboardingCompleted && workspace.tableCount < 2;
   const needsTableLayoutOnboarding = workspace.isOnboarding && !isTablesOnboardingCompleted && workspace.tableCount >= 2;
-  const viewMode = isMobile && !needsTableLayoutOnboarding ? TABLE_VIEW.LIST : storedViewMode;
+  const viewMode = isMobile ? TABLE_VIEW.LIST : storedViewMode;
   const selectedTable = tables.find((table) => table.tableNumber === Number(tableNo));
   const { orders, fetchOrders } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
   const { filterType, setFilterType, counts, filteredTables } = useTableFilter(tables);
@@ -242,7 +242,6 @@ function AdminTableRealtime() {
           showFilters={!isEditing}
           highlightSettings={needsTablesOnboarding}
           highlightLayout={needsTableLayoutOnboarding && viewMode !== TABLE_VIEW.LAYOUT}
-          showLayoutOnMobile={needsTableLayoutOnboarding}
           filterType={filterType}
           filterCounts={counts}
           onChangeFilter={setFilterType}

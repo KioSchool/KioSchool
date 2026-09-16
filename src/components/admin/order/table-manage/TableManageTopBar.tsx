@@ -52,7 +52,6 @@ interface TableManageTopBarProps {
   showFilters: boolean;
   highlightSettings: boolean;
   highlightLayout: boolean;
-  showLayoutOnMobile: boolean;
   filterType: TableFilterType;
   filterCounts: TableFilterCounts;
   onChangeFilter: (filter: TableFilterType) => void;
@@ -64,7 +63,6 @@ function TableManageTopBar({
   showFilters,
   highlightSettings,
   highlightLayout,
-  showLayoutOnMobile,
   filterType,
   filterCounts,
   onChangeFilter,
@@ -83,7 +81,7 @@ function TableManageTopBar({
           </ButtonHighlightWrapper>
           {showFilters && (
             <ButtonHighlightWrapper animate={highlightLayout}>
-              <ViewToggle showOnMobile={showLayoutOnMobile} />
+              <ViewToggle />
             </ButtonHighlightWrapper>
           )}
           {showFilters && <TableRefreshButton onClick={onRefresh} />}
