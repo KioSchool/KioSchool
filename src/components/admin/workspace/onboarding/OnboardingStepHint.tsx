@@ -17,8 +17,8 @@ const STEP_HINT_COPY: Partial<Record<OnboardingStep, StepHintCopy>> = {
     description: '주점명, 대표 사진, 주점 설명을 모두 등록한 뒤 ‘편집 완료’ 버튼을 눌러주세요.',
   },
   [ONBOARDING_STEP.TABLES]: {
-    title: '테이블이 2개 이상 필요합니다',
-    description: '온보딩을 완료하려면 우측 상단의 ‘테이블 설정’ 버튼에서 테이블을 추가해주세요.',
+    title: '테이블 설정과 배치를 완료해주세요',
+    description: '테이블을 2개 이상 추가한 뒤 모든 테이블의 배치를 저장해야 온보딩을 완료할 수 있습니다.',
   },
   [ONBOARDING_STEP.MENU]: {
     title: '상품을 1개 이상 등록해주세요',
@@ -60,8 +60,8 @@ function OnboardingStepHint({ step, width = '100%' }: OnboardingStepHintProps) {
   const copy =
     step === ONBOARDING_STEP.TABLES && workspace.tableCount >= 2
       ? {
-          title: '모든 테이블을 배치해주세요',
-          description: '상단에서 배치 보기를 선택한 뒤 ‘배치 편집’에서 실제 주점의 테이블 위치를 저장해주세요.',
+          title: '테이블 배치를 완료해주세요',
+          description: '상단에서 배치 보기를 선택한 뒤 ‘배치 편집’에서 모든 테이블을 배치하고 저장해주세요. 배치 저장까지 완료해야 다음 단계로 넘어갑니다.',
         }
       : STEP_HINT_COPY[step];
 
