@@ -1,4 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react';
+import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { RiArrowDownSLine, RiArrowUpSLine, RiDragMove2Fill } from '@remixicon/react';
 import { Table } from '@@types/index';
@@ -11,6 +12,12 @@ import { SELECTED_RING_PX } from './TableLayoutCard';
 const LIST_MAX_ROWS = 2;
 const LIST_GAP_PX = 8;
 const CHEVRON_ICON_PX = 18;
+
+const buttonPulseAnimation = keyframes`
+  0% { box-shadow: 0 0 0 0 rgba(255, 145, 66, 0.45); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 145, 66, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 145, 66, 0); }
+`;
 
 const Container = styled.div`
   width: 100%;
@@ -25,6 +32,11 @@ const HeaderRow = styled.div`
 `;
 
 const Spacer = styled.div``;
+
+const EditButtonHighlight = styled.div<{ animate: boolean }>`
+  border-radius: 40px;
+  animation: ${({ animate }) => (animate ? `${buttonPulseAnimation} 1.8s ease-out infinite` : 'none')};
+`;
 
 const EditIcon = styled(RiDragMove2Fill)`
   width: 14px;
@@ -81,11 +93,12 @@ interface UnplacedTableStripProps {
   tables: Table[];
   selectedTableNumber: number | null;
   showEditButton: boolean;
+  highlightEditButton: boolean;
   onStartEdit: () => void;
   renderCard: (table: Table) => ReactNode;
 }
 
-function UnplacedTableStrip({ tables, selectedTableNumber, showEditButton, onStartEdit, renderCard }: UnplacedTableStripProps) {
+function UnplacedTableStrip({ tables, selectedTableNumber, showEditButton, highlightEditButton, onStartEdit, renderCard }: UnplacedTableStripProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const hasUnplaced = tables.length > 0;
@@ -114,15 +127,17 @@ function UnplacedTableStrip({ tables, selectedTableNumber, showEditButton, onSta
           <Spacer />
         )}
         {showEditButton && (
-          <NewCommonButton
-            size="xs"
-            color="blue_gray"
-            customColors={{ color: Color.KIO_ORANGE, border: `1px solid ${Color.KIO_ORANGE}`, hoverBackground: Color.KIO_ORANGE_FAINT }}
-            icon={<EditIcon />}
-            onClick={onStartEdit}
-          >
-            배치 편집
-          </NewCommonButton>
+          <EditButtonHighlight animate={highlightEditButton}>
+            <NewCommonButton
+              size="xs"
+              color="blue_gray"
+              customColors={{ color: Color.KIO_ORANGE, border: `1px solid ${Color.KIO_ORANGE}`, hoverBackground: Color.KIO_ORANGE_FAINT }}
+              icon={<EditIcon />}
+              onClick={onStartEdit}
+            >
+              배치 편집
+            </NewCommonButton>
+          </EditButtonHighlight>
         )}
       </HeaderRow>
       {hasUnplaced && isExpanded && (

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Table } from '@@types/index';
 import { Color } from '@resources/colors';
@@ -42,6 +43,17 @@ const EmptyStateHint = styled.div`
   color: ${Color.MUTED_GREY};
 `;
 
+const buttonPulseAnimation = keyframes`
+  0% { box-shadow: 0 0 0 0 rgba(255, 145, 66, 0.45); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 145, 66, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 145, 66, 0); }
+`;
+
+const EditButtonHighlight = styled.div<{ animate: boolean }>`
+  border-radius: 40px;
+  animation: ${({ animate }) => (animate ? `${buttonPulseAnimation} 1.8s ease-out infinite` : 'none')};
+`;
+
 function getCropBounds(placedTables: Table[]): GridCropBounds {
   const xs = placedTables.map((table) => table.position!.x);
   const ys = placedTables.map((table) => table.position!.y);
@@ -62,9 +74,18 @@ interface TableLayoutViewProps {
   selectedTableNumber: number | null;
   onSelectTable: (table: Table) => void;
   onStartEdit: () => void;
+  highlightEditButton: boolean;
 }
 
-function TableLayoutView({ tables, orderStatsBySessionId, visibleTableNumbers, selectedTableNumber, onSelectTable, onStartEdit }: TableLayoutViewProps) {
+function TableLayoutView({
+  tables,
+  orderStatsBySessionId,
+  visibleTableNumbers,
+  selectedTableNumber,
+  onSelectTable,
+  onStartEdit,
+  highlightEditButton,
+}: TableLayoutViewProps) {
   const placedTables = useMemo(() => tables.filter((table) => table.position != null), [tables]);
   const unplacedTables = useMemo(() => tables.filter((table) => table.position == null), [tables]);
 
@@ -100,6 +121,7 @@ function TableLayoutView({ tables, orderStatsBySessionId, visibleTableNumbers, s
         tables={unplacedTables}
         selectedTableNumber={selectedTableNumber}
         showEditButton={placedTables.length > 0}
+        highlightEditButton={highlightEditButton}
         onStartEdit={onStartEdit}
         renderCard={renderCard}
       />
@@ -108,9 +130,11 @@ function TableLayoutView({ tables, orderStatsBySessionId, visibleTableNumbers, s
           <EmptyState>
             아직 배치된 테이블이 없습니다
             <EmptyStateHint>실제 주점 테이블 배치대로 놓아두면 테이블 위치를 바로 찾을 수 있어요</EmptyStateHint>
-            <NewCommonButton size="sm" onClick={onStartEdit}>
-              배치 편집
-            </NewCommonButton>
+            <EditButtonHighlight animate={highlightEditButton}>
+              <NewCommonButton size="sm" onClick={onStartEdit}>
+                배치 편집
+              </NewCommonButton>
+            </EditButtonHighlight>
           </EmptyState>
         ) : (
           <TableLayoutCanvas cropBounds={getCropBounds(placedTables)} renderCell={renderCell} />

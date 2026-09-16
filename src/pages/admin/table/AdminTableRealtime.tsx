@@ -209,6 +209,7 @@ function AdminTableRealtime() {
         selectedTableNumber={selectedTable?.tableNumber ?? null}
         onSelectTable={handleSelectTable}
         onStartEdit={handleStartEdit}
+        highlightEditButton={needsTableLayoutOnboarding}
       />
     );
   };
