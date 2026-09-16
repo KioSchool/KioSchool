@@ -29,7 +29,7 @@ const Button = styled.button`
   }
 `;
 
-const RefreshIcon = styled(RiRefreshLine)<{ isSpinning: boolean }>`
+const RefreshIcon = styled(RiRefreshLine, { shouldForwardProp: (prop) => prop !== 'isSpinning' })<{ isSpinning: boolean }>`
   width: 18px;
   height: 18px;
 

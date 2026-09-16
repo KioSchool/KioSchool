@@ -1,6 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 import { setupApiInterceptors } from 'src/utils/apiInterceptors';
 import { URLS } from '@constants/urls';
+import { API_TIMEOUT_MS } from '@constants/network';
 
 const AUTH_ERROR_EVENT = 'adminAuthError';
 
@@ -15,7 +16,7 @@ class SuperAdminApiManager {
       baseURL: URLS.API.SUPER_ADMIN,
       withCredentials: true,
       signal: this.controller.signal,
-      timeout: 30000,
+      timeout: API_TIMEOUT_MS,
     });
 
     this.setupInterceptors();

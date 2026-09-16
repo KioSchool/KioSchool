@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import styled from '@emotion/styled';
 import { Table } from '@@types/index';
+import OnboardingActionHighlight from '@components/admin/order/table-manage/common/OnboardingActionHighlight';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { TABLE_CROP_MARGIN_CELLS, TABLE_GRID_SIZE, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
@@ -62,9 +63,18 @@ interface TableLayoutViewProps {
   selectedTableNumber: number | null;
   onSelectTable: (table: Table) => void;
   onStartEdit: () => void;
+  highlightEditButton: boolean;
 }
 
-function TableLayoutView({ tables, orderStatsBySessionId, visibleTableNumbers, selectedTableNumber, onSelectTable, onStartEdit }: TableLayoutViewProps) {
+function TableLayoutView({
+  tables,
+  orderStatsBySessionId,
+  visibleTableNumbers,
+  selectedTableNumber,
+  onSelectTable,
+  onStartEdit,
+  highlightEditButton,
+}: TableLayoutViewProps) {
   const placedTables = useMemo(() => tables.filter((table) => table.position != null), [tables]);
   const unplacedTables = useMemo(() => tables.filter((table) => table.position == null), [tables]);
 
@@ -100,6 +110,7 @@ function TableLayoutView({ tables, orderStatsBySessionId, visibleTableNumbers, s
         tables={unplacedTables}
         selectedTableNumber={selectedTableNumber}
         showEditButton={placedTables.length > 0}
+        highlightEditButton={highlightEditButton}
         onStartEdit={onStartEdit}
         renderCard={renderCard}
       />
@@ -108,9 +119,11 @@ function TableLayoutView({ tables, orderStatsBySessionId, visibleTableNumbers, s
           <EmptyState>
             아직 배치된 테이블이 없습니다
             <EmptyStateHint>실제 주점 테이블 배치대로 놓아두면 테이블 위치를 바로 찾을 수 있어요</EmptyStateHint>
-            <NewCommonButton size="sm" onClick={onStartEdit}>
-              배치 편집
-            </NewCommonButton>
+            <OnboardingActionHighlight active={highlightEditButton}>
+              <NewCommonButton size="sm" onClick={onStartEdit}>
+                배치 편집
+              </NewCommonButton>
+            </OnboardingActionHighlight>
           </EmptyState>
         ) : (
           <TableLayoutCanvas cropBounds={getCropBounds(placedTables)} renderCell={renderCell} />

@@ -8,7 +8,7 @@ import { ACQUISITION_CONTEXT_KEYS, ACQUISITION_CONTEXT_KEY_LABEL, parseAcquisiti
 import { exportToCsv } from '@utils/csv';
 import { formatNullableKoreanDateTime } from '@utils/formatNumber';
 
-const CSV_HEADERS = ['응답일시', '이메일', '유입 경로', '기타 직접 입력', ...ACQUISITION_CONTEXT_KEYS.map((key) => ACQUISITION_CONTEXT_KEY_LABEL[key])];
+const CSV_HEADERS = ['응답일시', '이메일', '학교', '유입 경로', '기타 직접 입력', ...ACQUISITION_CONTEXT_KEYS.map((key) => ACQUISITION_CONTEXT_KEY_LABEL[key])];
 const CSV_FILE_NAME = '유입경로_설문응답.csv';
 const SKIPPED_LABEL = '건너뜀';
 
@@ -53,6 +53,7 @@ function SurveyCsvDownloadButton({ disabled, fetchAllResponses }: SurveyCsvDownl
       return [
         formatNullableKoreanDateTime(response.answeredAt),
         response.userEmail,
+        response.schoolName,
         response.channelLabel ?? SKIPPED_LABEL,
         response.channelEtc ?? '',
         ...ACQUISITION_CONTEXT_KEYS.map((key) => context[key] ?? ''),

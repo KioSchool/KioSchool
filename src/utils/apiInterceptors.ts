@@ -2,7 +2,7 @@ import { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } 
 import * as Sentry from '@sentry/react';
 import { match } from 'ts-pattern';
 import { SENTRY_CONFIG } from '@constants/sentry';
-import { NETWORK_BLOCKED_EVENT } from '@constants/network';
+import { NETWORK_BLOCKED_EVENT, UPLOAD_TIMEOUT_MS } from '@constants/network';
 import { getApiErrorCode, isAxiosCancel, requiresGlobalLogout } from './apiError';
 import { loadingManager } from './loadingManager';
 import { isReportableError } from './sentryErrorFilter';
@@ -70,6 +70,8 @@ export function setupApiInterceptors(
   const pendingTimers = new Map<InternalAxiosRequestConfig, NodeJS.Timeout>();
 
   const handleRequestStart = (config: InternalAxiosRequestConfig) => {
+    if (config.data instanceof FormData) config.timeout = UPLOAD_TIMEOUT_MS;
+
     if (config.skipGlobalLoading) return config;
 
     const timerId = setTimeout(() => {

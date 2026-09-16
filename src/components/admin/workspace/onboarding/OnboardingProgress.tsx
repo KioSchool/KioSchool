@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { Fragment } from 'react';
 import { RiCheckLine } from '@remixicon/react';
 import { match } from 'ts-pattern';
-import { Workspace } from '@@types/index';
+import { Table, Workspace } from '@@types/index';
 import { Color, OnboardingColor } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { ONBOARDING_STEP_DEFINITIONS, isOnboardingStepCompleted } from '@utils/onboarding';
@@ -122,16 +122,17 @@ const StepLabel = styled.span<{ variant: ProgressVariant }>`
 
 interface OnboardingProgressProps {
   workspace: Workspace;
+  tables: Table[];
   currentStep: OnboardingStep;
 }
 
-function OnboardingProgress({ workspace, currentStep }: OnboardingProgressProps) {
+function OnboardingProgress({ workspace, tables, currentStep }: OnboardingProgressProps) {
   const currentIndex = ONBOARDING_STEP_DEFINITIONS.findIndex(({ step }) => step === currentStep);
 
   return (
     <Container>
       {ONBOARDING_STEP_DEFINITIONS.map(({ step, label }, index) => {
-        const completed = isOnboardingStepCompleted(workspace, step);
+        const completed = isOnboardingStepCompleted(workspace, step, tables);
         const active = currentStep === step;
         const progressVariant = match({ active, completed })
           .with({ active: true }, () => 'active' as const)

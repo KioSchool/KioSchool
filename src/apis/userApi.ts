@@ -1,6 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 import { setupApiInterceptors } from 'src/utils/apiInterceptors';
 import { URLS } from '@constants/urls';
+import { API_TIMEOUT_MS } from '@constants/network';
 
 class UserApiManager {
   private controller: AbortController;
@@ -12,7 +13,7 @@ class UserApiManager {
     this.api = axios.create({
       baseURL: URLS.API.USER,
       withCredentials: true,
-      timeout: 30000,
+      timeout: API_TIMEOUT_MS,
     });
 
     this.setupInterceptors();
