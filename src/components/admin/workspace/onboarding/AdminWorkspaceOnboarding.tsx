@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { RiRefreshLine } from '@remixicon/react';
-import { Workspace } from '@@types/index';
+import { Table, Workspace } from '@@types/index';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import OnboardingHeader from '@components/onboarding/OnboardingHeader';
 import { colFlex, rowFlex } from '@styles/flexStyles';
@@ -29,12 +29,13 @@ const ProgressContainer = styled.div`
 
 interface AdminWorkspaceOnboardingProps {
   workspace: Workspace;
+  tables: Table[];
   onRefreshStatus: () => void;
   onSkipOnboarding: () => void;
 }
 
-function AdminWorkspaceOnboarding({ workspace, onRefreshStatus, onSkipOnboarding }: AdminWorkspaceOnboardingProps) {
-  const currentStep = getInitialOnboardingStep(workspace);
+function AdminWorkspaceOnboarding({ workspace, tables, onRefreshStatus, onSkipOnboarding }: AdminWorkspaceOnboardingProps) {
+  const currentStep = getInitialOnboardingStep(workspace, tables);
 
   return (
     <Container>
@@ -51,13 +52,13 @@ function AdminWorkspaceOnboarding({ workspace, onRefreshStatus, onSkipOnboarding
 
       <ActionsRow>
         <ProgressContainer>
-          <OnboardingProgress workspace={workspace} currentStep={currentStep} />
+          <OnboardingProgress workspace={workspace} tables={tables} currentStep={currentStep} />
         </ProgressContainer>
         <NewCommonButton type="button" size="xs" icon={<RiRefreshLine size={16} />} gap={6} color="blue_gray" onClick={onRefreshStatus}>
           최신 상태 확인
         </NewCommonButton>
       </ActionsRow>
-      <OnboardingStepList workspace={workspace} currentStep={currentStep} />
+      <OnboardingStepList workspace={workspace} tables={tables} currentStep={currentStep} />
     </Container>
   );
 }
