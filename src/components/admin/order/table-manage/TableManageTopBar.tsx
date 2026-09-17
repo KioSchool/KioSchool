@@ -4,7 +4,7 @@ import OnboardingActionHighlight from '@components/admin/order/table-manage/comm
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import TableFilterBar from './TableFilterBar';
 import TableRefreshButton from './TableRefreshButton';
-import ViewToggle from './ViewToggle';
+import ViewToggle, { VIEW_TOGGLE_RADIUS_PX } from './ViewToggle';
 import { TableFilterCounts, TableFilterType } from '@hooks/admin/useTableFilter';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
@@ -65,7 +65,7 @@ function TableManageTopBar({
             </NewCommonButton>
           </OnboardingActionHighlight>
           {showFilters && (
-            <OnboardingActionHighlight active={highlightLayout}>
+            <OnboardingActionHighlight active={highlightLayout} borderRadius={VIEW_TOGGLE_RADIUS_PX}>
               <ViewToggle />
             </OnboardingActionHighlight>
           )}

@@ -10,10 +10,11 @@ import { mobileMediaQuery } from '@styles/globalStyles';
 import { trackEvent } from '@utils/analytics';
 
 const TOGGLE_BUTTON_SIZE_PX = 36;
+export const VIEW_TOGGLE_RADIUS_PX = 10;
 
 const Container = styled.div`
   background-color: ${Color.LIGHT_GREY};
-  border-radius: 10px;
+  border-radius: ${VIEW_TOGGLE_RADIUS_PX}px;
   padding: 4px;
   gap: 4px;
   ${rowFlex({ align: 'center' })};
