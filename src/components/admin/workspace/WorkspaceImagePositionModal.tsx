@@ -123,7 +123,7 @@ function WorkspaceImagePositionModal({ imageUrl, focalPoint, onConfirm, onClose 
           <PreviewImage ref={imageRef} src={imageUrl} alt={'대표 사진 미리보기'} objectPosition={toObjectPosition(draftFocalPoint)} />
         </Frame>
         <ButtonContainer>
-          <NewCommonButton size={'sm'} onClick={onClose}>
+          <NewCommonButton size={'sm'} color="blue_gray" onClick={onClose}>
             취소
           </NewCommonButton>
           <NewCommonButton size={'sm'} onClick={handleConfirm}>
