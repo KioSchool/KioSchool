@@ -26,6 +26,15 @@ const Tab = styled.div<{ isSelected: boolean }>`
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
+// 옆 '시간대별 추이' 카드 높이에 맞춰, 넘치는 순위는 카드 안에서 스크롤한다
+const ScrollArea = styled.div`
+  width: 100%;
+  max-height: 360px;
+  padding-right: 8px;
+  box-sizing: border-box;
+  overflow-y: auto;
+`;
+
 const tabConfig: { key: TabKey; label: string; unit: string }[] = [
   { key: 'byQuantity', label: '판매량', unit: '개' },
   { key: 'byRevenue', label: '판매액', unit: '원' },
@@ -48,7 +57,7 @@ function PopularProductsSection({ popularProducts }: PopularProductsSectionProps
   }));
 
   return (
-    <ContentCard title="상품별 순위 TOP5" showDivider={false}>
+    <ContentCard title="상품별 순위" showDivider={false}>
       <TabContainer>
         {tabConfig.map((tab) => (
           <Tab key={tab.key} isSelected={selectedTab === tab.key} onClick={() => setSelectedTab(tab.key)}>
@@ -56,7 +65,9 @@ function PopularProductsSection({ popularProducts }: PopularProductsSectionProps
           </Tab>
         ))}
       </TabContainer>
-      <RankedList items={items} />
+      <ScrollArea key={selectedTab}>
+        <RankedList items={items} />
+      </ScrollArea>
     </ContentCard>
   );
 }
