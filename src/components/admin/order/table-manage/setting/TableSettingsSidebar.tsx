@@ -7,6 +7,8 @@ import { adminWorkspaceAtom, adminTablesAtom } from '@jotai/admin/atoms';
 import { externalSidebarAtom } from '@jotai/atoms';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import NewCommonButton from '@components/common/button/NewCommonButton';
+import OnboardingActionHighlight from '@components/admin/order/table-manage/common/OnboardingActionHighlight';
+import { ONBOARDING_MIN_TABLE_COUNT } from '@components/admin/workspace/onboarding/onboardingData';
 import SettingSection from './SettingSection';
 import { colFlex } from '@styles/flexStyles';
 import { MAX_TABLE_COUNT } from '@constants/layout';
@@ -31,9 +33,13 @@ const CountCaption = styled.div`
   color: ${Color.MUTED_GREY};
 `;
 
-const SaveButton = styled(NewCommonButton)`
+const SaveHighlight = styled(OnboardingActionHighlight)`
   width: 100%;
   margin-top: auto;
+`;
+
+const SaveButton = styled(NewCommonButton)`
+  width: 100%;
 `;
 
 function TableSettingsSidebar() {
@@ -52,6 +58,11 @@ function TableSettingsSidebar() {
     tableCount !== workspace.tableCount ||
     isTimeLimited !== workspace.workspaceSetting?.useOrderSessionTimeLimit ||
     timeLimitMinutes !== workspace.workspaceSetting?.orderSessionTimeLimitMinutes;
+
+  // 온보딩 테이블 단계는 2개 이상이어야 완료된다 — 개수를 채울 때까지 입력을, 채운 뒤엔 적용 버튼을 유도한다
+  const needsTableCountOnboarding = workspace.isOnboarding && workspace.tableCount < ONBOARDING_MIN_TABLE_COUNT;
+  const highlightTableCount = needsTableCountOnboarding && tableCount < ONBOARDING_MIN_TABLE_COUNT;
+  const highlightSave = needsTableCountOnboarding && tableCount >= ONBOARDING_MIN_TABLE_COUNT;
 
   const handleTableCountMinus = () => {
     setTableCount(Math.max(1, tableCount - 1));
@@ -86,7 +97,7 @@ function TableSettingsSidebar() {
     }
 
     const hasPlacedRemainingTable = tables.some((table) => table.tableNumber <= tableCount && table.position != null);
-    const shouldContinueTableOnboarding = workspace.isOnboarding && tableCount >= 2;
+    const shouldContinueTableOnboarding = workspace.isOnboarding && tableCount >= ONBOARDING_MIN_TABLE_COUNT;
     const shouldReturnToOnboarding = shouldContinueTableOnboarding && hasPlacedRemainingTable;
 
     try {
@@ -111,14 +122,16 @@ function TableSettingsSidebar() {
       <TableQRDownload workspaceId={workspaceId} workspaceName={workspace.name} tables={tables} />
 
       <SettingSection label="테이블 개수">
-        <NumberInput
-          value={tableCount}
-          formatter={(v) => `${v}개`}
-          maxWidth="100%"
-          onChange={handleTableCountChange}
-          onIncrement={handleTableCountPlus}
-          onDecrement={handleTableCountMinus}
-        />
+        <OnboardingActionHighlight active={highlightTableCount}>
+          <NumberInput
+            value={tableCount}
+            formatter={(v) => `${v}개`}
+            maxWidth="100%"
+            onChange={handleTableCountChange}
+            onIncrement={handleTableCountPlus}
+            onDecrement={handleTableCountMinus}
+          />
+        </OnboardingActionHighlight>
         <CountCaption>최대 {MAX_TABLE_COUNT}개까지 만들 수 있어요</CountCaption>
       </SettingSection>
 
@@ -129,9 +142,11 @@ function TableSettingsSidebar() {
         onMinutesChange={setTimeLimitMinutes}
       />
 
-      <SaveButton size={'xs'} onClick={handleSave} disabled={!isDirty}>
-        적용
-      </SaveButton>
+      <SaveHighlight active={highlightSave}>
+        <SaveButton size={'xs'} onClick={handleSave} disabled={!isDirty}>
+          적용
+        </SaveButton>
+      </SaveHighlight>
     </Container>
   );
 }
