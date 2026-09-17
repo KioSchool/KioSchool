@@ -21,13 +21,30 @@ export const GA_EVENT = {
   TABLE_LAYOUT_VIEW: 'table_layout_view',
   TABLE_LAYOUT_EDIT_START: 'table_layout_edit_start',
   TABLE_LAYOUT_SAVED: 'table_layout_saved',
+  TABLE_VIEW_SHOWN: 'table_view_shown',
+  TABLE_SELECTED: 'table_selected',
+  TABLE_SESSION_ACTION: 'table_session_action',
 } as const;
 
 export type GaEventName = typeof GA_EVENT[keyof typeof GA_EVENT];
 
+/**
+ * `TABLE_LAYOUT_VIEW`는 리스트→배치로 "전환하는 순간"에만 찍히므로 도입률(adoption)을 재는 값이지
+ * 사용량이 아니다. 뷰 모드는 localStorage에 고착되어 한 번 바꾼 사용자는 다시 찍히지 않으니,
+ * 사용량 비율 계산에는 `TABLE_VIEW_SHOWN`/`TABLE_SESSION_ACTION`만 쓴다.
+ */
 export const TABLE_LAYOUT_VIEW_SOURCE = {
   TOGGLE: 'toggle',
   PROMO_POPUP: 'promo_popup',
 } as const;
+
+export const TABLE_SESSION_ACTION = {
+  START: 'start',
+  END: 'end',
+  EXTEND: 'extend',
+  REDUCE: 'reduce',
+} as const;
+
+export type TableSessionAction = typeof TABLE_SESSION_ACTION[keyof typeof TABLE_SESSION_ACTION];
 
 export const GA_CURRENCY = 'KRW';

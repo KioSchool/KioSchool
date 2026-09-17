@@ -3,7 +3,7 @@ import { useAtomValue } from 'jotai';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
-import { adminWorkspaceAtom } from '@jotai/admin/atoms';
+import { adminWorkspaceAtom, TableView } from '@jotai/admin/atoms';
 import { useTableSession } from '@hooks/admin/useTableSession';
 import { getTableStatus } from '@utils/tableStatus';
 import TableDetailHeader from './TableDetailHeader';
@@ -85,9 +85,12 @@ interface TableDetailPanelProps {
   table: Table;
   orders: Order[];
   refetchTable: () => void;
+  /** 세션 조작을 어느 뷰에서 했는지 집계하기 위한 값. 페이지에서 파생한 실제 뷰를 그대로 받는다. */
+  viewMode: TableView;
+  isMobile: boolean;
 }
 
-function TableDetailPanel({ workspaceId, workspaceName, table, orders, refetchTable }: TableDetailPanelProps) {
+function TableDetailPanel({ workspaceId, workspaceName, table, orders, refetchTable, viewMode, isMobile }: TableDetailPanelProps) {
   const status = getTableStatus(table);
   const session = table.orderSession;
   const workspace = useAtomValue(adminWorkspaceAtom);
@@ -110,6 +113,8 @@ function TableDetailPanel({ workspaceId, workspaceName, table, orders, refetchTa
     orderSessionId: session?.id,
     tableNumber: table.tableNumber,
     refetchTable,
+    viewMode,
+    isMobile,
   });
 
   const isStepperDisabled = !session || !setting?.useOrderSessionTimeLimit;
