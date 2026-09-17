@@ -14,7 +14,7 @@ import AppContainer from '@components/common/container/AppContainer';
 import RightSidebarModal from '@components/common/modal/RightSidebarModal';
 import AppPopup from '@components/common/popup/AppPopup';
 import OnboardingStepHint from '@components/admin/workspace/onboarding/OnboardingStepHint';
-import { ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardingData';
+import { ONBOARDING_MIN_TABLE_COUNT, ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardingData';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import useTableFilter, { TABLE_FILTER } from '@hooks/admin/useTableFilter';
 import useTableLayoutSave from '@hooks/admin/useTableLayoutSave';
@@ -100,8 +100,8 @@ function AdminTableRealtime() {
   const tables = useAtomValue(adminTablesAtom);
   const setAdminTables = useSetAtom(adminTablesAtom);
   const isTablesOnboardingCompleted = isOnboardingStepCompleted(workspace, ONBOARDING_STEP.TABLES, tables);
-  const needsTablesOnboarding = workspace.isOnboarding && !isTablesOnboardingCompleted && workspace.tableCount < 2;
-  const needsTableLayoutOnboarding = workspace.isOnboarding && !isTablesOnboardingCompleted && workspace.tableCount >= 2;
+  const needsTablesOnboarding = workspace.isOnboarding && !isTablesOnboardingCompleted && workspace.tableCount < ONBOARDING_MIN_TABLE_COUNT;
+  const needsTableLayoutOnboarding = workspace.isOnboarding && !isTablesOnboardingCompleted && workspace.tableCount >= ONBOARDING_MIN_TABLE_COUNT;
   const viewMode = isMobile ? TABLE_VIEW.LIST : storedViewMode;
   const selectedTable = tables.find((table) => table.tableNumber === Number(tableNo));
   const { orders, fetchOrders } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
@@ -182,7 +182,7 @@ function AdminTableRealtime() {
     const changedPositionByTableId = new Map(changes.map(({ tableId, position }) => [tableId, position]));
     const completesTableOnboarding =
       workspace.isOnboarding &&
-      workspace.tableCount >= 2 &&
+      workspace.tableCount >= ONBOARDING_MIN_TABLE_COUNT &&
       tables.length === workspace.tableCount &&
       tables.some((table) => (changedPositionByTableId.has(table.id) ? changedPositionByTableId.get(table.id) : table.position) != null);
 
