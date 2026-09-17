@@ -140,14 +140,13 @@ function AdminTableRealtime() {
     return () => clearInterval(timer);
   }, [isEditing, workspaceId]);
 
-  // 배치/리스트 뷰 사용률의 공통 파라미터. `view_mode`는 반드시 이 파생값을 써야 한다 —
+  // 배치/리스트 뷰 사용률의 공통 파라미터. `table_view_mode`는 반드시 이 파생값을 써야 한다 —
   // 모바일에서는 저장된 선호(`storedViewMode`)와 실제 화면이 갈라지므로, 하위 컴포넌트가
   // `adminTableViewModeAtom`을 직접 읽으면 리스트를 보는 사용자가 배치로 집계된다.
   const viewAnalyticsParams = {
-    view_mode: viewMode,
+    table_view_mode: viewMode,
     workspace_id: workspaceId,
-    is_mobile: isMobile,
-    occupied_tables: counts[TABLE_FILTER.USING] + counts[TABLE_FILTER.WARNING] + counts[TABLE_FILTER.EXCEEDED],
+    occupied_table_count: counts[TABLE_FILTER.USING] + counts[TABLE_FILTER.WARNING] + counts[TABLE_FILTER.EXCEEDED],
   };
 
   // 진입 시 1회가 아니라 뷰가 바뀔 때마다 찍는다. 프로모 팝업·온보딩 유도는 페이지에 머문 채로
@@ -162,8 +161,8 @@ function AdminTableRealtime() {
     lastShownViewModeRef.current = viewMode;
     trackEvent(GA_EVENT.TABLE_VIEW_SHOWN, {
       ...viewAnalyticsParams,
-      table_count: tables.length,
-      positioned_count: tables.filter((table) => table.position != null).length,
+      total_table_count: tables.length,
+      positioned_table_count: tables.filter((table) => table.position != null).length,
       is_onboarding: workspace.isOnboarding,
     });
   }, [viewMode, tables]);
@@ -281,7 +280,6 @@ function AdminTableRealtime() {
         orders={orders}
         refetchTable={fetchTables}
         viewMode={viewMode}
-        isMobile={isMobile}
       />
     );
   };

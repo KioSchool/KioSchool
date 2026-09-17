@@ -87,10 +87,9 @@ interface TableDetailPanelProps {
   refetchTable: () => void;
   /** 세션 조작을 어느 뷰에서 했는지 집계하기 위한 값. 페이지에서 파생한 실제 뷰를 그대로 받는다. */
   viewMode: TableView;
-  isMobile: boolean;
 }
 
-function TableDetailPanel({ workspaceId, workspaceName, table, orders, refetchTable, viewMode, isMobile }: TableDetailPanelProps) {
+function TableDetailPanel({ workspaceId, workspaceName, table, orders, refetchTable, viewMode }: TableDetailPanelProps) {
   const status = getTableStatus(table);
   const session = table.orderSession;
   const workspace = useAtomValue(adminWorkspaceAtom);
@@ -114,7 +113,6 @@ function TableDetailPanel({ workspaceId, workspaceName, table, orders, refetchTa
     tableNumber: table.tableNumber,
     refetchTable,
     viewMode,
-    isMobile,
   });
 
   const isStepperDisabled = !session || !setting?.useOrderSessionTimeLimit;

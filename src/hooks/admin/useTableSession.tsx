@@ -62,10 +62,9 @@ interface UseTableSessionProps {
   refetchTable: () => void;
   /** 조작이 일어난 실제 뷰. 저장된 선호가 아니라 페이지에서 파생한 값을 받는다. */
   viewMode: TableView;
-  isMobile: boolean;
 }
 
-export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessionId, tableNumber, refetchTable, viewMode, isMobile }: UseTableSessionProps) {
+export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessionId, tableNumber, refetchTable, viewMode }: UseTableSessionProps) {
   const [selectedTimeLimit, setSelectedTimeLimit] = useState<string>(() => {
     const storedTime = sessionStorage.getItem(SESSION_STORAGE_KEY);
     if (storedTime) {
@@ -97,10 +96,9 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
   // 활발한 사용으로 잡힌다. 빈 세션 모달에서 사용자가 빠져나간 경우도 여기서 함께 걸러진다.
   const trackSessionAction = (action: TableSessionAction) => {
     trackEvent(GA_EVENT.TABLE_SESSION_ACTION, {
-      action,
-      view_mode: viewMode,
+      session_action: action,
+      table_view_mode: viewMode,
       workspace_id: workspaceId,
-      is_mobile: isMobile,
       table_number: tableNumber,
     });
   };
