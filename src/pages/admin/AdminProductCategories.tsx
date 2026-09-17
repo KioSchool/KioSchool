@@ -2,13 +2,15 @@ import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import { useRef } from 'react';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { RiArrowRightLine } from '@remixicon/react';
 import CategoryDragAndDropContent from '@components/admin/product-category/CategoryDragAndDropContent';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import OnboardingStepHint from '@components/admin/workspace/onboarding/OnboardingStepHint';
 import { ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardingData';
+import { getAdminProductsPath } from '@constants/routes';
 
 const Container = styled.div`
   width: 680px;
@@ -60,8 +62,14 @@ const CategoryInput = styled.input`
   }
 `;
 
+const ProductLinkButton = styled(NewCommonButton)`
+  width: auto;
+  padding: 0 14px 0 18px;
+`;
+
 function AdminProductCategories() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
+  const navigate = useNavigate();
   const { addCategory } = useAdminProducts(workspaceId);
   const categoryInputRef = useRef<HTMLInputElement>(null);
 
@@ -77,10 +85,30 @@ function AdminProductCategories() {
     if (categoryInputRef.current) categoryInputRef.current.value = '';
   };
 
+  const handleGoToProducts = () => {
+    if (!workspaceId) return;
+
+    navigate(getAdminProductsPath(workspaceId));
+  };
+
   return (
     <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })}>
       <Container className={'admin-product-categories-container'}>
-        <OnboardingStepHint step={ONBOARDING_STEP.MENU} />
+        <OnboardingStepHint
+          step={ONBOARDING_STEP.MENU}
+          action={
+            <ProductLinkButton
+              type="button"
+              size="xs"
+              color="blue_gray"
+              customColors={{ color: Color.KIO_ORANGE, border: `1px solid ${Color.KIO_ORANGE}`, hoverBackground: Color.KIO_ORANGE_FAINT }}
+              onClick={handleGoToProducts}
+            >
+              상품 추가하러 가기
+              <RiArrowRightLine size={14} />
+            </ProductLinkButton>
+          }
+        />
         <CategoriesInputContainer className={'categories-input-container'}>
           <SectionTitle>등록할 카테고리명</SectionTitle>
           <InputRow>
