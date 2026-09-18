@@ -1,5 +1,11 @@
 import { Table, Workspace } from '@@types/index';
-import { ONBOARDING_STEP, OnboardingStep, OnboardingStepDefinition, StepActionItem } from '@components/admin/workspace/onboarding/onboardingData';
+import {
+  ONBOARDING_MIN_TABLE_COUNT,
+  ONBOARDING_STEP,
+  OnboardingStep,
+  OnboardingStepDefinition,
+  StepActionItem,
+} from '@components/admin/workspace/onboarding/onboardingData';
 import { ROUTES_PATH_KR_MAP } from '@constants/data/urlMapData';
 import { ADMIN_ROUTES } from '@constants/routes';
 
@@ -17,7 +23,7 @@ function hasWorkspaceInfoCompleted(workspace: Workspace): boolean {
 }
 
 function hasWorkspaceTablesCompleted(workspace: Workspace, tables?: Table[]): boolean {
-  if (workspace.tableCount < 2) return false;
+  if (workspace.tableCount < ONBOARDING_MIN_TABLE_COUNT) return false;
   if (!tables) return true;
 
   return tables.length === workspace.tableCount && tables.some((table) => table.position != null);

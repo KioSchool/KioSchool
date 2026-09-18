@@ -1,10 +1,11 @@
+import { ReactNode } from 'react';
 import styled from '@emotion/styled';
 import { useAtomValue } from 'jotai';
 import { adminTablesAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { OnboardingColor } from '@resources/colors';
-import { colFlex } from '@styles/flexStyles';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { isOnboardingStepCompleted } from '@utils/onboarding';
-import { ONBOARDING_STEP, OnboardingStep } from './onboardingData';
+import { ONBOARDING_MIN_TABLE_COUNT, ONBOARDING_STEP, OnboardingStep } from './onboardingData';
 
 interface StepHintCopy {
   title: string;
@@ -33,9 +34,20 @@ const Banner = styled.div<{ width: string }>`
   border: 1px solid ${OnboardingColor.STEP_ACTIVE_BORDER};
   background: ${OnboardingColor.STEP_PENDING_BG};
   border-radius: 10px;
-  gap: 4px;
+  gap: 16px;
   box-sizing: border-box;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
+`;
+
+const TextColumn = styled.div`
+  flex: 1;
+  min-width: 0;
+  gap: 4px;
   ${colFlex({ align: 'flex-start' })}
+`;
+
+const ActionSlot = styled.div`
+  flex-shrink: 0;
 `;
 
 const Title = styled.span`
@@ -52,13 +64,14 @@ const Description = styled.span`
 interface OnboardingStepHintProps {
   step: OnboardingStep;
   width?: string;
+  action?: ReactNode;
 }
 
-function OnboardingStepHint({ step, width = '100%' }: OnboardingStepHintProps) {
+function OnboardingStepHint({ step, width = '100%', action }: OnboardingStepHintProps) {
   const workspace = useAtomValue(adminWorkspaceAtom);
   const tables = useAtomValue(adminTablesAtom);
   const copy =
-    step === ONBOARDING_STEP.TABLES && workspace.tableCount >= 2
+    step === ONBOARDING_STEP.TABLES && workspace.tableCount >= ONBOARDING_MIN_TABLE_COUNT
       ? {
           title: '테이블을 1개 이상 배치해주세요',
           description: '상단에서 배치 보기를 선택한 뒤 ‘배치 편집’에서 테이블을 1개 이상 배치하고 저장해주세요.',
@@ -71,8 +84,11 @@ function OnboardingStepHint({ step, width = '100%' }: OnboardingStepHintProps) {
 
   return (
     <Banner width={width}>
-      <Title>{copy.title}</Title>
-      <Description>{copy.description}</Description>
+      <TextColumn>
+        <Title>{copy.title}</Title>
+        <Description>{copy.description}</Description>
+      </TextColumn>
+      {action && <ActionSlot>{action}</ActionSlot>}
     </Banner>
   );
 }
