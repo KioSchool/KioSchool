@@ -28,12 +28,14 @@ const Sub = styled.div`
   color: ${Color.GREY};
 `;
 
+const NO_EMAIL_LABEL = '이메일 없음';
+
 function SuperAdminUserContent(user: User) {
   return (
     <Row>
       <Info>
         <Name>{user.name}</Name>
-        <Sub>{user.email}</Sub>
+        <Sub>{user.email ?? NO_EMAIL_LABEL}</Sub>
       </Info>
     </Row>
   );

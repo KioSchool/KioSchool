@@ -52,7 +52,7 @@ function SurveyCsvDownloadButton({ disabled, fetchAllResponses }: SurveyCsvDownl
       const context = parseAcquisitionContext(response.context);
       return [
         formatNullableKoreanDateTime(response.answeredAt),
-        response.userEmail,
+        response.userEmail ?? '',
         response.schoolName,
         response.channelLabel ?? SKIPPED_LABEL,
         response.channelEtc ?? '',

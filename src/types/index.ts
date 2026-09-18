@@ -192,7 +192,7 @@ export enum UserRole {
 
 export interface User {
   name: string;
-  email: string;
+  email: string | null;
   role: UserRole;
   account: Account | null;
   accountUrl: string;
@@ -523,7 +523,7 @@ export interface FestivalWorkspaceRankItem {
   workspaceName: string;
   universityName: string;
   ownerName: string;
-  ownerEmail: string;
+  ownerEmail: string | null;
   festivalDays: number;
   totalOrders: number;
   totalRevenue: number;
