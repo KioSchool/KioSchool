@@ -3,7 +3,10 @@ import useAdminTable from '@hooks/admin/useAdminTable';
 import useConfirm from '@hooks/useConfirm';
 import { dateConverter } from '@utils/formatDate';
 import { API_ERROR_CODES } from '@constants/errorCodes';
+import { GA_EVENT, TABLE_SESSION_ACTION, TableSessionAction } from '@constants/analytics';
+import { TableView } from '@jotai/admin/atoms';
 import { isApiErrorCode } from '@utils/apiError';
+import { trackEvent } from '@utils/analytics';
 
 function isEmptyOrderSessionError(error: unknown): boolean {
   return isApiErrorCode(error, API_ERROR_CODES.EMPTY_ORDER_SESSION);
@@ -57,9 +60,11 @@ interface UseTableSessionProps {
   orderSessionId: number | undefined;
   tableNumber?: number;
   refetchTable: () => void;
+  /** 조작이 일어난 실제 뷰. 저장된 선호가 아니라 페이지에서 파생한 값을 받는다. */
+  viewMode: TableView;
 }
 
-export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessionId, tableNumber, refetchTable }: UseTableSessionProps) {
+export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessionId, tableNumber, refetchTable, viewMode }: UseTableSessionProps) {
   const [selectedTimeLimit, setSelectedTimeLimit] = useState<string>(() => {
     const storedTime = sessionStorage.getItem(SESSION_STORAGE_KEY);
     if (storedTime) {
@@ -86,10 +91,25 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
     cancelText: '무효한 세션으로 저장',
   });
 
-  const handleApiAndRefetch = (apiCall: Promise<unknown>) => {
+  // 조작을 "시도"가 아니라 "성공"에만 집계한다. 사용 시작·시간 변경은 실패해도 화면에 아무
+  // 변화가 없어(useAdminTable에서 에러를 삼킨다), 시도 기준이면 서버가 죽은 시간대가
+  // 활발한 사용으로 잡힌다. 빈 세션 모달에서 사용자가 빠져나간 경우도 여기서 함께 걸러진다.
+  const trackSessionAction = (action: TableSessionAction) => {
+    trackEvent(GA_EVENT.TABLE_SESSION_ACTION, {
+      session_action: action,
+      table_view_mode: viewMode,
+      workspace_id: workspaceId,
+      table_number: tableNumber,
+    });
+  };
+
+  const handleApiAndRefetch = (apiCall: Promise<unknown>, onSuccess?: () => void) => {
     apiCall
       .then((res) => {
-        if (res) refetchTable();
+        if (!res) return;
+
+        refetchTable();
+        onSuccess?.();
       })
       .catch((error) => {
         console.error('API 호출 실패:', error);
@@ -118,7 +138,7 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
     const newEndDate = new Date(currentEndDate.getTime() - timeToDecrease * MINUTES_TO_MILLISECONDS);
     const newEndDateString = dateConverter(newEndDate);
 
-    handleApiAndRefetch(updateSessionEndTime(orderSessionId, newEndDateString));
+    handleApiAndRefetch(updateSessionEndTime(orderSessionId, newEndDateString), () => trackSessionAction(TABLE_SESSION_ACTION.REDUCE));
   };
 
   const handleIncreaseTime = () => {
@@ -142,7 +162,7 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
     const newEndDate = new Date(currentEndDate.getTime() + timeToExtend * MINUTES_TO_MILLISECONDS);
     const newEndDateString = dateConverter(newEndDate);
 
-    handleApiAndRefetch(updateSessionEndTime(orderSessionId, newEndDateString));
+    handleApiAndRefetch(updateSessionEndTime(orderSessionId, newEndDateString), () => trackSessionAction(TABLE_SESSION_ACTION.EXTEND));
   };
 
   const endSessionWithEmptyCheck = async (sessionId: number, table: number) => {
@@ -165,12 +185,12 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
     const confirmed = await confirmEndSession();
     if (!confirmed) return;
 
-    handleApiAndRefetch(endSessionWithEmptyCheck(orderSessionId, tableNumber));
+    handleApiAndRefetch(endSessionWithEmptyCheck(orderSessionId, tableNumber), () => trackSessionAction(TABLE_SESSION_ACTION.END));
   };
 
   const handleStartSession = () => {
     if (!tableNumber) return;
-    handleApiAndRefetch(startTableSession(tableNumber));
+    handleApiAndRefetch(startTableSession(tableNumber), () => trackSessionAction(TABLE_SESSION_ACTION.START));
   };
 
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
