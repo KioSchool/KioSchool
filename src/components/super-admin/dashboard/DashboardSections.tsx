@@ -36,7 +36,7 @@ function DashboardSections({ data }: DashboardSectionsProps) {
       <ActiveWorkspaceSection insights={data.insights} workspaces={data.workspaces} />
       <UserStatsSection users={data.users} />
       <WorkspaceStatsSection workspaces={data.workspaces} />
-      <RevenueStatsSection revenue={data.revenue} />
+      <RevenueStatsSection revenue={data.revenue} operatedWorkspaces={data.insights.funnel.hadFirstOrder} />
       <FunnelSection funnel={data.insights.funnel} />
       <OnboardingTimeSection stats={data.insights.onboardingTimeStats} />
       <TopWorkspacesSection items={data.insights.topWorkspaces} />
