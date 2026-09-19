@@ -63,6 +63,7 @@ const AnsweredAt = styled.div`
 `;
 
 const SKIPPED_LABEL = '건너뜀';
+const NO_EMAIL_LABEL = '이메일 없음';
 
 interface SurveyResponseItemProps {
   response: AcquisitionSurveyResponse;
@@ -74,7 +75,7 @@ function SurveyResponseItem({ response }: SurveyResponseItemProps) {
   return (
     <Row>
       <Header>
-        <Email>{response.userEmail}</Email>
+        <Email>{response.userEmail ?? NO_EMAIL_LABEL}</Email>
         <SchoolName>{response.schoolName}</SchoolName>
         <ChannelChip skipped={isSkipped}>{isSkipped ? SKIPPED_LABEL : response.channelLabel}</ChannelChip>
         {response.channelEtc && <ChannelEtc>{response.channelEtc}</ChannelEtc>}

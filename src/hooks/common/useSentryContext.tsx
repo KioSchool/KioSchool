@@ -16,7 +16,7 @@ function useSentryContext() {
     const role = deriveRole(pathname);
 
     if (role === 'admin' && adminUser.id > 0) {
-      Sentry.setUser({ id: String(adminUser.id), email: adminUser.email });
+      Sentry.setUser({ id: String(adminUser.id), email: adminUser.email ?? undefined });
     } else {
       Sentry.setUser(null);
     }
