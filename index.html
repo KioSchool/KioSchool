@@ -10,8 +10,29 @@
     <link rel="apple-touch-icon" href="/logo192.png" />
     <link rel="manifest" href="/manifest.json" />
     <title>키오스쿨</title>
+    <style>
+      /* 프리렌더된 랜딩이 다른 경로의 SPA 폴백으로 내려오면 body 첫 인라인 스크립트가 kio-shell을 붙이고, App 첫 커밋 뒤 useRevealAppShell이 뗀다 */
+      html.kio-shell body { overflow: hidden; }
+      html.kio-shell #root { visibility: hidden; }
+      #kio-shell-loading { display: none; }
+      html.kio-shell #kio-shell-loading { position: fixed; inset: 0; z-index: 5002; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(5px); }
+      #kio-shell-loading span { width: 12px; height: 12px; border-radius: 50%; background-color: #FF9142; animation: kio-shell-bounce 1s infinite ease-in-out; }
+      #kio-shell-loading span:nth-child(2) { animation-delay: 0.2s; }
+      #kio-shell-loading span:nth-child(3) { animation-delay: 0.4s; }
+      #kio-shell-loading span:nth-child(4) { animation-delay: 0.6s; }
+      @keyframes kio-shell-bounce { 0%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-20px); } }
+    </style>
   </head>
   <body class="notranslate">
+    <script>
+      (function () {
+        var meta = document.querySelector('meta[name="prerender-route"]');
+        if (!meta) return;
+        var pathname = location.pathname.replace(/\/+$/, '') || '/';
+        if (meta.content !== pathname) document.documentElement.classList.add('kio-shell');
+      })();
+    </script>
+    <div id="kio-shell-loading" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <div id="kioschool-modal-root"></div>

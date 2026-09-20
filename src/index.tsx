@@ -13,6 +13,7 @@ import { SENTRY_CONFIG } from '@constants/sentry';
 import { isReportableError } from '@utils/sentryErrorFilter';
 import { initAnalytics } from '@utils/analytics';
 import { captureAcquisitionContext } from '@utils/acquisitionContext';
+import { APP_SHELL_CLASS } from '@constants/appShell';
 
 const environment = import.meta.env.VITE_ENVIRONMENT as SentryEnvironment;
 const gaId = import.meta.env.VITE_GA_ID;
@@ -51,7 +52,11 @@ Sentry.init({
 });
 export const SentryRoutes = Sentry.withSentryReactRouterV6Routing(Routes);
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+const rootElement = document.getElementById('root') as HTMLElement;
+// 다른 경로에 폴백으로 내려온 프리렌더 랜딩 DOM은 React 첫 커밋 전에 비워 레이아웃과 메모리에서 뺀다.
+if (document.documentElement.classList.contains(APP_SHELL_CLASS)) rootElement.replaceChildren();
+
+const root = ReactDOM.createRoot(rootElement);
 root.render(
   <Sentry.ErrorBoundary fallback={() => <SentryErrorFallback />}>
     <HelmetProvider>
