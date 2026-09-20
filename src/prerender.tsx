@@ -8,6 +8,7 @@ import type { PrerenderArguments, PrerenderResult } from 'vite-prerender-plugin'
 import Home from '@pages/user/home/Home';
 import Info from '@pages/user/info/Info';
 import { getMarketingHeadElements, getMarketingSeoByPathname } from '@constants/marketingSeo';
+import { PRERENDER_ROUTE_META_NAME } from '@constants/appShell';
 
 const EMOTION_CACHE_KEY = 'css';
 
@@ -126,6 +127,7 @@ export async function prerender({ url }: PrerenderArguments): Promise<PrerenderR
   );
 
   const headElements = getMarketingHeadElements(pathname);
+  headElements.add({ type: 'meta', props: { name: PRERENDER_ROUTE_META_NAME, content: pathname } });
   const cssRules = fakeDocument.styleSheets.flatMap((sheet) => sheet.cssRules);
   const insertedIds = Object.keys(cache.inserted);
   if (cssRules.length > 0) {
