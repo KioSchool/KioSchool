@@ -29,7 +29,7 @@ export interface AcquisitionSurveySummary {
 export interface AcquisitionSurveyResponse {
   id: number;
   userId: number;
-  userEmail: string;
+  userEmail: string | null;
   schoolName: string;
   channel: AcquisitionChannel | null;
   channelLabel: string | null;

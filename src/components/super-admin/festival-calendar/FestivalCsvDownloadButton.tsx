@@ -44,7 +44,7 @@ function FestivalCsvDownloadButton({ workspaceRanking, year, month }: FestivalCs
       workspace.universityName,
       workspace.workspaceName,
       workspace.ownerName,
-      workspace.ownerEmail,
+      workspace.ownerEmail ?? '',
       `${window.location.origin}${getAdminWorkspacePath(workspace.workspaceId)}`,
       workspace.festivalDays,
       workspace.totalOrders,

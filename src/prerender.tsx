@@ -8,6 +8,7 @@ import type { PrerenderArguments, PrerenderResult } from 'vite-prerender-plugin'
 import Home from '@pages/user/home/Home';
 import Info from '@pages/user/info/Info';
 import { getMarketingHeadElements, getMarketingSeoByPathname } from '@constants/marketingSeo';
+import { PRERENDERED_PATH_META_NAME } from '@constants/appShell';
 
 const EMOTION_CACHE_KEY = 'css';
 
@@ -126,6 +127,8 @@ export async function prerender({ url }: PrerenderArguments): Promise<PrerenderR
   );
 
   const headElements = getMarketingHeadElements(pathname);
+  // 이 문서가 SPA fallback 으로 다른 경로에 서빙됐는지 index.html 가드가 판별하는 근거다.
+  headElements.add({ type: 'meta', props: { name: PRERENDERED_PATH_META_NAME, content: pathname } });
   const cssRules = fakeDocument.styleSheets.flatMap((sheet) => sheet.cssRules);
   const insertedIds = Object.keys(cache.inserted);
   if (cssRules.length > 0) {
