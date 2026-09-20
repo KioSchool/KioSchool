@@ -40,6 +40,7 @@ import useServerHealth from '@hooks/useServerHealth';
 import useScrollToTop from '@hooks/useScrollToTop';
 import useSentryContext from '@hooks/common/useSentryContext';
 import useAnalytics from '@hooks/common/useAnalytics';
+import useAppShellReveal from '@hooks/common/useAppShellReveal';
 import ServerErrorFallback from '@components/common/fallback/ServerErrorFallback';
 import OrderWait from '@pages/user/order/OrderWait';
 import AdminTotalOrder from '@pages/admin/order/AdminTotalOrder';
@@ -53,6 +54,7 @@ import Contact from '@pages/user/contact/Contact';
 import PcOnlyLayout from '@components/common/layout/PcOnlyLayout';
 
 function App() {
+  useAppShellReveal();
   useSentryContext();
   useAnalytics();
   useNetworkStatusNotifier();
