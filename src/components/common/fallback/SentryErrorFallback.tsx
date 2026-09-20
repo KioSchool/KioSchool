@@ -1,6 +1,7 @@
 import { RiErrorWarningLine, RiHomeLine, RiRefreshLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import { USER_ROUTES } from '@constants/routes';
+import useAppShellReveal from '@hooks/common/useAppShellReveal';
 import {
   FallbackActionRow,
   FallbackContactLink,
@@ -18,6 +19,9 @@ import {
 } from './fallbackStyles';
 
 function SentryErrorFallback() {
+  // App이 렌더 중 죽으면 App의 리빌 훅이 실행되지 않아 스플래시가 이 화면을 덮는다.
+  useAppShellReveal();
+
   const handleReload = () => {
     window.location.reload();
   };

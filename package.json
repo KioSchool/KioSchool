@@ -57,6 +57,7 @@
     "start": "vite --host",
     "build": "tsc -b && vite build && node scripts/generate-seo-assets.mjs production",
     "build:dev": "tsc -b && vite build --mode dev && node scripts/generate-seo-assets.mjs dev",
+    "build:local": "tsc -b && vite build --mode development && node scripts/generate-seo-assets.mjs dev",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
