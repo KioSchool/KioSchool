@@ -34,28 +34,28 @@ export const adminNavData: SideNavCategory[] = [
         name: '전체 주문 조회',
         path: '/total-order',
       },
+      {
+        name: '주문 통계',
+        path: '/order/statistics',
+      },
     ],
   },
   {
     category: '상품',
     items: [
       {
-        name: '카테고리 관리',
-        path: '/products/categories',
-      },
-      {
         name: '상품 관리',
         path: '/products',
+      },
+      {
+        name: '카테고리 관리',
+        path: '/products/categories',
       },
     ],
   },
   {
-    category: '주점',
+    category: '설정',
     items: [
-      {
-        name: '주문 통계',
-        path: '/order/statistics',
-      },
       {
         name: '주점 정보 관리',
         path: '/edit',
