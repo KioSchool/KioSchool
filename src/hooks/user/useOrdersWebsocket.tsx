@@ -19,7 +19,10 @@ function playOrderCreateAudio() {
   audio.play().catch((error) => console.error('Audio play failed:', error));
 }
 
-function useOrdersWebsocket(workspaceId: string | undefined) {
+// onStompRejected: 서버가 연결/구독을 거부했을 때(버스트당 1회) 호출된다.
+// 거부 사유가 토큰 만료면 소켓만으로는 알 수 없고 5초마다 재시도만 반복하므로(9/19 실측: 만료 토큰 하나로
+// 6시간에 약 1만 건), 호출자가 HTTP 요청을 한 번 보내 기존 401 → 로그인 이동 흐름을 태우게 한다.
+function useOrdersWebsocket(workspaceId: string | undefined, onStompRejected?: () => void) {
   const setOrders = useSetAtom(adminOrdersAtom);
 
   // 첫 실패는 즉시 보고한다 — 구독 거부는 단 1회만 나도(실측) 그 화면은 재접속 전까지
@@ -27,6 +30,10 @@ function useOrdersWebsocket(workspaceId: string | undefined) {
   const lastFailureAt = useRef(0);
   const lastReportAt = useRef(0);
   const failureCount = useRef(0);
+
+  // 호출자가 매 렌더 새 함수를 넘겨도 소켓을 재연결하지 않도록 ref로 최신 값만 참조한다.
+  const onStompRejectedRef = useRef(onStompRejected);
+  onStompRejectedRef.current = onStompRejected;
 
   const addOrder = useCallback(
     (order: Order) => {
@@ -67,6 +74,7 @@ function useOrdersWebsocket(workspaceId: string | undefined) {
     const reportWsFailure = (phase: 'stomp' | 'transport', reason: string) => {
       const now = Date.now();
       const isNewBurst = now - lastFailureAt.current >= WS_FAILURE_BURST_RESET_MS;
+      if (phase === 'stomp' && isNewBurst) onStompRejectedRef.current?.();
       if (isNewBurst) {
         failureCount.current = 1;
       } else {
