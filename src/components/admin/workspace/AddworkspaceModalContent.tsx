@@ -13,12 +13,12 @@ const ModalContentContainer = styled.form`
   transform: translate(-50%, -50%);
   background-color: ${Color.WHITE};
   border-radius: 16px;
-  padding: 20px 0;
+  box-sizing: border-box;
+  padding: 56px 32px 40px;
   z-index: 1010;
-  height: 500px;
-  width: 700px;
-  gap: 140px;
-  flex-wrap: wrap;
+  width: 480px;
+  max-width: calc(100vw - 32px);
+  gap: 36px;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
@@ -38,7 +38,7 @@ const CloseButton = styled(RiCloseLine)`
 `;
 
 const Title = styled.div`
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
   line-height: 1.25;
   color: #464a4d;
@@ -46,7 +46,8 @@ const Title = styled.div`
 `;
 
 const UnderlineInput = styled.input`
-  width: 400px;
+  box-sizing: border-box;
+  width: 100%;
   border: none;
   border-bottom: 1px solid #e8eef2;
   padding: 10px 4px;

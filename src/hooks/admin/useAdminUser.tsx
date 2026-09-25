@@ -25,7 +25,7 @@ function useAdminUser() {
   };
 
   const fetchWorkspaces = () => {
-    adminApi
+    return adminApi
       .get<Workspace[]>('/workspaces')
       .then((res) => setWorkspaces(res.data))
       .catch((error) => console.error('Failed to fetch workspaces:', error));
