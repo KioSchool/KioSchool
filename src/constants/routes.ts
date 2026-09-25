@@ -1,3 +1,5 @@
+import { UserAccountFilter } from '@@types/index';
+
 export const USER_ROUTES = {
   HOME: '/',
   LOGIN: '/login',
@@ -42,7 +44,6 @@ export const SUPER_ADMIN_ROUTES = {
   BANK: '/super-admin/bank',
   DASHBOARD: '/super-admin/dashboard',
   ORDERS: '/super-admin/orders',
-  ACCOUNT_STATUS: '/super-admin/account-status',
   FESTIVAL_CALENDAR: '/super-admin/festival-calendar',
   CACHE: '/super-admin/cache',
   INQUIRIES: '/super-admin/inquiries',
@@ -58,6 +59,18 @@ export const TEST_ROUTES = {
 export const getAdminWorkspacePath = (workspaceId: string | number) => `/admin/workspace/${workspaceId}`;
 
 export const getAdminProductsPath = (workspaceId: string | number) => `/admin/workspace/${workspaceId}/products`;
+
+export function getSuperAdminWorkspacePath(query: { keyword: string }): string {
+  return `${SUPER_ADMIN_ROUTES.WORKSPACE}?name=${encodeURIComponent(query.keyword)}`;
+}
+
+export function getSuperAdminUserSearchPath(query: { keyword: string }): string {
+  return `${SUPER_ADMIN_ROUTES.USER}?name=${encodeURIComponent(query.keyword)}`;
+}
+
+export function getSuperAdminUserPath(query: { accountFilter: UserAccountFilter }): string {
+  return `${SUPER_ADMIN_ROUTES.USER}?account=${query.accountFilter}`;
+}
 
 export function getSuperAdminOrdersPath(query?: { workspaceId?: number }): string {
   if (!query?.workspaceId) return SUPER_ADMIN_ROUTES.ORDERS;

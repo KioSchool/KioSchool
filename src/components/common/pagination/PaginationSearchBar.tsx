@@ -41,7 +41,13 @@ const SearchBarContainer = styled.div`
   }
 `;
 
-function PaginationSearchBar() {
+const DEFAULT_PLACEHOLDER = '이름을 입력해주세요';
+
+interface PaginationSearchBarProps {
+  placeholder?: string;
+}
+
+function PaginationSearchBar({ placeholder = DEFAULT_PLACEHOLDER }: PaginationSearchBarProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -72,7 +78,7 @@ function PaginationSearchBar() {
       <Input
         ref={inputRef}
         type="text"
-        placeholder={`이름을 입력해주세요`}
+        placeholder={placeholder}
         onKeyDown={fetchContentsByName}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}

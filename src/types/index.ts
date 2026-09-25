@@ -409,10 +409,28 @@ export interface SuperAdminDashboard {
   insights: DashboardInsights;
 }
 
+export interface WorkspaceUserSummary {
+  id: number;
+  loginId: string;
+  name: string;
+  email: string | null;
+}
+
+export interface SuperAdminWorkspace {
+  id: number;
+  name: string;
+  owner: WorkspaceUserSummary;
+  isOnboarding: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface WorkspaceAdminDetail {
   id: number;
   name: string;
   owner: User;
+  ownerLoginId: string;
+  members: WorkspaceUserSummary[];
   description: string;
   notice: string;
   memo: string;
@@ -437,6 +455,25 @@ export interface SuperAdminOrder {
   orderNumber: number;
   createdAt: string;
   updatedAt: string;
+}
+
+export type UserAccountFilter = 'CONNECTED' | 'NOT_CONNECTED' | 'TOSS_NOT_CONNECTED';
+
+export interface SuperAdminUserWorkspace {
+  id: number;
+  name: string;
+  isOwner: boolean;
+}
+
+export interface SuperAdminUser {
+  id: number;
+  loginId: string;
+  name: string;
+  email: string | null;
+  role: UserRole;
+  account: Account | null;
+  workspaces: SuperAdminUserWorkspace[];
+  createdAt: string;
 }
 
 export interface AccountConnectionStatus {

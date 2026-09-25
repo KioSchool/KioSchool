@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import { SuperAdminDashboard } from '@@types/index';
+import { AccountConnectionStatus, SuperAdminDashboard } from '@@types/index';
 import { colFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import UserStatsSection from './UserStatsSection';
+import AccountStatsSection from './AccountStatsSection';
 import WorkspaceStatsSection from './WorkspaceStatsSection';
 import RevenueStatsSection from './RevenueStatsSection';
 import DailyChartSection from './DailyChartSection';
@@ -25,9 +26,10 @@ const Stack = styled.div`
 
 interface DashboardSectionsProps {
   data: SuperAdminDashboard;
+  account: AccountConnectionStatus | null;
 }
 
-function DashboardSections({ data }: DashboardSectionsProps) {
+function DashboardSections({ data, account }: DashboardSectionsProps) {
   const [chartMode, setChartMode] = useState<'revenue' | 'orders'>('revenue');
 
   return (
@@ -35,6 +37,7 @@ function DashboardSections({ data }: DashboardSectionsProps) {
       <DailyChartSection data={data.insights.dailyLast30Days} mode={chartMode} onModeChange={setChartMode} />
       <ActiveWorkspaceSection insights={data.insights} workspaces={data.workspaces} />
       <UserStatsSection users={data.users} />
+      {account && <AccountStatsSection account={account} />}
       <WorkspaceStatsSection workspaces={data.workspaces} />
       <RevenueStatsSection revenue={data.revenue} operatedWorkspaces={data.insights.funnel.hadFirstOrder} />
       <FunnelSection funnel={data.insights.funnel} />
