@@ -1,19 +1,20 @@
 import styled from '@emotion/styled';
 import { useAtom } from 'jotai';
 import { Location } from 'react-router-dom';
-import { Workspace, RIGHT_SIDEBAR_ACTION } from '@@types/index';
-import OnboardingBadge from './OnboardingBadge';
+import { SuperAdminWorkspace, RIGHT_SIDEBAR_ACTION } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { formatKoreanDate } from '@utils/formatNumber';
 import { externalSidebarAtom } from '@jotai/atoms';
 import { SUPER_ADMIN_ROUTES } from '@constants/routes';
+import OnboardingBadge from './OnboardingBadge';
 import WorkspaceDetailContent from './WorkspaceDetailContent';
 
 const Container = styled.div`
   width: 100%;
   cursor: pointer;
   padding: 12px 0;
+  border-bottom: 1px solid ${Color.LIGHT_GREY};
   ${rowFlex({ align: 'center', justify: 'space-between' })}
 
   &:hover .ws-name {
@@ -43,9 +44,17 @@ const Name = styled.div`
 const Sub = styled.div`
   font-size: 12px;
   color: ${Color.HEAVY_GREY};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
-function SuperAdminWorkspaceContent(workspace: Workspace) {
+interface SuperAdminWorkspaceContentProps {
+  workspace: SuperAdminWorkspace;
+  onChanged: () => void;
+}
+
+function SuperAdminWorkspaceContent({ workspace, onChanged }: SuperAdminWorkspaceContentProps) {
   const [externalSidebar, setExternalSidebar] = useAtom(externalSidebarAtom);
 
   const handleClick = () => {
@@ -58,7 +67,14 @@ function SuperAdminWorkspaceContent(workspace: Workspace) {
     setExternalSidebar({
       action: RIGHT_SIDEBAR_ACTION.OPEN,
       title: workspace.name,
-      content: <WorkspaceDetailContent workspace={workspace} onClose={() => setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE })} />,
+      content: (
+        <WorkspaceDetailContent
+          key={workspace.id}
+          workspace={workspace}
+          onClose={() => setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE })}
+          onChanged={onChanged}
+        />
+      ),
       location: { pathname: SUPER_ADMIN_ROUTES.WORKSPACE } as Location,
     });
   };
@@ -68,7 +84,7 @@ function SuperAdminWorkspaceContent(workspace: Workspace) {
       <Info>
         <Name className="ws-name">{workspace.name}</Name>
         <Sub>
-          {formatKoreanDate(workspace.createdAt)} | {workspace.owner.name}
+          {formatKoreanDate(workspace.createdAt)} | {workspace.owner.name} ({workspace.owner.loginId})
         </Sub>
       </Info>
       <RightInfo>

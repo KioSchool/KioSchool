@@ -4,13 +4,17 @@ import { match } from 'ts-pattern';
 import { useNavigate } from 'react-router-dom';
 import { RiExternalLinkLine } from '@remixicon/react';
 import useSuperAdminWorkspace from '@hooks/super-admin/useSuperAdminWorkspace';
-import { Workspace, WorkspaceAdminDetail } from '@@types/index';
+import { SuperAdminWorkspace, WorkspaceAdminDetail } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { formatKoreanDate } from '@utils/formatNumber';
 import { getAdminWorkspacePath, getSuperAdminOrdersPath } from '@constants/routes';
+import DetailSection from '@components/super-admin/detail/DetailSection';
 import OnboardingBadge from './OnboardingBadge';
 import WorkspaceRecentOrders from './WorkspaceRecentOrders';
+import WorkspaceOwnerSection from './WorkspaceOwnerSection';
+import WorkspaceMemberSection from './WorkspaceMemberSection';
+import WorkspaceForceDeleteSection from './WorkspaceForceDeleteSection';
 
 const Wrap = styled.div`
   width: 100%;
@@ -73,6 +77,19 @@ const StatValue = styled.div`
   color: ${Color.BLACK};
 `;
 
+const LoadedStack = styled.div`
+  width: 100%;
+  gap: 20px;
+  ${colFlex()}
+`;
+
+const MemoText = styled.div`
+  font-size: 13px;
+  color: ${Color.BLACK};
+  white-space: pre-wrap;
+  word-break: break-all;
+`;
+
 const StateText = styled.div`
   font-size: 12px;
   color: ${Color.HEAVY_GREY};
@@ -123,11 +140,12 @@ const SecondaryCta = styled.button`
 type DetailState = { kind: 'idle' } | { kind: 'loading' } | { kind: 'loaded'; detail: WorkspaceAdminDetail } | { kind: 'error' };
 
 interface WorkspaceDetailContentProps {
-  workspace: Workspace;
+  workspace: SuperAdminWorkspace;
   onClose: () => void;
+  onChanged: () => void;
 }
 
-function WorkspaceDetailContent({ workspace, onClose }: WorkspaceDetailContentProps) {
+function WorkspaceDetailContent({ workspace, onClose, onChanged }: WorkspaceDetailContentProps) {
   const [state, setState] = useState<DetailState>({ kind: 'idle' });
   const { fetchWorkspaceDetail } = useSuperAdminWorkspace();
   const navigate = useNavigate();
@@ -148,6 +166,16 @@ function WorkspaceDetailContent({ workspace, onClose }: WorkspaceDetailContentPr
     window.open(getAdminWorkspacePath(workspace.id), '_blank', 'noopener,noreferrer');
   };
 
+  const handleOwnerChanged = (detail: WorkspaceAdminDetail) => {
+    setState({ kind: 'loaded', detail });
+    onChanged();
+  };
+
+  const handleDeleted = () => {
+    onClose();
+    onChanged();
+  };
+
   const handleOpenWorkspaceOrders = () => {
     navigate(getSuperAdminOrdersPath({ workspaceId: workspace.id }));
     onClose();
@@ -158,9 +186,7 @@ function WorkspaceDetailContent({ workspace, onClose }: WorkspaceDetailContentPr
       <HeaderRow>
         <HeaderText>
           <TitleText>{workspace.name}</TitleText>
-          <SubText>
-            사장 {workspace.owner.name} · {formatKoreanDate(workspace.createdAt)} 가입
-          </SubText>
+          <SubText>{formatKoreanDate(workspace.createdAt)} 생성</SubText>
         </HeaderText>
         <OnboardingBadge done={!workspace.isOnboarding} />
       </HeaderRow>
@@ -170,23 +196,31 @@ function WorkspaceDetailContent({ workspace, onClose }: WorkspaceDetailContentPr
         .with({ kind: 'error' }, () => <StateText>현황 정보를 불러오지 못했습니다.</StateText>)
         .with({ kind: 'idle' }, () => null)
         .with({ kind: 'loaded' }, ({ detail }) => (
-          <div>
-            <SectionTitle>현황</SectionTitle>
-            <StatGrid>
-              <StatCell>
-                <StatLabel>멤버</StatLabel>
-                <StatValue>{detail.memberCount}명</StatValue>
-              </StatCell>
-              <StatCell>
-                <StatLabel>상품</StatLabel>
-                <StatValue>{detail.productCount}개</StatValue>
-              </StatCell>
-              <StatCell>
-                <StatLabel>테이블</StatLabel>
-                <StatValue>{detail.tableCount}개</StatValue>
-              </StatCell>
-            </StatGrid>
-          </div>
+          <LoadedStack>
+            <DetailSection title="현황">
+              <StatGrid>
+                <StatCell>
+                  <StatLabel>멤버</StatLabel>
+                  <StatValue>{detail.memberCount}명</StatValue>
+                </StatCell>
+                <StatCell>
+                  <StatLabel>상품</StatLabel>
+                  <StatValue>{detail.productCount}개</StatValue>
+                </StatCell>
+                <StatCell>
+                  <StatLabel>테이블</StatLabel>
+                  <StatValue>{detail.tableCount}개</StatValue>
+                </StatCell>
+              </StatGrid>
+            </DetailSection>
+            <WorkspaceOwnerSection detail={detail} onNavigate={onClose} />
+            {detail.memo && (
+              <DetailSection title="메모">
+                <MemoText>{detail.memo}</MemoText>
+              </DetailSection>
+            )}
+            <WorkspaceMemberSection detail={detail} onOwnerChanged={handleOwnerChanged} />
+          </LoadedStack>
         ))
         .exhaustive()}
 
@@ -200,6 +234,8 @@ function WorkspaceDetailContent({ workspace, onClose }: WorkspaceDetailContentPr
         </PrimaryCta>
         <SecondaryCta onClick={handleOpenWorkspaceOrders}>이 워크스페이스의 주문만 보기</SecondaryCta>
       </Footer>
+
+      <WorkspaceForceDeleteSection workspaceId={workspace.id} workspaceName={workspace.name} onDeleted={handleDeleted} />
     </Wrap>
   );
 }
