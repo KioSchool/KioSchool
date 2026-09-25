@@ -91,7 +91,7 @@ function SuperAdminWorkspace() {
       <SuperAdminPageContainer>
         <PageHeader title="워크스페이스 관리" description="서비스에 등록된 모든 주점(워크스페이스)을 조회하고 점검합니다." />
         <SuperAdminFilterTabs label="수정 기준" tabs={FILTER_TABS} value={period} onChange={handlePeriodChange} />
-        <PaginationSearchBar placeholder="주점 이름, 사장 이름·이메일·아이디로 검색" />
+        <PaginationSearchBar placeholder="주점 이름, 학교, 사장 이름·이메일·아이디로 검색" />
         <CountText>총 {formatNumber(workspaces.totalElements)}곳</CountText>
         {!isLoading && workspaces.empty && <EmptyText>조건에 맞는 워크스페이스가 없습니다.</EmptyText>}
         <List>

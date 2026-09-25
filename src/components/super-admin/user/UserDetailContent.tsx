@@ -86,6 +86,7 @@ function UserDetailContent({ user, onClose }: UserDetailContentProps) {
 
       <DetailSection title="기본 정보">
         <DetailInfoRow label="아이디">{user.loginId}</DetailInfoRow>
+        <DetailInfoRow label="학교">{user.schoolName}</DetailInfoRow>
         <DetailInfoRow label="이메일">{user.email ?? NO_VALUE}</DetailInfoRow>
         <DetailInfoRow label="가입일">{formatKoreanDate(user.createdAt)}</DetailInfoRow>
         {user.role === UserRole.SUPER_ADMIN && <DetailInfoRow label="권한">슈퍼어드민</DetailInfoRow>}

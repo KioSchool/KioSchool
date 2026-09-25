@@ -84,7 +84,7 @@ function SuperAdminWorkspaceContent({ workspace, onChanged }: SuperAdminWorkspac
       <Info>
         <Name className="ws-name">{workspace.name}</Name>
         <Sub>
-          {formatKoreanDate(workspace.createdAt)} | {workspace.owner.name} ({workspace.owner.loginId})
+          {formatKoreanDate(workspace.createdAt)} | {workspace.schoolName} | {workspace.owner.name} ({workspace.owner.loginId})
         </Sub>
       </Info>
       <RightInfo>

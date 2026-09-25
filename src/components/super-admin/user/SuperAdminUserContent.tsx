@@ -78,7 +78,7 @@ function SuperAdminUserContent({ user }: SuperAdminUserContentProps) {
       <Info>
         <Name className="user-name">{user.name}</Name>
         <Sub>
-          {user.loginId} · {user.email ?? NO_EMAIL_LABEL}
+          {user.loginId} · {user.schoolName} · {user.email ?? NO_EMAIL_LABEL}
         </Sub>
         <WorkspaceText>{workspaceNames || NO_WORKSPACE_LABEL}</WorkspaceText>
       </Info>

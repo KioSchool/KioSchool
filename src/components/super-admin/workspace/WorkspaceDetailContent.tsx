@@ -180,7 +180,9 @@ function WorkspaceDetailContent({ workspace, onClose, onChanged }: WorkspaceDeta
       <HeaderRow>
         <HeaderText>
           <TitleText>{workspace.name}</TitleText>
-          <SubText>{formatKoreanDate(workspace.createdAt)} 생성</SubText>
+          <SubText>
+            {workspace.schoolName} · {formatKoreanDate(workspace.createdAt)} 생성
+          </SubText>
         </HeaderText>
         <OnboardingBadge done={!workspace.isOnboarding} />
       </HeaderRow>
@@ -207,7 +209,7 @@ function WorkspaceDetailContent({ workspace, onClose, onChanged }: WorkspaceDeta
                 </StatCell>
               </StatGrid>
             </DetailSection>
-            <WorkspaceOwnerSection detail={detail} onNavigate={onClose} />
+            <WorkspaceOwnerSection detail={detail} schoolName={workspace.schoolName} onNavigate={onClose} />
             {detail.memo && (
               <DetailSection title="메모">
                 <MemoText>{detail.memo}</MemoText>

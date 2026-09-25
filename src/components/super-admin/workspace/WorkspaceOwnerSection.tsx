@@ -29,10 +29,11 @@ const NO_VALUE = '-';
 
 interface WorkspaceOwnerSectionProps {
   detail: WorkspaceAdminDetail;
+  schoolName: string;
   onNavigate: () => void;
 }
 
-function WorkspaceOwnerSection({ detail, onNavigate }: WorkspaceOwnerSectionProps) {
+function WorkspaceOwnerSection({ detail, schoolName, onNavigate }: WorkspaceOwnerSectionProps) {
   const navigate = useNavigate();
   const { owner } = detail;
 
@@ -45,6 +46,7 @@ function WorkspaceOwnerSection({ detail, onNavigate }: WorkspaceOwnerSectionProp
     <DetailSection title="사장">
       <DetailInfoRow label="이름">{owner.name}</DetailInfoRow>
       <DetailInfoRow label="아이디">{detail.ownerLoginId}</DetailInfoRow>
+      <DetailInfoRow label="학교">{schoolName}</DetailInfoRow>
       <DetailInfoRow label="이메일">{owner.email ?? NO_VALUE}</DetailInfoRow>
       <DetailInfoRow label="계좌">
         <UserAccountBadge state={getUserAccountState(owner)} />

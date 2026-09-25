@@ -81,7 +81,7 @@ function SuperAdminUser() {
       <SuperAdminPageContainer>
         <PageHeader title="사용자 관리" description="가입한 사용자를 찾고 계좌 연동 상태와 소속 주점을 확인합니다." />
         <SuperAdminFilterTabs label="계좌" tabs={ACCOUNT_TABS} value={accountFilter ?? ALL_FILTER} onChange={handleAccountFilterChange} />
-        <PaginationSearchBar placeholder="이름·이메일·아이디로 검색" />
+        <PaginationSearchBar placeholder="이름·학교·이메일·아이디로 검색" />
         <CountText>총 {formatNumber(users.totalElements)}명</CountText>
         {!isLoading && users.empty && <EmptyText>조건에 맞는 사용자가 없습니다.</EmptyText>}
         <List>

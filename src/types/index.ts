@@ -420,6 +420,7 @@ export interface SuperAdminWorkspace {
   id: number;
   name: string;
   owner: WorkspaceUserSummary;
+  schoolName: string;
   isOnboarding: boolean;
   createdAt: string;
   updatedAt: string;
@@ -469,6 +470,7 @@ export interface SuperAdminUser {
   loginId: string;
   name: string;
   email: string | null;
+  schoolName: string;
   role: UserRole;
   account: Account | null;
   workspaces: SuperAdminUserWorkspace[];
