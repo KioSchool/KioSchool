@@ -13,7 +13,6 @@ import DetailSection from '@components/super-admin/detail/DetailSection';
 import OnboardingBadge from './OnboardingBadge';
 import WorkspaceRecentOrders from './WorkspaceRecentOrders';
 import WorkspaceOwnerSection from './WorkspaceOwnerSection';
-import WorkspaceMemberSection from './WorkspaceMemberSection';
 import WorkspaceForceDeleteSection from './WorkspaceForceDeleteSection';
 
 const Wrap = styled.div`
@@ -166,11 +165,6 @@ function WorkspaceDetailContent({ workspace, onClose, onChanged }: WorkspaceDeta
     window.open(getAdminWorkspacePath(workspace.id), '_blank', 'noopener,noreferrer');
   };
 
-  const handleOwnerChanged = (detail: WorkspaceAdminDetail) => {
-    setState({ kind: 'loaded', detail });
-    onChanged();
-  };
-
   const handleDeleted = () => {
     onClose();
     onChanged();
@@ -219,7 +213,6 @@ function WorkspaceDetailContent({ workspace, onClose, onChanged }: WorkspaceDeta
                 <MemoText>{detail.memo}</MemoText>
               </DetailSection>
             )}
-            <WorkspaceMemberSection detail={detail} onOwnerChanged={handleOwnerChanged} />
           </LoadedStack>
         ))
         .exhaustive()}

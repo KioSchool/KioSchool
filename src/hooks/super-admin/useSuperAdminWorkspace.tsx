@@ -47,14 +47,7 @@ function useSuperAdminWorkspace() {
     [superAdminApi],
   );
 
-  const changeWorkspaceOwner = useCallback(
-    (workspaceId: number, newOwnerLoginId: string): Promise<WorkspaceAdminDetail> => {
-      return superAdminApi.put<WorkspaceAdminDetail>('/workspace/owner', { workspaceId, newOwnerLoginId }).then((res) => res.data);
-    },
-    [superAdminApi],
-  );
-
-  return { fetchAllWorkspaces, fetchWorkspaceDetail, forceDeleteWorkspace, changeWorkspaceOwner };
+  return { fetchAllWorkspaces, fetchWorkspaceDetail, forceDeleteWorkspace };
 }
 
 export default useSuperAdminWorkspace;

@@ -430,7 +430,6 @@ export interface WorkspaceAdminDetail {
   name: string;
   owner: User;
   ownerLoginId: string;
-  members: WorkspaceUserSummary[];
   description: string;
   notice: string;
   memo: string;
