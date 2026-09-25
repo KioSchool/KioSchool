@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Location, useSearchParams } from 'react-router-dom';
 import { RiCloseLine } from '@remixicon/react';
 import { match } from 'ts-pattern';
 import styled from '@emotion/styled';
 import AppContainer from '@components/common/container/AppContainer';
 import PageHeader from '@components/common/page/PageHeader';
+import RightSidebarModal from '@components/common/modal/RightSidebarModal';
 import Pagination from '@components/common/pagination/Pagination';
 import SuperAdminPageContainer from '@components/super-admin/SuperAdminPageContainer';
 import SurveyChannelFilter from '@components/super-admin/acquisition-survey/SurveyChannelFilter';
@@ -21,6 +22,7 @@ import { defaultPaginationValue } from '@@types/defaultValues';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
+import { SUPER_ADMIN_ROUTES } from '@constants/routes';
 import { ACQUISITION_CHANNEL_ORDER, AcquisitionChannel } from '@utils/acquisitionChannel';
 
 const PAGE_SIZE = 20;
@@ -174,6 +176,7 @@ function SuperAdminAcquisitionSurvey() {
           <Pagination totalPageCount={responses.totalPages} paginateFunction={handlePageChange} />
         </ResponsesSection>
       </SuperAdminPageContainer>
+      <RightSidebarModal useExternalControl={{ location: { pathname: SUPER_ADMIN_ROUTES.ACQUISITION_SURVEY } as Location }} />
     </AppContainer>
   );
 }
