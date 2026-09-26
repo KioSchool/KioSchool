@@ -127,7 +127,7 @@ function getHeaderInfo(pathname: string, workspaceName: string, userName: string
       (currentPathname) => currentPathname.startsWith('/super-admin'),
       () => ({ title: '슈퍼 어드민', label: getPageTitle(pathname) }),
     )
-    .with('/admin', () => ({ title: '키오스쿨', label: `${userName}님 환영합니다.` }))
+    .with('/admin', () => ({ title: '내 주점', label: `${userName}님 환영합니다.` }))
     .otherwise(() => ({ title: workspaceName, label: getPageTitle(pathname) }));
 }
 

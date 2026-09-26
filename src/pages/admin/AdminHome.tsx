@@ -5,6 +5,7 @@ import AppContainer from '@components/common/container/AppContainer';
 import AddWorkspace from '@components/common/workspace/AddWorkspace';
 import WorkspaceContent from '@components/admin/workspace/WorkspaceContent';
 import HomeOnboarding from '@components/admin/home/HomeOnboarding';
+import AdminHomeGuide from '@components/admin/home/AdminHomeGuide';
 import AcquisitionSurvey from '@components/admin/acquisition/AcquisitionSurvey';
 import AppPopup from '@components/common/popup/AppPopup';
 import { POPUP_CLOSE_MODE, PopupData } from '@constants/data/popupData';
@@ -16,7 +17,7 @@ import styled from '@emotion/styled';
 import OrderQRNoticePopupContent from '@components/admin/home/OrderQRNoticePopupContent';
 
 const Container = styled.div`
-  width: 95%;
+  width: 100%;
   ${colFlex({ align: 'center' })}
 `;
 
@@ -52,11 +53,13 @@ function AdminHome() {
   const user = useAtomValue(adminUserAtom);
   const acquisitionSurvey = useAtomValue(adminAcquisitionSurveyAtom);
   const [isAdminUserLoading, setIsAdminUserLoading] = useState(true);
-  const addWorkspaceNumber = 3 - workspaces.length;
+  const [isWorkspacesLoading, setIsWorkspacesLoading] = useState(true);
   const isAccountRegistered = !!user.account?.accountNumber;
 
   useEffect(() => {
-    fetchWorkspaces();
+    fetchWorkspaces().finally(() => {
+      setIsWorkspacesLoading(false);
+    });
     fetchAdminUser().finally(() => {
       setIsAdminUserLoading(false);
     });
@@ -76,6 +79,8 @@ function AdminHome() {
   const isSurveyPending = !!user.id && !isSurveyResolved;
   const shouldAskSurvey = !!user.id && isSurveyResolved && !acquisitionSurvey.isAnswered;
 
+  const isWorkspaceListVisible = !isAdminUserLoading && !isSurveyPending && !shouldAskSurvey && isAccountRegistered;
+
   const getPageContent = () => {
     if (isAdminUserLoading || isSurveyPending) {
       return <LoadingContainer>계정 정보를 불러오는 중입니다.</LoadingContainer>;
@@ -85,13 +90,17 @@ function AdminHome() {
 
     if (!isAccountRegistered) return <HomeOnboarding />;
 
+    // 캐시된 목록이 있으면 재조회 중에도 그대로 보여준다. 비어 있을 때만 로딩 문구로 추가 카드 깜빡임을 막는다
+    if (isWorkspacesLoading && workspaces.length === 0) {
+      return <LoadingContainer>주점 목록을 불러오는 중입니다.</LoadingContainer>;
+    }
+
     return (
       <Container>
         <WorkspaceContent workspaces={workspaces}>
-          {Array.from({ length: addWorkspaceNumber }).map((_, i) => (
-            <AddWorkspace key={i} workspaces={workspaces} />
-          ))}
+          <AddWorkspace workspaces={workspaces} />
         </WorkspaceContent>
+        <AdminHomeGuide />
         <AppFaqButton />
       </Container>
     );
@@ -100,7 +109,7 @@ function AdminHome() {
   const pageContent = getPageContent();
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} customGap={'30px'}>
+    <AppContainer useFlex={colFlex({ justify: isWorkspaceListVisible ? 'flex-start' : 'center', align: 'center' })} customGap={'30px'}>
       <>
         {pageContent}
         <AppPopup popupDatas={ADMIN_HOME_POPUP_DATAS} />
