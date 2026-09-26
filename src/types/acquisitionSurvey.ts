@@ -1,4 +1,5 @@
 import { AcquisitionChannel } from '@utils/acquisitionChannel';
+import { SuperAdminUser } from '@@types/index';
 
 export interface AcquisitionChannelStat {
   channel: AcquisitionChannel;
@@ -36,4 +37,5 @@ export interface AcquisitionSurveyResponse {
   channelEtc: string | null;
   context: string | null;
   answeredAt: string | null;
+  user: SuperAdminUser;
 }

@@ -26,7 +26,6 @@ import UserEmailDomain from '@pages/user/UserEmailDomain';
 import AdminWorkspaceEdit from '@pages/admin/AdminWorkspaceEdit';
 import SuperAdminBank from '@pages/super-admin/SuperAdminBank';
 import SuperAdminDashboard from '@pages/super-admin/SuperAdminDashboard';
-import SuperAdminAccountStatus from '@pages/super-admin/SuperAdminAccountStatus';
 import SuperAdminAcquisitionSurvey from '@pages/super-admin/SuperAdminAcquisitionSurvey';
 import SuperAdminDonationClicks from '@pages/super-admin/SuperAdminDonationClicks';
 import SuperAdminOrders from '@pages/super-admin/SuperAdminOrders';
@@ -96,7 +95,6 @@ function App() {
         <Route path={SUPER_ADMIN_ROUTES.EMAIL} element={<SuperAdminEmailDomainList />} />
         <Route path={SUPER_ADMIN_ROUTES.BANK} element={<SuperAdminBank />} />
         <Route path={SUPER_ADMIN_ROUTES.DASHBOARD} element={<SuperAdminDashboard />} />
-        <Route path={SUPER_ADMIN_ROUTES.ACCOUNT_STATUS} element={<SuperAdminAccountStatus />} />
         <Route path={SUPER_ADMIN_ROUTES.ORDERS} element={<SuperAdminOrders />} />
         <Route path={SUPER_ADMIN_ROUTES.FESTIVAL_CALENDAR} element={<SuperAdminFestivalCalendar />} />
         <Route path={SUPER_ADMIN_ROUTES.CACHE} element={<SuperAdminCache />} />

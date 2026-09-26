@@ -1,31 +1,30 @@
-import { PaginationResponse, User } from '@@types/index';
+import { useCallback } from 'react';
+import { PaginationResponse, SuperAdminUser, UserAccountFilter } from '@@types/index';
 import { defaultPaginationValue } from '@@types/defaultValues';
 import useApi from '@hooks/useApi';
 
-interface FetchAllUsersParamsType {
+interface FetchAllUsersParams {
   page: number;
   size: number;
-  name?: string;
+  keyword?: string;
+  accountFilter?: UserAccountFilter;
 }
 
 function useSuperAdminUser() {
   const { superAdminApi } = useApi();
 
-  const fetchAllUsers = (page: number, size: number, name?: string) => {
-    const params: FetchAllUsersParamsType = { page, size, name };
-
-    const response = superAdminApi
-      .get<PaginationResponse<User>>('/users', { params })
-      .then((res) => {
-        return res.data;
-      })
-      .catch((error) => {
-        console.error(error);
-        return defaultPaginationValue;
-      });
-
-    return response;
-  };
+  const fetchAllUsers = useCallback(
+    (params: FetchAllUsersParams): Promise<PaginationResponse<SuperAdminUser>> => {
+      return superAdminApi
+        .get<PaginationResponse<SuperAdminUser>>('/users', { params })
+        .then((res) => res.data)
+        .catch((error) => {
+          console.error(error);
+          return defaultPaginationValue;
+        });
+    },
+    [superAdminApi],
+  );
 
   return { fetchAllUsers };
 }
