@@ -7,8 +7,20 @@ import { rowFlex } from '@styles/flexStyles';
 import { ACQUISITION_CONTEXT_KEYS, ACQUISITION_CONTEXT_KEY_LABEL, parseAcquisitionContext } from '@utils/acquisitionContext';
 import { exportToCsv } from '@utils/csv';
 import { formatNullableKoreanDateTime } from '@utils/formatNumber';
+import { USER_ACCOUNT_STATE_LABEL, getUserAccountState } from '@utils/userAccountFilter';
 
-const CSV_HEADERS = ['응답일시', '이메일', '학교', '유입 경로', '기타 직접 입력', ...ACQUISITION_CONTEXT_KEYS.map((key) => ACQUISITION_CONTEXT_KEY_LABEL[key])];
+const CSV_HEADERS = [
+  '응답일시',
+  '이름',
+  '아이디',
+  '이메일',
+  '학교',
+  '계좌 상태',
+  '소속 주점',
+  '유입 경로',
+  '기타 직접 입력',
+  ...ACQUISITION_CONTEXT_KEYS.map((key) => ACQUISITION_CONTEXT_KEY_LABEL[key]),
+];
 const CSV_FILE_NAME = '유입경로_설문응답.csv';
 const SKIPPED_LABEL = '건너뜀';
 
@@ -52,8 +64,12 @@ function SurveyCsvDownloadButton({ disabled, fetchAllResponses }: SurveyCsvDownl
       const context = parseAcquisitionContext(response.context);
       return [
         formatNullableKoreanDateTime(response.answeredAt),
+        response.user.name,
+        response.user.loginId,
         response.userEmail ?? '',
         response.schoolName,
+        USER_ACCOUNT_STATE_LABEL[getUserAccountState(response.user)],
+        response.user.workspaces.map((workspace) => workspace.name).join(', '),
         response.channelLabel ?? SKIPPED_LABEL,
         response.channelEtc ?? '',
         ...ACQUISITION_CONTEXT_KEYS.map((key) => context[key] ?? ''),

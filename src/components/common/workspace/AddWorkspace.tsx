@@ -1,21 +1,35 @@
 import styled from '@emotion/styled';
 import { Workspace } from '@@types/index';
-import { rowFlex } from '@styles/flexStyles';
 import AddWorkspaceModalButton from '@components/common/workspace/modal/AddWorkspaceModalButton';
-import { Color } from '@resources/colors';
+import { Color, OnboardingColor } from '@resources/colors';
 
-const MAX_WORKSPACE_NUMBER = 3;
+export const MAX_WORKSPACE_NUMBER = 3;
 
 const AddWorkspaceContainer = styled.div`
-  width: calc((100% - 40px) / 3);
-  max-width: 380px;
+  box-sizing: border-box;
   min-width: 0;
-  height: 350px;
-  border: 1px solid ${Color.BORDER_GREY};
+  min-height: 320px;
+  border: 1.5px dashed ${Color.HEAVY_GREY};
   border-radius: 16px;
-  background: ${Color.WHITE};
-  box-shadow: 0px 4px 20px rgba(92, 92, 92, 0.25);
-  ${rowFlex({ justify: 'center', align: 'center' })};
+  background: ${Color.LIGHT_GREY};
+  overflow: hidden;
+  transition: border-color 0.15s ease, background 0.15s ease;
+
+  &:hover {
+    border-color: ${Color.KIO_ORANGE};
+    background: ${Color.KIO_ORANGE_FAINT};
+  }
+`;
+
+const Label = styled.div`
+  color: ${Color.TEXT_STRONG};
+  font-size: 17px;
+  font-weight: 700;
+`;
+
+const Caption = styled.div`
+  color: ${OnboardingColor.SUBTLE_TEXT};
+  font-size: 13px;
 `;
 
 interface AddWorkspaceProps {
@@ -27,7 +41,12 @@ function AddWorkspace({ workspaces }: AddWorkspaceProps) {
 
   return (
     <AddWorkspaceContainer className={'add-workspace-container'}>
-      <AddWorkspaceModalButton />
+      <AddWorkspaceModalButton>
+        <Label>주점 추가하기</Label>
+        <Caption>
+          최대 {MAX_WORKSPACE_NUMBER}개까지 만들 수 있어요 ({workspaces.length}/{MAX_WORKSPACE_NUMBER})
+        </Caption>
+      </AddWorkspaceModalButton>
     </AddWorkspaceContainer>
   );
 }
