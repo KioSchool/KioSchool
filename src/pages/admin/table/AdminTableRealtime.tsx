@@ -9,6 +9,7 @@ import TableLayoutEditor from '@components/admin/order/table-manage/layout/edit/
 import TableLayoutPromoPopupContent, { TABLE_LAYOUT_PROMO_POPUP_ID } from '@components/admin/order/table-manage/layout/TableLayoutPromoPopupContent';
 import TableDetailPanel from '@components/admin/order/table-manage/detail/TableDetailPanel';
 import TableManageTopBar from '@components/admin/order/table-manage/TableManageTopBar';
+import TableSessionGuideBanner from '@components/admin/order/table-manage/TableSessionGuideBanner';
 import TableSettingsSidebar from '@components/admin/order/table-manage/setting/TableSettingsSidebar';
 import AppContainer from '@components/common/container/AppContainer';
 import RightSidebarModal from '@components/common/modal/RightSidebarModal';
@@ -288,6 +289,7 @@ function AdminTableRealtime() {
     <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })}>
       <>
         <OnboardingStepHint step={ONBOARDING_STEP.TABLES} width="1000px" />
+        <TableSessionGuideBanner />
         <TableManageTopBar
           showFilters={!isEditing}
           highlightSettings={needsTablesOnboarding}

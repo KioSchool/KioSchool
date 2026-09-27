@@ -19,24 +19,38 @@ const Icon = styled(RiArmchairLine)`
   color: ${Color.HEAVY_GREY};
 `;
 
-const Message = styled.p`
+const TextColumn = styled.div`
+  gap: 4px;
+  text-align: center;
+  word-break: keep-all;
+  text-wrap: balance;
+  ${colFlex({ align: 'center' })};
+`;
+
+const Title = styled.p`
   margin: 0;
   font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: ${Color.TEXT_STRONG};
+`;
+
+const Description = styled.p`
+  margin: 0;
+  font-size: 13px;
   font-weight: 500;
-  line-height: 1.6;
+  line-height: 1.5;
   color: ${Color.GREY};
-  text-align: center;
 `;
 
 function TableInactivePanel() {
   return (
     <Container>
       <Icon />
-      <Message>
-        아직 사용을 시작하지 않은 테이블입니다.
-        <br />
-        손님이 앉으면 사용을 시작하세요.
-      </Message>
+      <TextColumn>
+        <Title>아직 주문을 받을 수 없는 테이블입니다</Title>
+        <Description>손님이 앉으면 사용을 시작하세요.</Description>
+      </TextColumn>
     </Container>
   );
 }
