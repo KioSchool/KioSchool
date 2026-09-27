@@ -6,8 +6,6 @@ import useWorkspace from '@hooks/user/useWorkspace';
 import { Product, ProductStatus } from '@@types/index';
 import _ from 'lodash';
 import OrderButton from '@components/user/order/OrderButton';
-import OrderUnavailableNotice from '@components/user/order/OrderUnavailableNotice';
-import useOrderAvailability from '@hooks/user/useOrderAvailability';
 import useProduct from '@hooks/user/useProduct';
 import { colFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
@@ -69,10 +67,8 @@ function Order() {
 
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
-  const tableNo = searchParams.get('tableNo');
   const isPreview = searchParams.get('preview') === 'true';
 
-  const { isOrderBlocked } = useOrderAvailability({ workspaceId, tableNo, isEnabled: !isPreview });
   const { fetchWorkspace } = useWorkspace();
   const { fetchCategories, fetchProducts } = useProduct(workspaceId);
   const navigate = useNavigate();
@@ -130,24 +126,20 @@ function Order() {
 
       <OrderProductContent />
 
-      {isOrderBlocked ? (
-        <OrderUnavailableNotice />
-      ) : (
-        <OrderButton
-          showButton={orderBasket.length > 0}
-          buttonLabel={`${totalAmount.toLocaleString()}원 장바구니`}
-          onClick={() => {
-            if (isPreview) {
-              alert('미리보기 모드에서는 주문이 불가능합니다.');
-              return;
-            }
-            navigate({
-              pathname: '/order-basket',
-              search: createSearchParams(searchParams).toString(),
-            });
-          }}
-        />
-      )}
+      <OrderButton
+        showButton={orderBasket.length > 0}
+        buttonLabel={`${totalAmount.toLocaleString()}원 장바구니`}
+        onClick={() => {
+          if (isPreview) {
+            alert('미리보기 모드에서는 주문이 불가능합니다.');
+            return;
+          }
+          navigate({
+            pathname: '/order-basket',
+            search: createSearchParams(searchParams).toString(),
+          });
+        }}
+      />
     </Container>
   );
 }
