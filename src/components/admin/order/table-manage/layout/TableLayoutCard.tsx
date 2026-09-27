@@ -17,7 +17,7 @@ const DIMMED_OPACITY = 0.28;
 const CARD_PADDING_Y_PX = 8;
 const CARD_PADDING_X_PX = 6;
 const QUICK_START_BUTTON_HEIGHT_PX = 22;
-const QUICK_START_TITLE = '사용을 시작해야 이 테이블에서 주문을 받을 수 있습니다';
+const QUICK_START_TITLE = '‘사용 시작’을 눌러야 이 테이블에서 주문을 받을 수 있습니다';
 
 interface StatusStyle {
   background: string;
@@ -220,6 +220,7 @@ function TableLayoutCard({
   const status = getTableStatus(table);
   const ringColors = getRingColors(status);
   const hasQuickStart = status === TABLE_STATUS.EMPTY && Boolean(onQuickStart) && !showHandle && !isDimmed;
+  const quickStartLabel = isStarting ? '시작 중' : '사용 시작';
 
   const handleClick = () => onSelect?.(table);
 
@@ -254,7 +255,7 @@ function TableLayoutCard({
       </Bottom>
       {hasQuickStart && (
         <QuickStartButton type="button" data-role="quick-start" isStarting={isStarting} disabled={isStarting} onClick={handleQuickStart}>
-          {isStarting ? '시작 중' : '사용 시작'}
+          {quickStartLabel}
         </QuickStartButton>
       )}
     </Container>

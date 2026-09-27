@@ -155,6 +155,7 @@ function TableListItem({ table, orderStats, isStarting = false, onQuickStart }: 
   const session = table.orderSession;
   const isEmpty = status === TABLE_STATUS.EMPTY;
   const showQuickStart = isEmpty && Boolean(onQuickStart);
+  const quickStartLabel = isStarting ? '시작 중' : '사용 시작';
 
   const handleQuickStart = (event: React.MouseEvent<HTMLButtonElement>) => {
     // 행 선택과 분리한다. 다른 테이블 상세를 보던 중에 시작만 눌러도 보던 화면이 유지돼야 한다.
@@ -185,7 +186,7 @@ function TableListItem({ table, orderStats, isStarting = false, onQuickStart }: 
       <BadgeCell>
         {showQuickStart ? (
           <QuickStartButton type="button" onClick={handleQuickStart} disabled={isStarting}>
-            {isStarting ? '시작 중' : '사용 시작'}
+            {quickStartLabel}
           </QuickStartButton>
         ) : (
           <StatusBadge status={status} />

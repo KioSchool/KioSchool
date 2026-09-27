@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import useAdminTable from '@hooks/admin/useAdminTable';
+import useAdminTable from './useAdminTable';
 import { GA_EVENT, TABLE_SESSION_ACTION } from '@constants/analytics';
 import { TABLE_VIEW, TableView } from '@jotai/admin/atoms';
 import { trackEvent } from '@utils/analytics';
