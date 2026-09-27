@@ -73,7 +73,7 @@ function TableUsageSummary({ workspaceId }: TableUsageSummaryProps) {
     if (!workspaceId) return undefined;
 
     const fetchTables = () => {
-      fetchWorkspaceTables(workspaceId).catch(() => {});
+      fetchWorkspaceTables(workspaceId, { skipGlobalLoading: true }).catch(() => {});
     };
 
     fetchTables();
