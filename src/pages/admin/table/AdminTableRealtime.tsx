@@ -9,6 +9,7 @@ import TableLayoutEditor from '@components/admin/order/table-manage/layout/edit/
 import TableLayoutPromoPopupContent, { TABLE_LAYOUT_PROMO_POPUP_ID } from '@components/admin/order/table-manage/layout/TableLayoutPromoPopupContent';
 import TableDetailPanel from '@components/admin/order/table-manage/detail/TableDetailPanel';
 import TableManageTopBar from '@components/admin/order/table-manage/TableManageTopBar';
+import TableSessionGuideBanner from '@components/admin/order/table-manage/TableSessionGuideBanner';
 import TableSettingsSidebar from '@components/admin/order/table-manage/setting/TableSettingsSidebar';
 import AppContainer from '@components/common/container/AppContainer';
 import RightSidebarModal from '@components/common/modal/RightSidebarModal';
@@ -16,6 +17,7 @@ import AppPopup from '@components/common/popup/AppPopup';
 import OnboardingStepHint from '@components/admin/workspace/onboarding/OnboardingStepHint';
 import { ONBOARDING_MIN_TABLE_COUNT, ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardingData';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
+import useQuickStartTableSession from '@hooks/admin/useQuickStartTableSession';
 import useTableFilter, { TABLE_FILTER } from '@hooks/admin/useTableFilter';
 import useTableLayoutSave from '@hooks/admin/useTableLayoutSave';
 import useTableOrders from '@hooks/admin/useTableOrders';
@@ -117,6 +119,8 @@ function AdminTableRealtime() {
   const fetchTables = () => {
     fetchWorkspaceTables(workspaceId);
   };
+
+  const { quickStartSession, startingTableNumber } = useQuickStartTableSession({ workspaceId, viewMode, refetchTables: fetchTables });
 
   const handleManualRefresh = () => {
     fetchTables();
@@ -240,7 +244,16 @@ function AdminTableRealtime() {
 
   // 편집도 좌측 영역만 인라인 교체한다 — 우측 상세 구역까지 갈아엎으면 별도 페이지로 이동한 느낌을 준다
   const renderMainColumn = () => {
-    if (viewMode !== TABLE_VIEW.LAYOUT) return <AdminTableList tables={filteredTables} orderStatsBySessionId={statsBySessionId} />;
+    if (viewMode !== TABLE_VIEW.LAYOUT) {
+      return (
+        <AdminTableList
+          tables={filteredTables}
+          orderStatsBySessionId={statsBySessionId}
+          startingTableNumber={startingTableNumber}
+          onQuickStart={quickStartSession}
+        />
+      );
+    }
 
     if (isEditing) {
       return (
@@ -264,6 +277,8 @@ function AdminTableRealtime() {
         onSelectTable={handleSelectTable}
         onStartEdit={handleStartEdit}
         highlightEditButton={needsTableLayoutOnboarding}
+        startingTableNumber={startingTableNumber}
+        onQuickStart={quickStartSession}
       />
     );
   };
@@ -288,6 +303,7 @@ function AdminTableRealtime() {
     <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })}>
       <>
         <OnboardingStepHint step={ONBOARDING_STEP.TABLES} width="1000px" />
+        <TableSessionGuideBanner />
         <TableManageTopBar
           showFilters={!isEditing}
           highlightSettings={needsTablesOnboarding}

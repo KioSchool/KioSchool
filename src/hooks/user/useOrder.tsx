@@ -35,7 +35,17 @@ function useOrder() {
       });
   };
 
-  return { fetchOrder, createOrder };
+  // 확인에 실패하면 주문을 막지 않는다. 최종 판단은 POST /order가 한다
+  const checkOrderAvailable = (workspaceId: string | null, tableNo: string | null) => {
+    if (!workspaceId || !tableNo) return Promise.resolve(true);
+
+    return userApi
+      .get<boolean>('/order/available', { params: { workspaceId, tableNumber: tableNo } })
+      .then((response) => response.data)
+      .catch(() => true);
+  };
+
+  return { fetchOrder, createOrder, checkOrderAvailable };
 }
 
 export default useOrder;

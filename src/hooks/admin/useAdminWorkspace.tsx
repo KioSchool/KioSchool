@@ -141,8 +141,8 @@ function useAdminWorkspace() {
       });
   };
 
-  const fetchWorkspaceTables = (workspaceId: string | undefined | null) =>
-    adminApi.get(`/workspace/tables`, { params: { workspaceId } }).then((res) => setAdminTables(res.data));
+  const fetchWorkspaceTables = (workspaceId: string | undefined | null, options: { skipGlobalLoading?: boolean } = {}) =>
+    adminApi.get(`/workspace/tables`, { params: { workspaceId }, skipGlobalLoading: options.skipGlobalLoading }).then((res) => setAdminTables(res.data));
 
   const updateWorkspaceMemo = (workspaceId: number, memo: string) => {
     return adminApi.put<Workspace>('/workspace/memo', { workspaceId, memo }).then((res) => {

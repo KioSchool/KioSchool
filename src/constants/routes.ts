@@ -60,6 +60,8 @@ export const getAdminWorkspacePath = (workspaceId: string | number) => `/admin/w
 
 export const getAdminProductsPath = (workspaceId: string | number) => `/admin/workspace/${workspaceId}/products`;
 
+export const getAdminTableRealtimePath = (workspaceId: string | number) => `/admin/workspace/${workspaceId}/table/realtime`;
+
 export function getSuperAdminWorkspacePath(query: { keyword: string }): string {
   return `${SUPER_ADMIN_ROUTES.WORKSPACE}?name=${encodeURIComponent(query.keyword)}`;
 }

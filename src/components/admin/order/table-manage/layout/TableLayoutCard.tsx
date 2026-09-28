@@ -14,6 +14,10 @@ const SELECTED_OFFSET_PX = 2;
 export const SELECTED_RING_PX = SELECTED_OUTLINE_PX + SELECTED_OFFSET_PX;
 const HANDLE_ICON_PX = 14;
 const DIMMED_OPACITY = 0.28;
+const CARD_PADDING_Y_PX = 8;
+const CARD_PADDING_X_PX = 6;
+const QUICK_START_BUTTON_HEIGHT_PX = 22;
+const QUICK_START_TITLE = '‘사용 시작’을 클릭해야 이 테이블에서 주문을 받을 수 있습니다';
 
 interface StatusStyle {
   background: string;
@@ -54,12 +58,35 @@ const exceededPulse = keyframes`
   100% { opacity: 1; }
 `;
 
-const Container = styled.div<{ status: TableStatus; isSelected: boolean; isDimmed: boolean; clickable: boolean }>`
+// 터치 기기는 탭이 곧 클릭이라 72px 카드에서 선택하려다 세션을 열기 쉽다. hover가 되는 기기에서만 버튼을 드러낸다
+const quickStartReveal = css`
+  &:focus-within [data-role='quick-start'] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  &:focus-within [data-role='status'] {
+    opacity: 0;
+  }
+
+  @media (hover: hover) {
+    &:hover [data-role='quick-start'] {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    &:hover [data-role='status'] {
+      opacity: 0;
+    }
+  }
+`;
+
+const Container = styled.div<{ status: TableStatus; isSelected: boolean; isDimmed: boolean; clickable: boolean; hasQuickStart: boolean }>`
   width: 100%;
   height: 100%;
   box-sizing: border-box;
   border-radius: 12px;
-  padding: 8px 6px;
+  padding: ${CARD_PADDING_Y_PX}px ${CARD_PADDING_X_PX}px;
   position: relative;
   cursor: ${({ clickable }) => (clickable ? 'pointer' : 'inherit')};
   opacity: ${({ isDimmed }) => (isDimmed ? DIMMED_OPACITY : 1)};
@@ -78,6 +105,7 @@ const Container = styled.div<{ status: TableStatus; isSelected: boolean; isDimme
       animation: ${exceededPulse} 2s infinite;
     `}
   ${colFlex()};
+  ${({ hasQuickStart }) => hasQuickStart && quickStartReveal}
 `;
 
 const TopRow = styled.div`
@@ -115,11 +143,38 @@ const HandleIcon = styled(RiDraggable)`
   color: ${Color.MUTED_GREY};
 `;
 
-const Bottom = styled.div`
+const Bottom = styled.div<{ isHidden: boolean }>`
   margin-top: auto;
   min-width: 0;
   gap: 4px;
+  opacity: ${({ isHidden }) => (isHidden ? 0 : 1)};
+  transition: opacity 0.12s ease-in-out;
   ${rowFlex({ align: 'center' })};
+`;
+
+const QuickStartButton = styled.button<{ isStarting: boolean }>`
+  position: absolute;
+  left: ${CARD_PADDING_X_PX}px;
+  right: ${CARD_PADDING_X_PX}px;
+  bottom: ${CARD_PADDING_Y_PX}px;
+  height: ${QUICK_START_BUTTON_HEIGHT_PX}px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+  color: ${Color.WHITE};
+  background-color: ${({ isStarting }) => (isStarting ? Color.HEAVY_GREY : Color.KIO_ORANGE)};
+  cursor: ${({ isStarting }) => (isStarting ? 'default' : 'pointer')};
+  opacity: ${({ isStarting }) => (isStarting ? 1 : 0)};
+  pointer-events: none;
+  transition: opacity 0.12s ease-in-out, background-color 0.12s ease-in-out;
+
+  &:hover:not(:disabled) {
+    background-color: ${Color.KIO_ORANGE_DARK};
+  }
 `;
 
 // 카드 내용 폭 58px에서 링·간격을 뺀 38px 안에 "+10:30"(약 37.7px)까지 들어가야 한다
@@ -147,23 +202,49 @@ interface TableLayoutCardProps {
   isSelected?: boolean;
   isDimmed?: boolean;
   showHandle?: boolean;
+  isStarting?: boolean;
   onSelect?: (table: Table) => void;
+  onQuickStart?: (tableNumber: number) => void;
 }
 
-function TableLayoutCard({ table, orderCount = 0, isSelected = false, isDimmed = false, showHandle = false, onSelect }: TableLayoutCardProps) {
+function TableLayoutCard({
+  table,
+  orderCount = 0,
+  isSelected = false,
+  isDimmed = false,
+  showHandle = false,
+  isStarting = false,
+  onSelect,
+  onQuickStart,
+}: TableLayoutCardProps) {
   const status = getTableStatus(table);
   const ringColors = getRingColors(status);
+  const hasQuickStart = status === TABLE_STATUS.EMPTY && Boolean(onQuickStart) && !showHandle && !isDimmed;
+  const quickStartLabel = isStarting ? '시작 중' : '사용 시작';
 
   const handleClick = () => onSelect?.(table);
 
+  const handleQuickStart = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    onQuickStart?.(table.tableNumber);
+  };
+
   return (
-    <Container status={status} isSelected={isSelected} isDimmed={isDimmed} clickable={Boolean(onSelect)} onClick={handleClick}>
+    <Container
+      status={status}
+      isSelected={isSelected}
+      isDimmed={isDimmed}
+      clickable={Boolean(onSelect)}
+      hasQuickStart={hasQuickStart}
+      title={hasQuickStart ? QUICK_START_TITLE : undefined}
+      onClick={handleClick}
+    >
       <TopRow>
         <TableNumber status={status}>{table.tableNumber}</TableNumber>
         {showHandle && <HandleIcon />}
         {!showHandle && orderCount > 0 && <OrderCountBadge status={status}>{orderCount}</OrderCountBadge>}
       </TopRow>
-      <Bottom>
+      <Bottom data-role="status" isHidden={hasQuickStart && isStarting}>
         <ProgressRing
           percent={getElapsedPercent(table.orderSession)}
           fillColor={ringColors.fill}
@@ -172,6 +253,11 @@ function TableLayoutCard({ table, orderCount = 0, isSelected = false, isDimmed =
         />
         <TimeText status={status}>{formatSessionTimeShortLabel(table.orderSession)}</TimeText>
       </Bottom>
+      {hasQuickStart && (
+        <QuickStartButton type="button" data-role="quick-start" isStarting={isStarting} disabled={isStarting} onClick={handleQuickStart}>
+          {quickStartLabel}
+        </QuickStartButton>
+      )}
     </Container>
   );
 }

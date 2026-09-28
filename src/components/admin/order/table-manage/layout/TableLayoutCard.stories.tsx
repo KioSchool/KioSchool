@@ -44,6 +44,8 @@ const meta = {
 export default meta;
 
 export const Empty = { args: { table: makeTable(1, null) } };
+export const EmptyWithQuickStart = { args: { table: makeTable(1, null) }, argTypes: { onQuickStart: { action: 'quickStart' } } };
+export const EmptyWhileStarting = { args: { table: makeTable(1, null), isStarting: true }, argTypes: { onQuickStart: { action: 'quickStart' } } };
 export const Using = { args: { table: makeTable(2, 47), orderCount: 3 } };
 export const Warning = { args: { table: makeTable(3, 7), orderCount: 3 } };
 export const Exceeded = { args: { table: makeTable(4, -12), orderCount: 3 } };
