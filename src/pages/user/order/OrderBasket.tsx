@@ -12,10 +12,14 @@ import { useAtom, useAtomValue } from 'jotai';
 import { useEffect, useMemo, useRef } from 'react';
 import useOrder from '@hooks/user/useOrder';
 import { API_ERROR_CODES } from '@constants/errorCodes';
+import { ORDER_ROUTES } from '@constants/routes';
 import { isApiErrorCode } from '@utils/apiError';
 import { basketToGaItems, calculateBasketTotalAmount, getBasketItemsWithProduct } from '@utils/orderBasket';
 import { trackEvent } from '@utils/analytics';
 import { GA_CURRENCY, GA_EVENT } from '@constants/analytics';
+
+// 이 화면은 주문 화면에서만 들어오므로 한 칸 뒤가 주문 화면이다.
+const ORDER_PAGE_HISTORY_OFFSET = 1;
 
 const ORDER_UNAVAILABLE_MESSAGE = '아직 주문을 받을 수 없는 테이블입니다.\n직원에게 테이블 사용 시작을 요청해주세요.';
 
@@ -97,10 +101,16 @@ function OrderBasket() {
   // 상품 목록에서 사라진 항목만 남은 경우도 "보여줄 게 없는" 상태이므로 같이 처리한다.
   // 이 화면은 상품을 직접 조회하지 않고 주문 화면이 채워둔 목록을 쓰므로, 로딩 중을 빈 목록으로 오인할 여지가 없다.
   useEffect(() => {
-    if (basketItems.length === 0) {
-      navigate(-1);
+    if (basketItems.length > 0) return;
+
+    const historyIndex = window.history.state?.idx ?? 0;
+    if (historyIndex >= ORDER_PAGE_HISTORY_OFFSET) {
+      navigate(-ORDER_PAGE_HISTORY_OFFSET);
+      return;
     }
-  }, [basketItems.length, navigate]);
+
+    navigate({ pathname: ORDER_ROUTES.ORDER, search: createSearchParams(searchParams).toString() }, { replace: true });
+  }, [basketItems.length]);
 
   const hasTrackedViewCartRef = useRef(false);
 
@@ -122,7 +132,6 @@ function OrderBasket() {
     if (isApiErrorCode(error, API_ERROR_CODES.NOT_SELLABLE_PRODUCT)) {
       alert('품절된 상품이 있습니다. 주문 화면으로 돌아갑니다.');
       setOrderBasket([]);
-      navigate(-1);
       return;
     }
   };
