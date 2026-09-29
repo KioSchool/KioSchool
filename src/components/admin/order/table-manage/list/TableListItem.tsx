@@ -13,6 +13,7 @@ import { Table } from '@@types/index';
 
 const SELECTED_OUTLINE_PX = 2;
 const STATUS_BAR_WIDTH_PX = 3;
+const EMPTY_TABLE_HINT = '사용 시작 전 · 주문 불가';
 
 const STATUS_BAR_COLOR: Record<TableStatus, string> = {
   [TABLE_STATUS.EMPTY]: 'transparent',
@@ -98,6 +99,35 @@ const BadgeCell = styled.div`
   justify-content: center;
 `;
 
+const QuickStartButton = styled.button`
+  padding: 5px 10px;
+  border: none;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+  color: ${Color.WHITE};
+  background-color: ${Color.KIO_ORANGE};
+  cursor: pointer;
+  transition: background-color 0.12s ease-in-out;
+
+  &:hover:not(:disabled) {
+    background-color: ${Color.KIO_ORANGE_DARK};
+  }
+
+  &:disabled {
+    background-color: ${Color.HEAVY_GREY};
+    cursor: default;
+  }
+`;
+
+function getSessionStartLabel(table: Table): string {
+  if (!table.orderSession) return EMPTY_TABLE_HINT;
+
+  return formatSessionStartLabel(table.orderSession) ?? '—';
+}
+
 function getOrderCountLabel(orderStats: SessionOrderStats | null): string {
   if (!orderStats) return '—';
 
@@ -113,14 +143,25 @@ function getOrderAmountLabel(orderStats: SessionOrderStats | null): string {
 interface TableListItemProps {
   table: Table;
   orderStats: SessionOrderStats | null;
+  isStarting?: boolean;
+  onQuickStart?: (tableNumber: number) => void;
 }
 
-function TableListItem({ table, orderStats }: TableListItemProps) {
+function TableListItem({ table, orderStats, isStarting = false, onQuickStart }: TableListItemProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedTableNo = searchParams.get('tableNo');
   const isSelected = selectedTableNo === String(table.tableNumber);
   const status = getTableStatus(table);
   const session = table.orderSession;
+  const isEmpty = status === TABLE_STATUS.EMPTY;
+  const showQuickStart = isEmpty && Boolean(onQuickStart);
+  const quickStartLabel = isStarting ? '시작 중' : '사용 시작';
+
+  const handleQuickStart = (event: React.MouseEvent<HTMLButtonElement>) => {
+    // 행 선택과 분리한다. 다른 테이블 상세를 보던 중에 시작만 눌러도 보던 화면이 유지돼야 한다.
+    event.stopPropagation();
+    onQuickStart?.(table.tableNumber);
+  };
 
   const handleClickTable = (tableNumber: number) => {
     searchParams.set('tableNo', String(tableNumber));
@@ -138,12 +179,18 @@ function TableListItem({ table, orderStats }: TableListItemProps) {
       />
       <UsageTimeCell>
         <MainTimeText status={status}>{formatSessionTimeLabel(session)}</MainTimeText>
-        <StartTimeText>{formatSessionStartLabel(session) ?? '—'}</StartTimeText>
+        <StartTimeText>{getSessionStartLabel(table)}</StartTimeText>
       </UsageTimeCell>
       <CountText>{getOrderCountLabel(orderStats)}</CountText>
       <AmountText>{getOrderAmountLabel(orderStats)}</AmountText>
       <BadgeCell>
-        <StatusBadge status={status} />
+        {showQuickStart ? (
+          <QuickStartButton type="button" onClick={handleQuickStart} disabled={isStarting}>
+            {quickStartLabel}
+          </QuickStartButton>
+        ) : (
+          <StatusBadge status={status} />
+        )}
       </BadgeCell>
     </Row>
   );

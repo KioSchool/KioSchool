@@ -16,6 +16,7 @@ import { useAtom, useAtomValue } from 'jotai';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import usePreventRefresh from '@hooks/usePreventRefresh';
 import useTossPopup from '@hooks/user/useTossPopup';
+import useReturnToOrderPage from '@hooks/user/useReturnToOrderPage';
 import { Account } from '@@types/index';
 import { defaultAccountValue } from '@@types/defaultValues';
 import { basketToGaItems, calculateBasketTotalAmount, getBasketItemsWithProduct } from '@utils/orderBasket';
@@ -80,14 +81,12 @@ function OrderPay() {
     if (isApiErrorCode(error, API_ERROR_CODES.NOT_SELLABLE_PRODUCT)) {
       alert('품절된 상품이 있습니다. 주문 화면으로 돌아갑니다.');
       setOrderBasket([]);
-      navigate(-2);
       return;
     }
 
     if (isApiErrorCode(error, ...MISSING_ORDER_TARGET_CODES)) {
       alert(getApiErrorMessage(error, '주문 대상을 찾을 수 없습니다. 주문 화면으로 돌아갑니다.'));
       setOrderBasket([]);
-      navigate(-2);
       return;
     }
 
@@ -96,6 +95,8 @@ function OrderPay() {
     }
   };
   usePreventRefresh();
+
+  useReturnToOrderPage(basketItems.length === 0);
 
   useEffect(() => {
     customerNameRef.current?.focus();

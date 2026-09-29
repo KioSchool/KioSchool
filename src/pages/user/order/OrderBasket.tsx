@@ -11,11 +11,14 @@ import { userOrderBasketAtom, userProductsAtom, userWorkspaceAtom } from '@jotai
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect, useMemo, useRef } from 'react';
 import useOrder from '@hooks/user/useOrder';
+import useReturnToOrderPage from '@hooks/user/useReturnToOrderPage';
 import { API_ERROR_CODES } from '@constants/errorCodes';
 import { isApiErrorCode } from '@utils/apiError';
 import { basketToGaItems, calculateBasketTotalAmount, getBasketItemsWithProduct } from '@utils/orderBasket';
 import { trackEvent } from '@utils/analytics';
 import { GA_CURRENCY, GA_EVENT } from '@constants/analytics';
+
+const ORDER_UNAVAILABLE_MESSAGE = '아직 주문을 받을 수 없는 테이블입니다.\n직원에게 테이블 사용 시작을 요청해주세요.';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -88,16 +91,13 @@ function OrderBasket() {
   const tableNo = searchParams.get('tableNo');
   const tableHash = searchParams.get('tableHash');
 
-  const { createOrder } = useOrder();
+  const { createOrder, checkOrderAvailable } = useOrder();
+  const isCheckingRef = useRef(false);
 
   // 담긴 게 없으면 주문 화면으로 되돌린다.
   // 상품 목록에서 사라진 항목만 남은 경우도 "보여줄 게 없는" 상태이므로 같이 처리한다.
   // 이 화면은 상품을 직접 조회하지 않고 주문 화면이 채워둔 목록을 쓰므로, 로딩 중을 빈 목록으로 오인할 여지가 없다.
-  useEffect(() => {
-    if (basketItems.length === 0) {
-      navigate(-1);
-    }
-  }, [basketItems.length, navigate]);
+  useReturnToOrderPage(basketItems.length === 0);
 
   const hasTrackedViewCartRef = useRef(false);
 
@@ -119,12 +119,11 @@ function OrderBasket() {
     if (isApiErrorCode(error, API_ERROR_CODES.NOT_SELLABLE_PRODUCT)) {
       alert('품절된 상품이 있습니다. 주문 화면으로 돌아갑니다.');
       setOrderBasket([]);
-      navigate(-1);
       return;
     }
   };
 
-  const navigateHandler = () => {
+  const proceedOrder = () => {
     if (totalAmount === 0) {
       trackEvent(GA_EVENT.BEGIN_CHECKOUT, { items: basketToGaItems(orderBasket, productsMap), value: totalAmount, currency: GA_CURRENCY });
 
@@ -149,6 +148,24 @@ function OrderBasket() {
       pathname: '/order-pay',
       search: createSearchParams(searchParams).toString(),
     });
+  };
+
+  const navigateHandler = () => {
+    if (isCheckingRef.current) return;
+    isCheckingRef.current = true;
+
+    checkOrderAvailable(workspaceId, tableNo)
+      .then((isAvailable) => {
+        if (!isAvailable) {
+          alert(ORDER_UNAVAILABLE_MESSAGE);
+          return;
+        }
+
+        proceedOrder();
+      })
+      .finally(() => {
+        isCheckingRef.current = false;
+      });
   };
 
   return (

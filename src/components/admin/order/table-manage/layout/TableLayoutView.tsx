@@ -64,6 +64,8 @@ interface TableLayoutViewProps {
   onSelectTable: (table: Table) => void;
   onStartEdit: () => void;
   highlightEditButton: boolean;
+  startingTableNumber?: number | null;
+  onQuickStart?: (tableNumber: number) => void;
 }
 
 function TableLayoutView({
@@ -74,6 +76,8 @@ function TableLayoutView({
   onSelectTable,
   onStartEdit,
   highlightEditButton,
+  startingTableNumber = null,
+  onQuickStart,
 }: TableLayoutViewProps) {
   const placedTables = useMemo(() => tables.filter((table) => table.position != null), [tables]);
   const unplacedTables = useMemo(() => tables.filter((table) => table.position == null), [tables]);
@@ -93,7 +97,9 @@ function TableLayoutView({
       orderCount={getSessionOrderStats(table, orderStatsBySessionId)?.count ?? 0}
       isSelected={table.tableNumber === selectedTableNumber}
       isDimmed={isDimmedByFilter(table)}
+      isStarting={startingTableNumber === table.tableNumber}
       onSelect={onSelectTable}
+      onQuickStart={onQuickStart}
     />
   );
 

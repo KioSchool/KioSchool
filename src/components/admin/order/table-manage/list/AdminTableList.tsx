@@ -113,9 +113,11 @@ const SORT_COMPARATORS: Record<SortType, (a: Table, b: Table) => number> = {
 interface AdminTableListProps {
   tables: Table[];
   orderStatsBySessionId: Map<number, SessionOrderStats>;
+  startingTableNumber?: number | null;
+  onQuickStart?: (tableNumber: number) => void;
 }
 
-function AdminTableList({ tables, orderStatsBySessionId }: AdminTableListProps) {
+function AdminTableList({ tables, orderStatsBySessionId, startingTableNumber = null, onQuickStart }: AdminTableListProps) {
   const [sortType, setSortType] = useState<SortType>(SORT_NUMBER);
 
   const sortedTables = [...tables].sort(SORT_COMPARATORS[sortType]);
@@ -141,7 +143,13 @@ function AdminTableList({ tables, orderStatsBySessionId }: AdminTableListProps) 
         <ListBody>
           {sortedTables.length === 0 && <EmptyBody>조건에 맞는 테이블이 없습니다</EmptyBody>}
           {sortedTables.map((table) => (
-            <TableListItem key={table.id} table={table} orderStats={getSessionOrderStats(table, orderStatsBySessionId)} />
+            <TableListItem
+              key={table.id}
+              table={table}
+              orderStats={getSessionOrderStats(table, orderStatsBySessionId)}
+              isStarting={startingTableNumber === table.tableNumber}
+              onQuickStart={onQuickStart}
+            />
           ))}
         </ListBody>
       </ListWrapper>

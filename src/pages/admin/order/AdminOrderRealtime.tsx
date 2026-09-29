@@ -11,6 +11,7 @@ import { useAtomValue } from 'jotai';
 import { adminOrdersAtom } from '@jotai/admin/atoms';
 import RightSidebarModal from '@components/common/modal/RightSidebarModal';
 import OrderByProductList from '@components/admin/order/realtime/OrderByProductList';
+import TableUsageSummary from '@components/admin/order/realtime/TableUsageSummary';
 import styled from '@emotion/styled';
 import { useWakeLock } from '@hooks/useWakeLock';
 
@@ -43,6 +44,7 @@ function AdminOrderRealtime() {
   return (
     <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })}>
       <ListContainer>
+        <TableUsageSummary workspaceId={workspaceId} />
         <TitledOrderStatusList
           orders={notPaidOrders}
           orderStatus={OrderStatus.NOT_PAID}
