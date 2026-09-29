@@ -16,6 +16,7 @@ import OrderProductContent from './OrderProductContent';
 import { useAtomValue } from 'jotai';
 import { userCategoriesAtom, userOrderBasketAtom, userProductsAtom, userWorkspaceAtom } from '@jotai/user/atoms';
 import { calculateBasketTotalAmount, productsToGaItems } from '@utils/orderBasket';
+import { saveOrderPageHistoryIndex } from '@utils/orderPageHistory';
 import { trackEvent } from '@utils/analytics';
 import { GA_EVENT } from '@constants/analytics';
 
@@ -79,6 +80,7 @@ function Order() {
   const [showNavBar, setShowNavBar] = useState(false);
 
   useEffect(() => {
+    saveOrderPageHistoryIndex();
     fetchWorkspace(workspaceId);
     fetchCategories();
     fetchProducts();
