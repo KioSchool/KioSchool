@@ -10,13 +10,13 @@ import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import OrderPayRadio from '@components/user/order/OrderPayRadio';
 import OrderPayDescription from '@components/user/order/OrderPayDescription';
 import { API_ERROR_CODES } from '@constants/errorCodes';
-import { ORDER_ROUTES } from '@constants/routes';
 import { getApiErrorMessage, isApiErrorCode } from '@utils/apiError';
 import { userOrderBasketAtom, userProductsAtom, userWorkspaceAtom } from '@jotai/user/atoms';
 import { useAtom, useAtomValue } from 'jotai';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import usePreventRefresh from '@hooks/usePreventRefresh';
 import useTossPopup from '@hooks/user/useTossPopup';
+import useReturnToOrderPage from '@hooks/user/useReturnToOrderPage';
 import { Account } from '@@types/index';
 import { defaultAccountValue } from '@@types/defaultValues';
 import { basketToGaItems, calculateBasketTotalAmount, getBasketItemsWithProduct } from '@utils/orderBasket';
@@ -28,9 +28,6 @@ const MISSING_ORDER_TARGET_CODES = [API_ERROR_CODES.NOT_FOUND_PRODUCT, API_ERROR
 
 // 주문을 받을 수 없는 상태. 안내만 하고 화면은 유지한다.
 const UNORDERABLE_STATE_CODES = [API_ERROR_CODES.NO_ORDER_SESSION, API_ERROR_CODES.ORDER_SESSION_ALREADY_EXIST, API_ERROR_CODES.TABLE_HASH_IS_NULL] as const;
-
-// 이 화면은 주문 → 장바구니 → 결제 순으로만 들어오므로 두 칸 뒤가 주문 화면이다.
-const ORDER_PAGE_HISTORY_OFFSET = 2;
 
 const Container = styled.div`
   width: 100%;
@@ -99,18 +96,7 @@ function OrderPay() {
   };
   usePreventRefresh();
 
-  // 새로고침하면 장바구니·상품 아톰이 초기화된다. 링크로 바로 들어와 되돌아갈 기록이 없으면 주문 화면으로 교체한다.
-  useEffect(() => {
-    if (basketItems.length > 0) return;
-
-    const historyIndex = window.history.state?.idx ?? 0;
-    if (historyIndex >= ORDER_PAGE_HISTORY_OFFSET) {
-      navigate(-ORDER_PAGE_HISTORY_OFFSET);
-      return;
-    }
-
-    navigate({ pathname: ORDER_ROUTES.ORDER, search: createSearchParams(searchParams).toString() }, { replace: true });
-  }, [basketItems.length]);
+  useReturnToOrderPage(basketItems.length === 0);
 
   useEffect(() => {
     customerNameRef.current?.focus();
