@@ -6,7 +6,16 @@ import { areOrdersEquivalent } from '@utils/memoCompareFunction';
 import useModal from '@hooks/useModal';
 import { extractMinFromDate } from '@utils/formatDate';
 import useFormattedTime from '@hooks/useFormattedTime';
-import { CardContainer, CardText, DescriptionContainer, HeaderContainer, HorizontalLine, OrderInfoContainer, TitleContainer } from '@styles/orderCardStyles';
+import {
+  CardContainer,
+  CardText,
+  DescriptionContainer,
+  HeaderContainer,
+  HorizontalLine,
+  OrderInfoContainer,
+  CardFooter,
+  TableNumberBadge,
+} from '@styles/orderCardStyles';
 
 const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => {
   return areOrdersEquivalent(prevProps.order, nextProps.order);
@@ -28,12 +37,9 @@ function PaidOrderCard({ order }: OrderCardProps) {
     <CardContainer height={234}>
       <OrderInfoContainer onClick={orderInfoClickHandler}>
         <HeaderContainer>
-          <TitleContainer>
-            <CardText size={16} weight={800} height={24}>
-              {order.customerName}
-            </CardText>
-            <CardText size={12} weight={800}>{`테이블 ${order.tableNumber}`}</CardText>
-          </TitleContainer>
+          <CardText size={16} weight={800} height={24}>
+            {order.customerName}
+          </CardText>
           <DescriptionContainer>
             <CardText size={12} weight={800}>{`${delayMinutes}분 전`}</CardText>
             <CardText size={12} weight={800}>{`총 ${order.totalPrice.toLocaleString()}원`}</CardText>
@@ -41,6 +47,9 @@ function PaidOrderCard({ order }: OrderCardProps) {
         </HeaderContainer>
         <HorizontalLine />
         <OrderItemList order={order} />
+        <CardFooter>
+          <TableNumberBadge>{`테이블 ${order.tableNumber}`}</TableNumberBadge>
+        </CardFooter>
       </OrderInfoContainer>
       <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
     </CardContainer>

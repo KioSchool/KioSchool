@@ -3,7 +3,7 @@ import { Order } from '@@types/index';
 import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
 import { areOrdersEquivalent } from '@utils/memoCompareFunction';
 import useModal from '@hooks/useModal';
-import { CardContainer, OrderInfoContainer, DescriptionContainer, CardText, TitleContainer } from '@styles/orderCardStyles';
+import { CardContainer, OrderInfoContainer, DescriptionContainer, CardText, CardFooter, TableNumberBadge } from '@styles/orderCardStyles';
 
 const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => {
   return areOrdersEquivalent(prevProps.order, nextProps.order);
@@ -21,18 +21,18 @@ function ServedOrderCard({ order }: OrderCardProps) {
   };
 
   return (
-    <CardContainer height={48}>
+    <CardContainer height={72}>
       <OrderInfoContainer onClick={orderInfoClickHandler}>
-        <TitleContainer>
-          <CardText size={16} weight={800}>
-            {order.customerName}
-          </CardText>
-          <CardText size={12} weight={800}>{`테이블 ${order.tableNumber}`}</CardText>
-        </TitleContainer>
+        <CardText size={16} weight={800}>
+          {order.customerName}
+        </CardText>
         <DescriptionContainer>
           <CardText size={12} weight={800}>{`주문번호 ${order.orderNumber}`}</CardText>
           <CardText size={12} weight={800}>{`총 ${order.totalPrice.toLocaleString()}원`}</CardText>
         </DescriptionContainer>
+        <CardFooter>
+          <TableNumberBadge>{`테이블 ${order.tableNumber}`}</TableNumberBadge>
+        </CardFooter>
       </OrderInfoContainer>
       <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
     </CardContainer>
