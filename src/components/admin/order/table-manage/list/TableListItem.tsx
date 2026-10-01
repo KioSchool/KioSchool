@@ -8,7 +8,6 @@ import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { getTableStatus, TABLE_STATUS, TableStatus } from '@utils/tableStatus';
 import { formatSessionStartLabel, formatSessionTimeLabel, getElapsedPercent } from '@utils/tableTime';
-import { SessionOrderStats } from '@hooks/admin/useTableOrderStats';
 import { Table } from '@@types/index';
 
 const SELECTED_OUTLINE_PX = 2;
@@ -128,26 +127,25 @@ function getSessionStartLabel(table: Table): string {
   return formatSessionStartLabel(table.orderSession) ?? '—';
 }
 
-function getOrderCountLabel(orderStats: SessionOrderStats | null): string {
-  if (!orderStats) return '—';
+function getOrderCountLabel(table: Table): string {
+  if (!table.orderSession) return '—';
 
-  return `${orderStats.count}건`;
+  return `${table.orderSession.orderCount}건`;
 }
 
-function getOrderAmountLabel(orderStats: SessionOrderStats | null): string {
-  if (!orderStats) return '—';
+function getOrderAmountLabel(table: Table): string {
+  if (!table.orderSession) return '—';
 
-  return `${orderStats.amount.toLocaleString()}원`;
+  return `${table.orderSession.totalOrderPrice.toLocaleString()}원`;
 }
 
 interface TableListItemProps {
   table: Table;
-  orderStats: SessionOrderStats | null;
   isStarting?: boolean;
   onQuickStart?: (tableNumber: number) => void;
 }
 
-function TableListItem({ table, orderStats, isStarting = false, onQuickStart }: TableListItemProps) {
+function TableListItem({ table, isStarting = false, onQuickStart }: TableListItemProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedTableNo = searchParams.get('tableNo');
   const isSelected = selectedTableNo === String(table.tableNumber);
@@ -181,8 +179,8 @@ function TableListItem({ table, orderStats, isStarting = false, onQuickStart }: 
         <MainTimeText status={status}>{formatSessionTimeLabel(session)}</MainTimeText>
         <StartTimeText>{getSessionStartLabel(table)}</StartTimeText>
       </UsageTimeCell>
-      <CountText>{getOrderCountLabel(orderStats)}</CountText>
-      <AmountText>{getOrderAmountLabel(orderStats)}</AmountText>
+      <CountText>{getOrderCountLabel(table)}</CountText>
+      <AmountText>{getOrderAmountLabel(table)}</AmountText>
       <BadgeCell>
         {showQuickStart ? (
           <QuickStartButton type="button" onClick={handleQuickStart} disabled={isStarting}>

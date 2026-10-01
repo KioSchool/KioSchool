@@ -42,16 +42,31 @@ export const TitleContainer = styled.div`
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
+export const TableNumberBadge = styled.span`
+  flex-shrink: 0;
+  padding: 2px 7px;
+  border: 1px solid ${Color.KIO_ORANGE_ICON_BG};
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 18px;
+  white-space: nowrap;
+  color: ${Color.KIO_ORANGE_DARK};
+  background-color: ${Color.KIO_ORANGE_FAINT};
+`;
+
 export const DescriptionContainer = styled.div`
   width: 100%;
   height: 24px;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
-export const CheckButtonContainer = styled.div`
+export const CardFooter = styled.div`
+  flex-shrink: 0;
   width: 100%;
+  height: 24px;
   box-sizing: border-box;
-  ${rowFlex({ justify: 'end', align: 'end' })}
+  ${rowFlex({ justify: 'space-between', align: 'end' })}
 `;
 
 export const CheckIcon = styled(RiCheckboxCircleFill)`
