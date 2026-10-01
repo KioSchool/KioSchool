@@ -21,8 +21,8 @@ import useQuickStartTableSession from '@hooks/admin/useQuickStartTableSession';
 import useTableFilter, { TABLE_FILTER } from '@hooks/admin/useTableFilter';
 import useTableLayoutSave from '@hooks/admin/useTableLayoutSave';
 import useTableOrders from '@hooks/admin/useTableOrders';
-import useTableOrderStats from '@hooks/admin/useTableOrderStats';
 import useClockTick from '@hooks/common/useClockTick';
+import useVisiblePolling from '@hooks/common/useVisiblePolling';
 import useQueryParam from '@hooks/common/useQueryParam';
 import { tableNoQueryParamConfig } from '@hooks/common/queryParamConfigs';
 import useIsMobile from '@hooks/useIsMobile';
@@ -108,7 +108,6 @@ function AdminTableRealtime() {
   const selectedTable = tables.find((table) => table.tableNumber === Number(tableNo));
   const { orders, fetchOrders } = useTableOrders(workspaceId, selectedTable?.orderSession?.id);
   const { filterType, setFilterType, counts, filteredTables } = useTableFilter(tables);
-  const { statsBySessionId, refresh: refreshOrderStats } = useTableOrderStats(workspaceId, tables);
   const { isSaving: isSavingLayout, conflictedPosition, clearConflict, save: saveLayout } = useTableLayoutSave(workspaceId, setAdminTables);
 
   const visibleTableNumbers = filterType === TABLE_FILTER.ALL ? null : new Set(filteredTables.map((table) => table.tableNumber));
@@ -124,7 +123,6 @@ function AdminTableRealtime() {
 
   const handleManualRefresh = () => {
     fetchTables();
-    refreshOrderStats();
     fetchOrders();
   };
 
@@ -132,17 +130,7 @@ function AdminTableRealtime() {
     fetchTables();
   }, [workspace.tableCount]);
 
-  useEffect(() => {
-    if (isEditing) return undefined;
-
-    const timer = setInterval(() => {
-      if (document.hidden) return;
-      fetchTables();
-      refreshOrderStats();
-    }, TABLE_POLL_INTERVAL_MS);
-
-    return () => clearInterval(timer);
-  }, [isEditing, workspaceId]);
+  useVisiblePolling(fetchTables, TABLE_POLL_INTERVAL_MS, !isEditing);
 
   // 배치/리스트 뷰 사용률의 공통 파라미터. `table_view_mode`는 반드시 이 파생값을 써야 한다 —
   // 모바일에서는 저장된 선호(`storedViewMode`)와 실제 화면이 갈라지므로, 하위 컴포넌트가
@@ -245,14 +233,7 @@ function AdminTableRealtime() {
   // 편집도 좌측 영역만 인라인 교체한다 — 우측 상세 구역까지 갈아엎으면 별도 페이지로 이동한 느낌을 준다
   const renderMainColumn = () => {
     if (viewMode !== TABLE_VIEW.LAYOUT) {
-      return (
-        <AdminTableList
-          tables={filteredTables}
-          orderStatsBySessionId={statsBySessionId}
-          startingTableNumber={startingTableNumber}
-          onQuickStart={quickStartSession}
-        />
-      );
+      return <AdminTableList tables={filteredTables} startingTableNumber={startingTableNumber} onQuickStart={quickStartSession} />;
     }
 
     if (isEditing) {
@@ -271,7 +252,6 @@ function AdminTableRealtime() {
     return (
       <TableLayoutView
         tables={tables}
-        orderStatsBySessionId={statsBySessionId}
         visibleTableNumbers={visibleTableNumbers}
         selectedTableNumber={selectedTable?.tableNumber ?? null}
         onSelectTable={handleSelectTable}
