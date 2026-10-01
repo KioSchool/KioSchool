@@ -7,7 +7,7 @@ import { areOrdersEquivalent } from '@utils/memoCompareFunction';
 import useFormattedTime from '@hooks/useFormattedTime';
 import useModal from '@hooks/useModal';
 import { extractMinFromDate } from '@utils/formatDate';
-import { CardContainer, OrderInfoContainer, DescriptionContainer, CheckButtonContainer, CheckIcon, CardText } from '@styles/orderCardStyles';
+import { CardContainer, OrderInfoContainer, DescriptionContainer, CardFooter, CheckIcon, CardText, TableNumberBadge } from '@styles/orderCardStyles';
 
 interface OrderCardProps {
   order: Order;
@@ -43,9 +43,10 @@ function NotPaidOrderCard({ order }: OrderCardProps) {
         </DescriptionContainer>
       </OrderInfoContainer>
       <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
-      <CheckButtonContainer>
+      <CardFooter>
+        <TableNumberBadge>{`테이블 ${order.tableNumber}`}</TableNumberBadge>
         <CheckIcon onClick={checkClickHandler} />
-      </CheckButtonContainer>
+      </CardFooter>
     </CardContainer>
   );
 }
