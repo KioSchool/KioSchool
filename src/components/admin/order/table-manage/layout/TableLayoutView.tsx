@@ -6,7 +6,6 @@ import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { TABLE_CROP_MARGIN_CELLS, TABLE_GRID_SIZE, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
 import NewCommonButton from '@components/common/button/NewCommonButton';
-import { getSessionOrderStats, SessionOrderStats } from '@hooks/admin/useTableOrderStats';
 import TableLayoutCanvas, { GridCropBounds } from './TableLayoutCanvas';
 import TableLayoutCard from './TableLayoutCard';
 import UnplacedTableStrip from './UnplacedTableStrip';
@@ -58,7 +57,6 @@ function getCropBounds(placedTables: Table[]): GridCropBounds {
 
 interface TableLayoutViewProps {
   tables: Table[];
-  orderStatsBySessionId: Map<number, SessionOrderStats>;
   visibleTableNumbers: Set<number> | null;
   selectedTableNumber: number | null;
   onSelectTable: (table: Table) => void;
@@ -70,7 +68,6 @@ interface TableLayoutViewProps {
 
 function TableLayoutView({
   tables,
-  orderStatsBySessionId,
   visibleTableNumbers,
   selectedTableNumber,
   onSelectTable,
@@ -94,7 +91,7 @@ function TableLayoutView({
   const renderCard = (table: Table) => (
     <TableLayoutCard
       table={table}
-      orderCount={getSessionOrderStats(table, orderStatsBySessionId)?.count ?? 0}
+      orderCount={table.orderSession?.orderCount ?? 0}
       isSelected={table.tableNumber === selectedTableNumber}
       isDimmed={isDimmedByFilter(table)}
       isStarting={startingTableNumber === table.tableNumber}

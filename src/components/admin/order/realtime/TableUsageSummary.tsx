@@ -4,8 +4,9 @@ import styled from '@emotion/styled';
 import { RiArrowRightSLine, RiInformationLine } from '@remixicon/react';
 import { useAtomValue } from 'jotai';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
+import useVisiblePolling from '@hooks/common/useVisiblePolling';
 import { adminTablesAtom } from '@jotai/admin/atoms';
-import { TABLE_POLL_INTERVAL_MS } from '@constants/layout';
+import { TABLE_USAGE_SUMMARY_POLL_INTERVAL_MS } from '@constants/layout';
 import { getAdminTableRealtimePath } from '@constants/routes';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
@@ -69,22 +70,16 @@ function TableUsageSummary({ workspaceId }: TableUsageSummaryProps) {
   const tablesInUseCount = tables.filter((table) => getTableStatus(table) !== TABLE_STATUS.EMPTY).length;
   const hasNoTableInUse = tablesInUseCount === 0;
 
+  const fetchTables = () => {
+    if (!workspaceId) return;
+    fetchWorkspaceTables(workspaceId, { skipGlobalLoading: true }).catch(() => {});
+  };
+
   useEffect(() => {
-    if (!workspaceId) return undefined;
-
-    const fetchTables = () => {
-      fetchWorkspaceTables(workspaceId, { skipGlobalLoading: true }).catch(() => {});
-    };
-
     fetchTables();
-
-    const timer = setInterval(() => {
-      if (document.hidden) return;
-      fetchTables();
-    }, TABLE_POLL_INTERVAL_MS);
-
-    return () => clearInterval(timer);
   }, [workspaceId]);
+
+  useVisiblePolling(fetchTables, TABLE_USAGE_SUMMARY_POLL_INTERVAL_MS, Boolean(workspaceId));
 
   if (!workspaceId || tables.length === 0) return null;
 

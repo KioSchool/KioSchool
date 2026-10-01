@@ -6,7 +6,6 @@ import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { TABLE_LIST_GRID_TEMPLATE, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
 import { getTableStatus, STATUS_ORDER } from '@utils/tableStatus';
-import { getSessionOrderStats, SessionOrderStats } from '@hooks/admin/useTableOrderStats';
 import { Table } from '@@types/index';
 
 import TableListItem from './TableListItem';
@@ -112,12 +111,11 @@ const SORT_COMPARATORS: Record<SortType, (a: Table, b: Table) => number> = {
 
 interface AdminTableListProps {
   tables: Table[];
-  orderStatsBySessionId: Map<number, SessionOrderStats>;
   startingTableNumber?: number | null;
   onQuickStart?: (tableNumber: number) => void;
 }
 
-function AdminTableList({ tables, orderStatsBySessionId, startingTableNumber = null, onQuickStart }: AdminTableListProps) {
+function AdminTableList({ tables, startingTableNumber = null, onQuickStart }: AdminTableListProps) {
   const [sortType, setSortType] = useState<SortType>(SORT_NUMBER);
 
   const sortedTables = [...tables].sort(SORT_COMPARATORS[sortType]);
@@ -143,13 +141,7 @@ function AdminTableList({ tables, orderStatsBySessionId, startingTableNumber = n
         <ListBody>
           {sortedTables.length === 0 && <EmptyBody>조건에 맞는 테이블이 없습니다</EmptyBody>}
           {sortedTables.map((table) => (
-            <TableListItem
-              key={table.id}
-              table={table}
-              orderStats={getSessionOrderStats(table, orderStatsBySessionId)}
-              isStarting={startingTableNumber === table.tableNumber}
-              onQuickStart={onQuickStart}
-            />
+            <TableListItem key={table.id} table={table} isStarting={startingTableNumber === table.tableNumber} onQuickStart={onQuickStart} />
           ))}
         </ListBody>
       </ListWrapper>

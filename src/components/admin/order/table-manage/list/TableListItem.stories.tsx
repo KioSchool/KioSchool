@@ -60,19 +60,19 @@ export default meta;
 type Story = StoryObj<typeof TableListItem>;
 
 export const EmptyWithQuickStart: Story = {
-  args: { table: createTable(12, false), orderStats: null },
+  args: { table: createTable(12, false) },
 };
 
 export const EmptyWhileStarting: Story = {
-  args: { table: createTable(12, false), orderStats: null, isStarting: true },
+  args: { table: createTable(12, false), isStarting: true },
 };
 
 export const EmptyWithoutQuickStart: Story = {
-  args: { table: createTable(12, false), orderStats: null },
+  args: { table: createTable(12, false) },
   argTypes: { onQuickStart: { table: { disable: true } } },
-  render: ({ table, orderStats }) => <TableListItem table={table} orderStats={orderStats} />,
+  render: ({ table }) => <TableListItem table={table} />,
 };
 
 export const InUse: Story = {
-  args: { table: createTable(7, true), orderStats: { count: 3, amount: 45000 } },
+  args: { table: { ...createTable(7, true), orderSession: { ...createSession(7), orderCount: 3, totalOrderPrice: 45000 } } },
 };
