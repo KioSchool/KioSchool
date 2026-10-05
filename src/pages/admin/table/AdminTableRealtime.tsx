@@ -6,14 +6,12 @@ import { toast } from 'react-toastify';
 import AdminTableList from '@components/admin/order/table-manage/list/AdminTableList';
 import TableLayoutView from '@components/admin/order/table-manage/layout/TableLayoutView';
 import TableLayoutEditor from '@components/admin/order/table-manage/layout/edit/TableLayoutEditor';
-import TableLayoutPromoPopupContent, { TABLE_LAYOUT_PROMO_POPUP_ID } from '@components/admin/order/table-manage/layout/TableLayoutPromoPopupContent';
 import TableDetailPanel from '@components/admin/order/table-manage/detail/TableDetailPanel';
 import TableManageTopBar from '@components/admin/order/table-manage/TableManageTopBar';
 import TableSessionGuideBanner from '@components/admin/order/table-manage/TableSessionGuideBanner';
 import TableSettingsSidebar from '@components/admin/order/table-manage/setting/TableSettingsSidebar';
 import AppContainer from '@components/common/container/AppContainer';
 import RightSidebarModal from '@components/common/modal/RightSidebarModal';
-import AppPopup from '@components/common/popup/AppPopup';
 import OnboardingStepHint from '@components/admin/workspace/onboarding/OnboardingStepHint';
 import { ONBOARDING_MIN_TABLE_COUNT, ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardingData';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
@@ -31,7 +29,6 @@ import { adminTablesAtom, adminTableViewModeAtom, adminWorkspaceAtom, TABLE_VIEW
 import { externalSidebarAtom } from '@jotai/atoms';
 import { TABLE_CLOCK_TICK_MS, TABLE_DETAIL_COLUMN_PX, TABLE_POLL_INTERVAL_MS, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
 import { GA_EVENT } from '@constants/analytics';
-import { POPUP_CLOSE_MODE, PopupData } from '@constants/data/popupData';
 import { getAdminWorkspacePath } from '@constants/routes';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
@@ -41,23 +38,6 @@ import { isOnboardingStepCompleted } from '@utils/onboarding';
 import { RIGHT_SIDEBAR_ACTION, Table } from '@@types/index';
 
 const UNPLACED_NOTICE_TOAST_ID = 'unplaced-table-notice';
-
-const TABLE_REALTIME_POPUP_DATAS: PopupData[] = [
-  {
-    popupId: 0,
-    title: 'Default Popup for prevent flickering',
-    expireDate: new Date(1000, 1, 1),
-    children: null,
-  },
-  {
-    popupId: TABLE_LAYOUT_PROMO_POPUP_ID,
-    title: '테이블 배치 기능 안내',
-    expireDate: new Date(2026, 9, 14),
-    children: <TableLayoutPromoPopupContent />,
-    closeMode: POPUP_CLOSE_MODE.FOREVER,
-    closeText: '다시 보지 않기',
-  },
-];
 
 const Container = styled.div`
   width: 95%;
@@ -141,7 +121,7 @@ function AdminTableRealtime() {
     occupied_table_count: counts[TABLE_FILTER.USING] + counts[TABLE_FILTER.WARNING] + counts[TABLE_FILTER.EXCEEDED],
   };
 
-  // 진입 시 1회가 아니라 뷰가 바뀔 때마다 찍는다. 프로모 팝업·온보딩 유도는 페이지에 머문 채로
+  // 진입 시 1회가 아니라 뷰가 바뀔 때마다 찍는다. 온보딩 유도는 페이지에 머문 채로
   // 모드를 바꾸므로, 진입 시점에만 찍으면 분모는 LIST인데 분자는 LAYOUT이 되어 비율이 깨진다.
   const lastShownViewModeRef = useRef<TableView | null>(null);
 
@@ -299,7 +279,6 @@ function AdminTableRealtime() {
           {renderDetailColumn()}
         </Container>
         <RightSidebarModal useExternalControl={{ location }} />
-        {!isMobile && <AppPopup popupDatas={TABLE_REALTIME_POPUP_DATAS} />}
       </>
     </AppContainer>
   );

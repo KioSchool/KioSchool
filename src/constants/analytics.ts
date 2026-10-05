@@ -35,7 +35,6 @@ export type GaEventName = typeof GA_EVENT[keyof typeof GA_EVENT];
  */
 export const TABLE_LAYOUT_VIEW_SOURCE = {
   TOGGLE: 'toggle',
-  PROMO_POPUP: 'promo_popup',
 } as const;
 
 export const TABLE_SESSION_ACTION = {
