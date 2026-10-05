@@ -3,6 +3,7 @@ import { SuperAdminOrder } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { formatCurrency, formatKoreanDateTime } from '@utils/formatNumber';
+import { getPaymentMethodLabel } from '@constants/data/paymentMethod';
 import OrderStatusBadge from './OrderStatusBadge';
 
 const List = styled.div`
@@ -70,6 +71,7 @@ function OrdersCardList({ orders, selectedOrderId, onSelect }: OrdersCardListPro
           <InfoLine>
             손님: {order.customerName} · 주문 #{order.orderNumber} · 주문 ID: {order.id}
           </InfoLine>
+          <InfoLine>송금수단: {getPaymentMethodLabel(order.paymentMethod)}</InfoLine>
           <Price>{formatCurrency(order.totalPrice)}</Price>
           <TimestampLine>{formatKoreanDateTime(order.createdAt)}</TimestampLine>
         </Card>
