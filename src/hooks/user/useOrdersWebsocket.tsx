@@ -21,7 +21,8 @@ function playOrderCreateAudio() {
 
 // onStompRejected: 서버가 연결/구독을 거부했을 때(버스트당 1회) 호출된다.
 // 거부 사유가 토큰 만료면 소켓만으로는 알 수 없고 5초마다 재시도만 반복하므로(9/19 실측: 만료 토큰 하나로
-// 6시간에 약 1만 건), 호출자가 HTTP 요청을 한 번 보내 기존 401 → 로그인 이동 흐름을 태우게 한다.
+// 6시간에 약 1만 건), 호출자가 HTTP 요청을 한 번 보내 기존 401 처리(토큰 갱신, 실패하면 로그인 이동)를 태우게 한다.
+// 갱신에 성공하면 다음 자동 재시도가 새 쿠키로 붙는다.
 function useOrdersWebsocket(workspaceId: string | undefined, onStompRejected?: () => void) {
   const setOrders = useSetAtom(adminOrdersAtom);
 
