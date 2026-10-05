@@ -17,7 +17,7 @@ import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import usePreventRefresh from '@hooks/usePreventRefresh';
 import useTossPopup from '@hooks/user/useTossPopup';
 import useReturnToOrderPage from '@hooks/user/useReturnToOrderPage';
-import { Account } from '@@types/index';
+import { Account, PaymentMethod } from '@@types/index';
 import { defaultAccountValue } from '@@types/defaultValues';
 import { basketToGaItems, calculateBasketTotalAmount, getBasketItemsWithProduct } from '@utils/orderBasket';
 import { trackEvent } from '@utils/analytics';
@@ -126,7 +126,7 @@ function OrderPay() {
       tossAccountUrl,
       amount: totalAmount,
       closeDelay: 5000,
-      promise: createOrder(workspaceId, tableHash, orderBasket, customerName),
+      promise: createOrder(workspaceId, tableHash, orderBasket, customerName, PaymentMethod.TOSS),
       onSuccess: (res) => {
         navigate({
           pathname: '/order-wait',
@@ -144,7 +144,7 @@ function OrderPay() {
   };
 
   const createOrderAndNavigateToComplete = (customerName: string) => {
-    createOrder(workspaceId, tableHash, orderBasket, customerName)
+    createOrder(workspaceId, tableHash, orderBasket, customerName, PaymentMethod.BANK_TRANSFER)
       .then((res) => {
         navigate({
           pathname: '/order-wait',

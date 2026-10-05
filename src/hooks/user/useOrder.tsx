@@ -1,5 +1,5 @@
 import useApi from '@hooks/useApi';
-import { Order, OrderProductBase } from '@@types/index';
+import { Order, OrderProductBase, PaymentMethod } from '@@types/index';
 import { defaultUserOrderValue } from '@@types/defaultValues';
 import { trackEvent } from '@utils/analytics';
 import { GA_CURRENCY, GA_EVENT } from '@constants/analytics';
@@ -15,13 +15,20 @@ function useOrder() {
       .catch(() => defaultUserOrderValue);
   };
 
-  const createOrder = (workspaceId: string | null, tableHash: string | null, orderProducts: OrderProductBase[], customerName: string) => {
+  const createOrder = (
+    workspaceId: string | null,
+    tableHash: string | null,
+    orderProducts: OrderProductBase[],
+    customerName: string,
+    paymentMethod?: PaymentMethod,
+  ) => {
     return userApi
       .post<Order>('/order', {
         workspaceId,
         tableHash,
         orderProducts,
         customerName,
+        paymentMethod,
       })
       .then((response) => {
         trackEvent(GA_EVENT.PURCHASE, {

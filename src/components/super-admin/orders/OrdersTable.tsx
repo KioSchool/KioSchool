@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { SuperAdminOrder } from '@@types/index';
 import { Color } from '@resources/colors';
 import { formatCurrency, formatKoreanDateTime } from '@utils/formatNumber';
+import { getPaymentMethodLabel } from '@constants/data/paymentMethod';
 import OrderStatusBadge from './OrderStatusBadge';
 
 const Table = styled.table`
@@ -77,6 +78,7 @@ function OrdersTable({ orders, selectedOrderId, onSelect }: OrdersTableProps) {
           <Th>고객명</Th>
           <Th>주문번호</Th>
           <Th>금액</Th>
+          <Th>송금수단</Th>
           <Th>상태</Th>
           <Th>주문 시각</Th>
         </tr>
@@ -95,6 +97,7 @@ function OrdersTable({ orders, selectedOrderId, onSelect }: OrdersTableProps) {
               <WorkspaceIdSubText>ID: {order.id}</WorkspaceIdSubText>
             </Td>
             <Td>{formatCurrency(order.totalPrice)}</Td>
+            <Td>{getPaymentMethodLabel(order.paymentMethod)}</Td>
             <Td>
               <OrderStatusBadge status={order.status} />
             </Td>

@@ -185,6 +185,11 @@ export enum OrderStatus {
   NOT_PAID = 'NOT_PAID',
 }
 
+export enum PaymentMethod {
+  TOSS = 'TOSS',
+  BANK_TRANSFER = 'BANK_TRANSFER',
+}
+
 export enum UserRole {
   ADMIN = 'ADMIN',
   SUPER_ADMIN = 'SUPER_ADMIN',
@@ -452,6 +457,7 @@ export interface SuperAdminOrder {
   orderProducts: Array<OrderProduct>;
   totalPrice: number;
   status: OrderStatus;
+  paymentMethod: PaymentMethod | null;
   orderNumber: number;
   createdAt: string;
   updatedAt: string;

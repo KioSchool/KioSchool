@@ -6,6 +6,7 @@ import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { formatCurrency, formatKoreanDateTime } from '@utils/formatNumber';
 import { getAdminWorkspacePath, getSuperAdminOrdersPath } from '@constants/routes';
+import { getPaymentMethodLabel } from '@constants/data/paymentMethod';
 import OrderStatusBadge from './OrderStatusBadge';
 
 const Wrap = styled.div`
@@ -208,6 +209,10 @@ function OrderDetailContent({ order, onClose }: OrderDetailContentProps) {
           <InfoRow>
             <span>고객</span>
             <InfoValue>{order.customerName}</InfoValue>
+          </InfoRow>
+          <InfoRow>
+            <span>송금수단</span>
+            <InfoValue>{getPaymentMethodLabel(order.paymentMethod)}</InfoValue>
           </InfoRow>
           <InfoRow>
             <span>주문번호</span>
