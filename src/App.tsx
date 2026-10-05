@@ -50,6 +50,7 @@ import AdminOrderTimeline from '@pages/admin/order/AdminOrderTimeline';
 import AdminTableRealtime from '@pages/admin/table/AdminTableRealtime';
 import Info from '@pages/user/info/Info';
 import Contact from '@pages/user/contact/Contact';
+import Privacy from '@pages/user/privacy/Privacy';
 import PcOnlyLayout from '@components/common/layout/PcOnlyLayout';
 
 function App() {
@@ -82,6 +83,7 @@ function App() {
         <Route path={USER_ROUTES.HOME} element={<Home />} />
         <Route path={USER_ROUTES.INFO} element={<Info />} />
         <Route path={USER_ROUTES.CONTACT} element={<Contact />} />
+        <Route path={USER_ROUTES.PRIVACY} element={<Privacy />} />
 
         <Route path={ORDER_ROUTES.ORDER} element={<Order />} />
         <Route path={ORDER_ROUTES.ORDER_BASKET} element={<OrderBasket />} />

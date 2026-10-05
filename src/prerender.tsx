@@ -7,6 +7,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import type { PrerenderArguments, PrerenderResult } from 'vite-prerender-plugin';
 import Home from '@pages/user/home/Home';
 import Info from '@pages/user/info/Info';
+import Privacy from '@pages/user/privacy/Privacy';
 import { getMarketingHeadElements, getMarketingSeoByPathname } from '@constants/marketingSeo';
 import { PRERENDERED_PATH_META_NAME } from '@constants/appShell';
 
@@ -120,6 +121,7 @@ export async function prerender({ url }: PrerenderArguments): Promise<PrerenderR
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/info" element={<Info />} />
+            <Route path="/privacy" element={<Privacy />} />
           </Routes>
         </StaticRouter>
       </HelmetProvider>
