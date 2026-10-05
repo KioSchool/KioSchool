@@ -7,6 +7,7 @@ import { getApiErrorCode, isAxiosCancel, requiresGlobalLogout } from './apiError
 import { loadingManager } from './loadingManager';
 import { isReportableError } from './sentryErrorFilter';
 import { isNetworkFailure, NetworkProbeResult, probeNetwork } from './networkProbe';
+import { refreshSession } from './sessionRefresh';
 
 const TIMEOUT_BEFORE_SHOW_LOADING = 500;
 
@@ -116,8 +117,14 @@ export function setupApiInterceptors(
     return response;
   };
 
-  const handleResponseError = async (error: AxiosError): Promise<never> => {
+  const handleResponseError = async (error: AxiosError): Promise<AxiosResponse> => {
     if (error.config) cleanupRequest(error.config);
+
+    // access token(30분)이 만료된 경우다. refresh token으로 다시 발급받아 원래 요청을 한 번 재시도한다.
+    // 성공하면 호출자는 401을 보지 않고, Sentry에도 보고하지 않는다.
+    if (error.config && !error.config.skipAuthRefresh && requiresGlobalLogout(error) && (await refreshSession())) {
+      return api.request({ ...error.config, skipAuthRefresh: true });
+    }
 
     // 로그아웃은 Sentry 보고 여부와 독립된 판단이므로 분류 전에 처리한다.
     if (requiresGlobalLogout(error)) handleAuthError();
