@@ -59,7 +59,7 @@ export default defineConfig({
     ...vitePrerenderPlugin({
       renderTarget: '#root',
       prerenderScript: path.resolve(__dirname, 'src/prerender.tsx'),
-      additionalPrerenderRoutes: ['/info'],
+      additionalPrerenderRoutes: ['/info', '/privacy'],
     }),
     restorePreviewProxyUrl(),
     sentryVitePlugin({

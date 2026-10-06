@@ -1,14 +1,11 @@
 import styled from '@emotion/styled';
-import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
-import { RiCustomerService2Line, RiGithubFill } from '@remixicon/react';
 import { Link } from 'react-router-dom';
-import { colFlex, rowFlex } from '@styles/flexStyles';
-import { URLS } from '@constants/urls';
+import { colFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { captionTypography, headingTypography, subheadingTypography } from '@styles/landingTypography';
 import { Color } from '@resources/colors';
-import { ADMIN_ROUTES, USER_ROUTES } from '@constants/routes';
+import { ADMIN_ROUTES } from '@constants/routes';
 import useMarketingLoginStatus from '@hooks/useMarketingLoginStatus';
 import { trackEvent } from '@utils/analytics';
 import { GA_EVENT } from '@constants/analytics';
@@ -74,39 +71,6 @@ const Reassurance = styled.p`
   ${captionTypography};
 `;
 
-const ContactLinkRow = styled.div`
-  margin-top: 56px;
-  gap: 12px;
-  flex-wrap: wrap;
-  ${rowFlex({ justify: 'center', align: 'center' })};
-`;
-
-const contactLinkStyle = css`
-  padding: 10px 20px;
-  background: #f2f4f6;
-  color: #3c3530;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: 999px;
-  text-decoration: none;
-  gap: 8px;
-  transition: background 0.2s ease, color 0.2s ease;
-  ${rowFlex({ justify: 'center', align: 'center' })};
-
-  &:hover {
-    background: ${Color.KIO_ORANGE};
-    color: ${Color.WHITE};
-  }
-`;
-
-const ContactLink = styled.a`
-  ${contactLinkStyle};
-`;
-
-const InternalContactLink = styled(Link)`
-  ${contactLinkStyle};
-`;
-
 function InfoCtaSection() {
   const isLoggedIn = useMarketingLoginStatus();
 
@@ -128,16 +92,6 @@ function InfoCtaSection() {
           {isLoggedIn ? '어드민 홈으로' : '무료로 시작하기'}
         </CtaButton>
         <Reassurance>별도 비용 없이 시작할 수 있어요</Reassurance>
-        <ContactLinkRow>
-          <ContactLink href={URLS.EXTERNAL.GITHUB} target="_blank" rel="noopener noreferrer" aria-label="키오스쿨 GitHub 저장소 보기">
-            <RiGithubFill size={16} />
-            키오스쿨 GitHub
-          </ContactLink>
-          <InternalContactLink to={USER_ROUTES.CONTACT} aria-label="키오스쿨 문의창구로 이동">
-            <RiCustomerService2Line size={16} />
-            키오스쿨 문의하기
-          </InternalContactLink>
-        </ContactLinkRow>
       </ContentWrapper>
     </Container>
   );

@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import PageSeo from '@components/common/page/PageSeo';
 import { MotionConfig } from 'framer-motion';
 import AppContainer from '@components/common/container/AppContainer';
+import SiteFooter from '@components/common/footer/SiteFooter';
 import { colFlex } from '@styles/flexStyles';
 import { MARKETING_SEO } from '@constants/marketingSeo';
 import HeroSection from '@components/user/home/hero/HeroSection';
@@ -37,6 +38,7 @@ function Home() {
             <CtaSection />
           </>
         </AppContainer>
+        <SiteFooter />
       </LandingWrapper>
     </MotionConfig>
   );

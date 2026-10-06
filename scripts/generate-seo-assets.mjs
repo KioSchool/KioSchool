@@ -5,7 +5,7 @@ const SITE_URL = 'https://kio-school.com';
 const OUTPUT_DIRECTORY = path.resolve(process.cwd(), 'build');
 const ROBOTS_PATH = path.resolve(OUTPUT_DIRECTORY, 'robots.txt');
 const SITEMAP_PATH = path.resolve(OUTPUT_DIRECTORY, 'sitemap.xml');
-const ROUTES = ['/', '/info'];
+const ROUTES = ['/', '/info', '/privacy'];
 const mode = process.argv[2] ?? 'production';
 const isProduction = mode === 'production';
 
