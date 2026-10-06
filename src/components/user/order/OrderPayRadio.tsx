@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import { Link } from 'react-router-dom';
+import { USER_ROUTES } from '@constants/routes';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import NewAppInput from '@components/common/input/NewAppInput';
@@ -71,6 +73,16 @@ const FormHelperText = styled.div`
   color: ${Color.GREY};
   margin-top: 6px;
   line-height: 1.4;
+  text-align: center;
+`;
+
+const PrivacyPolicyLink = styled(Link)`
+  display: block;
+  width: fit-content;
+  margin: 6px auto 0;
+  font-size: 11px;
+  color: ${Color.GREY};
+  text-decoration: underline;
 `;
 
 interface OrderPayRadioProps {
@@ -109,6 +121,9 @@ function OrderPayRadio({ isTossAvailable, isTossPay, setIsTossPay, customerNameR
             <br />
             실제로 송금하시는 분의 이름을 적어주세요.
           </FormHelperText>
+          <PrivacyPolicyLink to={USER_ROUTES.PRIVACY} target="_blank" rel="noopener noreferrer">
+            개인정보처리방침
+          </PrivacyPolicyLink>
         </FormContainer>
       </SectionContainer>
     </OrderPayRadioContainer>
