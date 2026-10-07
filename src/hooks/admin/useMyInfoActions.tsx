@@ -1,21 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import useConfirm from '@hooks/useConfirm';
-import useAdminUser from '@hooks/admin/useAdminUser';
+import useModal from '@hooks/useModal';
 import useAuthentication from '@hooks/useAuthentication';
 import { MyInfoCardData } from '@constants/data/myInfoData';
 import { USER_ROUTES } from '@constants/routes';
 
 export const useMyInfoActions = () => {
   const navigate = useNavigate();
-  const { deleteUser } = useAdminUser();
   const { logout } = useAuthentication();
-
-  const { ConfirmModal: DeleteUserConfirmModal, confirm: deleteUserConfirm } = useConfirm({
-    title: '계정을 탈퇴하시겠습니까?',
-    description: '확인 후 되돌릴 수 없습니다.',
-    okText: '확인',
-    cancelText: '취소',
-  });
+  const { isModalOpen: isWithdrawModalOpen, openModal: openWithdrawModal, closeModal: closeWithdrawModal } = useModal();
 
   const { ConfirmModal: LogoutConfirmModal, confirm: logoutConfirm } = useConfirm({
     title: '로그아웃 하시겠습니까?',
@@ -41,17 +34,15 @@ export const useMyInfoActions = () => {
         break;
 
       case 'deleteAccount':
-        const deleteConfirmed = await deleteUserConfirm();
-        if (deleteConfirmed) {
-          deleteUser();
-        }
+        openWithdrawModal();
         break;
     }
   };
 
   return {
     handleCardAction,
-    DeleteUserConfirmModal,
     LogoutConfirmModal,
+    isWithdrawModalOpen,
+    closeWithdrawModal,
   };
 };
