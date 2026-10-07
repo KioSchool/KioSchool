@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import PageSeo from '@components/common/page/PageSeo';
 import { MotionConfig } from 'framer-motion';
 import AppContainer from '@components/common/container/AppContainer';
+import SiteFooter from '@components/common/footer/SiteFooter';
 import { colFlex } from '@styles/flexStyles';
 import { MARKETING_SEO } from '@constants/marketingSeo';
 import InfoHeroSection from '@components/user/info/InfoHeroSection';
@@ -41,6 +42,7 @@ function Info() {
             <InfoCtaSection />
           </>
         </AppContainer>
+        <SiteFooter />
       </LandingWrapper>
     </MotionConfig>
   );

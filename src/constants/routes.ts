@@ -7,6 +7,7 @@ export const USER_ROUTES = {
   RESET_PASSWORD: '/reset-password',
   INFO: '/info',
   CONTACT: '/contact',
+  PRIVACY: '/privacy',
   EMAIL_DOMAINS: '/email-domains',
 } as const;
 

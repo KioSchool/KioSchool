@@ -8,6 +8,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import NewAppInput from '@components/common/input/NewAppInput';
 import LinkLabel from '@components/common/label/LinkLabel';
+import LegalLinks from '@components/common/footer/LegalLinks';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { Color } from '@resources/colors';
 import { USER_ROUTES } from '@constants/routes';
@@ -26,6 +27,10 @@ const ErrorMessage = styled.div`
 const LinkContainer = styled.div`
   gap: 10px;
   ${rowFlex({ justify: 'center', align: 'center' })};
+`;
+
+const LoginLegalLinks = styled(LegalLinks)`
+  margin-top: 24px;
 `;
 
 const SubmitButton = styled(NewCommonButton)`
@@ -78,6 +83,7 @@ function Login() {
           <LinkLabel text={'비밀번호 찾기'} href={USER_ROUTES.RESET_PASSWORD} />
           <LinkLabel text={'회원가입 하기'} href={USER_ROUTES.REGISTER} />
         </LinkContainer>
+        <LoginLegalLinks />
       </>
     </AppContainer>
   );

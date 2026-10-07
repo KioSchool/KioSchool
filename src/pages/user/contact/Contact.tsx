@@ -1,10 +1,13 @@
 import styled from '@emotion/styled';
 import AppContainer from '@components/common/container/AppContainer';
+import SiteFooter from '@components/common/footer/SiteFooter';
 import ContactFaqCard from '@components/user/contact/ContactFaqCard';
 import ContactInquiryForm from '@components/user/contact/ContactInquiryForm';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
+
+const Page = styled.div``;
 
 const PageContent = styled.main`
   max-width: 720px;
@@ -53,17 +56,20 @@ const Description = styled.p`
 
 function Contact() {
   return (
-    <AppContainer useFlex={colFlex({ align: 'center' })} customWidth="100%" useTitle={false} backgroundColor="#f8f9fa">
-      <PageContent>
-        <Header>
-          <Eyebrow>CONTACT</Eyebrow>
-          <Title>키오스쿨 문의하기</Title>
-          <Description>서비스 이용 중 궁금한 점이나 불편한 내용을 남겨주시면 입력하신 이메일로 답변드리겠습니다.</Description>
-        </Header>
-        <ContactFaqCard />
-        <ContactInquiryForm />
-      </PageContent>
-    </AppContainer>
+    <Page>
+      <AppContainer useFlex={colFlex({ align: 'center' })} customWidth="100%" useTitle={false} useFullHeight={true} backgroundColor="#f8f9fa">
+        <PageContent>
+          <Header>
+            <Eyebrow>CONTACT</Eyebrow>
+            <Title>키오스쿨 문의하기</Title>
+            <Description>서비스 이용 중 궁금한 점이나 불편한 내용을 남겨주시면 입력하신 이메일로 답변드리겠습니다.</Description>
+          </Header>
+          <ContactFaqCard />
+          <ContactInquiryForm />
+        </PageContent>
+      </AppContainer>
+      <SiteFooter />
+    </Page>
   );
 }
 

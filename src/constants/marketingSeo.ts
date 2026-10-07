@@ -93,7 +93,7 @@ const SERVICE_SCHEMA: MarketingServiceSchema = {
   url: `${URLS.EXTERNAL.KIO_SCHOOL}/info`,
 };
 
-export type MarketingSeoKey = 'home' | 'info';
+export type MarketingSeoKey = 'home' | 'info' | 'privacy';
 
 type MarketingSeoConfig = Record<MarketingSeoKey, MarketingSeoConfigEntry>;
 
@@ -112,10 +112,22 @@ export const MARKETING_SEO: MarketingSeoConfig = {
     ogImageUrl: MARKETING_OG_IMAGE_URL,
     structuredData: [ORGANIZATION_SCHEMA, SERVICE_SCHEMA],
   },
+  privacy: {
+    title: '개인정보처리방침 | 키오스쿨',
+    description: '키오스쿨이 처리하는 개인정보의 항목과 목적, 보유 기간, 이용자의 권리를 안내합니다.',
+    canonicalUrl: `${URLS.EXTERNAL.KIO_SCHOOL}/privacy`,
+    ogImageUrl: MARKETING_OG_IMAGE_URL,
+    structuredData: [ORGANIZATION_SCHEMA],
+  },
+};
+
+const MARKETING_SEO_KEY_BY_PATHNAME: Record<string, MarketingSeoKey> = {
+  '/info': 'info',
+  '/privacy': 'privacy',
 };
 
 export function getMarketingSeoKeyByPathname(pathname: string): MarketingSeoKey {
-  return pathname === '/info' ? 'info' : 'home';
+  return MARKETING_SEO_KEY_BY_PATHNAME[pathname] ?? 'home';
 }
 
 export function getMarketingSeoByPathname(pathname: string): MarketingSeoConfigEntry {

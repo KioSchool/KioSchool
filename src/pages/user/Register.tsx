@@ -9,6 +9,7 @@ import NewAppInput from '@components/common/input/NewAppInput';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { Color } from '@resources/colors';
 import LinkLabel from '@components/common/label/LinkLabel';
+import LegalLinks from '@components/common/footer/LegalLinks';
 import { USER_ROUTES } from '@constants/routes';
 
 const FormContainer = styled.form`
@@ -18,6 +19,10 @@ const FormContainer = styled.form`
 `;
 
 const PasswordContainer = styled.div``;
+
+const RegisterLegalLinks = styled(LegalLinks)`
+  margin-top: 32px;
+`;
 
 const EmailContainer = styled.div`
   width: 100%;
@@ -285,6 +290,7 @@ function Register() {
           <NewCommonButton size={'sm'}>회원가입</NewCommonButton>
         </FormContainer>
         <LinkLabel text={'로그인하기'} href={USER_ROUTES.LOGIN} style={{ marginTop: '20px' }} />
+        <RegisterLegalLinks />
       </>
     </AppContainer>
   );
