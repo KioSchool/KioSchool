@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 
 const Container = styled.div<{ height?: number; compact?: boolean }>`
-  min-height: ${({ height, compact }) => height ?? (compact ? 104 : 123)}px;
+  min-height: ${({ height, compact }) => height ?? (compact ? 116 : 123)}px;
   min-width: ${({ compact }) => (compact ? 0 : 193)}px;
   flex: 1;
   box-shadow: 0px 4px 20px rgba(92, 92, 92, 0.05);
@@ -11,12 +11,12 @@ const Container = styled.div<{ height?: number; compact?: boolean }>`
   background-color: #fff;
   border: 1px solid #eaeaea;
   box-sizing: border-box;
-  padding: ${({ compact }) => (compact ? '10px 14px' : '14px 21px')};
+  padding: ${({ compact }) => (compact ? '12px 14px' : '14px 21px')};
   position: relative;
   isolation: isolate;
-  gap: ${({ compact }) => (compact ? '4px' : '8px')};
+  gap: ${({ compact }) => (compact ? '6px' : '8px')};
   overflow: hidden;
-  ${colFlex({ align: 'start' })}
+  ${({ compact }) => colFlex({ align: 'start', justify: compact ? 'space-between' : undefined })}
 `;
 
 const BackgroundHighlight = styled.div<{ rate: number }>`
