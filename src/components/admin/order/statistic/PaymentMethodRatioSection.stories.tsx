@@ -104,14 +104,30 @@ export const WithUnknown: Story = {
 
 export const UnknownOnly: Story = {
   args: { statistics: { tossCount: 0, bankTransferCount: 0, unknownCount: 12, tossRatio: 0, bankTransferRatio: 0 } },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('결제수단이 기록된 주문이 없습니다.')).toBeVisible();
+    await expect(canvas.queryByText('결제 완료 주문 건수 기준')).not.toBeInTheDocument();
+    await expect(canvas.queryByText('결제수단 미기록 12건 제외')).not.toBeInTheDocument();
+  },
 };
 
 export const Empty: Story = {
   args: { statistics: { tossCount: 0, bankTransferCount: 0, unknownCount: 0, tossRatio: 0, bankTransferRatio: 0 } },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('결제 완료 주문이 없습니다.')).toBeVisible();
+    await expect(canvas.queryByText('결제 완료 주문 건수 기준')).not.toBeInTheDocument();
+  },
 };
 
 export const Loading: Story = {
   args: { statistics: null, isLoading: true },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('결제수단 비율을 불러오는 중입니다.')).toBeVisible();
+    await expect(canvas.queryByText('결제 완료 주문 건수 기준')).not.toBeInTheDocument();
+  },
 };
 
 export const Error: Story = {
@@ -125,6 +141,12 @@ export const Error: Story = {
 
 export const RefreshError: Story = {
   args: { hasError: true },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('결제수단 비율을 갱신하지 못했습니다.')).toBeVisible();
+    await expect(canvas.queryByText('결제 완료 주문 건수 기준')).not.toBeInTheDocument();
+    await expect(canvas.queryByText('토스 65.0% · 65건')).not.toBeInTheDocument();
+  },
 };
 
 export const Refreshing: Story = {

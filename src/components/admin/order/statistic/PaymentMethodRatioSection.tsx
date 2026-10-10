@@ -109,16 +109,16 @@ function PaymentMethodRatioSection({ statistics, isLoading, hasError, onRetry }:
   const hasRecordedOrders = recordedCount > 0;
   const unknownCount = statistics?.unknownCount ?? 0;
   const emptyMessage = unknownCount > 0 ? '결제수단이 기록된 주문이 없습니다.' : '결제 완료 주문이 없습니다.';
-  const errorMessage = statistics ? '결제수단 비율을 갱신하지 못했습니다. 이전 결과를 표시합니다.' : '결제수단 비율을 불러오지 못했습니다.';
+  const errorMessage = statistics ? '결제수단 비율을 갱신하지 못했습니다.' : '결제수단 비율을 불러오지 못했습니다.';
 
   return (
     <Container aria-label="결제수단별 주문 비율" aria-busy={isLoading}>
       <ContentCard title="결제수단별 주문 비율" showDivider={false}>
         <Content>
-          <Description>결제 완료 주문 건수 기준</Description>
-          {isLoading && <Description role="status">결제수단 비율을 불러오는 중입니다.</Description>}
-          {statistics && hasRecordedOrders && (
+          {!hasError && isLoading && !statistics && <Description role="status">결제수단 비율을 불러오는 중입니다.</Description>}
+          {!hasError && statistics && hasRecordedOrders && (
             <>
+              <Description>결제 완료 주문 건수 기준</Description>
               <Track aria-hidden="true">
                 <Segment ratio={statistics.tossRatio} color={Color.BLUE} />
                 <Segment ratio={statistics.bankTransferRatio} color={Color.KIO_ORANGE} />
@@ -139,10 +139,10 @@ function PaymentMethodRatioSection({ statistics, isLoading, hasError, onRetry }:
                   </Value>
                 </LegendItem>
               </Legend>
+              {unknownCount > 0 && <Description>결제수단 미기록 {unknownCount.toLocaleString()}건 제외</Description>}
             </>
           )}
-          {statistics && !hasRecordedOrders && <Status>{emptyMessage}</Status>}
-          {unknownCount > 0 && <Description>결제수단 미기록 {unknownCount.toLocaleString()}건 제외</Description>}
+          {!hasError && statistics && !hasRecordedOrders && <Status>{emptyMessage}</Status>}
           {hasError && (
             <ErrorNotice role="status">
               <Value>{errorMessage}</Value>
