@@ -16,7 +16,7 @@ const Container = styled.div<{ height?: number; compact?: boolean }>`
   isolation: isolate;
   gap: ${({ compact }) => (compact ? '6px' : '8px')};
   overflow: hidden;
-  ${({ compact }) => colFlex({ align: 'start', justify: compact ? 'space-between' : undefined })}
+  ${({ compact }) => colFlex({ align: 'start', justify: compact ? 'center' : undefined })}
 `;
 
 const BackgroundHighlight = styled.div<{ rate: number }>`
