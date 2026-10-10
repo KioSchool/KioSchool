@@ -1,24 +1,38 @@
 import styled from '@emotion/styled';
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, fn, userEvent, within } from '@storybook/test';
+import StatCard from '@components/common/card/StatCard';
 import { Color } from '@resources/colors';
-import PaymentMethodRatioSection from './PaymentMethodRatioSection';
+import { rowFlex } from '@styles/flexStyles';
+import TossPaymentRatioCard from './TossPaymentRatioCard';
 
-const StoryContainer = styled.div`
+const StoryContainer = styled.div<{ wide: boolean }>`
   width: 100%;
-  max-width: 1100px;
+  max-width: ${({ wide }) => (wide ? '1200px' : '260px')};
   box-sizing: border-box;
   padding: 16px;
   background-color: ${Color.LIGHT_GREY};
 `;
 
-const meta: Meta<typeof PaymentMethodRatioSection> = {
-  title: 'Admin/Order/Statistic/PaymentMethodRatioSection',
-  component: PaymentMethodRatioSection,
+const SummaryRow = styled.div`
+  width: 100%;
+  gap: 12px;
+  flex-wrap: wrap;
+  ${rowFlex()}
+
+  & > * {
+    flex: 1;
+    width: auto;
+  }
+`;
+
+const meta: Meta<typeof TossPaymentRatioCard> = {
+  title: 'Admin/Order/Statistic/TossPaymentRatioCard',
+  component: TossPaymentRatioCard,
   parameters: { layout: 'fullscreen' },
   decorators: [
-    (Story) => (
-      <StoryContainer>
+    (Story, context) => (
+      <StoryContainer wide={context.parameters.wide === true}>
         <Story />
       </StoryContainer>
     ),
@@ -32,13 +46,13 @@ const meta: Meta<typeof PaymentMethodRatioSection> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof PaymentMethodRatioSection>;
+type Story = StoryObj<typeof TossPaymentRatioCard>;
 
 export const Mixed: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByText('토스 65.0% · 65건')).toBeVisible();
-    await expect(canvas.getByText('계좌 35.0% · 35건')).toBeVisible();
+    await expect(canvas.getByText('65.0', { exact: false })).toBeVisible();
+    await expect(canvas.getByText('토스 65건')).toBeVisible();
   },
 };
 
@@ -74,7 +88,7 @@ export const Error: Story = {
   args: { statistics: null, hasError: true },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
-    await userEvent.click(canvas.getByRole('button', { name: '재시도' }));
+    await userEvent.click(canvas.getByRole('button', { name: '조회 실패 · 재시도' }));
     await expect(args.onRetry).toHaveBeenCalledTimes(1);
   },
 };
@@ -90,4 +104,19 @@ export const Refreshing: Story = {
 export const Narrow: Story = {
   parameters: { viewport: { defaultViewport: 'iphone6' } },
   args: { statistics: { tossCount: 650000, bankTransferCount: 350000, unknownCount: 10000, tossRatio: 65, bankTransferRatio: 35 } },
+};
+
+export const InSummaryRow: Story = {
+  parameters: { wide: true },
+  render: function SummaryRowStory(args) {
+    return (
+      <SummaryRow>
+        <StatCard title="총 주문 건수" value="100" unit="건" description="총 판매된 상품 수량은 250개입니다." descriptionHighlight="250개" />
+        <StatCard title="총 매출액" value="1,500,000" unit="원" description="평균 주문 금액은 15,000원입니다." descriptionHighlight="15,000원" />
+        <StatCard title="전일 대비 주문 증감률" value="+12.0" unit="%" description="전일 대비 10건의 주문이 증가했습니다." descriptionHighlight="10건" />
+        <StatCard title="테이블 회전율" value="3.5" unit="회전" description="평균 테이블 이용 시간은 45분입니다." descriptionHighlight="45분" />
+        <TossPaymentRatioCard {...args} />
+      </SummaryRow>
+    );
+  },
 };

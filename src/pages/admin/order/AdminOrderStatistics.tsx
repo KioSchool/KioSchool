@@ -12,7 +12,7 @@ import ContentCard from '@components/common/card/ContentCard';
 import RefreshSpinIcon from '@components/common/refresh/RefreshSpinIcon';
 import HourlySalesChart from '@components/admin/order/statistic/HourlySalesChart';
 import PopularProductsSection from '@components/admin/order/statistic/PopularProductsSection';
-import PaymentMethodRatioSection from '@components/admin/order/statistic/PaymentMethodRatioSection';
+import TossPaymentRatioCard from '@components/admin/order/statistic/TossPaymentRatioCard';
 import InsightCard from '@components/admin/workspace/dashboard/InsightCard';
 import ShareSupportModal from '@components/admin/insight/ShareSupportModal';
 import { STATISTICS_POLLING_MINUTES, useAdminFetchDailyStatistics } from '@hooks/admin/useAdminFetchDailyStatistics';
@@ -48,6 +48,7 @@ const UpdateLabel = styled.span`
 
 const StatCardRow = styled.div`
   width: 100%;
+  flex-wrap: wrap;
   gap: 12px;
   ${rowFlex()}
 
@@ -130,46 +131,47 @@ function AdminOrderStatistics() {
 
         {isStatisticsLoading && !statistics && <UpdateLabel>로딩 중...</UpdateLabel>}
 
-        {statistics && (
-          <StatCardRow>
-            <StatCard
-              title="총 주문 건수"
-              value={statistics.totalOrders.toLocaleString()}
-              description={`총 판매된 상품 수량은 ${statistics.totalSalesVolume}개입니다.`}
-              descriptionHighlight={`${statistics.totalSalesVolume}개`}
-              unit="건"
-            />
-            <StatCard
-              title="총 매출액"
-              value={statistics.totalRevenue.toLocaleString()}
-              description={`평균 주문 금액은 ${statistics.averageOrderAmount.toLocaleString()}원입니다.`}
-              descriptionHighlight={`${statistics.averageOrderAmount.toLocaleString()}원`}
-              unit="원"
-            />
-            <StatCard
-              title="전일 대비 주문 증감률"
-              value={comparisonValue}
-              description={comparisonDescription}
-              descriptionHighlight={comparisonHighlight}
-              valueColor={comparisonColor}
-              unit="%"
-            />
-            <StatCard
-              title="테이블 회전율"
-              value={statistics.tableTurnoverRate.toFixed(1)}
-              description={`평균 테이블 이용 시간은 ${formatMinutesToTime(statistics.averageStayTimeMinutes)}입니다.`}
-              descriptionHighlight={formatMinutesToTime(statistics.averageStayTimeMinutes)}
-              unit="회전"
-            />
-          </StatCardRow>
-        )}
-
-        <PaymentMethodRatioSection
-          statistics={paymentMethodStatistics}
-          isLoading={isPaymentMethodLoading}
-          hasError={hasPaymentMethodError}
-          onRetry={manualRefetch}
-        />
+        <StatCardRow>
+          {statistics && (
+            <>
+              <StatCard
+                title="총 주문 건수"
+                value={statistics.totalOrders.toLocaleString()}
+                description={`총 판매된 상품 수량은 ${statistics.totalSalesVolume}개입니다.`}
+                descriptionHighlight={`${statistics.totalSalesVolume}개`}
+                unit="건"
+              />
+              <StatCard
+                title="총 매출액"
+                value={statistics.totalRevenue.toLocaleString()}
+                description={`평균 주문 금액은 ${statistics.averageOrderAmount.toLocaleString()}원입니다.`}
+                descriptionHighlight={`${statistics.averageOrderAmount.toLocaleString()}원`}
+                unit="원"
+              />
+              <StatCard
+                title="전일 대비 주문 증감률"
+                value={comparisonValue}
+                description={comparisonDescription}
+                descriptionHighlight={comparisonHighlight}
+                valueColor={comparisonColor}
+                unit="%"
+              />
+              <StatCard
+                title="테이블 회전율"
+                value={statistics.tableTurnoverRate.toFixed(1)}
+                description={`평균 테이블 이용 시간은 ${formatMinutesToTime(statistics.averageStayTimeMinutes)}입니다.`}
+                descriptionHighlight={formatMinutesToTime(statistics.averageStayTimeMinutes)}
+                unit="회전"
+              />
+            </>
+          )}
+          <TossPaymentRatioCard
+            statistics={paymentMethodStatistics}
+            isLoading={isPaymentMethodLoading}
+            hasError={hasPaymentMethodError}
+            onRetry={manualRefetch}
+          />
+        </StatCardRow>
 
         {statistics && (
           <SectionRow>

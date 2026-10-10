@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { P, match } from 'ts-pattern';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
@@ -59,7 +60,7 @@ interface StatCardProps {
   title: string;
   value: string | number;
   unit?: string;
-  description?: string;
+  description?: ReactNode;
   descriptionHighlight?: string;
   highlightRate?: number;
   height?: number;
@@ -69,7 +70,7 @@ interface StatCardProps {
 function StatCard({ title, value, unit, description, descriptionHighlight, highlightRate, height, valueColor }: StatCardProps) {
   const renderDescription = () => {
     if (!description) return null;
-    if (!descriptionHighlight || !description.includes(descriptionHighlight)) {
+    if (typeof description !== 'string' || !descriptionHighlight || !description.includes(descriptionHighlight)) {
       return <Description>{description}</Description>;
     }
     const index = description.indexOf(descriptionHighlight);
