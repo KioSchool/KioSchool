@@ -49,6 +49,7 @@ const UpdateLabel = styled.span`
 
 const StatCardGrid = styled.div`
   width: 100%;
+  align-self: start;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;

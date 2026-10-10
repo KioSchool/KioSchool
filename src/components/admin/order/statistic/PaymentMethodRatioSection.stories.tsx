@@ -41,6 +41,7 @@ const StatCardGrid = styled.div`
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
   width: 100%;
+  align-self: start;
 
   & > * {
     min-width: 0;
