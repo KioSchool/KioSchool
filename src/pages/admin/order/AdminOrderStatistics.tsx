@@ -12,9 +12,10 @@ import ContentCard from '@components/common/card/ContentCard';
 import RefreshSpinIcon from '@components/common/refresh/RefreshSpinIcon';
 import HourlySalesChart from '@components/admin/order/statistic/HourlySalesChart';
 import PopularProductsSection from '@components/admin/order/statistic/PopularProductsSection';
+import PaymentMethodRatioSection from '@components/admin/order/statistic/PaymentMethodRatioSection';
 import InsightCard from '@components/admin/workspace/dashboard/InsightCard';
 import ShareSupportModal from '@components/admin/insight/ShareSupportModal';
-import { useAdminFetchDailyStatistics } from '@hooks/admin/useAdminFetchDailyStatistics';
+import { STATISTICS_POLLING_MINUTES, useAdminFetchDailyStatistics } from '@hooks/admin/useAdminFetchDailyStatistics';
 import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { formatMinutesToTime } from '@utils/formatDate';
 import { Color } from '@resources/colors';
@@ -84,7 +85,17 @@ const isValidDate = (dateStr: string) => !isNaN(new Date(dateStr).getTime());
 
 function AdminOrderStatistics() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { selectedDate, setSelectedDate, statistics, isLoading, manualRefetch } = useAdminFetchDailyStatistics(workspaceId);
+  const {
+    selectedDate,
+    setSelectedDate,
+    statistics,
+    paymentMethodStatistics,
+    isStatisticsLoading,
+    isPaymentMethodLoading,
+    hasPaymentMethodError,
+    isLoading,
+    manualRefetch,
+  } = useAdminFetchDailyStatistics(workspaceId);
   const workspace = useAtomValue(adminWorkspaceAtom);
   const [shareCard, setShareCard] = useState<InsightCardResponse | null>(null);
   const insightEnabled = import.meta.env.VITE_INSIGHT_CARD_ENABLED === 'true';
@@ -106,17 +117,18 @@ function AdminOrderStatistics() {
           <CustomSelect value={dateLabel} triggerLabel={dateLabel} highlightOnSelect={true} width="160px">
             <CustomDatePicker mode="single" selectedDate={selectedDate} onDateChange={setSelectedDate} />
           </CustomSelect>
-          {statistics?.lastUpdated && isValidDate(statistics.lastUpdated) && (
-            <UpdateInfo>
-              <UpdateLabel>최종 업데이트 {format(new Date(statistics.lastUpdated), 'HH:mm')} · 5분마다 자동 갱신</UpdateLabel>
-              <RefreshSpinIcon isLoading={isLoading} onClick={manualRefetch} />
-            </UpdateInfo>
-          )}
+          <UpdateInfo>
+            <UpdateLabel>
+              {statistics?.lastUpdated && isValidDate(statistics.lastUpdated) && `최종 업데이트 ${format(new Date(statistics.lastUpdated), 'HH:mm')} · `}
+              {STATISTICS_POLLING_MINUTES}분마다 자동 갱신
+            </UpdateLabel>
+            <RefreshSpinIcon isLoading={isLoading} onClick={manualRefetch} />
+          </UpdateInfo>
         </FilterContainer>
 
         {insightEnabled && workspaceId && <InsightCard workspaceId={workspaceId} workspaceName={workspace.name} onShareClick={setShareCard} />}
 
-        {isLoading && !statistics && <UpdateLabel>로딩 중...</UpdateLabel>}
+        {isStatisticsLoading && !statistics && <UpdateLabel>로딩 중...</UpdateLabel>}
 
         {statistics && (
           <StatCardRow>
@@ -151,6 +163,13 @@ function AdminOrderStatistics() {
             />
           </StatCardRow>
         )}
+
+        <PaymentMethodRatioSection
+          statistics={paymentMethodStatistics}
+          isLoading={isPaymentMethodLoading}
+          hasError={hasPaymentMethodError}
+          onRetry={manualRefetch}
+        />
 
         {statistics && (
           <SectionRow>
