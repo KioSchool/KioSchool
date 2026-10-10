@@ -5,6 +5,7 @@ import StatCard from '@components/common/card/StatCard';
 import ContentCard from '@components/common/card/ContentCard';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
+import { mobileMediaQuery } from '@styles/globalStyles';
 import PaymentMethodRatioSection from './PaymentMethodRatioSection';
 
 const StoryContainer = styled.div`
@@ -29,17 +30,25 @@ const LayoutRow = styled.div`
   & > * {
     min-width: 0;
   }
+
+  ${mobileMediaQuery} {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const StatCardGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
   width: 100%;
 
   & > * {
     min-width: 0;
     width: 100%;
+  }
+
+  ${mobileMediaQuery} {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 `;
 
@@ -133,10 +142,10 @@ export const InStatisticsLayout: Story = {
       <LayoutPreview>
         <LayoutRow>
           <StatCardGrid>
-            <StatCard title="총 주문 건수" value="248" description="판매된 상품 631개" descriptionHighlight="631개" unit="건" />
-            <StatCard title="총 매출액" value="4,862,000" description="평균 주문 금액 19,605원" descriptionHighlight="19,605원" unit="원" />
-            <StatCard title="전일 대비 매출 증감률" value="+12.4" description="전일 대비 주문 18건 증가" descriptionHighlight="18건" unit="%" />
-            <StatCard title="테이블 회전율" value="3.2" description="평균 테이블 이용 시간 43분" descriptionHighlight="43분" unit="회전" />
+            <StatCard title="총 주문 건수" value="248" description="판매된 상품 631개" descriptionHighlight="631개" unit="건" compact />
+            <StatCard title="총 매출액" value="4,862,000" description="평균 주문 금액 19,605원" descriptionHighlight="19,605원" unit="원" compact />
+            <StatCard title="전일 대비 매출 증감률" value="+12.4" description="전일 대비 주문 18건 증가" descriptionHighlight="18건" unit="%" compact />
+            <StatCard title="테이블 회전율" value="3.2" description="평균 테이블 이용 시간 43분" descriptionHighlight="43분" unit="회전" compact />
           </StatCardGrid>
           <PaymentMethodRatioSection {...args} />
         </LayoutRow>

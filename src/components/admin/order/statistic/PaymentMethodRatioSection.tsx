@@ -17,7 +17,7 @@ const Container = styled.section`
 
 const Content = styled.div`
   height: 100%;
-  gap: 14px;
+  gap: 10px;
   padding-top: 4px;
   ${colFlex({ justify: 'center' })}
 `;
@@ -30,7 +30,7 @@ const Description = styled.p`
 
 const Track = styled.div`
   width: 100%;
-  height: 20px;
+  height: 14px;
   flex-shrink: 0;
   border-radius: 6px;
   overflow: hidden;
@@ -44,20 +44,21 @@ const Segment = styled.div<{ ratio: number; color: string }>`
 `;
 
 const Legend = styled.div`
-  gap: 10px;
-  ${colFlex()}
+  gap: 8px;
+  flex-wrap: wrap;
+  ${rowFlex({ justify: 'space-between' })}
 `;
 
 const LegendItem = styled.div`
-  gap: 8px;
+  gap: 5px;
   color: ${Color.TEXT_STRONG};
-  font-size: 14px;
+  font-size: 12px;
   ${rowFlex({ align: 'center' })}
 `;
 
 const Marker = styled.span<{ color: string }>`
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   flex-shrink: 0;
   border-radius: 3px;
   background-color: ${({ color }) => color};

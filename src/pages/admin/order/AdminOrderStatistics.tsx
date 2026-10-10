@@ -5,6 +5,7 @@ import { useAtomValue } from 'jotai';
 import { format } from 'date-fns';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { mobileMediaQuery } from '@styles/globalStyles';
 import CustomSelect from '@components/common/select/CustomSelect';
 import CustomDatePicker from '@components/common/date-picker/CustomDatePicker';
 import StatCard from '@components/common/card/StatCard';
@@ -49,12 +50,16 @@ const UpdateLabel = styled.span`
 const StatCardGrid = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
 
   & > * {
     min-width: 0;
     width: 100%;
+  }
+
+  ${mobileMediaQuery} {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 `;
 
@@ -66,6 +71,10 @@ const SectionRow = styled.div`
 
   & > * {
     min-width: 0;
+  }
+
+  ${mobileMediaQuery} {
+    grid-template-columns: 1fr;
   }
 `;
 
@@ -132,6 +141,7 @@ function AdminOrderStatistics() {
               <>
                 <StatCard
                   title="총 주문 건수"
+                  compact
                   value={statistics.totalOrders.toLocaleString()}
                   description={`판매된 상품 ${statistics.totalSalesVolume.toLocaleString()}개`}
                   descriptionHighlight={`${statistics.totalSalesVolume.toLocaleString()}개`}
@@ -139,6 +149,7 @@ function AdminOrderStatistics() {
                 />
                 <StatCard
                   title="총 매출액"
+                  compact
                   value={statistics.totalRevenue.toLocaleString()}
                   description={`평균 주문 금액 ${statistics.averageOrderAmount.toLocaleString()}원`}
                   descriptionHighlight={`${statistics.averageOrderAmount.toLocaleString()}원`}
@@ -146,6 +157,7 @@ function AdminOrderStatistics() {
                 />
                 <StatCard
                   title="전일 대비 매출 증감률"
+                  compact
                   value={comparisonValue}
                   description={comparisonDescription}
                   descriptionHighlight={comparisonHighlight}
@@ -154,6 +166,7 @@ function AdminOrderStatistics() {
                 />
                 <StatCard
                   title="테이블 회전율"
+                  compact
                   value={statistics.tableTurnoverRate.toFixed(1)}
                   description={`평균 테이블 이용 시간 ${formatMinutesToTime(statistics.averageStayTimeMinutes)}`}
                   descriptionHighlight={formatMinutesToTime(statistics.averageStayTimeMinutes)}
