@@ -12,7 +12,7 @@ import ContentCard from '@components/common/card/ContentCard';
 import RefreshSpinIcon from '@components/common/refresh/RefreshSpinIcon';
 import HourlySalesChart from '@components/admin/order/statistic/HourlySalesChart';
 import PopularProductsSection from '@components/admin/order/statistic/PopularProductsSection';
-import TossPaymentRatioCard from '@components/admin/order/statistic/TossPaymentRatioCard';
+import PaymentMethodRatioSection from '@components/admin/order/statistic/PaymentMethodRatioSection';
 import InsightCard from '@components/admin/workspace/dashboard/InsightCard';
 import ShareSupportModal from '@components/admin/insight/ShareSupportModal';
 import { STATISTICS_POLLING_MINUTES, useAdminFetchDailyStatistics } from '@hooks/admin/useAdminFetchDailyStatistics';
@@ -46,30 +46,25 @@ const UpdateLabel = styled.span`
   color: #939393;
 `;
 
-const StatCardRow = styled.div`
+const StatCardGrid = styled.div`
   width: 100%;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
-  ${rowFlex()}
 
   & > * {
-    flex: 1;
-    width: auto;
+    min-width: 0;
+    width: 100%;
   }
 `;
 
 const SectionRow = styled.div`
   width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 3fr);
   gap: 12px;
-  ${rowFlex()}
 
-  & > *:first-of-type {
-    flex: 7;
-    min-width: 0;
-  }
-
-  & > *:last-of-type {
-    flex: 3;
+  & > * {
     min-width: 0;
   }
 `;
@@ -107,7 +102,7 @@ function AdminOrderStatistics() {
   const orderDiff = Math.abs(comparison?.orderCountDifference ?? 0);
   const orderDiffDirection = (comparison?.orderCountDifference ?? 0) >= 0 ? '증가' : '감소';
   const comparisonValue = comparison ? formatWithSign(comparison.revenueGrowthRate, (v) => v.toFixed(1)) : '-';
-  const comparisonDescription = comparison ? `전일 대비 ${orderDiff}건의 주문이 ${orderDiffDirection}했습니다.` : '비교 데이터가 없습니다.';
+  const comparisonDescription = comparison ? `전일 대비 주문 ${orderDiff}건 ${orderDiffDirection}` : '비교 데이터가 없습니다.';
   const comparisonHighlight = comparison ? `${orderDiff}건` : undefined;
   const comparisonColor = comparison ? getComparisonColor(comparison.revenueGrowthRate) : undefined;
 
@@ -131,47 +126,49 @@ function AdminOrderStatistics() {
 
         {isStatisticsLoading && !statistics && <UpdateLabel>로딩 중...</UpdateLabel>}
 
-        <StatCardRow>
-          {statistics && (
-            <>
-              <StatCard
-                title="총 주문 건수"
-                value={statistics.totalOrders.toLocaleString()}
-                description={`총 판매된 상품 수량은 ${statistics.totalSalesVolume}개입니다.`}
-                descriptionHighlight={`${statistics.totalSalesVolume}개`}
-                unit="건"
-              />
-              <StatCard
-                title="총 매출액"
-                value={statistics.totalRevenue.toLocaleString()}
-                description={`평균 주문 금액은 ${statistics.averageOrderAmount.toLocaleString()}원입니다.`}
-                descriptionHighlight={`${statistics.averageOrderAmount.toLocaleString()}원`}
-                unit="원"
-              />
-              <StatCard
-                title="전일 대비 주문 증감률"
-                value={comparisonValue}
-                description={comparisonDescription}
-                descriptionHighlight={comparisonHighlight}
-                valueColor={comparisonColor}
-                unit="%"
-              />
-              <StatCard
-                title="테이블 회전율"
-                value={statistics.tableTurnoverRate.toFixed(1)}
-                description={`평균 테이블 이용 시간은 ${formatMinutesToTime(statistics.averageStayTimeMinutes)}입니다.`}
-                descriptionHighlight={formatMinutesToTime(statistics.averageStayTimeMinutes)}
-                unit="회전"
-              />
-            </>
-          )}
-          <TossPaymentRatioCard
+        <SectionRow>
+          <StatCardGrid>
+            {statistics && (
+              <>
+                <StatCard
+                  title="총 주문 건수"
+                  value={statistics.totalOrders.toLocaleString()}
+                  description={`판매된 상품 ${statistics.totalSalesVolume.toLocaleString()}개`}
+                  descriptionHighlight={`${statistics.totalSalesVolume.toLocaleString()}개`}
+                  unit="건"
+                />
+                <StatCard
+                  title="총 매출액"
+                  value={statistics.totalRevenue.toLocaleString()}
+                  description={`평균 주문 금액 ${statistics.averageOrderAmount.toLocaleString()}원`}
+                  descriptionHighlight={`${statistics.averageOrderAmount.toLocaleString()}원`}
+                  unit="원"
+                />
+                <StatCard
+                  title="전일 대비 매출 증감률"
+                  value={comparisonValue}
+                  description={comparisonDescription}
+                  descriptionHighlight={comparisonHighlight}
+                  valueColor={comparisonColor}
+                  unit="%"
+                />
+                <StatCard
+                  title="테이블 회전율"
+                  value={statistics.tableTurnoverRate.toFixed(1)}
+                  description={`평균 테이블 이용 시간 ${formatMinutesToTime(statistics.averageStayTimeMinutes)}`}
+                  descriptionHighlight={formatMinutesToTime(statistics.averageStayTimeMinutes)}
+                  unit="회전"
+                />
+              </>
+            )}
+          </StatCardGrid>
+          <PaymentMethodRatioSection
             statistics={paymentMethodStatistics}
             isLoading={isPaymentMethodLoading}
             hasError={hasPaymentMethodError}
             onRetry={manualRefetch}
           />
-        </StatCardRow>
+        </SectionRow>
 
         {statistics && (
           <SectionRow>
