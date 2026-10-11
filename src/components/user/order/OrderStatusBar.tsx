@@ -15,13 +15,21 @@ const Container = styled.div`
 
 const LabelsContainer = styled.div`
   width: 100%;
-  ${rowFlex({ justify: 'space-between' })}
+  ${rowFlex()}
 `;
 
 const Label = styled.div<{ active: boolean }>`
+  flex: 1;
   font-size: 13px;
   font-weight: 400;
+  text-align: center;
   color: ${({ active }) => (active ? Color.BLACK : Color.GREY)};
+  &:first-of-type {
+    text-align: left;
+  }
+  &:last-of-type {
+    text-align: right;
+  }
 `;
 
 const ProgressBarContainer = styled.div`
