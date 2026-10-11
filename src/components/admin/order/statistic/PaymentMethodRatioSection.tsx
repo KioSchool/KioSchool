@@ -17,8 +17,7 @@ const Container = styled.section`
 
 const Content = styled.div`
   height: 100%;
-  gap: 10px;
-  padding-top: 4px;
+  gap: 8px;
   ${colFlex({ justify: 'center' })}
 `;
 
@@ -112,13 +111,12 @@ function PaymentMethodRatioSection({ statistics, isLoading, hasError, onRetry }:
   const errorMessage = statistics ? '결제수단 비율을 갱신하지 못했습니다.' : '결제수단 비율을 불러오지 못했습니다.';
 
   return (
-    <Container aria-label="결제수단별 주문 비율" aria-busy={isLoading}>
-      <ContentCard title="결제수단별 주문 비율" showDivider={false}>
+    <Container aria-label="결제수단별 주문" aria-busy={isLoading}>
+      <ContentCard title="결제수단별 주문" showDivider={false} rightAction={<Description>결제 완료 주문 건수 기준</Description>}>
         <Content>
           {!hasError && isLoading && !statistics && <Description role="status">결제수단 비율을 불러오는 중입니다.</Description>}
           {!hasError && statistics && hasRecordedOrders && (
             <>
-              <Description>결제 완료 주문 건수 기준</Description>
               <Track aria-hidden="true">
                 <Segment ratio={statistics.tossRatio} color={Color.BLUE} />
                 <Segment ratio={statistics.bankTransferRatio} color={Color.KIO_ORANGE} />
@@ -139,7 +137,6 @@ function PaymentMethodRatioSection({ statistics, isLoading, hasError, onRetry }:
                   </Value>
                 </LegendItem>
               </Legend>
-              {unknownCount > 0 && <Description>결제수단 미기록 {unknownCount.toLocaleString()}건 제외</Description>}
             </>
           )}
           {!hasError && statistics && !hasRecordedOrders && <Status>{emptyMessage}</Status>}

@@ -81,6 +81,8 @@ type Story = StoryObj<typeof PaymentMethodRatioSection>;
 export const Mixed: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    await expect(canvas.getByText('결제수단별 주문')).toBeVisible();
+    await expect(canvas.getByText('결제 완료 주문 건수 기준')).toBeVisible();
     await expect(canvas.getByText('토스 65.0% · 65건')).toBeVisible();
     await expect(canvas.getByText('계좌 35.0% · 35건')).toBeVisible();
   },
@@ -100,6 +102,10 @@ export const SmallRatio: Story = {
 
 export const WithUnknown: Story = {
   args: { statistics: { tossCount: 3, bankTransferCount: 1, unknownCount: 2, tossRatio: 75, bankTransferRatio: 25 } },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.queryByText('결제수단 미기록 2건 제외')).not.toBeInTheDocument();
+  },
 };
 
 export const UnknownOnly: Story = {
@@ -107,7 +113,7 @@ export const UnknownOnly: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText('결제수단이 기록된 주문이 없습니다.')).toBeVisible();
-    await expect(canvas.queryByText('결제 완료 주문 건수 기준')).not.toBeInTheDocument();
+    await expect(canvas.getByText('결제 완료 주문 건수 기준')).toBeVisible();
     await expect(canvas.queryByText('결제수단 미기록 12건 제외')).not.toBeInTheDocument();
   },
 };
@@ -117,7 +123,7 @@ export const Empty: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText('결제 완료 주문이 없습니다.')).toBeVisible();
-    await expect(canvas.queryByText('결제 완료 주문 건수 기준')).not.toBeInTheDocument();
+    await expect(canvas.getByText('결제 완료 주문 건수 기준')).toBeVisible();
   },
 };
 
@@ -126,7 +132,7 @@ export const Loading: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText('결제수단 비율을 불러오는 중입니다.')).toBeVisible();
-    await expect(canvas.queryByText('결제 완료 주문 건수 기준')).not.toBeInTheDocument();
+    await expect(canvas.getByText('결제 완료 주문 건수 기준')).toBeVisible();
   },
 };
 
@@ -144,7 +150,7 @@ export const RefreshError: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText('결제수단 비율을 갱신하지 못했습니다.')).toBeVisible();
-    await expect(canvas.queryByText('결제 완료 주문 건수 기준')).not.toBeInTheDocument();
+    await expect(canvas.getByText('결제 완료 주문 건수 기준')).toBeVisible();
     await expect(canvas.queryByText('토스 65.0% · 65건')).not.toBeInTheDocument();
   },
 };
@@ -167,7 +173,7 @@ export const InStatisticsLayout: Story = {
             <StatCard title="총 주문 건수" value="248" description="판매된 상품 631개" descriptionHighlight="631개" unit="건" compact />
             <StatCard title="총 매출액" value="4,862,000" description="평균 주문 금액 19,605원" descriptionHighlight="19,605원" unit="원" compact />
             <StatCard title="전일 대비 매출 증감률" value="+12.4" description="전일 대비 주문 18건 증가" descriptionHighlight="18건" unit="%" compact />
-            <StatCard title="테이블 회전율" value="3.2" description="평균 테이블 이용 시간 43분" descriptionHighlight="43분" unit="회전" compact />
+            <StatCard title="테이블 회전율" value="3.2" description="평균 이용 시간 1시간 50분" descriptionHighlight="1시간 50분" unit="회전" compact />
           </StatCardGrid>
           <PaymentMethodRatioSection {...args} />
         </LayoutRow>

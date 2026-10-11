@@ -168,7 +168,7 @@ function AdminOrderStatistics() {
                   title="테이블 회전율"
                   compact
                   value={statistics.tableTurnoverRate.toFixed(1)}
-                  description={`평균 테이블 이용 시간 ${formatMinutesToTime(statistics.averageStayTimeMinutes)}`}
+                  description={`평균 이용 시간 ${formatMinutesToTime(statistics.averageStayTimeMinutes)}`}
                   descriptionHighlight={formatMinutesToTime(statistics.averageStayTimeMinutes)}
                   unit="회전"
                 />
