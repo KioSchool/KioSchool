@@ -5,6 +5,7 @@ import { useAtomValue } from 'jotai';
 import { format } from 'date-fns';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { mobileMediaQuery } from '@styles/globalStyles';
 import CustomSelect from '@components/common/select/CustomSelect';
 import CustomDatePicker from '@components/common/date-picker/CustomDatePicker';
 import StatCard from '@components/common/card/StatCard';
@@ -12,9 +13,11 @@ import ContentCard from '@components/common/card/ContentCard';
 import RefreshSpinIcon from '@components/common/refresh/RefreshSpinIcon';
 import HourlySalesChart from '@components/admin/order/statistic/HourlySalesChart';
 import PopularProductsSection from '@components/admin/order/statistic/PopularProductsSection';
+import PaymentMethodRatioSection from '@components/admin/order/statistic/PaymentMethodRatioSection';
 import InsightCard from '@components/admin/workspace/dashboard/InsightCard';
 import ShareSupportModal from '@components/admin/insight/ShareSupportModal';
-import { useAdminFetchDailyStatistics } from '@hooks/admin/useAdminFetchDailyStatistics';
+import { ORDER_STATISTICS_SUMMARY_CARD_HEIGHT } from '@constants/layout';
+import { STATISTICS_POLLING_MINUTES, useAdminFetchDailyStatistics } from '@hooks/admin/useAdminFetchDailyStatistics';
 import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { formatMinutesToTime } from '@utils/formatDate';
 import { Color } from '@resources/colors';
@@ -45,30 +48,34 @@ const UpdateLabel = styled.span`
   color: #939393;
 `;
 
-const StatCardRow = styled.div`
+const StatCardGrid = styled.div`
   width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
-  ${rowFlex()}
 
   & > * {
-    flex: 1;
-    width: auto;
+    min-width: 0;
+    width: 100%;
+  }
+
+  ${mobileMediaQuery} {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 `;
 
 const SectionRow = styled.div`
   width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 3fr);
   gap: 12px;
-  ${rowFlex()}
 
-  & > *:first-of-type {
-    flex: 7;
+  & > * {
     min-width: 0;
   }
 
-  & > *:last-of-type {
-    flex: 3;
-    min-width: 0;
+  ${mobileMediaQuery} {
+    grid-template-columns: 1fr;
   }
 `;
 
@@ -84,7 +91,17 @@ const isValidDate = (dateStr: string) => !isNaN(new Date(dateStr).getTime());
 
 function AdminOrderStatistics() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { selectedDate, setSelectedDate, statistics, isLoading, manualRefetch } = useAdminFetchDailyStatistics(workspaceId);
+  const {
+    selectedDate,
+    setSelectedDate,
+    statistics,
+    paymentMethodStatistics,
+    isStatisticsLoading,
+    isPaymentMethodLoading,
+    hasPaymentMethodError,
+    isLoading,
+    manualRefetch,
+  } = useAdminFetchDailyStatistics(workspaceId);
   const workspace = useAtomValue(adminWorkspaceAtom);
   const [shareCard, setShareCard] = useState<InsightCardResponse | null>(null);
   const insightEnabled = import.meta.env.VITE_INSIGHT_CARD_ENABLED === 'true';
@@ -95,7 +112,7 @@ function AdminOrderStatistics() {
   const orderDiff = Math.abs(comparison?.orderCountDifference ?? 0);
   const orderDiffDirection = (comparison?.orderCountDifference ?? 0) >= 0 ? '증가' : '감소';
   const comparisonValue = comparison ? formatWithSign(comparison.revenueGrowthRate, (v) => v.toFixed(1)) : '-';
-  const comparisonDescription = comparison ? `전일 대비 ${orderDiff}건의 주문이 ${orderDiffDirection}했습니다.` : '비교 데이터가 없습니다.';
+  const comparisonDescription = comparison ? `전일 대비 주문 ${orderDiff}건 ${orderDiffDirection}` : '비교 데이터가 없습니다.';
   const comparisonHighlight = comparison ? `${orderDiff}건` : undefined;
   const comparisonColor = comparison ? getComparisonColor(comparison.revenueGrowthRate) : undefined;
 
@@ -106,51 +123,66 @@ function AdminOrderStatistics() {
           <CustomSelect value={dateLabel} triggerLabel={dateLabel} highlightOnSelect={true} width="160px">
             <CustomDatePicker mode="single" selectedDate={selectedDate} onDateChange={setSelectedDate} />
           </CustomSelect>
-          {statistics?.lastUpdated && isValidDate(statistics.lastUpdated) && (
-            <UpdateInfo>
-              <UpdateLabel>최종 업데이트 {format(new Date(statistics.lastUpdated), 'HH:mm')} · 5분마다 자동 갱신</UpdateLabel>
-              <RefreshSpinIcon isLoading={isLoading} onClick={manualRefetch} />
-            </UpdateInfo>
-          )}
+          <UpdateInfo>
+            <UpdateLabel>
+              {statistics?.lastUpdated && isValidDate(statistics.lastUpdated) && `최종 업데이트 ${format(new Date(statistics.lastUpdated), 'HH:mm')} · `}
+              {STATISTICS_POLLING_MINUTES}분마다 자동 갱신
+            </UpdateLabel>
+            <RefreshSpinIcon isLoading={isLoading} onClick={manualRefetch} />
+          </UpdateInfo>
         </FilterContainer>
 
         {insightEnabled && workspaceId && <InsightCard workspaceId={workspaceId} workspaceName={workspace.name} onShareClick={setShareCard} />}
 
-        {isLoading && !statistics && <UpdateLabel>로딩 중...</UpdateLabel>}
+        {isStatisticsLoading && !statistics && <UpdateLabel>로딩 중...</UpdateLabel>}
 
-        {statistics && (
-          <StatCardRow>
-            <StatCard
-              title="총 주문 건수"
-              value={statistics.totalOrders.toLocaleString()}
-              description={`총 판매된 상품 수량은 ${statistics.totalSalesVolume}개입니다.`}
-              descriptionHighlight={`${statistics.totalSalesVolume}개`}
-              unit="건"
-            />
-            <StatCard
-              title="총 매출액"
-              value={statistics.totalRevenue.toLocaleString()}
-              description={`평균 주문 금액은 ${statistics.averageOrderAmount.toLocaleString()}원입니다.`}
-              descriptionHighlight={`${statistics.averageOrderAmount.toLocaleString()}원`}
-              unit="원"
-            />
-            <StatCard
-              title="전일 대비 주문 증감률"
-              value={comparisonValue}
-              description={comparisonDescription}
-              descriptionHighlight={comparisonHighlight}
-              valueColor={comparisonColor}
-              unit="%"
-            />
-            <StatCard
-              title="테이블 회전율"
-              value={statistics.tableTurnoverRate.toFixed(1)}
-              description={`평균 테이블 이용 시간은 ${formatMinutesToTime(statistics.averageStayTimeMinutes)}입니다.`}
-              descriptionHighlight={formatMinutesToTime(statistics.averageStayTimeMinutes)}
-              unit="회전"
-            />
-          </StatCardRow>
-        )}
+        <SectionRow>
+          <StatCardGrid>
+            {statistics && (
+              <>
+                <StatCard
+                  title="총 주문 건수"
+                  height={ORDER_STATISTICS_SUMMARY_CARD_HEIGHT}
+                  value={statistics.totalOrders.toLocaleString()}
+                  description={`판매된 상품 ${statistics.totalSalesVolume.toLocaleString()}개`}
+                  descriptionHighlight={`${statistics.totalSalesVolume.toLocaleString()}개`}
+                  unit="건"
+                />
+                <StatCard
+                  title="총 매출액"
+                  height={ORDER_STATISTICS_SUMMARY_CARD_HEIGHT}
+                  value={statistics.totalRevenue.toLocaleString()}
+                  description={`평균 주문 금액 ${statistics.averageOrderAmount.toLocaleString()}원`}
+                  descriptionHighlight={`${statistics.averageOrderAmount.toLocaleString()}원`}
+                  unit="원"
+                />
+                <StatCard
+                  title="전일 대비 매출 증감률"
+                  height={ORDER_STATISTICS_SUMMARY_CARD_HEIGHT}
+                  value={comparisonValue}
+                  description={comparisonDescription}
+                  descriptionHighlight={comparisonHighlight}
+                  valueColor={comparisonColor}
+                  unit="%"
+                />
+                <StatCard
+                  title="테이블 회전율"
+                  height={ORDER_STATISTICS_SUMMARY_CARD_HEIGHT}
+                  value={statistics.tableTurnoverRate.toFixed(1)}
+                  description={`평균 이용 시간 ${formatMinutesToTime(statistics.averageStayTimeMinutes)}`}
+                  descriptionHighlight={formatMinutesToTime(statistics.averageStayTimeMinutes)}
+                  unit="회전"
+                />
+              </>
+            )}
+          </StatCardGrid>
+          <PaymentMethodRatioSection
+            statistics={paymentMethodStatistics}
+            isLoading={isPaymentMethodLoading}
+            hasError={hasPaymentMethodError}
+            onRetry={manualRefetch}
+          />
+        </SectionRow>
 
         {statistics && (
           <SectionRow>

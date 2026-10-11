@@ -1,9 +1,16 @@
+import styled from '@emotion/styled';
 import type { Meta, StoryObj } from '@storybook/react';
 import { PopularProductItem } from '@@types/index';
 import PopularProductsSection from './PopularProductsSection';
 
 const products = (count: number, value: (index: number) => number): PopularProductItem[] =>
   Array.from({ length: count }, (_, index) => ({ productId: index + 1, name: `메뉴 ${index + 1}`, value: value(index) }));
+
+const EmptyPreview = styled.div`
+  width: 360px;
+  height: 480px;
+  display: grid;
+`;
 
 const meta: Meta<typeof PopularProductsSection> = {
   title: 'Admin/Order/Statistic/PopularProductsSection',
@@ -46,5 +53,12 @@ export const FewProducts: Story = {
 export const Empty: Story = {
   args: {
     popularProducts: { byQuantity: [], byRevenue: [], byReorderRate: [] },
+  },
+  render: function EmptyStory(args) {
+    return (
+      <EmptyPreview>
+        <PopularProductsSection {...args} />
+      </EmptyPreview>
+    );
   },
 };
