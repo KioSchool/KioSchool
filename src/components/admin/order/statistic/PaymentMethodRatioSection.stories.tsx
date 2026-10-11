@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { expect, fn, userEvent, within } from '@storybook/test';
 import StatCard from '@components/common/card/StatCard';
 import ContentCard from '@components/common/card/ContentCard';
+import { ORDER_STATISTICS_SUMMARY_CARD_HEIGHT } from '@constants/layout';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
@@ -170,10 +171,38 @@ export const InStatisticsLayout: Story = {
       <LayoutPreview>
         <LayoutRow>
           <StatCardGrid>
-            <StatCard title="총 주문 건수" value="248" description="판매된 상품 631개" descriptionHighlight="631개" unit="건" compact />
-            <StatCard title="총 매출액" value="4,862,000" description="평균 주문 금액 19,605원" descriptionHighlight="19,605원" unit="원" compact />
-            <StatCard title="전일 대비 매출 증감률" value="+12.4" description="전일 대비 주문 18건 증가" descriptionHighlight="18건" unit="%" compact />
-            <StatCard title="테이블 회전율" value="3.2" description="평균 이용 시간 1시간 50분" descriptionHighlight="1시간 50분" unit="회전" compact />
+            <StatCard
+              title="총 주문 건수"
+              value="248"
+              description="판매된 상품 631개"
+              descriptionHighlight="631개"
+              unit="건"
+              height={ORDER_STATISTICS_SUMMARY_CARD_HEIGHT}
+            />
+            <StatCard
+              title="총 매출액"
+              value="4,862,000"
+              description="평균 주문 금액 19,605원"
+              descriptionHighlight="19,605원"
+              unit="원"
+              height={ORDER_STATISTICS_SUMMARY_CARD_HEIGHT}
+            />
+            <StatCard
+              title="전일 대비 매출 증감률"
+              value="+12.4"
+              description="전일 대비 주문 18건 증가"
+              descriptionHighlight="18건"
+              unit="%"
+              height={ORDER_STATISTICS_SUMMARY_CARD_HEIGHT}
+            />
+            <StatCard
+              title="테이블 회전율"
+              value="3.2"
+              description="평균 이용 시간 1시간 50분"
+              descriptionHighlight="1시간 50분"
+              unit="회전"
+              height={ORDER_STATISTICS_SUMMARY_CARD_HEIGHT}
+            />
           </StatCardGrid>
           <PaymentMethodRatioSection {...args} />
         </LayoutRow>

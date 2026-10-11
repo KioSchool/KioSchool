@@ -16,6 +16,7 @@ import PopularProductsSection from '@components/admin/order/statistic/PopularPro
 import PaymentMethodRatioSection from '@components/admin/order/statistic/PaymentMethodRatioSection';
 import InsightCard from '@components/admin/workspace/dashboard/InsightCard';
 import ShareSupportModal from '@components/admin/insight/ShareSupportModal';
+import { ORDER_STATISTICS_SUMMARY_CARD_HEIGHT } from '@constants/layout';
 import { STATISTICS_POLLING_MINUTES, useAdminFetchDailyStatistics } from '@hooks/admin/useAdminFetchDailyStatistics';
 import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { formatMinutesToTime } from '@utils/formatDate';
@@ -141,7 +142,7 @@ function AdminOrderStatistics() {
               <>
                 <StatCard
                   title="총 주문 건수"
-                  compact
+                  height={ORDER_STATISTICS_SUMMARY_CARD_HEIGHT}
                   value={statistics.totalOrders.toLocaleString()}
                   description={`판매된 상품 ${statistics.totalSalesVolume.toLocaleString()}개`}
                   descriptionHighlight={`${statistics.totalSalesVolume.toLocaleString()}개`}
@@ -149,7 +150,7 @@ function AdminOrderStatistics() {
                 />
                 <StatCard
                   title="총 매출액"
-                  compact
+                  height={ORDER_STATISTICS_SUMMARY_CARD_HEIGHT}
                   value={statistics.totalRevenue.toLocaleString()}
                   description={`평균 주문 금액 ${statistics.averageOrderAmount.toLocaleString()}원`}
                   descriptionHighlight={`${statistics.averageOrderAmount.toLocaleString()}원`}
@@ -157,7 +158,7 @@ function AdminOrderStatistics() {
                 />
                 <StatCard
                   title="전일 대비 매출 증감률"
-                  compact
+                  height={ORDER_STATISTICS_SUMMARY_CARD_HEIGHT}
                   value={comparisonValue}
                   description={comparisonDescription}
                   descriptionHighlight={comparisonHighlight}
@@ -166,7 +167,7 @@ function AdminOrderStatistics() {
                 />
                 <StatCard
                   title="테이블 회전율"
-                  compact
+                  height={ORDER_STATISTICS_SUMMARY_CARD_HEIGHT}
                   value={statistics.tableTurnoverRate.toFixed(1)}
                   description={`평균 이용 시간 ${formatMinutesToTime(statistics.averageStayTimeMinutes)}`}
                   descriptionHighlight={formatMinutesToTime(statistics.averageStayTimeMinutes)}
