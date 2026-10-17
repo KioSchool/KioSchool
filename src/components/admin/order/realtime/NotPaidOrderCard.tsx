@@ -2,6 +2,8 @@ import { memo } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { Order } from '@@types/index';
+import { GA_EVENT, ORDER_EVENT_LOCATION } from '@constants/analytics';
+import { trackEvent } from '@utils/analytics';
 import { Color } from '@resources/colors';
 import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
 import NewCommonButton from '@components/common/button/NewCommonButton';
@@ -61,6 +63,7 @@ function NotPaidOrderCard({ order }: OrderCardProps) {
 
   const orderInfoClickHandler = () => {
     openModal();
+    trackEvent(GA_EVENT.ORDER_CARD_OPEN, { workspace_id: workspaceId, location: ORDER_EVENT_LOCATION.NOT_PAID_CARD });
   };
 
   return (

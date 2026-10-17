@@ -1,5 +1,8 @@
 import { memo } from 'react';
+import { useParams } from 'react-router-dom';
 import { Order } from '@@types/index';
+import { GA_EVENT, ORDER_EVENT_LOCATION } from '@constants/analytics';
+import { trackEvent } from '@utils/analytics';
 import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
 import { areOrdersEquivalent } from '@utils/memoCompareFunction';
 import useModal from '@hooks/useModal';
@@ -14,10 +17,12 @@ interface OrderCardProps {
 }
 
 function ServedOrderCard({ order }: OrderCardProps) {
+  const { workspaceId } = useParams<{ workspaceId: string }>();
   const { isModalOpen, openModal, closeModal } = useModal();
 
   const orderInfoClickHandler = () => {
     openModal();
+    trackEvent(GA_EVENT.ORDER_CARD_OPEN, { workspace_id: workspaceId, location: ORDER_EVENT_LOCATION.SERVED_CARD });
   };
 
   return (

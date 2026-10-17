@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import _ from 'lodash';
 import { useAtomValue } from 'jotai';
@@ -9,6 +10,8 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import defaultProductImage from '@resources/image/defaultWorkspaceImage.png';
 import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
 import useNow from '@hooks/useNow';
+import { GA_EVENT } from '@constants/analytics';
+import { trackEvent } from '@utils/analytics';
 import { buildProductQueues } from '@utils/productQueue';
 import ProductTableWaitRow from './ProductTableWaitRow';
 
@@ -81,6 +84,7 @@ const RestLabel = styled.div`
 
 // 외부 제어 사이드바는 열 때 넘긴 content를 그대로 들고 있어서, 주문은 prop이 아니라 아톰에서 읽어야 열린 동안에도 갱신된다
 function OrderByProductList() {
+  const { workspaceId } = useParams<{ workspaceId: string }>();
   const orders = useAtomValue(adminOrdersAtom);
   const products = useAtomValue(adminProductsAtom);
   const now = useNow();
@@ -90,6 +94,11 @@ function OrderByProductList() {
   const productMap = _.keyBy(products, 'id');
   const queues = buildProductQueues(paidOrders, now);
   const selectedOrder = orders.find((order) => order.id === selectedOrderId);
+
+  const handleOpenOrder = (orderId: number, rowIndex: number) => {
+    setSelectedOrderId(orderId);
+    trackEvent(GA_EVENT.PRODUCT_SUMMARY_ROW_OPEN, { workspace_id: workspaceId, location: `row_${rowIndex + 1}` });
+  };
 
   const handleCloseModal = () => {
     setSelectedOrderId(null);
@@ -111,8 +120,8 @@ function OrderByProductList() {
               </ProductInfoContainer>
             </ProductItem>
             <WaitList>
-              {queue.tables.slice(0, VISIBLE_TABLE_COUNT).map((wait) => (
-                <ProductTableWaitRow key={wait.tableNumber} wait={wait} onClick={setSelectedOrderId} />
+              {queue.tables.slice(0, VISIBLE_TABLE_COUNT).map((wait, rowIndex) => (
+                <ProductTableWaitRow key={wait.tableNumber} wait={wait} onClick={(orderId) => handleOpenOrder(orderId, rowIndex)} />
               ))}
               {restCount > 0 && <RestLabel>{`외 ${restCount}곳`}</RestLabel>}
             </WaitList>

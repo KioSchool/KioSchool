@@ -1,5 +1,8 @@
 import { memo } from 'react';
+import { useParams } from 'react-router-dom';
 import { Order } from '@@types/index';
+import { GA_EVENT, ORDER_EVENT_LOCATION } from '@constants/analytics';
+import { trackEvent } from '@utils/analytics';
 import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
 import OrderItemList from './OrderItemList';
 import { areOrdersEquivalent } from '@utils/memoCompareFunction';
@@ -38,10 +41,12 @@ interface OrderCardProps {
 function PaidOrderCard({ order }: OrderCardProps) {
   const delayMinutes = useFormattedTime<number>({ date: order.createdAt, formatter: extractMinFromDate }) ?? 0;
   const level = getElapsedLevel(delayMinutes);
+  const { workspaceId } = useParams<{ workspaceId: string }>();
   const { isModalOpen, openModal, closeModal } = useModal();
 
   const orderInfoClickHandler = () => {
     openModal();
+    trackEvent(GA_EVENT.ORDER_CARD_OPEN, { workspace_id: workspaceId, location: ORDER_EVENT_LOCATION.PAID_CARD });
   };
 
   return (

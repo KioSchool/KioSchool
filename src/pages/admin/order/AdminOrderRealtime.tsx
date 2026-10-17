@@ -11,6 +11,8 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { adminOrdersAtom } from '@jotai/admin/atoms';
 import { externalSidebarAtom } from '@jotai/atoms';
 import NewCommonButton from '@components/common/button/NewCommonButton';
+import { GA_EVENT } from '@constants/analytics';
+import { trackEvent } from '@utils/analytics';
 import RightSidebarModal from '@components/common/modal/RightSidebarModal';
 import OrderByProductList from '@components/admin/order/realtime/OrderByProductList';
 import TableUsageSummary from '@components/admin/order/realtime/TableUsageSummary';
@@ -64,6 +66,7 @@ function AdminOrderRealtime() {
       action: RIGHT_SIDEBAR_ACTION.OPEN,
       content: <OrderByProductList />,
     });
+    trackEvent(GA_EVENT.PRODUCT_SUMMARY_OPEN, { workspace_id: workspaceId });
   };
 
   return (
