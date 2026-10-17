@@ -42,7 +42,7 @@ function AdminOrderRealtime() {
   }, []);
 
   return (
-    <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })}>
+    <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })} disableLayoutScale>
       <ListContainer>
         <TableUsageSummary workspaceId={workspaceId} />
         <TitledOrderStatusList
