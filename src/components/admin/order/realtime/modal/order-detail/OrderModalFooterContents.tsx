@@ -63,10 +63,10 @@ function OrderModalFooterContents({ orderStatus, id, closeModal }: OrderModalFoo
 
   // SERVED의 되돌리기도 payOrder(SERVED → PAID)를 쓰므로, 결제 확인 이벤트는 미결제 버튼 전용 핸들러에서만 보낸다
   const actionHandlers = {
-    confirmPayment: () => {
+    confirmPayment: async () => {
       closeModal();
-      payOrder(id);
-      trackEvent(GA_EVENT.ORDER_PAY_CONFIRM, { workspace_id: workspaceId, location: ORDER_EVENT_LOCATION.DETAIL_MODAL });
+      const isPaid = await payOrder(id);
+      if (isPaid) trackEvent(GA_EVENT.ORDER_PAY_CONFIRM, { workspace_id: workspaceId, location: ORDER_EVENT_LOCATION.DETAIL_MODAL });
     },
     payOrder: () => {
       closeModal();
