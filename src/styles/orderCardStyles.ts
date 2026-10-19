@@ -1,25 +1,20 @@
 ﻿import styled from '@emotion/styled';
-import { css } from '@emotion/react';
-import { RiCheckboxCircleFill } from '@remixicon/react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { expandButtonStyle } from '@styles/buttonStyles';
 import { Color } from '@resources/colors';
+import { RiCheckboxCircleFill } from '@remixicon/react';
+import { expandButtonStyle } from '@styles/buttonStyles';
 
-const cardBaseStyle = (height: number) => css`
+export const CardContainer = styled.div<{ height: number }>`
   ${colFlex({
     justify: 'flex-start',
     align: 'start',
   })}
   background-color: ${Color.WHITE};
   min-width: 150px;
-  height: ${height}px;
+  height: ${(props) => props.height}px;
   border-radius: 16px;
   border: 1px solid #e8eef2;
   padding: 12px 15px;
-`;
-
-export const CardContainer = styled.div<{ height: number }>`
-  ${({ height }) => cardBaseStyle(height)}
 
   &:hover {
     background-color: ${Color.KIO_ORANGE};
@@ -29,17 +24,6 @@ export const CardContainer = styled.div<{ height: number }>`
       color: ${Color.WHITE};
       stroke: ${Color.WHITE};
     }
-  }
-`;
-
-// 카드 안에 결제 확인 버튼이 따로 있는 카드용. 공용 hover 반전(& *)은 버튼까지 같은 색으로 덮어 두 클릭 영역이 하나처럼 보인다
-export const PlainCardContainer = styled.div<{ height: number }>`
-  transition: background-color 0.12s ease-in-out, border-color 0.12s ease-in-out;
-  ${({ height }) => cardBaseStyle(height)}
-
-  &:hover {
-    background-color: ${Color.LIGHT_GREY};
-    border-color: ${Color.HEAVY_GREY};
   }
 `;
 
@@ -58,10 +42,38 @@ export const TitleContainer = styled.div`
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
+export const TableNumberBadge = styled.span`
+  flex-shrink: 0;
+  padding: 2px 7px;
+  border: 1px solid ${Color.KIO_ORANGE_ICON_BG};
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 18px;
+  white-space: nowrap;
+  color: ${Color.KIO_ORANGE_DARK};
+  background-color: ${Color.KIO_ORANGE_FAINT};
+`;
+
 export const DescriptionContainer = styled.div`
   width: 100%;
   height: 24px;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
+`;
+
+export const CardFooter = styled.div`
+  flex-shrink: 0;
+  width: 100%;
+  height: 24px;
+  box-sizing: border-box;
+  ${rowFlex({ justify: 'space-between', align: 'end' })}
+`;
+
+export const CheckIcon = styled(RiCheckboxCircleFill)`
+  width: 20px;
+  height: 20px;
+  color: ${Color.GREY};
+  ${expandButtonStyle}
 `;
 
 interface CardTextProps {
@@ -85,10 +97,3 @@ export const HorizontalLine = styled.hr`
 `;
 
 export const HeaderContainer = styled.div``;
-
-export const CheckIcon = styled(RiCheckboxCircleFill)`
-  width: 20px;
-  height: 20px;
-  color: ${Color.GREY};
-  ${expandButtonStyle}
-`;

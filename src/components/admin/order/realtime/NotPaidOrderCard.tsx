@@ -1,56 +1,15 @@
 import { memo } from 'react';
-import { useParams } from 'react-router-dom';
-import styled from '@emotion/styled';
 import { Order } from '@@types/index';
+import { useParams } from 'react-router-dom';
 import { GA_EVENT, ORDER_EVENT_LOCATION } from '@constants/analytics';
 import { trackEvent } from '@utils/analytics';
-import { Color } from '@resources/colors';
 import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
 import { areOrdersEquivalent } from '@utils/memoCompareFunction';
 import useFormattedTime from '@hooks/useFormattedTime';
 import useModal from '@hooks/useModal';
 import usePayOrderWithUndo from '@hooks/admin/usePayOrderWithUndo';
 import { extractMinFromDate } from '@utils/formatDate';
-import { rowFlex } from '@styles/flexStyles';
-import { PlainCardContainer, OrderInfoContainer, DescriptionContainer, CardText, CheckIcon } from '@styles/orderCardStyles';
-
-const CUSTOMER_NAME_MAX_WIDTH_PX = 96;
-
-const TitleRow = styled(DescriptionContainer)`
-  gap: 8px;
-`;
-
-const CustomerName = styled(CardText)`
-  display: block;
-  min-width: 0;
-  max-width: ${CUSTOMER_NAME_MAX_WIDTH_PX}px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
-const Price = styled(CardText)`
-  flex-shrink: 0;
-`;
-
-const MutedText = styled(CardText)`
-  color: ${Color.MUTED_GREY};
-`;
-
-const PayButton = styled.button`
-  flex-shrink: 0;
-  align-self: flex-end;
-  height: 24px;
-  gap: 4px;
-  padding: 0;
-  border: none;
-  background-color: transparent;
-  color: ${Color.GREY};
-  font-size: 12px;
-  font-weight: 800;
-  cursor: pointer;
-  ${rowFlex({ align: 'center' })}
-`;
+import { CardContainer, OrderInfoContainer, DescriptionContainer, CardFooter, CheckIcon, CardText, TableNumberBadge } from '@styles/orderCardStyles';
 
 interface OrderCardProps {
   order: Order;
@@ -66,7 +25,7 @@ function NotPaidOrderCard({ order }: OrderCardProps) {
   const delayMinutes = useFormattedTime<number>({ date: order.createdAt, formatter: extractMinFromDate });
   const { isModalOpen, openModal, closeModal } = useModal();
 
-  const handlePayClick = () => {
+  const checkClickHandler = () => {
     confirmPayment(order);
   };
 
@@ -76,25 +35,22 @@ function NotPaidOrderCard({ order }: OrderCardProps) {
   };
 
   return (
-    <PlainCardContainer height={84}>
+    <CardContainer height={84}>
       <OrderInfoContainer onClick={orderInfoClickHandler}>
-        <TitleRow>
-          <CustomerName size={16} weight={800}>
-            {order.customerName}
-          </CustomerName>
-          <Price size={16} weight={800}>{`${order.totalPrice.toLocaleString()}원`}</Price>
-        </TitleRow>
+        <CardText size={16} weight={800}>
+          {order.customerName}
+        </CardText>
         <DescriptionContainer>
-          <MutedText size={12} weight={800}>{`${order.tableNumber}번 테이블`}</MutedText>
-          <MutedText size={12} weight={800}>{`${delayMinutes}분 전`}</MutedText>
+          <CardText size={12} weight={800}>{`${delayMinutes}분 전`}</CardText>
+          <CardText size={12} weight={800}>{`총 ${order.totalPrice.toLocaleString()}원`}</CardText>
         </DescriptionContainer>
       </OrderInfoContainer>
-      <PayButton type="button" onClick={handlePayClick}>
-        <CheckIcon />
-        결제 확인
-      </PayButton>
       <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
-    </PlainCardContainer>
+      <CardFooter>
+        <TableNumberBadge>{`테이블 ${order.tableNumber}`}</TableNumberBadge>
+        <CheckIcon onClick={checkClickHandler} />
+      </CardFooter>
+    </CardContainer>
   );
 }
 
