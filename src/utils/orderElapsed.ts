@@ -4,8 +4,6 @@ import { Color } from '@resources/colors';
 export const ELAPSED_WARNING_MINUTES = 15;
 export const ELAPSED_DANGER_MINUTES = 25;
 
-const FULL_PERCENT = 100;
-
 export const ELAPSED_LEVEL = {
   NORMAL: 'normal',
   WARNING: 'warning',
@@ -25,9 +23,4 @@ export function getElapsedLevel(minutes: number): ElapsedLevel {
   if (minutes >= ELAPSED_DANGER_MINUTES) return ELAPSED_LEVEL.DANGER;
   if (minutes >= ELAPSED_WARNING_MINUTES) return ELAPSED_LEVEL.WARNING;
   return ELAPSED_LEVEL.NORMAL;
-}
-
-/** 초과 기준(25분)을 한 바퀴로 보는 시간 링의 진행률 */
-export function getElapsedRingPercent(minutes: number): number {
-  return Math.min(FULL_PERCENT, (minutes / ELAPSED_DANGER_MINUTES) * FULL_PERCENT);
 }
