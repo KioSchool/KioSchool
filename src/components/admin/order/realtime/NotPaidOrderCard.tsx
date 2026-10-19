@@ -6,13 +6,13 @@ import { GA_EVENT, ORDER_EVENT_LOCATION } from '@constants/analytics';
 import { trackEvent } from '@utils/analytics';
 import { Color } from '@resources/colors';
 import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
-import NewCommonButton from '@components/common/button/NewCommonButton';
 import { areOrdersEquivalent } from '@utils/memoCompareFunction';
 import useFormattedTime from '@hooks/useFormattedTime';
 import useModal from '@hooks/useModal';
 import usePayOrderWithUndo from '@hooks/admin/usePayOrderWithUndo';
 import { extractMinFromDate } from '@utils/formatDate';
-import { PlainCardContainer, OrderInfoContainer, DescriptionContainer, CardText } from '@styles/orderCardStyles';
+import { rowFlex } from '@styles/flexStyles';
+import { PlainCardContainer, OrderInfoContainer, DescriptionContainer, CardText, CheckIcon } from '@styles/orderCardStyles';
 
 const CUSTOMER_NAME_MAX_WIDTH_PX = 96;
 
@@ -37,10 +37,19 @@ const MutedText = styled(CardText)`
   color: ${Color.MUTED_GREY};
 `;
 
-const PayButton = styled(NewCommonButton)`
+const PayButton = styled.button`
   flex-shrink: 0;
-  width: 100%;
-  margin-top: 6px;
+  align-self: flex-end;
+  height: 24px;
+  gap: 4px;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  color: ${Color.GREY};
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  ${rowFlex({ align: 'center' })}
 `;
 
 interface OrderCardProps {
@@ -67,7 +76,7 @@ function NotPaidOrderCard({ order }: OrderCardProps) {
   };
 
   return (
-    <PlainCardContainer height={112}>
+    <PlainCardContainer height={84}>
       <OrderInfoContainer onClick={orderInfoClickHandler}>
         <TitleRow>
           <CustomerName size={16} weight={800}>
@@ -80,7 +89,8 @@ function NotPaidOrderCard({ order }: OrderCardProps) {
           <MutedText size={12} weight={800}>{`${delayMinutes}분 전`}</MutedText>
         </DescriptionContainer>
       </OrderInfoContainer>
-      <PayButton size="sm" onClick={handlePayClick}>
+      <PayButton type="button" onClick={handlePayClick}>
+        <CheckIcon />
         결제 확인
       </PayButton>
       <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />

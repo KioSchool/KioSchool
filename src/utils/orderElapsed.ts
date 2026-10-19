@@ -4,6 +4,8 @@ import { Color } from '@resources/colors';
 export const ELAPSED_WARNING_MINUTES = 15;
 export const ELAPSED_DANGER_MINUTES = 25;
 
+const FULL_PERCENT = 100;
+
 export const ELAPSED_LEVEL = {
   NORMAL: 'normal',
   WARNING: 'warning',
@@ -12,21 +14,20 @@ export const ELAPSED_LEVEL = {
 
 export type ElapsedLevel = typeof ELAPSED_LEVEL[keyof typeof ELAPSED_LEVEL];
 
-interface ElapsedLevelStyle {
-  text: string;
-  surface: string;
-  border: string;
-}
-
-// 실시간 테이블 화면의 상태 색을 그대로 쓴다: 경고는 배치 카드 WARNING, 초과는 상태 뱃지 EXCEEDED
-export const ELAPSED_LEVEL_STYLE: Record<ElapsedLevel, ElapsedLevelStyle> = {
-  [ELAPSED_LEVEL.NORMAL]: { text: '#464a4d', surface: Color.WHITE, border: Color.BORDER_GREY },
-  [ELAPSED_LEVEL.WARNING]: { text: Color.KIO_ORANGE_DARK, surface: Color.KIO_ORANGE_FAINT, border: '#FFD2A8' },
-  [ELAPSED_LEVEL.DANGER]: { text: Color.RED, surface: Color.LIGHT_RED, border: Color.RED },
+// 실시간 테이블 화면의 상태 색을 그대로 쓴다: 경고는 KIO_ORANGE_DARK, 초과는 RED
+export const ELAPSED_LEVEL_COLOR: Record<ElapsedLevel, string> = {
+  [ELAPSED_LEVEL.NORMAL]: '#464a4d',
+  [ELAPSED_LEVEL.WARNING]: Color.KIO_ORANGE_DARK,
+  [ELAPSED_LEVEL.DANGER]: Color.RED,
 };
 
 export function getElapsedLevel(minutes: number): ElapsedLevel {
   if (minutes >= ELAPSED_DANGER_MINUTES) return ELAPSED_LEVEL.DANGER;
   if (minutes >= ELAPSED_WARNING_MINUTES) return ELAPSED_LEVEL.WARNING;
   return ELAPSED_LEVEL.NORMAL;
+}
+
+/** 초과 기준(25분)을 한 바퀴로 보는 시간 링의 진행률 */
+export function getElapsedRingPercent(minutes: number): number {
+  return Math.min(FULL_PERCENT, (minutes / ELAPSED_DANGER_MINUTES) * FULL_PERCENT);
 }

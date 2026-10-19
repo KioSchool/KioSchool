@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
-import { ELAPSED_LEVEL_STYLE, getElapsedLevel } from '@utils/orderElapsed';
+import { ELAPSED_LEVEL_COLOR, getElapsedLevel } from '@utils/orderElapsed';
 import { TableWait } from '@utils/productQueue';
 
 const TABLE_NUMBER_MIN_WIDTH_PX = 36;
@@ -41,7 +41,7 @@ const Quantity = styled.span`
 
 const Elapsed = styled.span<{ minutes: number }>`
   font-weight: 800;
-  color: ${({ minutes }) => ELAPSED_LEVEL_STYLE[getElapsedLevel(minutes)].text};
+  color: ${({ minutes }) => ELAPSED_LEVEL_COLOR[getElapsedLevel(minutes)]};
 `;
 
 interface ProductTableWaitRowProps {
