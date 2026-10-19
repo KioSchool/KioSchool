@@ -42,11 +42,15 @@ function useAdminOrder(workspaceId: string | undefined) {
     });
   };
 
-  const payOrder = (orderId: number) => {
-    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.PAID }).catch((error) => {
-      console.log(error);
-    });
-  };
+  // 성공 여부를 돌려준다. 결제 확인 토스트와 되돌리기는 서버가 받아들인 뒤에만 띄워야 한다
+  const payOrder = (orderId: number) =>
+    adminApi
+      .post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.PAID })
+      .then(() => true)
+      .catch((error) => {
+        console.log(error);
+        return false;
+      });
 
   const serveOrder = (orderId: number) => {
     adminApi.post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.SERVED }).catch((error) => {
@@ -63,11 +67,14 @@ function useAdminOrder(workspaceId: string | undefined) {
     });
   };
 
-  const refundOrder = (orderId: number) => {
-    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.NOT_PAID }).catch((error) => {
-      console.log(error);
-    });
-  };
+  const refundOrder = (orderId: number) =>
+    adminApi
+      .post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.NOT_PAID })
+      .then(() => true)
+      .catch((error) => {
+        console.log(error);
+        return false;
+      });
 
   const updateOrderProductCount = (orderProductId: number, servedCount: number) => {
     adminApi.put('/order/product', { workspaceId, orderProductId, servedCount }).catch((error) => {
