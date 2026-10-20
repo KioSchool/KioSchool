@@ -153,7 +153,7 @@ function OrderComplete() {
     const pollOrder = async () => {
       if (!orderId) return;
 
-      const orderData = await fetchOrder(workspaceId, tableHash, orderId);
+      const orderData = await fetchOrder(orderId);
       setOrder(orderData);
 
       if (orderData.status === OrderStatus.SERVED || orderData.status === OrderStatus.CANCELLED || isOverOneDay(orderData.createdAt)) {
