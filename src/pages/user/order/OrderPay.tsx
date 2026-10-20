@@ -21,7 +21,6 @@ import { Account, PaymentMethod } from '@@types/index';
 import { defaultAccountValue } from '@@types/defaultValues';
 import { basketToGaItems, calculateBasketTotalAmount, getBasketItemsWithProduct } from '@utils/orderBasket';
 import { trackEvent } from '@utils/analytics';
-import { isTossSendUrl } from '@utils/tossUrl';
 import { GA_CURRENCY, GA_EVENT } from '@constants/analytics';
 
 // 주문 대상이 사라진 경우. 장바구니를 비우고 주문 화면으로 되돌린다.
@@ -72,7 +71,7 @@ function OrderPay() {
 
   const [accountInfo, setAccountInfo] = useState<Account>(defaultAccountValue);
   const tossAccountUrl = accountInfo?.tossAccountUrl;
-  const isTossAvailable = isTossSendUrl(tossAccountUrl);
+  const isTossAvailable = !!tossAccountUrl;
 
   const [isTossPay, setIsTossPay] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -105,7 +104,7 @@ function OrderPay() {
     fetchWorkspaceAccount(workspaceId).then((account) => {
       if (account) {
         setAccountInfo(account);
-        if (isTossSendUrl(account.tossAccountUrl)) {
+        if (account.tossAccountUrl) {
           setIsTossPay(true);
         }
       }
