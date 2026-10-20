@@ -8,9 +8,9 @@ import { orderResponseToGaItems } from '@utils/orderBasket';
 function useOrder() {
   const { userApi } = useApi();
 
-  const fetchOrder = (orderId: string | null) => {
+  const fetchOrder = (workspaceId: string | null, tableHash: string | null, orderId: string | null) => {
     return userApi
-      .get<Order>('/order', { params: { orderId } })
+      .get<Order>('/order', { params: { workspaceId, tableHash, orderId } })
       .then((response) => response.data)
       .catch(() => defaultUserOrderValue);
   };

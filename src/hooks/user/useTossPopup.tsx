@@ -1,3 +1,5 @@
+import { isTossSendUrl } from '@utils/tossUrl';
+
 interface TossPopupOptions {
   tossAccountUrl?: string;
   amount: number;
@@ -31,7 +33,7 @@ function useTossPopup() {
   };
 
   const openTossPopupSync = ({ tossAccountUrl, amount, closeDelay = 5000 }: TossPopupOptions) => {
-    if (!tossAccountUrl) {
+    if (!isTossSendUrl(tossAccountUrl)) {
       alert('토스 이체 정보를 가져올 수 없습니다.');
       return null;
     }
@@ -55,7 +57,7 @@ function useTossPopup() {
   };
 
   const openTossPopupWithPromise = ({ tossAccountUrl, amount, closeDelay = 5000, promise, onSuccess, onError }: TossPopupWithPromiseOptions) => {
-    if (!tossAccountUrl) {
+    if (!isTossSendUrl(tossAccountUrl)) {
       alert('토스 이체 정보를 가져올 수 없습니다.');
       return;
     }

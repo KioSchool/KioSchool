@@ -99,6 +99,7 @@ function OrderWait() {
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
+  const tableHash = searchParams.get('tableHash');
   const orderId = searchParams.get('orderId') || null;
   const isTossPay = searchParams.get('tossPay') === 'true';
 
@@ -132,7 +133,7 @@ function OrderWait() {
     const pollOrder = async () => {
       if (!orderId) return;
 
-      const orderData = await fetchOrder(orderId);
+      const orderData = await fetchOrder(workspaceId, tableHash, orderId);
       setCurrentOrder(orderData);
 
       if (isOverOneDay(orderData.createdAt)) {
