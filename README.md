@@ -17,6 +17,33 @@
 
 이 저장소는 키오스쿨의 웹 프론트엔드(손님 주문 화면, 운영진 화면, 서비스 소개 페이지)다. 서버는 [KioSchool-API](https://github.com/KioSchool/KioSchool-API)에 있다.
 
+## 서비스 화면
+
+<table>
+  <tr>
+    <th width="33%">사용자</th>
+    <th width="33%">관리자</th>
+    <th width="33%">슈퍼 관리자</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <a href=".github/assets/readme/user.webp">
+        <img src=".github/assets/readme/user.webp" alt="사용자 주문 화면" width="100%" />
+      </a>
+    </td>
+    <td align="center">
+      <a href=".github/assets/readme/admin.webp">
+        <img src=".github/assets/readme/admin.webp" alt="관리자 실시간 주문 관리 화면" width="100%" />
+      </a>
+    </td>
+    <td align="center">
+      <a href=".github/assets/readme/super-admin.webp">
+        <img src=".github/assets/readme/super-admin.webp" alt="슈퍼 관리자 대시보드 화면" width="100%" />
+      </a>
+    </td>
+  </tr>
+</table>
+
 ## 주요 기능
 
 ### 손님
