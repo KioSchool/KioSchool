@@ -21,24 +21,18 @@
 
 <table>
   <tr>
-    <th width="33%">사용자</th>
-    <th width="33%">관리자</th>
-    <th width="33%">슈퍼 관리자</th>
+    <th width="50%">손님</th>
+    <th width="50%">주점 운영진</th>
   </tr>
   <tr>
     <td align="center">
       <a href=".github/assets/readme/user.webp">
-        <img src=".github/assets/readme/user.webp" alt="사용자 주문 화면" width="100%" />
+        <img src=".github/assets/readme/user.webp" alt="손님 QR 주문 화면" width="100%" />
       </a>
     </td>
     <td align="center">
       <a href=".github/assets/readme/admin.webp">
-        <img src=".github/assets/readme/admin.webp" alt="관리자 실시간 주문 관리 화면" width="100%" />
-      </a>
-    </td>
-    <td align="center">
-      <a href=".github/assets/readme/super-admin.webp">
-        <img src=".github/assets/readme/super-admin.webp" alt="슈퍼 관리자 대시보드 화면" width="100%" />
+        <img src=".github/assets/readme/admin.webp" alt="주점 운영진 실시간 주문 관리 화면" width="100%" />
       </a>
     </td>
   </tr>
@@ -60,10 +54,6 @@
 - 실시간 주문: 새 주문 알림음, 입금 확인, 서빙 처리, 취소
 - 테이블 현황: 테이블별 사용 시간과 주문 금액, 배치도·목록 보기
 - 주문 통계, 주문 타임라인, 전체 주문 내역
-
-### 슈퍼어드민
-
-서비스 관리용 화면. 주점·사용자 조회, 가입 가능한 학교 이메일 도메인과 은행 목록, 문의, 축제 달력, 서비스 대시보드를 다룬다.
 
 ## 기술 스택
 
@@ -146,8 +136,8 @@ Sentry 소스맵 업로드에는 Sentry 인증 토큰(`SENTRY_AUTH_TOKEN` 또는
 
 ```
 src/
-├── apis/         API 클라이언트 (userApi, adminApi, superAdminApi)
-├── components/   컴포넌트 (common, user, admin, super-admin)
+├── apis/         역할별 API 클라이언트
+├── components/   공통·역할별 컴포넌트
 ├── constants/    라우트, URL, 화면 문구와 데이터
 ├── hooks/        커스텀 훅
 ├── jotai/        전역 상태
