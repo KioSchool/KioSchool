@@ -7,6 +7,16 @@ export interface ApiFieldError {
   index: number | null;
 }
 
+export interface ApiLinkedSetDetail {
+  id: number;
+  name: string;
+}
+
+export interface ApiErrorDetails {
+  linkedSets?: ApiLinkedSetDetail[];
+  notSellableProductIds?: number[];
+}
+
 /** 백엔드 `ErrorResponse` 미러. 모든 에러 응답이 이 형태를 갖는다. */
 export interface ApiErrorBody {
   code: string;
@@ -15,4 +25,5 @@ export interface ApiErrorBody {
   path: string;
   timestamp: string;
   errors?: ApiFieldError[];
+  details?: ApiErrorDetails;
 }
