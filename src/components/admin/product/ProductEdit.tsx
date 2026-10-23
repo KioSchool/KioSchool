@@ -41,19 +41,26 @@ function ProductEdit({ productId, onDelete, onClose }: ProductEditProps) {
   };
 
   const handleEditProduct = async (formData: ProductStateType, file: File | null) => {
-    const submitData = { ...formData, workspaceId };
-    await editProduct(submitData, file);
-
-    await fetchProducts();
-    alert('상품 정보가 수정되었습니다.');
-    closeSidebar();
+    try {
+      const submitData = { ...formData, workspaceId };
+      await editProduct(submitData, file);
+      await fetchProducts();
+      alert('상품 정보가 수정되었습니다.');
+      closeSidebar();
+    } catch {
+      alert('상품 정보를 수정하지 못했습니다. 입력 내용을 확인해주세요.');
+    }
   };
 
   const handleEditSetProduct = async (request: SetProductRequest, file: File | null) => {
-    await editSetProduct(request, file);
-    await fetchProducts();
-    alert('세트 메뉴 정보가 수정되었습니다.');
-    closeSidebar();
+    try {
+      await editSetProduct(request, file);
+      await fetchProducts();
+      alert('세트 메뉴 정보가 수정되었습니다.');
+      closeSidebar();
+    } catch {
+      alert('세트 메뉴 정보를 수정하지 못했습니다. 입력 내용을 확인해주세요.');
+    }
   };
 
   if (!initialData) return null;
