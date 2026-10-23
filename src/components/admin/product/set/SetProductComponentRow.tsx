@@ -96,7 +96,13 @@ function SetProductComponentRow({
     <Container>
       <Field>
         <Label>구성품명</Label>
-        <NewAppInput height={42} value={component.name} placeholder="예: 족발 소" onChange={(event) => onChange({ ...component, name: event.target.value })} />
+        <NewAppInput
+          width="100%"
+          height={42}
+          value={component.name}
+          placeholder="예: 족발 소"
+          onChange={(event) => onChange({ ...component, name: event.target.value })}
+        />
       </Field>
 
       <Field>

@@ -148,6 +148,7 @@ function SetProductBasicFields({ value, categories, onChange, onImageChange }: S
         <WideField>
           <FieldLabel>세트 이름</FieldLabel>
           <NewAppInput
+            width="100%"
             value={value.name}
             maxLength={12}
             placeholder="최대 12자까지 가능합니다."
@@ -158,6 +159,7 @@ function SetProductBasicFields({ value, categories, onChange, onImageChange }: S
         <Field>
           <FieldLabel>기존 금액</FieldLabel>
           <NewAppInput
+            width="100%"
             value={value.originalPrice}
             inputMode="numeric"
             placeholder="예: 28000"
@@ -168,6 +170,7 @@ function SetProductBasicFields({ value, categories, onChange, onImageChange }: S
         <Field>
           <FieldLabel>할인 금액</FieldLabel>
           <NewAppInput
+            width="100%"
             value={value.discountPrice}
             inputMode="numeric"
             placeholder="예: 3000"
