@@ -13,19 +13,34 @@ import { MAX_PRODUCT_IMAGE_SIZE } from '@constants/data/productData';
 import NewAppTextarea from '@components/common/input/NewAppTextarea';
 
 const Container = styled.div`
-  height: 100%;
-  gap: 24px;
-  overflow-y: auto;
-  padding-top: 24px;
-  padding-bottom: 100px;
-  ${colFlex({ justify: 'space-between', align: 'center' })};
+  width: 100%;
+  gap: 28px;
+  ${colFlex()};
 `;
 
 const InputContainer = styled.div`
   width: 100%;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
   color: #464a4d;
-  ${colFlex({ justify: 'center', align: 'start' })};
+`;
+
+const SectionHeading = styled.div`
+  gap: 4px;
+  ${colFlex()}
+`;
+
+const SectionTitle = styled.h3`
+  margin: 0;
+  font-size: 18px;
+  color: #25282b;
+`;
+
+const SectionDescription = styled.p`
+  margin: 0;
+  font-size: 13px;
+  color: #8d959c;
 `;
 
 const InputLabel = styled.div`
@@ -36,16 +51,46 @@ const InputLabel = styled.div`
 `;
 
 const InputColContainer = styled.div`
+  min-width: 0;
   width: 100%;
-  gap: 4px;
-  ${colFlex({ justify: 'center', align: 'center' })};
+  gap: 7px;
+  ${colFlex()};
+`;
+
+const WideInputContainer = styled(InputColContainer)`
+  grid-column: 1 / -1;
+`;
+
+const ImageInputContainer = styled.div`
+  align-self: flex-start;
 `;
 
 const SubmitContainer = styled.div`
-  width: 100%;
-  gap: 10px;
-  padding-top: 20px;
-  ${rowFlex({ justify: 'center', align: 'center' })};
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  margin: 0 -28px -28px;
+  padding: 16px 28px;
+  border-top: 1px solid #e8eef2;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(8px);
+  ${rowFlex({ justify: 'space-between', align: 'center' })};
+`;
+
+const DeleteButton = styled.button`
+  padding: 8px 4px;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ff5a5a;
+  cursor: pointer;
+`;
+
+const SubmitActions = styled.div`
+  gap: 8px;
+  margin-left: auto;
+  ${rowFlex({ align: 'center' })}
 `;
 
 function reducer(state: any, action: ProductActionType) {
@@ -159,15 +204,16 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
 
   const isEditMode = mode === 'EDIT';
 
-  const secondaryButtonText = isEditMode ? '삭제' : '취소';
-  const secondaryButtonHandler = isEditMode ? onDelete : onCancel;
-
   const primaryButtonText = isEditMode ? '변경 완료' : '추가 완료';
 
   return (
     <Container>
+      <SectionHeading>
+        <SectionTitle>기본 정보</SectionTitle>
+        <SectionDescription>손님 주문 화면에 보일 메뉴 이름과 설명, 가격을 입력해주세요.</SectionDescription>
+      </SectionHeading>
       <InputContainer>
-        <InputColContainer>
+        <WideInputContainer>
           <InputLabel>카테고리</InputLabel>
           <SelectWithOptions
             options={productCategories}
@@ -177,9 +223,9 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
             }}
             width={'100%'}
           />
-        </InputColContainer>
+        </WideInputContainer>
 
-        <InputColContainer>
+        <WideInputContainer>
           <InputLabel>상품명</InputLabel>
           <NewAppInput
             placeholder={'최대 12자까지 가능합니다.'}
@@ -189,9 +235,9 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
             }}
             width={'100%'}
           />
-        </InputColContainer>
+        </WideInputContainer>
 
-        <InputColContainer>
+        <WideInputContainer>
           <InputLabel>상품 가격</InputLabel>
           <NewAppInput
             value={state.price}
@@ -200,11 +246,11 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
             }}
             width={'100%'}
           />
-        </InputColContainer>
+        </WideInputContainer>
 
-        <InputColContainer>
+        <ImageInputContainer>
           <AppImageInput title={'상품 사진'} url={state.image?.url} file={state.image?.file} onImageChange={onImageChange} width={224} height={224} />
-        </InputColContainer>
+        </ImageInputContainer>
 
         <InputColContainer>
           <InputLabel>상품 설명</InputLabel>
@@ -220,12 +266,19 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
       </InputContainer>
 
       <SubmitContainer>
-        <NewCommonButton onClick={secondaryButtonHandler} customSize={{ width: 106, height: 40 }} color="blue_gray">
-          {secondaryButtonText}
-        </NewCommonButton>
-        <NewCommonButton onClick={handleSubmit} customSize={{ width: 106, height: 40 }}>
-          {primaryButtonText}
-        </NewCommonButton>
+        {isEditMode && onDelete && (
+          <DeleteButton type="button" onClick={onDelete}>
+            메뉴 삭제
+          </DeleteButton>
+        )}
+        <SubmitActions>
+          <NewCommonButton type="button" size="sm" color="blue_gray" onClick={onCancel}>
+            취소
+          </NewCommonButton>
+          <NewCommonButton type="button" size="sm" onClick={handleSubmit}>
+            {primaryButtonText}
+          </NewCommonButton>
+        </SubmitActions>
       </SubmitContainer>
     </Container>
   );
