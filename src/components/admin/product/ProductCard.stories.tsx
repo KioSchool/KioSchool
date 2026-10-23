@@ -2,8 +2,8 @@ import styled from '@emotion/styled';
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import { BrowserRouter } from 'react-router-dom';
-import { Product, ProductStatus } from '@@types/index';
-import { rowFlex } from '@styles/flexStyles';
+import { AdminProduct, Product, ProductStatus, ProductType } from '@@types/index';
+import { colFlex } from '@styles/flexStyles';
 import ProductCard from './ProductCard';
 
 const StoryContainer = styled.div`
@@ -16,8 +16,7 @@ const StoryContainer = styled.div`
 const ProductList = styled.div`
   width: 100%;
   gap: 8px;
-  overflow-x: auto;
-  ${rowFlex({ justify: 'start', align: 'center' })}
+  ${colFlex()}
 `;
 
 const PRODUCT: Product = {
@@ -36,6 +35,28 @@ const LONG_KOREAN_NAME = '매콤달콤치즈떡볶이한세트';
 const LONG_UNBROKEN_NAME = 'ExtraSpicyCheeseTteokbokkiPartySet';
 const EMOJI_NAME = '치즈🧀떡볶이🌶️감자튀김🍟세트';
 const PRODUCT_NAMES = [PRODUCT.name, LONG_KOREAN_NAME, LONG_UNBROKEN_NAME, EMOJI_NAME];
+
+const SET_PRODUCT: AdminProduct = {
+  ...PRODUCT,
+  id: 2,
+  name: '족발 막국수 세트',
+  description: '족발 소와 막국수를 함께',
+  price: 25000,
+  type: ProductType.SET,
+  originalPrice: 28000,
+  discountPrice: 3000,
+  effectiveStatus: ProductStatus.SOLD_OUT,
+  components: [
+    {
+      id: 1,
+      name: '막국수',
+      quantity: 1,
+      displayOrder: 0,
+      conditionProduct: { id: 3, name: '막국수', status: ProductStatus.SOLD_OUT },
+    },
+  ],
+  linkedSets: [],
+};
 
 const meta: Meta<typeof ProductCard> = {
   title: 'Components/Admin/Product/ProductCard',
@@ -62,6 +83,10 @@ export const Basic: Story = {};
 
 export const Unsellable: Story = {
   args: { product: { ...PRODUCT, status: ProductStatus.SOLD_OUT } },
+};
+
+export const AutomaticallySoldOutSet: Story = {
+  args: { product: SET_PRODUCT },
 };
 
 export const LongKoreanName: Story = {
