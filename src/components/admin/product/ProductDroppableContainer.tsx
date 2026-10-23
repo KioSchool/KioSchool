@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useDroppable } from '@dnd-kit/core';
-import { horizontalListSortingStrategy, SortableContext } from '@dnd-kit/sortable';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { Product } from '@@types/index';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import ProductSortableItem from './ProductSortableItem';
@@ -8,8 +8,8 @@ import ProductSortableItem from './ProductSortableItem';
 const Container = styled.div`
   box-sizing: border-box;
   width: 95%;
-  padding: 18px 30px;
-  gap: 10px;
+  padding: 22px 26px 26px;
+  gap: 16px;
   border: 1px solid #e8eef2;
   border-radius: 16px;
   background: #ffffff50;
@@ -18,27 +18,24 @@ const Container = styled.div`
 `;
 
 const CategoryTitle = styled.div`
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 700;
   width: 100%;
 `;
 
 const ProductCardsContainer = styled.div<{ isOver: boolean }>`
-  gap: 8px;
+  gap: 10px;
   width: 100%;
-  overflow-x: auto;
-  flex-wrap: nowrap;
-  padding-bottom: 4px;
-  min-height: 220px;
+  min-height: 142px;
   background-color: ${({ isOver }) => (isOver ? 'rgba(0, 0, 0, 0.02)' : 'transparent')};
   transition: background-color 0.2s ease;
   border-radius: 16px;
-  ${rowFlex({ justify: 'start', align: 'center' })};
+  ${colFlex({ justify: 'start' })};
 `;
 
 const EmptyContainer = styled.div`
   width: 100%;
-  height: 220px;
+  height: 142px;
   ${rowFlex({ justify: 'center', align: 'center' })};
 `;
 
@@ -64,7 +61,7 @@ function ProductDroppableContainer({ categoryId, categoryName, products, onProdu
     <Container className="products-container">
       <CategoryTitle>{categoryName}</CategoryTitle>
 
-      <SortableContext id={droppableId} items={products.map((p) => `product-${p.id}`)} strategy={horizontalListSortingStrategy}>
+      <SortableContext id={droppableId} items={products.map((p) => `product-${p.id}`)} strategy={verticalListSortingStrategy}>
         <ProductCardsContainer ref={setNodeRef} isOver={isOver} className="product-cards-container">
           {products.map((product) => (
             <ProductSortableItem key={product.id} product={product} onClick={() => onProductClick(product.id)} />

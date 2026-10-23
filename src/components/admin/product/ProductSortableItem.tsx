@@ -6,6 +6,7 @@ import ProductCard from './ProductCard';
 
 const DraggableContainer = styled.div<{ transform?: string; transition?: string; isDragging?: boolean }>`
   position: relative;
+  width: 100%;
   transform: ${({ transform }) => transform};
   transition: ${({ transition }) => transition || 'box-shadow 0.2s ease'};
   z-index: ${({ isDragging }) => (isDragging ? 999 : 'auto')};
