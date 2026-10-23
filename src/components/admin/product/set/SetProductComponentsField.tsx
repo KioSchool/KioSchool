@@ -66,7 +66,7 @@ const Notice = styled.div`
   background: ${Color.BLUE_FAINT};
   font-size: 12px;
   line-height: 1.5;
-  color: ${Color.TEXT_BODY};
+  color: ${Color.TEXT_DEFAULT};
 `;
 
 interface SetProductComponentsFieldProps {
