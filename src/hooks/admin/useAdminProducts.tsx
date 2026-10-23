@@ -10,7 +10,7 @@ function useAdminProducts(workspaceId: string | undefined | null) {
   const setProductCategories = useSetAtom(adminCategoriesAtom);
 
   const fetchProducts = () => {
-    adminApi
+    return adminApi
       .get<AdminProduct[]>('/products', {
         params: {
           workspaceId: workspaceId,
@@ -74,11 +74,7 @@ function useAdminProducts(workspaceId: string | undefined | null) {
         status,
       })
       .then((response) => {
-        fetchProducts();
-        return response.data;
-      })
-      .catch((error) => {
-        console.error('Failed to edit product sellable: ', error);
+        return fetchProducts().then(() => response.data);
       });
   };
 
@@ -92,9 +88,6 @@ function useAdminProducts(workspaceId: string | undefined | null) {
       })
       .then(() => {
         setProducts((prev) => prev.filter((item) => item.id !== productId));
-      })
-      .catch((error) => {
-        console.error('Failed to delete selected products: ', error);
       });
   };
 

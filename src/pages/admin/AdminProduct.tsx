@@ -82,13 +82,34 @@ function AdminProduct() {
   };
 
   const handleDeleteProduct = async (productId: number) => {
-    const userInput = await confirm();
+    const product = products.find((item) => item.id === productId);
+    if (!product) return;
+
+    if (product.linkedSets.length > 0) {
+      await confirm({
+        title: '연결된 세트가 있어 삭제할 수 없습니다.',
+        description: `${product.linkedSets.map((linkedSet) => linkedSet.name).join(', ')}에서 연결 상품으로 사용하고 있습니다.`,
+        okText: '확인',
+        cancelText: undefined,
+      });
+      return;
+    }
+
+    const userInput = await confirm({
+      title: `${product.name} 메뉴를 삭제하시겠습니까?`,
+      description: '삭제한 메뉴는 되돌릴 수 없습니다.',
+      okText: '삭제하기',
+      cancelText: '취소',
+    });
     if (!userInput) return;
 
-    await deleteProduct(productId);
-    await fetchProducts();
-    alert('상품이 삭제되었습니다.');
-    handleCloseEditor();
+    try {
+      await deleteProduct(productId);
+      alert('상품이 삭제되었습니다.');
+      handleCloseEditor();
+    } catch {
+      alert('상품을 삭제하지 못했습니다. 연결된 세트와 주문 상태를 확인해주세요.');
+    }
   };
 
   const handleOpenEditProduct = (productId: number) => {
