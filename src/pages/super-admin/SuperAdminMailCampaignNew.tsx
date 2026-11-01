@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import AppContainer from '@components/common/container/AppContainer';
@@ -10,6 +10,7 @@ import MailCampaignForm, { MailCampaignFormValues } from '@components/super-admi
 import MailCampaignHistory from '@components/super-admin/mail/MailCampaignHistory';
 import MailCampaignPreview from '@components/super-admin/mail/MailCampaignPreview';
 import SuperAdminPageContainer from '@components/super-admin/SuperAdminPageContainer';
+import { API_ERROR_CODES } from '@constants/errorCodes';
 import { getSuperAdminMailCampaignPath, SUPER_ADMIN_ROUTES } from '@constants/routes';
 import useSuperAdminMail from '@hooks/super-admin/useSuperAdminMail';
 import useConfirm from '@hooks/useConfirm';
@@ -17,7 +18,7 @@ import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import type { MailAudiencePreview, MailCampaignRequest } from '@@types/mail';
-import { getApiErrorMessage } from '@utils/apiError';
+import { getApiErrorMessage, isApiErrorCode } from '@utils/apiError';
 import { getCampaignConfirmDescription } from '@utils/mailCampaign';
 
 const AUDIENCE_PAGE_SIZE = 500;
@@ -132,34 +133,41 @@ function SuperAdminMailCampaignNew() {
   const [isWorking, setIsWorking] = useState(false);
   const [notice, setNotice] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [audienceVersion, setAudienceVersion] = useState(0);
   const minOrdersNumber = Number(minOrders);
   const hasFilter = Boolean(from && to) && Number.isInteger(minOrdersNumber) && minOrdersNumber >= 1;
 
   // 체크를 푼 주점은 목록에서 계속 보여 다시 넣을 수 있도록 조회에는 빼지 않고 수만 뺀다
   const rows = preview?.content.content ?? [];
-  const targetCount = (preview?.targetCount ?? 0) - excludedIds.length;
+  const targetCount = Math.max((preview?.targetCount ?? 0) - excludedIds.length, 0);
   const firstRow = rows.find((row) => !excludedIds.includes(row.workspaceId));
   const dailyLimit = preview?.dailyLimit ?? 0;
   const excludedByReason = preview ? preview.noEmailCount + preview.unsubscribedCount + preview.withdrawnCount : 0;
 
+  // 조건을 바꾸면 이전 곳 수를 바로 지운다. 새 곳 수를 받기 전에는 보내기 버튼이 잠겨 있어 잘못된 수로 확인할 수 없다.
   useEffect(() => {
-    if (!hasFilter) {
-      setPreview(null);
-      return undefined;
-    }
+    setPreview(null);
+    setExcludedIds([]);
+    if (!hasFilter) return undefined;
 
+    let cancelled = false;
     const timer = setTimeout(() => {
       previewAudience({ from, to, minOrders: minOrdersNumber, schoolName: schoolName.trim() || undefined, excludedWorkspaceIds: [] }, 0, AUDIENCE_PAGE_SIZE)
         .then((response) => {
+          if (cancelled) return;
           setPreview(response);
-          setExcludedIds([]);
           setErrorMessage('');
         })
-        .catch((error: unknown) => setErrorMessage(getApiErrorMessage(error, '받을 주점을 불러오지 못했습니다.')));
+        .catch((error: unknown) => {
+          if (!cancelled) setErrorMessage(getApiErrorMessage(error, '받을 주점을 불러오지 못했습니다.'));
+        });
     }, SEARCH_DEBOUNCE_MS);
 
-    return () => clearTimeout(timer);
-  }, [from, hasFilter, minOrdersNumber, previewAudience, schoolName, to]);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [audienceVersion, from, hasFilter, minOrdersNumber, previewAudience, schoolName, to]);
 
   const { ConfirmModal, confirm } = useConfirm({
     title: `${targetCount}곳에 메일을 보낼까요?`,
@@ -172,12 +180,17 @@ function SuperAdminMailCampaignNew() {
     setExcludedIds((ids) => (ids.includes(workspaceId) ? ids.filter((id) => id !== workspaceId) : [...ids, workspaceId]));
   };
 
+  // 응답을 못 받아 다시 눌러도 발송을 또 만들지 않게 한다. 대상이나 내용을 고치면 새 발송이다.
+  const requestId = useMemo(() => crypto.randomUUID(), [audienceVersion, from, to, minOrdersNumber, schoolName, excludedIds, form]);
+
   const buildRequest = (): MailCampaignRequest => ({
     filter: { from, to, minOrders: minOrdersNumber, schoolName: schoolName.trim() || undefined, excludedWorkspaceIds: excludedIds },
     subject: form.subject.trim(),
     content: form.content.trim(),
     buttonLabel: form.buttonLabel.trim() || undefined,
     buttonUrl: form.buttonUrl.trim() || undefined,
+    expectedCount: targetCount,
+    requestId,
   });
 
   const validate = (): boolean => {
@@ -221,7 +234,14 @@ function SuperAdminMailCampaignNew() {
       const campaign = await startCampaign(buildRequest());
       navigate(getSuperAdminMailCampaignPath(campaign.id));
     } catch (error) {
-      setErrorMessage(getApiErrorMessage(error, '발송을 시작하지 못했습니다.'));
+      const message = getApiErrorMessage(error, '발송을 시작하지 못했습니다.');
+      if (isApiErrorCode(error, API_ERROR_CODES.MAIL_AUDIENCE_CHANGED)) {
+        // 다시 불러오면 오류 문구가 지워지므로 안내로 남긴다
+        setNotice(message);
+        setAudienceVersion((version) => version + 1);
+      } else {
+        setErrorMessage(message);
+      }
       setIsWorking(false);
     }
   };

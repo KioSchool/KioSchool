@@ -75,6 +75,8 @@ export interface MailCampaignRequest {
   content: string;
   buttonLabel?: string;
   buttonUrl?: string;
+  expectedCount: number;
+  requestId: string;
 }
 
 export interface MailCampaignSummary {

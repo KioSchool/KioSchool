@@ -130,14 +130,14 @@ function useSuperAdminMail() {
 
   const sendCampaignTest = useCallback(
     async (request: MailCampaignRequest): Promise<void> => {
-      await superAdminApi.post('/mail/campaigns/test', request);
+      await superAdminApi.post('/mail/campaigns/test', request, { timeout: MAIL_SEND_TIMEOUT_MS });
     },
     [superAdminApi],
   );
 
   const startCampaign = useCallback(
     async (request: MailCampaignRequest): Promise<MailCampaignSummary> => {
-      const response = await superAdminApi.post<MailCampaignSummary>('/mail/campaigns', request);
+      const response = await superAdminApi.post<MailCampaignSummary>('/mail/campaigns', request, { timeout: MAIL_SEND_TIMEOUT_MS });
       return response.data;
     },
     [superAdminApi],
