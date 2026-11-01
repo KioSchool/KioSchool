@@ -1,5 +1,5 @@
 import { Color } from '@resources/colors';
-import type { MailThreadStatus } from '@@types/mail';
+import type { MailCampaignStatus, MailRecipientStatus, MailThreadStatus } from '@@types/mail';
 
 export const MAIL_SUBJECT_MAX_LENGTH = 200;
 export const MAIL_CONTENT_MAX_LENGTH = 10000;
@@ -22,4 +22,30 @@ export const MAIL_STATUS_PALETTE: Record<MailThreadStatus, { bg: string; text: s
   WAITING: { bg: Color.LIGHT_GREY, text: Color.GREY },
   RESOLVED: { bg: Color.LIGHT_GREY, text: Color.GREY },
   SPAM: { bg: Color.LIGHT_GREY, text: Color.GREY },
+};
+
+export const MAIL_TEMPLATE_VALUES = ['{주점 이름}', '{사장 이름}', '{주점 번호}'] as const;
+export const MAIL_BUTTON_LABEL_MAX_LENGTH = 40;
+export const MAIL_BUTTON_URL_MAX_LENGTH = 2000;
+
+export const MAIL_CAMPAIGN_STATUS_LABELS: Record<MailCampaignStatus, string> = {
+  SENDING: '보내는 중',
+  STOPPED: '멈춤',
+  DONE: '완료',
+};
+
+export const MAIL_RECIPIENT_STATUS_LABELS: Record<MailRecipientStatus, string> = {
+  PENDING: '남음',
+  SENDING: '보내는 중',
+  SENT: '보냄',
+  FAILED: '실패',
+  EXCLUDED: '제외',
+};
+
+export const MAIL_RECIPIENT_STATUS_COLORS: Record<MailRecipientStatus, string> = {
+  PENDING: Color.GREY,
+  SENDING: Color.KIO_ORANGE_DARK,
+  SENT: Color.GREEN,
+  FAILED: Color.RED,
+  EXCLUDED: Color.GREY,
 };

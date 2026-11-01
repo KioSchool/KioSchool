@@ -36,6 +36,9 @@ import SuperAdminInquiryDetail from '@pages/super-admin/SuperAdminInquiryDetail'
 import SuperAdminMailList from '@pages/super-admin/SuperAdminMailList';
 import SuperAdminMailDetail from '@pages/super-admin/SuperAdminMailDetail';
 import SuperAdminMailNew from '@pages/super-admin/SuperAdminMailNew';
+import SuperAdminMailCampaignNew from '@pages/super-admin/SuperAdminMailCampaignNew';
+import SuperAdminMailCampaignDetail from '@pages/super-admin/SuperAdminMailCampaignDetail';
+import MailUnsubscribe from '@pages/user/mail/MailUnsubscribe';
 import { ToastContainer } from 'react-toastify';
 import useNetworkStatusNotifier from '@hooks/useNetworkStatusNotifier';
 import useServerHealth from '@hooks/useServerHealth';
@@ -87,6 +90,7 @@ function App() {
         <Route path={USER_ROUTES.INFO} element={<Info />} />
         <Route path={USER_ROUTES.CONTACT} element={<Contact />} />
         <Route path={USER_ROUTES.PRIVACY} element={<Privacy />} />
+        <Route path={USER_ROUTES.MAIL_UNSUBSCRIBE} element={<MailUnsubscribe />} />
 
         <Route path={ORDER_ROUTES.ORDER} element={<Order />} />
         <Route path={ORDER_ROUTES.ORDER_BASKET} element={<OrderBasket />} />
@@ -107,6 +111,8 @@ function App() {
         <Route path={SUPER_ADMIN_ROUTES.INQUIRY_DETAIL} element={<SuperAdminInquiryDetail />} />
         <Route path={SUPER_ADMIN_ROUTES.MAIL} element={<SuperAdminMailList />} />
         <Route path={SUPER_ADMIN_ROUTES.MAIL_NEW} element={<SuperAdminMailNew />} />
+        <Route path={SUPER_ADMIN_ROUTES.MAIL_CAMPAIGN_NEW} element={<SuperAdminMailCampaignNew />} />
+        <Route path={SUPER_ADMIN_ROUTES.MAIL_CAMPAIGN_DETAIL} element={<SuperAdminMailCampaignDetail />} />
         <Route path={SUPER_ADMIN_ROUTES.MAIL_DETAIL} element={<SuperAdminMailDetail />} />
         <Route path={SUPER_ADMIN_ROUTES.ACQUISITION_SURVEY} element={<SuperAdminAcquisitionSurvey />} />
         <Route path={SUPER_ADMIN_ROUTES.DONATION_CLICKS} element={<SuperAdminDonationClicks />} />

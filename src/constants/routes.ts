@@ -9,6 +9,7 @@ export const USER_ROUTES = {
   CONTACT: '/contact',
   PRIVACY: '/privacy',
   EMAIL_DOMAINS: '/email-domains',
+  MAIL_UNSUBSCRIBE: '/mail/unsubscribe',
 } as const;
 
 export const ORDER_ROUTES = {
@@ -52,6 +53,8 @@ export const SUPER_ADMIN_ROUTES = {
   MAIL: '/super-admin/mail',
   MAIL_NEW: '/super-admin/mail/new',
   MAIL_DETAIL: '/super-admin/mail/:threadId',
+  MAIL_CAMPAIGN_NEW: '/super-admin/mail/campaigns/new',
+  MAIL_CAMPAIGN_DETAIL: '/super-admin/mail/campaigns/:campaignId',
   ACQUISITION_SURVEY: '/super-admin/acquisition-survey',
   DONATION_CLICKS: '/super-admin/donation-clicks',
 } as const;
@@ -86,6 +89,8 @@ export function getSuperAdminOrdersPath(query?: { workspaceId?: number }): strin
 export const getSuperAdminInquiryPath = (inquiryId: string | number) => `/super-admin/inquiries/${inquiryId}`;
 
 export const getSuperAdminMailPath = (threadId: string | number) => `/super-admin/mail/${threadId}`;
+
+export const getSuperAdminMailCampaignPath = (campaignId: string | number) => `/super-admin/mail/campaigns/${campaignId}`;
 
 export function getSuperAdminMailNewPath(workspaceId?: number): string {
   if (!workspaceId) return SUPER_ADMIN_ROUTES.MAIL_NEW;
