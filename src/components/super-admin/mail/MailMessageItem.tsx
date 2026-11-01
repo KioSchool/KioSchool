@@ -92,6 +92,11 @@ function getSenderName(message: MailMessage): string {
     .otherwise(() => MAIL_TEAM_NAME);
 }
 
+function getDownloadErrorMessage(error: unknown): string {
+  if (isApiErrorCode(error, API_ERROR_CODES.MAIL_ATTACHMENT_UNAVAILABLE)) return ATTACHMENT_UNAVAILABLE_MESSAGE;
+  return getApiErrorMessage(error, '파일을 내려받지 못했습니다.');
+}
+
 function saveBlob(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
@@ -117,11 +122,7 @@ function MailMessageItem({ message }: MailMessageItemProps) {
     try {
       saveBlob(await downloadAttachment(attachment.id), attachment.filename ?? NO_FILE_NAME);
     } catch (error) {
-      setErrorMessage(
-        isApiErrorCode(error, API_ERROR_CODES.MAIL_ATTACHMENT_UNAVAILABLE)
-          ? ATTACHMENT_UNAVAILABLE_MESSAGE
-          : getApiErrorMessage(error, '파일을 내려받지 못했습니다.'),
-      );
+      setErrorMessage(getDownloadErrorMessage(error));
     } finally {
       setDownloadingId(null);
     }

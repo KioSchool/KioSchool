@@ -35,7 +35,7 @@ interface MailHtmlFrameProps {
 }
 
 function MailHtmlFrame({ html, text }: MailHtmlFrameProps) {
-  const srcDoc = useMemo(() => (html ? buildMailSrcDoc(html) : ''), [html]);
+  const srcDoc = useMemo(() => buildMailSrcDoc(html ?? ''), [html]);
 
   if (html) return <Frame title="받은 메일 내용" sandbox="allow-popups allow-popups-to-escape-sandbox" srcDoc={srcDoc} />;
   if (text) return <PlainText>{text}</PlainText>;

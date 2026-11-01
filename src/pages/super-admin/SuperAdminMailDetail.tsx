@@ -221,17 +221,25 @@ function SuperAdminMailDetail() {
     navigate(SUPER_ADMIN_ROUTES.MAIL);
   };
 
-  if (isLoading || !thread) {
+  if (isLoading) {
     return (
       <AppContainer useFlex={colFlex({ align: 'center' })} useTitle={false}>
         <SuperAdminPageContainer>
-          <MessageCard role={isLoading ? undefined : 'alert'}>
-            {isLoading ? '대화를 불러오는 중입니다.' : errorMessage || '대화를 찾을 수 없습니다.'}
-            {!isLoading && (
-              <NewCommonButton type="button" size="xs" color="blue_gray" onClick={handleBackToList}>
-                목록으로 돌아가기
-              </NewCommonButton>
-            )}
+          <MessageCard>대화를 불러오는 중입니다.</MessageCard>
+        </SuperAdminPageContainer>
+      </AppContainer>
+    );
+  }
+
+  if (!thread) {
+    return (
+      <AppContainer useFlex={colFlex({ align: 'center' })} useTitle={false}>
+        <SuperAdminPageContainer>
+          <MessageCard role="alert">
+            {errorMessage || '대화를 찾을 수 없습니다.'}
+            <NewCommonButton type="button" size="xs" color="blue_gray" onClick={handleBackToList}>
+              목록으로 돌아가기
+            </NewCommonButton>
           </MessageCard>
         </SuperAdminPageContainer>
       </AppContainer>
@@ -265,11 +273,11 @@ function SuperAdminMailDetail() {
                 <InfoValue>
                   {!thread.workspaceName && MAIL_NO_WORKSPACE}
                   {thread.workspaceName && (
-                    <>
+                    <span>
                       {thread.workspaceName}
                       {thread.schoolName && ` · ${thread.schoolName}`} ·{' '}
                       <WorkspaceLink to={getSuperAdminWorkspacePath({ keyword: thread.workspaceName })}>주점 보기</WorkspaceLink>
-                    </>
+                    </span>
                   )}
                 </InfoValue>
               </InfoRow>
@@ -289,11 +297,12 @@ function SuperAdminMailDetail() {
             </Section>
             <MailReplyForm thread={thread} onReplied={setThread} onStale={reloadAfterStale} onResolve={handleResolve} isChanging={isChanging} />
             <ActionRow>
-              {thread.status === 'SPAM' ? (
+              {thread.status === 'SPAM' && (
                 <NewCommonButton type="button" size="xs" color="blue_gray" disabled={isChanging} onClick={handleUnmarkSpam}>
                   스팸 표시 취소
                 </NewCommonButton>
-              ) : (
+              )}
+              {thread.status !== 'SPAM' && (
                 <NewCommonButton type="button" size="xs" color="blue_gray" disabled={isChanging} onClick={handleMarkSpam}>
                   스팸 표시
                 </NewCommonButton>
