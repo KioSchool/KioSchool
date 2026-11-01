@@ -36,7 +36,18 @@ const Description = styled.p`
   overflow-wrap: anywhere;
 `;
 
+const ReadyContent = styled.div`
+  width: 100%;
+  gap: 16px;
+  ${colFlex({ align: 'center' })}
+`;
+
 type UnsubscribeState = { kind: 'loading' } | { kind: 'invalid' } | { kind: 'ready'; maskedEmail: string } | { kind: 'done' };
+
+function getStateOf({ unsubscribed, maskedEmail }: MailUnsubscribeInfo): UnsubscribeState {
+  if (unsubscribed) return { kind: 'done' };
+  return { kind: 'ready', maskedEmail };
+}
 
 function MailUnsubscribe() {
   const [searchParams] = useSearchParams();
@@ -54,7 +65,7 @@ function MailUnsubscribe() {
 
     userApi
       .get<MailUnsubscribeInfo>('/mail/unsubscribe', { params: { token } })
-      .then(({ data }) => setState(data.unsubscribed ? { kind: 'done' } : { kind: 'ready', maskedEmail: data.maskedEmail }))
+      .then(({ data }) => setState(getStateOf(data)))
       .catch(() => setState({ kind: 'invalid' }));
   }, [token, userApi]);
 
@@ -82,14 +93,14 @@ function MailUnsubscribe() {
         {state.kind === 'loading' && <Description>확인하고 있어요.</Description>}
         {state.kind === 'invalid' && <Description role="alert">링크가 올바르지 않아요.</Description>}
         {state.kind === 'ready' && (
-          <>
+          <ReadyContent>
             <Title>메일 수신 거부</Title>
             <Description>{state.maskedEmail} 주소로 오는 키오스쿨 안내 메일을 받지 않을까요?</Description>
             {hasFailed && <Description role="alert">처리하지 못했어요. 잠시 후 다시 시도해 주세요.</Description>}
             <NewCommonButton type="button" size="xs" disabled={isSubmitting} onClick={handleUnsubscribe}>
               수신 거부하기
             </NewCommonButton>
-          </>
+          </ReadyContent>
         )}
         {state.kind === 'done' && <Description role="status">앞으로 이런 메일을 보내지 않을게요.</Description>}
       </Main>

@@ -142,7 +142,6 @@ function SuperAdminMailCampaignNew() {
   const targetCount = Math.max((preview?.targetCount ?? 0) - excludedIds.length, 0);
   const firstRow = rows.find((row) => !excludedIds.includes(row.workspaceId));
   const dailyLimit = preview?.dailyLimit ?? 0;
-  const excludedByReason = preview ? preview.noEmailCount + preview.unsubscribedCount + preview.withdrawnCount : 0;
 
   // 조건을 바꾸면 이전 곳 수를 바로 지운다. 새 곳 수를 받기 전에는 보내기 버튼이 잠겨 있어 잘못된 수로 확인할 수 없다.
   useEffect(() => {
@@ -177,7 +176,10 @@ function SuperAdminMailCampaignNew() {
   });
 
   const handleToggle = (workspaceId: number) => {
-    setExcludedIds((ids) => (ids.includes(workspaceId) ? ids.filter((id) => id !== workspaceId) : [...ids, workspaceId]));
+    setExcludedIds((ids) => {
+      if (ids.includes(workspaceId)) return ids.filter((id) => id !== workspaceId);
+      return [...ids, workspaceId];
+    });
   };
 
   // 응답을 못 받아 다시 눌러도 발송을 또 만들지 않게 한다. 대상이나 내용을 고치면 새 발송이다.
@@ -293,7 +295,8 @@ function SuperAdminMailCampaignNew() {
                   <TargetCount>{targetCount}곳</TargetCount>에 보냅니다
                 </span>
                 <span>
-                  제외 {excludedByReason}곳: 이메일 없음 {preview.noEmailCount}곳, 수신 거부 {preview.unsubscribedCount}곳, 탈퇴 {preview.withdrawnCount}곳
+                  제외 {preview.noEmailCount + preview.unsubscribedCount + preview.withdrawnCount}곳: 이메일 없음 {preview.noEmailCount}곳, 수신 거부{' '}
+                  {preview.unsubscribedCount}곳, 탈퇴 {preview.withdrawnCount}곳
                 </span>
               </CountRow>
             )}

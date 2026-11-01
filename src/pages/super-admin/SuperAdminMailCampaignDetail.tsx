@@ -150,13 +150,21 @@ function SuperAdminMailCampaignDetail() {
     setSearchParams({ page: nextPage.toString() }, { replace: true });
   };
 
-  if (isLoading || !detail) {
+  if (isLoading) {
     return (
       <AppContainer useFlex={colFlex({ align: 'center' })} useTitle={false}>
         <SuperAdminPageContainer>
-          <MessageCard role={isLoading ? undefined : 'alert'}>
-            {isLoading ? '발송 현황을 불러오는 중입니다.' : errorMessage || '발송을 찾을 수 없습니다.'}
-          </MessageCard>
+          <MessageCard>발송 현황을 불러오는 중입니다.</MessageCard>
+        </SuperAdminPageContainer>
+      </AppContainer>
+    );
+  }
+
+  if (!detail) {
+    return (
+      <AppContainer useFlex={colFlex({ align: 'center' })} useTitle={false}>
+        <SuperAdminPageContainer>
+          <MessageCard role="alert">{errorMessage || '발송을 찾을 수 없습니다.'}</MessageCard>
         </SuperAdminPageContainer>
       </AppContainer>
     );

@@ -13,13 +13,17 @@ function getKstHour(now: Date): number {
   return Number(new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Seoul', hour: 'numeric', hourCycle: 'h23' }).format(now));
 }
 
+function getStartDayText(hour: number): string {
+  if (hour < SENDING_START_HOUR) return '오늘';
+  return '내일';
+}
+
 export function getCampaignConfirmDescription(count: number, dailyLimit: number, now: Date = new Date()): string {
   const hour = getKstHour(now);
   const days = calcCampaignDays(count, dailyLimit);
 
   if (hour < SENDING_START_HOUR || hour >= SENDING_END_HOUR) {
-    const startDay = hour < SENDING_START_HOUR ? '오늘' : '내일';
-    return `지금은 보내는 시간이 아니라 ${startDay} 오전 10시부터 보내요. 모두 보내는 데 ${days}일 걸려요.`;
+    return `지금은 보내는 시간이 아니라 ${getStartDayText(hour)} 오전 10시부터 보내요. 모두 보내는 데 ${days}일 걸려요.`;
   }
 
   if (count <= dailyLimit) return '오늘 모두 보내요.';
@@ -37,6 +41,7 @@ export function renderMailTemplatePreview(template: string, row: MailAudienceRow
   };
   return template.replace(/\{[^{}]+\}/g, (placeholder) => {
     const value = values[placeholder];
-    return value === undefined ? placeholder : transform(value);
+    if (value === undefined) return placeholder;
+    return transform(value);
   });
 }

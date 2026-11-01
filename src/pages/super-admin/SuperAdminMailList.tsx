@@ -26,6 +26,11 @@ const Content = styled.div`
   ${colFlex()}
 `;
 
+const HeaderActions = styled.div`
+  gap: 8px;
+  ${rowFlex({ align: 'center' })}
+`;
+
 const FilterRow = styled.div`
   width: 100%;
   gap: 8px;
@@ -129,14 +134,14 @@ function SuperAdminMailList() {
           title="메일함"
           description={`${MAIL_ADDRESS}으로 주고받은 메일을 확인하고 답장합니다.`}
           actions={
-            <>
+            <HeaderActions>
               <NewCommonButton size="xs" color="blue_gray" onClick={() => navigate(SUPER_ADMIN_ROUTES.MAIL_CAMPAIGN_NEW)}>
                 여러 곳에 보내기
               </NewCommonButton>
               <NewCommonButton size="xs" onClick={() => navigate(getSuperAdminMailNewPath())}>
                 새 메일
               </NewCommonButton>
-            </>
+            </HeaderActions>
           }
         />
         <Content>

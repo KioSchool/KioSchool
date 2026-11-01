@@ -46,6 +46,13 @@ const Frame = styled.iframe`
   background: #f6f7f9;
 `;
 
+function getPreviewButton(values: MailCampaignFormValues, row: MailAudienceRow | undefined) {
+  const label = values.buttonLabel.trim();
+  const url = values.buttonUrl.trim();
+  if (!label || !url) return undefined;
+  return { label: renderMailTemplatePreview(label, row), url: renderMailTemplatePreview(url, row, encodeURIComponent) };
+}
+
 interface MailCampaignPreviewProps {
   values: MailCampaignFormValues;
   row: MailAudienceRow | undefined;
@@ -53,20 +60,15 @@ interface MailCampaignPreviewProps {
 
 function MailCampaignPreview({ values, row }: MailCampaignPreviewProps) {
   const html = useMemo(() => {
-    const buttonLabel = values.buttonLabel.trim();
-    const buttonUrl = values.buttonUrl.trim();
     return createMailPreviewHtml(renderMailTemplatePreview(values.content, row), {
-      button:
-        buttonLabel && buttonUrl
-          ? { label: renderMailTemplatePreview(buttonLabel, row), url: renderMailTemplatePreview(buttonUrl, row, encodeURIComponent) }
-          : undefined,
+      button: getPreviewButton(values, row),
       unsubscribeUrl: PREVIEW_UNSUBSCRIBE_URL,
     });
   }, [row, values.buttonLabel, values.buttonUrl, values.content]);
 
   return (
     <Container>
-      <Title>미리보기{row ? `: ${row.workspaceName}` : ''}</Title>
+      <Title>미리보기{row && `: ${row.workspaceName}`}</Title>
       <Info>
         보낸 사람: {MAIL_TEAM_NAME} &lt;{MAIL_ADDRESS}&gt;
         <br />
