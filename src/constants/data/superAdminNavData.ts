@@ -9,6 +9,7 @@ export const superAdminNavData: SideNavCategory[] = [
     items: [
       { name: '전체 주문 모니터링', path: stripPrefix(SUPER_ADMIN_ROUTES.ORDERS) },
       { name: '문의 관리', path: stripPrefix(SUPER_ADMIN_ROUTES.INQUIRIES) },
+      { name: '메일함', path: stripPrefix(SUPER_ADMIN_ROUTES.MAIL) },
       { name: '워크스페이스 관리', path: stripPrefix(SUPER_ADMIN_ROUTES.WORKSPACE) },
       { name: '서비스 현황 대시보드', path: stripPrefix(SUPER_ADMIN_ROUTES.DASHBOARD) },
       { name: '축제 달력', path: stripPrefix(SUPER_ADMIN_ROUTES.FESTIVAL_CALENDAR) },
