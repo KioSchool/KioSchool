@@ -122,6 +122,8 @@ function SuperAdminMailNew() {
   const workspaceIdParam = Number(searchParams.get('workspaceId'));
   const ownerEmail = workspace?.ownerEmail ?? null;
   const previewHtml = useMemo(() => createMailPreviewHtml(content), [content]);
+  // 응답을 못 받아 다시 눌러도 같은 메일이 두 번 나가지 않게 한다. 내용을 고치면 새 메일이다.
+  const requestId = useMemo(() => crypto.randomUUID(), [workspace?.id, subject, content]);
   const { ConfirmModal, confirm } = useConfirm({
     title: '메일을 보낼까요?',
     description: `${workspace?.name ?? ''} 사장(${ownerEmail ?? ''})에게 메일을 보냅니다.`,
@@ -164,7 +166,7 @@ function SuperAdminMailNew() {
     setErrorMessage('');
 
     try {
-      await sendNewMail({ workspaceId: workspace.id, subject: subject.trim(), content: content.trim() });
+      await sendNewMail({ workspaceId: workspace.id, subject: subject.trim(), content: content.trim(), requestId });
       navigate(SUPER_ADMIN_ROUTES.MAIL, { state: { sentNotice: SENT_NOTICE } });
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error, '메일을 보내지 못했습니다.'));

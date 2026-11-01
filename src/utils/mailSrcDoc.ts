@@ -8,6 +8,17 @@ const MAIL_FRAME_HEAD = [
   '<style>body { margin: 12px; font-family: sans-serif; font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }</style>',
 ].join('');
 
+// 메일에 rel="opener"가 있으면 열린 페이지가 슈퍼어드민 탭을 다른 주소로 바꿀 수 있다. 링크는 모두 새 탭으로만 연다.
+function isolateLinks(document: Document) {
+  document.querySelectorAll('a, area').forEach((link) => {
+    link.setAttribute('rel', 'noopener noreferrer');
+    link.setAttribute('target', '_blank');
+  });
+}
+
 export function buildMailSrcDoc(html: string): string {
-  return `<!DOCTYPE html><html><head>${MAIL_FRAME_HEAD}</head><body>${html}</body></html>`;
+  const document = new DOMParser().parseFromString(html, 'text/html');
+  isolateLinks(document);
+  document.head.insertAdjacentHTML('afterbegin', MAIL_FRAME_HEAD);
+  return `<!DOCTYPE html>${document.documentElement.outerHTML}`;
 }

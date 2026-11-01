@@ -4,6 +4,10 @@ import type { PaginationResponse } from '@@types/index';
 import type { MailThreadDetail, MailThreadListItem, MailThreadStatus, ReplyMailRequest, SendMailRequest } from '@@types/mail';
 import useApi from '@hooks/useApi';
 
+// 서버가 Resend를 두 번 부르는 동안(호출당 최대 15초) 먼저 포기하면, 메일이 나갔는데 실패로 보여 다시 보내게 된다
+const MAIL_SEND_TIMEOUT_MS = 35000;
+const MAIL_ATTACHMENT_TIMEOUT_MS = 130000;
+
 interface FetchThreadsParams {
   page: number;
   size: number;
@@ -45,14 +49,14 @@ function useSuperAdminMail() {
 
   const sendNewMail = useCallback(
     async (request: SendMailRequest): Promise<void> => {
-      await superAdminApi.post('/mail/threads', request);
+      await superAdminApi.post('/mail/threads', request, { timeout: MAIL_SEND_TIMEOUT_MS });
     },
     [superAdminApi],
   );
 
   const replyThread = useCallback(
     async (threadId: number, request: ReplyMailRequest): Promise<MailThreadDetail> => {
-      const response = await superAdminApi.post<MailThreadDetail>(`/mail/threads/${threadId}/reply`, request);
+      const response = await superAdminApi.post<MailThreadDetail>(`/mail/threads/${threadId}/reply`, request, { timeout: MAIL_SEND_TIMEOUT_MS });
       return response.data;
     },
     [superAdminApi],
@@ -92,7 +96,10 @@ function useSuperAdminMail() {
   const downloadAttachment = useCallback(
     async (attachmentId: number): Promise<Blob> => {
       try {
-        const response = await superAdminApi.get<Blob>(`/mail/attachments/${attachmentId}/download`, { responseType: 'blob' });
+        const response = await superAdminApi.get<Blob>(`/mail/attachments/${attachmentId}/download`, {
+          responseType: 'blob',
+          timeout: MAIL_ATTACHMENT_TIMEOUT_MS,
+        });
         return response.data;
       } catch (error) {
         await restoreBlobErrorBody(error);

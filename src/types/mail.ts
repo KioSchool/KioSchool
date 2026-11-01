@@ -49,6 +49,7 @@ export interface SendMailRequest {
   workspaceId: number;
   subject: string;
   content: string;
+  requestId: string;
 }
 
 export interface ReplyMailRequest {
