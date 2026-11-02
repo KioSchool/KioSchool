@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { RiCloseLine } from '@remixicon/react';
 import { MAIL_ADDRESS, MAIL_TEAM_NAME } from '@constants/data/mailData';
@@ -17,7 +17,7 @@ const Overlay = styled.div`
 const Panel = styled.div`
   width: 680px;
   max-width: calc(100% - 32px);
-  height: 85vh;
+  max-height: 85vh;
   box-sizing: border-box;
   padding: 24px;
   border-radius: 12px;
@@ -65,15 +65,20 @@ const Subject = styled.span`
   overflow-wrap: anywhere;
 `;
 
-const Frame = styled.iframe`
-  flex: 1;
+const Frame = styled.iframe<{ frameHeight: number }>`
+  flex: 0 1 auto;
   width: 100%;
+  height: ${({ frameHeight }) => frameHeight}px;
   min-height: 0;
   box-sizing: border-box;
   border: 1px solid ${Color.BORDER_GREY};
   border-radius: 8px;
   background: #f6f7f9;
 `;
+
+const INITIAL_FRAME_HEIGHT = 240;
+const FRAME_BORDER_HEIGHT = 2;
+const CLOSE_ICON_SIZE = 22;
 
 interface MailPreviewModalProps {
   title: string;
@@ -84,6 +89,8 @@ interface MailPreviewModalProps {
 }
 
 function MailPreviewModal({ title, recipient, subject, html, onClose }: MailPreviewModalProps) {
+  const [frameHeight, setFrameHeight] = useState(INITIAL_FRAME_HEIGHT);
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose();
@@ -93,13 +100,18 @@ function MailPreviewModal({ title, recipient, subject, html, onClose }: MailPrev
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
+  const handleFrameLoad = (event: SyntheticEvent<HTMLIFrameElement>) => {
+    const contentHeight = event.currentTarget.contentDocument?.documentElement.scrollHeight;
+    if (contentHeight) setFrameHeight(contentHeight + FRAME_BORDER_HEIGHT);
+  };
+
   return (
     <Overlay onClick={onClose}>
       <Panel role="dialog" aria-modal="true" aria-label={title} onClick={(event) => event.stopPropagation()}>
         <Header>
           <Title>{title}</Title>
           <CloseButton type="button" aria-label="닫기" onClick={onClose}>
-            <RiCloseLine size={22} />
+            <RiCloseLine size={CLOSE_ICON_SIZE} />
           </CloseButton>
         </Header>
         <Info>
@@ -108,7 +120,8 @@ function MailPreviewModal({ title, recipient, subject, html, onClose }: MailPrev
           받는 사람: {recipient}
         </Info>
         <Subject>{subject || '(제목 없음)'}</Subject>
-        <Frame title="메일 미리보기" sandbox="" srcDoc={html} />
+        {/* 높이를 재려면 같은 출처여야 한다. allow-scripts가 없어 메일 안의 스크립트는 돌지 않는다. */}
+        <Frame title="메일 미리보기" sandbox="allow-same-origin" srcDoc={html} frameHeight={frameHeight} onLoad={handleFrameLoad} />
       </Panel>
     </Overlay>
   );
