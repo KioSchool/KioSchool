@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import AppContainer from '@components/common/container/AppContainer';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import PageHeader from '@components/common/page/PageHeader';
-import MailEnvironmentBanner from '@components/super-admin/mail/MailEnvironmentBanner';
+import MailProdWarningBand from '@components/super-admin/mail/MailProdWarningBand';
 import MailMessageItem from '@components/super-admin/mail/MailMessageItem';
 import MailReplyForm from '@components/super-admin/mail/MailReplyForm';
 import MailStatusBadge from '@components/super-admin/mail/MailStatusBadge';
@@ -226,6 +226,7 @@ function SuperAdminMailDetail() {
     return (
       <AppContainer useFlex={colFlex({ align: 'center' })} useTitle={false}>
         <SuperAdminPageContainer>
+          <MailProdWarningBand />
           <MessageCard>대화를 불러오는 중입니다.</MessageCard>
         </SuperAdminPageContainer>
       </AppContainer>
@@ -261,7 +262,6 @@ function SuperAdminMailDetail() {
             </NewCommonButton>
           }
         />
-        <MailEnvironmentBanner />
         <Content>
           {errorMessage && <ErrorBanner role="alert">{errorMessage}</ErrorBanner>}
           <DetailCard>

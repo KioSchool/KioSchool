@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import AppContainer from '@components/common/container/AppContainer';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import PageHeader from '@components/common/page/PageHeader';
-import MailEnvironmentBanner from '@components/super-admin/mail/MailEnvironmentBanner';
+import MailProdWarningBand from '@components/super-admin/mail/MailProdWarningBand';
 import MailAudiencePicker from '@components/super-admin/mail/MailAudiencePicker';
 import MailCampaignForm, { MailCampaignFormValues } from '@components/super-admin/mail/MailCampaignForm';
 import MailCampaignHistory from '@components/super-admin/mail/MailCampaignHistory';
@@ -224,6 +224,7 @@ function SuperAdminMailCampaignNew() {
   return (
     <AppContainer useFlex={colFlex({ align: 'center' })} useTitle={false}>
       <SuperAdminPageContainer>
+        <MailProdWarningBand />
         <ConfirmModal />
         {mailPreview && (
           <MailPreviewModal
@@ -243,7 +244,6 @@ function SuperAdminMailCampaignNew() {
             </NewCommonButton>
           }
         />
-        <MailEnvironmentBanner />
         <Content>
           <Section>
             <SectionTitle>받을 주점</SectionTitle>

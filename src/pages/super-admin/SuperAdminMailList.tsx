@@ -6,7 +6,7 @@ import AppContainer from '@components/common/container/AppContainer';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import Pagination from '@components/common/pagination/Pagination';
 import PageHeader from '@components/common/page/PageHeader';
-import MailEnvironmentBanner from '@components/super-admin/mail/MailEnvironmentBanner';
+import MailProdWarningBand from '@components/super-admin/mail/MailProdWarningBand';
 import MailThreadList from '@components/super-admin/mail/MailThreadList';
 import SuperAdminPageContainer from '@components/super-admin/SuperAdminPageContainer';
 import { MAIL_ADDRESS, MAIL_STATUS_FILTERS, MAIL_STATUS_LABELS } from '@constants/data/mailData';
@@ -131,6 +131,7 @@ function SuperAdminMailList() {
   return (
     <AppContainer useFlex={colFlex({ align: 'center' })} useTitle={false}>
       <SuperAdminPageContainer>
+        <MailProdWarningBand />
         <PageHeader
           title="메일함"
           description={`${MAIL_ADDRESS}으로 주고받은 메일을 확인하고 답장합니다.`}
@@ -145,7 +146,6 @@ function SuperAdminMailList() {
             </HeaderActions>
           }
         />
-        <MailEnvironmentBanner />
         <Content>
           {sentNotice && <SentNotice role="status">{sentNotice}</SentNotice>}
           <FilterRow>
