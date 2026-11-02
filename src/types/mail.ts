@@ -50,6 +50,7 @@ export interface MailAudienceFilter {
   minOrders: number;
   schoolName?: string;
   excludedWorkspaceIds: number[];
+  workspaceIds?: number[];
 }
 
 export interface MailAudienceRow {

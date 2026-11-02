@@ -9,7 +9,8 @@ import MailAudienceList from '@components/super-admin/mail/MailAudienceList';
 import MailCampaignForm, { MailCampaignFormValues } from '@components/super-admin/mail/MailCampaignForm';
 import MailCampaignHistory from '@components/super-admin/mail/MailCampaignHistory';
 import MailPreviewModal from '@components/super-admin/mail/MailPreviewModal';
-import SuperAdminFilterTabs from '@components/super-admin/SuperAdminFilterTabs';
+import MailWorkspaceSearch from '@components/super-admin/mail/MailWorkspaceSearch';
+import SuperAdminFilterTabs, { FilterTab } from '@components/super-admin/SuperAdminFilterTabs';
 import SuperAdminPageContainer from '@components/super-admin/SuperAdminPageContainer';
 import { API_ERROR_CODES } from '@constants/errorCodes';
 import { getSuperAdminMailCampaignPath, SUPER_ADMIN_ROUTES } from '@constants/routes';
@@ -25,6 +26,15 @@ import { isMailHtmlEmpty } from '@utils/mailEditor';
 
 const AUDIENCE_PAGE_SIZE = 500;
 const SEARCH_DEBOUNCE_MS = 300;
+const DIRECT_DEFAULT_PERIOD = '최근 1년';
+
+type AudienceMode = 'condition' | 'direct';
+
+const AUDIENCE_MODE_TABS: FilterTab<AudienceMode>[] = [
+  { label: '조건으로 고르기', value: 'condition' },
+  { label: '주점 직접 고르기', value: 'direct' },
+];
+
 const EMPTY_FORM: MailCampaignFormValues = { subject: '', content: '' };
 
 const Content = styled.div`
@@ -67,6 +77,11 @@ const Label = styled.label`
   color: ${Color.GREY};
   font-size: 13px;
   font-weight: 600;
+`;
+
+const Hint = styled.span`
+  color: ${Color.GREY};
+  font-size: 13px;
 `;
 
 const CountRow = styled.div`
@@ -115,6 +130,8 @@ function SuperAdminMailCampaignNew() {
   const { previewAudience, previewCampaign, sendCampaignTest, startCampaign } = useSuperAdminMail();
   const periods = useMemo(() => getMailAudiencePeriods(), []);
   const periodTabs = useMemo(() => periods.map(({ label }) => ({ label, value: label })), [periods]);
+  const [audienceMode, setAudienceMode] = useState<AudienceMode>('condition');
+  const [pickedWorkspaceIds, setPickedWorkspaceIds] = useState<number[]>([]);
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [minOrders, setMinOrders] = useState('15');
@@ -129,12 +146,21 @@ function SuperAdminMailCampaignNew() {
   const [mailPreview, setMailPreview] = useState<MailCampaignPreviewResult | null>(null);
   const minOrdersNumber = Number(minOrders);
   const selectedPeriod = periods.find((period) => period.from === from && period.to === to)?.label ?? '';
-  const hasFilter = Boolean(from && to) && Number.isInteger(minOrdersNumber) && minOrdersNumber >= 1;
+  const isDirect = audienceMode === 'direct';
+  const hasCondition = !isDirect && Number.isInteger(minOrdersNumber) && minOrdersNumber >= 1;
+  const hasPicked = isDirect && pickedWorkspaceIds.length > 0;
+  const hasFilter = Boolean(from && to) && (hasCondition || hasPicked);
 
   // 체크를 푼 주점은 목록에서 계속 보여 다시 넣을 수 있도록 조회에는 빼지 않고 수만 뺀다
   const rows = preview?.content.content ?? [];
   const targetCount = Math.max((preview?.targetCount ?? 0) - excludedIds.length, 0);
   const dailyLimit = preview?.dailyLimit ?? 0;
+
+  // 체크 해제는 조회 조건이 아니라 곳 수에서만 빼므로 따로 둔다
+  const audienceFilter = useMemo<MailAudienceFilter>(() => {
+    if (isDirect) return { from, to, minOrders: 1, excludedWorkspaceIds: [], workspaceIds: pickedWorkspaceIds };
+    return { from, to, minOrders: minOrdersNumber, schoolName: schoolName.trim() || undefined, excludedWorkspaceIds: [] };
+  }, [from, isDirect, minOrdersNumber, pickedWorkspaceIds, schoolName, to]);
 
   // 조건을 바꾸면 이전 곳 수를 바로 지운다. 새 곳 수를 받기 전에는 보내기 버튼이 잠겨 있어 잘못된 수로 확인할 수 없다.
   useEffect(() => {
@@ -144,7 +170,7 @@ function SuperAdminMailCampaignNew() {
 
     let cancelled = false;
     const timer = setTimeout(() => {
-      previewAudience({ from, to, minOrders: minOrdersNumber, schoolName: schoolName.trim() || undefined, excludedWorkspaceIds: [] }, 0, AUDIENCE_PAGE_SIZE)
+      previewAudience(audienceFilter, 0, AUDIENCE_PAGE_SIZE)
         .then((response) => {
           if (cancelled) return;
           setPreview(response);
@@ -159,12 +185,9 @@ function SuperAdminMailCampaignNew() {
       cancelled = true;
       clearTimeout(timer);
     };
-  }, [audienceVersion, from, hasFilter, minOrdersNumber, previewAudience, schoolName, to]);
+  }, [audienceFilter, audienceVersion, hasFilter, previewAudience]);
 
-  const filter = useMemo<MailAudienceFilter>(
-    () => ({ from, to, minOrders: minOrdersNumber, schoolName: schoolName.trim() || undefined, excludedWorkspaceIds: excludedIds }),
-    [excludedIds, from, minOrdersNumber, schoolName, to],
-  );
+  const filter = useMemo<MailAudienceFilter>(() => ({ ...audienceFilter, excludedWorkspaceIds: excludedIds }), [audienceFilter, excludedIds]);
 
   const { ConfirmModal, confirm } = useConfirm({
     title: `${targetCount}곳에 메일을 보낼까요?`,
@@ -181,7 +204,18 @@ function SuperAdminMailCampaignNew() {
     setTo(period.to);
   };
 
+  const handleChangeAudienceMode = (mode: AudienceMode) => {
+    setAudienceMode(mode);
+    // 직접 고를 때 기간은 값을 채우는 데만 쓰여서, 비어 있으면 바로 볼 수 있게 채운다
+    if (mode === 'direct' && !from && !to) handleSelectPeriod(DIRECT_DEFAULT_PERIOD);
+  };
+
   const handleToggle = (workspaceId: number) => {
+    if (isDirect) {
+      setPickedWorkspaceIds((ids) => ids.filter((id) => id !== workspaceId));
+      return;
+    }
+
     setExcludedIds((ids) => {
       if (ids.includes(workspaceId)) return ids.filter((id) => id !== workspaceId);
       return [...ids, workspaceId];
@@ -189,6 +223,11 @@ function SuperAdminMailCampaignNew() {
   };
 
   const handleToggleAll = (isExcludingAll: boolean) => {
+    if (isDirect) {
+      setPickedWorkspaceIds([]);
+      return;
+    }
+
     if (isExcludingAll) {
       setExcludedIds(rows.map((row) => row.workspaceId));
       return;
@@ -197,7 +236,7 @@ function SuperAdminMailCampaignNew() {
   };
 
   // 응답을 못 받아 다시 눌러도 발송을 또 만들지 않게 한다. 대상이나 내용을 고치면 새 발송이다.
-  const requestId = useMemo(() => crypto.randomUUID(), [audienceVersion, from, to, minOrdersNumber, schoolName, excludedIds, form]);
+  const requestId = useMemo(() => crypto.randomUUID(), [audienceVersion, filter, form]);
 
   const buildRequest = (): MailCampaignRequest => ({
     filter,
@@ -309,7 +348,19 @@ function SuperAdminMailCampaignNew() {
         <Content>
           <Section>
             <SectionTitle>받을 주점</SectionTitle>
+            <SuperAdminFilterTabs label="고르는 방법" tabs={AUDIENCE_MODE_TABS} value={audienceMode} onChange={handleChangeAudienceMode} />
+            {isDirect && (
+              <Field>
+                <Label htmlFor="campaign-workspace">주점 찾기</Label>
+                <MailWorkspaceSearch
+                  inputId="campaign-workspace"
+                  pickedIds={pickedWorkspaceIds}
+                  onPick={(workspace) => setPickedWorkspaceIds((ids) => [...ids, workspace.id])}
+                />
+              </Field>
+            )}
             <SuperAdminFilterTabs label="운영 기간" tabs={periodTabs} value={selectedPeriod} onChange={handleSelectPeriod} />
+            {isDirect && <Hint>이 기간의 주문으로 표와 메일의 값을 채워요.</Hint>}
             <FilterGrid>
               <Field>
                 <Label htmlFor="campaign-from">운영 기간 시작</Label>
@@ -319,21 +370,31 @@ function SuperAdminMailCampaignNew() {
                 <Label htmlFor="campaign-to">운영 기간 끝</Label>
                 <NewAppInput id="campaign-to" width="100%" type="date" value={to} onChange={(event) => setTo(event.target.value)} />
               </Field>
-              <Field>
-                <Label htmlFor="campaign-min-orders">주문 수 (이상)</Label>
-                <NewAppInput
-                  id="campaign-min-orders"
-                  width="100%"
-                  type="number"
-                  min={1}
-                  value={minOrders}
-                  onChange={(event) => setMinOrders(event.target.value)}
-                />
-              </Field>
-              <Field>
-                <Label htmlFor="campaign-school">학교 (선택)</Label>
-                <NewAppInput id="campaign-school" width="100%" value={schoolName} placeholder="전체" onChange={(event) => setSchoolName(event.target.value)} />
-              </Field>
+              {!isDirect && (
+                <Field>
+                  <Label htmlFor="campaign-min-orders">주문 수 (이상)</Label>
+                  <NewAppInput
+                    id="campaign-min-orders"
+                    width="100%"
+                    type="number"
+                    min={1}
+                    value={minOrders}
+                    onChange={(event) => setMinOrders(event.target.value)}
+                  />
+                </Field>
+              )}
+              {!isDirect && (
+                <Field>
+                  <Label htmlFor="campaign-school">학교 (선택)</Label>
+                  <NewAppInput
+                    id="campaign-school"
+                    width="100%"
+                    value={schoolName}
+                    placeholder="전체"
+                    onChange={(event) => setSchoolName(event.target.value)}
+                  />
+                </Field>
+              )}
             </FilterGrid>
             {preview && (
               <CountRow>
