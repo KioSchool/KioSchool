@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
+import { RiAlignCenter, RiAlignLeft, RiAlignRight } from '@remixicon/react';
 import { Editor } from '@tiptap/react';
 import { match } from 'ts-pattern';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
+import { MailAlignment } from './mailEditorExtensions';
 
 export type MailEditorPanel = 'link' | 'button' | 'value';
 
@@ -39,6 +41,11 @@ const Tool = styled.button<{ isActive: boolean }>`
   font-size: 13px;
   font-weight: 600;
 
+  svg {
+    display: block;
+    margin: 0 auto;
+  }
+
   &:hover {
     background: ${Color.KIO_ORANGE_FAINT};
   }
@@ -48,6 +55,19 @@ function getButtonToolText(isButtonSelected: boolean): string {
   return match(isButtonSelected)
     .with(true, () => '버튼 고치기')
     .otherwise(() => '버튼 넣기');
+}
+
+const ALIGN_ICON_SIZE = 16;
+const ALIGNMENTS: { label: string; value: MailAlignment | null; Icon: typeof RiAlignLeft }[] = [
+  { label: '왼쪽 정렬', value: null, Icon: RiAlignLeft },
+  { label: '가운데 정렬', value: 'center', Icon: RiAlignCenter },
+  { label: '오른쪽 정렬', value: 'right', Icon: RiAlignRight },
+];
+
+function getCurrentAlignment(editor: Editor): MailAlignment | null {
+  if (editor.isActive({ align: 'center' })) return 'center';
+  if (editor.isActive({ align: 'right' })) return 'right';
+  return null;
 }
 
 const Separator = styled.span`
@@ -77,6 +97,12 @@ function MailEditorToolbar({ editor, panel, withValues, onTogglePanel }: MailEdi
     { label: '구분선', isActive: false, run: () => editor.chain().focus().setHorizontalRule().run() },
   ];
 
+  const currentAlignment = getCurrentAlignment(editor);
+
+  const handleAlign = (align: MailAlignment | null) => {
+    editor.chain().focus().updateAttributes('paragraph', { align }).updateAttributes('heading', { align }).run();
+  };
+
   return (
     <Bar>
       {tools.map((tool) => (
@@ -95,6 +121,19 @@ function MailEditorToolbar({ editor, panel, withValues, onTogglePanel }: MailEdi
       {blocks.map((block) => (
         <Tool key={block.label} type="button" isActive={block.isActive} onMouseDown={(event) => event.preventDefault()} onClick={block.run}>
           {block.label}
+        </Tool>
+      ))}
+      <Separator />
+      {ALIGNMENTS.map(({ label, value, Icon }) => (
+        <Tool
+          key={label}
+          type="button"
+          aria-label={label}
+          isActive={currentAlignment === value}
+          onMouseDown={(event) => event.preventDefault()}
+          onClick={() => handleAlign(value)}
+        >
+          <Icon size={ALIGN_ICON_SIZE} />
         </Tool>
       ))}
       <Separator />

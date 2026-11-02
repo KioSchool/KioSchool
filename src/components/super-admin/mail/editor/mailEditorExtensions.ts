@@ -9,7 +9,10 @@ import { getPastedMarkdown, markdownToHtml } from './mailMarkdown';
 
 const MARKDOWN_LINK_PATTERN = /\[([^\]]+)\]\(([^)]+)\)$/;
 
+const ALIGN_ATTRIBUTE = 'data-align';
+
 export type MailButtonVariant = 'solid' | 'line';
+export type MailAlignment = 'center' | 'right';
 
 export interface MailButtonAttributes {
   label: string;
@@ -19,7 +22,8 @@ export interface MailButtonAttributes {
 
 export const MailButton = Node.create({
   name: 'mailButton',
-  group: 'block',
+  group: 'inline',
+  inline: true,
   atom: true,
   selectable: true,
   draggable: true,
@@ -36,6 +40,8 @@ export const MailButton = Node.create({
     return [
       {
         tag: 'a[data-mail-button]',
+        // 같은 우선순위면 일반 링크 규칙이 먼저 읽어 버튼이 링크로 바뀐다
+        priority: 60,
         getAttrs: (element) => ({
           label: element.textContent,
           href: element.getAttribute('href'),
@@ -46,7 +52,7 @@ export const MailButton = Node.create({
   },
 
   renderHTML({ node }) {
-    return ['p', {}, ['a', { 'data-mail-button': node.attrs.variant, href: node.attrs.href }, node.attrs.label]];
+    return ['a', { 'data-mail-button': node.attrs.variant, href: node.attrs.href }, node.attrs.label];
   },
 
   // 수정할 수 없는 칸 안의 링크라 그대로 두면 누를 때 그 주소로 이동한다
@@ -62,6 +68,28 @@ export const MailButton = Node.create({
           },
         },
       }),
+    ];
+  },
+});
+
+export const MailAlign = Extension.create({
+  name: 'mailAlign',
+
+  addGlobalAttributes() {
+    return [
+      {
+        types: ['paragraph', 'heading'],
+        attributes: {
+          align: {
+            default: null,
+            parseHTML: (element) => element.getAttribute(ALIGN_ATTRIBUTE),
+            renderHTML: (attributes) => {
+              if (!attributes.align) return {};
+              return { [ALIGN_ATTRIBUTE]: attributes.align };
+            },
+          },
+        },
+      },
     ];
   },
 });

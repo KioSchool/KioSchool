@@ -7,6 +7,7 @@ import NewCommonButton from '@components/common/button/NewCommonButton';
 import NewAppInput from '@components/common/input/NewAppInput';
 import PageHeader from '@components/common/page/PageHeader';
 import LazyMailEditor from '@components/super-admin/mail/editor/LazyMailEditor';
+import MailPreviewModal from '@components/super-admin/mail/MailPreviewModal';
 import MailWorkspacePicker from '@components/super-admin/mail/MailWorkspacePicker';
 import SuperAdminPageContainer from '@components/super-admin/SuperAdminPageContainer';
 import { MAIL_ADDRESS, MAIL_SUBJECT_MAX_LENGTH, MAIL_TEAM_NAME } from '@constants/data/mailData';
@@ -16,24 +17,11 @@ import useSuperAdminWorkspace from '@hooks/super-admin/useSuperAdminWorkspace';
 import useConfirm from '@hooks/useConfirm';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { mobileMediaQuery } from '@styles/globalStyles';
 import type { MailTargetWorkspace } from '@@types/mail';
 import { getApiErrorMessage } from '@utils/apiError';
 import { isMailHtmlEmpty } from '@utils/mailEditor';
 
 const SENT_NOTICE = '보냈어요. 잠시 뒤 목록에 보여요.';
-const MAIL_PREVIEW_DEBOUNCE_MS = 400;
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  width: 100%;
-  gap: 24px;
-
-  ${mobileMediaQuery} {
-    grid-template-columns: minmax(0, 1fr);
-  }
-`;
 
 const Form = styled.form`
   width: 100%;
@@ -53,36 +41,6 @@ const FieldLabel = styled.label`
   font-weight: 600;
 `;
 
-const Preview = styled.div`
-  width: 100%;
-  gap: 8px;
-  ${colFlex()}
-`;
-
-const PreviewInfo = styled.p`
-  margin: 0;
-  color: ${Color.GREY};
-  font-size: 13px;
-  line-height: 1.6;
-  overflow-wrap: anywhere;
-`;
-
-const PreviewSubject = styled.span`
-  color: ${Color.BLACK};
-  font-size: 14px;
-  font-weight: 600;
-  overflow-wrap: anywhere;
-`;
-
-const PreviewFrame = styled.iframe`
-  width: 100%;
-  height: 440px;
-  box-sizing: border-box;
-  border: 1px solid ${Color.BORDER_GREY};
-  border-radius: 8px;
-  background: #f6f7f9;
-`;
-
 const ErrorText = styled.span`
   color: ${Color.RED};
   font-size: 13px;
@@ -90,6 +48,7 @@ const ErrorText = styled.span`
 
 const ButtonRow = styled.div`
   width: 100%;
+  gap: 10px;
   ${rowFlex({ justify: 'flex-end' })}
 `;
 
@@ -112,8 +71,7 @@ function SuperAdminMailNew() {
   const [workspace, setWorkspace] = useState<MailTargetWorkspace | null>(null);
   const [subject, setSubject] = useState('');
   const [content, setContent] = useState('');
-  const [previewHtml, setPreviewHtml] = useState('');
-  const [previewError, setPreviewError] = useState('');
+  const [previewHtml, setPreviewHtml] = useState<string | null>(null);
   const [isSending, setIsSending] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const workspaceIdParam = Number(searchParams.get('workspaceId'));
@@ -136,25 +94,20 @@ function SuperAdminMailNew() {
     });
   }, [fetchWorkspaceDetail, workspaceIdParam]);
 
-  useEffect(() => {
-    let cancelled = false;
-    const timer = setTimeout(() => {
-      previewMail(content)
-        .then((html) => {
-          if (cancelled) return;
-          setPreviewHtml(html);
-          setPreviewError('');
-        })
-        .catch((error: unknown) => {
-          if (!cancelled) setPreviewError(getApiErrorMessage(error, '미리보기를 만들지 못했습니다.'));
-        });
-    }, MAIL_PREVIEW_DEBOUNCE_MS);
+  const handlePreview = async () => {
+    if (isMailHtmlEmpty(content)) {
+      setErrorMessage('내용을 입력해 주세요.');
+      return;
+    }
 
-    return () => {
-      cancelled = true;
-      clearTimeout(timer);
-    };
-  }, [content, previewMail]);
+    setErrorMessage('');
+
+    try {
+      setPreviewHtml(await previewMail(content));
+    } catch (error) {
+      setErrorMessage(getApiErrorMessage(error, '미리보기를 만들지 못했습니다.'));
+    }
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -195,6 +148,15 @@ function SuperAdminMailNew() {
     <AppContainer useFlex={colFlex({ align: 'center' })} useTitle={false}>
       <SuperAdminPageContainer>
         <ConfirmModal />
+        {previewHtml !== null && (
+          <MailPreviewModal
+            title="미리보기"
+            recipient={getRecipientText(workspace, ownerEmail)}
+            subject={subject}
+            html={previewHtml}
+            onClose={() => setPreviewHtml(null)}
+          />
+        )}
         <PageHeader
           title="새 메일"
           description={`${MAIL_TEAM_NAME} <${MAIL_ADDRESS}>으로 보내고, 답장은 메일함으로 들어옵니다.`}
@@ -204,47 +166,37 @@ function SuperAdminMailNew() {
             </NewCommonButton>
           }
         />
-        <Grid>
-          <Form onSubmit={handleSubmit} noValidate>
-            <Field>
-              <FieldLabel htmlFor="mail-workspace">받는 주점</FieldLabel>
-              <MailWorkspacePicker selected={workspace} onSelect={setWorkspace} />
-              {workspace && !ownerEmail && <ErrorText role="alert">이메일이 없어 보낼 수 없어요.</ErrorText>}
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="mail-subject">제목</FieldLabel>
-              <NewAppInput
-                id="mail-subject"
-                width="100%"
-                value={subject}
-                maxLength={MAIL_SUBJECT_MAX_LENGTH}
-                placeholder="메일 제목을 입력해 주세요"
-                onChange={(event) => setSubject(event.target.value)}
-              />
-            </Field>
-            <Field>
-              <FieldLabel as="span">내용</FieldLabel>
-              <LazyMailEditor height={260} placeholder="전달할 내용을 입력해 주세요" onChange={setContent} />
-            </Field>
-            {errorMessage && <ErrorText role="alert">{errorMessage}</ErrorText>}
-            <ButtonRow>
-              <NewCommonButton type="submit" size="xs" disabled={isSending || (Boolean(workspace) && !ownerEmail)}>
-                {getSendButtonText(isSending)}
-              </NewCommonButton>
-            </ButtonRow>
-          </Form>
-          <Preview>
-            <FieldLabel as="span">메일 미리보기</FieldLabel>
-            <PreviewInfo>
-              보낸 사람: {MAIL_TEAM_NAME} &lt;{MAIL_ADDRESS}&gt;
-              <br />
-              받는 사람: {getRecipientText(workspace, ownerEmail)}
-            </PreviewInfo>
-            <PreviewSubject>{subject || '메일 제목이 여기에 보여요'}</PreviewSubject>
-            {previewError && <ErrorText role="alert">{previewError}</ErrorText>}
-            <PreviewFrame title="메일 미리보기" sandbox="" srcDoc={previewHtml} />
-          </Preview>
-        </Grid>
+        <Form onSubmit={handleSubmit} noValidate>
+          <Field>
+            <FieldLabel htmlFor="mail-workspace">받는 주점</FieldLabel>
+            <MailWorkspacePicker selected={workspace} onSelect={setWorkspace} />
+            {workspace && !ownerEmail && <ErrorText role="alert">이메일이 없어 보낼 수 없어요.</ErrorText>}
+          </Field>
+          <Field>
+            <FieldLabel htmlFor="mail-subject">제목</FieldLabel>
+            <NewAppInput
+              id="mail-subject"
+              width="100%"
+              value={subject}
+              maxLength={MAIL_SUBJECT_MAX_LENGTH}
+              placeholder="메일 제목을 입력해 주세요"
+              onChange={(event) => setSubject(event.target.value)}
+            />
+          </Field>
+          <Field>
+            <FieldLabel as="span">내용</FieldLabel>
+            <LazyMailEditor height={260} placeholder="전달할 내용을 입력해 주세요" onChange={setContent} />
+          </Field>
+          {errorMessage && <ErrorText role="alert">{errorMessage}</ErrorText>}
+          <ButtonRow>
+            <NewCommonButton type="button" size="xs" color="blue_gray" disabled={isSending} onClick={handlePreview}>
+              미리보기
+            </NewCommonButton>
+            <NewCommonButton type="submit" size="xs" disabled={isSending || (Boolean(workspace) && !ownerEmail)}>
+              {getSendButtonText(isSending)}
+            </NewCommonButton>
+          </ButtonRow>
+        </Form>
       </SuperAdminPageContainer>
     </AppContainer>
   );

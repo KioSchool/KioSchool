@@ -63,6 +63,24 @@ function getSelectedButtonPosition(editor: Editor): number | null {
   return editor.state.selection.from;
 }
 
+// 글이 있는 줄에 끼어들지 않게 다음 줄에 넣고, 빈 줄이나 버튼만 있는 줄에는 그 자리에 이어 붙인다
+function insertMailButton(editor: Editor, attributes: MailButtonAttributes) {
+  const button = { type: 'mailButton', attrs: attributes };
+  const { $from } = editor.state.selection;
+
+  if ($from.depth > 0 && $from.parent.textContent === '') {
+    editor.chain().focus().insertContent(button).run();
+    return;
+  }
+
+  const paragraph = { type: 'paragraph', content: [button] };
+  if ($from.depth === 0) {
+    editor.chain().focus().insertContent(paragraph).run();
+    return;
+  }
+  editor.chain().focus().insertContentAt($from.after(), paragraph).run();
+}
+
 function getApplyText(isEditing: boolean): string {
   return match(isEditing)
     .with(true, () => '버튼 바꾸기')
@@ -98,11 +116,7 @@ function MailButtonPanel({ editor, withValues, onClose }: MailButtonPanelProps) 
     if (buttonPosition !== null && editor.state.doc.nodeAt(buttonPosition)?.type.name === 'mailButton') {
       editor.chain().focus().setNodeSelection(buttonPosition).updateAttributes('mailButton', attributes).run();
     } else {
-      editor.chain().focus().insertContent({ type: 'mailButton', attrs: attributes }).run();
-      // 버튼이 맨 끝이면 그 뒤에 이어 쓸 줄이 없다
-      if (editor.state.doc.lastChild?.type.name === 'mailButton') {
-        editor.chain().insertContentAt(editor.state.doc.content.size, { type: 'paragraph' }).focus('end').run();
-      }
+      insertMailButton(editor, attributes);
     }
     onClose();
   };

@@ -8,7 +8,7 @@ import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { isMailLinkValid } from '@utils/mailEditor';
 import MailValueMenu from '../MailValueMenu';
-import { MailButton, MailHeading, MailMarkdown, MailValueHighlight } from './mailEditorExtensions';
+import { MailAlign, MailButton, MailHeading, MailMarkdown, MailValueHighlight } from './mailEditorExtensions';
 import MailButtonPanel from './MailButtonPanel';
 import MailEditorToolbar, { MailEditorPanel } from './MailEditorToolbar';
 import MailLinkPanel from './MailLinkPanel';
@@ -84,13 +84,27 @@ const Body = styled.div<{ height: number }>`
     border-top: 1px solid ${Color.BORDER_GREY};
   }
 
+  .ProseMirror [data-align='center'] {
+    text-align: center;
+  }
+
+  .ProseMirror [data-align='right'] {
+    text-align: right;
+  }
+
   .ProseMirror a[data-mail-button] {
     display: inline-block;
+    margin: 4px 0;
     padding: 10px 18px;
     border-radius: 8px;
     font-size: 14px;
     font-weight: 600;
     text-decoration: none;
+  }
+
+  /* 편집기는 인라인 노드 사이에 커서용 요소를 넣어서 바로 옆 선택자가 닿지 않는다 */
+  .ProseMirror a[data-mail-button] ~ a[data-mail-button] {
+    margin-left: 8px;
   }
 
   .ProseMirror a[data-mail-button='solid'] {
@@ -104,7 +118,6 @@ const Body = styled.div<{ height: number }>`
     color: ${BUTTON_ORANGE};
   }
 
-  .ProseMirror .ProseMirror-selectednode a[data-mail-button],
   .ProseMirror a[data-mail-button].ProseMirror-selectednode {
     outline: 2px solid ${Color.KIO_ORANGE};
     outline-offset: 2px;
@@ -152,6 +165,7 @@ function getExtensions(withValues: boolean) {
     Underline,
     Link.configure({ openOnClick: false, autolink: false, isAllowedUri: (url) => isMailLinkValid(url ?? ''), HTMLAttributes: { rel: null, target: null } }),
     MailButton,
+    MailAlign,
   ];
   if (!withValues) return extensions;
   return [...extensions, MailValueHighlight];

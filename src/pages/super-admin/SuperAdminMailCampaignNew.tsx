@@ -8,7 +8,7 @@ import PageHeader from '@components/common/page/PageHeader';
 import MailAudienceList from '@components/super-admin/mail/MailAudienceList';
 import MailCampaignForm, { MailCampaignFormValues } from '@components/super-admin/mail/MailCampaignForm';
 import MailCampaignHistory from '@components/super-admin/mail/MailCampaignHistory';
-import MailCampaignPreview from '@components/super-admin/mail/MailCampaignPreview';
+import MailPreviewModal from '@components/super-admin/mail/MailPreviewModal';
 import SuperAdminFilterTabs from '@components/super-admin/SuperAdminFilterTabs';
 import SuperAdminPageContainer from '@components/super-admin/SuperAdminPageContainer';
 import { API_ERROR_CODES } from '@constants/errorCodes';
@@ -25,7 +25,6 @@ import { isMailHtmlEmpty } from '@utils/mailEditor';
 
 const AUDIENCE_PAGE_SIZE = 500;
 const SEARCH_DEBOUNCE_MS = 300;
-const MAIL_PREVIEW_DEBOUNCE_MS = 400;
 const EMPTY_FORM: MailCampaignFormValues = { subject: '', content: '' };
 
 const Content = styled.div`
@@ -84,17 +83,6 @@ const TargetCount = styled.b`
   font-size: 15px;
 `;
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  width: 100%;
-  gap: 24px;
-
-  ${mobileMediaQuery} {
-    grid-template-columns: minmax(0, 1fr);
-  }
-`;
-
 const Warning = styled.p`
   width: 100%;
   box-sizing: border-box;
@@ -139,7 +127,6 @@ function SuperAdminMailCampaignNew() {
   const [errorMessage, setErrorMessage] = useState('');
   const [audienceVersion, setAudienceVersion] = useState(0);
   const [mailPreview, setMailPreview] = useState<MailCampaignPreviewResult | null>(null);
-  const [mailPreviewError, setMailPreviewError] = useState('');
   const minOrdersNumber = Number(minOrders);
   const selectedPeriod = periods.find((period) => period.from === from && period.to === to)?.label ?? '';
   const hasFilter = Boolean(from && to) && Number.isInteger(minOrdersNumber) && minOrdersNumber >= 1;
@@ -178,33 +165,6 @@ function SuperAdminMailCampaignNew() {
     () => ({ from, to, minOrders: minOrdersNumber, schoolName: schoolName.trim() || undefined, excludedWorkspaceIds: excludedIds }),
     [excludedIds, from, minOrdersNumber, schoolName, to],
   );
-
-  // 값은 주점 자료로 채워지므로 서버가 실제로 보낼 메일을 그대로 받아 보여 준다
-  useEffect(() => {
-    if (!hasFilter) {
-      setMailPreview(null);
-      setMailPreviewError('');
-      return undefined;
-    }
-
-    let cancelled = false;
-    const timer = setTimeout(() => {
-      previewCampaign({ filter, subject: form.subject, content: form.content })
-        .then((response) => {
-          if (cancelled) return;
-          setMailPreview(response);
-          setMailPreviewError('');
-        })
-        .catch((error: unknown) => {
-          if (!cancelled) setMailPreviewError(getApiErrorMessage(error, '미리보기를 만들지 못했습니다.'));
-        });
-    }, MAIL_PREVIEW_DEBOUNCE_MS);
-
-    return () => {
-      cancelled = true;
-      clearTimeout(timer);
-    };
-  }, [filter, form.content, form.subject, hasFilter, previewCampaign]);
 
   const { ConfirmModal, confirm } = useConfirm({
     title: `${targetCount}곳에 메일을 보낼까요?`,
@@ -259,6 +219,30 @@ function SuperAdminMailCampaignNew() {
     return true;
   };
 
+  // 값은 주점 자료로 채워지므로 서버가 실제로 보낼 메일을 받아 보여 준다
+  const handlePreview = async () => {
+    if (targetCount === 0) {
+      setErrorMessage('받을 주점이 없어요.');
+      return;
+    }
+    if (isMailHtmlEmpty(form.content)) {
+      setErrorMessage('내용을 입력해 주세요.');
+      return;
+    }
+
+    setIsWorking(true);
+    setErrorMessage('');
+    setNotice('');
+
+    try {
+      setMailPreview(await previewCampaign({ filter, subject: form.subject, content: form.content }));
+    } catch (error) {
+      setErrorMessage(getApiErrorMessage(error, '미리보기를 만들지 못했습니다.'));
+    } finally {
+      setIsWorking(false);
+    }
+  };
+
   const handleTest = async () => {
     if (!validate()) return;
 
@@ -304,6 +288,15 @@ function SuperAdminMailCampaignNew() {
     <AppContainer useFlex={colFlex({ align: 'center' })} useTitle={false}>
       <SuperAdminPageContainer>
         <ConfirmModal />
+        {mailPreview && (
+          <MailPreviewModal
+            title={`미리보기: ${mailPreview.workspaceName ?? ''}`}
+            recipient={mailPreview.ownerEmail ?? ''}
+            subject={mailPreview.subject}
+            html={mailPreview.html}
+            onClose={() => setMailPreview(null)}
+          />
+        )}
         <PageHeader
           title="여러 곳에 보내기"
           description="주점마다 한 통씩 보내고, 답장은 메일함에서 주점별 대화로 이어집니다."
@@ -357,15 +350,15 @@ function SuperAdminMailCampaignNew() {
           </Section>
           <Section>
             <SectionTitle>내용</SectionTitle>
-            <Grid>
-              <MailCampaignForm values={form} onChange={setForm} />
-              <MailCampaignPreview preview={mailPreview} errorMessage={mailPreviewError} />
-            </Grid>
+            <MailCampaignForm values={form} onChange={setForm} />
           </Section>
           <Warning>홍보 내용은 수신 동의를 받은 사람에게만 보낼 수 있어서 이 화면으로 보내면 안 돼요.</Warning>
           {notice && <Notice role="status">{notice}</Notice>}
           {errorMessage && <ErrorText role="alert">{errorMessage}</ErrorText>}
           <ButtonRow>
+            <NewCommonButton type="button" size="xs" color="blue_gray" disabled={isWorking} onClick={handlePreview}>
+              미리보기
+            </NewCommonButton>
             <NewCommonButton type="button" size="xs" color="blue_gray" disabled={isWorking} onClick={handleTest}>
               나에게 테스트
             </NewCommonButton>
