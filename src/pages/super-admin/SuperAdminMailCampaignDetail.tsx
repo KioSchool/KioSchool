@@ -216,7 +216,7 @@ function SuperAdminMailCampaignDetail() {
               </NewCommonButton>
             )}
             {summary.status !== 'STOPPED' && summary.failedCount > 0 && (
-              <NewCommonButton type="button" size="xs" disabled={isWorking} onClick={handleRetry}>
+              <NewCommonButton type="button" customSize={{ width: 160, height: 32, padding: 0 }} disabled={isWorking} onClick={handleRetry}>
                 실패한 곳 다시 보내기
               </NewCommonButton>
             )}
