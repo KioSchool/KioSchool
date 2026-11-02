@@ -9,6 +9,7 @@ import MailAudienceList from '@components/super-admin/mail/MailAudienceList';
 import MailCampaignForm, { MailCampaignFormValues } from '@components/super-admin/mail/MailCampaignForm';
 import MailCampaignHistory from '@components/super-admin/mail/MailCampaignHistory';
 import MailCampaignPreview from '@components/super-admin/mail/MailCampaignPreview';
+import SuperAdminFilterTabs from '@components/super-admin/SuperAdminFilterTabs';
 import SuperAdminPageContainer from '@components/super-admin/SuperAdminPageContainer';
 import { API_ERROR_CODES } from '@constants/errorCodes';
 import { getSuperAdminMailCampaignPath, SUPER_ADMIN_ROUTES } from '@constants/routes';
@@ -19,7 +20,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import type { MailAudienceFilter, MailAudiencePreview, MailCampaignPreview as MailCampaignPreviewResult, MailCampaignRequest } from '@@types/mail';
 import { getApiErrorMessage, isApiErrorCode } from '@utils/apiError';
-import { getCampaignConfirmDescription } from '@utils/mailCampaign';
+import { getCampaignConfirmDescription, getMailAudiencePeriods } from '@utils/mailCampaign';
 import { isMailHtmlEmpty } from '@utils/mailEditor';
 
 const AUDIENCE_PAGE_SIZE = 500;
@@ -124,6 +125,8 @@ const ButtonRow = styled.div`
 function SuperAdminMailCampaignNew() {
   const navigate = useNavigate();
   const { previewAudience, previewCampaign, sendCampaignTest, startCampaign } = useSuperAdminMail();
+  const periods = useMemo(() => getMailAudiencePeriods(), []);
+  const periodTabs = useMemo(() => periods.map(({ label }) => ({ label, value: label })), [periods]);
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [minOrders, setMinOrders] = useState('15');
@@ -138,6 +141,7 @@ function SuperAdminMailCampaignNew() {
   const [mailPreview, setMailPreview] = useState<MailCampaignPreviewResult | null>(null);
   const [mailPreviewError, setMailPreviewError] = useState('');
   const minOrdersNumber = Number(minOrders);
+  const selectedPeriod = periods.find((period) => period.from === from && period.to === to)?.label ?? '';
   const hasFilter = Boolean(from && to) && Number.isInteger(minOrdersNumber) && minOrdersNumber >= 1;
 
   // 체크를 푼 주점은 목록에서 계속 보여 다시 넣을 수 있도록 조회에는 빼지 않고 수만 뺀다
@@ -208,6 +212,14 @@ function SuperAdminMailCampaignNew() {
     okText: '보내기',
     cancelText: '취소',
   });
+
+  const handleSelectPeriod = (label: string) => {
+    const period = periods.find((item) => item.label === label);
+    if (!period) return;
+
+    setFrom(period.from);
+    setTo(period.to);
+  };
 
   const handleToggle = (workspaceId: number) => {
     setExcludedIds((ids) => {
@@ -304,6 +316,7 @@ function SuperAdminMailCampaignNew() {
         <Content>
           <Section>
             <SectionTitle>받을 주점</SectionTitle>
+            <SuperAdminFilterTabs label="운영 기간" tabs={periodTabs} value={selectedPeriod} onChange={handleSelectPeriod} />
             <FilterGrid>
               <Field>
                 <Label htmlFor="campaign-from">운영 기간 시작</Label>

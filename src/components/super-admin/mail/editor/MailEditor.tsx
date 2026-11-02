@@ -8,7 +8,7 @@ import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { isMailLinkValid } from '@utils/mailEditor';
 import MailValueMenu from '../MailValueMenu';
-import { MailButton, MailValueHighlight } from './mailEditorExtensions';
+import { MailButton, MailHeading, MailMarkdown, MailValueHighlight } from './mailEditorExtensions';
 import MailButtonPanel from './MailButtonPanel';
 import MailEditorToolbar, { MailEditorPanel } from './MailEditorToolbar';
 import MailLinkPanel from './MailLinkPanel';
@@ -55,6 +55,12 @@ const Body = styled.div<{ height: number }>`
   .ProseMirror h2 {
     margin: 0 0 12px;
     font-size: 18px;
+    font-weight: 700;
+  }
+
+  .ProseMirror h3 {
+    margin: 0 0 10px;
+    font-size: 16px;
     font-weight: 700;
   }
 
@@ -140,7 +146,9 @@ export interface MailEditorProps {
 
 function getExtensions(withValues: boolean) {
   const extensions = [
-    StarterKit.configure({ code: false, codeBlock: false, blockquote: false, strike: false, heading: { levels: [2] } }),
+    StarterKit.configure({ code: false, codeBlock: false, blockquote: false, strike: false, heading: false }),
+    MailHeading.configure({ levels: [2, 3] }),
+    MailMarkdown,
     Underline,
     Link.configure({ openOnClick: false, autolink: false, isAllowedUri: (url) => isMailLinkValid(url ?? ''), HTMLAttributes: { rel: null, target: null } }),
     MailButton,

@@ -1,9 +1,13 @@
-import { Extension, Node } from '@tiptap/react';
+import { Heading } from '@tiptap/extension-heading';
+import { Extension, InputRule, Node, textblockTypeInputRule } from '@tiptap/react';
 import { Node as ProseMirrorNode } from '@tiptap/pm/model';
 import { Plugin, PluginKey } from '@tiptap/pm/state';
 import { Decoration, DecorationSet } from '@tiptap/pm/view';
 import { MAIL_TEMPLATE_VALUES } from '@constants/data/mailData';
-import { MAIL_VALUE_PATTERN } from '@utils/mailEditor';
+import { isMailLinkValid, MAIL_VALUE_PATTERN } from '@utils/mailEditor';
+import { getPastedMarkdown, markdownToHtml } from './mailMarkdown';
+
+const MARKDOWN_LINK_PATTERN = /\[([^\]]+)\]\(([^)]+)\)$/;
 
 export type MailButtonVariant = 'solid' | 'line';
 
@@ -100,6 +104,64 @@ export const MailValueHighlight = Extension.create({
         },
         props: {
           decorations: (state) => key.getState(state),
+        },
+      }),
+    ];
+  },
+});
+
+// 메일 제목은 두 단계뿐이라 # ## 는 큰 제목으로, 그보다 작은 것은 작은 제목으로 받는다
+export const MailHeading = Heading.extend({
+  parseHTML() {
+    return [
+      { tag: 'h1', attrs: { level: 2 } },
+      { tag: 'h2', attrs: { level: 2 } },
+      { tag: 'h3', attrs: { level: 3 } },
+      { tag: 'h4', attrs: { level: 3 } },
+      { tag: 'h5', attrs: { level: 3 } },
+      { tag: 'h6', attrs: { level: 3 } },
+    ];
+  },
+
+  addInputRules() {
+    return [
+      textblockTypeInputRule({ find: /^#{1,2}\s$/, type: this.type, getAttributes: { level: 2 } }),
+      textblockTypeInputRule({ find: /^#{3,6}\s$/, type: this.type, getAttributes: { level: 3 } }),
+    ];
+  },
+});
+
+export const MailMarkdown = Extension.create({
+  name: 'mailMarkdown',
+
+  addInputRules() {
+    return [
+      new InputRule({
+        find: MARKDOWN_LINK_PATTERN,
+        handler: ({ state, range, match }) => {
+          const [, label, href] = match;
+          if (!isMailLinkValid(href)) return null;
+
+          state.tr.replaceWith(range.from, range.to, state.schema.text(label, [state.schema.marks.link.create({ href })]));
+          return undefined;
+        },
+      }),
+    ];
+  },
+
+  addProseMirrorPlugins() {
+    const { editor } = this;
+
+    return [
+      new Plugin({
+        props: {
+          handlePaste: (_, event) => {
+            const text = getPastedMarkdown(event);
+            if (text === null) return false;
+
+            editor.commands.insertContent(markdownToHtml(text), { parseOptions: { preserveWhitespace: false } });
+            return true;
+          },
         },
       }),
     ];

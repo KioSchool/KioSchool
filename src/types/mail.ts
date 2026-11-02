@@ -71,6 +71,12 @@ export interface MailAudienceRow {
   lastReplied: boolean;
 }
 
+export interface MailAudiencePeriod {
+  label: string;
+  from: string;
+  to: string;
+}
+
 export interface MailAudiencePreview {
   targetCount: number;
   noEmailCount: number;
