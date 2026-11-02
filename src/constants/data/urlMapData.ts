@@ -32,6 +32,7 @@ export const ROUTES_PATH_KR_MAP = {
   [SUPER_ADMIN_ROUTES.USER]: '사용자 관리',
   [SUPER_ADMIN_ROUTES.EMAIL]: '이메일 관리',
   [SUPER_ADMIN_ROUTES.BANK]: '은행 정보 관리',
+  [SUPER_ADMIN_ROUTES.MAIL]: '메일함',
 
   [TEST_ROUTES.SENTRY_TEST]: 'Sentry 테스트',
 } as const;

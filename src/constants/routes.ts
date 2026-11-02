@@ -49,6 +49,9 @@ export const SUPER_ADMIN_ROUTES = {
   CACHE: '/super-admin/cache',
   INQUIRIES: '/super-admin/inquiries',
   INQUIRY_DETAIL: '/super-admin/inquiries/:inquiryId',
+  MAIL: '/super-admin/mail',
+  MAIL_NEW: '/super-admin/mail/new',
+  MAIL_DETAIL: '/super-admin/mail/:threadId',
   ACQUISITION_SURVEY: '/super-admin/acquisition-survey',
   DONATION_CLICKS: '/super-admin/donation-clicks',
 } as const;
@@ -81,3 +84,10 @@ export function getSuperAdminOrdersPath(query?: { workspaceId?: number }): strin
 }
 
 export const getSuperAdminInquiryPath = (inquiryId: string | number) => `/super-admin/inquiries/${inquiryId}`;
+
+export const getSuperAdminMailPath = (threadId: string | number) => `/super-admin/mail/${threadId}`;
+
+export function getSuperAdminMailNewPath(workspaceId?: number): string {
+  if (!workspaceId) return SUPER_ADMIN_ROUTES.MAIL_NEW;
+  return `${SUPER_ADMIN_ROUTES.MAIL_NEW}?workspaceId=${workspaceId}`;
+}

@@ -33,6 +33,9 @@ import SuperAdminFestivalCalendar from '@pages/super-admin/SuperAdminFestivalCal
 import SuperAdminCache from '@pages/super-admin/SuperAdminCache';
 import SuperAdminInquiryList from '@pages/super-admin/SuperAdminInquiryList';
 import SuperAdminInquiryDetail from '@pages/super-admin/SuperAdminInquiryDetail';
+import SuperAdminMailList from '@pages/super-admin/SuperAdminMailList';
+import SuperAdminMailDetail from '@pages/super-admin/SuperAdminMailDetail';
+import SuperAdminMailNew from '@pages/super-admin/SuperAdminMailNew';
 import { ToastContainer } from 'react-toastify';
 import useNetworkStatusNotifier from '@hooks/useNetworkStatusNotifier';
 import useServerHealth from '@hooks/useServerHealth';
@@ -102,6 +105,9 @@ function App() {
         <Route path={SUPER_ADMIN_ROUTES.CACHE} element={<SuperAdminCache />} />
         <Route path={SUPER_ADMIN_ROUTES.INQUIRIES} element={<SuperAdminInquiryList />} />
         <Route path={SUPER_ADMIN_ROUTES.INQUIRY_DETAIL} element={<SuperAdminInquiryDetail />} />
+        <Route path={SUPER_ADMIN_ROUTES.MAIL} element={<SuperAdminMailList />} />
+        <Route path={SUPER_ADMIN_ROUTES.MAIL_NEW} element={<SuperAdminMailNew />} />
+        <Route path={SUPER_ADMIN_ROUTES.MAIL_DETAIL} element={<SuperAdminMailDetail />} />
         <Route path={SUPER_ADMIN_ROUTES.ACQUISITION_SURVEY} element={<SuperAdminAcquisitionSurvey />} />
         <Route path={SUPER_ADMIN_ROUTES.DONATION_CLICKS} element={<SuperAdminDonationClicks />} />
 
