@@ -7,7 +7,7 @@ import { rowFlex } from '@styles/flexStyles';
 const PRODUCTION_ENVIRONMENT = 'production';
 const LABEL = '운영 서버';
 const ICON_SIZE = 16;
-const REPEAT_COUNT = 24;
+const REPEAT_COUNT = 20;
 const REPEATED_LABEL_KEYS = Array.from({ length: REPEAT_COUNT }, (_, index) => index);
 
 // 같은 글자가 두 벌 이어져 있어 절반만큼 움직인 뒤 처음으로 돌아가면 끊겨 보이지 않는다
@@ -35,7 +35,7 @@ const Band = styled.div`
 const Track = styled.div`
   width: max-content;
   height: 100%;
-  animation: ${flow} 30s linear infinite;
+  animation: ${flow} 60s linear infinite;
   ${rowFlex({ align: 'center' })}
 
   @media (prefers-reduced-motion: reduce) {
@@ -44,7 +44,7 @@ const Track = styled.div`
 `;
 
 const Item = styled.span`
-  padding: 0 24px;
+  padding: 0 120px;
   gap: 6px;
   white-space: nowrap;
   ${rowFlex({ align: 'center' })}
