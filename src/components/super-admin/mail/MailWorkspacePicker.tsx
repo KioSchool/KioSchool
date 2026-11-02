@@ -115,7 +115,7 @@ function MailWorkspacePicker({ selected, onSelect }: MailWorkspacePickerProps) {
         id="mail-workspace"
         width="100%"
         value={keyword}
-        placeholder="주점 이름으로 찾아 주세요"
+        placeholder="주점, 사장, 이메일, 학교로 찾아 주세요"
         onChange={(event) => setKeyword(event.target.value)}
       />
       {results.length > 0 && (

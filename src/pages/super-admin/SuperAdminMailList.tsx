@@ -6,10 +6,11 @@ import AppContainer from '@components/common/container/AppContainer';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import Pagination from '@components/common/pagination/Pagination';
 import PageHeader from '@components/common/page/PageHeader';
+import MailProdWarningBand from '@components/super-admin/mail/MailProdWarningBand';
 import MailThreadList from '@components/super-admin/mail/MailThreadList';
 import SuperAdminPageContainer from '@components/super-admin/SuperAdminPageContainer';
 import { MAIL_ADDRESS, MAIL_STATUS_FILTERS, MAIL_STATUS_LABELS } from '@constants/data/mailData';
-import { getSuperAdminMailNewPath } from '@constants/routes';
+import { getSuperAdminMailNewPath, SUPER_ADMIN_ROUTES } from '@constants/routes';
 import useSuperAdminMail from '@hooks/super-admin/useSuperAdminMail';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
@@ -24,6 +25,11 @@ const Content = styled.div`
   width: 100%;
   gap: 16px;
   ${colFlex()}
+`;
+
+const HeaderActions = styled.div`
+  gap: 8px;
+  ${rowFlex({ align: 'center' })}
 `;
 
 const FilterRow = styled.div`
@@ -125,13 +131,19 @@ function SuperAdminMailList() {
   return (
     <AppContainer useFlex={colFlex({ align: 'center' })} useTitle={false}>
       <SuperAdminPageContainer>
+        <MailProdWarningBand />
         <PageHeader
           title="메일함"
           description={`${MAIL_ADDRESS}으로 주고받은 메일을 확인하고 답장합니다.`}
           actions={
-            <NewCommonButton size="xs" onClick={() => navigate(getSuperAdminMailNewPath())}>
-              새 메일
-            </NewCommonButton>
+            <HeaderActions>
+              <NewCommonButton size="xs" color="blue_gray" onClick={() => navigate(SUPER_ADMIN_ROUTES.MAIL_CAMPAIGN_NEW)}>
+                여러 곳에 보내기
+              </NewCommonButton>
+              <NewCommonButton size="xs" onClick={() => navigate(getSuperAdminMailNewPath())}>
+                새 메일
+              </NewCommonButton>
+            </HeaderActions>
           }
         />
         <Content>

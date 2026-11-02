@@ -1,7 +1,19 @@
 import { useCallback } from 'react';
 import axios from 'axios';
 import type { PaginationResponse } from '@@types/index';
-import type { MailThreadDetail, MailThreadListItem, MailThreadStatus, ReplyMailRequest, SendMailRequest } from '@@types/mail';
+import type {
+  MailAudience,
+  MailCampaignDetail,
+  MailCampaignPreview,
+  MailCampaignPreviewRequest,
+  MailCampaignRequest,
+  MailCampaignSummary,
+  MailThreadDetail,
+  MailThreadListItem,
+  MailThreadStatus,
+  ReplyMailRequest,
+  SendMailRequest,
+} from '@@types/mail';
 import useApi from '@hooks/useApi';
 
 // 서버가 Resend를 두 번 부르는 동안(호출당 최대 15초) 먼저 포기하면, 메일이 나갔는데 실패로 보여 다시 보내게 된다
@@ -109,7 +121,97 @@ function useSuperAdminMail() {
     [superAdminApi],
   );
 
-  return { fetchThreads, fetchThread, sendNewMail, replyThread, resolveThread, markSpam, unmarkSpam, deleteThread, downloadAttachment };
+  const fetchAudience = useCallback(
+    async (from: string, to: string): Promise<MailAudience> => {
+      const response = await superAdminApi.get<MailAudience>('/mail/campaigns/audience', { params: { from, to }, skipGlobalLoading: true });
+      return response.data;
+    },
+    [superAdminApi],
+  );
+
+  const sendCampaignTest = useCallback(
+    async (request: MailCampaignRequest): Promise<void> => {
+      await superAdminApi.post('/mail/campaigns/test', request, { timeout: MAIL_SEND_TIMEOUT_MS });
+    },
+    [superAdminApi],
+  );
+
+  const startCampaign = useCallback(
+    async (request: MailCampaignRequest): Promise<MailCampaignSummary> => {
+      const response = await superAdminApi.post<MailCampaignSummary>('/mail/campaigns', request, { timeout: MAIL_SEND_TIMEOUT_MS });
+      return response.data;
+    },
+    [superAdminApi],
+  );
+
+  const previewMail = useCallback(
+    async (content: string): Promise<string> => {
+      const response = await superAdminApi.post<{ html: string }>('/mail/preview', { content }, { skipGlobalLoading: true });
+      return response.data.html;
+    },
+    [superAdminApi],
+  );
+
+  const previewCampaign = useCallback(
+    async (request: MailCampaignPreviewRequest): Promise<MailCampaignPreview> => {
+      const response = await superAdminApi.post<MailCampaignPreview>('/mail/campaigns/preview', request, { skipGlobalLoading: true });
+      return response.data;
+    },
+    [superAdminApi],
+  );
+
+  const fetchCampaigns = useCallback(
+    async (page: number, size: number): Promise<PaginationResponse<MailCampaignSummary>> => {
+      const response = await superAdminApi.get<PaginationResponse<MailCampaignSummary>>('/mail/campaigns', { params: { page, size } });
+      return response.data;
+    },
+    [superAdminApi],
+  );
+
+  const fetchCampaign = useCallback(
+    async (campaignId: number, page: number, size: number): Promise<MailCampaignDetail> => {
+      const response = await superAdminApi.get<MailCampaignDetail>(`/mail/campaigns/${campaignId}`, { params: { page, size } });
+      return response.data;
+    },
+    [superAdminApi],
+  );
+
+  const stopCampaign = useCallback(
+    async (campaignId: number, page: number, size: number): Promise<MailCampaignDetail> => {
+      const response = await superAdminApi.post<MailCampaignDetail>(`/mail/campaigns/${campaignId}/stop`, undefined, { params: { page, size } });
+      return response.data;
+    },
+    [superAdminApi],
+  );
+
+  const retryFailedCampaign = useCallback(
+    async (campaignId: number, page: number, size: number): Promise<MailCampaignDetail> => {
+      const response = await superAdminApi.post<MailCampaignDetail>(`/mail/campaigns/${campaignId}/retry-failed`, undefined, { params: { page, size } });
+      return response.data;
+    },
+    [superAdminApi],
+  );
+
+  return {
+    fetchThreads,
+    fetchThread,
+    sendNewMail,
+    replyThread,
+    resolveThread,
+    markSpam,
+    unmarkSpam,
+    deleteThread,
+    downloadAttachment,
+    fetchAudience,
+    previewMail,
+    previewCampaign,
+    sendCampaignTest,
+    startCampaign,
+    fetchCampaigns,
+    fetchCampaign,
+    stopCampaign,
+    retryFailedCampaign,
+  };
 }
 
 export default useSuperAdminMail;
