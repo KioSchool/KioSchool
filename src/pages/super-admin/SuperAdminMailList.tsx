@@ -6,6 +6,7 @@ import AppContainer from '@components/common/container/AppContainer';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import Pagination from '@components/common/pagination/Pagination';
 import PageHeader from '@components/common/page/PageHeader';
+import MailEnvironmentBanner from '@components/super-admin/mail/MailEnvironmentBanner';
 import MailThreadList from '@components/super-admin/mail/MailThreadList';
 import SuperAdminPageContainer from '@components/super-admin/SuperAdminPageContainer';
 import { MAIL_ADDRESS, MAIL_STATUS_FILTERS, MAIL_STATUS_LABELS } from '@constants/data/mailData';
@@ -144,6 +145,7 @@ function SuperAdminMailList() {
             </HeaderActions>
           }
         />
+        <MailEnvironmentBanner />
         <Content>
           {sentNotice && <SentNotice role="status">{sentNotice}</SentNotice>}
           <FilterRow>

@@ -6,6 +6,7 @@ import AppContainer from '@components/common/container/AppContainer';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import NewAppInput from '@components/common/input/NewAppInput';
 import PageHeader from '@components/common/page/PageHeader';
+import MailEnvironmentBanner from '@components/super-admin/mail/MailEnvironmentBanner';
 import LazyMailEditor from '@components/super-admin/mail/editor/LazyMailEditor';
 import MailPreviewModal from '@components/super-admin/mail/MailPreviewModal';
 import MailWorkspacePicker from '@components/super-admin/mail/MailWorkspacePicker';
@@ -166,6 +167,7 @@ function SuperAdminMailNew() {
             </NewCommonButton>
           }
         />
+        <MailEnvironmentBanner />
         <Form onSubmit={handleSubmit} noValidate>
           <Field>
             <FieldLabel htmlFor="mail-workspace">받는 주점</FieldLabel>

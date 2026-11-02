@@ -5,6 +5,7 @@ import AppContainer from '@components/common/container/AppContainer';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import Pagination from '@components/common/pagination/Pagination';
 import PageHeader from '@components/common/page/PageHeader';
+import MailEnvironmentBanner from '@components/super-admin/mail/MailEnvironmentBanner';
 import MailCampaignStatusTable from '@components/super-admin/mail/MailCampaignStatusTable';
 import SuperAdminPageContainer from '@components/super-admin/SuperAdminPageContainer';
 import { MAIL_CAMPAIGN_STATUS_LABELS } from '@constants/data/mailData';
@@ -185,6 +186,7 @@ function SuperAdminMailCampaignDetail() {
             </NewCommonButton>
           }
         />
+        <MailEnvironmentBanner />
         <Content>
           <StatGrid>
             <StatCell>

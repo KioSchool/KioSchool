@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import AppContainer from '@components/common/container/AppContainer';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import PageHeader from '@components/common/page/PageHeader';
+import MailEnvironmentBanner from '@components/super-admin/mail/MailEnvironmentBanner';
 import MailMessageItem from '@components/super-admin/mail/MailMessageItem';
 import MailReplyForm from '@components/super-admin/mail/MailReplyForm';
 import MailStatusBadge from '@components/super-admin/mail/MailStatusBadge';
@@ -260,6 +261,7 @@ function SuperAdminMailDetail() {
             </NewCommonButton>
           }
         />
+        <MailEnvironmentBanner />
         <Content>
           {errorMessage && <ErrorBanner role="alert">{errorMessage}</ErrorBanner>}
           <DetailCard>

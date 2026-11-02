@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import AppContainer from '@components/common/container/AppContainer';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import PageHeader from '@components/common/page/PageHeader';
+import MailEnvironmentBanner from '@components/super-admin/mail/MailEnvironmentBanner';
 import MailAudiencePicker from '@components/super-admin/mail/MailAudiencePicker';
 import MailCampaignForm, { MailCampaignFormValues } from '@components/super-admin/mail/MailCampaignForm';
 import MailCampaignHistory from '@components/super-admin/mail/MailCampaignHistory';
@@ -242,6 +243,7 @@ function SuperAdminMailCampaignNew() {
             </NewCommonButton>
           }
         />
+        <MailEnvironmentBanner />
         <Content>
           <Section>
             <SectionTitle>받을 주점</SectionTitle>
