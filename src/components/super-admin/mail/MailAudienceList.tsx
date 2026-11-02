@@ -4,7 +4,7 @@ import { match } from 'ts-pattern';
 import { Color } from '@resources/colors';
 import type { MailAudienceRow } from '@@types/mail';
 import { formatCurrency, formatNumber } from '@utils/formatNumber';
-import { formatLastSent, formatOperatingPeriod } from '@utils/mailCampaign';
+import { formatLastSent, formatOperatingPeriod, getOwnerWorkspaceCounts } from '@utils/mailCampaign';
 
 type SortKey = 'orderCount' | 'revenue' | 'operatingDays' | 'insightCardCount' | 'lastSentAt';
 
@@ -56,8 +56,10 @@ const SortButton = styled.button<{ isNumber: boolean }>`
   white-space: nowrap;
 `;
 
-const Row = styled.tr<{ isExcluded: boolean }>`
-  color: ${({ isExcluded }) => (isExcluded ? Color.MUTED_GREY : Color.BLACK)};
+const Row = styled.tr<{ isPicked: boolean }>`
+  background: ${({ isPicked }) => (isPicked ? Color.KIO_ORANGE_FAINT : Color.WHITE)};
+  color: ${Color.BLACK};
+  cursor: pointer;
 `;
 
 const Cell = styled.td`
@@ -75,6 +77,17 @@ const SubText = styled.div`
   color: ${Color.MUTED_GREY};
   font-size: 12px;
   overflow-wrap: anywhere;
+`;
+
+const OwnerTag = styled.span`
+  display: inline-block;
+  margin-top: 2px;
+  padding: 1px 6px;
+  border-radius: 8px;
+  background: ${Color.KIO_ORANGE_FAINT};
+  color: ${Color.KIO_ORANGE_DARK};
+  font-size: 11px;
+  font-weight: 600;
 `;
 
 const SentTag = styled.span<{ isSent: boolean }>`
@@ -106,17 +119,19 @@ function getSortMark(isSorted: boolean, isDescending: boolean): string {
 
 interface MailAudienceListProps {
   rows: MailAudienceRow[];
-  excludedIds: number[];
+  allRows: MailAudienceRow[];
+  pickedIds: Set<number>;
   onToggle: (workspaceId: number) => void;
-  onToggleAll: (isExcludingAll: boolean) => void;
 }
 
-function MailAudienceList({ rows, excludedIds, onToggle, onToggleAll }: MailAudienceListProps) {
+function MailAudienceList({ rows, allRows, pickedIds, onToggle }: MailAudienceListProps) {
   const [sortKey, setSortKey] = useState<SortKey>('orderCount');
   const [isDescending, setIsDescending] = useState(true);
-  const sortedRows = useMemo(() => {
-    return [...rows].sort((a, b) => (getSortValue(a, sortKey) - getSortValue(b, sortKey)) * getSortDirection(isDescending));
-  }, [isDescending, rows, sortKey]);
+  const ownerCounts = useMemo(() => getOwnerWorkspaceCounts(allRows), [allRows]);
+  const sortedRows = useMemo(
+    () => [...rows].sort((a, b) => (getSortValue(a, sortKey) - getSortValue(b, sortKey)) * getSortDirection(isDescending)),
+    [isDescending, rows, sortKey],
+  );
 
   const handleSort = (key: SortKey) => {
     if (key === sortKey) {
@@ -132,9 +147,7 @@ function MailAudienceList({ rows, excludedIds, onToggle, onToggleAll }: MailAudi
       <Table>
         <thead>
           <tr>
-            <HeadCell>
-              <input type="checkbox" aria-label="전체 선택" checked={excludedIds.length === 0} onChange={() => onToggleAll(excludedIds.length === 0)} />
-            </HeadCell>
+            <HeadCell aria-label="담기" />
             <HeadCell>주점</HeadCell>
             <HeadCell>받는 사람</HeadCell>
             {SORTABLE_COLUMNS.map((column) => (
@@ -149,12 +162,12 @@ function MailAudienceList({ rows, excludedIds, onToggle, onToggleAll }: MailAudi
         </thead>
         <tbody>
           {sortedRows.map((row) => (
-            <Row key={row.workspaceId} isExcluded={excludedIds.includes(row.workspaceId)}>
-              <Cell>
+            <Row key={row.workspaceId} isPicked={pickedIds.has(row.workspaceId)} onClick={() => onToggle(row.workspaceId)}>
+              <Cell onClick={(event) => event.stopPropagation()}>
                 <input
                   type="checkbox"
-                  aria-label={`${row.workspaceName} 받기`}
-                  checked={!excludedIds.includes(row.workspaceId)}
+                  aria-label={`${row.workspaceName} 담기`}
+                  checked={pickedIds.has(row.workspaceId)}
                   onChange={() => onToggle(row.workspaceId)}
                 />
               </Cell>
@@ -167,6 +180,7 @@ function MailAudienceList({ rows, excludedIds, onToggle, onToggleAll }: MailAudi
               <Cell>
                 {row.ownerName}
                 <SubText>{row.ownerEmail}</SubText>
+                {(ownerCounts.get(row.ownerEmail) ?? 0) > 1 && <OwnerTag>같은 사장 {ownerCounts.get(row.ownerEmail)}곳</OwnerTag>}
               </Cell>
               <NumberCell>{formatNumber(row.orderCount)}건</NumberCell>
               <NumberCell>{formatCurrency(row.revenue)}</NumberCell>

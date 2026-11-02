@@ -1,5 +1,5 @@
 import { Color } from '@resources/colors';
-import type { MailCampaignStatus, MailRecipientStatus, MailThreadStatus } from '@@types/mail';
+import type { MailCampaignStatus, MailRecipientStatus, MailSentFilter, MailThreadStatus } from '@@types/mail';
 
 export const MAIL_SUBJECT_MAX_LENGTH = 200;
 export const MAIL_NO_SUBJECT = '(제목 없음)';
@@ -31,6 +31,15 @@ export const MAIL_TEMPLATE_VALUE_GROUPS: { label: string; values: string[] }[] =
 export const MAIL_TEMPLATE_VALUES = MAIL_TEMPLATE_VALUE_GROUPS.flatMap((group) => group.values);
 export const MAIL_BUTTON_LABEL_MAX_LENGTH = 40;
 export const MAIL_BUTTON_URL_MAX_LENGTH = 2000;
+
+export const MAIL_AUDIENCE_DEFAULT_MIN_ORDERS = 15;
+
+export const MAIL_SENT_FILTER_OPTIONS: { value: MailSentFilter; label: string }[] = [
+  { value: 'ALL', label: '전체' },
+  { value: 'NEVER', label: '받은 적 없음' },
+  { value: 'NO_REPLY', label: '받았는데 답장 없음' },
+  { value: 'REPLIED', label: '답장 옴' },
+];
 
 export const MAIL_CAMPAIGN_STATUS_LABELS: Record<MailCampaignStatus, string> = {
   SENDING: '보내는 중',

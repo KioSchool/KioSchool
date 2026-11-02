@@ -47,10 +47,7 @@ export type MailRecipientStatus = 'PENDING' | 'SENDING' | 'SENT' | 'FAILED' | 'E
 export interface MailAudienceFilter {
   from: string;
   to: string;
-  minOrders: number;
-  schoolName?: string;
-  excludedWorkspaceIds: number[];
-  workspaceIds?: number[];
+  workspaceIds: number[];
 }
 
 export interface MailAudienceRow {
@@ -78,13 +75,21 @@ export interface MailAudiencePeriod {
   to: string;
 }
 
-export interface MailAudiencePreview {
-  targetCount: number;
+export interface MailAudience {
+  rows: MailAudienceRow[];
   noEmailCount: number;
   unsubscribedCount: number;
   withdrawnCount: number;
   dailyLimit: number;
-  content: PaginationResponse<MailAudienceRow>;
+}
+
+export type MailSentFilter = 'ALL' | 'NEVER' | 'NO_REPLY' | 'REPLIED';
+
+export interface MailAudienceCondition {
+  keyword: string;
+  minOrders: number;
+  schoolName: string;
+  sent: MailSentFilter;
 }
 
 export interface MailCampaignRequest {

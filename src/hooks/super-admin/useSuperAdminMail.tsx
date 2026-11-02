@@ -2,8 +2,7 @@ import { useCallback } from 'react';
 import axios from 'axios';
 import type { PaginationResponse } from '@@types/index';
 import type {
-  MailAudienceFilter,
-  MailAudiencePreview,
+  MailAudience,
   MailCampaignDetail,
   MailCampaignPreview,
   MailCampaignPreviewRequest,
@@ -122,9 +121,9 @@ function useSuperAdminMail() {
     [superAdminApi],
   );
 
-  const previewAudience = useCallback(
-    async (filter: MailAudienceFilter, page: number, size: number): Promise<MailAudiencePreview> => {
-      const response = await superAdminApi.post<MailAudiencePreview>('/mail/campaigns/audience', filter, { params: { page, size } });
+  const fetchAudience = useCallback(
+    async (from: string, to: string): Promise<MailAudience> => {
+      const response = await superAdminApi.get<MailAudience>('/mail/campaigns/audience', { params: { from, to }, skipGlobalLoading: true });
       return response.data;
     },
     [superAdminApi],
@@ -203,7 +202,7 @@ function useSuperAdminMail() {
     unmarkSpam,
     deleteThread,
     downloadAttachment,
-    previewAudience,
+    fetchAudience,
     previewMail,
     previewCampaign,
     sendCampaignTest,
