@@ -19,6 +19,7 @@ import { ORDER_ROUTES } from '@constants/routes';
 import { isOverOneDay } from '@utils/formatDate';
 import useWorkspace from '@hooks/user/useWorkspace';
 import CustomerDonationModal from '@components/user/order/orderComplete/CustomerDonationModal';
+import SessionOrderList from '@components/user/order/orderComplete/SessionOrderList';
 
 const Container = styled.div`
   width: 100%;
@@ -109,6 +110,10 @@ const OrderProductText = styled.div`
   font-weight: 400;
 `;
 
+function isFinishedOrder(order: Order) {
+  return order.status === OrderStatus.SERVED || order.status === OrderStatus.CANCELLED;
+}
+
 function OrderComplete() {
   const navigate = useNavigate();
 
@@ -118,11 +123,12 @@ function OrderComplete() {
   const tableNo = searchParams.get('tableNo');
   const tableHash = searchParams.get('tableHash');
 
-  const { fetchOrder } = useOrder();
+  const { fetchOrder, fetchSessionOrders } = useOrder();
   const { fetchWorkspace } = useWorkspace();
   const { allowPullToRefresh } = useRefresh();
   const resetOrderBasket = useResetAtom(userOrderBasketAtom);
   const [order, setOrder] = useState<Order>(defaultUserOrderValue);
+  const [sessionOrders, setSessionOrders] = useState<Order[]>([]);
   const workspace = useAtomValue(userWorkspaceAtom);
 
   const dateConverter = (date: Date) => {
@@ -153,10 +159,12 @@ function OrderComplete() {
     const pollOrder = async () => {
       if (!orderId) return;
 
-      const orderData = await fetchOrder(orderId);
+      const [orderData, sessionOrdersData] = await Promise.all([fetchOrder(orderId), fetchSessionOrders(workspaceId, tableHash, orderId)]);
       setOrder(orderData);
+      setSessionOrders(sessionOrdersData);
 
-      if (orderData.status === OrderStatus.SERVED || orderData.status === OrderStatus.CANCELLED || isOverOneDay(orderData.createdAt)) {
+      const isAllFinished = [orderData, ...sessionOrdersData].every(isFinishedOrder);
+      if (isAllFinished || isOverOneDay(orderData.createdAt)) {
         terminated = true;
         stopPolling();
       }
@@ -246,6 +254,7 @@ function OrderComplete() {
           </OrderPriceContainer>
         </ContentsContainer>
         <CustomerDonationModal key={orderId} orderId={orderId} workspaceId={workspaceId} eligible={isDonationEligible} />
+        <SessionOrderList orders={sessionOrders} currentOrderId={Number(orderId)} />
       </SubContainer>
       <OrderButton
         showButton={true}
