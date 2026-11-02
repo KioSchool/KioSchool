@@ -5,11 +5,11 @@ import { match } from 'ts-pattern';
 import AppContainer from '@components/common/container/AppContainer';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import NewAppInput from '@components/common/input/NewAppInput';
-import NewAppTextarea from '@components/common/input/NewAppTextarea';
 import PageHeader from '@components/common/page/PageHeader';
+import LazyMailEditor from '@components/super-admin/mail/editor/LazyMailEditor';
 import MailWorkspacePicker from '@components/super-admin/mail/MailWorkspacePicker';
 import SuperAdminPageContainer from '@components/super-admin/SuperAdminPageContainer';
-import { MAIL_ADDRESS, MAIL_CONTENT_MAX_LENGTH, MAIL_SUBJECT_MAX_LENGTH, MAIL_TEAM_NAME } from '@constants/data/mailData';
+import { MAIL_ADDRESS, MAIL_SUBJECT_MAX_LENGTH, MAIL_TEAM_NAME } from '@constants/data/mailData';
 import { SUPER_ADMIN_ROUTES } from '@constants/routes';
 import useSuperAdminMail from '@hooks/super-admin/useSuperAdminMail';
 import useSuperAdminWorkspace from '@hooks/super-admin/useSuperAdminWorkspace';
@@ -19,9 +19,10 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import type { MailTargetWorkspace } from '@@types/mail';
 import { getApiErrorMessage } from '@utils/apiError';
-import { createMailPreviewHtml } from '@utils/mailPreview';
+import { isMailHtmlEmpty } from '@utils/mailEditor';
 
 const SENT_NOTICE = '보냈어요. 잠시 뒤 목록에 보여요.';
+const MAIL_PREVIEW_DEBOUNCE_MS = 400;
 
 const Grid = styled.div`
   display: grid;
@@ -50,12 +51,6 @@ const FieldLabel = styled.label`
   color: ${Color.GREY};
   font-size: 13px;
   font-weight: 600;
-`;
-
-const CharacterCount = styled.span`
-  align-self: flex-end;
-  color: ${Color.GREY};
-  font-size: 12px;
 `;
 
 const Preview = styled.div`
@@ -112,16 +107,17 @@ function getRecipientText(workspace: MailTargetWorkspace | null, ownerEmail: str
 function SuperAdminMailNew() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { sendNewMail } = useSuperAdminMail();
+  const { previewMail, sendNewMail } = useSuperAdminMail();
   const { fetchWorkspaceDetail } = useSuperAdminWorkspace();
   const [workspace, setWorkspace] = useState<MailTargetWorkspace | null>(null);
   const [subject, setSubject] = useState('');
   const [content, setContent] = useState('');
+  const [previewHtml, setPreviewHtml] = useState('');
+  const [previewError, setPreviewError] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const workspaceIdParam = Number(searchParams.get('workspaceId'));
   const ownerEmail = workspace?.ownerEmail ?? null;
-  const previewHtml = useMemo(() => createMailPreviewHtml(content), [content]);
   // 응답을 못 받아 다시 눌러도 같은 메일이 두 번 나가지 않게 한다. 내용을 고치면 새 메일이다.
   const requestId = useMemo(() => crypto.randomUUID(), [workspace?.id, subject, content]);
   const { ConfirmModal, confirm } = useConfirm({
@@ -140,6 +136,26 @@ function SuperAdminMailNew() {
     });
   }, [fetchWorkspaceDetail, workspaceIdParam]);
 
+  useEffect(() => {
+    let cancelled = false;
+    const timer = setTimeout(() => {
+      previewMail(content)
+        .then((html) => {
+          if (cancelled) return;
+          setPreviewHtml(html);
+          setPreviewError('');
+        })
+        .catch((error: unknown) => {
+          if (!cancelled) setPreviewError(getApiErrorMessage(error, '미리보기를 만들지 못했습니다.'));
+        });
+    }, MAIL_PREVIEW_DEBOUNCE_MS);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [content, previewMail]);
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (isSending) return;
@@ -154,7 +170,7 @@ function SuperAdminMailNew() {
       return;
     }
 
-    if (!subject.trim() || !content.trim()) {
+    if (!subject.trim() || isMailHtmlEmpty(content)) {
       setErrorMessage('제목과 내용을 입력해 주세요.');
       return;
     }
@@ -166,7 +182,7 @@ function SuperAdminMailNew() {
     setErrorMessage('');
 
     try {
-      await sendNewMail({ workspaceId: workspace.id, subject: subject.trim(), content: content.trim(), requestId });
+      await sendNewMail({ workspaceId: workspace.id, subject: subject.trim(), content, requestId });
       navigate(SUPER_ADMIN_ROUTES.MAIL, { state: { sentNotice: SENT_NOTICE } });
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error, '메일을 보내지 못했습니다.'));
@@ -207,19 +223,8 @@ function SuperAdminMailNew() {
               />
             </Field>
             <Field>
-              <FieldLabel htmlFor="mail-content">내용</FieldLabel>
-              <NewAppTextarea
-                id="mail-content"
-                width="100%"
-                height={260}
-                value={content}
-                maxLength={MAIL_CONTENT_MAX_LENGTH}
-                placeholder="전달할 내용을 입력해 주세요"
-                onChange={(event) => setContent(event.target.value)}
-              />
-              <CharacterCount>
-                {content.length}/{MAIL_CONTENT_MAX_LENGTH}
-              </CharacterCount>
+              <FieldLabel as="span">내용</FieldLabel>
+              <LazyMailEditor height={260} placeholder="전달할 내용을 입력해 주세요" onChange={setContent} />
             </Field>
             {errorMessage && <ErrorText role="alert">{errorMessage}</ErrorText>}
             <ButtonRow>
@@ -236,6 +241,7 @@ function SuperAdminMailNew() {
               받는 사람: {getRecipientText(workspace, ownerEmail)}
             </PreviewInfo>
             <PreviewSubject>{subject || '메일 제목이 여기에 보여요'}</PreviewSubject>
+            {previewError && <ErrorText role="alert">{previewError}</ErrorText>}
             <PreviewFrame title="메일 미리보기" sandbox="" srcDoc={previewHtml} />
           </Preview>
         </Grid>

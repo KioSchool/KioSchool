@@ -2,8 +2,6 @@ import { FormEvent, useState } from 'react';
 import styled from '@emotion/styled';
 import { match } from 'ts-pattern';
 import NewCommonButton from '@components/common/button/NewCommonButton';
-import NewAppTextarea from '@components/common/input/NewAppTextarea';
-import { MAIL_CONTENT_MAX_LENGTH } from '@constants/data/mailData';
 import { API_ERROR_CODES } from '@constants/errorCodes';
 import useSuperAdminMail from '@hooks/super-admin/useSuperAdminMail';
 import useConfirm from '@hooks/useConfirm';
@@ -11,6 +9,8 @@ import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import type { MailThreadDetail } from '@@types/mail';
 import { getApiErrorMessage, isApiErrorCode } from '@utils/apiError';
+import { isMailHtmlEmpty } from '@utils/mailEditor';
+import LazyMailEditor from './editor/LazyMailEditor';
 
 const Form = styled.form`
   width: 100%;
@@ -18,7 +18,7 @@ const Form = styled.form`
   ${colFlex()}
 `;
 
-const Label = styled.label`
+const Label = styled.span`
   color: ${Color.GREY};
   font-size: 13px;
 `;
@@ -51,6 +51,7 @@ interface MailReplyFormProps {
 function MailReplyForm({ thread, onReplied, onStale, onResolve, isChanging }: MailReplyFormProps) {
   const { replyThread } = useSuperAdminMail();
   const [content, setContent] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const [isSending, setIsSending] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const { ConfirmModal, confirm } = useConfirm({
@@ -65,7 +66,7 @@ function MailReplyForm({ thread, onReplied, onStale, onResolve, isChanging }: Ma
     event.preventDefault();
     if (isSending || lastMessageId === undefined) return;
 
-    if (!content.trim()) {
+    if (isMailHtmlEmpty(content)) {
       setErrorMessage('답장 내용을 입력해 주세요.');
       return;
     }
@@ -77,8 +78,8 @@ function MailReplyForm({ thread, onReplied, onStale, onResolve, isChanging }: Ma
     setErrorMessage('');
 
     try {
-      onReplied(await replyThread(thread.id, { lastMessageId, content: content.trim() }));
-      setContent('');
+      onReplied(await replyThread(thread.id, { lastMessageId, content }));
+      setResetKey((key) => key + 1);
     } catch (error) {
       const nextErrorMessage = getApiErrorMessage(error, '답장을 보내지 못했습니다.');
       if (isApiErrorCode(error, API_ERROR_CODES.MAIL_THREAD_STALE)) {
@@ -95,16 +96,8 @@ function MailReplyForm({ thread, onReplied, onStale, onResolve, isChanging }: Ma
   return (
     <Form onSubmit={handleSubmit} noValidate>
       <ConfirmModal />
-      <Label htmlFor="mail-reply-content">답장</Label>
-      <NewAppTextarea
-        id="mail-reply-content"
-        width="100%"
-        height={160}
-        value={content}
-        maxLength={MAIL_CONTENT_MAX_LENGTH}
-        placeholder="답장을 입력해 주세요"
-        onChange={(event) => setContent(event.target.value)}
-      />
+      <Label>답장</Label>
+      <LazyMailEditor height={160} placeholder="답장을 입력해 주세요" resetKey={resetKey} onChange={setContent} />
       {errorMessage && <ErrorText role="alert">{errorMessage}</ErrorText>}
       <ButtonRow>
         {thread.status !== 'RESOLVED' && (

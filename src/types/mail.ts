@@ -58,6 +58,17 @@ export interface MailAudienceRow {
   schoolName: string;
   ownerName: string;
   ownerEmail: string;
+  tableCount: number;
+  orderCount: number;
+  revenue: number;
+  operatingDays: number;
+  firstOperatingDate: string | null;
+  lastOperatingDate: string | null;
+  topMenu: string | null;
+  insightCardCount: number;
+  lastSentAt: string | null;
+  lastSentSubject: string | null;
+  lastReplied: boolean;
 }
 
 export interface MailAudiencePreview {
@@ -73,10 +84,21 @@ export interface MailCampaignRequest {
   filter: MailAudienceFilter;
   subject: string;
   content: string;
-  buttonLabel?: string;
-  buttonUrl?: string;
   expectedCount: number;
   requestId: string;
+}
+
+export interface MailCampaignPreviewRequest {
+  filter: MailAudienceFilter;
+  subject: string;
+  content: string;
+}
+
+export interface MailCampaignPreview {
+  subject: string;
+  html: string;
+  workspaceName: string | null;
+  ownerEmail: string | null;
 }
 
 export interface MailCampaignSummary {

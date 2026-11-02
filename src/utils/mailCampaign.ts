@@ -1,5 +1,6 @@
 import type { MailAudienceRow } from '@@types/mail';
 
+const DATE_LENGTH = 10;
 const SENDING_START_HOUR = 10;
 const SENDING_END_HOUR = 20;
 
@@ -30,18 +31,21 @@ export function getCampaignConfirmDescription(count: number, dailyLimit: number,
   return `오늘 ${dailyLimit}곳에 보내고, 나머지는 내일부터 이어서 보내요. 모두 보내는 데 ${days}일 걸려요.`;
 }
 
-// 서버의 MailTemplateRenderer와 같이 한 번만 치환한다. 미리보기 전용이다.
-export function renderMailTemplatePreview(template: string, row: MailAudienceRow | undefined, transform: (value: string) => string = (value) => value): string {
-  if (!row) return template;
+function formatMonthDay(iso: string): string {
+  const [, month, day] = iso.split('-').map(Number);
+  return `${month}/${day}`;
+}
 
-  const values: Record<string, string> = {
-    '{주점 이름}': row.workspaceName,
-    '{사장 이름}': row.ownerName,
-    '{주점 번호}': row.workspaceId.toString(),
-  };
-  return template.replace(/\{[^{}]+\}/g, (placeholder) => {
-    const value = values[placeholder];
-    if (value === undefined) return placeholder;
-    return transform(value);
-  });
+export function formatOperatingPeriod(firstDate: string | null, lastDate: string | null): string {
+  if (!firstDate || !lastDate) return '';
+  if (firstDate === lastDate) return formatMonthDay(firstDate);
+  return `${formatMonthDay(firstDate)}~${formatMonthDay(lastDate)}`;
+}
+
+export function formatLastSent(row: MailAudienceRow): string {
+  if (!row.lastSentAt) return '없음';
+
+  const sent = `${formatMonthDay(row.lastSentAt.slice(0, DATE_LENGTH))} ${row.lastSentSubject ?? ''}`.trim();
+  if (row.lastReplied) return `${sent} · 답장 옴`;
+  return sent;
 }

@@ -5,6 +5,8 @@ import type {
   MailAudienceFilter,
   MailAudiencePreview,
   MailCampaignDetail,
+  MailCampaignPreview,
+  MailCampaignPreviewRequest,
   MailCampaignRequest,
   MailCampaignSummary,
   MailThreadDetail,
@@ -143,6 +145,22 @@ function useSuperAdminMail() {
     [superAdminApi],
   );
 
+  const previewMail = useCallback(
+    async (content: string): Promise<string> => {
+      const response = await superAdminApi.post<{ html: string }>('/mail/preview', { content }, { skipGlobalLoading: true });
+      return response.data.html;
+    },
+    [superAdminApi],
+  );
+
+  const previewCampaign = useCallback(
+    async (request: MailCampaignPreviewRequest): Promise<MailCampaignPreview> => {
+      const response = await superAdminApi.post<MailCampaignPreview>('/mail/campaigns/preview', request, { skipGlobalLoading: true });
+      return response.data;
+    },
+    [superAdminApi],
+  );
+
   const fetchCampaigns = useCallback(
     async (page: number, size: number): Promise<PaginationResponse<MailCampaignSummary>> => {
       const response = await superAdminApi.get<PaginationResponse<MailCampaignSummary>>('/mail/campaigns', { params: { page, size } });
@@ -186,6 +204,8 @@ function useSuperAdminMail() {
     deleteThread,
     downloadAttachment,
     previewAudience,
+    previewMail,
+    previewCampaign,
     sendCampaignTest,
     startCampaign,
     fetchCampaigns,

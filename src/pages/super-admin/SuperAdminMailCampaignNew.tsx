@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import AppContainer from '@components/common/container/AppContainer';
@@ -17,13 +17,15 @@ import useConfirm from '@hooks/useConfirm';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
-import type { MailAudiencePreview, MailCampaignRequest } from '@@types/mail';
+import type { MailAudienceFilter, MailAudiencePreview, MailCampaignPreview as MailCampaignPreviewResult, MailCampaignRequest } from '@@types/mail';
 import { getApiErrorMessage, isApiErrorCode } from '@utils/apiError';
 import { getCampaignConfirmDescription } from '@utils/mailCampaign';
+import { isMailHtmlEmpty } from '@utils/mailEditor';
 
 const AUDIENCE_PAGE_SIZE = 500;
 const SEARCH_DEBOUNCE_MS = 300;
-const EMPTY_FORM: MailCampaignFormValues = { subject: '', content: '', buttonLabel: '', buttonUrl: '' };
+const MAIL_PREVIEW_DEBOUNCE_MS = 400;
+const EMPTY_FORM: MailCampaignFormValues = { subject: '', content: '' };
 
 const Content = styled.div`
   width: 100%;
@@ -121,8 +123,7 @@ const ButtonRow = styled.div`
 
 function SuperAdminMailCampaignNew() {
   const navigate = useNavigate();
-  const { previewAudience, sendCampaignTest, startCampaign } = useSuperAdminMail();
-  const contentRef = useRef<HTMLTextAreaElement>(null);
+  const { previewAudience, previewCampaign, sendCampaignTest, startCampaign } = useSuperAdminMail();
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [minOrders, setMinOrders] = useState('15');
@@ -134,13 +135,14 @@ function SuperAdminMailCampaignNew() {
   const [notice, setNotice] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [audienceVersion, setAudienceVersion] = useState(0);
+  const [mailPreview, setMailPreview] = useState<MailCampaignPreviewResult | null>(null);
+  const [mailPreviewError, setMailPreviewError] = useState('');
   const minOrdersNumber = Number(minOrders);
   const hasFilter = Boolean(from && to) && Number.isInteger(minOrdersNumber) && minOrdersNumber >= 1;
 
   // 체크를 푼 주점은 목록에서 계속 보여 다시 넣을 수 있도록 조회에는 빼지 않고 수만 뺀다
   const rows = preview?.content.content ?? [];
   const targetCount = Math.max((preview?.targetCount ?? 0) - excludedIds.length, 0);
-  const firstRow = rows.find((row) => !excludedIds.includes(row.workspaceId));
   const dailyLimit = preview?.dailyLimit ?? 0;
 
   // 조건을 바꾸면 이전 곳 수를 바로 지운다. 새 곳 수를 받기 전에는 보내기 버튼이 잠겨 있어 잘못된 수로 확인할 수 없다.
@@ -168,6 +170,38 @@ function SuperAdminMailCampaignNew() {
     };
   }, [audienceVersion, from, hasFilter, minOrdersNumber, previewAudience, schoolName, to]);
 
+  const filter = useMemo<MailAudienceFilter>(
+    () => ({ from, to, minOrders: minOrdersNumber, schoolName: schoolName.trim() || undefined, excludedWorkspaceIds: excludedIds }),
+    [excludedIds, from, minOrdersNumber, schoolName, to],
+  );
+
+  // 값은 주점 자료로 채워지므로 서버가 실제로 보낼 메일을 그대로 받아 보여 준다
+  useEffect(() => {
+    if (!hasFilter) {
+      setMailPreview(null);
+      setMailPreviewError('');
+      return undefined;
+    }
+
+    let cancelled = false;
+    const timer = setTimeout(() => {
+      previewCampaign({ filter, subject: form.subject, content: form.content })
+        .then((response) => {
+          if (cancelled) return;
+          setMailPreview(response);
+          setMailPreviewError('');
+        })
+        .catch((error: unknown) => {
+          if (!cancelled) setMailPreviewError(getApiErrorMessage(error, '미리보기를 만들지 못했습니다.'));
+        });
+    }, MAIL_PREVIEW_DEBOUNCE_MS);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [filter, form.content, form.subject, hasFilter, previewCampaign]);
+
   const { ConfirmModal, confirm } = useConfirm({
     title: `${targetCount}곳에 메일을 보낼까요?`,
     description: getCampaignConfirmDescription(targetCount, dailyLimit),
@@ -182,15 +216,21 @@ function SuperAdminMailCampaignNew() {
     });
   };
 
+  const handleToggleAll = (isExcludingAll: boolean) => {
+    if (isExcludingAll) {
+      setExcludedIds(rows.map((row) => row.workspaceId));
+      return;
+    }
+    setExcludedIds([]);
+  };
+
   // 응답을 못 받아 다시 눌러도 발송을 또 만들지 않게 한다. 대상이나 내용을 고치면 새 발송이다.
   const requestId = useMemo(() => crypto.randomUUID(), [audienceVersion, from, to, minOrdersNumber, schoolName, excludedIds, form]);
 
   const buildRequest = (): MailCampaignRequest => ({
-    filter: { from, to, minOrders: minOrdersNumber, schoolName: schoolName.trim() || undefined, excludedWorkspaceIds: excludedIds },
+    filter,
     subject: form.subject.trim(),
-    content: form.content.trim(),
-    buttonLabel: form.buttonLabel.trim() || undefined,
-    buttonUrl: form.buttonUrl.trim() || undefined,
+    content: form.content,
     expectedCount: targetCount,
     requestId,
   });
@@ -200,7 +240,7 @@ function SuperAdminMailCampaignNew() {
       setErrorMessage('받을 주점이 없어요.');
       return false;
     }
-    if (!form.subject.trim() || !form.content.trim()) {
+    if (!form.subject.trim() || isMailHtmlEmpty(form.content)) {
       setErrorMessage('제목과 내용을 입력해 주세요.');
       return false;
     }
@@ -300,13 +340,13 @@ function SuperAdminMailCampaignNew() {
                 </span>
               </CountRow>
             )}
-            {rows.length > 0 && <MailAudienceList rows={rows} excludedIds={excludedIds} onToggle={handleToggle} />}
+            {rows.length > 0 && <MailAudienceList rows={rows} excludedIds={excludedIds} onToggle={handleToggle} onToggleAll={handleToggleAll} />}
           </Section>
           <Section>
             <SectionTitle>내용</SectionTitle>
             <Grid>
-              <MailCampaignForm values={form} contentRef={contentRef} onChange={setForm} />
-              <MailCampaignPreview values={form} row={firstRow} />
+              <MailCampaignForm values={form} onChange={setForm} />
+              <MailCampaignPreview preview={mailPreview} errorMessage={mailPreviewError} />
             </Grid>
           </Section>
           <Warning>홍보 내용은 수신 동의를 받은 사람에게만 보낼 수 있어서 이 화면으로 보내면 안 돼요.</Warning>

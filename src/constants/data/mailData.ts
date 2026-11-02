@@ -2,7 +2,6 @@ import { Color } from '@resources/colors';
 import type { MailCampaignStatus, MailRecipientStatus, MailThreadStatus } from '@@types/mail';
 
 export const MAIL_SUBJECT_MAX_LENGTH = 200;
-export const MAIL_CONTENT_MAX_LENGTH = 10000;
 export const MAIL_NO_SUBJECT = '(제목 없음)';
 export const MAIL_NO_WORKSPACE = '주점 없음';
 export const MAIL_TEAM_NAME = '키오스쿨';
@@ -24,7 +23,12 @@ export const MAIL_STATUS_PALETTE: Record<MailThreadStatus, { bg: string; text: s
   SPAM: { bg: Color.LIGHT_GREY, text: Color.GREY },
 };
 
-export const MAIL_TEMPLATE_VALUES = ['{주점 이름}', '{사장 이름}', '{주점 번호}'] as const;
+export const MAIL_TEMPLATE_VALUE_GROUPS: { label: string; values: string[] }[] = [
+  { label: '주점', values: ['{주점 이름}', '{학교}', '{주점 번호}', '{테이블 수}'] },
+  { label: '사장', values: ['{사장 이름}'] },
+  { label: '고른 기간', values: ['{주문 수}', '{매출}', '{운영일}', '{첫 운영일}', '{마지막 운영일}', '{인기 메뉴}'] },
+];
+export const MAIL_TEMPLATE_VALUES = MAIL_TEMPLATE_VALUE_GROUPS.flatMap((group) => group.values);
 export const MAIL_BUTTON_LABEL_MAX_LENGTH = 40;
 export const MAIL_BUTTON_URL_MAX_LENGTH = 2000;
 

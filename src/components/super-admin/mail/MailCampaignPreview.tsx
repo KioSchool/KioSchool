@@ -1,17 +1,12 @@
-import { useMemo } from 'react';
 import styled from '@emotion/styled';
 import { MAIL_ADDRESS, MAIL_TEAM_NAME } from '@constants/data/mailData';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import type { MailAudienceRow } from '@@types/mail';
-import { renderMailTemplatePreview } from '@utils/mailCampaign';
-import { createMailPreviewHtml } from '@utils/mailPreview';
-import type { MailCampaignFormValues } from './MailCampaignForm';
-
-const PREVIEW_UNSUBSCRIBE_URL = 'https://kio-school.com/mail/unsubscribe';
+import type { MailCampaignPreview as MailCampaignPreviewResult } from '@@types/mail';
 
 const Container = styled.div`
   width: 100%;
+  min-width: 0;
   gap: 8px;
   ${colFlex()}
 `;
@@ -39,43 +34,35 @@ const Subject = styled.span`
 
 const Frame = styled.iframe`
   width: 100%;
-  height: 440px;
+  height: 520px;
   box-sizing: border-box;
   border: 1px solid ${Color.BORDER_GREY};
   border-radius: 8px;
   background: #f6f7f9;
 `;
 
-function getPreviewButton(values: MailCampaignFormValues, row: MailAudienceRow | undefined) {
-  const label = values.buttonLabel.trim();
-  const url = values.buttonUrl.trim();
-  if (!label || !url) return undefined;
-  return { label: renderMailTemplatePreview(label, row), url: renderMailTemplatePreview(url, row, encodeURIComponent) };
-}
+const ErrorText = styled.span`
+  color: ${Color.RED};
+  font-size: 13px;
+`;
 
 interface MailCampaignPreviewProps {
-  values: MailCampaignFormValues;
-  row: MailAudienceRow | undefined;
+  preview: MailCampaignPreviewResult | null;
+  errorMessage: string;
 }
 
-function MailCampaignPreview({ values, row }: MailCampaignPreviewProps) {
-  const html = useMemo(() => {
-    return createMailPreviewHtml(renderMailTemplatePreview(values.content, row), {
-      button: getPreviewButton(values, row),
-      unsubscribeUrl: PREVIEW_UNSUBSCRIBE_URL,
-    });
-  }, [row, values.buttonLabel, values.buttonUrl, values.content]);
-
+function MailCampaignPreview({ preview, errorMessage }: MailCampaignPreviewProps) {
   return (
     <Container>
-      <Title>미리보기{row && `: ${row.workspaceName}`}</Title>
+      <Title>미리보기{preview?.workspaceName && `: ${preview.workspaceName}`}</Title>
       <Info>
         보낸 사람: {MAIL_TEAM_NAME} &lt;{MAIL_ADDRESS}&gt;
         <br />
-        받는 사람: {row?.ownerEmail ?? '받을 주점을 골라 주세요'}
+        받는 사람: {preview?.ownerEmail ?? '받을 주점을 골라 주세요'}
       </Info>
-      <Subject>{renderMailTemplatePreview(values.subject, row) || '메일 제목이 여기에 보여요'}</Subject>
-      <Frame title="메일 미리보기" sandbox="" srcDoc={html} />
+      <Subject>{preview?.subject || '메일 제목이 여기에 보여요'}</Subject>
+      {errorMessage && <ErrorText role="alert">{errorMessage}</ErrorText>}
+      <Frame title="메일 미리보기" sandbox="" srcDoc={preview?.html ?? ''} />
     </Container>
   );
 }
