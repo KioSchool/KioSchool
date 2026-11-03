@@ -73,7 +73,7 @@ const Frame = styled.iframe<{ frameHeight: number }>`
   box-sizing: border-box;
   border: 1px solid ${Color.BORDER_GREY};
   border-radius: 8px;
-  background: #f6f7f9;
+  background: ${Color.WHITE};
 `;
 
 const INITIAL_FRAME_HEIGHT = 240;

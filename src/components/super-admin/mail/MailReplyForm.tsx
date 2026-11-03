@@ -9,8 +9,9 @@ import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import type { MailThreadDetail } from '@@types/mail';
 import { getApiErrorMessage, isApiErrorCode } from '@utils/apiError';
-import { isMailHtmlEmpty } from '@utils/mailEditor';
+import { getReplySubject, isMailHtmlEmpty } from '@utils/mailEditor';
 import LazyMailEditor from './editor/LazyMailEditor';
+import MailPreviewModal from './MailPreviewModal';
 
 const Form = styled.form`
   width: 100%;
@@ -49,11 +50,12 @@ interface MailReplyFormProps {
 }
 
 function MailReplyForm({ thread, onReplied, onStale, onResolve, isChanging }: MailReplyFormProps) {
-  const { replyThread } = useSuperAdminMail();
+  const { previewReply, replyThread } = useSuperAdminMail();
   const [content, setContent] = useState('');
   const [resetKey, setResetKey] = useState(0);
   const [isSending, setIsSending] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [previewHtml, setPreviewHtml] = useState<string | null>(null);
   const { ConfirmModal, confirm } = useConfirm({
     title: '답장을 보낼까요?',
     description: `${thread.counterpartEmail} 주소로 답장을 보냅니다.`,
@@ -61,6 +63,21 @@ function MailReplyForm({ thread, onReplied, onStale, onResolve, isChanging }: Ma
     cancelText: '취소',
   });
   const lastMessageId = thread.messages[thread.messages.length - 1]?.id;
+
+  const handlePreview = async () => {
+    if (isMailHtmlEmpty(content)) {
+      setErrorMessage('답장 내용을 입력해 주세요.');
+      return;
+    }
+
+    setErrorMessage('');
+
+    try {
+      setPreviewHtml(await previewReply(thread.id, content));
+    } catch (error) {
+      setErrorMessage(getApiErrorMessage(error, '미리보기를 만들지 못했습니다.'));
+    }
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -96,6 +113,15 @@ function MailReplyForm({ thread, onReplied, onStale, onResolve, isChanging }: Ma
   return (
     <Form onSubmit={handleSubmit} noValidate>
       <ConfirmModal />
+      {previewHtml !== null && (
+        <MailPreviewModal
+          title="미리보기"
+          recipient={thread.counterpartEmail}
+          subject={getReplySubject(thread.subject)}
+          html={previewHtml}
+          onClose={() => setPreviewHtml(null)}
+        />
+      )}
       <Label>답장</Label>
       <LazyMailEditor height={160} placeholder="답장을 입력해 주세요" resetKey={resetKey} onChange={setContent} />
       {errorMessage && <ErrorText role="alert">{errorMessage}</ErrorText>}
@@ -105,6 +131,9 @@ function MailReplyForm({ thread, onReplied, onStale, onResolve, isChanging }: Ma
             답장 없이 완료
           </NewCommonButton>
         )}
+        <NewCommonButton type="button" size="xs" color="blue_gray" disabled={isSending} onClick={handlePreview}>
+          미리보기
+        </NewCommonButton>
         <NewCommonButton type="submit" size="xs" disabled={isSending}>
           {getSendButtonText(isSending)}
         </NewCommonButton>

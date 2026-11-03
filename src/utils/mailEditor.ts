@@ -13,3 +13,9 @@ export function isMailLinkValid(url: string): boolean {
   const withoutValues = url.replace(MAIL_VALUE_PATTERN, '');
   return withoutValues.length > HTTPS_PREFIX.length && !/\s/.test(withoutValues);
 }
+
+export function getReplySubject(subject: string | null): string {
+  if (!subject) return '';
+  if (/^re:/i.test(subject)) return subject;
+  return `Re: ${subject}`;
+}
