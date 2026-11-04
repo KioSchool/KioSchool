@@ -7,7 +7,7 @@ export const MAIL_NO_WORKSPACE = '주점 없음';
 export const MAIL_TEAM_NAME = '키오스쿨';
 export const MAIL_ADDRESS = 'contact@kio-school.com';
 
-export const MAIL_STATUS_FILTERS: MailThreadStatus[] = ['NEEDS_REPLY', 'WAITING', 'SPAM'];
+export const MAIL_STATUS_FILTERS: MailThreadStatus[] = ['NEEDS_REPLY', 'WAITING', 'RESOLVED', 'SPAM'];
 
 export const MAIL_STATUS_LABELS: Record<MailThreadStatus, string> = {
   NEEDS_REPLY: '답장 필요',
