@@ -182,7 +182,7 @@ function SuperAdminMailCampaignDetail() {
           title={summary.subject}
           description={`${summary.createdByName ?? ''} · ${formatNullableKoreanDateTime(summary.createdAt)} 시작 · ${getScheduleText(detail)}`}
           actions={
-            <NewCommonButton type="button" size="xs" color="blue_gray" onClick={() => navigate(SUPER_ADMIN_ROUTES.MAIL_CAMPAIGN_NEW)}>
+            <NewCommonButton type="button" size="xs" color="blue_gray" onClick={() => navigate(SUPER_ADMIN_ROUTES.MAIL_CAMPAIGNS)}>
               지난 발송 보기
             </NewCommonButton>
           }

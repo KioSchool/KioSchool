@@ -137,6 +137,9 @@ function SuperAdminMailList() {
           description={`${MAIL_ADDRESS}으로 주고받은 메일을 확인하고 답장합니다.`}
           actions={
             <HeaderActions>
+              <NewCommonButton size="xs" color="blue_gray" onClick={() => navigate(SUPER_ADMIN_ROUTES.MAIL_CAMPAIGNS)}>
+                지난 발송
+              </NewCommonButton>
               <NewCommonButton size="xs" color="blue_gray" onClick={() => navigate(SUPER_ADMIN_ROUTES.MAIL_CAMPAIGN_NEW)}>
                 여러 곳에 보내기
               </NewCommonButton>

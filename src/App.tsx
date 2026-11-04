@@ -36,6 +36,7 @@ import SuperAdminInquiryDetail from '@pages/super-admin/SuperAdminInquiryDetail'
 import SuperAdminMailList from '@pages/super-admin/SuperAdminMailList';
 import SuperAdminMailDetail from '@pages/super-admin/SuperAdminMailDetail';
 import SuperAdminMailNew from '@pages/super-admin/SuperAdminMailNew';
+import SuperAdminMailCampaignList from '@pages/super-admin/SuperAdminMailCampaignList';
 import SuperAdminMailCampaignNew from '@pages/super-admin/SuperAdminMailCampaignNew';
 import SuperAdminMailCampaignDetail from '@pages/super-admin/SuperAdminMailCampaignDetail';
 import MailUnsubscribe from '@pages/user/mail/MailUnsubscribe';
@@ -111,6 +112,7 @@ function App() {
         <Route path={SUPER_ADMIN_ROUTES.INQUIRY_DETAIL} element={<SuperAdminInquiryDetail />} />
         <Route path={SUPER_ADMIN_ROUTES.MAIL} element={<SuperAdminMailList />} />
         <Route path={SUPER_ADMIN_ROUTES.MAIL_NEW} element={<SuperAdminMailNew />} />
+        <Route path={SUPER_ADMIN_ROUTES.MAIL_CAMPAIGNS} element={<SuperAdminMailCampaignList />} />
         <Route path={SUPER_ADMIN_ROUTES.MAIL_CAMPAIGN_NEW} element={<SuperAdminMailCampaignNew />} />
         <Route path={SUPER_ADMIN_ROUTES.MAIL_CAMPAIGN_DETAIL} element={<SuperAdminMailCampaignDetail />} />
         <Route path={SUPER_ADMIN_ROUTES.MAIL_DETAIL} element={<SuperAdminMailDetail />} />
