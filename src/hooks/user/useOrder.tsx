@@ -15,6 +15,16 @@ function useOrder() {
       .catch(() => defaultUserOrderValue);
   };
 
+  // 테이블 사용이 끝났거나 orderId가 현재 세션 소속이 아니면 서버가 빈 배열을 준다
+  const fetchSessionOrders = (workspaceId: string | null, tableHash: string | null, orderId: string | null) => {
+    if (!workspaceId || !tableHash || !orderId) return Promise.resolve<Order[]>([]);
+
+    return userApi
+      .get<Order[]>('/order/session-orders', { params: { workspaceId, tableHash, orderId } })
+      .then((response) => response.data)
+      .catch(() => []);
+  };
+
   const createOrder = (
     workspaceId: string | null,
     tableHash: string | null,
@@ -52,7 +62,7 @@ function useOrder() {
       .catch(() => true);
   };
 
-  return { fetchOrder, createOrder, checkOrderAvailable };
+  return { fetchOrder, fetchSessionOrders, createOrder, checkOrderAvailable };
 }
 
 export default useOrder;

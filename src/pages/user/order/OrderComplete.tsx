@@ -19,6 +19,7 @@ import { ORDER_ROUTES } from '@constants/routes';
 import { isOverOneDay } from '@utils/formatDate';
 import useWorkspace from '@hooks/user/useWorkspace';
 import CustomerDonationModal from '@components/user/order/orderComplete/CustomerDonationModal';
+import SessionOrderHistoryButton from '@components/user/order/orderComplete/SessionOrderHistoryButton';
 
 const Container = styled.div`
   width: 100%;
@@ -118,11 +119,12 @@ function OrderComplete() {
   const tableNo = searchParams.get('tableNo');
   const tableHash = searchParams.get('tableHash');
 
-  const { fetchOrder } = useOrder();
+  const { fetchOrder, fetchSessionOrders } = useOrder();
   const { fetchWorkspace } = useWorkspace();
   const { allowPullToRefresh } = useRefresh();
   const resetOrderBasket = useResetAtom(userOrderBasketAtom);
   const [order, setOrder] = useState<Order>(defaultUserOrderValue);
+  const [sessionOrders, setSessionOrders] = useState<Order[]>([]);
   const workspace = useAtomValue(userWorkspaceAtom);
 
   const dateConverter = (date: Date) => {
@@ -136,6 +138,10 @@ function OrderComplete() {
   const isDonationEligible = order.id !== defaultUserOrderValue.id && order.id === Number(orderId) && order.status !== OrderStatus.CANCELLED;
 
   useBlockPopState();
+
+  const handleSessionOrderHistoryClick = () => {
+    navigate({ pathname: ORDER_ROUTES.ORDER_HISTORY, search: createSearchParams(searchParams).toString() });
+  };
 
   const fetchIntervalTime = 60000;
 
@@ -194,6 +200,7 @@ function OrderComplete() {
     resetOrderBasket();
     allowPullToRefresh();
     fetchWorkspace(workspaceId);
+    fetchSessionOrders(workspaceId, tableHash, orderId).then(setSessionOrders);
 
     return () => {
       stopPolling();
@@ -245,6 +252,7 @@ function OrderComplete() {
             <ContentTitle>{order.totalPrice.toLocaleString()}원</ContentTitle>
           </OrderPriceContainer>
         </ContentsContainer>
+        <SessionOrderHistoryButton orders={sessionOrders} onClick={handleSessionOrderHistoryClick} />
         <CustomerDonationModal key={orderId} orderId={orderId} workspaceId={workspaceId} eligible={isDonationEligible} />
       </SubContainer>
       <OrderButton

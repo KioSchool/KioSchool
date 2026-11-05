@@ -14,6 +14,7 @@ export const ROUTES_PATH_KR_MAP = {
   [ORDER_ROUTES.ORDER_PAY]: '결제하기',
   [ORDER_ROUTES.ORDER_WAIT]: '주문 대기',
   [ORDER_ROUTES.ORDER_COMPLETE]: '주문 완료',
+  [ORDER_ROUTES.ORDER_HISTORY]: '테이블 주문 내역',
 
   [ADMIN_ROUTES.HOME]: '대시보드',
   [ADMIN_ROUTES.MY_INFO]: '내 정보',
