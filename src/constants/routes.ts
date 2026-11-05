@@ -17,6 +17,7 @@ export const ORDER_ROUTES = {
   ORDER_PAY: '/order-pay',
   ORDER_WAIT: '/order-wait',
   ORDER_COMPLETE: '/order-complete',
+  ORDER_HISTORY: '/order-history',
 } as const;
 
 export const ADMIN_ROUTES = {

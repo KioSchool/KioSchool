@@ -14,7 +14,7 @@ const Container = styled.div<{ isCurrent: boolean }>`
   padding: 14px 20px;
   border-radius: 9px;
   border: ${({ isCurrent }) => (isCurrent ? `1.5px solid ${Color.KIO_ORANGE}` : '0.5px solid #939393')};
-  cursor: ${({ isCurrent }) => (isCurrent ? 'default' : 'pointer')};
+  cursor: pointer;
   gap: 4px;
   ${colFlex()}
 `;
@@ -43,13 +43,12 @@ const PriceText = styled.div<{ isCancelled: boolean }>`
 `;
 
 const ToggleIcon = styled(RiArrowDownSLine, {
-  shouldForwardProp: (prop) => prop !== 'expanded' && prop !== 'isVisible',
-})<{ expanded: boolean; isVisible: boolean }>`
+  shouldForwardProp: (prop) => prop !== 'expanded',
+})<{ expanded: boolean }>`
   width: 16px;
   height: 16px;
   flex-shrink: 0;
   fill: ${Color.MUTED_GREY};
-  visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
   transition: transform 0.15s;
   transform: rotate(${({ expanded }) => (expanded ? '180deg' : '0deg')});
 `;
@@ -92,8 +91,6 @@ function SessionOrderCard({ order, isCurrent }: SessionOrderCardProps) {
   const isCancelled = order.status === OrderStatus.CANCELLED;
 
   const handleCardClick = () => {
-    if (isCurrent) return;
-
     setExpanded((prev) => !prev);
   };
 
@@ -103,7 +100,7 @@ function SessionOrderCard({ order, isCurrent }: SessionOrderCardProps) {
         <StatusText isCancelled={isCancelled}>{USER_STATUS_LABELS[order.status]}</StatusText>
         <PriceContainer>
           <PriceText isCancelled={isCancelled}>{order.totalPrice.toLocaleString()}원</PriceText>
-          <ToggleIcon expanded={expanded} isVisible={!isCurrent} />
+          <ToggleIcon expanded={expanded} />
         </PriceContainer>
       </SummaryRow>
       <MetaText>

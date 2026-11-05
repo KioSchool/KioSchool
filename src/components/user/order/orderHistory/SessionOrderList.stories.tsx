@@ -70,7 +70,6 @@ export const 가격_0원_주점: Story = {
   args: { orders: FREE_ORDERS },
 };
 
-// 이번 주문 하나뿐이면 섹션을 그리지 않는다
 export const 이번_주문만: Story = {
   args: { orders: [ORDERS[3]] },
 };

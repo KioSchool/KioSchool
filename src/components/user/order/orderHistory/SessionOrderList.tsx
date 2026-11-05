@@ -1,9 +1,8 @@
 import styled from '@emotion/styled';
-import { Order, OrderStatus } from '@@types/index';
+import { Order } from '@@types/index';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { getSessionOrderTotalPrice } from '@utils/sessionOrder';
 import SessionOrderCard from './SessionOrderCard';
-
-const MIN_ORDER_COUNT_TO_SHOW = 2;
 
 const Container = styled.div`
   box-sizing: border-box;
@@ -42,10 +41,8 @@ interface SessionOrderListProps {
 }
 
 function SessionOrderList({ orders, currentOrderId }: SessionOrderListProps) {
-  if (orders.length < MIN_ORDER_COUNT_TO_SHOW) return null;
-
   const latestFirstOrders = [...orders].sort((a, b) => b.id - a.id);
-  const totalPrice = orders.filter((order) => order.status !== OrderStatus.CANCELLED).reduce((sum, order) => sum + order.totalPrice, 0);
+  const totalPrice = getSessionOrderTotalPrice(orders);
 
   return (
     <Container>
