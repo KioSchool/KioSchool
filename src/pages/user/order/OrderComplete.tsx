@@ -19,7 +19,7 @@ import { ORDER_ROUTES } from '@constants/routes';
 import { isOverOneDay } from '@utils/formatDate';
 import useWorkspace from '@hooks/user/useWorkspace';
 import CustomerDonationModal from '@components/user/order/orderComplete/CustomerDonationModal';
-import SessionOrderList from '@components/user/order/orderComplete/SessionOrderList';
+import SessionOrderList from '@components/user/order/orderHistory/SessionOrderList';
 
 const Container = styled.div`
   width: 100%;
