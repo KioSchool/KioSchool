@@ -19,7 +19,7 @@ import { ORDER_ROUTES } from '@constants/routes';
 import { isOverOneDay } from '@utils/formatDate';
 import useWorkspace from '@hooks/user/useWorkspace';
 import CustomerDonationModal from '@components/user/order/orderComplete/CustomerDonationModal';
-import SessionOrderList from '@components/user/order/orderHistory/SessionOrderList';
+import SessionOrderHistoryButton from '@components/user/order/orderComplete/SessionOrderHistoryButton';
 
 const Container = styled.div`
   width: 100%;
@@ -110,10 +110,6 @@ const OrderProductText = styled.div`
   font-weight: 400;
 `;
 
-function isFinishedOrder(order: Order) {
-  return order.status === OrderStatus.SERVED || order.status === OrderStatus.CANCELLED;
-}
-
 function OrderComplete() {
   const navigate = useNavigate();
 
@@ -143,6 +139,10 @@ function OrderComplete() {
 
   useBlockPopState();
 
+  const handleSessionOrderHistoryClick = () => {
+    navigate({ pathname: ORDER_ROUTES.ORDER_HISTORY, search: createSearchParams(searchParams).toString() });
+  };
+
   const fetchIntervalTime = 60000;
 
   useEffect(() => {
@@ -159,12 +159,10 @@ function OrderComplete() {
     const pollOrder = async () => {
       if (!orderId) return;
 
-      const [orderData, sessionOrdersData] = await Promise.all([fetchOrder(orderId), fetchSessionOrders(workspaceId, tableHash, orderId)]);
+      const orderData = await fetchOrder(orderId);
       setOrder(orderData);
-      setSessionOrders(sessionOrdersData);
 
-      const isAllFinished = [orderData, ...sessionOrdersData].every(isFinishedOrder);
-      if (isAllFinished || isOverOneDay(orderData.createdAt)) {
+      if (orderData.status === OrderStatus.SERVED || orderData.status === OrderStatus.CANCELLED || isOverOneDay(orderData.createdAt)) {
         terminated = true;
         stopPolling();
       }
@@ -202,6 +200,7 @@ function OrderComplete() {
     resetOrderBasket();
     allowPullToRefresh();
     fetchWorkspace(workspaceId);
+    fetchSessionOrders(workspaceId, tableHash, orderId).then(setSessionOrders);
 
     return () => {
       stopPolling();
@@ -253,8 +252,8 @@ function OrderComplete() {
             <ContentTitle>{order.totalPrice.toLocaleString()}원</ContentTitle>
           </OrderPriceContainer>
         </ContentsContainer>
+        <SessionOrderHistoryButton orders={sessionOrders} onClick={handleSessionOrderHistoryClick} />
         <CustomerDonationModal key={orderId} orderId={orderId} workspaceId={workspaceId} eligible={isDonationEligible} />
-        <SessionOrderList orders={sessionOrders} currentOrderId={Number(orderId)} />
       </SubContainer>
       <OrderButton
         showButton={true}
