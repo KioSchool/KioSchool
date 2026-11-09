@@ -45,6 +45,11 @@ const ContentsContainer = styled.div`
   ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
+const TitleRow = styled.div`
+  width: 100%;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
+`;
+
 const SubTitle = styled.div`
   font-size: 16px;
   font-weight: 600;
@@ -212,7 +217,10 @@ function OrderComplete() {
     <Container className={'order-complete-container'}>
       <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={true} useLeftArrow={false} />
       <SubContainer className={'order-complete-sub-container'}>
-        <SubTitle>주문내역</SubTitle>
+        <TitleRow>
+          <SubTitle>주문내역</SubTitle>
+          <SessionOrderHistoryButton orders={sessionOrders} onClick={handleSessionOrderHistoryClick} />
+        </TitleRow>
         <ContentsContainer>
           <InfoContainer>
             <ContentTitle>주문 정보</ContentTitle>
@@ -252,7 +260,6 @@ function OrderComplete() {
             <ContentTitle>{order.totalPrice.toLocaleString()}원</ContentTitle>
           </OrderPriceContainer>
         </ContentsContainer>
-        <SessionOrderHistoryButton orders={sessionOrders} onClick={handleSessionOrderHistoryClick} />
         <CustomerDonationModal key={orderId} orderId={orderId} workspaceId={workspaceId} eligible={isDonationEligible} />
       </SubContainer>
       <OrderButton
