@@ -152,6 +152,14 @@ function useSuperAdminMail() {
     [superAdminApi],
   );
 
+  const previewReply = useCallback(
+    async (threadId: number, content: string): Promise<string> => {
+      const response = await superAdminApi.post<{ html: string }>(`/mail/threads/${threadId}/reply/preview`, { content }, { skipGlobalLoading: true });
+      return response.data.html;
+    },
+    [superAdminApi],
+  );
+
   const previewCampaign = useCallback(
     async (request: MailCampaignPreviewRequest): Promise<MailCampaignPreview> => {
       const response = await superAdminApi.post<MailCampaignPreview>('/mail/campaigns/preview', request, { skipGlobalLoading: true });
@@ -204,6 +212,7 @@ function useSuperAdminMail() {
     downloadAttachment,
     fetchAudience,
     previewMail,
+    previewReply,
     previewCampaign,
     sendCampaignTest,
     startCampaign,

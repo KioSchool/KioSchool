@@ -14,6 +14,7 @@ import { globalStyles } from '@styles/globalStyles';
 import OrderBasket from '@pages/user/order/OrderBasket';
 import OrderPay from '@pages/user/order/OrderPay';
 import OrderComplete from '@pages/user/order/OrderComplete';
+import OrderHistory from '@pages/user/order/OrderHistory';
 import AdminOrderStatistics from '@pages/admin/order/AdminOrderStatistics';
 import AdminMyInfo from '@pages/admin/AdminMyInfo';
 import AdminProductCategories from '@pages/admin/AdminProductCategories';
@@ -36,6 +37,7 @@ import SuperAdminInquiryDetail from '@pages/super-admin/SuperAdminInquiryDetail'
 import SuperAdminMailList from '@pages/super-admin/SuperAdminMailList';
 import SuperAdminMailDetail from '@pages/super-admin/SuperAdminMailDetail';
 import SuperAdminMailNew from '@pages/super-admin/SuperAdminMailNew';
+import SuperAdminMailCampaignList from '@pages/super-admin/SuperAdminMailCampaignList';
 import SuperAdminMailCampaignNew from '@pages/super-admin/SuperAdminMailCampaignNew';
 import SuperAdminMailCampaignDetail from '@pages/super-admin/SuperAdminMailCampaignDetail';
 import MailUnsubscribe from '@pages/user/mail/MailUnsubscribe';
@@ -97,6 +99,7 @@ function App() {
         <Route path={ORDER_ROUTES.ORDER_PAY} element={<OrderPay />} />
         <Route path={ORDER_ROUTES.ORDER_WAIT} element={<OrderWait />} />
         <Route path={ORDER_ROUTES.ORDER_COMPLETE} element={<OrderComplete />} />
+        <Route path={ORDER_ROUTES.ORDER_HISTORY} element={<OrderHistory />} />
 
         <Route path={SUPER_ADMIN_ROUTES.HOME} element={<Navigate to={SUPER_ADMIN_ROUTES.DASHBOARD} replace />} />
         <Route path={SUPER_ADMIN_ROUTES.WORKSPACE} element={<SuperAdminWorkspace />} />
@@ -111,6 +114,7 @@ function App() {
         <Route path={SUPER_ADMIN_ROUTES.INQUIRY_DETAIL} element={<SuperAdminInquiryDetail />} />
         <Route path={SUPER_ADMIN_ROUTES.MAIL} element={<SuperAdminMailList />} />
         <Route path={SUPER_ADMIN_ROUTES.MAIL_NEW} element={<SuperAdminMailNew />} />
+        <Route path={SUPER_ADMIN_ROUTES.MAIL_CAMPAIGNS} element={<SuperAdminMailCampaignList />} />
         <Route path={SUPER_ADMIN_ROUTES.MAIL_CAMPAIGN_NEW} element={<SuperAdminMailCampaignNew />} />
         <Route path={SUPER_ADMIN_ROUTES.MAIL_CAMPAIGN_DETAIL} element={<SuperAdminMailCampaignDetail />} />
         <Route path={SUPER_ADMIN_ROUTES.MAIL_DETAIL} element={<SuperAdminMailDetail />} />

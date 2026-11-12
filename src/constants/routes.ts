@@ -18,6 +18,7 @@ export const ORDER_ROUTES = {
   ORDER_PAY: '/order-pay',
   ORDER_WAIT: '/order-wait',
   ORDER_COMPLETE: '/order-complete',
+  ORDER_HISTORY: '/order-history',
 } as const;
 
 export const ADMIN_ROUTES = {
@@ -53,6 +54,7 @@ export const SUPER_ADMIN_ROUTES = {
   MAIL: '/super-admin/mail',
   MAIL_NEW: '/super-admin/mail/new',
   MAIL_DETAIL: '/super-admin/mail/:threadId',
+  MAIL_CAMPAIGNS: '/super-admin/mail/campaigns',
   MAIL_CAMPAIGN_NEW: '/super-admin/mail/campaigns/new',
   MAIL_CAMPAIGN_DETAIL: '/super-admin/mail/campaigns/:campaignId',
   ACQUISITION_SURVEY: '/super-admin/acquisition-survey',

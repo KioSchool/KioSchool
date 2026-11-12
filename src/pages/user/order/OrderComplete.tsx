@@ -19,6 +19,7 @@ import { ORDER_ROUTES } from '@constants/routes';
 import { isOverOneDay } from '@utils/formatDate';
 import useWorkspace from '@hooks/user/useWorkspace';
 import CustomerDonationModal from '@components/user/order/orderComplete/CustomerDonationModal';
+import SessionOrderHistoryButton from '@components/user/order/orderComplete/SessionOrderHistoryButton';
 
 const Container = styled.div`
   width: 100%;
@@ -42,6 +43,11 @@ const ContentsContainer = styled.div`
   border-radius: 9px;
   border: 0.5px solid #939393;
   ${colFlex({ justify: 'center', align: 'start' })}
+`;
+
+const TitleRow = styled.div`
+  width: 100%;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const SubTitle = styled.div`
@@ -118,11 +124,12 @@ function OrderComplete() {
   const tableNo = searchParams.get('tableNo');
   const tableHash = searchParams.get('tableHash');
 
-  const { fetchOrder } = useOrder();
+  const { fetchOrder, fetchSessionOrders } = useOrder();
   const { fetchWorkspace } = useWorkspace();
   const { allowPullToRefresh } = useRefresh();
   const resetOrderBasket = useResetAtom(userOrderBasketAtom);
   const [order, setOrder] = useState<Order>(defaultUserOrderValue);
+  const [sessionOrders, setSessionOrders] = useState<Order[]>([]);
   const workspace = useAtomValue(userWorkspaceAtom);
 
   const dateConverter = (date: Date) => {
@@ -136,6 +143,10 @@ function OrderComplete() {
   const isDonationEligible = order.id !== defaultUserOrderValue.id && order.id === Number(orderId) && order.status !== OrderStatus.CANCELLED;
 
   useBlockPopState();
+
+  const handleSessionOrderHistoryClick = () => {
+    navigate({ pathname: ORDER_ROUTES.ORDER_HISTORY, search: createSearchParams(searchParams).toString() });
+  };
 
   const fetchIntervalTime = 60000;
 
@@ -194,6 +205,7 @@ function OrderComplete() {
     resetOrderBasket();
     allowPullToRefresh();
     fetchWorkspace(workspaceId);
+    fetchSessionOrders(workspaceId, tableHash, orderId).then(setSessionOrders);
 
     return () => {
       stopPolling();
@@ -205,7 +217,10 @@ function OrderComplete() {
     <Container className={'order-complete-container'}>
       <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={true} useLeftArrow={false} />
       <SubContainer className={'order-complete-sub-container'}>
-        <SubTitle>주문내역</SubTitle>
+        <TitleRow>
+          <SubTitle>주문내역</SubTitle>
+          <SessionOrderHistoryButton orders={sessionOrders} onClick={handleSessionOrderHistoryClick} />
+        </TitleRow>
         <ContentsContainer>
           <InfoContainer>
             <ContentTitle>주문 정보</ContentTitle>
