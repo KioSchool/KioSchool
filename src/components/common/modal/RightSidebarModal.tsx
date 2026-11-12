@@ -1,11 +1,8 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery, tabletMediaQuery } from '@styles/globalStyles';
 import { Color } from '@resources/colors';
 import { RiCloseLine } from '@remixicon/react';
-import useModal from '@hooks/useModal';
-import RightSidebarModalOpenButton from './RightSidebarModalOpenButton';
 import { useAtom, useAtomValue } from 'jotai';
 import { externalSidebarAtom, layoutScaleAtom } from '@jotai/atoms';
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
@@ -93,72 +90,37 @@ const HeaderCloseButton = styled.button`
   }
 `;
 
-interface InternalSidebarControlProps {
-  title: string;
-  subtitle?: string;
-  children: React.ReactNode;
-  useOpenButton?: boolean;
-  useExternalControl?: never;
-}
-
-interface ExternalSidebarControlProps {
-  title?: never;
-  subtitle?: never;
-  children?: never;
-  useOpenButton?: never;
+interface RightSidebarModalProps {
   useExternalControl: {
     location: Location;
   };
 }
 
-type RightSidebarModalProps = InternalSidebarControlProps | ExternalSidebarControlProps;
-
-function RightSidebarModal({ title, subtitle, useOpenButton = true, children, useExternalControl }: RightSidebarModalProps) {
-  const { isModalOpen, openModal, closeModal } = useModal();
+function RightSidebarModal({ useExternalControl }: RightSidebarModalProps) {
   const [externalSidebar, setExternalSidebar] = useAtom(externalSidebarAtom);
-  const { action, location: externalLocation } = externalSidebar;
+  const { action, location: externalLocation, title, subtitle, content } = externalSidebar;
   const scale = useAtomValue(layoutScaleAtom);
 
-  const isControlled = useExternalControl !== undefined;
-
-  const isOpen = isControlled ? action === RIGHT_SIDEBAR_ACTION.OPEN && externalLocation?.pathname === useExternalControl.location.pathname : isModalOpen;
-
-  const displayData = isControlled
-    ? {
-        title: externalSidebar.title,
-        subtitle: externalSidebar.subtitle,
-        content: externalSidebar.content,
-      }
-    : {
-        title,
-        subtitle,
-        content: children,
-      };
+  const isOpen = action === RIGHT_SIDEBAR_ACTION.OPEN && externalLocation?.pathname === useExternalControl.location.pathname;
 
   const handleClose = () => {
-    if (isControlled) {
-      setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE });
-    } else {
-      closeModal();
-    }
+    setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE });
   };
 
   return (
     <Container>
-      {!isControlled && useOpenButton && <RightSidebarModalOpenButton openModal={openModal} />}
-
       <SidebarContainer isOpen={isOpen} scale={scale}>
         <SidebarHeader>
           <TitleContainer>
-            {displayData.title && <Title>{displayData.title}</Title>}
-            {displayData.subtitle && <SubTitle>{displayData.subtitle}</SubTitle>}
+            {title && <Title>{title}</Title>}
+            {subtitle && <SubTitle>{subtitle}</SubTitle>}
           </TitleContainer>
           <HeaderCloseButton onClick={handleClose} aria-label="닫기">
             <RiCloseLine size={20} />
           </HeaderCloseButton>
         </SidebarHeader>
 
-        {displayData.content}
+        {content}
       </SidebarContainer>
     </Container>
   );

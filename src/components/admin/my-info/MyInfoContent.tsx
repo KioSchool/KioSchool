@@ -5,6 +5,7 @@ import { User, UserRole } from '@@types/index';
 import { myInfoCardsData } from '@constants/data/myInfoData';
 import { useMyInfoActions } from '@hooks/admin/useMyInfoActions';
 import MyInfoCard from './MyInfoCard';
+import WithdrawModal from './WithdrawModal';
 
 const Container = styled.div`
   width: 100%;
@@ -33,7 +34,7 @@ interface MyInfoContentProps {
 }
 
 function MyInfoContent({ user }: MyInfoContentProps) {
-  const { handleCardAction, DeleteUserConfirmModal, LogoutConfirmModal } = useMyInfoActions();
+  const { handleCardAction, LogoutConfirmModal, isWithdrawModalOpen, closeWithdrawModal } = useMyInfoActions();
 
   const visibleCards = myInfoCardsData.filter((card) => !card.requiresSuperAdmin || user.role === UserRole.SUPER_ADMIN);
 
@@ -44,8 +45,8 @@ function MyInfoContent({ user }: MyInfoContentProps) {
           <MyInfoCard key={card.id} icon={card.icon} label={card.label} onClick={() => handleCardAction(card)} />
         ))}
       </CardsContainer>
-      <DeleteUserConfirmModal />
       <LogoutConfirmModal />
+      {isWithdrawModalOpen && <WithdrawModal onClose={closeWithdrawModal} />}
     </Container>
   );
 }

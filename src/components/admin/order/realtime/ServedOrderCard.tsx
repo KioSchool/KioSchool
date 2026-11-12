@@ -1,15 +1,12 @@
 import { memo } from 'react';
-import styled from '@emotion/styled';
+import { useParams } from 'react-router-dom';
 import { Order } from '@@types/index';
+import { GA_EVENT, ORDER_EVENT_LOCATION } from '@constants/analytics';
+import { trackEvent } from '@utils/analytics';
 import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
 import { areOrdersEquivalent } from '@utils/memoCompareFunction';
 import useModal from '@hooks/useModal';
-import { CardContainer, OrderInfoContainer, DescriptionContainer, CardText, CardFooter, TableNumberBadge } from '@styles/orderCardStyles';
-
-const ServedCardFooter = styled(CardFooter)`
-  height: 32px;
-  padding-top: 8px;
-`;
+import { CardContainer, OrderInfoContainer, DescriptionContainer, CardText } from '@styles/orderCardStyles';
 
 const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => {
   return areOrdersEquivalent(prevProps.order, nextProps.order);
@@ -20,25 +17,24 @@ interface OrderCardProps {
 }
 
 function ServedOrderCard({ order }: OrderCardProps) {
+  const { workspaceId } = useParams<{ workspaceId: string }>();
   const { isModalOpen, openModal, closeModal } = useModal();
 
   const orderInfoClickHandler = () => {
     openModal();
+    trackEvent(GA_EVENT.ORDER_CARD_OPEN, { workspace_id: workspaceId, location: ORDER_EVENT_LOCATION.SERVED_CARD });
   };
 
   return (
-    <CardContainer height={80}>
+    <CardContainer height={48}>
       <OrderInfoContainer onClick={orderInfoClickHandler}>
         <CardText size={16} weight={800}>
-          {order.customerName}
+          {`${order.tableNumber}번 테이블`}
         </CardText>
         <DescriptionContainer>
           <CardText size={12} weight={800}>{`주문번호 ${order.orderNumber}`}</CardText>
           <CardText size={12} weight={800}>{`총 ${order.totalPrice.toLocaleString()}원`}</CardText>
         </DescriptionContainer>
-        <ServedCardFooter>
-          <TableNumberBadge>{`테이블 ${order.tableNumber}`}</TableNumberBadge>
-        </ServedCardFooter>
       </OrderInfoContainer>
       <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} />
     </CardContainer>

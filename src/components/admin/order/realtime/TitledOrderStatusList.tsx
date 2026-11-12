@@ -80,7 +80,7 @@ const getOrderContainerHeight = (status: OrderStatus) => {
     case OrderStatus.PAID:
       return 260;
     case OrderStatus.SERVED:
-      return 106;
+      return 74;
     default:
       return 200;
   }

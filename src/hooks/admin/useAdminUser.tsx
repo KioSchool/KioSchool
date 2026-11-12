@@ -4,14 +4,12 @@ import { trackEvent } from '@utils/analytics';
 import { getApiErrorMessage } from '@utils/apiError';
 import { GA_EVENT } from '@constants/analytics';
 import { useNavigate } from 'react-router-dom';
-import useAuthentication from '@hooks/useAuthentication';
 import { useSetAtom } from 'jotai';
 import { adminUserAtom, adminBanksAtom, adminWorkspacesAtom } from '@jotai/admin/atoms';
 import { USER_ROUTES } from '@constants/routes';
 
 function useAdminUser() {
   const { adminApi } = useApi();
-  const { logout } = useAuthentication();
   const setWorkspaces = useSetAtom(adminWorkspacesAtom);
   const setAdminUser = useSetAtom(adminUserAtom);
   const setBanks = useSetAtom(adminBanksAtom);
@@ -63,15 +61,12 @@ function useAdminUser() {
       });
   };
 
-  const deleteUser = async () => {
-    await logout();
-    adminApi
-      .delete('/user')
-      .then(() => {
-        alert('탈퇴가 완료되었습니다.');
-        navigate(USER_ROUTES.HOME);
-      })
-      .catch((error) => console.error('Failed to delete user: ', error));
+  const withdraw = (password: string) => {
+    return adminApi.post('/user/withdraw', { password }).then(() => {
+      localStorage.setItem('isLoggedIn', 'false');
+      alert('탈퇴가 완료되었습니다.');
+      navigate(USER_ROUTES.HOME);
+    });
   };
 
   const fetchBanks = () => {
@@ -140,7 +135,7 @@ function useAdminUser() {
     registerTossAccount,
     registerTossAccountAuto,
     fetchAdminUser,
-    deleteUser,
+    withdraw,
     fetchBanks,
     registerAccount,
     deleteAccount,

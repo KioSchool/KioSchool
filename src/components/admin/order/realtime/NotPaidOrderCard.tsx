@@ -1,11 +1,13 @@
 import { memo } from 'react';
 import { Order } from '@@types/index';
-import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { useParams } from 'react-router-dom';
+import { GA_EVENT, ORDER_EVENT_LOCATION } from '@constants/analytics';
+import { trackEvent } from '@utils/analytics';
 import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
 import { areOrdersEquivalent } from '@utils/memoCompareFunction';
 import useFormattedTime from '@hooks/useFormattedTime';
 import useModal from '@hooks/useModal';
+import usePayOrderWithUndo from '@hooks/admin/usePayOrderWithUndo';
 import { extractMinFromDate } from '@utils/formatDate';
 import { CardContainer, OrderInfoContainer, DescriptionContainer, CardFooter, CheckIcon, CardText, TableNumberBadge } from '@styles/orderCardStyles';
 
@@ -19,16 +21,17 @@ const arePropsEqual = (prevProps: OrderCardProps, nextProps: OrderCardProps) => 
 
 function NotPaidOrderCard({ order }: OrderCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { payOrder } = useAdminOrder(workspaceId);
+  const { confirmPayment } = usePayOrderWithUndo(workspaceId);
   const delayMinutes = useFormattedTime<number>({ date: order.createdAt, formatter: extractMinFromDate });
   const { isModalOpen, openModal, closeModal } = useModal();
 
   const checkClickHandler = () => {
-    payOrder(order.id);
+    confirmPayment(order);
   };
 
   const orderInfoClickHandler = () => {
     openModal();
+    trackEvent(GA_EVENT.ORDER_CARD_OPEN, { workspace_id: workspaceId, location: ORDER_EVENT_LOCATION.NOT_PAID_CARD });
   };
 
   return (

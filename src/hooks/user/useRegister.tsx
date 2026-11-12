@@ -57,8 +57,8 @@ function useRegister() {
       .then((res) => {
         return { isVerify: res.data, errorMessage: '틀린 인증 코드입니다.' };
       })
-      .catch(() => {
-        return { isVerify: false, errorMessage: '이메일 인증에 실패했습니다.' };
+      .catch((error) => {
+        return { isVerify: false, errorMessage: getApiErrorMessage(error, '이메일 인증에 실패했습니다.') };
       });
   };
 

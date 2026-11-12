@@ -24,6 +24,11 @@ export const GA_EVENT = {
   TABLE_VIEW_SHOWN: 'table_view_shown',
   TABLE_SELECTED: 'table_selected',
   TABLE_SESSION_ACTION: 'table_session_action',
+  ORDER_PAY_CONFIRM: 'order_pay_confirm',
+  ORDER_PAY_UNDO: 'order_pay_undo',
+  ORDER_CARD_OPEN: 'order_card_open',
+  PRODUCT_SUMMARY_OPEN: 'product_summary_open',
+  PRODUCT_SUMMARY_ROW_OPEN: 'product_summary_row_open',
 } as const;
 
 export type GaEventName = typeof GA_EVENT[keyof typeof GA_EVENT];
@@ -45,5 +50,14 @@ export const TABLE_SESSION_ACTION = {
 } as const;
 
 export type TableSessionAction = typeof TABLE_SESSION_ACTION[keyof typeof TABLE_SESSION_ACTION];
+
+/** 실시간 주문 화면 이벤트의 구분 값. GA에 이미 맞춤 측정기준으로 등록된 `location` 파라미터에 싣는다. */
+export const ORDER_EVENT_LOCATION = {
+  CARD_BUTTON: 'card_button',
+  DETAIL_MODAL: 'detail_modal',
+  NOT_PAID_CARD: 'not_paid_card',
+  PAID_CARD: 'paid_card',
+  SERVED_CARD: 'served_card',
+} as const;
 
 export const GA_CURRENCY = 'KRW';

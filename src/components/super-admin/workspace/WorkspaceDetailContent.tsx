@@ -13,6 +13,7 @@ import DetailSection from '@components/super-admin/detail/DetailSection';
 import OnboardingBadge from './OnboardingBadge';
 import WorkspaceRecentOrders from './WorkspaceRecentOrders';
 import WorkspaceOwnerSection from './WorkspaceOwnerSection';
+import WorkspaceMailSection from './WorkspaceMailSection';
 import WorkspaceForceDeleteSection from './WorkspaceForceDeleteSection';
 
 const Wrap = styled.div`
@@ -210,6 +211,7 @@ function WorkspaceDetailContent({ workspace, onClose, onChanged }: WorkspaceDeta
               </StatGrid>
             </DetailSection>
             <WorkspaceOwnerSection detail={detail} schoolName={workspace.schoolName} onNavigate={onClose} />
+            <WorkspaceMailSection workspaceId={workspace.id} ownerEmail={detail.owner.email} onNavigate={onClose} />
             {detail.memo && (
               <DetailSection title="메모">
                 <MemoText>{detail.memo}</MemoText>

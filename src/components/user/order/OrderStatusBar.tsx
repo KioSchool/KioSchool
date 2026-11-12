@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { OrderStatus } from '@@types/index';
 import { Color } from '@resources/colors';
+import { USER_STATUS_LABELS } from '@constants/data/orderStatus';
 
 interface OrderStatusBarProps {
   status: OrderStatus;
@@ -15,13 +16,21 @@ const Container = styled.div`
 
 const LabelsContainer = styled.div`
   width: 100%;
-  ${rowFlex({ justify: 'space-between' })}
+  ${rowFlex()}
 `;
 
 const Label = styled.div<{ active: boolean }>`
+  flex: 1;
   font-size: 13px;
   font-weight: 400;
+  text-align: center;
   color: ${({ active }) => (active ? Color.BLACK : Color.GREY)};
+  &:first-of-type {
+    text-align: left;
+  }
+  &:last-of-type {
+    text-align: right;
+  }
 `;
 
 const ProgressBarContainer = styled.div`
@@ -80,7 +89,7 @@ const CancelText = styled.div`
   color: ${Color.KIO_ORANGE};
 `;
 
-const stepLabels = ['입금 대기중', '조리중', '서빙완료'];
+const stepLabels = [OrderStatus.NOT_PAID, OrderStatus.PAID, OrderStatus.SERVED].map((status) => USER_STATUS_LABELS[status]);
 const statusMap = {
   [OrderStatus.NOT_PAID]: 0,
   [OrderStatus.PAID]: 1,

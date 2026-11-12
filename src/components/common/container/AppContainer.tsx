@@ -157,8 +157,8 @@ function AppContainer({
   const scale = disableLayoutScale ? 1 : calculateLayoutScale(windowWidth, customWidth, sideNavOffset);
 
   useEffect(() => {
-    setLayoutParams({ customWidth, sideNavOffset });
-  }, [customWidth, sideNavOffset, setLayoutParams]);
+    setLayoutParams({ customWidth, sideNavOffset, disableLayoutScale });
+  }, [customWidth, sideNavOffset, disableLayoutScale, setLayoutParams]);
 
   return (
     <MainContainer backgroundColor={backgroundColor} sideNavOffset={sideNavOffset} className={'main-container'}>

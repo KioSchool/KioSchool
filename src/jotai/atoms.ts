@@ -8,6 +8,7 @@ export const loadingCountAtom = atom<number>(0);
 interface LayoutParams {
   customWidth?: string;
   sideNavOffset: number;
+  disableLayoutScale?: boolean;
 }
 
 /**
@@ -33,8 +34,10 @@ windowWidthAtom.onMount = (set) => {
  * 자동으로 반응하는 스케일 값을 제공하는 파생 Atom
  */
 export const layoutScaleAtom = atom((get) => {
-  const { customWidth, sideNavOffset } = get(layoutParamsAtom);
+  const { customWidth, sideNavOffset, disableLayoutScale } = get(layoutParamsAtom);
   const windowWidth = get(windowWidthAtom);
+
+  if (disableLayoutScale) return 1;
 
   return calculateLayoutScale(windowWidth, customWidth, sideNavOffset);
 });

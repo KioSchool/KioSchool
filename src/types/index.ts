@@ -7,6 +7,7 @@ export interface Order {
   orderProducts: Array<OrderProduct>;
   totalPrice: number;
   status: OrderStatus;
+  paymentMethod: PaymentMethod | null;
   cancelReason: string;
   orderNumber: number;
   orderSession: OrderSession | null;

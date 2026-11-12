@@ -6,3 +6,9 @@ export function formatProductSummary(orderProducts: OrderProduct[] | undefined):
 
   return `${orderProducts[0].productName} 외 ${orderProducts.length - 1}건`;
 }
+
+// 다 내보낸 줄은 취소선으로 끝났음을 보여주므로 0 대신 시킨 개수를 둔다
+export function getDisplayedQuantity(orderProduct: OrderProduct): number {
+  if (orderProduct.isServed) return orderProduct.quantity;
+  return orderProduct.quantity - orderProduct.servedCount;
+}

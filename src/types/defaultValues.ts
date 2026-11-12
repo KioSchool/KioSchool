@@ -61,6 +61,7 @@ export const defaultUserOrderValue: Order = {
   orderProducts: [defaultOrderProductValue],
   totalPrice: 0,
   status: OrderStatus.NOT_PAID,
+  paymentMethod: null,
   cancelReason: '',
   orderNumber: 0,
   orderSession: null,
