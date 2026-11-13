@@ -53,6 +53,7 @@ export const SUPER_ADMIN_ROUTES = {
   INQUIRY_DETAIL: '/super-admin/inquiries/:inquiryId',
   MAIL: '/super-admin/mail',
   MAIL_NEW: '/super-admin/mail/new',
+  MAIL_SETTINGS: '/super-admin/mail/settings',
   MAIL_DETAIL: '/super-admin/mail/:threadId',
   MAIL_CAMPAIGNS: '/super-admin/mail/campaigns',
   MAIL_CAMPAIGN_NEW: '/super-admin/mail/campaigns/new',

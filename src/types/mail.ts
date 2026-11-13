@@ -166,3 +166,29 @@ export interface ReplyMailRequest {
   lastMessageId: number;
   content: string;
 }
+
+export interface MailSignatureContact {
+  label: string;
+  value: string;
+}
+
+export interface MailSignatureSetting {
+  greetingHtml: string;
+  name: string | null;
+  englishName: string | null;
+  organization: string | null;
+  jobTitle: string | null;
+  contacts: MailSignatureContact[];
+  slogan: string | null;
+  showLogo: boolean;
+}
+
+export interface MailSettings {
+  mine: MailSignatureSetting | null;
+  team: MailSignatureSetting;
+  personalSignatureHtml: string | null;
+  teamSignatureHtml: string | null;
+  myAccountName: string;
+}
+
+export type MailSignatureScope = 'mine' | 'team';
