@@ -20,9 +20,8 @@ import { defaultAccountValue } from '@@types/defaultValues';
 import { basketToGaItems, calculateBasketTotalAmount, getBasketItemsWithProduct } from '@utils/orderBasket';
 import { trackEvent } from '@utils/analytics';
 import { GA_CURRENCY, GA_EVENT } from '@constants/analytics';
-import { ORDER_ROUTES } from '@constants/routes';
 import { getPayButtonCaption, getPayButtonLabel } from '@constants/data/payMethods';
-import { getAvailablePayMethods, getDefaultPayMethod, getPayAppUrl, isPayApp } from '@utils/payMethods';
+import { getAvailablePayMethods, getPayAppUrl, isPayApp } from '@utils/payMethods';
 import { Color } from '@resources/colors';
 
 // 주문 대상이 사라진 경우. 장바구니를 비우고 주문 화면으로 되돌린다.
@@ -99,20 +98,21 @@ function OrderPay() {
   useReturnToOrderPage(basketItems.length === 0);
 
   useEffect(() => {
-    customerNameRef.current?.focus();
-
     fetchWorkspaceAccount(workspaceId)
       .then((account) => {
         if (!account) return;
         setAccountInfo(account);
-        setSelectedMethod(getDefaultPayMethod(getAvailablePayMethods(account)));
       })
-      .catch(() => {
-        setIsAccountFetchFailed(true);
-        setSelectedMethod(PaymentMethod.BANK_TRANSFER);
-      })
+      .catch(() => setIsAccountFetchFailed(true))
       .finally(() => setIsAccountLoaded(true));
   }, []);
+
+  const handleMethodSelect = (method: PaymentMethod) => {
+    setSelectedMethod(method);
+    if (customerNameRef.current?.value) return;
+    // iOS는 터치 처리 안에서 focus해야 자판이 올라온다
+    customerNameRef.current?.focus();
+  };
 
   const navigateToWait = (orderId: number, method: PaymentMethod) => {
     navigate({
@@ -179,10 +179,6 @@ function OrderPay() {
     createOrderAndNavigateToWait(customerName);
   };
 
-  const goToBasket = () => {
-    navigate({ pathname: ORDER_ROUTES.ORDER_BASKET, search: createSearchParams(searchParams).toString() });
-  };
-
   return (
     <Container className={'order-pay-container'}>
       <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
@@ -191,16 +187,15 @@ function OrderPay() {
         summaryText={summaryText}
         methods={payMethods}
         selected={selectedMethod}
-        onSelect={setSelectedMethod}
+        onSelect={handleMethodSelect}
         isLoading={!isAccountLoaded}
         customerNameRef={customerNameRef}
-        onSummaryClick={goToBasket}
       />
       {basketItems.length > 0 && (
         <OrderPayFooter
           label={match(isSubmitting)
             .with(true, () => '주문 진행 중...')
-            .otherwise(() => getPayButtonLabel(selectedMethod, totalAmount))}
+            .otherwise(() => getPayButtonLabel(selectedMethod, totalAmount, payMethods.length > 0))}
           caption={getPayButtonCaption(selectedMethod)}
           disabled={isSubmitting || !selectedMethod}
           onClick={payOrder}
