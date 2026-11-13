@@ -164,11 +164,6 @@ export interface ProductStateType {
   productCategoryId: string | number;
 }
 
-export interface ProductActionType {
-  type: string;
-  payload: any;
-}
-
 export interface Workspace {
   name: string;
   description: string;
