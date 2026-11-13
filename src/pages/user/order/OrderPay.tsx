@@ -15,7 +15,7 @@ import { userOrderBasketAtom, userProductsAtom, userWorkspaceAtom } from '@jotai
 import { useAtom, useAtomValue } from 'jotai';
 import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import usePreventRefresh from '@hooks/usePreventRefresh';
-import useTossPopup from '@hooks/user/useTossPopup';
+import usePayAppPopup from '@hooks/user/usePayAppPopup';
 import useReturnToOrderPage from '@hooks/user/useReturnToOrderPage';
 import { Account, PaymentMethod } from '@@types/index';
 import { defaultAccountValue } from '@@types/defaultValues';
@@ -63,7 +63,7 @@ function OrderPay() {
   const navigate = useNavigate();
   const { createOrder } = useOrder();
   const { fetchWorkspaceAccount } = useWorkspace();
-  const { openTossPopupWithPromise } = useTossPopup();
+  const { openPayAppWithPromise } = usePayAppPopup();
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
@@ -122,8 +122,8 @@ function OrderPay() {
    * - API 호출 성공 후 생성된 팝업창의 URL을 이용해 Toss 결제 창으로 이동
    */
   const createOrderAndNavigateToToss = (customerName: string) => {
-    openTossPopupWithPromise({
-      tossAccountUrl,
+    openPayAppWithPromise({
+      accountUrl: tossAccountUrl,
       amount: totalAmount,
       closeDelay: 5000,
       promise: createOrder(workspaceId, tableHash, orderBasket, customerName, PaymentMethod.TOSS),

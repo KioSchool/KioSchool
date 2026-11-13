@@ -1,18 +1,21 @@
-interface TossPopupOptions {
-  tossAccountUrl?: string | null;
+// 토스·카카오페이 송금 링크를 새 창으로 연다. 링크는 금액 없이 저장돼 있어 뒤에 &amount=를 붙인다.
+interface PayAppPopupOptions {
+  accountUrl?: string | null;
   amount: number;
   closeDelay?: number;
 }
 
-interface TossPopupWithPromiseOptions extends TossPopupOptions {
+interface PayAppPopupWithPromiseOptions extends PayAppPopupOptions {
   promise: Promise<any>;
   onSuccess?: (response: any) => void;
   onError?: (error: any) => void;
 }
 
-function useTossPopup() {
-  const createTossUrl = (tossAccountUrl: string, amount: number) => {
-    return `${tossAccountUrl}&amount=${amount}`;
+const OPEN_FAILED_MESSAGE = '송금 앱을 열 수 없어요.';
+
+function usePayAppPopup() {
+  const createPayAppUrl = (accountUrl: string, amount: number) => {
+    return `${accountUrl}&amount=${amount}`;
   };
 
   const isSafariBrowser = () => {
@@ -30,13 +33,13 @@ function useTossPopup() {
     }
   };
 
-  const openTossPopupSync = ({ tossAccountUrl, amount, closeDelay = 5000 }: TossPopupOptions) => {
-    if (!tossAccountUrl) {
-      alert('토스 이체 정보를 가져올 수 없습니다.');
+  const openPayAppSync = ({ accountUrl, amount, closeDelay = 5000 }: PayAppPopupOptions) => {
+    if (!accountUrl) {
+      alert(OPEN_FAILED_MESSAGE);
       return null;
     }
 
-    const tossUrl = createTossUrl(tossAccountUrl, amount);
+    const payAppUrl = createPayAppUrl(accountUrl, amount);
     const isSafari = isSafariBrowser();
 
     let popup: Window | null = null;
@@ -44,19 +47,19 @@ function useTossPopup() {
     if (isSafari) {
       popup = createPopup();
       if (popup) {
-        popup.location.replace(tossUrl);
+        popup.location.replace(payAppUrl);
       }
     } else {
-      popup = createPopup(tossUrl);
+      popup = createPopup(payAppUrl);
     }
 
     closePopupWithDelay(popup, closeDelay);
     return popup;
   };
 
-  const openTossPopupWithPromise = ({ tossAccountUrl, amount, closeDelay = 5000, promise, onSuccess, onError }: TossPopupWithPromiseOptions) => {
-    if (!tossAccountUrl) {
-      alert('토스 이체 정보를 가져올 수 없습니다.');
+  const openPayAppWithPromise = ({ accountUrl, amount, closeDelay = 5000, promise, onSuccess, onError }: PayAppPopupWithPromiseOptions) => {
+    if (!accountUrl) {
+      alert(OPEN_FAILED_MESSAGE);
       return;
     }
 
@@ -67,11 +70,11 @@ function useTossPopup() {
       .then((response) => {
         onSuccess?.(response);
 
-        const tossUrl = createTossUrl(tossAccountUrl, amount);
+        const payAppUrl = createPayAppUrl(accountUrl, amount);
         if (!isSafari) {
-          createPopup(tossUrl);
+          createPopup(payAppUrl);
         } else if (popup) {
-          popup.location.replace(tossUrl);
+          popup.location.replace(payAppUrl);
         }
       })
       .catch((error) => {
@@ -83,13 +86,9 @@ function useTossPopup() {
   };
 
   return {
-    openTossPopupSync,
-    openTossPopupWithPromise,
-    createTossUrl,
-    isSafariBrowser,
-    createPopup,
-    closePopupWithDelay,
+    openPayAppSync,
+    openPayAppWithPromise,
   };
 }
 
-export default useTossPopup;
+export default usePayAppPopup;

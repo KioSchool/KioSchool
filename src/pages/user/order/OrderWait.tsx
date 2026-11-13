@@ -16,7 +16,7 @@ import useOrder from '@hooks/user/useOrder';
 import { defaultAccountValue, defaultUserOrderValue } from '@@types/defaultValues';
 import { keyframes } from '@emotion/react';
 import useWorkspace from '@hooks/user/useWorkspace';
-import useTossPopup from '@hooks/user/useTossPopup';
+import usePayAppPopup from '@hooks/user/usePayAppPopup';
 import { ORDER_ROUTES } from '@constants/routes';
 import { isOverOneDay } from '@utils/formatDate';
 import { BANK_TRANSFER_TIPS, TOSS_TIPS } from '@constants/data/orderWaitData';
@@ -103,7 +103,7 @@ function OrderWait() {
   const isTossPay = searchParams.get('tossPay') === 'true';
 
   const { fetchWorkspace, fetchWorkspaceAccount } = useWorkspace();
-  const { openTossPopupSync } = useTossPopup();
+  const { openPayAppSync } = usePayAppPopup();
 
   const workspace = useAtomValue(userWorkspaceAtom);
   const [currentOrder, setCurrentOrder] = useState<Order>(defaultUserOrderValue);
@@ -205,8 +205,8 @@ function OrderWait() {
   }, [currentOrderStatus]);
 
   const handleTossRetry = () => {
-    openTossPopupSync({
-      tossAccountUrl,
+    openPayAppSync({
+      accountUrl: tossAccountUrl,
       amount: totalPrice,
       closeDelay: 5000,
     });

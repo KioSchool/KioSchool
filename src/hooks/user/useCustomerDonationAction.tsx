@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { buildDonationTossUrl, DONATION_ACCOUNT } from '@utils/donation';
 import { DonationMethod } from './useCustomerDonationModal';
-import useTossPopup from './useTossPopup';
+import usePayAppPopup from './usePayAppPopup';
 
 const COPY_ERROR_MESSAGE = '계좌번호를 복사하지 못했어요. 위 계좌번호를 직접 입력하거나 다시 시도해 주세요.';
 const TOSS_ERROR_MESSAGE = '토스를 열지 못했어요. 팝업 차단을 해제하거나 계좌이체를 선택해 주세요.';
@@ -14,7 +14,7 @@ interface UseCustomerDonationActionParams {
 }
 
 function useCustomerDonationAction({ isActive, method, amount, onDonate }: UseCustomerDonationActionParams) {
-  const { openTossPopupSync } = useTossPopup();
+  const { openPayAppSync } = usePayAppPopup();
   const [errorMessage, setErrorMessage] = useState('');
   const [isCopying, setIsCopying] = useState(false);
   const attemptRef = useRef(0);
@@ -65,7 +65,7 @@ function useCustomerDonationAction({ isActive, method, amount, onDonate }: UseCu
 
     setErrorMessage('');
     try {
-      const popup = openTossPopupSync({ tossAccountUrl: buildDonationTossUrl(), amount });
+      const popup = openPayAppSync({ accountUrl: buildDonationTossUrl(), amount });
       if (!popup) {
         setErrorMessage(TOSS_ERROR_MESSAGE);
         return;
