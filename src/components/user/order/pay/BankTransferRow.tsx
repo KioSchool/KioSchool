@@ -4,7 +4,7 @@ import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 import { PaymentMethod } from '@@types/index';
 import { PAY_METHOD_STYLE } from '@constants/data/payMethods';
-import { getPayCardBackground, getPayCardBorder } from '@utils/payMethodStyles';
+import { getPayCardBackground, getPayCardBorderColor, getPayCardShadow } from '@utils/payMethodStyles';
 import PayCheck from './PayCheck';
 
 const Row = styled.button<{ selected: boolean; color: string; background: string }>`
@@ -14,11 +14,14 @@ const Row = styled.button<{ selected: boolean; color: string; background: string
   padding: 12px 14px;
   gap: 12px;
   border-radius: 14px;
-  border: ${({ selected, color }) => getPayCardBorder(selected, color)};
+  border: 1px solid ${({ selected, color }) => getPayCardBorderColor(selected, color)};
+  box-shadow: ${({ selected, color }) => getPayCardShadow(selected, color)};
   background: ${({ selected, background }) => getPayCardBackground(selected, background)};
   font: inherit;
   text-align: left;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
   ${rowFlex({ align: 'center' })}
 `;
 

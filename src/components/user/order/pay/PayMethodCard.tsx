@@ -4,7 +4,7 @@ import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { PaymentMethod } from '@@types/index';
 import { PAY_APP_AMOUNT_BADGE, PAY_METHOD_STYLE } from '@constants/data/payMethods';
-import { getLogoBorder, getPayCardBackground, getPayCardBorder } from '@utils/payMethodStyles';
+import { getLogoBorder, getPayCardBackground, getPayCardBorderColor, getPayCardShadow } from '@utils/payMethodStyles';
 import PayCheck from './PayCheck';
 
 export type PayMethodCardLayout = 'tile' | 'wide';
@@ -26,11 +26,14 @@ const Card = styled.button<{ selected: boolean; color: string; background: strin
   margin: 0;
   padding: 14px;
   border-radius: 14px;
-  border: ${({ selected, color }) => getPayCardBorder(selected, color)};
+  border: 1px solid ${({ selected, color }) => getPayCardBorderColor(selected, color)};
+  box-shadow: ${({ selected, color }) => getPayCardShadow(selected, color)};
   background: ${({ selected, background }) => getPayCardBackground(selected, background)};
   font: inherit;
   text-align: left;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
   gap: ${({ layout }) => getLayoutGap(layout)};
   ${({ layout }) => getLayoutStyle(layout)}
 `;
