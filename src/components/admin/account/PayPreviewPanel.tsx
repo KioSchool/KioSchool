@@ -163,12 +163,21 @@ const RightColumn = styled.div`
   ${colFlex({ align: 'center' })}
 `;
 
+// 오른쪽 폰 자리. 수단을 바꿔도 판 높이가 그대로여야 운영진 페이지(세로 가운데 정렬)가 위아래로 움직이지 않는다
+const OpenedVisual = styled.div`
+  width: 220px;
+  height: 460px;
+  ${rowFlex({ justify: 'center', align: 'start' })}
+`;
+
 const ExampleImage = styled.img`
   width: 220px;
   height: 460px;
 `;
 
-const ExampleTag = styled.span`
+// hidden은 HTML 속성이라 DOM으로 넘어가 자리까지 없앤다. 자리를 남기려고 따로 이름을 쓴다
+const ExampleTag = styled.span<{ isSpaceOnly?: boolean }>`
+  visibility: ${({ isSpaceOnly }) => (isSpaceOnly ? 'hidden' : 'visible')};
   padding: 3px 10px;
   border-radius: 10px;
   background: #e8edf2;
@@ -220,23 +229,31 @@ function PayPreviewPanel({ account }: PayPreviewPanelProps) {
     if (isPayApp(selected)) {
       return (
         <RightColumn>
-          <ExampleImage src={APP_EXAMPLES[selected]} alt={`${selected === PaymentMethod.TOSS ? '토스' : '카카오페이'} 송금 화면 예시`} />
+          <OpenedVisual>
+            <ExampleImage src={APP_EXAMPLES[selected]} alt={`${selected === PaymentMethod.TOSS ? '토스' : '카카오페이'} 송금 화면 예시`} />
+          </OpenedVisual>
           <ExampleTag>예시 화면</ExampleTag>
         </RightColumn>
       );
     }
     return (
       <RightColumn>
-        <ScaledPhone>
-          <ScreenTop>
-            <PreviewNavBar />
-            <WaitBody>
-              <OrderWaitHeader method={PaymentMethod.BANK_TRANSFER} amount={SAMPLE_AMOUNT} />
-              <BankAccountCard account={account} />
-              <OrderItemsCard orderProducts={SAMPLE_PRODUCTS} totalPrice={SAMPLE_AMOUNT} />
-            </WaitBody>
-          </ScreenTop>
-        </ScaledPhone>
+        <OpenedVisual>
+          <ScaledPhone>
+            <ScreenTop>
+              <PreviewNavBar />
+              <WaitBody>
+                <OrderWaitHeader method={PaymentMethod.BANK_TRANSFER} amount={SAMPLE_AMOUNT} />
+                <BankAccountCard account={account} />
+                <OrderItemsCard orderProducts={SAMPLE_PRODUCTS} totalPrice={SAMPLE_AMOUNT} />
+              </WaitBody>
+            </ScreenTop>
+          </ScaledPhone>
+        </OpenedVisual>
+        {/* 우리 화면이라 '예시 화면' 이름표는 안 보이게 두되 자리는 같게 차지한다 */}
+        <ExampleTag isSpaceOnly aria-hidden="true">
+          예시 화면
+        </ExampleTag>
       </RightColumn>
     );
   })();
