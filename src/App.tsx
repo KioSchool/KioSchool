@@ -60,6 +60,7 @@ import Info from '@pages/user/info/Info';
 import Contact from '@pages/user/contact/Contact';
 import Privacy from '@pages/user/privacy/Privacy';
 import PcOnlyLayout from '@components/common/layout/PcOnlyLayout';
+import NoZoomLayout from '@components/common/layout/NoZoomLayout';
 
 function App() {
   useAppShellReveal();
@@ -94,12 +95,14 @@ function App() {
         <Route path={USER_ROUTES.PRIVACY} element={<Privacy />} />
         <Route path={USER_ROUTES.MAIL_UNSUBSCRIBE} element={<MailUnsubscribe />} />
 
-        <Route path={ORDER_ROUTES.ORDER} element={<Order />} />
-        <Route path={ORDER_ROUTES.ORDER_BASKET} element={<OrderBasket />} />
-        <Route path={ORDER_ROUTES.ORDER_PAY} element={<OrderPay />} />
-        <Route path={ORDER_ROUTES.ORDER_WAIT} element={<OrderWait />} />
-        <Route path={ORDER_ROUTES.ORDER_COMPLETE} element={<OrderComplete />} />
-        <Route path={ORDER_ROUTES.ORDER_HISTORY} element={<OrderHistory />} />
+        <Route element={<NoZoomLayout />}>
+          <Route path={ORDER_ROUTES.ORDER} element={<Order />} />
+          <Route path={ORDER_ROUTES.ORDER_BASKET} element={<OrderBasket />} />
+          <Route path={ORDER_ROUTES.ORDER_PAY} element={<OrderPay />} />
+          <Route path={ORDER_ROUTES.ORDER_WAIT} element={<OrderWait />} />
+          <Route path={ORDER_ROUTES.ORDER_COMPLETE} element={<OrderComplete />} />
+          <Route path={ORDER_ROUTES.ORDER_HISTORY} element={<OrderHistory />} />
+        </Route>
 
         <Route path={SUPER_ADMIN_ROUTES.HOME} element={<Navigate to={SUPER_ADMIN_ROUTES.DASHBOARD} replace />} />
         <Route path={SUPER_ADMIN_ROUTES.WORKSPACE} element={<SuperAdminWorkspace />} />
