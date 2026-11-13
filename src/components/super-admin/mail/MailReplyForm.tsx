@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { match } from 'ts-pattern';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { API_ERROR_CODES } from '@constants/errorCodes';
+import useMailComposeDefaults from '@hooks/super-admin/useMailComposeDefaults';
 import useSuperAdminMail from '@hooks/super-admin/useSuperAdminMail';
 import useConfirm from '@hooks/useConfirm';
 import { Color } from '@resources/colors';
@@ -51,6 +52,7 @@ interface MailReplyFormProps {
 
 function MailReplyForm({ thread, onReplied, onStale, onResolve, isChanging }: MailReplyFormProps) {
   const { previewReply, replyThread } = useSuperAdminMail();
+  const composeDefaults = useMailComposeDefaults('mine');
   const [content, setContent] = useState('');
   const [resetKey, setResetKey] = useState(0);
   const [isSending, setIsSending] = useState(false);
@@ -123,7 +125,16 @@ function MailReplyForm({ thread, onReplied, onStale, onResolve, isChanging }: Ma
         />
       )}
       <Label>답장</Label>
-      <LazyMailEditor height={160} placeholder="답장을 입력해 주세요" resetKey={resetKey} onChange={setContent} />
+      {composeDefaults && (
+        <LazyMailEditor
+          height={160}
+          placeholder="답장을 입력해 주세요"
+          resetKey={resetKey}
+          initialContent={composeDefaults.initialContent}
+          signatureHtml={composeDefaults.signatureHtml}
+          onChange={setContent}
+        />
+      )}
       {errorMessage && <ErrorText role="alert">{errorMessage}</ErrorText>}
       <ButtonRow>
         {thread.status !== 'RESOLVED' && (
