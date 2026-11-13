@@ -69,7 +69,7 @@ const meta: Meta<typeof PaymentMethodRatioSection> = {
     ),
   ],
   args: {
-    statistics: { tossCount: 65, bankTransferCount: 35, unknownCount: 0, tossRatio: 65, bankTransferRatio: 35 },
+    statistics: { tossCount: 12, kakaoPayCount: 7, bankTransferCount: 6, unknownCount: 0, tossRatio: 48, kakaoPayRatio: 28, bankTransferRatio: 24 },
     isLoading: false,
     hasError: false,
     onRetry: fn(),
@@ -84,25 +84,28 @@ export const Mixed: Story = {
     const canvas = within(canvasElement);
     await expect(canvas.getByText('결제수단별 주문')).toBeVisible();
     await expect(canvas.getByText('결제 완료 주문 건수 기준')).toBeVisible();
-    await expect(canvas.getByText('토스 65.0% · 65건')).toBeVisible();
-    await expect(canvas.getByText('계좌 35.0% · 35건')).toBeVisible();
+    await expect(canvas.getByText('토스 48.0% · 12건')).toBeVisible();
+    await expect(canvas.getByText('카카오페이 28.0% · 7건')).toBeVisible();
+    await expect(canvas.getByText('계좌 24.0% · 6건')).toBeVisible();
   },
 };
 
 export const TossOnly: Story = {
-  args: { statistics: { tossCount: 10, bankTransferCount: 0, unknownCount: 0, tossRatio: 100, bankTransferRatio: 0 } },
+  args: { statistics: { tossCount: 10, kakaoPayCount: 0, bankTransferCount: 0, unknownCount: 0, tossRatio: 100, kakaoPayRatio: 0, bankTransferRatio: 0 } },
 };
 
 export const BankTransferOnly: Story = {
-  args: { statistics: { tossCount: 0, bankTransferCount: 10, unknownCount: 0, tossRatio: 0, bankTransferRatio: 100 } },
+  args: { statistics: { tossCount: 0, kakaoPayCount: 0, bankTransferCount: 10, unknownCount: 0, tossRatio: 0, kakaoPayRatio: 0, bankTransferRatio: 100 } },
 };
 
 export const SmallRatio: Story = {
-  args: { statistics: { tossCount: 1, bankTransferCount: 9999, unknownCount: 0, tossRatio: 0.01, bankTransferRatio: 99.99 } },
+  args: {
+    statistics: { tossCount: 1, kakaoPayCount: 0, bankTransferCount: 9999, unknownCount: 0, tossRatio: 0.01, kakaoPayRatio: 0, bankTransferRatio: 99.99 },
+  },
 };
 
 export const WithUnknown: Story = {
-  args: { statistics: { tossCount: 3, bankTransferCount: 1, unknownCount: 2, tossRatio: 75, bankTransferRatio: 25 } },
+  args: { statistics: { tossCount: 3, kakaoPayCount: 0, bankTransferCount: 1, unknownCount: 2, tossRatio: 75, kakaoPayRatio: 0, bankTransferRatio: 25 } },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.queryByText('결제수단 미기록 2건 제외')).not.toBeInTheDocument();
@@ -110,7 +113,7 @@ export const WithUnknown: Story = {
 };
 
 export const UnknownOnly: Story = {
-  args: { statistics: { tossCount: 0, bankTransferCount: 0, unknownCount: 12, tossRatio: 0, bankTransferRatio: 0 } },
+  args: { statistics: { tossCount: 0, kakaoPayCount: 0, bankTransferCount: 0, unknownCount: 12, tossRatio: 0, kakaoPayRatio: 0, bankTransferRatio: 0 } },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText('결제수단이 기록된 주문이 없습니다.')).toBeVisible();
@@ -120,7 +123,7 @@ export const UnknownOnly: Story = {
 };
 
 export const Empty: Story = {
-  args: { statistics: { tossCount: 0, bankTransferCount: 0, unknownCount: 0, tossRatio: 0, bankTransferRatio: 0 } },
+  args: { statistics: { tossCount: 0, kakaoPayCount: 0, bankTransferCount: 0, unknownCount: 0, tossRatio: 0, kakaoPayRatio: 0, bankTransferRatio: 0 } },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText('결제 완료 주문이 없습니다.')).toBeVisible();
@@ -162,7 +165,9 @@ export const Refreshing: Story = {
 
 export const Narrow: Story = {
   parameters: { viewport: { defaultViewport: 'iphone6' } },
-  args: { statistics: { tossCount: 650000, bankTransferCount: 350000, unknownCount: 10000, tossRatio: 65, bankTransferRatio: 35 } },
+  args: {
+    statistics: { tossCount: 650000, kakaoPayCount: 0, bankTransferCount: 350000, unknownCount: 10000, tossRatio: 65, kakaoPayRatio: 0, bankTransferRatio: 35 },
+  },
 };
 
 export const InStatisticsLayout: Story = {

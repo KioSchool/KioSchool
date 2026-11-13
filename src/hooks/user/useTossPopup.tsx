@@ -1,5 +1,5 @@
 interface TossPopupOptions {
-  tossAccountUrl?: string;
+  tossAccountUrl?: string | null;
   amount: number;
   closeDelay?: number;
 }
