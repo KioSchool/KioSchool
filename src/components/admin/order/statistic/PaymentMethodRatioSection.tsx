@@ -9,6 +9,8 @@ import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const RATIO_DECIMAL_PLACES = 1;
+// 연한 카카오 노랑은 바로 옆 주황(계좌) 막대와 구분되지 않는다
+const KAKAOPAY_YELLOW = '#FEE500';
 
 const Container = styled.section`
   width: 100%;
@@ -110,7 +112,7 @@ interface PaymentMethodRatioSectionProps {
 function hasRecordedOrders(statistics: PaymentMethodStatistics | null): statistics is PaymentMethodStatistics {
   if (!statistics) return false;
 
-  return statistics.tossCount + statistics.bankTransferCount > 0;
+  return statistics.tossCount + statistics.kakaoPayCount + statistics.bankTransferCount > 0;
 }
 
 function getEmptyMessage(unknownCount: number) {
@@ -141,6 +143,7 @@ function PaymentMethodRatioSection({ statistics, isLoading, hasError, onRetry }:
       <RatioContent>
         <Track aria-hidden="true">
           <Segment ratio={recordedStatistics.tossRatio} color={Color.BLUE} />
+          <Segment ratio={recordedStatistics.kakaoPayRatio} color={KAKAOPAY_YELLOW} />
           <Segment ratio={recordedStatistics.bankTransferRatio} color={Color.KIO_ORANGE} />
         </Track>
         <Legend>
@@ -149,6 +152,13 @@ function PaymentMethodRatioSection({ statistics, isLoading, hasError, onRetry }:
             <Value>
               {PAYMENT_METHOD_LABELS[PaymentMethod.TOSS]} {recordedStatistics.tossRatio.toFixed(RATIO_DECIMAL_PLACES)}% ·{' '}
               {recordedStatistics.tossCount.toLocaleString()}건
+            </Value>
+          </LegendItem>
+          <LegendItem>
+            <Marker color={KAKAOPAY_YELLOW} aria-hidden="true" />
+            <Value>
+              {PAYMENT_METHOD_LABELS[PaymentMethod.KAKAOPAY]} {recordedStatistics.kakaoPayRatio.toFixed(RATIO_DECIMAL_PLACES)}% ·{' '}
+              {recordedStatistics.kakaoPayCount.toLocaleString()}건
             </Value>
           </LegendItem>
           <LegendItem>

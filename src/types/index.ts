@@ -188,6 +188,7 @@ export enum OrderStatus {
 
 export enum PaymentMethod {
   TOSS = 'TOSS',
+  KAKAOPAY = 'KAKAOPAY',
   BANK_TRANSFER = 'BANK_TRANSFER',
 }
 
@@ -211,7 +212,10 @@ export interface Account {
   bank: Bank;
   accountNumber: string;
   accountHolder: string;
-  tossAccountUrl: string;
+  // 금액 없이 저장돼 있어 손님 화면이 &amount=를 붙인다(null = 꺼짐)
+  tossAccountUrl: string | null;
+  // 옛 API 응답에는 이 칸이 없다(undefined = 꺼짐)
+  kakaoPayAccountUrl?: string | null;
   id: number;
   createdAt: string;
   updatedAt: string;
