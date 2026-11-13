@@ -10,18 +10,17 @@ import OrderPayContent from '@components/user/order/pay/OrderPayContent';
 import OrderPayFooter from '@components/user/order/pay/OrderPayFooter';
 import { API_ERROR_CODES } from '@constants/errorCodes';
 import { getApiErrorMessage, isApiErrorCode } from '@utils/apiError';
-import { userOrderBasketAtom, userProductsAtom, userWorkspaceAtom } from '@jotai/user/atoms';
+import { userOrderBasketAtom, userProductsAtom, userWorkspaceAccountsAtom, userWorkspaceAtom } from '@jotai/user/atoms';
 import { useAtom, useAtomValue } from 'jotai';
 import usePreventRefresh from '@hooks/usePreventRefresh';
 import usePayAppPopup from '@hooks/user/usePayAppPopup';
 import useReturnToOrderPage from '@hooks/user/useReturnToOrderPage';
 import { Account, PaymentMethod } from '@@types/index';
-import { defaultAccountValue } from '@@types/defaultValues';
 import { basketToGaItems, calculateBasketTotalAmount, getBasketItemsWithProduct } from '@utils/orderBasket';
 import { trackEvent } from '@utils/analytics';
 import { GA_CURRENCY, GA_EVENT } from '@constants/analytics';
 import { getPayButtonCaption, getPayButtonLabel } from '@constants/data/payMethods';
-import { getAvailablePayMethods, getPayAppUrl, isPayApp } from '@utils/payMethods';
+import { getAvailablePayMethods, getCachedWorkspaceAccount, getPayAppUrl, isPayApp } from '@utils/payMethods';
 import { Color } from '@resources/colors';
 
 // 주문 대상이 사라진 경우. 장바구니를 비우고 주문 화면으로 되돌린다.
@@ -37,6 +36,19 @@ const Container = styled.div`
   padding: 50px 0 150px;
   background: ${Color.WHITE};
 `;
+
+const getPayMethods = (account: Account | null | undefined, isFetchFailed: boolean): PaymentMethod[] => {
+  if (account !== undefined) return getAvailablePayMethods(account);
+  // 조회가 실패해도 계좌이체로 주문은 받는다(대기 화면이 계좌를 다시 불러온다)
+  if (isFetchFailed) return [PaymentMethod.BANK_TRANSFER];
+  return [];
+};
+
+// 뒤에서 다시 받은 계좌에서 고른 방법이 꺼졌으면 선택을 푼다
+const getSelectableMethod = (method: PaymentMethod | null, methods: PaymentMethod[]) => {
+  if (method && methods.includes(method)) return method;
+  return null;
+};
 
 const getOrderSummaryText = (firstName: string | undefined, otherCount: number) => {
   if (!firstName) return '';
@@ -61,14 +73,13 @@ function OrderPay() {
   const tableNo = searchParams.get('tableNo');
   const tableHash = searchParams.get('tableHash');
 
-  const [accountInfo, setAccountInfo] = useState<Account>(defaultAccountValue);
-  const [isAccountLoaded, setIsAccountLoaded] = useState(false);
-  // 조회가 실패해도 계좌이체로 주문은 받는다(대기 화면이 계좌를 다시 불러온다)
+  const workspaceAccounts = useAtomValue(userWorkspaceAccountsAtom);
+  const accountInfo = getCachedWorkspaceAccount(workspaceAccounts, workspaceId);
   const [isAccountFetchFailed, setIsAccountFetchFailed] = useState(false);
-  const payMethods = match(isAccountFetchFailed)
-    .with(true, () => [PaymentMethod.BANK_TRANSFER])
-    .otherwise(() => getAvailablePayMethods(accountInfo));
-  const [selectedMethod, setSelectedMethod] = useState<PaymentMethod | null>(null);
+  const isAccountLoaded = accountInfo !== undefined || isAccountFetchFailed;
+  const payMethods = getPayMethods(accountInfo, isAccountFetchFailed);
+  const [pickedMethod, setPickedMethod] = useState<PaymentMethod | null>(null);
+  const selectedMethod = getSelectableMethod(pickedMethod, payMethods);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [firstItem] = basketItems;
@@ -98,17 +109,11 @@ function OrderPay() {
   useReturnToOrderPage(basketItems.length === 0);
 
   useEffect(() => {
-    fetchWorkspaceAccount(workspaceId)
-      .then((account) => {
-        if (!account) return;
-        setAccountInfo(account);
-      })
-      .catch(() => setIsAccountFetchFailed(true))
-      .finally(() => setIsAccountLoaded(true));
+    fetchWorkspaceAccount(workspaceId).catch(() => setIsAccountFetchFailed(true));
   }, []);
 
   const handleMethodSelect = (method: PaymentMethod) => {
-    setSelectedMethod(method);
+    setPickedMethod(method);
     if (customerNameRef.current?.value) return;
     // iOS는 터치 처리 안에서 focus해야 자판이 올라온다
     customerNameRef.current?.focus();

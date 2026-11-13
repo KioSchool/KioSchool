@@ -70,7 +70,7 @@ function Order() {
   const workspaceId = searchParams.get('workspaceId');
   const isPreview = searchParams.get('preview') === 'true';
 
-  const { fetchWorkspace } = useWorkspace();
+  const { fetchWorkspace, fetchWorkspaceAccount } = useWorkspace();
   const { fetchCategories, fetchProducts } = useProduct(workspaceId);
   const navigate = useNavigate();
   const orderBasket = useAtomValue(userOrderBasketAtom);
@@ -82,6 +82,8 @@ function Order() {
   useEffect(() => {
     saveOrderPageHistoryIndex();
     fetchWorkspace(workspaceId);
+    // 결제 화면이 계좌를 기다리지 않게 메뉴를 고르는 동안 미리 받아 둔다
+    fetchWorkspaceAccount(workspaceId).catch(() => undefined);
     fetchCategories();
     fetchProducts();
 

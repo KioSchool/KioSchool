@@ -22,6 +22,11 @@ export const getAvailablePayMethods = (account: Account | null | undefined): Pay
   return [...apps, PaymentMethod.BANK_TRANSFER];
 };
 
+export const getCachedWorkspaceAccount = (accounts: Record<string, Account | null>, workspaceId: string | null): Account | null | undefined => {
+  if (!workspaceId) return undefined;
+  return accounts[workspaceId];
+};
+
 export const getDefaultPayMethod = (methods: PaymentMethod[]): PaymentMethod | null => methods[0] ?? null;
 
 export const PAY_APP_STATE = {

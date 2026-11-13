@@ -3,17 +3,17 @@ import { colFlex } from '@styles/flexStyles';
 import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
-import { userWorkspaceAtom } from '@jotai/user/atoms';
+import { userWorkspaceAccountsAtom, userWorkspaceAtom } from '@jotai/user/atoms';
 import { useEffect, useState } from 'react';
 import useBlockPopState from '@hooks/useBlockPopState';
-import { Account, Order, OrderStatus, PaymentMethod } from '@@types/index';
+import { Order, OrderStatus, PaymentMethod } from '@@types/index';
 import useOrder from '@hooks/user/useOrder';
 import { defaultAccountValue, defaultUserOrderValue } from '@@types/defaultValues';
 import useWorkspace from '@hooks/user/useWorkspace';
 import usePayAppPopup from '@hooks/user/usePayAppPopup';
 import { ORDER_ROUTES } from '@constants/routes';
 import { isOverOneDay } from '@utils/formatDate';
-import { getPayAppUrl, isPayApp } from '@utils/payMethods';
+import { getCachedWorkspaceAccount, getPayAppUrl, isPayApp } from '@utils/payMethods';
 import OrderWaitHeader from '@components/user/order/wait/OrderWaitHeader';
 import NotSentYetPanel from '@components/user/order/wait/NotSentYetPanel';
 import BankAccountCard from '@components/user/order/wait/BankAccountCard';
@@ -67,7 +67,8 @@ function OrderWait() {
 
   const workspace = useAtomValue(userWorkspaceAtom);
   const [currentOrder, setCurrentOrder] = useState<Order>(defaultUserOrderValue);
-  const [accountInfo, setAccountInfo] = useState<Account>(defaultAccountValue);
+  const workspaceAccounts = useAtomValue(userWorkspaceAccountsAtom);
+  const accountInfo = getCachedWorkspaceAccount(workspaceAccounts, workspaceId) || defaultAccountValue;
 
   const fetchIntervalTime = 5000;
   const { fetchOrder } = useOrder();
@@ -134,9 +135,7 @@ function OrderWait() {
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
     fetchWorkspace(workspaceId);
-    fetchWorkspaceAccount(workspaceId).then((account) => {
-      if (account) setAccountInfo(account);
-    });
+    fetchWorkspaceAccount(workspaceId);
 
     return () => {
       stopPolling();
