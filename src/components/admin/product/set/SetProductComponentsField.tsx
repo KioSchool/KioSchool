@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { RiAddLine } from '@remixicon/react';
 
+import NewCommonButton from '@components/common/button/NewCommonButton';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { AdminProduct } from '@@types/index';
@@ -37,24 +38,6 @@ const Description = styled.p`
   color: ${Color.MUTED_GREY};
 `;
 
-const AddButton = styled.button`
-  flex-shrink: 0;
-  padding: 8px 12px;
-  border: 1px solid ${Color.KIO_ORANGE};
-  border-radius: 999px;
-  background: ${Color.WHITE};
-  font-size: 13px;
-  font-weight: 700;
-  color: ${Color.KIO_ORANGE};
-  cursor: pointer;
-  gap: 4px;
-  ${rowFlex({ align: 'center' })}
-
-  &:hover {
-    background: ${Color.KIO_ORANGE_FAINT};
-  }
-`;
-
 const ComponentList = styled.div`
   gap: 10px;
   ${colFlex()}
@@ -86,10 +69,9 @@ function SetProductComponentsField({ components, products, onAdd, onChange, onMo
           <Title>제공 구성</Title>
           <Description>실제로 내주는 구성품을 입력하고, 품절 상태를 따라갈 일반 메뉴를 연결해주세요.</Description>
         </Heading>
-        <AddButton type="button" onClick={onAdd}>
-          <RiAddLine size={16} />
+        <NewCommonButton type="button" size="xs" icon={<RiAddLine size={16} />} onClick={onAdd}>
           구성품 추가
-        </AddButton>
+        </NewCommonButton>
       </Header>
 
       <Notice>연결 상품이 품절되면 세트도 자동으로 품절됩니다. 연결하지 않은 구성품은 운영자가 직접 판매 상태를 관리합니다.</Notice>
