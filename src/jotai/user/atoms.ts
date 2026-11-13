@@ -1,5 +1,5 @@
 import { defaultUserOrderValue, defaultWorkspaceValue } from '@@types/defaultValues';
-import { Order, OrderProductBase, Product, ProductCategory, Workspace } from '@@types/index';
+import { Account, Order, OrderProductBase, Product, ProductCategory, Workspace } from '@@types/index';
 import { atom } from 'jotai';
 import { atomWithReset, atomWithStorage } from 'jotai/utils';
 
@@ -8,6 +8,8 @@ export const userOrderAtom = atom<Order>(defaultUserOrderValue);
 export const userOrderBasketAtom = atomWithReset<OrderProductBase[]>([]);
 export const userCategoriesAtom = atom<ProductCategory[]>([]);
 export const userProductsAtom = atom<Product[]>([]);
+// 주점 id별 계좌. 키가 없으면 아직 못 받음, null이면 계좌 없음
+export const userWorkspaceAccountsAtom = atom<Record<string, Account | null>>({});
 
 // 후원 카드를 마지막으로 닫은 시각(epoch ms). 0이면 이력 없음.
 export const donationCardDismissedAtAtom = atomWithStorage<number>('customerDonationDismissedAt', 0, undefined, {

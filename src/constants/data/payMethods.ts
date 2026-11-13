@@ -27,10 +27,13 @@ export const PAY_METHOD_STYLE: Record<PaymentMethod, PayMethodStyle> = {
 
 export const PAY_APP_AMOUNT_BADGE = '금액 자동 입력';
 
-export const getPayButtonLabel = (method: PaymentMethod | null, amount: number) => {
+const PAY_METHOD_PROMPT = '송금 방법을 골라 주세요';
+
+export const getPayButtonLabel = (method: PaymentMethod | null, amount: number, hasMethods = false) => {
   const won = `${amount.toLocaleString()}원`;
   if (method === PaymentMethod.TOSS || method === PaymentMethod.KAKAOPAY) return `${PAY_METHOD_STYLE[method].label}로 ${won} 보내기`;
   if (method === PaymentMethod.BANK_TRANSFER) return `${won} 주문하고 계좌 보기`;
+  if (hasMethods) return PAY_METHOD_PROMPT;
   return `${won} 주문하기`;
 };
 
