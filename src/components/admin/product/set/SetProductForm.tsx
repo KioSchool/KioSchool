@@ -33,8 +33,7 @@ const Footer = styled.div`
   margin: 0 -28px -28px;
   padding: 16px 28px;
   border-top: 1px solid ${Color.BORDER_GREY};
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(8px);
+  background: ${Color.WHITE};
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 

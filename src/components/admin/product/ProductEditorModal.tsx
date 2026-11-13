@@ -72,11 +72,19 @@ const CloseButton = styled.button`
   }
 `;
 
-const Content = styled.div`
+const ScrollArea = styled.div`
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  background: ${Color.WHITE};
+`;
+
+const Content = styled.div`
+  min-height: 100%;
   padding: 28px;
+  box-sizing: border-box;
+  background: ${Color.WHITE};
 `;
 
 interface ProductEditorModalProps {
@@ -114,7 +122,9 @@ function ProductEditorModal({ eyebrow, title, description, children, onClose }: 
             <RiCloseLine size={22} />
           </CloseButton>
         </Header>
-        <Content>{children}</Content>
+        <ScrollArea>
+          <Content>{children}</Content>
+        </ScrollArea>
       </Dialog>
     </Backdrop>,
     document.body,
