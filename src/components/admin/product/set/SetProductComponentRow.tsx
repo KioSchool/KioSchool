@@ -11,9 +11,15 @@ import { MIN_SET_COMPONENT_QUANTITY } from '@utils/setProduct';
 
 import SetProductConditionSelect from './SetProductConditionSelect';
 
+const COMPONENT_CONTROL_HEIGHT = 42;
+const COMPONENT_NAME_COLUMN = 'minmax(160px, 220px)';
+const COMPONENT_QUANTITY_COLUMN = '150px';
+const COMPONENT_CONDITION_COLUMN = 'minmax(240px, 1fr)';
+
 const Container = styled.div`
   display: grid;
-  grid-template-columns: minmax(180px, 1.1fr) 130px minmax(180px, 1fr) auto;
+  grid-template-columns: ${COMPONENT_NAME_COLUMN} ${COMPONENT_QUANTITY_COLUMN} ${COMPONENT_CONDITION_COLUMN} auto;
+  align-items: end;
   gap: 12px;
   padding: 14px;
   border: 1px solid ${Color.BORDER_GREY};
@@ -35,14 +41,12 @@ const Label = styled.span`
 
 const Actions = styled.div`
   gap: 4px;
-  align-self: end;
-  padding-bottom: 3px;
   ${rowFlex({ align: 'center' })}
 `;
 
 const IconButton = styled.button`
-  width: 32px;
-  height: 32px;
+  width: ${COMPONENT_CONTROL_HEIGHT}px;
+  height: ${COMPONENT_CONTROL_HEIGHT}px;
   padding: 0;
   border: 1px solid ${Color.BORDER_GREY};
   border-radius: 8px;
@@ -98,7 +102,7 @@ function SetProductComponentRow({
         <Label>구성품명</Label>
         <NewAppInput
           width="100%"
-          height={42}
+          height={COMPONENT_CONTROL_HEIGHT}
           value={component.name}
           placeholder="예: 족발 소"
           onChange={(event) => onChange({ ...component, name: event.target.value })}
@@ -109,7 +113,8 @@ function SetProductComponentRow({
         <Label>세트 1개당 수량</Label>
         <NumberInput
           value={component.quantity}
-          maxWidth="130px"
+          maxWidth={COMPONENT_QUANTITY_COLUMN}
+          height={COMPONENT_CONTROL_HEIGHT}
           onChange={(quantity) => onChange({ ...component, quantity: Math.max(quantity, MIN_SET_COMPONENT_QUANTITY) })}
           onIncrement={() => onChange({ ...component, quantity: component.quantity + 1 })}
           onDecrement={() => onChange({ ...component, quantity: Math.max(component.quantity - 1, MIN_SET_COMPONENT_QUANTITY) })}
