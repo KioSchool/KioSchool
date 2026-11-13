@@ -1,16 +1,19 @@
 ﻿import { ChangeEvent, useEffect, useReducer } from 'react';
 import styled from '@emotion/styled';
-import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
+
+import NewCommonButton from '@components/common/button/NewCommonButton';
+import NewAppInput from '@components/common/input/NewAppInput';
+import NewAppTextarea from '@components/common/input/NewAppTextarea';
+import SelectWithOptions from '@components/common/select/SelectWithOptions';
+import { MAX_PRODUCT_IMAGE_SIZE } from '@constants/data/productData';
 import { adminCategoriesAtom } from '@jotai/admin/atoms';
+import { Color } from '@resources/colors';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { ProductActionType, ProductStateType } from '@@types/index';
 import { defaultProductEditValue } from '@@types/defaultValues';
-import SelectWithOptions from '@components/common/select/SelectWithOptions';
-import AppImageInput from '@components/common/input/AppImageInput';
-import NewAppInput from '@components/common/input/NewAppInput';
-import NewCommonButton from '@components/common/button/NewCommonButton';
-import { MAX_PRODUCT_IMAGE_SIZE } from '@constants/data/productData';
-import NewAppTextarea from '@components/common/input/NewAppTextarea';
+
+import ProductImageField from './ProductImageField';
 
 const Container = styled.div`
   width: 100%;
@@ -23,7 +26,7 @@ const InputContainer = styled.div`
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 16px;
-  color: #464a4d;
+  color: ${Color.TEXT_BODY};
 `;
 
 const SectionHeading = styled.div`
@@ -34,13 +37,13 @@ const SectionHeading = styled.div`
 const SectionTitle = styled.h3`
   margin: 0;
   font-size: 18px;
-  color: #25282b;
+  color: ${Color.TEXT_STRONG};
 `;
 
 const SectionDescription = styled.p`
   margin: 0;
   font-size: 13px;
-  color: #8d959c;
+  color: ${Color.MUTED_GREY};
 `;
 
 const InputLabel = styled.div`
@@ -61,19 +64,14 @@ const WideInputContainer = styled(InputColContainer)`
   grid-column: 1 / -1;
 `;
 
-const ImageInputContainer = styled.div`
-  align-self: flex-start;
-`;
-
 const SubmitContainer = styled.div`
   position: sticky;
   bottom: 0;
   z-index: 5;
   margin: 0 -28px -28px;
   padding: 16px 28px;
-  border-top: 1px solid #e8eef2;
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(8px);
+  border-top: 1px solid ${Color.BORDER_GREY};
+  background: ${Color.WHITE};
   ${rowFlex({ justify: 'space-between', align: 'center' })};
 `;
 
@@ -83,7 +81,7 @@ const DeleteButton = styled.button`
   background: transparent;
   font-size: 13px;
   font-weight: 700;
-  color: #ff5a5a;
+  color: ${Color.RED};
   cursor: pointer;
 `;
 
@@ -212,6 +210,14 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
         <SectionTitle>기본 정보</SectionTitle>
         <SectionDescription>손님 주문 화면에 보일 메뉴 이름과 설명, 가격을 입력해주세요.</SectionDescription>
       </SectionHeading>
+
+      <ProductImageField
+        url={state.image?.url}
+        file={state.image?.file}
+        description="메뉴를 한눈에 알아볼 수 있는 대표 사진을 등록해주세요. 일반 메뉴는 이미지 등록이 필수입니다."
+        onImageChange={onImageChange}
+      />
+
       <InputContainer>
         <WideInputContainer>
           <InputLabel>카테고리</InputLabel>
@@ -248,11 +254,7 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
           />
         </WideInputContainer>
 
-        <ImageInputContainer>
-          <AppImageInput title={'상품 사진'} url={state.image?.url} file={state.image?.file} onImageChange={onImageChange} width={224} height={224} />
-        </ImageInputContainer>
-
-        <InputColContainer>
+        <WideInputContainer>
           <InputLabel>상품 설명</InputLabel>
           <NewAppTextarea
             placeholder={'최대 30자까지 가능합니다.'}
@@ -262,7 +264,7 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
             }}
             width={'100%'}
           />
-        </InputColContainer>
+        </WideInputContainer>
       </InputContainer>
 
       <SubmitContainer>

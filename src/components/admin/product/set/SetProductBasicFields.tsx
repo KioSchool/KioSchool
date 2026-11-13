@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react';
 import styled from '@emotion/styled';
 
-import AppImageInput from '@components/common/input/AppImageInput';
+import ProductImageField from '@components/admin/product/ProductImageField';
 import NewAppInput from '@components/common/input/NewAppInput';
 import NewAppTextarea from '@components/common/input/NewAppTextarea';
 import SelectWithOptions from '@components/common/select/SelectWithOptions';
@@ -55,10 +55,6 @@ const FieldLabel = styled.span`
   font-size: 14px;
   font-weight: 700;
   color: ${Color.TEXT_STRONG};
-`;
-
-const ImageField = styled.div`
-  align-self: flex-start;
 `;
 
 const PricePreview = styled.div`
@@ -132,6 +128,13 @@ function SetProductBasicFields({ value, categories, onChange, onImageChange }: S
         <SectionDescription>손님 주문 화면에 보일 이름과 설명, 가격을 입력해주세요.</SectionDescription>
       </SectionHeading>
 
+      <ProductImageField
+        url={value.image.url}
+        file={value.image.file}
+        description="세트 구성을 쉽게 떠올릴 수 있는 대표 사진을 등록해주세요. 이미지를 등록하지 않으면 기본 이미지가 표시됩니다."
+        onImageChange={onImageChange}
+      />
+
       <FieldGrid>
         <WideField>
           <FieldLabel>카테고리</FieldLabel>
@@ -190,11 +193,7 @@ function SetProductBasicFields({ value, categories, onChange, onImageChange }: S
           </PriceValues>
         </PricePreview>
 
-        <ImageField>
-          <AppImageInput title="대표 이미지" url={value.image.url} file={value.image.file} onImageChange={onImageChange} width={180} height={180} />
-        </ImageField>
-
-        <Field>
+        <WideField>
           <FieldLabel>세트 설명</FieldLabel>
           <NewAppTextarea
             value={value.description}
@@ -203,7 +202,7 @@ function SetProductBasicFields({ value, categories, onChange, onImageChange }: S
             onChange={(event) => onChange({ ...value, description: event.target.value })}
             width="100%"
           />
-        </Field>
+        </WideField>
       </FieldGrid>
     </Section>
   );
