@@ -11,6 +11,7 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
 import { ACCOUNT_INFO, ACCOUNT_REGISTER_PAY_APP_HINT, ACCOUNT_REGISTER_RESULT } from '@constants/data/accountData';
+import { Color } from '@resources/colors';
 
 const Container = styled.div`
   width: 100%;
@@ -52,7 +53,7 @@ const BottomContainer = styled.div`
 `;
 
 const PayAppHint = styled.div`
-  color: #8d959c;
+  color: ${Color.MUTED_GREY};
   font-size: 13px;
 `;
 

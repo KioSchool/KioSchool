@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
 import { RiBankLine } from '@remixicon/react';
+import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 import { PaymentMethod } from '@@types/index';
 import { PAY_METHOD_STYLE } from '@constants/data/payMethods';
+import { getPayCardBackground, getPayCardBorder } from '@utils/payMethodStyles';
 import PayCheck from './PayCheck';
 
 const Row = styled.button<{ selected: boolean; color: string; background: string }>`
@@ -12,8 +14,8 @@ const Row = styled.button<{ selected: boolean; color: string; background: string
   padding: 12px 14px;
   gap: 12px;
   border-radius: 14px;
-  border: ${({ selected, color }) => (selected ? `2px solid ${color}` : '1px solid #e8eef2')};
-  background: ${({ selected, background }) => (selected ? background : '#ffffff')};
+  border: ${({ selected, color }) => getPayCardBorder(selected, color)};
+  background: ${({ selected, background }) => getPayCardBackground(selected, background)};
   font: inherit;
   text-align: left;
   cursor: pointer;
@@ -25,13 +27,13 @@ const IconBox = styled.span`
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: #f7f7f7;
+  background: ${Color.LIGHT_GREY};
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const Label = styled.span`
   flex: 1;
-  color: #25282b;
+  color: ${Color.TEXT_STRONG};
   font-size: 16px;
   font-weight: 700;
   line-height: 1.45;
@@ -56,7 +58,7 @@ function BankTransferRow({ selected, onSelect }: BankTransferRowProps) {
       onClick={() => onSelect(PaymentMethod.BANK_TRANSFER)}
     >
       <IconBox>
-        <RiBankLine size={22} color="#5c5c5c" />
+        <RiBankLine size={22} color={Color.GREY} />
       </IconBox>
       <Label>{style.label}</Label>
       <PayCheck checked={selected} color={style.checkColor} />

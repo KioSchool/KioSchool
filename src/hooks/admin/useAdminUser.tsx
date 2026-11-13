@@ -1,3 +1,4 @@
+import { match } from 'ts-pattern';
 import useApi from '@hooks/useApi';
 import { PaymentMethod, User, Workspace } from '@@types/index';
 import { trackEvent } from '@utils/analytics';
@@ -91,7 +92,6 @@ function useAdminUser() {
       });
   };
 
-  // 토스·카카오페이 송금 켜기·끄기. 켜기는 등록된 계좌로 링크를 만들고, 끄기는 링크를 지운다.
   const PAY_APP_PATHS: Record<PaymentMethod.TOSS | PaymentMethod.KAKAOPAY, { on: string; off: string }> = {
     [PaymentMethod.TOSS]: { on: '/toss-account/auto', off: '/toss-account' },
     [PaymentMethod.KAKAOPAY]: { on: '/kakaopay-account', off: '/kakaopay-account' },
@@ -99,7 +99,9 @@ function useAdminUser() {
 
   const setPayAppEnabled = (method: PaymentMethod.TOSS | PaymentMethod.KAKAOPAY, enabled: boolean) => {
     const { on, off } = PAY_APP_PATHS[method];
-    const request = enabled ? adminApi.post<User>(on) : adminApi.delete<User>(off);
+    const request = match(enabled)
+      .with(true, () => adminApi.post<User>(on))
+      .otherwise(() => adminApi.delete<User>(off));
     return request
       .then((res) => {
         setAdminUser(res.data);

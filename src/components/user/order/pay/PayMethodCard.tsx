@@ -1,8 +1,23 @@
 import styled from '@emotion/styled';
+import { match } from 'ts-pattern';
+import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { PaymentMethod } from '@@types/index';
 import { PAY_APP_AMOUNT_BADGE, PAY_METHOD_STYLE } from '@constants/data/payMethods';
+import { getLogoBorder, getPayCardBackground, getPayCardBorder } from '@utils/payMethodStyles';
 import PayCheck from './PayCheck';
+
+export type PayMethodCardLayout = 'tile' | 'wide';
+
+const getLayoutStyle = (layout: PayMethodCardLayout) =>
+  match(layout)
+    .with('tile', () => colFlex({ align: 'stretch' }))
+    .otherwise(() => rowFlex({ align: 'center' }));
+
+const getLayoutGap = (layout: PayMethodCardLayout) =>
+  match(layout)
+    .with('tile', () => '10px')
+    .otherwise(() => '12px');
 
 const Card = styled.button<{ selected: boolean; color: string; background: string; layout: PayMethodCardLayout }>`
   box-sizing: border-box;
@@ -11,13 +26,13 @@ const Card = styled.button<{ selected: boolean; color: string; background: strin
   margin: 0;
   padding: 14px;
   border-radius: 14px;
-  border: ${({ selected, color }) => (selected ? `2px solid ${color}` : '1px solid #e8eef2')};
-  background: ${({ selected, background }) => (selected ? background : '#ffffff')};
+  border: ${({ selected, color }) => getPayCardBorder(selected, color)};
+  background: ${({ selected, background }) => getPayCardBackground(selected, background)};
   font: inherit;
   text-align: left;
   cursor: pointer;
-  gap: ${({ layout }) => (layout === 'tile' ? '10px' : '12px')};
-  ${({ layout }) => (layout === 'tile' ? colFlex({ align: 'stretch' }) : rowFlex({ align: 'center' }))}
+  gap: ${({ layout }) => getLayoutGap(layout)};
+  ${({ layout }) => getLayoutStyle(layout)}
 `;
 
 const Top = styled.div`
@@ -30,7 +45,7 @@ const Logo = styled.img<{ bordered: boolean }>`
   width: 40px;
   height: 40px;
   border-radius: 11px;
-  border: ${({ bordered }) => (bordered ? '1px solid #e8eef2' : 'none')};
+  border: ${({ bordered }) => getLogoBorder(bordered)};
 `;
 
 const Name = styled.div`
@@ -41,7 +56,7 @@ const Name = styled.div`
 `;
 
 const Label = styled.span`
-  color: #25282b;
+  color: ${Color.TEXT_STRONG};
   font-size: 16px;
   font-weight: 700;
   line-height: 1.45;
@@ -57,26 +72,18 @@ const Badge = styled.span`
   line-height: 1.45;
 `;
 
-export type PayMethodCardLayout = 'tile' | 'wide';
-
 interface PayMethodCardProps {
   method: PaymentMethod.TOSS | PaymentMethod.KAKAOPAY;
   selected: boolean;
-  // 앱이 두 개면 세로 카드 두 장, 하나면 가로로 긴 카드 한 장
   layout: PayMethodCardLayout;
   onSelect: (method: PaymentMethod) => void;
 }
 
 function PayMethodCard({ method, selected, layout, onSelect }: PayMethodCardProps) {
   const style = PAY_METHOD_STYLE[method];
+  const isTile = layout === 'tile';
   const logo = style.logo && <Logo src={style.logo} alt="" bordered={style.logoBordered} />;
   const check = <PayCheck checked={selected} color={style.checkColor} />;
-  const name = (
-    <Name>
-      <Label>{style.label}</Label>
-      <Badge>{PAY_APP_AMOUNT_BADGE}</Badge>
-    </Name>
-  );
 
   return (
     <Card
@@ -89,21 +96,18 @@ function PayMethodCard({ method, selected, layout, onSelect }: PayMethodCardProp
       layout={layout}
       onClick={() => onSelect(method)}
     >
-      {layout === 'tile' ? (
-        <>
-          <Top>
-            {logo}
-            {check}
-          </Top>
-          {name}
-        </>
-      ) : (
-        <>
+      {isTile && (
+        <Top>
           {logo}
-          {name}
           {check}
-        </>
+        </Top>
       )}
+      {!isTile && logo}
+      <Name>
+        <Label>{style.label}</Label>
+        <Badge>{PAY_APP_AMOUNT_BADGE}</Badge>
+      </Name>
+      {!isTile && check}
     </Card>
   );
 }

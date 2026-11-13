@@ -22,7 +22,6 @@ interface PayScreenProps {
   isLoading?: boolean;
 }
 
-// 결제 화면 본문 + 아래 버튼. Figma '카카오페이 송금' 손님 결제 보드와 나란히 비교하는 용도
 function PayScreen({ methods, initial, isLoading = false }: PayScreenProps) {
   const [selected, setSelected] = useState<PaymentMethod | null>(initial);
   return (

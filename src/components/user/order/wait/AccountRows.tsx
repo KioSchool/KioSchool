@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Account } from '@@types/index';
 
@@ -24,23 +25,16 @@ const Key = styled.span`
 `;
 
 const Value = styled.span`
-  color: #25282b;
+  color: ${Color.TEXT_STRONG};
   font-size: 15px;
   font-weight: 700;
 `;
-
-export const copyAccountInfo = (account: Account) => {
-  navigator.clipboard.writeText(`${account.bank?.name ?? ''} ${account.accountNumber}`).then(() => {
-    alert('계좌 정보가 복사되었습니다.');
-  });
-};
 
 interface AccountRowsProps {
   title: string;
   account: Account;
 }
 
-// 은행·계좌번호·예금주 세 줄
 function AccountRows({ title, account }: AccountRowsProps) {
   return (
     <Rows>

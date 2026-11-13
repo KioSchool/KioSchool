@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
 import { RiBankLine } from '@remixicon/react';
+import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { PaymentMethod } from '@@types/index';
 import { PAY_METHOD_STYLE } from '@constants/data/payMethods';
 import kioCheckSearch from '@resources/image/order/kioCheckSearch.png';
+import { getLogoBorder } from '@utils/payMethodStyles';
 import { WaitCard } from './waitStyles';
 
 const loadingDots = keyframes`
@@ -29,7 +31,7 @@ const Kio = styled.img`
 
 const Title = styled.h1`
   margin: 0;
-  color: #25282b;
+  color: ${Color.TEXT_STRONG};
   font-size: 20px;
   font-weight: 700;
   line-height: 1.45;
@@ -55,7 +57,7 @@ const Chip = styled.div<{ background: string }>`
   gap: 8px;
   border-radius: 20px;
   background: ${({ background }) => background};
-  color: #25282b;
+  color: ${Color.TEXT_STRONG};
   font-size: 14px;
   ${rowFlex({ align: 'center' })}
 `;
@@ -65,14 +67,14 @@ const ChipLogo = styled.img<{ bordered: boolean }>`
   width: 24px;
   height: 24px;
   border-radius: 7px;
-  border: ${({ bordered }) => (bordered ? '1px solid #e8eef2' : 'none')};
+  border: ${({ bordered }) => getLogoBorder(bordered)};
 `;
 
 const ChipIcon = styled.span`
   width: 24px;
   height: 24px;
   border-radius: 7px;
-  background: #ffffff;
+  background: ${Color.WHITE};
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
@@ -86,11 +88,10 @@ const Content = styled.div`
 
 interface OrderWaitHeaderProps {
   method: PaymentMethod;
-  // 주문을 불러오기 전(0)에는 칩을 숨긴다
+  // 주문을 불러오기 전에 '0원'이 잠깐 보이지 않게 한다
   amount: number;
 }
 
-// 대기 화면 맨 위: 돋보기 든 키오(움직이지 않음), 점만 깜빡이는 제목, 수단·금액 칩
 function OrderWaitHeader({ method, amount }: OrderWaitHeaderProps) {
   const style = PAY_METHOD_STYLE[method];
 
@@ -103,11 +104,10 @@ function OrderWaitHeader({ method, amount }: OrderWaitHeaderProps) {
       </Content>
       {amount > 0 && (
         <Chip background={style.background}>
-          {style.logo ? (
-            <ChipLogo src={style.logo} alt="" bordered={style.logoBordered} />
-          ) : (
+          {style.logo && <ChipLogo src={style.logo} alt="" bordered={style.logoBordered} />}
+          {!style.logo && (
             <ChipIcon>
-              <RiBankLine size={16} color="#5c5c5c" />
+              <RiBankLine size={16} color={Color.GREY} />
             </ChipIcon>
           )}
           <span>

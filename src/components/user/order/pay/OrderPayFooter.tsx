@@ -1,15 +1,23 @@
 import styled from '@emotion/styled';
+import { match } from 'ts-pattern';
+import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
+
+// 아이폰 홈 막대에 버튼이 가리지 않게 띄운다
+const getPlacement = (fixed: boolean) =>
+  match(fixed)
+    .with(true, () => 'position: fixed; left: 0; bottom: 0; padding-bottom: max(22px, env(safe-area-inset-bottom));')
+    .otherwise(() => '');
 
 const Bar = styled.div<{ fixed: boolean }>`
   box-sizing: border-box;
   width: 100%;
-  padding: 14px 20px ${({ fixed }) => (fixed ? 'max(22px, env(safe-area-inset-bottom))' : '22px')};
+  padding: 14px 20px 22px;
   gap: 8px;
-  background: #ffffff;
+  background: ${Color.WHITE};
   box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
   z-index: 11;
-  ${({ fixed }) => (fixed ? 'position: fixed; left: 0; bottom: 0;' : '')}
+  ${({ fixed }) => getPlacement(fixed)}
   ${colFlex({ align: 'center' })}
 `;
 
@@ -18,15 +26,15 @@ const Button = styled.button`
   height: 54px;
   border: none;
   border-radius: 14px;
-  background: #ff9142;
-  color: #ffffff;
+  background: ${Color.KIO_ORANGE};
+  color: ${Color.WHITE};
   font: inherit;
   font-size: 17px;
   font-weight: 700;
   cursor: pointer;
 
   &:disabled {
-    background: #e8eef2;
+    background: ${Color.BORDER_GREY};
     color: #d1d5d8;
     cursor: default;
   }
@@ -43,14 +51,20 @@ interface OrderPayFooterProps {
   caption: string | null;
   disabled?: boolean;
   onClick?: () => void;
-  // 운영진 미리보기 폰 안에서는 화면에 붙이지 않는다
   fixed?: boolean;
 }
 
 function OrderPayFooter({ label, caption, disabled = false, onClick, fixed = true }: OrderPayFooterProps) {
   return (
     <Bar fixed={fixed}>
-      <Button type="button" disabled={disabled} onClick={onClick} tabIndex={fixed ? undefined : -1}>
+      <Button
+        type="button"
+        disabled={disabled}
+        onClick={onClick}
+        tabIndex={match(fixed)
+          .with(true, () => undefined)
+          .otherwise(() => -1)}
+      >
         {label}
       </Button>
       {caption && <Caption>{caption}</Caption>}

@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import { RiArrowDownSLine, RiArrowUpSLine } from '@remixicon/react';
+import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Account, PaymentMethod } from '@@types/index';
 import { PAY_METHOD_STYLE } from '@constants/data/payMethods';
-import AccountRows, { copyAccountInfo } from './AccountRows';
+import { getLogoBorder } from '@utils/payMethodStyles';
+import { copyAccountInfo } from '@utils/payMethods';
+import AccountRows from './AccountRows';
 import { WaitCard, WaitCardTitle } from './waitStyles';
 
 const Card = styled(WaitCard)`
@@ -28,7 +31,7 @@ const Reopen = styled.button<{ background: string }>`
   border: none;
   border-radius: 12px;
   background: ${({ background }) => background};
-  color: #25282b;
+  color: ${Color.TEXT_STRONG};
   font: inherit;
   font-size: 15px;
   font-weight: 700;
@@ -41,22 +44,27 @@ const ReopenLogo = styled.img<{ bordered: boolean }>`
   width: 22px;
   height: 22px;
   border-radius: 6px;
-  border: ${({ bordered }) => (bordered ? '1px solid #e8eef2' : 'none')};
+  border: ${({ bordered }) => getLogoBorder(bordered)};
+`;
+
+const Expanded = styled.div`
+  gap: 14px;
+  ${colFlex({ align: 'stretch' })}
 `;
 
 const AccountBox = styled.div`
   padding: 16px;
   gap: 10px;
   border-radius: 12px;
-  background: #f7f7f7;
+  background: ${Color.LIGHT_GREY};
   ${colFlex({ align: 'stretch' })}
 `;
 
 const CopyButton = styled.button`
   height: 40px;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 12px;
-  background: #ffffff;
+  background: ${Color.WHITE};
   color: #464a4d;
   font: inherit;
   font-size: 14px;
@@ -70,20 +78,19 @@ interface NotSentYetPanelProps {
   onReopen: () => void;
 }
 
-// 토스·카카오페이 대기 화면의 '아직 보내지 않았나요?'. 처음엔 접혀 있고, 펼치면 앱 다시 열기와 계좌 정보
 function NotSentYetPanel({ method, account, onReopen }: NotSentYetPanelProps) {
   const [isOpen, setIsOpen] = useState(false);
   const style = PAY_METHOD_STYLE[method];
-  const Arrow = isOpen ? RiArrowUpSLine : RiArrowDownSLine;
 
   return (
     <Card>
       <Toggle type="button" aria-expanded={isOpen} onClick={() => setIsOpen((open) => !open)}>
         <WaitCardTitle>아직 보내지 않았나요?</WaitCardTitle>
-        <Arrow size={20} color="#9aa1a6" />
+        {isOpen && <RiArrowUpSLine size={20} color="#9aa1a6" />}
+        {!isOpen && <RiArrowDownSLine size={20} color="#9aa1a6" />}
       </Toggle>
       {isOpen && (
-        <>
+        <Expanded>
           <Reopen type="button" background={style.background} onClick={onReopen}>
             {style.logo && <ReopenLogo src={style.logo} alt="" bordered={style.logoBordered} />}
             {style.label} 다시 열기
@@ -94,7 +101,7 @@ function NotSentYetPanel({ method, account, onReopen }: NotSentYetPanelProps) {
               계좌 정보 복사하기
             </CopyButton>
           </AccountBox>
-        </>
+        </Expanded>
       )}
     </Card>
   );

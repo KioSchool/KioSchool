@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 import { OrderProduct } from '@@types/index';
 import { WaitCard, WaitCardTitle } from './waitStyles';
@@ -31,17 +32,17 @@ const Divider = styled.hr`
   width: 100%;
   margin: 0;
   border: none;
-  border-top: 1px solid #e8eef2;
+  border-top: 1px solid ${Color.BORDER_GREY};
 `;
 
 const TotalLabel = styled.span`
-  color: #25282b;
+  color: ${Color.TEXT_STRONG};
   font-size: 14px;
   font-weight: 700;
 `;
 
 const TotalValue = styled.span`
-  color: #25282b;
+  color: ${Color.TEXT_STRONG};
   font-size: 15px;
   font-weight: 700;
 `;
@@ -51,7 +52,6 @@ interface OrderItemsCardProps {
   totalPrice: number;
 }
 
-// 대기 화면 아래 주문 내역(메뉴·수량·합계)
 function OrderItemsCard({ orderProducts, totalPrice }: OrderItemsCardProps) {
   if (orderProducts.length === 0) return null;
 

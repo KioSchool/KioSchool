@@ -48,12 +48,12 @@ const product = (id: number, productName: string, price: number): OrderProduct =
 
 const orderProducts = [product(1, '닭꼬치', 12000), product(2, '김치전', 10000), product(3, '콜라', 5000)];
 
-// 대기 화면 본문. Figma '카카오페이 송금' 주문 대기 보드와 나란히 비교하는 용도
 function WaitScreen({ method }: { method: PaymentMethod }) {
   return (
     <Screen>
       <OrderWaitHeader method={method} amount={27000} />
-      {isPayApp(method) ? <NotSentYetPanel method={method} account={account} onReopen={() => {}} /> : <BankAccountCard account={account} />}
+      {isPayApp(method) && <NotSentYetPanel method={method} account={account} onReopen={() => {}} />}
+      {!isPayApp(method) && <BankAccountCard account={account} />}
       <OrderItemsCard orderProducts={orderProducts} totalPrice={27000} />
       <Tip>이 화면을 닫지 말고 기다려 주세요</Tip>
     </Screen>
@@ -61,7 +61,7 @@ function WaitScreen({ method }: { method: PaymentMethod }) {
 }
 
 const meta: Meta<typeof WaitScreen> = {
-  title: 'user/order/wait/OrderWaitScreen',
+  title: 'user/order/wait/OrderWaitHeader',
   component: WaitScreen,
 };
 

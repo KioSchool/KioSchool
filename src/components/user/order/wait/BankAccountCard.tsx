@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
+import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { Account } from '@@types/index';
-import AccountRows, { copyAccountInfo } from './AccountRows';
+import { copyAccountInfo } from '@utils/payMethods';
+import AccountRows from './AccountRows';
 import { WaitCard } from './waitStyles';
 
 const Card = styled(WaitCard)`
@@ -18,8 +20,8 @@ const CopyButton = styled.button`
   height: 48px;
   border: none;
   border-radius: 12px;
-  background: #ff9142;
-  color: #ffffff;
+  background: ${Color.KIO_ORANGE};
+  color: ${Color.WHITE};
   font: inherit;
   font-size: 15px;
   font-weight: 700;
@@ -30,7 +32,6 @@ interface BankAccountCardProps {
   account: Account;
 }
 
-// 계좌이체 대기 화면: 계좌 정보가 열린 채, 복사 버튼이 주 버튼
 function BankAccountCard({ account }: BankAccountCardProps) {
   return (
     <Card>

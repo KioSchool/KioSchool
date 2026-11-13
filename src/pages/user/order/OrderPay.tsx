@@ -1,3 +1,4 @@
+import { match } from 'ts-pattern';
 import { useEffect, useRef, useState } from 'react';
 import _ from 'lodash';
 import styled from '@emotion/styled';
@@ -22,6 +23,7 @@ import { GA_CURRENCY, GA_EVENT } from '@constants/analytics';
 import { ORDER_ROUTES } from '@constants/routes';
 import { getPayButtonCaption, getPayButtonLabel } from '@constants/data/payMethods';
 import { getAvailablePayMethods, getDefaultPayMethod, getPayAppUrl, isPayApp } from '@utils/payMethods';
+import { Color } from '@resources/colors';
 
 // 주문 대상이 사라진 경우. 장바구니를 비우고 주문 화면으로 되돌린다.
 const MISSING_ORDER_TARGET_CODES = [API_ERROR_CODES.NOT_FOUND_PRODUCT, API_ERROR_CODES.WORKSPACE_NOT_FOUND, API_ERROR_CODES.WORKSPACE_TABLE_NOT_FOUND] as const;
@@ -34,8 +36,14 @@ const Container = styled.div`
   width: 100%;
   min-height: 100%;
   padding: 50px 0 150px;
-  background: #ffffff;
+  background: ${Color.WHITE};
 `;
+
+const getOrderSummaryText = (firstName: string | undefined, otherCount: number) => {
+  if (!firstName) return '';
+  if (otherCount <= 0) return firstName;
+  return `${firstName} 외 ${otherCount}개`;
+};
 
 function OrderPay() {
   const workspace = useAtomValue(userWorkspaceAtom);
@@ -56,15 +64,17 @@ function OrderPay() {
 
   const [accountInfo, setAccountInfo] = useState<Account>(defaultAccountValue);
   const [isAccountLoaded, setIsAccountLoaded] = useState(false);
-  // 계좌 조회가 실패하면 '계좌 없음'으로 막지 않고 예전처럼 계좌이체로 받는다(대기 화면이 계좌를 다시 불러온다)
+  // 조회가 실패해도 계좌이체로 주문은 받는다(대기 화면이 계좌를 다시 불러온다)
   const [isAccountFetchFailed, setIsAccountFetchFailed] = useState(false);
-  const payMethods = isAccountFetchFailed ? [PaymentMethod.BANK_TRANSFER] : getAvailablePayMethods(accountInfo);
+  const payMethods = match(isAccountFetchFailed)
+    .with(true, () => [PaymentMethod.BANK_TRANSFER])
+    .otherwise(() => getAvailablePayMethods(accountInfo));
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [firstItem] = basketItems;
   const otherItemCount = basketItems.length - 1;
-  const summaryText = firstItem ? `${firstItem.product.name}${otherItemCount > 0 ? ` 외 ${otherItemCount}개` : ''}` : '';
+  const summaryText = getOrderSummaryText(firstItem?.product.name, otherItemCount);
   const customerNameRef = useRef<HTMLInputElement>(null);
 
   const errorHandler = (error: unknown) => {
@@ -188,7 +198,9 @@ function OrderPay() {
       />
       {basketItems.length > 0 && (
         <OrderPayFooter
-          label={isSubmitting ? '주문 진행 중...' : getPayButtonLabel(selectedMethod, totalAmount)}
+          label={match(isSubmitting)
+            .with(true, () => '주문 진행 중...')
+            .otherwise(() => getPayButtonLabel(selectedMethod, totalAmount))}
           caption={getPayButtonCaption(selectedMethod)}
           disabled={isSubmitting || !selectedMethod}
           onClick={payOrder}

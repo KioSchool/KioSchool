@@ -12,5 +12,4 @@ export const ACCOUNT_MODAL = {
   SUBTITLE: '*편집 중 창을 닫지 마세요',
 } as const;
 
-// 계좌 등록 사이드바 버튼 위 한 줄. 등록하면 송금 앱 링크가 함께 만들어진다
 export const ACCOUNT_REGISTER_PAY_APP_HINT = '등록하면 토스·카카오페이 송금도 함께 켜져요';

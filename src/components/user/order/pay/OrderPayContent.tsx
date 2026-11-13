@@ -1,7 +1,9 @@
 import { RefObject } from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
+import { match } from 'ts-pattern';
 import { RiArrowRightSLine } from '@remixicon/react';
+import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { PaymentMethod } from '@@types/index';
 import { NO_ACCOUNT_MESSAGE } from '@constants/data/payMethods';
@@ -30,7 +32,7 @@ const Caption = styled.span`
 `;
 
 const AmountValue = styled.strong`
-  color: #25282b;
+  color: ${Color.TEXT_STRONG};
   font-size: 28px;
   font-weight: 700;
   line-height: 1.45;
@@ -53,7 +55,7 @@ const Section = styled.div`
 `;
 
 const SectionTitle = styled.span`
-  color: #25282b;
+  color: ${Color.TEXT_STRONG};
   font-size: 15px;
   font-weight: 700;
   line-height: 1.45;
@@ -67,7 +69,7 @@ const Apps = styled.div`
 const Empty = styled.div`
   height: 102px;
   border-radius: 10px;
-  background: #f7f7f7;
+  background: ${Color.LIGHT_GREY};
   color: #697278;
   font-size: 13px;
   ${rowFlex({ justify: 'center', align: 'center' })}
@@ -83,8 +85,8 @@ const NameInput = styled.input`
   height: 48px;
   padding: 0 14px;
   border-radius: 10px;
-  border: 1px solid #e8eef2;
-  color: #25282b;
+  border: 1px solid ${Color.BORDER_GREY};
+  color: ${Color.TEXT_STRONG};
   font-size: 15px;
   outline: none;
 
@@ -93,7 +95,7 @@ const NameInput = styled.input`
   }
 
   &:focus {
-    border-color: #ff9142;
+    border-color: ${Color.KIO_ORANGE};
   }
 `;
 
@@ -117,20 +119,22 @@ const PrivacyLink = styled(Link)`
 
 export interface OrderPayContentProps {
   totalAmount: number;
-  // '닭꼬치 외 2개'
   summaryText: string;
   methods: PaymentMethod[];
   selected: PaymentMethod | null;
   onSelect: (method: PaymentMethod) => void;
-  // 계좌 정보를 불러오는 동안은 빈 자리만 둔다(계좌 없음 안내가 잠깐 보이지 않게)
+  // 불러오는 동안 '계좌 없음' 안내가 잠깐 보이지 않게 빈 자리만 둔다
   isLoading?: boolean;
   customerNameRef?: RefObject<HTMLInputElement>;
   onSummaryClick?: () => void;
-  // 운영진 미리보기에서는 입력·링크를 막는다
   isPreview?: boolean;
 }
 
-// 손님 결제 화면 본문. 상태를 갖지 않아 운영진 계좌 화면 미리보기에서도 같은 화면을 그린다.
+const getPreviewTabIndex = (isPreview: boolean) =>
+  match(isPreview)
+    .with(true, () => -1)
+    .otherwise(() => undefined);
+
 function OrderPayContent({
   totalAmount,
   summaryText,
@@ -144,45 +148,41 @@ function OrderPayContent({
 }: OrderPayContentProps) {
   const apps = methods.filter(isPayApp);
   const hasBankTransfer = methods.includes(PaymentMethod.BANK_TRANSFER);
-  const layout = apps.length > 1 ? 'tile' : 'wide';
-
-  const methodList = (() => {
-    if (isLoading) return <Placeholder />;
-    if (methods.length === 0) return <Empty>{NO_ACCOUNT_MESSAGE}</Empty>;
-    return (
-      <>
-        {apps.length > 0 && (
-          <Apps role="radiogroup" aria-label="송금 방법">
-            {apps.map((method) => (
-              <PayMethodCard key={method} method={method} layout={layout} selected={selected === method} onSelect={onSelect} />
-            ))}
-          </Apps>
-        )}
-        {hasBankTransfer && <BankTransferRow selected={selected === PaymentMethod.BANK_TRANSFER} onSelect={onSelect} />}
-      </>
-    );
-  })();
+  const layout = match(apps.length)
+    .with(1, () => 'wide' as const)
+    .otherwise(() => 'tile' as const);
+  const tabIndex = getPreviewTabIndex(isPreview);
+  const isEmpty = !isLoading && methods.length === 0;
 
   return (
     <Body>
       <Amount>
         <Caption>보낼 금액</Caption>
         <AmountValue>{totalAmount.toLocaleString()}원</AmountValue>
-        <Summary type="button" onClick={onSummaryClick} tabIndex={isPreview ? -1 : undefined}>
+        <Summary type="button" onClick={onSummaryClick} tabIndex={tabIndex}>
           <Caption>{summaryText}</Caption>
           <RiArrowRightSLine size={14} color="#9aa1a6" />
         </Summary>
       </Amount>
       <Section>
         <SectionTitle>송금 방법</SectionTitle>
-        {methodList}
+        {isLoading && <Placeholder />}
+        {isEmpty && <Empty>{NO_ACCOUNT_MESSAGE}</Empty>}
+        {!isLoading && apps.length > 0 && (
+          <Apps role="radiogroup" aria-label="송금 방법">
+            {apps.map((method) => (
+              <PayMethodCard key={method} method={method} layout={layout} selected={selected === method} onSelect={onSelect} />
+            ))}
+          </Apps>
+        )}
+        {!isLoading && hasBankTransfer && <BankTransferRow selected={selected === PaymentMethod.BANK_TRANSFER} onSelect={onSelect} />}
       </Section>
       <Section>
         <SectionTitle>송금자명</SectionTitle>
-        <NameInput ref={customerNameRef} placeholder="예: 홍길동" readOnly={isPreview} tabIndex={isPreview ? -1 : undefined} />
+        <NameInput ref={customerNameRef} placeholder="예: 홍길동" readOnly={isPreview} tabIndex={tabIndex} />
         <NameCaption>
           <Hint>실제로 보내는 분 이름을 적어 주세요</Hint>
-          <PrivacyLink to={USER_ROUTES.PRIVACY} target="_blank" rel="noopener noreferrer" tabIndex={isPreview ? -1 : undefined}>
+          <PrivacyLink to={USER_ROUTES.PRIVACY} target="_blank" rel="noopener noreferrer" tabIndex={tabIndex}>
             개인정보처리방침
           </PrivacyLink>
         </NameCaption>

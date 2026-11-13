@@ -38,7 +38,10 @@ export function getPaymentMethodStatistics(orders: Pick<Order, 'status' | 'payme
   });
 
   const recordedCount = tossCount + kakaoPayCount + bankTransferCount;
-  const toRatio = (count: number) => (recordedCount > 0 ? (count / recordedCount) * PERCENTAGE_TOTAL : 0);
+  const toRatio = (count: number) => {
+    if (recordedCount === 0) return 0;
+    return (count / recordedCount) * PERCENTAGE_TOTAL;
+  };
 
   return {
     tossCount,

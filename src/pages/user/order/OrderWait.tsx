@@ -18,13 +18,14 @@ import OrderWaitHeader from '@components/user/order/wait/OrderWaitHeader';
 import NotSentYetPanel from '@components/user/order/wait/NotSentYetPanel';
 import BankAccountCard from '@components/user/order/wait/BankAccountCard';
 import OrderItemsCard from '@components/user/order/wait/OrderItemsCard';
+import { Color } from '@resources/colors';
 
 const Container = styled.div`
   box-sizing: border-box;
   width: 100%;
   min-height: 100%;
   padding-top: 50px;
-  background: #ffffff;
+  background: ${Color.WHITE};
 `;
 
 const SubContainer = styled.div`
@@ -45,11 +46,12 @@ const Tip = styled.p`
 
 const PAYMENT_METHODS = Object.values(PaymentMethod) as string[];
 
-// 대기 화면 수단. 결제 화면이 method=로 넘긴다. 배포 전에 열린 옛 주소는 tossPay=true|false만 있다.
+// 배포 전에 열린 옛 대기 주소에는 method 대신 tossPay=true|false만 있다
 const getWaitMethod = (searchParams: URLSearchParams): PaymentMethod => {
   const method = searchParams.get('method');
   if (method && PAYMENT_METHODS.includes(method)) return method as PaymentMethod;
-  return searchParams.get('tossPay') === 'true' ? PaymentMethod.TOSS : PaymentMethod.BANK_TRANSFER;
+  if (searchParams.get('tossPay') === 'true') return PaymentMethod.TOSS;
+  return PaymentMethod.BANK_TRANSFER;
 };
 
 function OrderWait() {
@@ -171,7 +173,8 @@ function OrderWait() {
       <OrderStickyNavBar useLeftArrow={false} showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
       <SubContainer className={'order-wait-sub-container'}>
         <OrderWaitHeader method={method} amount={totalPrice} />
-        {isPayApp(method) ? <NotSentYetPanel method={method} account={accountInfo} onReopen={handleReopenPayApp} /> : <BankAccountCard account={accountInfo} />}
+        {isPayApp(method) && <NotSentYetPanel method={method} account={accountInfo} onReopen={handleReopenPayApp} />}
+        {!isPayApp(method) && <BankAccountCard account={accountInfo} />}
         <OrderItemsCard orderProducts={currentOrder?.orderProducts ?? []} totalPrice={totalPrice} />
       </SubContainer>
       <Tip>이 화면을 닫지 말고 기다려 주세요</Tip>

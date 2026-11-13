@@ -9,7 +9,7 @@ import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const RATIO_DECIMAL_PLACES = 1;
-// 카카오페이 브랜드 노랑. 주황(계좌)과 붙어 있어도 구분되게 연한 노랑 대신 이 색을 쓴다.
+// 연한 카카오 노랑은 바로 옆 주황(계좌) 막대와 구분되지 않는다
 const KAKAOPAY_YELLOW = '#FEE500';
 
 const Container = styled.section`
