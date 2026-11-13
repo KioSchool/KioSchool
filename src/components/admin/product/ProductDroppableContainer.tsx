@@ -1,8 +1,11 @@
 import styled from '@emotion/styled';
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { Product } from '@@types/index';
+
+import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Product } from '@@types/index';
+
 import ProductSortableItem from './ProductSortableItem';
 
 const Container = styled.div`
@@ -10,9 +13,9 @@ const Container = styled.div`
   width: 95%;
   padding: 22px 26px 26px;
   gap: 16px;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 16px;
-  background: #ffffff50;
+  background: ${Color.WHITE};
   box-shadow: 0 4px 20px 0 rgba(92, 92, 92, 0.05) outset;
   ${colFlex({ justify: 'center', align: 'center' })};
 `;

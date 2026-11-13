@@ -19,13 +19,13 @@ const Container = styled.article<{ isSellable: boolean }>`
   border: 1px solid ${Color.BORDER_GREY};
   border-radius: 16px;
   box-sizing: border-box;
-  background: ${({ isSellable }) => (isSellable ? Color.WHITE : '#fbfbfb')};
+  background: ${({ isSellable }) => (isSellable ? Color.WHITE : Color.LIGHT_GREY)};
   gap: 16px;
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 
   &:hover {
-    border-color: #d8dde1;
+    border-color: ${Color.HEAVY_GREY};
     box-shadow: 0 7px 20px rgba(92, 92, 92, 0.08);
   }
 `;

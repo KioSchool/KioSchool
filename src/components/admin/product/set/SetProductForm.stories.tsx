@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { Provider, createStore } from 'jotai';
 
 import { adminCategoriesAtom, adminProductsAtom } from '@jotai/admin/atoms';
+import { Color } from '@resources/colors';
 import { AdminProduct, ProductStatus, ProductType } from '@@types/index';
 
 import SetProductForm from './SetProductForm';
@@ -13,7 +14,7 @@ const StoryContainer = styled.div`
   overflow-y: auto;
   padding: 28px;
   box-sizing: border-box;
-  background: #ffffff;
+  background: ${Color.WHITE};
 `;
 
 const CATEGORY = {

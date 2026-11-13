@@ -2,15 +2,18 @@ import styled from '@emotion/styled';
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import { BrowserRouter } from 'react-router-dom';
-import { AdminProduct, Product, ProductStatus, ProductType } from '@@types/index';
+
+import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
+import { AdminProduct, Product, ProductStatus, ProductType } from '@@types/index';
+
 import ProductCard from './ProductCard';
 
 const StoryContainer = styled.div`
   width: 100%;
   padding: 10px;
   box-sizing: border-box;
-  background-color: #f0f0f0;
+  background-color: ${Color.LIGHT_GREY};
 `;
 
 const ProductList = styled.div`
