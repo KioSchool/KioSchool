@@ -3,58 +3,18 @@ import styled from '@emotion/styled';
 import { useAtomValue } from 'jotai';
 
 import NewCommonButton from '@components/common/button/NewCommonButton';
-import NewAppInput from '@components/common/input/NewAppInput';
-import NewAppTextarea from '@components/common/input/NewAppTextarea';
-import SelectWithOptions from '@components/common/select/SelectWithOptions';
 import { MAX_PRODUCT_IMAGE_SIZE } from '@constants/data/productData';
 import { adminCategoriesAtom } from '@jotai/admin/atoms';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { AdminProduct, ProductStateType } from '@@types/index';
 
-import ProductImageField from './ProductImageField';
+import ProductBasicFields from './ProductBasicFields';
+import { createProductFormState, MAX_PRODUCT_DESCRIPTION_LENGTH, MAX_PRODUCT_NAME_LENGTH, reduceProductForm } from './productFormState';
 
 const Container = styled.div`
   width: 100%;
   gap: 28px;
-  ${colFlex()};
-`;
-
-const Fields = styled.div`
-  width: 100%;
-  gap: 16px;
-  color: ${Color.TEXT_BODY};
-  ${colFlex()}
-`;
-
-const SectionHeading = styled.div`
-  gap: 4px;
-  ${colFlex()}
-`;
-
-const SectionTitle = styled.h3`
-  margin: 0;
-  font-size: 18px;
-  color: ${Color.TEXT_STRONG};
-`;
-
-const SectionDescription = styled.p`
-  margin: 0;
-  font-size: 13px;
-  color: ${Color.MUTED_GREY};
-`;
-
-const InputLabel = styled.div`
-  width: 100%;
-  font-size: 16px;
-  font-weight: 700;
-  ${colFlex({ justify: 'center', align: 'start' })};
-`;
-
-const Field = styled.label`
-  min-width: 0;
-  width: 100%;
-  gap: 7px;
   ${colFlex()};
 `;
 
@@ -85,75 +45,6 @@ const SubmitActions = styled.div`
   ${rowFlex({ align: 'center' })}
 `;
 
-const MAX_PRODUCT_NAME_LENGTH = 12;
-const MAX_PRODUCT_DESCRIPTION_LENGTH = 30;
-
-interface ProductFormState {
-  id?: number;
-  name: string;
-  description: string;
-  price: string | number;
-  productCategory: {
-    id: string | number;
-    name: string;
-  };
-  image: {
-    url: string;
-    file: File | null;
-  };
-}
-
-type ProductFormAction =
-  | { type: 'PRODUCT_RESET'; payload: ProductFormState }
-  | { type: 'PRODUCT_NAME_INPUT'; payload: string }
-  | { type: 'PRODUCT_DESCRIPTION_INPUT'; payload: string }
-  | { type: 'PRODUCT_PRICE_INPUT'; payload: string }
-  | { type: 'PRODUCT_CATEGORY_INPUT'; payload: string }
-  | { type: 'PRODUCT_IMAGE_INPUT'; payload: ProductFormState['image'] };
-
-function createInitialState(initialValues?: AdminProduct): ProductFormState {
-  if (!initialValues) {
-    return {
-      name: '',
-      description: '',
-      price: 0,
-      productCategory: { id: 'null', name: '' },
-      image: { url: '', file: null },
-    };
-  }
-
-  return {
-    id: initialValues.id,
-    name: initialValues.name,
-    description: initialValues.description,
-    price: initialValues.price,
-    productCategory: {
-      id: initialValues.productCategory?.id ?? 'null',
-      name: initialValues.productCategory?.name ?? '',
-    },
-    image: { url: initialValues.imageUrl, file: null },
-  };
-}
-
-function reducer(state: ProductFormState, action: ProductFormAction): ProductFormState {
-  switch (action.type) {
-    case 'PRODUCT_RESET':
-      return action.payload;
-    case 'PRODUCT_NAME_INPUT':
-      return { ...state, name: action.payload };
-    case 'PRODUCT_DESCRIPTION_INPUT':
-      return { ...state, description: action.payload };
-    case 'PRODUCT_PRICE_INPUT':
-      return { ...state, price: action.payload };
-    case 'PRODUCT_CATEGORY_INPUT':
-      return { ...state, productCategory: { ...state.productCategory, id: action.payload } };
-    case 'PRODUCT_IMAGE_INPUT':
-      return { ...state, image: action.payload };
-    default:
-      throw new Error('Unhandled action');
-  }
-}
-
 interface ProductFormProps {
   mode: 'ADD' | 'EDIT';
   workspaceId: string | undefined;
@@ -166,10 +57,10 @@ interface ProductFormProps {
 function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onDelete }: ProductFormProps) {
   const productCategories = useAtomValue(adminCategoriesAtom);
 
-  const [state, dispatch] = useReducer(reducer, initialValues, createInitialState);
+  const [state, dispatch] = useReducer(reduceProductForm, initialValues, createProductFormState);
 
   useEffect(() => {
-    dispatch({ type: 'PRODUCT_RESET', payload: createInitialState(initialValues) });
+    dispatch({ type: 'PRODUCT_RESET', payload: createProductFormState(initialValues) });
   }, [initialValues]);
 
   const isPriceNumeric = (price: string | number) => /^\d+$/.test(String(price).trim());
@@ -237,68 +128,15 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
 
   return (
     <Container>
-      <SectionHeading>
-        <SectionTitle>기본 정보</SectionTitle>
-        <SectionDescription>손님 주문 화면에 보일 메뉴 이름과 설명, 가격을 입력해주세요.</SectionDescription>
-      </SectionHeading>
-
-      <ProductImageField
-        url={state.image.url}
-        file={state.image.file}
-        description="메뉴를 한눈에 알아볼 수 있는 대표 사진을 등록해주세요. 일반 메뉴는 이미지 등록이 필수입니다."
+      <ProductBasicFields
+        value={state}
+        categories={productCategories}
+        onCategoryChange={(categoryId) => dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: categoryId })}
+        onNameChange={(name) => dispatch({ type: 'PRODUCT_NAME_INPUT', payload: name })}
+        onPriceChange={(price) => dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: price })}
+        onDescriptionChange={(description) => dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: description })}
         onImageChange={handleImageChange}
       />
-
-      <Fields>
-        <Field>
-          <InputLabel>카테고리</InputLabel>
-          <SelectWithOptions
-            options={productCategories}
-            value={state.productCategory.id || ''}
-            onChange={(event: ChangeEvent<HTMLSelectElement>) => {
-              dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
-            }}
-            width="100%"
-          />
-        </Field>
-
-        <Field>
-          <InputLabel>상품명</InputLabel>
-          <NewAppInput
-            placeholder={'최대 12자까지 가능합니다.'}
-            value={state.name}
-            maxLength={MAX_PRODUCT_NAME_LENGTH}
-            onChange={(event: ChangeEvent<HTMLInputElement>) => {
-              dispatch({ type: 'PRODUCT_NAME_INPUT', payload: event.target?.value });
-            }}
-            width="100%"
-          />
-        </Field>
-
-        <Field>
-          <InputLabel>상품 가격</InputLabel>
-          <NewAppInput
-            value={state.price}
-            onChange={(event: ChangeEvent<HTMLInputElement>) => {
-              dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: event.target?.value });
-            }}
-            width="100%"
-          />
-        </Field>
-
-        <Field>
-          <InputLabel>상품 설명</InputLabel>
-          <NewAppTextarea
-            placeholder={'최대 30자까지 가능합니다.'}
-            value={state.description}
-            maxLength={MAX_PRODUCT_DESCRIPTION_LENGTH}
-            onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
-              dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: event.target?.value });
-            }}
-            width="100%"
-          />
-        </Field>
-      </Fields>
 
       <SubmitContainer>
         {isEditMode && onDelete && (
