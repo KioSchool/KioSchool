@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import NewAppInput from '@components/common/input/NewAppInput';
 import { MAIL_SUBJECT_MAX_LENGTH } from '@constants/data/mailData';
+import useMailComposeDefaults from '@hooks/super-admin/useMailComposeDefaults';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import LazyMailEditor from './editor/LazyMailEditor';
@@ -55,6 +56,7 @@ interface MailCampaignFormProps {
 function MailCampaignForm({ values, onChange }: MailCampaignFormProps) {
   const subjectRef = useRef<HTMLInputElement>(null);
   const [isValueMenuOpen, setIsValueMenuOpen] = useState(false);
+  const composeDefaults = useMailComposeDefaults('team');
 
   const handleInsertSubjectValue = (value: string) => {
     const input = subjectRef.current;
@@ -91,7 +93,16 @@ function MailCampaignForm({ values, onChange }: MailCampaignFormProps) {
       </Field>
       <Field>
         <Label as="span">내용</Label>
-        <LazyMailEditor withValues height={300} placeholder="전달할 내용을 입력해 주세요" onChange={(content) => onChange({ ...values, content })} />
+        {composeDefaults && (
+          <LazyMailEditor
+            withValues
+            height={300}
+            placeholder="전달할 내용을 입력해 주세요"
+            initialContent={composeDefaults.initialContent}
+            signatureHtml={composeDefaults.signatureHtml}
+            onChange={(content) => onChange({ ...values, content })}
+          />
+        )}
       </Field>
     </Form>
   );

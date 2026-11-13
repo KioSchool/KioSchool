@@ -5,14 +5,17 @@ const PERCENTAGE_TOTAL = 100;
 
 export interface PaymentMethodStatistics {
   tossCount: number;
+  kakaoPayCount: number;
   bankTransferCount: number;
   unknownCount: number;
   tossRatio: number;
+  kakaoPayRatio: number;
   bankTransferRatio: number;
 }
 
 export function getPaymentMethodStatistics(orders: Pick<Order, 'status' | 'paymentMethod'>[]): PaymentMethodStatistics {
   let tossCount = 0;
+  let kakaoPayCount = 0;
   let bankTransferCount = 0;
   let unknownCount = 0;
 
@@ -23,6 +26,9 @@ export function getPaymentMethodStatistics(orders: Pick<Order, 'status' | 'payme
       .with(PaymentMethod.TOSS, () => {
         tossCount += 1;
       })
+      .with(PaymentMethod.KAKAOPAY, () => {
+        kakaoPayCount += 1;
+      })
       .with(PaymentMethod.BANK_TRANSFER, () => {
         bankTransferCount += 1;
       })
@@ -31,9 +37,19 @@ export function getPaymentMethodStatistics(orders: Pick<Order, 'status' | 'payme
       });
   });
 
-  const recordedCount = tossCount + bankTransferCount;
-  const tossRatio = recordedCount > 0 ? (tossCount / recordedCount) * PERCENTAGE_TOTAL : 0;
-  const bankTransferRatio = recordedCount > 0 ? (bankTransferCount / recordedCount) * PERCENTAGE_TOTAL : 0;
+  const recordedCount = tossCount + kakaoPayCount + bankTransferCount;
+  const toRatio = (count: number) => {
+    if (recordedCount === 0) return 0;
+    return (count / recordedCount) * PERCENTAGE_TOTAL;
+  };
 
-  return { tossCount, bankTransferCount, unknownCount, tossRatio, bankTransferRatio };
+  return {
+    tossCount,
+    kakaoPayCount,
+    bankTransferCount,
+    unknownCount,
+    tossRatio: toRatio(tossCount),
+    kakaoPayRatio: toRatio(kakaoPayCount),
+    bankTransferRatio: toRatio(bankTransferCount),
+  };
 }

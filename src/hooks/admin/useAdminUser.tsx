@@ -1,5 +1,6 @@
+import { match } from 'ts-pattern';
 import useApi from '@hooks/useApi';
-import { User, Workspace } from '@@types/index';
+import { PaymentMethod, User, Workspace } from '@@types/index';
 import { trackEvent } from '@utils/analytics';
 import { getApiErrorMessage } from '@utils/apiError';
 import { GA_EVENT } from '@constants/analytics';
@@ -48,19 +49,6 @@ function useAdminUser() {
       .catch((error) => console.error('Failed to leave workspace: ', error));
   };
 
-  const registerTossAccount = (accountUrl: string) => {
-    return adminApi
-      .post('/toss-account', { accountUrl })
-      .then((res) => {
-        setAdminUser(res.data);
-        alert('계좌 정보가 성공적으로 저장되었습니다.');
-        return res.data;
-      })
-      .catch((error) => {
-        alert(getApiErrorMessage(error, '계좌 정보를 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.'));
-      });
-  };
-
   const withdraw = (password: string) => {
     return adminApi.post('/user/withdraw', { password }).then(() => {
       localStorage.setItem('isLoggedIn', 'false');
@@ -104,27 +92,22 @@ function useAdminUser() {
       });
   };
 
-  const deleteTossAccount = () => {
-    adminApi
-      .delete<User>('/toss-account')
-      .then((res) => {
-        setAdminUser(res.data);
-        alert('Toss QR 정보 삭제가 완료되었습니다.');
-      })
-      .catch((error) => {
-        alert(getApiErrorMessage(error, 'Toss QR 정보를 삭제하지 못했습니다. 잠시 후 다시 시도해 주세요.'));
-      });
+  const PAY_APP_PATHS: Record<PaymentMethod.TOSS | PaymentMethod.KAKAOPAY, { on: string; off: string }> = {
+    [PaymentMethod.TOSS]: { on: '/toss-account/auto', off: '/toss-account' },
+    [PaymentMethod.KAKAOPAY]: { on: '/kakaopay-account', off: '/kakaopay-account' },
   };
 
-  const registerTossAccountAuto = () => {
-    adminApi
-      .post<User>('/toss-account/auto')
+  const setPayAppEnabled = (method: PaymentMethod.TOSS | PaymentMethod.KAKAOPAY, enabled: boolean) => {
+    const { on, off } = PAY_APP_PATHS[method];
+    const request = match(enabled)
+      .with(true, () => adminApi.post<User>(on))
+      .otherwise(() => adminApi.delete<User>(off));
+    return request
       .then((res) => {
         setAdminUser(res.data);
-        alert('토스 계좌가 자동으로 등록되었습니다.');
       })
       .catch((error) => {
-        alert(getApiErrorMessage(error, '토스 계좌를 자동으로 등록하지 못했습니다. 잠시 후 다시 시도해 주세요.'));
+        alert(getApiErrorMessage(error, '송금 방법을 바꾸지 못했어요. 잠시 후 다시 시도해 주세요.'));
       });
   };
 
@@ -132,14 +115,12 @@ function useAdminUser() {
     fetchWorkspaces,
     createWorkspaces,
     leaveWorkspace,
-    registerTossAccount,
-    registerTossAccountAuto,
     fetchAdminUser,
     withdraw,
     fetchBanks,
     registerAccount,
     deleteAccount,
-    deleteTossAccount,
+    setPayAppEnabled,
   };
 }
 

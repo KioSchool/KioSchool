@@ -1,27 +1,29 @@
+import { match } from 'ts-pattern';
 import { useEffect, useRef, useState } from 'react';
 import _ from 'lodash';
 import styled from '@emotion/styled';
-import OrderButton from '@components/user/order/OrderButton';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { colFlex } from '@styles/flexStyles';
 import useOrder from '@hooks/user/useOrder';
 import useWorkspace from '@hooks/user/useWorkspace';
 import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
-import OrderPayRadio from '@components/user/order/OrderPayRadio';
-import OrderPayDescription from '@components/user/order/OrderPayDescription';
+import OrderPayContent from '@components/user/order/pay/OrderPayContent';
+import OrderPayFooter from '@components/user/order/pay/OrderPayFooter';
 import { API_ERROR_CODES } from '@constants/errorCodes';
 import { getApiErrorMessage, isApiErrorCode } from '@utils/apiError';
 import { userOrderBasketAtom, userProductsAtom, userWorkspaceAtom } from '@jotai/user/atoms';
 import { useAtom, useAtomValue } from 'jotai';
-import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import usePreventRefresh from '@hooks/usePreventRefresh';
-import useTossPopup from '@hooks/user/useTossPopup';
+import usePayAppPopup from '@hooks/user/usePayAppPopup';
 import useReturnToOrderPage from '@hooks/user/useReturnToOrderPage';
 import { Account, PaymentMethod } from '@@types/index';
 import { defaultAccountValue } from '@@types/defaultValues';
 import { basketToGaItems, calculateBasketTotalAmount, getBasketItemsWithProduct } from '@utils/orderBasket';
 import { trackEvent } from '@utils/analytics';
 import { GA_CURRENCY, GA_EVENT } from '@constants/analytics';
+import { ORDER_ROUTES } from '@constants/routes';
+import { getPayButtonCaption, getPayButtonLabel } from '@constants/data/payMethods';
+import { getAvailablePayMethods, getDefaultPayMethod, getPayAppUrl, isPayApp } from '@utils/payMethods';
+import { Color } from '@resources/colors';
 
 // 주문 대상이 사라진 경우. 장바구니를 비우고 주문 화면으로 되돌린다.
 const MISSING_ORDER_TARGET_CODES = [API_ERROR_CODES.NOT_FOUND_PRODUCT, API_ERROR_CODES.WORKSPACE_NOT_FOUND, API_ERROR_CODES.WORKSPACE_TABLE_NOT_FOUND] as const;
@@ -30,27 +32,18 @@ const MISSING_ORDER_TARGET_CODES = [API_ERROR_CODES.NOT_FOUND_PRODUCT, API_ERROR
 const UNORDERABLE_STATE_CODES = [API_ERROR_CODES.NO_ORDER_SESSION, API_ERROR_CODES.ORDER_SESSION_ALREADY_EXIST, API_ERROR_CODES.TABLE_HASH_IS_NULL] as const;
 
 const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  padding-top: 50px;
-`;
-
-const SubContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
-  padding: 20px 20px 0 20px;
-  ${colFlex({ justify: 'center', align: 'center' })}
+  min-height: 100%;
+  padding: 50px 0 150px;
+  background: ${Color.WHITE};
 `;
 
-const ContentsContainer = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  padding: 12px 10px;
-  gap: 20px;
-  border-radius: 9px;
-  border: 0.5px solid #939393;
-  ${colFlex({ justify: 'center', align: 'start' })}
-`;
+const getOrderSummaryText = (firstName: string | undefined, otherCount: number) => {
+  if (!firstName) return '';
+  if (otherCount <= 0) return firstName;
+  return `${firstName} 외 ${otherCount}개`;
+};
 
 function OrderPay() {
   const workspace = useAtomValue(userWorkspaceAtom);
@@ -63,18 +56,25 @@ function OrderPay() {
   const navigate = useNavigate();
   const { createOrder } = useOrder();
   const { fetchWorkspaceAccount } = useWorkspace();
-  const { openTossPopupWithPromise } = useTossPopup();
+  const { openPayAppWithPromise } = usePayAppPopup();
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
   const tableHash = searchParams.get('tableHash');
 
   const [accountInfo, setAccountInfo] = useState<Account>(defaultAccountValue);
-  const tossAccountUrl = accountInfo?.tossAccountUrl;
-  const isTossAvailable = !!tossAccountUrl;
-
-  const [isTossPay, setIsTossPay] = useState<boolean>(false);
+  const [isAccountLoaded, setIsAccountLoaded] = useState(false);
+  // 조회가 실패해도 계좌이체로 주문은 받는다(대기 화면이 계좌를 다시 불러온다)
+  const [isAccountFetchFailed, setIsAccountFetchFailed] = useState(false);
+  const payMethods = match(isAccountFetchFailed)
+    .with(true, () => [PaymentMethod.BANK_TRANSFER])
+    .otherwise(() => getAvailablePayMethods(accountInfo));
+  const [selectedMethod, setSelectedMethod] = useState<PaymentMethod | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [firstItem] = basketItems;
+  const otherItemCount = basketItems.length - 1;
+  const summaryText = getOrderSummaryText(firstItem?.product.name, otherItemCount);
   const customerNameRef = useRef<HTMLInputElement>(null);
 
   const errorHandler = (error: unknown) => {
@@ -101,15 +101,31 @@ function OrderPay() {
   useEffect(() => {
     customerNameRef.current?.focus();
 
-    fetchWorkspaceAccount(workspaceId).then((account) => {
-      if (account) {
+    fetchWorkspaceAccount(workspaceId)
+      .then((account) => {
+        if (!account) return;
         setAccountInfo(account);
-        if (account.tossAccountUrl) {
-          setIsTossPay(true);
-        }
-      }
-    });
+        setSelectedMethod(getDefaultPayMethod(getAvailablePayMethods(account)));
+      })
+      .catch(() => {
+        setIsAccountFetchFailed(true);
+        setSelectedMethod(PaymentMethod.BANK_TRANSFER);
+      })
+      .finally(() => setIsAccountLoaded(true));
   }, []);
+
+  const navigateToWait = (orderId: number, method: PaymentMethod) => {
+    navigate({
+      pathname: '/order-wait',
+      search: createSearchParams({
+        orderId: orderId.toString(),
+        workspaceId: workspaceId || '',
+        tableNo: tableNo || '',
+        tableHash: tableHash || '',
+        method,
+      }).toString(),
+    });
+  };
 
   /**
    * Safari 브라우저 호환성 이슈 대응
@@ -119,44 +135,22 @@ function OrderPay() {
    * 해결책:
    * - Safari 브라우저 감지
    * - 비동기 API 호출 전에 빈 팝업창 미리 생성
-   * - API 호출 성공 후 생성된 팝업창의 URL을 이용해 Toss 결제 창으로 이동
+   * - API 호출 성공 후 생성된 팝업창의 URL을 이용해 토스·카카오페이 송금 창으로 이동
    */
-  const createOrderAndNavigateToToss = (customerName: string) => {
-    openTossPopupWithPromise({
-      tossAccountUrl,
+  const createOrderAndOpenPayApp = (customerName: string, method: PaymentMethod) => {
+    openPayAppWithPromise({
+      accountUrl: getPayAppUrl(accountInfo, method),
       amount: totalAmount,
       closeDelay: 5000,
-      promise: createOrder(workspaceId, tableHash, orderBasket, customerName, PaymentMethod.TOSS),
-      onSuccess: (res) => {
-        navigate({
-          pathname: '/order-wait',
-          search: createSearchParams({
-            orderId: res.data.id.toString(),
-            workspaceId: workspaceId || '',
-            tableNo: tableNo || '',
-            tableHash: tableHash || '',
-            tossPay: 'true',
-          }).toString(),
-        });
-      },
+      promise: createOrder(workspaceId, tableHash, orderBasket, customerName, method),
+      onSuccess: (res) => navigateToWait(res.data.id, method),
       onError: errorHandler,
     })?.finally(() => setIsSubmitting(false));
   };
 
-  const createOrderAndNavigateToComplete = (customerName: string) => {
+  const createOrderAndNavigateToWait = (customerName: string) => {
     createOrder(workspaceId, tableHash, orderBasket, customerName, PaymentMethod.BANK_TRANSFER)
-      .then((res) => {
-        navigate({
-          pathname: '/order-wait',
-          search: createSearchParams({
-            orderId: res.data.id.toString(),
-            workspaceId: workspaceId || '',
-            tableNo: tableNo || '',
-            tableHash: tableHash || '',
-            tossPay: 'false',
-          }).toString(),
-        });
-      })
+      .then((res) => navigateToWait(res.data.id, PaymentMethod.BANK_TRANSFER))
       .catch(errorHandler)
       .finally(() => {
         setIsSubmitting(false);
@@ -164,7 +158,7 @@ function OrderPay() {
   };
 
   const payOrder = () => {
-    if (isSubmitting) return;
+    if (isSubmitting || !selectedMethod) return;
 
     const customerName = customerNameRef.current?.value;
 
@@ -177,30 +171,41 @@ function OrderPay() {
 
     setIsSubmitting(true);
 
-    if (isTossPay) {
-      createOrderAndNavigateToToss(customerName);
+    if (isPayApp(selectedMethod)) {
+      createOrderAndOpenPayApp(customerName, selectedMethod);
       return;
     }
 
-    createOrderAndNavigateToComplete(customerName);
+    createOrderAndNavigateToWait(customerName);
+  };
+
+  const goToBasket = () => {
+    navigate({ pathname: ORDER_ROUTES.ORDER_BASKET, search: createSearchParams(searchParams).toString() });
   };
 
   return (
     <Container className={'order-pay-container'}>
       <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
-      <SubContainer className={'order-pay-sub-container'}>
-        <ContentsContainer>
-          <OrderPayRadio isTossAvailable={isTossAvailable} isTossPay={isTossPay} setIsTossPay={setIsTossPay} customerNameRef={customerNameRef} />
-          <HorizontalDivider />
-          <OrderPayDescription />
-        </ContentsContainer>
-      </SubContainer>
-      <OrderButton
-        showButton={basketItems.length > 0}
-        disabled={isSubmitting}
-        buttonLabel={isSubmitting ? '주문 진행 중...' : `${totalAmount.toLocaleString()}원 · ${isTossPay ? '토스로 송금' : '계좌로 송금'}`}
-        onClick={payOrder}
+      <OrderPayContent
+        totalAmount={totalAmount}
+        summaryText={summaryText}
+        methods={payMethods}
+        selected={selectedMethod}
+        onSelect={setSelectedMethod}
+        isLoading={!isAccountLoaded}
+        customerNameRef={customerNameRef}
+        onSummaryClick={goToBasket}
       />
+      {basketItems.length > 0 && (
+        <OrderPayFooter
+          label={match(isSubmitting)
+            .with(true, () => '주문 진행 중...')
+            .otherwise(() => getPayButtonLabel(selectedMethod, totalAmount))}
+          caption={getPayButtonCaption(selectedMethod)}
+          disabled={isSubmitting || !selectedMethod}
+          onClick={payOrder}
+        />
+      )}
     </Container>
   );
 }

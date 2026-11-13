@@ -2,6 +2,7 @@ import { PaymentMethod } from '@@types/index';
 
 export const PAYMENT_METHOD_LABELS: Record<PaymentMethod, string> = {
   TOSS: '토스',
+  KAKAOPAY: '카카오페이',
   BANK_TRANSFER: '계좌',
 };
 
