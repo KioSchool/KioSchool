@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import { useAtomValue, useSetAtom } from 'jotai';
+import { useNavigate, useParams } from 'react-router-dom';
+
+import { getAdminWorkspacePath } from '@constants/routes';
+import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { externalSidebarAtom } from '@jotai/atoms';
 import { ProductStateType, ProductType, RIGHT_SIDEBAR_ACTION, SetProductRequest } from '@@types/index';
-import useAdminProducts from '@hooks/admin/useAdminProducts';
-import { getAdminWorkspacePath } from '@constants/routes';
+
 import ProductForm from './ProductForm';
 import SetProductForm from './set/SetProductForm';
 
@@ -26,7 +28,7 @@ function ProductAdd({ productType = ProductType.SINGLE, onClose }: ProductAddPro
     fetchCategories();
   }, []);
 
-  const closeSidebar = () => {
+  const handleCloseEditor = () => {
     if (onClose) {
       onClose();
       return;
@@ -45,7 +47,7 @@ function ProductAdd({ productType = ProductType.SINGLE, onClose }: ProductAddPro
       .then(() => fetchProducts())
       .then(() => {
         alert('상품이 추가되었습니다.');
-        closeSidebar();
+        handleCloseEditor();
 
         if (shouldRedirectToOnboarding) {
           navigate(getAdminWorkspacePath(Number(workspaceId)));
@@ -61,7 +63,7 @@ function ProductAdd({ productType = ProductType.SINGLE, onClose }: ProductAddPro
       .then(() => fetchProducts())
       .then(() => {
         alert('세트 메뉴가 추가되었습니다.');
-        closeSidebar();
+        handleCloseEditor();
 
         if (shouldRedirectToOnboarding) {
           navigate(getAdminWorkspacePath(Number(workspaceId)));
@@ -73,10 +75,10 @@ function ProductAdd({ productType = ProductType.SINGLE, onClose }: ProductAddPro
   };
 
   if (productType === ProductType.SET && workspaceId) {
-    return <SetProductForm mode="ADD" workspaceId={workspaceId} onSubmit={handleAddSetProduct} onCancel={closeSidebar} />;
+    return <SetProductForm mode="ADD" workspaceId={workspaceId} onSubmit={handleAddSetProduct} onCancel={handleCloseEditor} />;
   }
 
-  return <ProductForm mode="ADD" workspaceId={workspaceId} onSubmit={handleAddProduct} onCancel={closeSidebar} />;
+  return <ProductForm mode="ADD" workspaceId={workspaceId} onSubmit={handleAddProduct} onCancel={handleCloseEditor} />;
 }
 
 export default ProductAdd;

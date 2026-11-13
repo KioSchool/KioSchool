@@ -1,9 +1,11 @@
 ﻿import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { useSetAtom } from 'jotai';
+import { useParams } from 'react-router-dom';
+
+import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { externalSidebarAtom } from '@jotai/atoms';
 import { AdminProduct, ProductStateType, ProductType, RIGHT_SIDEBAR_ACTION, SetProductRequest } from '@@types/index';
-import useAdminProducts from '@hooks/admin/useAdminProducts';
+
 import ProductForm from './ProductForm';
 import SetProductForm from './set/SetProductForm';
 
@@ -32,7 +34,7 @@ function ProductEdit({ productId, onDelete, onClose }: ProductEditProps) {
     loadProductData();
   }, [productId]);
 
-  const closeSidebar = () => {
+  const handleCloseEditor = () => {
     if (onClose) {
       onClose();
       return;
@@ -46,7 +48,7 @@ function ProductEdit({ productId, onDelete, onClose }: ProductEditProps) {
       await editProduct(submitData, file);
       await fetchProducts();
       alert('상품 정보가 수정되었습니다.');
-      closeSidebar();
+      handleCloseEditor();
     } catch {
       alert('상품 정보를 수정하지 못했습니다. 입력 내용을 확인해주세요.');
     }
@@ -57,7 +59,7 @@ function ProductEdit({ productId, onDelete, onClose }: ProductEditProps) {
       await editSetProduct(request, file);
       await fetchProducts();
       alert('세트 메뉴 정보가 수정되었습니다.');
-      closeSidebar();
+      handleCloseEditor();
     } catch {
       alert('세트 메뉴 정보를 수정하지 못했습니다. 입력 내용을 확인해주세요.');
     }
@@ -73,13 +75,20 @@ function ProductEdit({ productId, onDelete, onClose }: ProductEditProps) {
         initialValues={initialData}
         onSubmit={handleEditSetProduct}
         onDelete={onDelete}
-        onCancel={closeSidebar}
+        onCancel={handleCloseEditor}
       />
     );
   }
 
   return (
-    <ProductForm mode="EDIT" workspaceId={workspaceId} initialValues={initialData} onSubmit={handleEditProduct} onDelete={onDelete} onCancel={closeSidebar} />
+    <ProductForm
+      mode="EDIT"
+      workspaceId={workspaceId}
+      initialValues={initialData}
+      onSubmit={handleEditProduct}
+      onDelete={onDelete}
+      onCancel={handleCloseEditor}
+    />
   );
 }
 

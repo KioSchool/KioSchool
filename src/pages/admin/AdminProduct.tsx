@@ -1,26 +1,27 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import useAdminProducts from '@hooks/admin/useAdminProducts';
-import useAdminProductDnd from '@hooks/admin/useAdminProductDnd';
 import styled from '@emotion/styled';
-import { colFlex, rowFlex } from '@styles/flexStyles';
-import useConfirm from '@hooks/useConfirm';
-import AppContainer from '@components/common/container/AppContainer';
-import NewCommonButton from '@components/common/button/NewCommonButton';
+import { closestCenter, DndContext, DragOverlay } from '@dnd-kit/core';
+import { useParams } from 'react-router-dom';
+
 import ProductAdd from '@components/admin/product/ProductAdd';
+import ProductCard from '@components/admin/product/ProductCard';
+import ProductDroppableContainer from '@components/admin/product/ProductDroppableContainer';
 import ProductEdit from '@components/admin/product/ProductEdit';
 import ProductEditorModal from '@components/admin/product/ProductEditorModal';
-import { closestCenter, DndContext, DragOverlay } from '@dnd-kit/core';
-import ProductDroppableContainer from '@components/admin/product/ProductDroppableContainer';
-import ProductCard from '@components/admin/product/ProductCard';
-import { Color } from '@resources/colors';
-import OnboardingStepHint from '@components/admin/workspace/onboarding/OnboardingStepHint';
 import { ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardingData';
+import OnboardingStepHint from '@components/admin/workspace/onboarding/OnboardingStepHint';
+import NewCommonButton from '@components/common/button/NewCommonButton';
+import AppContainer from '@components/common/container/AppContainer';
+import useAdminProductDnd from '@hooks/admin/useAdminProductDnd';
+import useAdminProducts from '@hooks/admin/useAdminProducts';
+import useConfirm from '@hooks/useConfirm';
+import { Color } from '@resources/colors';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { ProductType } from '@@types/index';
 
 const Container = styled.div`
   width: 100%;
-  color: #464a4d;
+  color: ${Color.TEXT_BODY};
   gap: 10px;
   ${colFlex({ align: 'center' })}
 `;
@@ -38,7 +39,7 @@ const AddButtonGroup = styled.div`
 
 const DragHintText = styled.div`
   font-size: 14px;
-  color: #8e9599;
+  color: ${Color.MUTED_GREY};
   gap: 6px;
   ${rowFlex({ align: 'center' })}
 
