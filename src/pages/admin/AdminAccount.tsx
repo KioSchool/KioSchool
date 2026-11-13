@@ -1,23 +1,25 @@
-import AccountInfo from '@components/admin/account/info/AccountInfo';
-import AppContainer from '@components/common/container/AppContainer';
-import RightSidebarModal from '@components/common/modal/RightSidebarModal';
-import TossAccountInfo from '@components/admin/account/info/TossAccountInfo';
-import useAdminUser from '@hooks/admin/useAdminUser';
-import { colFlex, rowFlex } from '@styles/flexStyles';
-import styled from '@emotion/styled';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useAtomValue } from 'jotai';
+import styled from '@emotion/styled';
+import AppContainer from '@components/common/container/AppContainer';
+import RightSidebarModal from '@components/common/modal/RightSidebarModal';
+import AccountCards from '@components/admin/account/AccountCards';
+import PayPreviewPanel from '@components/admin/account/PayPreviewPanel';
+import useAdminUser from '@hooks/admin/useAdminUser';
+import { adminUserAtom } from '@jotai/admin/atoms';
+import { colFlex } from '@styles/flexStyles';
 
-const AccountContainer = styled.div`
+const Content = styled.div`
   width: 100%;
-  height: 520px;
-  gap: 15px;
-  ${rowFlex({ justify: 'space-between' })};
+  gap: 20px;
+  ${colFlex({ align: 'stretch' })}
 `;
 
 function AdminAccount() {
   const { fetchAdminUser } = useAdminUser();
   const router = useLocation();
+  const account = useAtomValue(adminUserAtom).account;
 
   useEffect(() => {
     fetchAdminUser();
@@ -25,11 +27,11 @@ function AdminAccount() {
 
   return (
     <AppContainer useFlex={colFlex({ justify: 'center' })} customWidth={'1000px'}>
-      <AccountContainer>
-        <AccountInfo />
-        <TossAccountInfo />
+      <Content>
+        <AccountCards account={account} />
+        <PayPreviewPanel account={account} />
         <RightSidebarModal useExternalControl={{ location: router }} />
-      </AccountContainer>
+      </Content>
     </AppContainer>
   );
 }

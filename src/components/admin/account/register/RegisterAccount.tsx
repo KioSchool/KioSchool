@@ -10,7 +10,7 @@ import { normalizeAccountNumber } from '@utils/formatNumber';
 import { useAtomValue, useSetAtom } from 'jotai';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
-import { ACCOUNT_INFO, ACCOUNT_REGISTER_RESULT } from '@constants/data/accountData';
+import { ACCOUNT_INFO, ACCOUNT_REGISTER_PAY_APP_HINT, ACCOUNT_REGISTER_RESULT } from '@constants/data/accountData';
 
 const Container = styled.div`
   width: 100%;
@@ -43,6 +43,17 @@ const InputColContainer = styled.div`
 const SubmitContainer = styled.div`
   gap: 10px;
   ${rowFlex({ justify: 'end', align: 'center' })};
+`;
+
+const BottomContainer = styled.div`
+  width: 100%;
+  gap: 12px;
+  ${colFlex({ justify: 'center', align: 'end' })};
+`;
+
+const PayAppHint = styled.div`
+  color: #8d959c;
+  font-size: 13px;
 `;
 
 function RegisterAccount() {
@@ -131,14 +142,17 @@ function RegisterAccount() {
           />
         </InputColContainer>
       </InputContainer>
-      <SubmitContainer>
-        <NewCommonButton onClick={handleReset} customSize={{ width: 106, height: 40 }} color="blue_gray">
-          초기화
-        </NewCommonButton>
-        <NewCommonButton onClick={registerHandler} customSize={{ width: 106, height: 40 }}>
-          편집 완료
-        </NewCommonButton>
-      </SubmitContainer>
+      <BottomContainer>
+        <PayAppHint>{ACCOUNT_REGISTER_PAY_APP_HINT}</PayAppHint>
+        <SubmitContainer>
+          <NewCommonButton onClick={handleReset} customSize={{ width: 106, height: 40 }} color="blue_gray">
+            초기화
+          </NewCommonButton>
+          <NewCommonButton onClick={registerHandler} customSize={{ width: 106, height: 40 }}>
+            편집 완료
+          </NewCommonButton>
+        </SubmitContainer>
+      </BottomContainer>
     </Container>
   );
 }
