@@ -12,6 +12,11 @@ interface PayAppPopupWithPromiseOptions extends PayAppPopupOptions {
 }
 
 const OPEN_FAILED_MESSAGE = '송금 앱을 열 수 없어요.';
+// 카카오페이 링크(https)는 카카오 웹 페이지를 먼저 받은 뒤 앱으로 넘어간다. 축제 현장처럼 느린 망에서
+// 5초 안에 창을 닫으면 앱이 열리기 전에 끊길 수 있어, 웹 링크는 창을 더 오래 둔다.
+const WEB_LINK_CLOSE_DELAY = 20000;
+
+const getCloseDelay = (accountUrl: string, closeDelay: number) => (/^https?:\/\//.test(accountUrl) ? Math.max(closeDelay, WEB_LINK_CLOSE_DELAY) : closeDelay);
 
 function usePayAppPopup() {
   const createPayAppUrl = (accountUrl: string, amount: number) => {
@@ -53,7 +58,7 @@ function usePayAppPopup() {
       popup = createPopup(payAppUrl);
     }
 
-    closePopupWithDelay(popup, closeDelay);
+    closePopupWithDelay(popup, getCloseDelay(accountUrl, closeDelay));
     return popup;
   };
 
@@ -81,7 +86,7 @@ function usePayAppPopup() {
         onError?.(error);
       })
       .finally(() => {
-        closePopupWithDelay(popup, closeDelay);
+        closePopupWithDelay(popup, getCloseDelay(accountUrl, closeDelay));
       });
   };
 

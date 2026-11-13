@@ -56,7 +56,9 @@ function OrderPay() {
 
   const [accountInfo, setAccountInfo] = useState<Account>(defaultAccountValue);
   const [isAccountLoaded, setIsAccountLoaded] = useState(false);
-  const payMethods = getAvailablePayMethods(accountInfo);
+  // 계좌 조회가 실패하면 '계좌 없음'으로 막지 않고 예전처럼 계좌이체로 받는다(대기 화면이 계좌를 다시 불러온다)
+  const [isAccountFetchFailed, setIsAccountFetchFailed] = useState(false);
+  const payMethods = isAccountFetchFailed ? [PaymentMethod.BANK_TRANSFER] : getAvailablePayMethods(accountInfo);
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -94,6 +96,10 @@ function OrderPay() {
         if (!account) return;
         setAccountInfo(account);
         setSelectedMethod(getDefaultPayMethod(getAvailablePayMethods(account)));
+      })
+      .catch(() => {
+        setIsAccountFetchFailed(true);
+        setSelectedMethod(PaymentMethod.BANK_TRANSFER);
       })
       .finally(() => setIsAccountLoaded(true));
   }, []);
