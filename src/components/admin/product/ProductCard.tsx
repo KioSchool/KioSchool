@@ -146,6 +146,12 @@ function isAdminProduct(product: Product | AdminProduct): product is AdminProduc
   return 'effectiveStatus' in product;
 }
 
+function getSoldOutLabel(productNames: string[]): string {
+  if (productNames.length === 0) return '판매 중지';
+  if (productNames.length === 1) return `${productNames[0]} 품절`;
+  return `${productNames[0]} 외 ${productNames.length - 1}개 품절`;
+}
+
 function ProductCard({ product, onClick, showStatusSelector = true }: ProductCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { editProductStatus } = useAdminProducts(workspaceId);
@@ -165,9 +171,7 @@ function ProductCard({ product, onClick, showStatusSelector = true }: ProductCar
     .filter((component) => component.conditionProduct?.status === ProductStatus.SOLD_OUT)
     .map((component) => component.conditionProduct?.name)
     .filter((name): name is string => Boolean(name));
-  const soldOutLabel = soldOutConditionNames?.length
-    ? `${soldOutConditionNames[0]}${soldOutConditionNames.length > 1 ? ` 외 ${soldOutConditionNames.length - 1}개` : ''} 품절`
-    : '판매 중지';
+  const soldOutLabel = getSoldOutLabel(soldOutConditionNames ?? []);
   const originalPrice = adminProduct?.originalPrice;
   const discountPrice = adminProduct?.discountPrice ?? 0;
 

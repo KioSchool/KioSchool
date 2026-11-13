@@ -20,6 +20,7 @@ function ProductAdd({ productType = ProductType.SINGLE, onClose }: ProductAddPro
   const workspace = useAtomValue(adminWorkspaceAtom);
   const navigate = useNavigate();
   const { addProduct, addSetProduct, fetchCategories, fetchProducts } = useAdminProducts(workspaceId);
+  const shouldRedirectToOnboarding = workspace.isOnboarding && Boolean(workspaceId);
 
   useEffect(() => {
     fetchCategories();
@@ -40,8 +41,6 @@ function ProductAdd({ productType = ProductType.SINGLE, onClose }: ProductAddPro
     }
 
     const submitData = { ...formData, workspaceId };
-    const shouldRedirectToOnboarding = workspace.isOnboarding && Boolean(workspaceId);
-
     return addProduct(submitData, file)
       .then(() => fetchProducts())
       .then(() => {
@@ -63,6 +62,10 @@ function ProductAdd({ productType = ProductType.SINGLE, onClose }: ProductAddPro
       .then(() => {
         alert('세트 메뉴가 추가되었습니다.');
         closeSidebar();
+
+        if (shouldRedirectToOnboarding) {
+          navigate(getAdminWorkspacePath(Number(workspaceId)));
+        }
       })
       .catch(() => {
         alert('세트 메뉴 추가에 실패했습니다. 입력 내용을 확인해주세요.');

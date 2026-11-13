@@ -119,7 +119,9 @@ function AdminProduct() {
   };
 
   const isSetEditor = editorState?.productType === ProductType.SET;
-  const editorTitle = editorState?.mode === 'EDIT' ? `${isSetEditor ? '세트 메뉴' : '일반 메뉴'} 수정` : `${isSetEditor ? '세트 메뉴' : '일반 메뉴'} 추가`;
+  const editorProductLabel = isSetEditor ? '세트 메뉴' : '일반 메뉴';
+  const editorActionLabel = editorState?.mode === 'EDIT' ? '수정' : '추가';
+  const editorTitle = `${editorProductLabel} ${editorActionLabel}`;
 
   return (
     <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })}>

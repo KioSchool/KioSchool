@@ -98,6 +98,9 @@ function SetProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, 
   const [value, setValue] = useState<SetProductFormValue>(() => createInitialValue(initialValues));
   const [isSubmitting, setIsSubmitting] = useState(false);
   const componentKeyRef = useRef(value.components.length + 1);
+  let submitButtonText = '세트 추가';
+  if (mode === 'EDIT') submitButtonText = '변경 완료';
+  if (isSubmitting) submitButtonText = '저장 중...';
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -194,7 +197,7 @@ function SetProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, 
             취소
           </NewCommonButton>
           <NewCommonButton type="submit" size="sm" disabled={isSubmitting}>
-            {isSubmitting ? '저장 중...' : mode === 'EDIT' ? '변경 완료' : '세트 추가'}
+            {submitButtonText}
           </NewCommonButton>
         </SubmitActions>
       </Footer>
