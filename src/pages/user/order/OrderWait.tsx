@@ -1,98 +1,56 @@
 import styled from '@emotion/styled';
-import { colFlex, rowFlex } from '@styles/flexStyles';
+import { colFlex } from '@styles/flexStyles';
 import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
 import { userWorkspaceAtom } from '@jotai/user/atoms';
-import OrderAccountInfo from '@components/user/order/orderWait/OrderAccountInfo';
-import OrderWaitTipBanner from '@components/user/order/orderWait/OrderWaitTipBanner';
-import OrderWaitStepGuide from '@components/user/order/orderWait/OrderWaitStepGuide';
-import HorizontalDivider from '@components/common/divider/HorizontalDivider';
-import { Color } from '@resources/colors';
 import { useEffect, useState } from 'react';
 import useBlockPopState from '@hooks/useBlockPopState';
-import { Account, Order, OrderStatus } from '@@types/index';
+import { Account, Order, OrderStatus, PaymentMethod } from '@@types/index';
 import useOrder from '@hooks/user/useOrder';
 import { defaultAccountValue, defaultUserOrderValue } from '@@types/defaultValues';
-import { keyframes } from '@emotion/react';
 import useWorkspace from '@hooks/user/useWorkspace';
 import usePayAppPopup from '@hooks/user/usePayAppPopup';
 import { ORDER_ROUTES } from '@constants/routes';
 import { isOverOneDay } from '@utils/formatDate';
-import { BANK_TRANSFER_TIPS, TOSS_TIPS } from '@constants/data/orderWaitData';
+import { getPayAppUrl, isPayApp } from '@utils/payMethods';
+import OrderWaitHeader from '@components/user/order/wait/OrderWaitHeader';
+import NotSentYetPanel from '@components/user/order/wait/NotSentYetPanel';
+import BankAccountCard from '@components/user/order/wait/BankAccountCard';
+import OrderItemsCard from '@components/user/order/wait/OrderItemsCard';
 
 const Container = styled.div`
+  box-sizing: border-box;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   padding-top: 50px;
+  background: #ffffff;
 `;
 
 const SubContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
-  padding: 20px 20px 80px 20px;
-  gap: 24px;
-  ${colFlex({ justify: 'center', align: 'center' })}
+  padding: 20px 20px 0;
+  gap: 14px;
+  ${colFlex({ align: 'stretch' })}
 `;
 
-const ContentsContainer = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  padding: 12px 10px;
-  gap: 20px;
-  border-radius: 9px;
-  border: 0.5px solid #939393;
-  ${colFlex({ justify: 'center', align: 'start' })}
+const Tip = styled.p`
+  margin: 0;
+  padding: 12px 0 24px;
+  color: #9aa1a6;
+  font-size: 12px;
+  text-align: center;
 `;
 
-const OrderInfoContainer = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  padding: 0 10px;
-  ${rowFlex({ justify: 'space-between', align: 'center' })};
-`;
+const PAYMENT_METHODS = Object.values(PaymentMethod) as string[];
 
-const Label = styled.div`
-  font-size: 13px;
-  font-weight: 600;
-`;
-
-const PriceLabel = styled(Label)`
-  font-size: 18px;
-  font-weight: 700;
-  color: ${Color.KIO_ORANGE};
-`;
-
-const loadingDots = keyframes`
-  0%, 20% { content: '.'; }
-  40% { content: '..'; }
-  60% { content: '...'; }
-  80%, 100% { content: ''; }
-`;
-
-const PollingStatusContainer = styled.div`
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  height: 60px;
-  background-color: ${Color.WHITE};
-  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
-  font-size: 15px;
-  font-weight: 600;
-  color: ${Color.BLACK};
-  z-index: 10;
-  ${rowFlex({ justify: 'center', align: 'center' })}
-
-  .dots::after {
-    display: inline-block;
-    animation: ${loadingDots} 1.5s infinite;
-    content: '...';
-    text-align: left;
-    width: 20px;
-  }
-`;
-
-const Dot = styled.span``;
+// 대기 화면 수단. 결제 화면이 method=로 넘긴다. 배포 전에 열린 옛 주소는 tossPay=true|false만 있다.
+const getWaitMethod = (searchParams: URLSearchParams): PaymentMethod => {
+  const method = searchParams.get('method');
+  if (method && PAYMENT_METHODS.includes(method)) return method as PaymentMethod;
+  return searchParams.get('tossPay') === 'true' ? PaymentMethod.TOSS : PaymentMethod.BANK_TRANSFER;
+};
 
 function OrderWait() {
   const navigate = useNavigate();
@@ -100,7 +58,7 @@ function OrderWait() {
   const workspaceId = searchParams.get('workspaceId');
   const tableNo = searchParams.get('tableNo');
   const orderId = searchParams.get('orderId') || null;
-  const isTossPay = searchParams.get('tossPay') === 'true';
+  const method = getWaitMethod(searchParams);
 
   const { fetchWorkspace, fetchWorkspaceAccount } = useWorkspace();
   const { openPayAppSync } = usePayAppPopup();
@@ -108,10 +66,6 @@ function OrderWait() {
   const workspace = useAtomValue(userWorkspaceAtom);
   const [currentOrder, setCurrentOrder] = useState<Order>(defaultUserOrderValue);
   const [accountInfo, setAccountInfo] = useState<Account>(defaultAccountValue);
-
-  const tossAccountUrl = accountInfo?.tossAccountUrl;
-
-  const tips = isTossPay ? TOSS_TIPS : BANK_TRANSFER_TIPS;
 
   const fetchIntervalTime = 5000;
   const { fetchOrder } = useOrder();
@@ -204,9 +158,9 @@ function OrderWait() {
     }
   }, [currentOrderStatus]);
 
-  const handleTossRetry = () => {
+  const handleReopenPayApp = () => {
     openPayAppSync({
-      accountUrl: tossAccountUrl,
+      accountUrl: getPayAppUrl(accountInfo, method),
       amount: totalPrice,
       closeDelay: 5000,
     });
@@ -214,23 +168,13 @@ function OrderWait() {
 
   return (
     <Container className={'order-wait-container'}>
-      <OrderWaitTipBanner tips={tips} />
       <OrderStickyNavBar useLeftArrow={false} showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
       <SubContainer className={'order-wait-sub-container'}>
-        <ContentsContainer>
-          <OrderAccountInfo account={accountInfo} />
-          <HorizontalDivider />
-          <OrderInfoContainer>
-            <Label>송금하실 금액</Label>
-            <PriceLabel>{totalPrice.toLocaleString()}원</PriceLabel>
-          </OrderInfoContainer>
-          <HorizontalDivider />
-          <OrderWaitStepGuide isTossPay={isTossPay} onTossRetry={handleTossRetry} />
-        </ContentsContainer>
+        <OrderWaitHeader method={method} amount={totalPrice} />
+        {isPayApp(method) ? <NotSentYetPanel method={method} account={accountInfo} onReopen={handleReopenPayApp} /> : <BankAccountCard account={accountInfo} />}
+        <OrderItemsCard orderProducts={currentOrder?.orderProducts ?? []} totalPrice={totalPrice} />
       </SubContainer>
-      <PollingStatusContainer>
-        입금 내역을 확인하고 있습니다 <Dot className="dots" />
-      </PollingStatusContainer>
+      <Tip>이 화면을 닫지 말고 기다려 주세요</Tip>
     </Container>
   );
 }
