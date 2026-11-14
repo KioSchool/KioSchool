@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { rowFlex } from '@styles/flexStyles';
 import { DASHBOARD_NOTICES } from '@constants/data/noticeData';
 import { TIP_DURATION } from '@constants/data/orderWaitData';
+import { Color } from '@resources/colors';
 
 const tipFade = keyframes`
   0% { opacity: 0; transform: translateY(4px); }
@@ -18,7 +19,7 @@ const Container = styled.div`
   box-shadow: 0px 4px 20px rgba(92, 92, 92, 0.05);
   border-radius: 10px;
   background-color: #fff;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   box-sizing: border-box;
   padding: 0 17px;
   gap: 12px;
@@ -32,7 +33,7 @@ const Icon = styled.div`
 const Text = styled.div`
   line-height: 18px;
   font-size: 14px;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
 `;
 
 const FadeText = styled.span`

@@ -32,7 +32,7 @@ const ModalContainer = styled.div`
   transform: translate(-50%, -50%);
   background-color: ${Color.WHITE};
   border-radius: 10px;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   width: 500px;
   max-height: calc(100vh - 64px);
   overflow-y: auto;

@@ -10,7 +10,7 @@ interface StatusOption {
 export const STATUS_OPTIONS: StatusOption[] = [
   { label: '판매 중', value: ProductStatus.SELLING, color: Color.KIO_ORANGE },
   { label: '품절', value: ProductStatus.SOLD_OUT, color: Color.GREY },
-  { label: '숨김', value: ProductStatus.HIDDEN, color: '#e8eef2' },
+  { label: '숨김', value: ProductStatus.HIDDEN, color: Color.BORDER_GREY },
 ];
 
 export const MAX_PRODUCT_IMAGE_SIZE = 1024 * 1024 * 5;

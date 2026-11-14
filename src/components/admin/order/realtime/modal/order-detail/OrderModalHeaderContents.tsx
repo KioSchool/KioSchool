@@ -7,11 +7,12 @@ import { formatDate } from '@utils/formatDate';
 import { useAtomValue } from 'jotai';
 import { createSearchParams, useNavigate, useParams } from 'react-router-dom';
 import { orderModalReadOnlyAtom } from '@jotai/atoms';
+import { Color } from '@resources/colors';
 
 const ModalHeader = styled.div`
   padding: 20px 30px 12px 30px;
-  border-bottom: 1px solid #e8eef2;
-  color: #464a4d;
+  border-bottom: 1px solid ${Color.BORDER_GREY};
+  color: ${Color.TEXT_DEFAULT};
   ${colFlex({ justify: 'space-between', align: 'start' })}
 `;
 

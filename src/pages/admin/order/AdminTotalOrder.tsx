@@ -29,11 +29,11 @@ const ResetButton = styled.div`
   padding: 0 10px;
   height: 24px;
   background: ${Color.WHITE};
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 4px;
   cursor: pointer;
   font-size: 12px;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   gap: 4px;
   ${rowFlex({ justify: 'center', align: 'center' })}
 
@@ -53,7 +53,7 @@ const FallbackContainer = styled.div`
 
 const OrderListContainer = styled.div`
   width: 100%;
-  border-top: 1px solid #e8eef2;
+  border-top: 1px solid ${Color.BORDER_GREY};
   overflow: hidden;
   ${colFlex({ align: 'stretch' })}
 `;

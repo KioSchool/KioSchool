@@ -1,6 +1,7 @@
 import { P, match } from 'ts-pattern';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 const DEFAULT_STAT_CARD_HEIGHT = 123;
 
@@ -34,13 +35,13 @@ const BackgroundHighlight = styled.div<{ rate: number }>`
 const Title = styled.b`
   line-height: 18px;
   font-size: 12px;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
 `;
 
 const Value = styled.b<{ color?: string }>`
   line-height: 32px;
   font-size: 21px;
-  color: ${({ color }) => color || '#464a4d'};
+  color: ${({ color }) => color || Color.TEXT_DEFAULT};
 `;
 
 const Unit = styled.span`
@@ -54,7 +55,7 @@ const Description = styled.div`
 `;
 
 const DescriptionBold = styled.b`
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
 `;
 
 interface StatCardProps {

@@ -42,7 +42,7 @@ const Title = styled.span`
 
 const Description = styled.span`
   font-size: 13px;
-  color: ${Color.TEXT_BODY};
+  color: ${Color.TEXT_SUBTLE};
 `;
 
 function TableSessionGuideBanner() {

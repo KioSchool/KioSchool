@@ -9,7 +9,7 @@ const Rows = styled.div`
 `;
 
 const Title = styled.span`
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   font-size: 13px;
   font-weight: 700;
   line-height: 1.45;
@@ -20,7 +20,7 @@ const Row = styled.div`
 `;
 
 const Key = styled.span`
-  color: #697278;
+  color: ${Color.TEXT_SUBTLE};
   font-size: 14px;
 `;
 

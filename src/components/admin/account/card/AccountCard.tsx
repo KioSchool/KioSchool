@@ -31,7 +31,7 @@ const TextButton = styled.button`
   padding: 0;
   border: none;
   background: none;
-  color: #9aa1a6;
+  color: ${Color.TEXT_HINT};
   font: inherit;
   font-size: 13px;
   cursor: pointer;
@@ -43,7 +43,7 @@ const PillButton = styled.button`
   border-radius: 16px;
   border: 1px solid ${Color.BORDER_GREY};
   background: ${Color.WHITE};
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   font: inherit;
   font-size: 13px;
   font-weight: 700;

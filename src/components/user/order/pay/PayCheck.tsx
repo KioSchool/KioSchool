@@ -7,7 +7,7 @@ import { rowFlex } from '@styles/flexStyles';
 const getBorder = (checked: boolean) =>
   match(checked)
     .with(true, () => 'none')
-    .otherwise(() => '1.5px solid #d1d5d8');
+    .otherwise(() => `1.5px solid ${Color.DISABLED_GREY}`);
 
 const getBackground = (checked: boolean, color: string) =>
   match(checked)

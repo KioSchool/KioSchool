@@ -1,4 +1,5 @@
 import { GhostType } from '@@types/index';
+import { Color } from '@resources/colors';
 
 export const TIMELINE_START_HOUR = 9;
 
@@ -8,12 +9,12 @@ export const FALLBACK_WALL_END_HOUR = 5;
 export const MIN_VALID_SESSION_MINUTES = 30;
 
 export const TIMELINE_COLORS = {
-  TEXT_PRIMARY: '#464a4d',
+  TEXT_PRIMARY: Color.TEXT_DEFAULT,
   TEXT_SECONDARY: '#939393',
   BORDER: '#eaeaea',
-  BORDER_CARD: '#e8eef2',
+  BORDER_CARD: Color.BORDER_GREY,
   BACKGROUND_LIGHT: '#fafafa',
-  HEADER_BG: '#f0f5f8',
+  HEADER_BG: Color.GREY_FAINT,
   GHOST_TEXT: '#7c3aad',
   GHOST_BG: '#f0edf5',
   GHOST_BORDER: '#e0d6ed',

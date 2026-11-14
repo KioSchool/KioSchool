@@ -4,6 +4,7 @@ import { PopularProducts } from '@@types/index';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import ContentCard from '@components/common/card/ContentCard';
 import RankedList, { RankedItem } from '@components/common/list/RankedList';
+import { Color } from '@resources/colors';
 
 type TabKey = 'byQuantity' | 'byRevenue' | 'byReorderRate';
 
@@ -18,10 +19,10 @@ const TabContainer = styled.div`
 
 const Tab = styled.div<{ isSelected: boolean }>`
   padding: 10px;
-  border-bottom: 3px solid ${({ isSelected }) => (isSelected ? '#464a4d' : 'transparent')};
+  border-bottom: 3px solid ${({ isSelected }) => (isSelected ? Color.TEXT_DEFAULT : 'transparent')};
   font-weight: ${({ isSelected }) => (isSelected ? 600 : 400)};
   font-size: 14px;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   cursor: pointer;
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;

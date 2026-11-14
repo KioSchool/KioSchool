@@ -39,7 +39,7 @@ const SubContainer = styled.div`
 const Tip = styled.p`
   margin: 0;
   padding: 12px 0 24px;
-  color: #9aa1a6;
+  color: ${Color.TEXT_HINT};
   font-size: 12px;
   text-align: center;
 `;

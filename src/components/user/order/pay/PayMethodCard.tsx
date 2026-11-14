@@ -68,8 +68,8 @@ const Label = styled.span`
 const Badge = styled.span`
   padding: 2px 7px;
   border-radius: 9px;
-  background: #f0f5f8;
-  color: #697278;
+  background: ${Color.GREY_FAINT};
+  color: ${Color.TEXT_SUBTLE};
   font-size: 11px;
   font-weight: 700;
   line-height: 1.45;
