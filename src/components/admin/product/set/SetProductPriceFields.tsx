@@ -33,6 +33,7 @@ const Description = styled.p`
 `;
 
 const PRICE_ROW_HEIGHT = 70;
+const PRICE_INPUT_WIDTH = 320;
 
 const Rows = styled.div`
   gap: 10px;
@@ -56,6 +57,17 @@ const FieldLabel = styled.span`
   font-size: 14px;
   font-weight: 700;
   color: ${Color.TEXT_STRONG};
+`;
+
+const InputSlot = styled.div`
+  width: min(${PRICE_INPUT_WIDTH}px, 100%);
+  justify-self: end;
+`;
+
+const PriceInput = styled(NewAppInput)`
+  font-weight: 700;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 `;
 
 const Preview = styled.div`
@@ -138,24 +150,28 @@ function SetProductPriceFields({ value, onChange }: SetProductPriceFieldsProps) 
       <Rows>
         <Field>
           <FieldLabel>설정 금액 (할인 전)</FieldLabel>
-          <NewAppInput
-            width="100%"
-            value={value.originalPrice}
-            inputMode="numeric"
-            placeholder="예: 28000"
-            onChange={(event) => onChange({ ...value, originalPrice: event.target.value.replace(/[^0-9]/g, '') })}
-          />
+          <InputSlot>
+            <PriceInput
+              width="100%"
+              value={value.originalPrice}
+              inputMode="numeric"
+              placeholder="예: 28000"
+              onChange={(event) => onChange({ ...value, originalPrice: event.target.value.replace(/[^0-9]/g, '') })}
+            />
+          </InputSlot>
         </Field>
 
         <Field>
           <FieldLabel>할인 금액</FieldLabel>
-          <NewAppInput
-            width="100%"
-            value={value.discountPrice}
-            inputMode="numeric"
-            placeholder="예: 3000"
-            onChange={(event) => onChange({ ...value, discountPrice: event.target.value.replace(/[^0-9]/g, '') })}
-          />
+          <InputSlot>
+            <PriceInput
+              width="100%"
+              value={value.discountPrice}
+              inputMode="numeric"
+              placeholder="예: 3000"
+              onChange={(event) => onChange({ ...value, discountPrice: event.target.value.replace(/[^0-9]/g, '') })}
+            />
+          </InputSlot>
         </Field>
 
         <Preview>
