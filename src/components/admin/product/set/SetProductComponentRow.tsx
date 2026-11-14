@@ -12,9 +12,9 @@ import { MIN_SET_COMPONENT_QUANTITY } from '@utils/setProduct';
 import SetProductConditionSelect from './SetProductConditionSelect';
 
 const COMPONENT_CONTROL_HEIGHT = 42;
-const COMPONENT_NAME_COLUMN = 'minmax(160px, 220px)';
+const COMPONENT_NAME_COLUMN = 'minmax(240px, 1fr)';
 const COMPONENT_QUANTITY_COLUMN = '150px';
-const COMPONENT_CONDITION_COLUMN = 'minmax(240px, 1fr)';
+const COMPONENT_CONDITION_COLUMN = 'minmax(200px, 280px)';
 
 const Container = styled.div`
   display: grid;
