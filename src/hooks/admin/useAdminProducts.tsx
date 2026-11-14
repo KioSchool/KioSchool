@@ -1,19 +1,17 @@
-import useApi from '@hooks/useApi';
-import { Product, ProductCategory, ProductStatus } from '@@types/index';
-import { useNavigate } from 'react-router-dom';
-import { adminCategoriesAtom, adminProductsAtom } from '@jotai/admin/atoms';
 import { useSetAtom } from 'jotai';
-import { getAdminProductsPath } from '@constants/routes';
+
+import useApi from '@hooks/useApi';
+import { adminCategoriesAtom, adminProductsAtom } from '@jotai/admin/atoms';
+import { AdminProduct, ProductCategory, ProductStateType, ProductStatus, SetProductRequest } from '@@types/index';
 
 function useAdminProducts(workspaceId: string | undefined | null) {
   const { adminApi } = useApi();
-  const navigate = useNavigate();
   const setProducts = useSetAtom(adminProductsAtom);
   const setProductCategories = useSetAtom(adminCategoriesAtom);
 
   const fetchProducts = () => {
-    adminApi
-      .get<Product[]>('/products', {
+    return adminApi
+      .get<AdminProduct[]>('/products', {
         params: {
           workspaceId: workspaceId,
         },
@@ -24,7 +22,7 @@ function useAdminProducts(workspaceId: string | undefined | null) {
   };
 
   const fetchProduct = async (productId: number) => {
-    const res = await adminApi.get<Product>('/product', {
+    const res = await adminApi.get<AdminProduct>('/product', {
       params: {
         productId,
       },
@@ -33,7 +31,7 @@ function useAdminProducts(workspaceId: string | undefined | null) {
     return res.data;
   };
 
-  const createFormData = (parameter: any, file: File | null) => {
+  const createFormData = (parameter: ProductStateType | SetProductRequest, file: File | null) => {
     const data = new FormData();
     data.append('body', new Blob([JSON.stringify(parameter)], { type: 'application/json' }));
     if (file) data.append('file', new Blob([file], { type: 'image/jpeg' }));
@@ -41,43 +39,47 @@ function useAdminProducts(workspaceId: string | undefined | null) {
     return data;
   };
 
-  const addProduct = (product: any, file: File) => {
+  const addProduct = (product: ProductStateType, file: File) => {
     const data = createFormData(product, file);
 
-    return adminApi.post('/product', data).catch((error) => {
+    return adminApi.post<AdminProduct>('/product', data).catch((error) => {
       console.error('Failed to add product: ', error);
       throw error;
     });
   };
 
-  const editProduct = (parameter: any, file: File | null) => {
+  const editProduct = (parameter: ProductStateType, file: File | null) => {
     const data = createFormData(parameter, file);
 
-    adminApi
-      .put('/product', data)
-      .then(() => {
-        navigate(getAdminProductsPath(parameter.workspaceId));
-      })
-      .catch((error) => console.error('Failed to add product: ', error));
+    return adminApi.put<AdminProduct>('/product', data);
+  };
+
+  const addSetProduct = (parameter: SetProductRequest, file: File | null) => {
+    const data = createFormData(parameter, file);
+
+    return adminApi.post<AdminProduct>('/product/set', data);
+  };
+
+  const editSetProduct = (parameter: SetProductRequest, file: File | null) => {
+    const data = createFormData(parameter, file);
+
+    return adminApi.put<AdminProduct>('/product/set', data);
   };
 
   const editProductStatus = (productId: number, status: ProductStatus) => {
-    adminApi
-      .put('/product/status', {
+    return adminApi
+      .put<AdminProduct>('/product/status', {
         workspaceId,
         productId,
         status,
       })
-      .then(() => {
-        fetchProducts();
-      })
-      .catch((error) => {
-        console.error('Failed to edit product sellable: ', error);
+      .then((response) => {
+        return fetchProducts().then(() => response.data);
       });
   };
 
   const deleteProduct = (productId: number) => {
-    adminApi
+    return adminApi
       .delete('/product', {
         params: {
           workspaceId: workspaceId,
@@ -86,9 +88,6 @@ function useAdminProducts(workspaceId: string | undefined | null) {
       })
       .then(() => {
         setProducts((prev) => prev.filter((item) => item.id !== productId));
-      })
-      .catch((error) => {
-        console.error('Failed to delete selected products: ', error);
       });
   };
 
@@ -129,7 +128,7 @@ function useAdminProducts(workspaceId: string | undefined | null) {
 
   const reorderProducts = (sorts: { categoryId: number | null; productIds: number[] }[]) => {
     return adminApi
-      .put<Product[]>('/products/sort', { workspaceId, sorts })
+      .put<AdminProduct[]>('/products/sort', { workspaceId, sorts })
       .then((res) => {
         setProducts(res.data);
       })
@@ -150,6 +149,8 @@ function useAdminProducts(workspaceId: string | undefined | null) {
     deleteProduct,
     fetchProduct,
     editProduct,
+    addSetProduct,
+    editSetProduct,
     editProductStatus,
     reorderCategories,
     reorderProducts,

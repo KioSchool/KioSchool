@@ -57,15 +57,31 @@ export interface OrderProduct extends OrderProductBase {
   isServed: boolean;
   servedCount: number;
   totalPrice: number;
+  discountPrice?: number | null;
+  components?: OrderProductComponent[];
   id: number;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface OrderProductComponent {
+  id: number;
+  name: string;
+  quantity: number;
+  totalQuantity: number;
+  servedCount: number;
+  displayOrder: number;
 }
 
 export enum ProductStatus {
   SELLING = 'SELLING',
   SOLD_OUT = 'SOLD_OUT',
   HIDDEN = 'HIDDEN',
+}
+
+export enum ProductType {
+  SINGLE = 'SINGLE',
+  SET = 'SET',
 }
 
 export interface Product {
@@ -78,6 +94,52 @@ export interface Product {
   createdAt: string;
   updatedAt: string;
   productCategory: ProductCategory | null;
+}
+
+export interface AdminConditionProduct {
+  id: number;
+  name: string;
+  status: ProductStatus;
+}
+
+export interface AdminSetComponent {
+  id: number;
+  name: string;
+  quantity: number;
+  displayOrder: number;
+  conditionProduct: AdminConditionProduct | null;
+}
+
+export interface LinkedSet {
+  id: number;
+  name: string;
+  effectiveStatus: ProductStatus;
+}
+
+export interface AdminProduct extends Product {
+  type: ProductType;
+  originalPrice: number | null;
+  discountPrice: number | null;
+  effectiveStatus: ProductStatus;
+  components: AdminSetComponent[];
+  linkedSets: LinkedSet[];
+}
+
+export interface SetProductComponentRequest {
+  name: string;
+  quantity: number;
+  conditionProductId: number | null;
+}
+
+export interface SetProductRequest {
+  workspaceId: number;
+  productId?: number;
+  name: string;
+  description: string;
+  productCategoryId: number | null;
+  originalPrice: number;
+  discountPrice: number;
+  components: SetProductComponentRequest[];
 }
 
 export interface ProductCategory {
@@ -100,11 +162,6 @@ export interface ProductStateType {
   productId?: string;
   workspaceId: string | undefined;
   productCategoryId: string | number;
-}
-
-export interface ProductActionType {
-  type: string;
-  payload: any;
 }
 
 export interface Workspace {

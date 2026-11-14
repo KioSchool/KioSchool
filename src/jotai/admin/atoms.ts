@@ -1,12 +1,12 @@
 import { defaultBanksValue, defaultDashboardValue, defaultUserValue, defaultWorkspaceValue } from '@@types/defaultValues';
-import { Bank, DashboardResponse, Order, Product, ProductCategory, Table, User, Workspace } from '@@types/index';
+import { AdminProduct, Bank, DashboardResponse, Order, ProductCategory, Table, User, Workspace } from '@@types/index';
 import { atom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 
 export const adminTablesAtom = atom<Table[]>([]);
 export const adminOrdersAtom = atom<Order[]>([]);
 export const adminWorkspacesAtom = atom<Workspace[]>([]);
-export const adminProductsAtom = atom<Product[]>([]);
+export const adminProductsAtom = atom<AdminProduct[]>([]);
 export const adminCategoriesAtom = atom<ProductCategory[]>([]);
 export const adminBanksAtom = atom<Bank[]>(defaultBanksValue);
 

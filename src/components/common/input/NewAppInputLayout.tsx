@@ -1,10 +1,11 @@
 ﻿import React, { ReactNode } from 'react';
 import styled from '@emotion/styled';
+import { RiShareBoxLine } from '@remixicon/react';
+
+import NewCommonButton, { CustomButtonSize } from '@components/common/button/NewCommonButton';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
-import { RiShareBoxLine } from '@remixicon/react';
-import NewCommonButton, { CustomButtonSize } from '@components/common/button/NewCommonButton';
 import { ButtonColor, ButtonSize } from '@@types/index';
 
 const Container = styled.div<ContainerProps>`
@@ -58,6 +59,11 @@ const LinkText = styled.span`
   font-weight: 500;
 `;
 
+const HeaderButton = styled(NewCommonButton)`
+  margin-right: 10px;
+  margin-left: auto;
+`;
+
 export interface InputButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize;
   color?: ButtonColor;
@@ -83,29 +89,26 @@ interface ContainerProps {
 }
 
 function NewAppInputLayout({ width, label, buttonProps, linkProps, enterHandler, children, className }: BaseInputLayoutProps) {
+  const hasHeader = Boolean(label || linkProps || buttonProps);
+
   return (
     <Container width={width} className={className}>
-      <HeaderContainer>
-        {label && <InputLabel>{label}</InputLabel>}
-        {linkProps && (
-          <LinkContainer href={linkProps.url} target="_blank" rel="noopener noreferrer">
-            <LinkIcon size={16} />
-            <LinkText>{linkProps.text}</LinkText>
-          </LinkContainer>
-        )}
-        {buttonProps && (
-          <NewCommonButton
-            {...buttonProps}
-            size={buttonProps.size || 'xs'}
-            color={buttonProps.color}
-            customSize={buttonProps.customSize}
-            onClick={enterHandler}
-            style={{ marginLeft: 'auto', marginRight: '10px' }}
-          >
-            {buttonProps.text}
-          </NewCommonButton>
-        )}
-      </HeaderContainer>
+      {hasHeader && (
+        <HeaderContainer>
+          {label && <InputLabel>{label}</InputLabel>}
+          {linkProps && (
+            <LinkContainer href={linkProps.url} target="_blank" rel="noopener noreferrer">
+              <LinkIcon size={16} />
+              <LinkText>{linkProps.text}</LinkText>
+            </LinkContainer>
+          )}
+          {buttonProps && (
+            <HeaderButton {...buttonProps} size={buttonProps.size || 'xs'} color={buttonProps.color} customSize={buttonProps.customSize} onClick={enterHandler}>
+              {buttonProps.text}
+            </HeaderButton>
+          )}
+        </HeaderContainer>
+      )}
       {children}
     </Container>
   );

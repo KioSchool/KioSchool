@@ -1,16 +1,17 @@
-import styled from '@emotion/styled';
-import { Color } from '@resources/colors';
-import { RiAddFill, RiSubtractFill } from '@remixicon/react';
-import { rowFlex } from '@styles/flexStyles';
 import { useState } from 'react';
+import styled from '@emotion/styled';
+import { RiAddFill, RiSubtractFill } from '@remixicon/react';
 
-const InputContainer = styled.div<{ disabled?: boolean; maxWidth?: string }>`
+import { Color } from '@resources/colors';
+import { rowFlex } from '@styles/flexStyles';
+
+const InputContainer = styled.div<{ disabled?: boolean; maxWidth?: string; inputHeight: number }>`
   box-sizing: border-box;
   padding: 2px 4px;
   border-radius: 45px;
-  background-color: ${({ disabled }) => (disabled ? '#e8eef2' : '#ffffff')};
-  border: 1px solid #e8eef2;
-  height: 28px;
+  background-color: ${({ disabled }) => (disabled ? Color.BORDER_GREY : Color.WHITE)};
+  border: 1px solid ${Color.BORDER_GREY};
+  height: ${({ inputHeight }) => inputHeight}px;
   width: 100%;
   max-width: ${({ maxWidth }) => maxWidth || '250px'};
   user-select: none;
@@ -24,7 +25,7 @@ const Input = styled.input<{ disabled?: boolean }>`
   background: none;
   border: none;
   font-size: 13px;
-  color: ${({ disabled }) => (disabled ? '#d1d5d8' : '#464a4d')};
+  color: ${({ disabled }) => (disabled ? Color.HEAVY_GREY : Color.TEXT_BODY)};
 
   &:focus {
     outline: none;
@@ -38,8 +39,8 @@ const Input = styled.input<{ disabled?: boolean }>`
 const MinusButton = styled(RiSubtractFill)<{ disabled?: boolean }>`
   width: 18px;
   height: 18px;
-  color: ${({ disabled }) => (disabled ? '#d1d5d8' : Color.KIO_ORANGE)};
-  background-color: ${({ disabled }) => (disabled ? '#e8eef2' : Color.WHITE)};
+  color: ${({ disabled }) => (disabled ? Color.HEAVY_GREY : Color.KIO_ORANGE)};
+  background-color: ${({ disabled }) => (disabled ? Color.BORDER_GREY : Color.WHITE)};
   border: ${({ disabled }) => (disabled ? 'none' : `1px solid ${Color.KIO_ORANGE}`)};
   border-radius: 50%;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
@@ -49,8 +50,8 @@ const MinusButton = styled(RiSubtractFill)<{ disabled?: boolean }>`
 const PlusButton = styled(RiAddFill)<{ disabled?: boolean }>`
   width: 18px;
   height: 18px;
-  color: ${({ disabled }) => (disabled ? '#d1d5d8' : Color.WHITE)};
-  background-color: ${({ disabled }) => (disabled ? '#e8eef2' : Color.KIO_ORANGE)};
+  color: ${({ disabled }) => (disabled ? Color.HEAVY_GREY : Color.WHITE)};
+  background-color: ${({ disabled }) => (disabled ? Color.BORDER_GREY : Color.KIO_ORANGE)};
   border-radius: 50%;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   flex-shrink: 0;
@@ -65,9 +66,22 @@ interface NumberInputProps {
   disabled?: boolean;
   readOnly?: boolean;
   maxWidth?: string;
+  height?: number;
 }
 
-function NumberInput({ value, formatter, onChange, onIncrement, onDecrement, disabled = false, readOnly = false, maxWidth }: NumberInputProps) {
+const DEFAULT_NUMBER_INPUT_HEIGHT = 28;
+
+function NumberInput({
+  value,
+  formatter,
+  onChange,
+  onIncrement,
+  onDecrement,
+  disabled = false,
+  readOnly = false,
+  maxWidth,
+  height = DEFAULT_NUMBER_INPUT_HEIGHT,
+}: NumberInputProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [internalValue, setInternalValue] = useState(String(value));
 
@@ -116,7 +130,7 @@ function NumberInput({ value, formatter, onChange, onIncrement, onDecrement, dis
   };
 
   return (
-    <InputContainer disabled={disabled} maxWidth={maxWidth}>
+    <InputContainer disabled={disabled} maxWidth={maxWidth} inputHeight={height}>
       {onDecrement && <MinusButton disabled={disabled} onMouseDown={preventTextSelection} onClick={disabled ? undefined : onDecrement} />}
       <Input
         type="text"
