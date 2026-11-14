@@ -14,8 +14,7 @@ const Section = styled.section`
   padding: 28px;
   border: 1px solid ${Color.BORDER_GREY};
   border-radius: 18px;
-  background: ${Color.LIGHT_GREY};
-  gap: 22px;
+  gap: 20px;
   ${colFlex()}
 `;
 
@@ -66,8 +65,7 @@ const InputContainer = styled.span`
 
 const PriceInput = styled(NewAppInput)`
   padding-right: 58px;
-  font-size: 17px;
-  font-weight: 700;
+  font-size: 16px;
   text-align: right;
   font-variant-numeric: tabular-nums;
 `;
@@ -76,13 +74,14 @@ const InputUnit = styled.span`
   position: absolute;
   top: 50%;
   right: 28px;
+  font-size: 14px;
   color: ${Color.MUTED_GREY};
   pointer-events: none;
   transform: translateY(-50%);
 `;
 
 const Preview = styled.div`
-  padding: 16px 18px;
+  padding: 14px 18px;
   border: 1px solid ${Color.KIO_ORANGE_ICON_BG};
   border-radius: 14px;
   background: ${Color.KIO_ORANGE_FAINT};

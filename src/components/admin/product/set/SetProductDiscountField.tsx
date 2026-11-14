@@ -19,9 +19,9 @@ const MAX_DISCOUNT_RATE = 99;
 const DISCOUNT_INPUT_WIDTH = 320;
 
 const Section = styled.section`
-  padding: 24px 0;
+  padding: 20px 0 0;
   border-top: 1px solid ${Color.BORDER_GREY};
-  gap: 18px;
+  gap: 14px;
   ${colFlex()}
 `;
 
@@ -55,8 +55,7 @@ const InputContainer = styled.div`
 
 const DiscountInput = styled(NewAppInput)`
   padding-right: 58px;
-  font-size: 17px;
-  font-weight: 700;
+  font-size: 16px;
   text-align: right;
   font-variant-numeric: tabular-nums;
 `;
@@ -65,33 +64,34 @@ const InputUnit = styled.span`
   position: absolute;
   top: 50%;
   right: 28px;
+  font-size: 14px;
   color: ${Color.MUTED_GREY};
   pointer-events: none;
   transform: translateY(-50%);
 `;
 
 const Controls = styled.div`
-  gap: 16px;
+  gap: 12px;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const ModeToggle = styled.div`
   flex-shrink: 0;
-  padding: 4px;
-  border-radius: 14px;
+  padding: 3px;
+  border-radius: 10px;
   background: ${Color.BORDER_GREY};
-  gap: 4px;
+  gap: 2px;
   ${rowFlex({ align: 'center' })}
 `;
 
 const ModeButton = styled.button<{ selected: boolean }>`
-  min-width: 62px;
-  height: 38px;
-  padding: 0 16px;
+  min-width: 44px;
+  height: 32px;
+  padding: 0 10px;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   background: ${({ selected }) => (selected ? Color.WHITE : 'transparent')};
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: ${({ selected }) => (selected ? Color.TEXT_STRONG : Color.MUTED_GREY)};
   cursor: pointer;
