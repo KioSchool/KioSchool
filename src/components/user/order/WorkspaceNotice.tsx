@@ -16,10 +16,11 @@ const Container = styled.div<{ expanded: boolean }>`
 const NoticeContent = styled.div<{ expanded: boolean }>`
   width: 100%;
   height: ${({ expanded }) => (expanded ? 'auto' : '100%')};
+  box-sizing: border-box;
   background: ${Color.LIGHT_GREY};
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
-  padding: 0 10px;
+  padding: 2px 12px 2px 16px;
   ${({ expanded }) => rowFlex({ justify: 'space-between', align: expanded ? 'end' : 'center' })}
 `;
 
@@ -32,16 +33,20 @@ const unExpandedStyle = `
 
 const Notice = styled.p<{ expanded: boolean }>`
   width: 80%;
+  color: ${Color.TEXT_DEFAULT};
   font-size: 13px;
+  line-height: 1.45;
   white-space: pre-wrap;
+  word-break: keep-all;
   ${({ expanded }) => !expanded && unExpandedStyle}
 `;
 
 const ToggleIcon = styled(RiArrowDownSLine, {
   shouldForwardProp: (prop) => prop !== 'expanded',
 })<{ expanded: boolean }>`
-  width: 25px;
-  height: 25px;
+  width: 22px;
+  height: 22px;
+  color: ${Color.TEXT_HINT};
   transition: transform 0.3s;
   transform: rotate(${({ expanded }) => (expanded ? '180deg' : '0deg')});
   padding-top: ${({ expanded }) => (expanded ? '8px' : '')};

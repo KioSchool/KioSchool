@@ -104,7 +104,13 @@ function PayPreviewPanel({ account }: PayPreviewPanelProps) {
             <PreviewNavBar />
             <OrderPayContent totalAmount={SAMPLE_AMOUNT} summaryText={SAMPLE_SUMMARY} methods={methods} selected={selected} onSelect={setSelected} isPreview />
           </ScreenTop>
-          <OrderPayFooter fixed={false} label={getPayButtonLabel(selected, SAMPLE_AMOUNT)} caption={getPayButtonCaption(selected)} disabled={!selected} />
+          <OrderPayFooter
+            fixed={false}
+            preview
+            label={getPayButtonLabel(selected, SAMPLE_AMOUNT)}
+            caption={getPayButtonCaption(selected)}
+            disabled={!selected}
+          />
         </ScaledPhone>
         {hasChoice && (
           <Bubble>

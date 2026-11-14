@@ -1,8 +1,24 @@
 import styled from '@emotion/styled';
+import { match } from 'ts-pattern';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { OrderStatus } from '@@types/index';
 import { Color } from '@resources/colors';
 import { USER_STATUS_LABELS } from '@constants/data/orderStatus';
+
+const getLabelWeight = (active: boolean) =>
+  match(active)
+    .with(true, () => 700)
+    .otherwise(() => 400);
+
+const getLabelColor = (active: boolean) =>
+  match(active)
+    .with(true, () => Color.TEXT_STRONG)
+    .otherwise(() => Color.TEXT_HINT);
+
+const getNodeBorderColor = (active: boolean) =>
+  match(active)
+    .with(true, () => Color.KIO_ORANGE)
+    .otherwise(() => Color.DISABLED_GREY);
 
 interface OrderStatusBarProps {
   status: OrderStatus;
@@ -22,9 +38,9 @@ const LabelsContainer = styled.div`
 const Label = styled.div<{ active: boolean }>`
   flex: 1;
   font-size: 13px;
-  font-weight: 400;
+  font-weight: ${({ active }) => getLabelWeight(active)};
   text-align: center;
-  color: ${({ active }) => (active ? Color.BLACK : Color.GREY)};
+  color: ${({ active }) => getLabelColor(active)};
   &:first-of-type {
     text-align: left;
   }
@@ -51,7 +67,7 @@ const BaseLine = styled.div`
 
 const DashedLine = styled(BaseLine)`
   width: 100%;
-  background-image: repeating-linear-gradient(to right, #e0e0e0 0, #e0e0e0 6px, transparent 6px, transparent 8px);
+  background-image: linear-gradient(${Color.BORDER_GREY}, ${Color.BORDER_GREY});
   z-index: 1;
 `;
 
@@ -70,11 +86,11 @@ const NodeContainer = styled.div`
 `;
 
 const Node = styled.div<{ active: boolean }>`
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background-color: ${({ active }) => (active ? Color.KIO_ORANGE : Color.WHITE)};
-  border: 1px solid ${({ active }) => (active ? Color.KIO_ORANGE : '#e0e0e0')};
+  border: 1.5px solid ${({ active }) => getNodeBorderColor(active)};
   box-sizing: border-box;
 `;
 

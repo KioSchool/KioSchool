@@ -7,10 +7,10 @@ import { Account, PaymentMethod } from '@@types/index';
 import { PAY_METHOD_STYLE } from '@constants/data/payMethods';
 import { getLogoBorder } from '@utils/payMethodStyles';
 import { copyAccountInfo } from '@utils/payMethods';
+import { OrderCard, OrderCardTitle } from '@components/user/order/orderCardStyles';
 import AccountRows from './AccountRows';
-import { WaitCard, WaitCardTitle } from './waitStyles';
 
-const Card = styled(WaitCard)`
+const Card = styled(OrderCard)`
   padding: 18px 20px;
   gap: 14px;
 `;
@@ -85,7 +85,7 @@ function NotSentYetPanel({ method, account, onReopen }: NotSentYetPanelProps) {
   return (
     <Card>
       <Toggle type="button" aria-expanded={isOpen} onClick={() => setIsOpen((open) => !open)}>
-        <WaitCardTitle>아직 보내지 않았나요?</WaitCardTitle>
+        <OrderCardTitle>아직 보내지 않았나요?</OrderCardTitle>
         {isOpen && <RiArrowUpSLine size={20} color={Color.TEXT_HINT} />}
         {!isOpen && <RiArrowDownSLine size={20} color={Color.TEXT_HINT} />}
       </Toggle>

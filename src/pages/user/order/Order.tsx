@@ -43,14 +43,17 @@ const Header = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 25px;
-  font-weight: 600;
+  color: ${Color.TEXT_STRONG};
+  font-size: 24px;
+  font-weight: 700;
   text-align: center;
 `;
 
 const Description = styled.div`
-  font-size: 18px;
-  color: ${Color.GREY};
+  padding: 0 24px;
+  font-size: 15px;
+  line-height: 1.45;
+  color: ${Color.TEXT_SUBTLE};
   text-align: center;
   white-space: pre-wrap;
 `;

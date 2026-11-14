@@ -1,3 +1,4 @@
+import { Color } from '@resources/colors';
 import styled from '@emotion/styled';
 import { Order } from '@@types/index';
 import { colFlex, rowFlex } from '@styles/flexStyles';
@@ -12,9 +13,10 @@ const Container = styled.div`
 `;
 
 const SubTitle = styled.div`
-  font-size: 16px;
-  font-weight: 600;
-  padding-left: 10px;
+  color: ${Color.TEXT_STRONG};
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.45;
 `;
 
 const OrderCardContainer = styled.div`
@@ -26,13 +28,14 @@ const OrderCardContainer = styled.div`
 const TotalRow = styled.div`
   box-sizing: border-box;
   width: 100%;
-  padding: 0 20px;
+  padding: 4px 20px 0;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const TotalText = styled.div`
-  font-size: 14px;
-  font-weight: 600;
+  color: ${Color.TEXT_STRONG};
+  font-size: 15px;
+  font-weight: 700;
 `;
 
 interface SessionOrderListProps {

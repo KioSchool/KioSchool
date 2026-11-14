@@ -1,6 +1,5 @@
 import { Product } from '@@types/index';
 import styled from '@emotion/styled';
-import AppLabel from '@components/common/label/AppLabel';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { RiAddLine, RiCloseCircleFill, RiSubtractLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
@@ -12,7 +11,8 @@ import { productToGaItem } from '@utils/orderBasket';
 
 const Container = styled.div`
   width: 100%;
-  min-height: 90px;
+  min-height: 96px;
+  padding: 14px 0;
   gap: 12px;
   box-sizing: border-box;
   border-radius: 28px;
@@ -22,17 +22,18 @@ const Container = styled.div`
 const ProductDetailsWrapper = styled.div`
   flex: 1;
   min-width: 0;
-  gap: 10px;
+  gap: 12px;
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const ProductImage = styled.img`
-  width: 70px;
-  height: 70px;
+  width: 68px;
+  height: 68px;
   flex-shrink: 0;
   object-fit: cover;
-  border-radius: 4px;
-  border: 0.3px solid #939393;
+  border-radius: 12px;
+  border: 1px solid ${Color.BORDER_GREY};
+  box-sizing: border-box;
 `;
 
 const ProductInfoContainer = styled.div`
@@ -50,31 +51,34 @@ const ProductLabels = styled.div`
 `;
 
 const StyledLabel = styled.div<{ size?: number }>`
+  color: ${Color.TEXT_SUBTLE};
   font-size: ${({ size }) => size || 13}px;
-  font-weight: 600;
   white-space: nowrap;
 `;
 
 const ProductName = styled.div`
+  color: ${Color.TEXT_STRONG};
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
   overflow-wrap: anywhere;
 `;
 
 const QuantityControl = styled.div`
   box-sizing: border-box;
-  padding: 0 3px;
-  width: 88px;
+  padding: 0 6px;
+  width: 92px;
   max-width: 100%;
-  height: 25px;
-  border-radius: 4px;
-  background: ${Color.LIGHT_GREY};
+  height: 30px;
+  border-radius: 10px;
+  border: 1px solid ${Color.BORDER_GREY};
+  background: ${Color.WHITE};
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const QuantityLabel = styled.div`
-  font-size: 15px;
-  font-weight: 400;
+  color: ${Color.TEXT_STRONG};
+  font-size: 14px;
+  font-weight: 700;
 `;
 
 const ProductActions = styled.div`
@@ -88,9 +92,7 @@ const DecreaseButton = styled(RiSubtractLine)`
   width: 16px;
   border-radius: 25px;
 
-  & path {
-    stroke: ${Color.BLACK};
-  }
+  color: ${Color.TEXT_DEFAULT};
 `;
 
 const IncreaseButton = styled(RiAddLine)`
@@ -98,14 +100,20 @@ const IncreaseButton = styled(RiAddLine)`
   height: 19px;
   border-radius: 25px;
 
-  & path {
-    stroke-width: 3.5;
-    filter: none;
-  }
+  color: ${Color.TEXT_DEFAULT};
 `;
 
 const DeleteProductButton = styled(RiCloseCircleFill)`
-  color: #c2c2c2;
+  width: 20px;
+  height: 20px;
+  color: ${Color.DISABLED_GREY};
+`;
+
+const LineTotal = styled.div`
+  color: ${Color.TEXT_STRONG};
+  font-size: 15px;
+  font-weight: 700;
+  padding-bottom: 4px;
 `;
 
 interface ProductCounterBadgeProps {
@@ -174,9 +182,7 @@ function ProductCounterBadge({ product }: ProductCounterBadgeProps) {
       </ProductDetailsWrapper>
       <ProductActions className="counter-container">
         <DeleteProductButton onClick={handleDeleteProduct} />
-        <AppLabel color={Color.BLACK} size={15} style={{ paddingBottom: '15px' }}>
-          {(product.price * quantity).toLocaleString()}원
-        </AppLabel>
+        <LineTotal>{(product.price * quantity).toLocaleString()}원</LineTotal>
       </ProductActions>
     </Container>
   );

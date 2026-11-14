@@ -1,19 +1,31 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
+import { match } from 'ts-pattern';
 import { RiArrowDownSLine } from '@remixicon/react';
 import { Order, OrderStatus } from '@@types/index';
 import { USER_STATUS_LABELS } from '@constants/data/orderStatus';
-import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { formatKoreanTime } from '@utils/formatDate';
+import { OrderCardDivider, OrderItemName, OrderItemQuantity } from '@components/user/order/orderCardStyles';
+
+const getCardBorder = (isCurrent: boolean) =>
+  match(isCurrent)
+    .with(true, () => `1.5px solid ${Color.KIO_ORANGE}`)
+    .otherwise(() => `1px solid ${Color.BORDER_GREY}`);
+
+const getSummaryColor = (isCancelled: boolean) =>
+  match(isCancelled)
+    .with(true, () => Color.TEXT_HINT)
+    .otherwise(() => Color.TEXT_STRONG);
 
 const Container = styled.div<{ isCurrent: boolean }>`
   box-sizing: border-box;
   width: 100%;
-  padding: 14px 20px;
-  border-radius: 9px;
-  border: ${({ isCurrent }) => (isCurrent ? `1.5px solid ${Color.KIO_ORANGE}` : '0.5px solid #939393')};
+  padding: 16px 20px;
+  border-radius: 16px;
+  border: ${({ isCurrent }) => getCardBorder(isCurrent)};
+  background: ${Color.WHITE};
   cursor: pointer;
   gap: 4px;
   ${colFlex()}
@@ -25,9 +37,9 @@ const SummaryRow = styled.div`
 `;
 
 const StatusText = styled.div<{ isCancelled: boolean }>`
-  font-size: 13px;
-  font-weight: ${({ isCancelled }) => (isCancelled ? 400 : 600)};
-  color: ${({ isCancelled }) => (isCancelled ? Color.MUTED_GREY : Color.GREY)};
+  font-size: 15px;
+  font-weight: 700;
+  color: ${({ isCancelled }) => getSummaryColor(isCancelled)};
 `;
 
 const PriceContainer = styled.div`
@@ -36,9 +48,9 @@ const PriceContainer = styled.div`
 `;
 
 const PriceText = styled.div<{ isCancelled: boolean }>`
-  font-size: 13px;
-  font-weight: ${({ isCancelled }) => (isCancelled ? 400 : 600)};
-  color: ${({ isCancelled }) => (isCancelled ? Color.MUTED_GREY : Color.GREY)};
+  font-size: 15px;
+  font-weight: 700;
+  color: ${({ isCancelled }) => getSummaryColor(isCancelled)};
   text-decoration: ${({ isCancelled }) => (isCancelled ? 'line-through' : 'none')};
 `;
 
@@ -48,14 +60,14 @@ const ToggleIcon = styled(RiArrowDownSLine, {
   width: 16px;
   height: 16px;
   flex-shrink: 0;
-  fill: ${Color.MUTED_GREY};
+  fill: ${Color.TEXT_HINT};
   transition: transform 0.15s;
   transform: rotate(${({ expanded }) => (expanded ? '180deg' : '0deg')});
 `;
 
 const MetaText = styled.div`
-  font-size: 12px;
-  color: ${Color.MUTED_GREY};
+  font-size: 13px;
+  color: ${Color.TEXT_SUBTLE};
 `;
 
 const CurrentLabel = styled.span`
@@ -76,9 +88,8 @@ const ProductRow = styled.div`
 `;
 
 const ProductText = styled.div`
-  font-size: 13px;
-  color: ${Color.GREY};
-  font-weight: 400;
+  font-size: 14px;
+  color: ${Color.TEXT_DEFAULT};
 `;
 
 interface SessionOrderCardProps {
@@ -110,12 +121,13 @@ function SessionOrderCard({ order, isCurrent }: SessionOrderCardProps) {
       </MetaText>
       {expanded && (
         <ProductContainer>
-          <HorizontalDivider />
+          <OrderCardDivider />
           {order.orderProducts.map((orderProduct) => (
             <ProductRow key={orderProduct.id}>
-              <ProductText>
-                {orderProduct.productName} · {orderProduct.quantity}개
-              </ProductText>
+              <OrderItemName>
+                {orderProduct.productName}
+                <OrderItemQuantity>{orderProduct.quantity}개</OrderItemQuantity>
+              </OrderItemName>
               <ProductText>{orderProduct.totalPrice.toLocaleString()}원</ProductText>
             </ProductRow>
           ))}
