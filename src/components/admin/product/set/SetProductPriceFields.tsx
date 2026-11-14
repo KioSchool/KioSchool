@@ -32,20 +32,24 @@ const Description = styled.p`
   color: ${Color.TEXT_BODY};
 `;
 
-const Content = styled.div`
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(300px, 1.1fr);
-  gap: 18px;
-`;
+const PRICE_ROW_HEIGHT = 70;
 
-const InputFields = styled.div`
-  gap: 14px;
+const Rows = styled.div`
+  gap: 10px;
   ${colFlex()}
 `;
 
 const Field = styled.label`
-  gap: 7px;
-  ${colFlex()}
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  align-items: center;
+  height: ${PRICE_ROW_HEIGHT}px;
+  padding: 10px 14px;
+  border: 1px solid ${Color.BORDER_GREY};
+  border-radius: 14px;
+  box-sizing: border-box;
+  background: ${Color.WHITE};
+  gap: 16px;
 `;
 
 const FieldLabel = styled.span`
@@ -55,17 +59,20 @@ const FieldLabel = styled.span`
 `;
 
 const Preview = styled.div`
-  min-height: 150px;
-  padding: 20px;
-  border-radius: 16px;
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  align-items: center;
+  height: ${PRICE_ROW_HEIGHT}px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  box-sizing: border-box;
   background: ${Color.KIO_ORANGE};
   color: ${Color.WHITE};
-  gap: 14px;
-  ${colFlex({ justify: 'space-between' })}
+  gap: 16px;
 `;
 
 const PreviewHeader = styled.div`
-  gap: 3px;
+  gap: 2px;
   ${colFlex()}
 `;
 
@@ -80,8 +87,8 @@ const PreviewDescription = styled.span`
 `;
 
 const PriceSummary = styled.div`
-  gap: 8px;
-  ${colFlex({ align: 'flex-end' })}
+  gap: 10px;
+  ${rowFlex({ justify: 'flex-end', align: 'center' })}
 `;
 
 const PriceValues = styled.div`
@@ -96,7 +103,7 @@ const OriginalPrice = styled.span`
 `;
 
 const SalePrice = styled.strong`
-  font-size: 32px;
+  font-size: 26px;
   line-height: 1;
 `;
 
@@ -128,30 +135,28 @@ function SetProductPriceFields({ value, onChange }: SetProductPriceFieldsProps) 
         <Description>할인 전 금액과 할인 금액을 입력하면 최종 판매가가 바로 계산됩니다.</Description>
       </Heading>
 
-      <Content>
-        <InputFields>
-          <Field>
-            <FieldLabel>설정 금액 (할인 전)</FieldLabel>
-            <NewAppInput
-              width="100%"
-              value={value.originalPrice}
-              inputMode="numeric"
-              placeholder="예: 28000"
-              onChange={(event) => onChange({ ...value, originalPrice: event.target.value.replace(/[^0-9]/g, '') })}
-            />
-          </Field>
+      <Rows>
+        <Field>
+          <FieldLabel>설정 금액 (할인 전)</FieldLabel>
+          <NewAppInput
+            width="100%"
+            value={value.originalPrice}
+            inputMode="numeric"
+            placeholder="예: 28000"
+            onChange={(event) => onChange({ ...value, originalPrice: event.target.value.replace(/[^0-9]/g, '') })}
+          />
+        </Field>
 
-          <Field>
-            <FieldLabel>할인 금액</FieldLabel>
-            <NewAppInput
-              width="100%"
-              value={value.discountPrice}
-              inputMode="numeric"
-              placeholder="예: 3000"
-              onChange={(event) => onChange({ ...value, discountPrice: event.target.value.replace(/[^0-9]/g, '') })}
-            />
-          </Field>
-        </InputFields>
+        <Field>
+          <FieldLabel>할인 금액</FieldLabel>
+          <NewAppInput
+            width="100%"
+            value={value.discountPrice}
+            inputMode="numeric"
+            placeholder="예: 3000"
+            onChange={(event) => onChange({ ...value, discountPrice: event.target.value.replace(/[^0-9]/g, '') })}
+          />
+        </Field>
 
         <Preview>
           <PreviewHeader>
@@ -166,7 +171,7 @@ function SetProductPriceFields({ value, onChange }: SetProductPriceFieldsProps) 
             <DiscountBadge>{discountLabel}</DiscountBadge>
           </PriceSummary>
         </Preview>
-      </Content>
+      </Rows>
     </Section>
   );
 }
