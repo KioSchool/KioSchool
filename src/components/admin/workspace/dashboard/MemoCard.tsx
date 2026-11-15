@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import ContentCard from '@components/common/card/ContentCard';
 import { useState, useEffect, useMemo, ChangeEvent, useRef } from 'react';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
+import { notifyActionFailure } from '@utils/actionFailure';
 import { useParams } from 'react-router-dom';
 import _ from 'lodash';
 
@@ -42,7 +43,7 @@ function MemoCard({ initialMemo }: MemoCardProps) {
       try {
         await updateWorkspaceMemo(id, newMemo);
       } catch (error) {
-        console.error('Error saving memos', error);
+        notifyActionFailure(error, '메모를 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.');
       }
     }, 1000),
   );

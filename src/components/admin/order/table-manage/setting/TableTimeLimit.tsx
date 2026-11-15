@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
+import { notifyActionFailure } from '@utils/actionFailure';
 
 const Container = styled.div`
   width: 100%;
@@ -116,8 +117,8 @@ function TableTimeLimit() {
       .then(() => {
         alert(`테이블 시간 제한이 ${isTimeLimited ? `${formatTime(timeLimitMinutes)}으로 설정` : '비활성화'}되었습니다.`);
       })
-      .catch(() => {
-        alert('테이블 시간 제한 설정에 실패했습니다. 다시 시도해주세요.');
+      .catch((error) => {
+        notifyActionFailure(error, '테이블 시간 제한을 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.');
       });
   };
 

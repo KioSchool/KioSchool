@@ -2,6 +2,7 @@ import useApi from '@hooks/useApi';
 import { Order, OrderStatus, OrderSessionWithOrder } from '@@types/index';
 import { useSetAtom } from 'jotai';
 import { adminOrdersAtom } from '@jotai/admin/atoms';
+import { notifyActionFailure } from '@utils/actionFailure';
 
 interface FetchOrdersParams {
   workspaceId: number;
@@ -43,42 +44,32 @@ function useAdminOrder(workspaceId: string | undefined) {
   };
 
   // 성공 여부를 돌려준다. 결제 확인 토스트와 되돌리기는 서버가 받아들인 뒤에만 띄워야 한다
-  const payOrder = (orderId: number) =>
+  const changeOrderStatus = (orderId: number, status: OrderStatus, failureMessage: string) =>
     adminApi
-      .post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.PAID })
+      .post<Order>('/order/status', { orderId, workspaceId, status })
       .then(() => true)
       .catch((error) => {
-        console.log(error);
+        notifyActionFailure(error, failureMessage);
         return false;
       });
 
-  const serveOrder = (orderId: number) => {
-    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.SERVED }).catch((error) => {
-      console.log(error);
-    });
-  };
+  const payOrder = (orderId: number) => changeOrderStatus(orderId, OrderStatus.PAID, '결제 완료로 바꾸지 못했습니다. 잠시 후 다시 시도해 주세요.');
+
+  const serveOrder = (orderId: number) => changeOrderStatus(orderId, OrderStatus.SERVED, '서빙 완료로 바꾸지 못했습니다. 잠시 후 다시 시도해 주세요.');
 
   const cancelOrder = (orderId: number) => {
     const userInput = confirm('정말로 주문을 취소하시겠습니까?');
     if (!userInput) return;
 
-    adminApi.post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.CANCELLED }).catch((error) => {
-      console.log(error);
-    });
+    changeOrderStatus(orderId, OrderStatus.CANCELLED, '주문을 취소하지 못했습니다. 잠시 후 다시 시도해 주세요.');
   };
 
   const refundOrder = (orderId: number) =>
-    adminApi
-      .post<Order>('/order/status', { orderId, workspaceId, status: OrderStatus.NOT_PAID })
-      .then(() => true)
-      .catch((error) => {
-        console.log(error);
-        return false;
-      });
+    changeOrderStatus(orderId, OrderStatus.NOT_PAID, '결제 완료를 되돌리지 못했습니다. 주문 상세에서 다시 시도해 주세요.');
 
   const updateOrderProductCount = (orderProductId: number, servedCount: number) => {
     adminApi.put('/order/product', { workspaceId, orderProductId, servedCount }).catch((error) => {
-      console.log(error);
+      notifyActionFailure(error, '서빙 수량을 바꾸지 못했습니다. 잠시 후 다시 시도해 주세요.');
     });
   };
 
