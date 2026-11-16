@@ -6,6 +6,7 @@ import { API_ERROR_CODES } from '@constants/errorCodes';
 import { GA_EVENT, TABLE_SESSION_ACTION, TableSessionAction } from '@constants/analytics';
 import { TableView } from '@jotai/admin/atoms';
 import { isApiErrorCode } from '@utils/apiError';
+import { notifyActionFailure } from '@utils/actionFailure';
 import { trackEvent } from '@utils/analytics';
 
 function isEmptyOrderSessionError(error: unknown): boolean {
@@ -91,8 +92,8 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
     cancelText: '무효한 세션으로 저장',
   });
 
-  // 조작을 "시도"가 아니라 "성공"에만 집계한다. 사용 시작·시간 변경은 실패해도 화면에 아무
-  // 변화가 없어(useAdminTable에서 에러를 삼킨다), 시도 기준이면 서버가 죽은 시간대가
+  // 조작을 "시도"가 아니라 "성공"에만 집계한다. 사용 시작·시간 변경은 실패하면 useAdminTable이 알리고
+  // undefined를 돌려줘 화면이 그대로라, 시도 기준이면 서버가 죽은 시간대가
   // 활발한 사용으로 잡힌다. 빈 세션 모달에서 사용자가 빠져나간 경우도 여기서 함께 걸러진다.
   const trackSessionAction = (action: TableSessionAction) => {
     trackEvent(GA_EVENT.TABLE_SESSION_ACTION, {
@@ -112,8 +113,7 @@ export function useTableSession({ workspaceId, currentExpectedEndAt, orderSessio
         onSuccess?.();
       })
       .catch((error) => {
-        console.error('API 호출 실패:', error);
-        alert('작업을 처리하는 중 오류가 발생했습니다.');
+        notifyActionFailure(error, '테이블 사용을 종료하지 못했습니다. 잠시 후 다시 시도해 주세요.');
       });
   };
 

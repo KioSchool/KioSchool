@@ -8,6 +8,7 @@ import { CSS } from '@dnd-kit/utilities';
 import styled from '@emotion/styled';
 import { API_ERROR_CODES } from '@constants/errorCodes';
 import { isApiErrorCode } from '@utils/apiError';
+import { notifyActionFailure } from '@utils/actionFailure';
 
 const DraggableContainer = styled.div<{ transform?: string; transition?: string; isDragging?: boolean }>`
   transform: ${({ transform }) => transform};
@@ -37,7 +38,10 @@ function CategoryDraggableContents({ category }: DraggableProps) {
       // 405는 워크스페이스 접근 불가(WORKSPACE_INACCESSIBLE)와도 겹치므로 code로 판정한다.
       if (isApiErrorCode(e, API_ERROR_CODES.CANNOT_DELETE_USING_PRODUCT_CATEGORY)) {
         confirm();
+        return;
       }
+
+      notifyActionFailure(e, '카테고리를 삭제하지 못했습니다. 잠시 후 다시 시도해 주세요.');
     });
   };
 
