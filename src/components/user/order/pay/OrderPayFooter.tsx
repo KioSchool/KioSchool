@@ -3,16 +3,16 @@ import { match } from 'ts-pattern';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 
+// 아이폰 홈 막대에 버튼이 가리지 않게 띄운다
 const getPlacement = (fixed: boolean) =>
   match(fixed)
-    .with(true, () => 'position: fixed; left: 0; bottom: 0;')
+    .with(true, () => 'position: fixed; left: 0; bottom: 0; padding-bottom: max(22px, env(safe-area-inset-bottom));')
     .otherwise(() => '');
 
-// 아이폰 홈 막대에 버튼이 가리지 않게 띄운다
 const Bar = styled.div<{ fixed: boolean }>`
   box-sizing: border-box;
   width: 100%;
-  padding: 14px 20px max(22px, env(safe-area-inset-bottom));
+  padding: 14px 20px 22px;
   gap: 8px;
   background: ${Color.WHITE};
   box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
@@ -52,19 +52,18 @@ interface OrderPayFooterProps {
   disabled?: boolean;
   onClick?: () => void;
   fixed?: boolean;
-  preview?: boolean;
 }
 
-function OrderPayFooter({ label, caption, disabled = false, onClick, fixed = true, preview = false }: OrderPayFooterProps) {
+function OrderPayFooter({ label, caption, disabled = false, onClick, fixed = true }: OrderPayFooterProps) {
   return (
     <Bar fixed={fixed}>
       <Button
         type="button"
         disabled={disabled}
         onClick={onClick}
-        tabIndex={match(preview)
-          .with(true, () => -1)
-          .otherwise(() => undefined)}
+        tabIndex={match(fixed)
+          .with(true, () => undefined)
+          .otherwise(() => -1)}
       >
         {label}
       </Button>
