@@ -59,7 +59,7 @@ const StatGrid = styled.div`
 `;
 
 const StatCell = styled.div`
-  background: #f7f7f7;
+  background: ${Color.LIGHT_GREY};
   border-radius: 6px;
   padding: 8px 10px;
   gap: 2px;

@@ -22,7 +22,7 @@ const InfoRow = styled.div`
 
 const Key = styled.div`
   flex-shrink: 0;
-  color: ${Color.TEXT_BODY};
+  color: ${Color.TEXT_SUBTLE};
   ${rowFlex({ justify: 'end', align: 'center' })};
 `;
 

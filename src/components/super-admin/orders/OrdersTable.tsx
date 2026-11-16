@@ -30,9 +30,9 @@ const Th = styled.th`
 `;
 
 const Tr = styled.tr<{ active: boolean }>`
-  border-bottom: 1px solid #f7f7f7;
+  border-bottom: 1px solid ${Color.LIGHT_GREY};
   cursor: pointer;
-  background: ${({ active }) => (active ? '#FFF3E7' : 'transparent')};
+  background: ${({ active }) => (active ? Color.KIO_ORANGE_FAINT : 'transparent')};
   transition: background 0.15s;
 
   &:last-child {
@@ -40,7 +40,7 @@ const Tr = styled.tr<{ active: boolean }>`
   }
 
   &:hover {
-    background: ${({ active }) => (active ? '#FFF3E7' : '#fcfaf6')};
+    background: ${({ active }) => (active ? Color.KIO_ORANGE_FAINT : '#fcfaf6')};
   }
 `;
 

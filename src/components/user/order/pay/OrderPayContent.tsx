@@ -25,7 +25,7 @@ const Amount = styled.div`
 `;
 
 const Caption = styled.span`
-  color: #697278;
+  color: ${Color.TEXT_SUBTLE};
   font-size: 13px;
   line-height: 1.45;
 `;
@@ -58,7 +58,7 @@ const Empty = styled.div`
   height: 102px;
   border-radius: 10px;
   background: ${Color.LIGHT_GREY};
-  color: #697278;
+  color: ${Color.TEXT_SUBTLE};
   font-size: 13px;
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
@@ -93,13 +93,13 @@ const NameCaption = styled.div`
 `;
 
 const Hint = styled.span`
-  color: #697278;
+  color: ${Color.TEXT_SUBTLE};
   font-size: 12px;
   line-height: 1.45;
 `;
 
 const PrivacyLink = styled(Link)`
-  color: #9aa1a6;
+  color: ${Color.TEXT_HINT};
   font-size: 12px;
   line-height: 1.45;
   text-decoration: underline;

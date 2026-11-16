@@ -11,7 +11,7 @@ import _ from 'lodash';
 import OrderModalProductList from './OrderModalProductsList';
 
 const ModalContent = styled.div`
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   gap: 10px;
   ${colFlex({ justify: 'start', align: 'start' })}
 `;
@@ -30,8 +30,8 @@ const StatusLabelContainer = styled.div<{ isServed: boolean }>`
   box-sizing: border-box;
   font-size: 12px;
   background-color: ${(props) => (props.isServed ? Color.KIO_ORANGE : 'white')};
-  border: ${(props) => (props.isServed ? '' : '1px solid #e8eef2')};
-  color: ${(props) => (props.isServed ? '#ffffff' : '#464a4d')};
+  border: ${(props) => (props.isServed ? '' : `1px solid ${Color.BORDER_GREY}`)};
+  color: ${(props) => (props.isServed ? '#ffffff' : Color.TEXT_DEFAULT)};
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 

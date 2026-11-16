@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { DashboardCardDivider } from '@styles/dashboardStyles';
+import { Color } from '@resources/colors';
 import { ReactNode } from 'react';
 
 const Container = styled.div<{ width?: number; height?: number }>`
@@ -25,14 +26,14 @@ const TitleRow = styled.div`
 const Title = styled.b`
   line-height: 18px;
   font-size: 14px;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
 `;
 
 const ContentWrapper = styled.div`
   align-self: stretch;
   position: relative;
   font-size: 12px;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   flex: 1;
 `;
 

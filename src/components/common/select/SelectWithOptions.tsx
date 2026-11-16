@@ -32,11 +32,11 @@ const Container = styled.select<{ width?: string }>`
   }
 
   &:valid {
-    color: #464a4d;
+    color: ${Color.TEXT_DEFAULT};
   }
 
   option {
-    color: #464a4d;
+    color: ${Color.TEXT_DEFAULT};
   }
 `;
 

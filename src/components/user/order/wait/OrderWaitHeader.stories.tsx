@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { Account, OrderProduct, PaymentMethod } from '@@types/index';
 import { defaultAccountValue } from '@@types/defaultValues';
 import { isPayApp } from '@utils/payMethods';
+import { Color } from '@resources/colors';
 import OrderWaitHeader from './OrderWaitHeader';
 import NotSentYetPanel from './NotSentYetPanel';
 import BankAccountCard from './BankAccountCard';
@@ -21,7 +22,7 @@ const Screen = styled.div`
 
 const Tip = styled.p`
   margin: 0;
-  color: #9aa1a6;
+  color: ${Color.TEXT_HINT};
   font-size: 12px;
   text-align: center;
 `;

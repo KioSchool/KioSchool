@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import ContentCard from '@components/common/card/ContentCard';
 import { useState, useEffect, useMemo, ChangeEvent, useRef } from 'react';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
+import { Color } from '@resources/colors';
 import { useParams } from 'react-router-dom';
 import _ from 'lodash';
 
@@ -11,7 +12,7 @@ const MemoTextArea = styled.textarea`
   border: none;
   resize: none;
   font-size: 12px;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   line-height: 20px;
   font-family: inherit;
   background: transparent;

@@ -47,7 +47,7 @@ const Title = styled.h1`
 
 const Sub = styled.p`
   margin: 0 0 12px;
-  color: #697278;
+  color: ${Color.TEXT_SUBTLE};
   font-size: 13px;
   line-height: 1.45;
 `;

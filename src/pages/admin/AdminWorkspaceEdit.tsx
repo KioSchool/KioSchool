@@ -41,7 +41,7 @@ const ContentContainer = styled.div`
 `;
 
 const Label = styled.label`
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   font-size: 16px;
   font-weight: 700;
 `;

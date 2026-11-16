@@ -63,7 +63,7 @@ const FilterButton = styled.button<{ isActive: boolean }>`
 
 const List = styled.div`
   width: 100%;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 10px;
   overflow: hidden;
   ${colFlex()}
@@ -135,7 +135,7 @@ const MessageCard = styled.div`
   width: 100%;
   box-sizing: border-box;
   padding: 40px 20px;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 10px;
   color: ${Color.GREY};
   text-align: center;

@@ -65,7 +65,7 @@ const CopyButton = styled.button`
   border: 1px solid ${Color.BORDER_GREY};
   border-radius: 12px;
   background: ${Color.WHITE};
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   font: inherit;
   font-size: 14px;
   font-weight: 700;
@@ -86,8 +86,8 @@ function NotSentYetPanel({ method, account, onReopen }: NotSentYetPanelProps) {
     <Card>
       <Toggle type="button" aria-expanded={isOpen} onClick={() => setIsOpen((open) => !open)}>
         <WaitCardTitle>아직 보내지 않았나요?</WaitCardTitle>
-        {isOpen && <RiArrowUpSLine size={20} color="#9aa1a6" />}
-        {!isOpen && <RiArrowDownSLine size={20} color="#9aa1a6" />}
+        {isOpen && <RiArrowUpSLine size={20} color={Color.TEXT_HINT} />}
+        {!isOpen && <RiArrowDownSLine size={20} color={Color.TEXT_HINT} />}
       </Toggle>
       {isOpen && (
         <Expanded>

@@ -36,7 +36,7 @@ const ContentContainer = styled.div`
 const Title = styled.div`
   font-size: 16px;
   font-weight: 700;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
 `;
 
 const Description = styled.div`
@@ -51,7 +51,7 @@ const Frame = styled.div`
   height: ${ORDER_IMAGE_HEIGHT_PX}px;
   overflow: hidden;
   border-radius: 10px;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   cursor: grab;
   touch-action: none;
   user-select: none;

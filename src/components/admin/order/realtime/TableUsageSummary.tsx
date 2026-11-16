@@ -30,7 +30,7 @@ const Message = styled.div`
   gap: 8px;
   font-size: 13px;
   word-break: keep-all;
-  color: ${Color.TEXT_BODY};
+  color: ${Color.TEXT_SUBTLE};
   ${rowFlex({ justify: 'start', align: 'center' })}
 `;
 

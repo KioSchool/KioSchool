@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { getYear, getMonth } from 'date-fns';
 import { RiArrowLeftSLine, RiArrowRightSLine } from '@remixicon/react';
 import { rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 const HeaderContainer = styled.div`
   box-sizing: border-box;
@@ -11,7 +12,7 @@ const HeaderContainer = styled.div`
   margin-bottom: 10px;
   font-size: 14px;
   font-weight: 400;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
@@ -19,12 +20,12 @@ const HeaderButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
-  color: #d1d5d8;
+  color: ${Color.DISABLED_GREY};
   padding: 0;
   ${rowFlex({ align: 'center' })}
 
   &:hover {
-    color: #464a4d;
+    color: ${Color.TEXT_DEFAULT};
   }
 `;
 

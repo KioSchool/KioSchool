@@ -10,7 +10,7 @@ const Phone = styled.div`
   height: 459px;
   padding: 3px;
   border-radius: 28px;
-  border: 3px solid #d1d5d8;
+  border: 3px solid ${Color.DISABLED_GREY};
   background: ${Color.WHITE};
   overflow: hidden;
 `;

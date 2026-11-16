@@ -18,11 +18,11 @@ const SelectTrigger = styled.div<{ isOpen: boolean; isHighlight?: boolean }>`
   padding: 0 28px 0 10px;
   height: 24px;
   background: ${({ isHighlight }) => (isHighlight ? Color.KIO_ORANGE : Color.WHITE)};
-  border: 1px solid ${({ isOpen, isHighlight }) => (isHighlight || isOpen ? Color.KIO_ORANGE : '#e8eef2')};
+  border: 1px solid ${({ isOpen, isHighlight }) => (isHighlight || isOpen ? Color.KIO_ORANGE : Color.BORDER_GREY)};
   border-radius: 4px;
   cursor: pointer;
   font-size: 12px;
-  color: ${({ isHighlight }) => (isHighlight ? Color.WHITE : '#464a4d')};
+  color: ${({ isHighlight }) => (isHighlight ? Color.WHITE : Color.TEXT_DEFAULT)};
   line-height: normal;
   user-select: none;
   transition: border-color 0.2s;
@@ -62,7 +62,7 @@ const SelectDropdownContainer = styled.div`
 const SelectDropdown = styled.div`
   width: 100%;
   background: ${Color.WHITE};
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 4px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   max-height: 200px;
@@ -72,7 +72,7 @@ const SelectDropdown = styled.div`
 const SelectOption = styled.div<{ isSelected: boolean }>`
   padding: 8px 10px;
   font-size: 12px;
-  color: ${({ isSelected }) => (isSelected ? Color.KIO_ORANGE : '#464a4d')};
+  color: ${({ isSelected }) => (isSelected ? Color.KIO_ORANGE : Color.TEXT_DEFAULT)};
   cursor: pointer;
   background: ${({ isSelected }) => (isSelected ? '#fff5f0' : Color.WHITE)};
   border-bottom: 1px solid #f5f5f5;

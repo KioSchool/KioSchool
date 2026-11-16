@@ -22,7 +22,7 @@ import { ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardi
 
 const Container = styled.div`
   width: 100%;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   gap: 10px;
   ${colFlex({ align: 'center' })}
 `;

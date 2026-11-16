@@ -19,7 +19,7 @@ const Container = styled.div<{ isSellable: boolean | null }>`
   flex-shrink: 0;
   padding: 12px;
   border-radius: 16px;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   box-sizing: border-box;
   ${(props) => (props.isSellable ? sellableStyle : unSellableStyle)}
   ${colFlex({ justify: 'space-between', align: 'center' })}
@@ -52,7 +52,7 @@ const ContentContainer = styled.div<{ showStatusSelector: boolean }>`
 const TextContainer = styled.div<{ isSellable: boolean | null }>`
   width: 100%;
   min-width: 0;
-  color: ${(props) => (props.isSellable ? '#464a4d' : '#B2B2B2')};
+  color: ${(props) => (props.isSellable ? Color.TEXT_DEFAULT : '#B2B2B2')};
   padding-bottom: 12px;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
@@ -61,7 +61,7 @@ const Image = styled.img<{ isSellable: boolean | null }>`
   width: 100px;
   height: 100px;
   border-radius: 6px;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   opacity: ${(props) => (props.isSellable ? 1 : 0.4)};
   margin-bottom: 12px;
 `;

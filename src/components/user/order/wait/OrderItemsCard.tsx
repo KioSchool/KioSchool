@@ -19,12 +19,12 @@ const Menu = styled.span`
 `;
 
 const Text = styled.span`
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   font-size: 14px;
 `;
 
 const Quantity = styled.span`
-  color: #9aa1a6;
+  color: ${Color.TEXT_HINT};
   font-size: 13px;
 `;
 

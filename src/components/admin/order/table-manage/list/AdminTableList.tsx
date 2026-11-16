@@ -30,7 +30,7 @@ const Header = styled.div`
   display: grid;
   grid-template-columns: ${TABLE_LIST_GRID_TEMPLATE};
   padding: 0 12px;
-  background-color: #f0f5f8;
+  background-color: ${Color.GREY_FAINT};
   text-align: center;
   border-bottom: 1px solid ${Color.BORDER_GREY};
   height: 38px;

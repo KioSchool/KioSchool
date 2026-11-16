@@ -11,7 +11,7 @@ import { format } from 'date-fns/format';
 const Container = styled.div<{ isOpen: boolean }>`
   width: 100%;
   background: ${({ isOpen }) => (isOpen ? '#fcfcfc' : Color.WHITE)};
-  border: ${({ isOpen }) => (isOpen ? '1px solid #e8eef2' : 'none')};
+  border: ${({ isOpen }) => (isOpen ? `1px solid ${Color.BORDER_GREY}` : 'none')};
   border-radius: ${({ isOpen }) => (isOpen ? '0 0 15px 15px' : '0')};
   overflow: hidden;
   user-select: none;
@@ -22,7 +22,7 @@ const HeaderContainer = styled.div<{ isOpen: boolean }>`
   width: 100%;
   padding: 15px 20px;
   background: ${({ isOpen }) => (isOpen ? '#fcfcfc' : Color.WHITE)};
-  border-bottom: 1px solid #e8eef2;
+  border-bottom: 1px solid ${Color.BORDER_GREY};
   box-sizing: border-box;
   cursor: pointer;
   ${rowFlex({ justify: 'space-between', align: 'flex-end' })}
@@ -39,14 +39,14 @@ const TimeRow = styled.div`
 `;
 
 const TimeIcon = styled(RiTimeFill)`
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   size: 16px;
 `;
 
 const TimeText = styled.span`
   font-size: 16px;
   font-weight: 700;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   line-height: normal;
 `;
 
@@ -59,11 +59,11 @@ const StatusBadge = styled.div<{ isActive: boolean }>`
   width: 71px;
   height: 24px;
   background: ${({ isActive }) => (isActive ? Color.KIO_ORANGE : Color.WHITE)};
-  border: 1px solid ${({ isActive }) => (isActive ? Color.KIO_ORANGE : '#e8eef2')};
+  border: 1px solid ${({ isActive }) => (isActive ? Color.KIO_ORANGE : Color.BORDER_GREY)};
   border-radius: 6px;
   font-size: 12px;
   font-weight: 400;
-  color: ${({ isActive }) => (isActive ? Color.WHITE : '#464a4d')};
+  color: ${({ isActive }) => (isActive ? Color.WHITE : Color.TEXT_DEFAULT)};
   text-align: center;
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
@@ -84,7 +84,7 @@ const BottomPadding = styled.div`
 const Label = styled.span`
   font-size: 12px;
   font-weight: 400;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
 `;
 
 interface OrderSessionCardProps {

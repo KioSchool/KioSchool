@@ -23,7 +23,7 @@ const Card = styled.div`
 const Step = styled.div`
   width: 100%;
   padding: 12px 0;
-  border-bottom: 1px solid #f7f7f7;
+  border-bottom: 1px solid ${Color.LIGHT_GREY};
   gap: 8px;
   &:last-of-type {
     border-bottom: none;

@@ -11,7 +11,7 @@ const BaseImageStyle = css`
   width: 320px;
   height: 180px;
   border-radius: 15px;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
@@ -35,7 +35,7 @@ const DummyContent = styled.div`
 const PlusIcon = styled(RiCameraFill)`
   width: 30px;
   height: 30px;
-  color: #e8eef2;
+  color: ${Color.BORDER_GREY};
 `;
 
 const ActionContainer = styled.div`
@@ -47,9 +47,9 @@ const ActionButton = styled.button`
   padding: 6px 12px;
   font-size: 13px;
   border-radius: 8px;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   background: transparent;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   cursor: pointer;
 `;
 

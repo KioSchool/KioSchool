@@ -19,7 +19,7 @@ const SidebarContainer = styled.div<{ isOpen: boolean; scale: number }>`
   z-index: 1010;
   height: calc((100vh - ${NAVBAR_HEIGHT}px) / ${(props) => props.scale});
   background-color: ${Color.WHITE};
-  border-left: 1px solid #e8eef2;
+  border-left: 1px solid ${Color.BORDER_GREY};
   box-shadow: -4px 0 12px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
   padding: 20px 16px 0 16px;
@@ -39,7 +39,7 @@ const SidebarContainer = styled.div<{ isOpen: boolean; scale: number }>`
     width: 100%;
     height: calc(100vh - ${NAVBAR_HEIGHT_MOBILE}px);
     border-left: none;
-    border-top: 1px solid #e8eef2;
+    border-top: 1px solid ${Color.BORDER_GREY};
     box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.06);
     padding: 16px 16px 24px 16px;
     transform: translateY(${(props) => (props.isOpen ? '0' : '100%')});
@@ -53,7 +53,7 @@ const SidebarHeader = styled.div`
 `;
 
 const TitleContainer = styled.div`
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   flex: 1;
   min-width: 0;
   gap: 4px;

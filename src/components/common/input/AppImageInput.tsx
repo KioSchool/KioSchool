@@ -2,6 +2,7 @@ import { ChangeEvent, useRef } from 'react';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { RiCameraFill } from '@remixicon/react';
+import { Color } from '@resources/colors';
 
 const ImageInputContainer = styled.div`
   gap: 8px;
@@ -17,7 +18,7 @@ const ImageLabelContainer = styled.div`
 const StyledLabel = styled.div`
   font-size: 16px;
   font-weight: 700;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
 `;
 
 const UploadImageWrapper = styled.div<{ width?: number; height?: number }>`
@@ -33,7 +34,7 @@ const UploadImageWrapper = styled.div<{ width?: number; height?: number }>`
 const UploadImage = styled(RiCameraFill)`
   width: 26px;
   height: 26px;
-  color: #e8eef2;
+  color: ${Color.BORDER_GREY};
 `;
 
 const ImageInput = styled.input`

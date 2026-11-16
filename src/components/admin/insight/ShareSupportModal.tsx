@@ -10,6 +10,7 @@ import useInsightDiscordReport from '@hooks/admin/useInsightDiscordReport';
 import { renderInsightCardToDataUrl } from './insightCardRenderer';
 import DonationSection from './DonationSection';
 import { InsightCardResponse } from '@@types/index';
+import { Color } from '@resources/colors';
 import { InsightDesignTokens } from './insightDesignTokens';
 
 const Overlay = styled.div`
@@ -92,7 +93,7 @@ const ActionRow = styled.div`
 
 const ActionButton = styled.button<{ primary?: boolean }>`
   padding: 10px;
-  background: ${({ primary }) => (primary ? InsightDesignTokens.brand.main : '#F7F7F7')};
+  background: ${({ primary }) => (primary ? InsightDesignTokens.brand.main : Color.LIGHT_GREY)};
   color: ${({ primary }) => (primary ? '#fff' : InsightDesignTokens.text.primary)};
   border: 1px solid ${({ primary }) => (primary ? 'transparent' : InsightDesignTokens.card.border)};
   border-radius: 8px;
