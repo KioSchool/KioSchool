@@ -36,7 +36,8 @@ function ProductEdit({ productId, onDelete }: ProductEditProps) {
 
   const handleEditProduct = async (formData: ProductStateType, file: File | null) => {
     const submitData = { ...formData, workspaceId };
-    await editProduct(submitData, file);
+    const isEdited = await editProduct(submitData, file);
+    if (!isEdited) return;
 
     await fetchProducts();
     alert('상품 정보가 수정되었습니다.');

@@ -9,6 +9,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { MODAL_ROOT_KEY } from '@hooks/useModal';
 import { Table } from '@@types/index';
 import { downloadDataUrl } from '@utils/qrCode';
+import { notifyActionFailure } from '@utils/actionFailure';
 
 const QR_DISPLAY_SIZE_PX = 220;
 const QR_DOWNLOAD_SIZE_PX = 480;
@@ -138,8 +139,7 @@ function TableQrModal({ workspaceId, workspaceName, table, onClose }: TableQrMod
       });
       downloadDataUrl(dataUrl, `테이블${table.tableNumber} QR코드.png`);
     } catch (error) {
-      console.error(error);
-      alert('QR 코드 생성에 실패했습니다.');
+      notifyActionFailure(error, 'QR 코드를 만들지 못했습니다. 다시 시도해 주세요.');
     }
   };
 

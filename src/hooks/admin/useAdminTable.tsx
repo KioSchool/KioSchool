@@ -1,4 +1,5 @@
 import useApi from '@hooks/useApi';
+import { notifyActionFailure } from '@utils/actionFailure';
 
 function useAdminTable(workspaceId: string | undefined) {
   const { adminApi } = useApi();
@@ -11,7 +12,7 @@ function useAdminTable(workspaceId: string | undefined) {
         expectedEndAt,
       })
       .catch((error) => {
-        console.error('Error updating session end time:', error);
+        notifyActionFailure(error, '사용 시간을 바꾸지 못했습니다. 잠시 후 다시 시도해 주세요.');
       });
   };
 
@@ -31,7 +32,7 @@ function useAdminTable(workspaceId: string | undefined) {
         tableNumber,
       })
       .catch((error) => {
-        console.error('Error starting table session:', error);
+        notifyActionFailure(error, '테이블 사용을 시작하지 못했습니다. 잠시 후 다시 시도해 주세요.');
       });
   };
 

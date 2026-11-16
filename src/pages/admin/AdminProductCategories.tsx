@@ -73,7 +73,7 @@ function AdminProductCategories() {
   const { addCategory } = useAdminProducts(workspaceId);
   const categoryInputRef = useRef<HTMLInputElement>(null);
 
-  const addCategoryHandler = () => {
+  const addCategoryHandler = async () => {
     const userInput = categoryInputRef.current?.value;
 
     if (!userInput) {
@@ -81,8 +81,8 @@ function AdminProductCategories() {
       return;
     }
 
-    addCategory(userInput);
-    if (categoryInputRef.current) categoryInputRef.current.value = '';
+    const isAdded = await addCategory(userInput);
+    if (isAdded && categoryInputRef.current) categoryInputRef.current.value = '';
   };
 
   const handleGoToProducts = () => {

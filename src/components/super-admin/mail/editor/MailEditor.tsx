@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { EditorContent, useEditor } from '@tiptap/react';
+import { Editor, EditorContent, useEditor } from '@tiptap/react';
 import { Link } from '@tiptap/extension-link';
 import { Underline } from '@tiptap/extension-underline';
 import { StarterKit } from '@tiptap/starter-kit';
@@ -8,7 +8,7 @@ import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { isMailLinkValid } from '@utils/mailEditor';
 import MailValueMenu from '../MailValueMenu';
-import { MailAlign, MailButton, MailHeading, MailMarkdown, MailValueHighlight } from './mailEditorExtensions';
+import { MailAlign, MailButton, MailHeading, MailMarkdown, MailSignature, MailValueHighlight } from './mailEditorExtensions';
 import MailButtonPanel from './MailButtonPanel';
 import MailEditorToolbar, { MailEditorPanel } from './MailEditorToolbar';
 import MailLinkPanel from './MailLinkPanel';
@@ -154,10 +154,12 @@ export interface MailEditorProps {
   height?: number;
   withValues?: boolean;
   resetKey?: number;
+  initialContent?: string;
+  signatureHtml?: string | null;
   onChange: (html: string) => void;
 }
 
-function getExtensions(withValues: boolean) {
+function getExtensions(withValues: boolean, signatureHtml: string | null) {
   const extensions = [
     StarterKit.configure({ code: false, codeBlock: false, blockquote: false, strike: false, heading: false }),
     MailHeading.configure({ levels: [2, 3] }),
@@ -166,15 +168,31 @@ function getExtensions(withValues: boolean) {
     Link.configure({ openOnClick: false, autolink: false, isAllowedUri: (url) => isMailLinkValid(url ?? ''), HTMLAttributes: { rel: null, target: null } }),
     MailButton,
     MailAlign,
+    MailSignature.configure({ html: signatureHtml }),
   ];
   if (!withValues) return extensions;
   return [...extensions, MailValueHighlight];
 }
 
-function MailEditor({ placeholder, height = 220, withValues = false, resetKey = 0, onChange }: MailEditorProps) {
+function placeCursorAboveSignature(editor: Editor) {
+  const emptyParagraphPositions: number[] = [];
+  editor.state.doc.forEach((node, offset) => {
+    if (node.type.name === 'paragraph' && node.content.size === 0) emptyParagraphPositions.push(offset + 1);
+  });
+  const target = emptyParagraphPositions[emptyParagraphPositions.length - 1];
+  if (target !== undefined) editor.commands.setTextSelection(target);
+}
+
+function MailEditor({ placeholder, height = 220, withValues = false, resetKey = 0, initialContent = '', signatureHtml = null, onChange }: MailEditorProps) {
   const [panel, setPanel] = useState<MailEditorPanel | null>(null);
   const editor = useEditor({
-    extensions: getExtensions(withValues),
+    extensions: getExtensions(withValues, signatureHtml),
+    content: initialContent,
+    onCreate: ({ editor: current }) => {
+      if (!initialContent) return;
+      placeCursorAboveSignature(current);
+      onChange(current.getHTML());
+    },
     onUpdate: ({ editor: current }) => {
       if (current.isEmpty) {
         onChange('');
@@ -185,8 +203,10 @@ function MailEditor({ placeholder, height = 220, withValues = false, resetKey = 
   });
 
   useEffect(() => {
-    if (resetKey > 0) editor?.commands.clearContent(true);
-  }, [editor, resetKey]);
+    if (resetKey === 0 || !editor) return;
+    editor.commands.setContent(initialContent, true);
+    placeCursorAboveSignature(editor);
+  }, [editor, resetKey, initialContent]);
 
   if (!editor) return null;
 

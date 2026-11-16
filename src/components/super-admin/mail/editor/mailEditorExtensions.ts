@@ -1,10 +1,11 @@
 import { Heading } from '@tiptap/extension-heading';
-import { Extension, InputRule, Node, textblockTypeInputRule } from '@tiptap/react';
+import { Extension, InputRule, Node, ReactNodeViewRenderer, textblockTypeInputRule } from '@tiptap/react';
 import { Node as ProseMirrorNode } from '@tiptap/pm/model';
 import { Plugin, PluginKey } from '@tiptap/pm/state';
 import { Decoration, DecorationSet } from '@tiptap/pm/view';
 import { MAIL_TEMPLATE_VALUES } from '@constants/data/mailData';
-import { isMailLinkValid, MAIL_VALUE_PATTERN } from '@utils/mailEditor';
+import { isMailLinkValid, MAIL_SIGNATURE_ATTRIBUTE, MAIL_VALUE_PATTERN } from '@utils/mailEditor';
+import MailSignatureNodeView from './MailSignatureNodeView';
 import { getPastedMarkdown, markdownToHtml } from './mailMarkdown';
 
 const MARKDOWN_LINK_PATTERN = /\[([^\]]+)\]\(([^)]+)\)$/;
@@ -69,6 +70,35 @@ export const MailButton = Node.create({
         },
       }),
     ];
+  },
+});
+
+interface MailSignatureOptions {
+  html: string | null;
+}
+
+// 서명은 자리 표시만 저장하고, 보낼 때 서버가 그 자리를 설정한 서명으로 바꾼다
+export const MailSignature = Node.create<MailSignatureOptions>({
+  name: 'mailSignature',
+  group: 'block',
+  atom: true,
+  selectable: true,
+  draggable: false,
+
+  addOptions() {
+    return { html: null };
+  },
+
+  parseHTML() {
+    return [{ tag: `div[${MAIL_SIGNATURE_ATTRIBUTE}]` }];
+  },
+
+  renderHTML() {
+    return ['div', { [MAIL_SIGNATURE_ATTRIBUTE]: '' }];
+  },
+
+  addNodeView() {
+    return ReactNodeViewRenderer(MailSignatureNodeView);
   },
 });
 

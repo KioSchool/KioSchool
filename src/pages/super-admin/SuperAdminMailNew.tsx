@@ -13,6 +13,7 @@ import MailWorkspacePicker from '@components/super-admin/mail/MailWorkspacePicke
 import SuperAdminPageContainer from '@components/super-admin/SuperAdminPageContainer';
 import { MAIL_ADDRESS, MAIL_SUBJECT_MAX_LENGTH, MAIL_TEAM_NAME } from '@constants/data/mailData';
 import { SUPER_ADMIN_ROUTES } from '@constants/routes';
+import useMailComposeDefaults from '@hooks/super-admin/useMailComposeDefaults';
 import useSuperAdminMail from '@hooks/super-admin/useSuperAdminMail';
 import useSuperAdminWorkspace from '@hooks/super-admin/useSuperAdminWorkspace';
 import useConfirm from '@hooks/useConfirm';
@@ -69,6 +70,7 @@ function SuperAdminMailNew() {
   const [searchParams] = useSearchParams();
   const { previewMail, sendNewMail } = useSuperAdminMail();
   const { fetchWorkspaceDetail } = useSuperAdminWorkspace();
+  const composeDefaults = useMailComposeDefaults('mine');
   const [workspace, setWorkspace] = useState<MailTargetWorkspace | null>(null);
   const [subject, setSubject] = useState('');
   const [content, setContent] = useState('');
@@ -187,7 +189,15 @@ function SuperAdminMailNew() {
           </Field>
           <Field>
             <FieldLabel as="span">내용</FieldLabel>
-            <LazyMailEditor height={260} placeholder="전달할 내용을 입력해 주세요" onChange={setContent} />
+            {composeDefaults && (
+              <LazyMailEditor
+                height={260}
+                placeholder="전달할 내용을 입력해 주세요"
+                initialContent={composeDefaults.initialContent}
+                signatureHtml={composeDefaults.signatureHtml}
+                onChange={setContent}
+              />
+            )}
           </Field>
           {errorMessage && <ErrorText role="alert">{errorMessage}</ErrorText>}
           <ButtonRow>

@@ -82,13 +82,14 @@ const CLOSE_ICON_SIZE = 22;
 
 interface MailPreviewModalProps {
   title: string;
-  recipient: string;
-  subject: string;
+  recipient?: string;
+  subject?: string;
+  description?: string;
   html: string;
   onClose: () => void;
 }
 
-function MailPreviewModal({ title, recipient, subject, html, onClose }: MailPreviewModalProps) {
+function MailPreviewModal({ title, recipient, subject, description, html, onClose }: MailPreviewModalProps) {
   const [frameHeight, setFrameHeight] = useState(INITIAL_FRAME_HEIGHT);
 
   useEffect(() => {
@@ -114,12 +115,15 @@ function MailPreviewModal({ title, recipient, subject, html, onClose }: MailPrev
             <RiCloseLine size={CLOSE_ICON_SIZE} />
           </CloseButton>
         </Header>
-        <Info>
-          보낸 사람: {MAIL_TEAM_NAME} &lt;{MAIL_ADDRESS}&gt;
-          <br />
-          받는 사람: {recipient}
-        </Info>
-        <Subject>{subject || '(제목 없음)'}</Subject>
+        {description && <Info>{description}</Info>}
+        {!description && (
+          <Info>
+            보낸 사람: {MAIL_TEAM_NAME} &lt;{MAIL_ADDRESS}&gt;
+            <br />
+            받는 사람: {recipient}
+          </Info>
+        )}
+        {!description && <Subject>{subject || '(제목 없음)'}</Subject>}
         {/* 높이를 재려면 같은 출처여야 한다. allow-scripts가 없어 메일 안의 스크립트는 돌지 않는다. */}
         <Frame title="메일 미리보기" sandbox="allow-same-origin" srcDoc={html} frameHeight={frameHeight} onLoad={handleFrameLoad} />
       </Panel>

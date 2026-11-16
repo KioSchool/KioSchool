@@ -14,6 +14,7 @@ import { colFlex } from '@styles/flexStyles';
 import { MAX_TABLE_COUNT } from '@constants/layout';
 import { getAdminWorkspacePath } from '@constants/routes';
 import { getTableStatus, TABLE_STATUS } from '@utils/tableStatus';
+import { notifyActionFailure } from '@utils/actionFailure';
 import TableTimeSetting from './TableTimeSetting';
 import TableQRDownload from './TableQRDownload';
 import NumberInput from '@components/common/input/NumberInput';
@@ -112,8 +113,7 @@ function TableSettingsSidebar() {
         setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE });
       }
     } catch (error) {
-      console.error('설정 저장 실패:', error);
-      alert('설정 저장에 실패했습니다. 다시 시도해주세요.');
+      notifyActionFailure(error, '테이블 설정을 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.');
     }
   };
 

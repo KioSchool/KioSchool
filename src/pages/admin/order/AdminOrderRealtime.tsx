@@ -50,8 +50,8 @@ function AdminOrderRealtime() {
   const paidOrders = orders.filter((order) => order.status === OrderStatus.PAID);
   const servedOrders = orders.filter((order) => order.status === OrderStatus.SERVED);
 
-  // 소켓이 거부되면 주문을 다시 불러온다. 토큰 만료가 원인이면 이 요청의 401로 토큰이 갱신되고, 갱신도 실패하면 로그인 화면으로 이동한다.
-  useOrdersWebsocket(workspaceId, fetchTodayOrders);
+  // 소켓이 거부되거나 (다시) 연결되면 주문을 다시 불러온다. 거부 원인이 토큰 만료면 이 요청의 401로 토큰이 갱신되고, 갱신도 실패하면 로그인 화면으로 이동한다.
+  useOrdersWebsocket(workspaceId, fetchTodayOrders, fetchTodayOrders);
 
   useEffect(() => {
     fetchTodayOrders();

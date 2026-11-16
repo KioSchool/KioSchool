@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import QRCode from 'qrcode';
 import { QRCodeCanvas } from 'qrcode.react';
 import { downloadDataUrl, downloadQRGrid } from '@utils/qrCode';
+import { notifyActionFailure } from '@utils/actionFailure';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import SettingSection from './SettingSection';
 import { Color } from '@resources/colors';
@@ -61,8 +62,7 @@ function TableQRDownload({ workspaceId, workspaceName, tables }: TableQRDownload
     })
       .then((dataUrl) => downloadDataUrl(dataUrl, '미리보기_QR코드.png'))
       .catch((err) => {
-        console.error(err);
-        alert('QR 코드 생성에 실패했습니다.');
+        notifyActionFailure(err, 'QR 코드를 만들지 못했습니다. 다시 시도해 주세요.');
       });
   };
 

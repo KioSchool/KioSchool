@@ -1,12 +1,12 @@
 import useApi from '@hooks/useApi';
 import { FocalPoint, Workspace } from '@@types/index';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { adminTablesAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { useSetAtom } from 'jotai';
 import { ADMIN_ROUTES, getAdminWorkspacePath } from '@constants/routes';
 import { API_ERROR_CODES } from '@constants/errorCodes';
 import { isApiErrorCode } from '@utils/apiError';
+import { notifyActionFailure } from '@utils/actionFailure';
 
 const INVALID_WORKSPACE_ALERT_MESSAGE = '접근할 수 없는 워크스페이스입니다.';
 
@@ -25,8 +25,7 @@ function useAdminWorkspace() {
         return res.data;
       })
       .catch((error) => {
-        toast.error(error.response?.data?.message ?? '온보딩 상태 변경에 실패했어요.');
-        console.error(error);
+        notifyActionFailure(error, '온보딩 상태를 바꾸지 못했습니다. 잠시 후 다시 시도해 주세요.');
         throw error;
       });
   };
@@ -41,8 +40,7 @@ function useAdminWorkspace() {
         return res.data;
       })
       .catch((error) => {
-        toast.error(error.response?.data?.message ?? '워크스페이스 정보를 불러오지 못했어요.');
-        console.error(error);
+        notifyActionFailure(error, '주점 정보를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.');
         throw error;
       });
   };
@@ -71,12 +69,9 @@ function useAdminWorkspace() {
   };
 
   const updateWorkspaceTableCount = (workspaceId: string | undefined | null, tableCount: number) => {
-    return adminApi
-      .post<Workspace>('/workspace/table-count', { workspaceId, tableCount })
-      .then((res) => {
-        setAdminWorkspace(res.data);
-      })
-      .catch(() => Promise.reject());
+    return adminApi.post<Workspace>('/workspace/table-count', { workspaceId, tableCount }).then((res) => {
+      setAdminWorkspace(res.data);
+    });
   };
 
   const updateWorkspaceOrderSetting = (workspaceId: string | undefined | null, useOrderSessionTimeLimit: boolean, orderSessionTimeLimitMinutes: number) => {
@@ -88,8 +83,7 @@ function useAdminWorkspace() {
       })
       .then((res) => {
         setAdminWorkspace(res.data);
-      })
-      .catch(() => Promise.reject());
+      });
   };
 
   const updateWorkspaceInfo = (workspaceId: number, name: string, description: string, notice?: string) => {
@@ -136,8 +130,7 @@ function useAdminWorkspace() {
         navigate(getAdminWorkspacePath(workspaceId));
       })
       .catch((error) => {
-        toast.error(error.response?.data?.message ?? '워크스페이스 저장에 실패했어요. 잠시 후 다시 시도해주세요.');
-        console.error(error);
+        notifyActionFailure(error, '주점 정보를 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.');
       });
   };
 

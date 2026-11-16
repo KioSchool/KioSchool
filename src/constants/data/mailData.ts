@@ -1,5 +1,5 @@
 import { Color } from '@resources/colors';
-import type { MailCampaignStatus, MailRecipientStatus, MailSentFilter, MailThreadStatus } from '@@types/mail';
+import type { MailCampaignStatus, MailRecipientStatus, MailSentFilter, MailSignatureScope, MailThreadStatus } from '@@types/mail';
 
 export const MAIL_SUBJECT_MAX_LENGTH = 200;
 export const MAIL_NO_SUBJECT = '(제목 없음)';
@@ -31,6 +31,29 @@ export const MAIL_TEMPLATE_VALUE_GROUPS: { label: string; values: string[] }[] =
 export const MAIL_TEMPLATE_VALUES = MAIL_TEMPLATE_VALUE_GROUPS.flatMap((group) => group.values);
 export const MAIL_BUTTON_LABEL_MAX_LENGTH = 40;
 export const MAIL_BUTTON_URL_MAX_LENGTH = 2000;
+
+export const MAIL_SIGNATURE_TEXT_MAX_LENGTH = 40;
+export const MAIL_SIGNATURE_SLOGAN_MAX_LENGTH = 80;
+export const MAIL_SIGNATURE_CONTACT_LABEL_MAX_LENGTH = 20;
+export const MAIL_SIGNATURE_CONTACT_VALUE_MAX_LENGTH = 120;
+export const MAIL_SIGNATURE_MAX_CONTACTS = 5;
+
+export const MAIL_SIGNATURE_SCOPES: MailSignatureScope[] = ['mine', 'team'];
+
+export const MAIL_SIGNATURE_SCOPE_LABELS: Record<MailSignatureScope, string> = {
+  mine: '내 인사말·서명',
+  team: '팀 공용',
+};
+
+export const MAIL_SIGNATURE_SCOPE_DESCRIPTIONS: Record<MailSignatureScope, string> = {
+  mine: '새 메일과 답장을 쓸 때 들어가요. 나만 고칠 수 있어요.',
+  team: '여러 곳 보내기에 들어가요. 내 설정이 없는 사람이 새 메일·답장을 쓸 때도 이걸로 채워요. 슈퍼어드민 누구나 고칠 수 있어요.',
+};
+
+export const MAIL_SIGNATURE_PREVIEW_DESCRIPTIONS: Record<MailSignatureScope, string> = {
+  mine: '새 메일과 답장에 이렇게 들어가요. 본문 자리는 비워 두고 보여 줘요.',
+  team: '여러 곳 보내기에 이렇게 들어가요. 실제 메일은 카드 틀 안에 들어가요. 본문 자리는 비워 두고 보여 줘요.',
+};
 
 export const MAIL_AUDIENCE_DEFAULT_MIN_ORDERS = 15;
 

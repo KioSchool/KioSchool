@@ -6,6 +6,7 @@ import { externalSidebarAtom } from '@jotai/atoms';
 import { ProductStateType, RIGHT_SIDEBAR_ACTION } from '@@types/index';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { getAdminWorkspacePath } from '@constants/routes';
+import { notifyActionFailure } from '@utils/actionFailure';
 import ProductForm from './ProductForm';
 
 function ProductAdd() {
@@ -42,8 +43,8 @@ function ProductAdd() {
           navigate(getAdminWorkspacePath(Number(workspaceId)));
         }
       })
-      .catch(() => {
-        alert('상품 추가에 실패했습니다. 다시 시도해주세요.');
+      .catch((error) => {
+        notifyActionFailure(error, '상품을 추가하지 못했습니다. 잠시 후 다시 시도해 주세요.');
       });
   };
 

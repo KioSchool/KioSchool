@@ -2,7 +2,7 @@ import { match } from 'ts-pattern';
 import useApi from '@hooks/useApi';
 import { PaymentMethod, User, Workspace } from '@@types/index';
 import { trackEvent } from '@utils/analytics';
-import { getApiErrorMessage } from '@utils/apiError';
+import { notifyActionFailure } from '@utils/actionFailure';
 import { GA_EVENT } from '@constants/analytics';
 import { useNavigate } from 'react-router-dom';
 import { useSetAtom } from 'jotai';
@@ -37,7 +37,7 @@ function useAdminUser() {
         setWorkspaces((prev) => [...prev, res.data]);
         trackEvent(GA_EVENT.WORKSPACE_CREATED, { workspace_id: res.data.id });
       })
-      .catch((error) => alert(getApiErrorMessage(error, '주점을 생성하지 못했습니다. 잠시 후 다시 시도해 주세요.')));
+      .catch((error) => notifyActionFailure(error, '주점을 생성하지 못했습니다. 잠시 후 다시 시도해 주세요.'));
   };
 
   const leaveWorkspace = (workspaceId: number) => {
@@ -62,7 +62,7 @@ function useAdminUser() {
       .get('/banks')
       .then((res) => setBanks(res.data))
       .catch((error) => {
-        alert(getApiErrorMessage(error, '은행 목록을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.'));
+        notifyActionFailure(error, '은행 목록을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.');
       });
   };
 
@@ -76,7 +76,7 @@ function useAdminUser() {
         return res.data;
       })
       .catch((error) => {
-        alert(getApiErrorMessage(error, '계좌를 등록하지 못했습니다. 잠시 후 다시 시도해 주세요.'));
+        notifyActionFailure(error, '계좌를 등록하지 못했습니다. 잠시 후 다시 시도해 주세요.');
       });
   };
 
@@ -88,7 +88,7 @@ function useAdminUser() {
         alert('계좌 삭제가 완료되었습니다.');
       })
       .catch((error) => {
-        alert(getApiErrorMessage(error, '계좌를 삭제하지 못했습니다. 잠시 후 다시 시도해 주세요.'));
+        notifyActionFailure(error, '계좌를 삭제하지 못했습니다. 잠시 후 다시 시도해 주세요.');
       });
   };
 
@@ -107,7 +107,7 @@ function useAdminUser() {
         setAdminUser(res.data);
       })
       .catch((error) => {
-        alert(getApiErrorMessage(error, '송금 방법을 바꾸지 못했어요. 잠시 후 다시 시도해 주세요.'));
+        notifyActionFailure(error, '송금 방법을 바꾸지 못했어요. 잠시 후 다시 시도해 주세요.');
       });
   };
 
