@@ -28,11 +28,8 @@ function useQuickStartTableSession({ workspaceId, viewMode, refetchTables }: Use
       .then((response) => {
         refetchTables();
 
-        // startTableSession은 실패를 삼키고 undefined를 돌려준다. 다른 기기에서 이미 시작한 경우가 흔하므로 목록은 어느 쪽이든 새로 받는다.
-        if (!response) {
-          alert('테이블 사용을 시작하지 못했습니다. 잠시 후 다시 시도해주세요.');
-          return;
-        }
+        // startTableSession은 실패를 알린 뒤 undefined를 돌려준다. 다른 기기에서 이미 시작한 경우가 흔하므로 목록은 어느 쪽이든 새로 받는다.
+        if (!response) return;
 
         trackEvent(GA_EVENT.TABLE_SESSION_ACTION, {
           session_action: TABLE_SESSION_ACTION.START,

@@ -56,7 +56,7 @@ const FooterButton = styled.button<{ variant: 'start' | 'end' }>`
   letter-spacing: -0.01em;
   cursor: pointer;
   background-color: ${({ variant }) => (variant === 'end' ? Color.WHITE : Color.KIO_ORANGE)};
-  color: ${({ variant }) => (variant === 'end' ? '#464a4d' : Color.WHITE)};
+  color: ${({ variant }) => (variant === 'end' ? Color.TEXT_DEFAULT : Color.WHITE)};
   transition: background-color 0.15s ease-in-out;
   ${rowFlex({ justify: 'center', align: 'center' })};
 

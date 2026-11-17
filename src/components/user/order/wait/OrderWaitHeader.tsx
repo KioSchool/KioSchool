@@ -7,7 +7,7 @@ import { PaymentMethod } from '@@types/index';
 import { PAY_METHOD_STYLE } from '@constants/data/payMethods';
 import kioCheckSearch from '@resources/image/order/kioCheckSearch.png';
 import { getLogoBorder } from '@utils/payMethodStyles';
-import { WaitCard } from './waitStyles';
+import { OrderCard } from '@components/user/order/orderCardStyles';
 
 const loadingDots = keyframes`
   0%, 20% { content: '.'; }
@@ -16,7 +16,7 @@ const loadingDots = keyframes`
   80%, 100% { content: ''; }
 `;
 
-const Card = styled(WaitCard)`
+const Card = styled(OrderCard)`
   padding: 24px 20px 22px;
   gap: 4px;
   align-items: center;
@@ -47,7 +47,7 @@ const Title = styled.h1`
 
 const Sub = styled.p`
   margin: 0 0 12px;
-  color: #697278;
+  color: ${Color.TEXT_SUBTLE};
   font-size: 13px;
   line-height: 1.45;
 `;

@@ -14,7 +14,7 @@ export type ElapsedLevel = typeof ELAPSED_LEVEL[keyof typeof ELAPSED_LEVEL];
 
 // 실시간 테이블 화면의 상태 색을 그대로 쓴다: 경고는 KIO_ORANGE_DARK, 초과는 RED
 export const ELAPSED_LEVEL_COLOR: Record<ElapsedLevel, string> = {
-  [ELAPSED_LEVEL.NORMAL]: '#464a4d',
+  [ELAPSED_LEVEL.NORMAL]: Color.TEXT_DEFAULT,
   [ELAPSED_LEVEL.WARNING]: Color.KIO_ORANGE_DARK,
   [ELAPSED_LEVEL.DANGER]: Color.RED,
 };

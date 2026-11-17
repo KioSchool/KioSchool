@@ -33,7 +33,7 @@ const CategoriesItemContainer = styled.div`
 const SectionTitle = styled.div`
   font-size: 16px;
   font-weight: 700;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   padding-bottom: 15px;
 `;
 
@@ -46,7 +46,7 @@ const InputRow = styled.div`
 const CategoryInput = styled.input`
   flex: 1;
   border: none;
-  border-bottom: 1px solid #e8eef2;
+  border-bottom: 1px solid ${Color.BORDER_GREY};
   padding: 12px 4px;
   font-size: 16px;
   box-sizing: border-box;
@@ -58,7 +58,7 @@ const CategoryInput = styled.input`
   }
 
   &::placeholder {
-    color: #e8eef2;
+    color: ${Color.BORDER_GREY};
   }
 `;
 
@@ -73,7 +73,7 @@ function AdminProductCategories() {
   const { addCategory } = useAdminProducts(workspaceId);
   const categoryInputRef = useRef<HTMLInputElement>(null);
 
-  const addCategoryHandler = () => {
+  const addCategoryHandler = async () => {
     const userInput = categoryInputRef.current?.value;
 
     if (!userInput) {
@@ -81,8 +81,8 @@ function AdminProductCategories() {
       return;
     }
 
-    addCategory(userInput);
-    if (categoryInputRef.current) categoryInputRef.current.value = '';
+    const isAdded = await addCategory(userInput);
+    if (isAdded && categoryInputRef.current) categoryInputRef.current.value = '';
   };
 
   const handleGoToProducts = () => {

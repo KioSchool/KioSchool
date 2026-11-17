@@ -3,6 +3,7 @@ import { useDroppable } from '@dnd-kit/core';
 import { horizontalListSortingStrategy, SortableContext } from '@dnd-kit/sortable';
 import { Product } from '@@types/index';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 import ProductSortableItem from './ProductSortableItem';
 
 const Container = styled.div`
@@ -10,7 +11,7 @@ const Container = styled.div`
   width: 95%;
   padding: 18px 30px;
   gap: 10px;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 16px;
   background: #ffffff50;
   box-shadow: 0 4px 20px 0 rgba(92, 92, 92, 0.05) outset;

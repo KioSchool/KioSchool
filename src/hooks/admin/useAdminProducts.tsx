@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { adminCategoriesAtom, adminProductsAtom } from '@jotai/admin/atoms';
 import { useSetAtom } from 'jotai';
 import { getAdminProductsPath } from '@constants/routes';
+import { notifyActionFailure } from '@utils/actionFailure';
 
 function useAdminProducts(workspaceId: string | undefined | null) {
   const { adminApi } = useApi();
@@ -53,12 +54,16 @@ function useAdminProducts(workspaceId: string | undefined | null) {
   const editProduct = (parameter: any, file: File | null) => {
     const data = createFormData(parameter, file);
 
-    adminApi
+    return adminApi
       .put('/product', data)
       .then(() => {
         navigate(getAdminProductsPath(parameter.workspaceId));
+        return true;
       })
-      .catch((error) => console.error('Failed to add product: ', error));
+      .catch((error) => {
+        notifyActionFailure(error, '상품을 수정하지 못했습니다. 잠시 후 다시 시도해 주세요.');
+        return false;
+      });
   };
 
   const editProductStatus = (productId: number, status: ProductStatus) => {
@@ -72,11 +77,11 @@ function useAdminProducts(workspaceId: string | undefined | null) {
         fetchProducts();
       })
       .catch((error) => {
-        console.error('Failed to edit product sellable: ', error);
+        notifyActionFailure(error, '상품 판매 상태를 바꾸지 못했습니다. 잠시 후 다시 시도해 주세요.');
       });
   };
 
-  const deleteProduct = (productId: number) => {
+  const deleteProduct = (productId: number) =>
     adminApi
       .delete('/product', {
         params: {
@@ -86,11 +91,12 @@ function useAdminProducts(workspaceId: string | undefined | null) {
       })
       .then(() => {
         setProducts((prev) => prev.filter((item) => item.id !== productId));
+        return true;
       })
       .catch((error) => {
-        console.error('Failed to delete selected products: ', error);
+        notifyActionFailure(error, '상품을 삭제하지 못했습니다. 잠시 후 다시 시도해 주세요.');
+        return false;
       });
-  };
 
   const fetchCategories = () => {
     adminApi
@@ -107,14 +113,17 @@ function useAdminProducts(workspaceId: string | undefined | null) {
       });
   };
 
-  const addCategory = (name: string) => {
+  const addCategory = (name: string) =>
     adminApi
       .post('/product-category', { name, workspaceId })
-      .then(() => fetchCategories())
+      .then(() => {
+        fetchCategories();
+        return true;
+      })
       .catch((error) => {
-        console.error('Failed to add products categories : ', error);
+        notifyActionFailure(error, '카테고리를 추가하지 못했습니다. 잠시 후 다시 시도해 주세요.');
+        return false;
       });
-  };
 
   const reorderCategories = (productCategoryIds: number[]) => {
     return adminApi
@@ -123,7 +132,8 @@ function useAdminProducts(workspaceId: string | undefined | null) {
         setProductCategories(res.data);
       })
       .catch((error) => {
-        console.error('Failed to reorder products categories : ', error);
+        notifyActionFailure(error, '카테고리 순서를 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.');
+        fetchCategories();
       });
   };
 
@@ -134,7 +144,8 @@ function useAdminProducts(workspaceId: string | undefined | null) {
         setProducts(res.data);
       })
       .catch((error) => {
-        console.error('Failed to reorder products : ', error);
+        notifyActionFailure(error, '상품 순서를 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.');
+        fetchProducts();
       });
   };
 

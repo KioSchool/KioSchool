@@ -46,7 +46,7 @@ const StepButton = styled.button<{ variant: 'decrease' | 'increase' }>`
 
   &:disabled {
     background-color: ${Color.BORDER_GREY};
-    color: #d1d5d8;
+    color: ${Color.DISABLED_GREY};
     cursor: not-allowed;
   }
 `;

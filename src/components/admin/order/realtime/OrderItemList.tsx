@@ -2,6 +2,7 @@ import { Order } from '@@types/index';
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { getDisplayedQuantity } from '@utils/orderProduct';
+import { Color } from '@resources/colors';
 
 const ListContainer = styled.div`
   width: 100%;
@@ -20,7 +21,7 @@ const StyledText = styled.div<{ $isServed: boolean }>`
   height: 24px;
   font-size: 12px;
   font-weight: 400;
-  color: ${({ $isServed }) => ($isServed ? '#D1D5D8' : '#464A4D')};
+  color: ${({ $isServed }) => ($isServed ? Color.DISABLED_GREY : Color.TEXT_DEFAULT)};
   text-decoration: ${({ $isServed }) => ($isServed ? 'line-through' : 'none')};
 `;
 

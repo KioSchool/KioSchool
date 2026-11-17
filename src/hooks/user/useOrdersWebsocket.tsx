@@ -23,7 +23,7 @@ function playOrderCreateAudio() {
 // 거부 사유가 토큰 만료면 소켓만으로는 알 수 없고 5초마다 재시도만 반복하므로(9/19 실측: 만료 토큰 하나로
 // 6시간에 약 1만 건), 호출자가 HTTP 요청을 한 번 보내 기존 401 처리(토큰 갱신, 실패하면 로그인 이동)를 태우게 한다.
 // 갱신에 성공하면 다음 자동 재시도가 새 쿠키로 붙는다.
-function useOrdersWebsocket(workspaceId: string | undefined, onStompRejected?: () => void) {
+function useOrdersWebsocket(workspaceId: string | undefined, onStompRejected?: () => void, onConnected?: () => void) {
   const setOrders = useSetAtom(adminOrdersAtom);
 
   // 첫 실패는 즉시 보고한다 — 구독 거부는 단 1회만 나도(실측) 그 화면은 재접속 전까지
@@ -35,10 +35,16 @@ function useOrdersWebsocket(workspaceId: string | undefined, onStompRejected?: (
   // 호출자가 매 렌더 새 함수를 넘겨도 소켓을 재연결하지 않도록 ref로 최신 값만 참조한다.
   const onStompRejectedRef = useRef(onStompRejected);
   onStompRejectedRef.current = onStompRejected;
+  const onConnectedRef = useRef(onConnected);
+  onConnectedRef.current = onConnected;
 
   const addOrder = useCallback(
     (order: Order) => {
-      setOrders((prevOrders) => [...prevOrders, order]);
+      setOrders((prevOrders) => {
+        // 연결 직후 다시 불러온 목록에 같은 주문이 이미 들어 있을 수 있다.
+        if (prevOrders.some((prevOrder) => prevOrder.id === order.id)) return prevOrders;
+        return [...prevOrders, order];
+      });
     },
     [setOrders],
   );
@@ -120,6 +126,8 @@ function useOrdersWebsocket(workspaceId: string | undefined, onStompRejected?: (
           updateOrder(order);
         }
       });
+      // 끊긴 사이 생긴 주문·상태 변경은 소켓으로 다시 오지 않으므로, 구독한 뒤 목록을 다시 불러온다.
+      onConnectedRef.current?.();
     };
 
     client.onWebSocketError = (error) => {

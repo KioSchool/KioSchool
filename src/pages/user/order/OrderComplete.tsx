@@ -13,13 +13,13 @@ import { useAtomValue } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
 import useBlockPopState from '@hooks/useBlockPopState';
 import { defaultUserOrderValue } from '@@types/defaultValues';
-import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import { Order, OrderStatus } from '@@types/index';
 import { ORDER_ROUTES } from '@constants/routes';
 import { isOverOneDay } from '@utils/formatDate';
 import useWorkspace from '@hooks/user/useWorkspace';
 import CustomerDonationModal from '@components/user/order/orderComplete/CustomerDonationModal';
 import SessionOrderHistoryButton from '@components/user/order/orderComplete/SessionOrderHistoryButton';
+import { OrderCard, OrderCardDivider, OrderCardTitle, OrderItemName, OrderItemQuantity } from '@components/user/order/orderCardStyles';
 
 const Container = styled.div`
   width: 100%;
@@ -30,19 +30,14 @@ const Container = styled.div`
 const SubContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
-  padding: 20px 20px 120px 20px;
-  gap: 15px;
+  padding: 20px 20px 130px;
+  gap: 12px;
   ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
-const ContentsContainer = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  padding: 12px 10px;
-  gap: 20px;
-  border-radius: 9px;
-  border: 0.5px solid #939393;
-  ${colFlex({ justify: 'center', align: 'start' })}
+const ContentsContainer = styled(OrderCard)`
+  padding: 18px 20px;
+  gap: 16px;
 `;
 
 const TitleRow = styled.div`
@@ -51,22 +46,22 @@ const TitleRow = styled.div`
 `;
 
 const SubTitle = styled.div`
-  font-size: 16px;
-  font-weight: 600;
-  padding-left: 10px;
+  color: ${Color.TEXT_STRONG};
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.45;
 `;
 
-const ContentTitle = styled.div`
-  font-size: 14px;
-  font-weight: 600;
-  padding-bottom: 8px;
+const TotalValue = styled.div`
+  color: ${Color.TEXT_STRONG};
+  font-size: 17px;
+  font-weight: 700;
 `;
 
 const InfoContainer = styled.div`
   width: 100%;
-  padding: 0 10px;
   box-sizing: border-box;
-  gap: 8px;
+  gap: 10px;
   ${colFlex()}
 `;
 
@@ -76,16 +71,19 @@ const InfoRow = styled.div`
 `;
 
 const ContentText = styled.div`
-  font-size: 13px;
-  font-weight: 400;
-  color: ${Color.GREY};
+  font-size: 14px;
+  color: ${Color.TEXT_SUBTLE};
+`;
+
+const ValueText = styled.div`
+  font-size: 14px;
+  color: ${Color.TEXT_DEFAULT};
 `;
 
 const OrderStatusContainer = styled.div<{}>`
   box-sizing: border-box;
   width: 100%;
-  padding: 7px 10px;
-  gap: 10px;
+  gap: 12px;
   ${colFlex({ justify: 'space-between', align: 'start' })};
 `;
 
@@ -93,14 +91,12 @@ const OrderProductContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
   gap: 10px;
-  padding: 0 10px;
   ${colFlex()}
 `;
 
 const OrderPriceContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
-  padding: 7px 10px;
   ${rowFlex({ justify: 'space-between', align: 'center' })};
 `;
 
@@ -110,9 +106,8 @@ const OrderProductRow = styled.div`
 `;
 
 const OrderProductText = styled.div`
-  font-size: 13px;
-  color: ${Color.GREY};
-  font-weight: 400;
+  font-size: 14px;
+  color: ${Color.TEXT_DEFAULT};
 `;
 
 function OrderComplete() {
@@ -223,41 +218,42 @@ function OrderComplete() {
         </TitleRow>
         <ContentsContainer>
           <InfoContainer>
-            <ContentTitle>주문 정보</ContentTitle>
+            <OrderCardTitle>주문 정보</OrderCardTitle>
             <InfoRow>
               <ContentText>주문일시</ContentText>
-              <ContentText>{dateConverter(new Date(order.createdAt))}</ContentText>
+              <ValueText>{dateConverter(new Date(order.createdAt))}</ValueText>
             </InfoRow>
             <InfoRow>
               <ContentText>주문번호</ContentText>
-              <ContentText>{order.orderNumber}</ContentText>
+              <ValueText>{order.orderNumber}</ValueText>
             </InfoRow>
             <InfoRow>
               <ContentText>입금자명</ContentText>
-              <ContentText>{order.customerName}</ContentText>
+              <ValueText>{order.customerName}</ValueText>
             </InfoRow>
           </InfoContainer>
-          <HorizontalDivider />
+          <OrderCardDivider />
           <OrderStatusContainer>
-            <ContentTitle>주문 상태</ContentTitle>
+            <OrderCardTitle>주문 상태</OrderCardTitle>
             <OrderStatusBar status={order.status} />
           </OrderStatusContainer>
-          <HorizontalDivider />
+          <OrderCardDivider />
           <OrderProductContainer>
-            <ContentTitle>상품 정보</ContentTitle>
+            <OrderCardTitle>상품 정보</OrderCardTitle>
             {order.orderProducts.map((orderProduct) => (
               <OrderProductRow key={orderProduct.id}>
-                <OrderProductText>
-                  {orderProduct.productName} · {orderProduct.quantity}개
-                </OrderProductText>
+                <OrderItemName>
+                  {orderProduct.productName}
+                  <OrderItemQuantity>{orderProduct.quantity}개</OrderItemQuantity>
+                </OrderItemName>
                 <OrderProductText>{orderProduct.totalPrice.toLocaleString()}원</OrderProductText>
               </OrderProductRow>
             ))}
           </OrderProductContainer>
-          <HorizontalDivider />
+          <OrderCardDivider />
           <OrderPriceContainer key={order.id}>
-            <ContentTitle>결제 금액</ContentTitle>
-            <ContentTitle>{order.totalPrice.toLocaleString()}원</ContentTitle>
+            <OrderCardTitle>합계</OrderCardTitle>
+            <TotalValue>{order.totalPrice.toLocaleString()}원</TotalValue>
           </OrderPriceContainer>
         </ContentsContainer>
         <CustomerDonationModal key={orderId} orderId={orderId} workspaceId={workspaceId} eligible={isDonationEligible} />

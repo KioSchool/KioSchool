@@ -13,7 +13,7 @@ const ProductContainer = styled.div`
   width: 100%;
   padding: 15px 20px;
   background: ${Color.WHITE};
-  border-bottom: 1px solid #e8eef2;
+  border-bottom: 1px solid ${Color.BORDER_GREY};
   box-sizing: border-box;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -32,13 +32,13 @@ const InfoContainer = styled.div`
 const OrderNumber = styled.span`
   font-size: 16px;
   font-weight: 700;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
 `;
 
 const ProductSummary = styled.span`
   font-size: 12px;
   font-weight: 700;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
 `;
 
 const MetaRow = styled.div`
@@ -50,11 +50,11 @@ const StatusBadge = styled.div`
   width: 71px;
   height: 24px;
   background: ${Color.WHITE};
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 6px;
   font-size: 12px;
   font-weight: 400;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   text-align: center;
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
@@ -62,7 +62,7 @@ const StatusBadge = styled.div`
 const Label = styled.span`
   font-size: 12px;
   font-weight: 400;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
 `;
 
 const getProductSummary = (orderProducts: OrderProduct[]) => {

@@ -9,6 +9,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { MODAL_ROOT_KEY } from '@hooks/useModal';
 import { Table } from '@@types/index';
 import { downloadDataUrl } from '@utils/qrCode';
+import { notifyActionFailure } from '@utils/actionFailure';
 
 const QR_DISPLAY_SIZE_PX = 220;
 const QR_DOWNLOAD_SIZE_PX = 480;
@@ -92,8 +93,8 @@ const ActionButton = styled.button<{ primary?: boolean }>`
   font-weight: 700;
   cursor: pointer;
   gap: 6px;
-  background-color: ${({ primary }) => (primary ? Color.KIO_ORANGE : '#e8eef2')};
-  color: ${({ primary }) => (primary ? Color.WHITE : '#464a4d')};
+  background-color: ${({ primary }) => (primary ? Color.KIO_ORANGE : Color.BORDER_GREY)};
+  color: ${({ primary }) => (primary ? Color.WHITE : Color.TEXT_DEFAULT)};
   ${rowFlex({ justify: 'center', align: 'center' })};
 
   &:hover {
@@ -138,8 +139,7 @@ function TableQrModal({ workspaceId, workspaceName, table, onClose }: TableQrMod
       });
       downloadDataUrl(dataUrl, `테이블${table.tableNumber} QR코드.png`);
     } catch (error) {
-      console.error(error);
-      alert('QR 코드 생성에 실패했습니다.');
+      notifyActionFailure(error, 'QR 코드를 만들지 못했습니다. 다시 시도해 주세요.');
     }
   };
 

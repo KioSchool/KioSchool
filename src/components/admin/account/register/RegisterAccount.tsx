@@ -24,7 +24,7 @@ const Container = styled.div`
 const InputContainer = styled.div`
   width: 100%;
   gap: 10px;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   ${colFlex({ justify: 'center', align: 'start' })};
 `;
 

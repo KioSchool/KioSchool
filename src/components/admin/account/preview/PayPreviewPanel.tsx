@@ -31,7 +31,7 @@ const Column = styled.div`
 
 const LabelRow = styled.div`
   height: ${LABEL_ROW_HEIGHT}px;
-  color: #697278;
+  color: ${Color.TEXT_SUBTLE};
   font-size: 12px;
   font-weight: 700;
   ${rowFlex({ align: 'center' })}
@@ -71,7 +71,7 @@ const BubbleTail = styled.span`
 const Middle = styled.div`
   height: ${PHONE_COLUMN_HEIGHT}px;
   gap: 6px;
-  color: #697278;
+  color: ${Color.TEXT_SUBTLE};
   font-size: 12px;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
@@ -116,7 +116,7 @@ function PayPreviewPanel({ account }: PayPreviewPanelProps) {
       {selected && account && (
         <Middle>
           누르면 열려요
-          <RiArrowRightLine size={22} color="#9aa1a6" />
+          <RiArrowRightLine size={22} color={Color.TEXT_HINT} />
         </Middle>
       )}
       {selected && account && <PreviewOpenedScreen method={selected} account={account} />}

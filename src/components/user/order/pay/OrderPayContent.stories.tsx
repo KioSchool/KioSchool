@@ -28,7 +28,12 @@ function PayScreen({ methods, initial, isLoading = false }: PayScreenProps) {
     <MemoryRouter>
       <Screen>
         <OrderPayContent totalAmount={27000} summaryText="닭꼬치 외 2개" methods={methods} selected={selected} onSelect={setSelected} isLoading={isLoading} />
-        <OrderPayFooter fixed={false} label={getPayButtonLabel(selected, 27000)} caption={getPayButtonCaption(selected)} disabled={!selected} />
+        <OrderPayFooter
+          fixed={false}
+          label={getPayButtonLabel(selected, 27000, methods.length > 0)}
+          caption={getPayButtonCaption(selected)}
+          disabled={!selected}
+        />
       </Screen>
     </MemoryRouter>
   );
@@ -44,11 +49,12 @@ const meta: Meta<typeof PayScreen> = {
 export default meta;
 type Story = StoryObj<typeof PayScreen>;
 
+export const NotSelected: Story = { args: { methods: ALL, initial: null } };
 export const TossSelected: Story = { args: { methods: ALL, initial: PaymentMethod.TOSS } };
 export const KakaoPaySelected: Story = { args: { methods: ALL, initial: PaymentMethod.KAKAOPAY } };
 export const BankTransferSelected: Story = { args: { methods: ALL, initial: PaymentMethod.BANK_TRANSFER } };
 export const TossOnly: Story = { args: { methods: [PaymentMethod.TOSS, PaymentMethod.BANK_TRANSFER], initial: PaymentMethod.TOSS } };
 export const KakaoPayOnly: Story = { args: { methods: [PaymentMethod.KAKAOPAY, PaymentMethod.BANK_TRANSFER], initial: PaymentMethod.KAKAOPAY } };
-export const BankTransferOnly: Story = { args: { methods: [PaymentMethod.BANK_TRANSFER], initial: PaymentMethod.BANK_TRANSFER } };
+export const BankTransferOnly: Story = { args: { methods: [PaymentMethod.BANK_TRANSFER], initial: null } };
 export const NoAccount: Story = { args: { methods: [], initial: null } };
 export const Loading: Story = { args: { methods: [], initial: null, isLoading: true } };

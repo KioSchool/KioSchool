@@ -14,7 +14,7 @@ const getCardOpacity = (dimmed: boolean) =>
 const getBadgeColors = (active: boolean) =>
   match(active)
     .with(true, () => ({ background: Color.GREEN_FAINT, text: Color.GREEN, dot: Color.GREEN }))
-    .otherwise(() => ({ background: '#f0f5f8', text: '#697278', dot: '#b8c0c5' }));
+    .otherwise(() => ({ background: Color.GREY_FAINT, text: Color.TEXT_SUBTLE, dot: '#b8c0c5' }));
 
 export const Card = styled.section<{ dimmed?: boolean }>`
   box-sizing: border-box;
@@ -74,7 +74,7 @@ export const Info = styled.div`
 `;
 
 export const InfoLabel = styled.span`
-  color: #697278;
+  color: ${Color.TEXT_SUBTLE};
   font-size: 13px;
 `;
 

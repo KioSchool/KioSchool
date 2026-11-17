@@ -7,10 +7,10 @@ import { Account, PaymentMethod } from '@@types/index';
 import { PAY_METHOD_STYLE } from '@constants/data/payMethods';
 import { getLogoBorder } from '@utils/payMethodStyles';
 import { copyAccountInfo } from '@utils/payMethods';
+import { OrderCard, OrderCardTitle } from '@components/user/order/orderCardStyles';
 import AccountRows from './AccountRows';
-import { WaitCard, WaitCardTitle } from './waitStyles';
 
-const Card = styled(WaitCard)`
+const Card = styled(OrderCard)`
   padding: 18px 20px;
   gap: 14px;
 `;
@@ -65,7 +65,7 @@ const CopyButton = styled.button`
   border: 1px solid ${Color.BORDER_GREY};
   border-radius: 12px;
   background: ${Color.WHITE};
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   font: inherit;
   font-size: 14px;
   font-weight: 700;
@@ -85,9 +85,9 @@ function NotSentYetPanel({ method, account, onReopen }: NotSentYetPanelProps) {
   return (
     <Card>
       <Toggle type="button" aria-expanded={isOpen} onClick={() => setIsOpen((open) => !open)}>
-        <WaitCardTitle>아직 보내지 않았나요?</WaitCardTitle>
-        {isOpen && <RiArrowUpSLine size={20} color="#9aa1a6" />}
-        {!isOpen && <RiArrowDownSLine size={20} color="#9aa1a6" />}
+        <OrderCardTitle>아직 보내지 않았나요?</OrderCardTitle>
+        {isOpen && <RiArrowUpSLine size={20} color={Color.TEXT_HINT} />}
+        {!isOpen && <RiArrowDownSLine size={20} color={Color.TEXT_HINT} />}
       </Toggle>
       {isOpen && (
         <Expanded>

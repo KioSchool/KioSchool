@@ -64,7 +64,7 @@ const TitleContainer = styled.div`
 `;
 
 const WorkspaceName = styled.div`
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   text-align: center;
   font-size: 40px;
   font-weight: 700;
@@ -80,7 +80,7 @@ const WorkspaceName = styled.div`
 `;
 
 const LocationLabel = styled.div`
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   text-align: center;
   font-size: 20px;
   font-weight: 700;

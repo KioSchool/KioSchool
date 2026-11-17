@@ -22,7 +22,7 @@ import { ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardi
 
 const Container = styled.div`
   width: 100%;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   gap: 10px;
   ${colFlex({ align: 'center' })}
 `;
@@ -84,7 +84,9 @@ function AdminProduct() {
     const userInput = await confirm();
     if (!userInput) return;
 
-    await deleteProduct(productId);
+    const isDeleted = await deleteProduct(productId);
+    if (!isDeleted) return;
+
     await fetchProducts();
     alert('상품이 삭제되었습니다.');
     setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE });

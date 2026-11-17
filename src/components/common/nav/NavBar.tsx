@@ -13,6 +13,7 @@ import { adminNavData } from '@constants/data/adminNavData';
 import { superAdminNavData } from '@constants/data/superAdminNavData';
 import kioLogo from '@resources/image/kioLogo.png';
 import AuthenticationButton from '@components/user/AuthenticationButton';
+import { Color } from '@resources/colors';
 import MobileNav from './MobileNav';
 import SideNav from './SideNav';
 
@@ -26,7 +27,7 @@ const NavContainer = styled.div<{ useBackground: boolean }>`
   padding: 20px 40px;
   box-sizing: border-box;
   background: ${(props) => (props.useBackground ? 'rgba(255, 255, 255, 0.95)' : 'transparent')};
-  border-bottom: 1px solid #e8eef2;
+  border-bottom: 1px solid ${Color.BORDER_GREY};
   user-select: none;
   ${rowFlex({ justify: 'center' })};
 

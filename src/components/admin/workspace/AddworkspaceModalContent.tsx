@@ -33,7 +33,7 @@ const CloseButton = styled(RiCloseLine)`
   transition: color 0.2s ease;
 
   &:hover {
-    color: #464a4d;
+    color: ${Color.TEXT_DEFAULT};
   }
 `;
 
@@ -41,7 +41,7 @@ const Title = styled.div`
   font-size: 24px;
   font-weight: 700;
   line-height: 1.25;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
@@ -49,22 +49,22 @@ const UnderlineInput = styled.input`
   box-sizing: border-box;
   width: 100%;
   border: none;
-  border-bottom: 1px solid #e8eef2;
+  border-bottom: 1px solid ${Color.BORDER_GREY};
   padding: 10px 4px;
   font-size: 18px;
   font-weight: 500;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   background: transparent;
   outline: none;
   text-align: center;
   transition: border-bottom-color 0.2s ease;
 
   &::placeholder {
-    color: #d1d5d8;
+    color: ${Color.DISABLED_GREY};
   }
 
   &:focus {
-    border-bottom-color: #464a4d;
+    border-bottom-color: ${Color.TEXT_DEFAULT};
   }
 `;
 

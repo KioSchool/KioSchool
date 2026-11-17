@@ -8,13 +8,13 @@ export const EmptyText = styled.div`
 `;
 
 export const DashboardCardDivider = styled.div`
-  border-top: 1px solid #e8eef2;
+  border-top: 1px solid ${Color.BORDER_GREY};
   width: 100%;
 `;
 
 export const ActionButton = styled.button`
   font-size: 10px;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   background: none;
   border: none;
   cursor: pointer;

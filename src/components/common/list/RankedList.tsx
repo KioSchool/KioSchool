@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { getRankBackgroundColor } from '@styles/dashboardStyles';
+import { Color } from '@resources/colors';
 
 const ListWrapper = styled.div`
   width: 100%;
@@ -29,7 +30,7 @@ const RankCircle = styled.div<{ rank: number }>`
   border-radius: 50%;
   font-size: 12px;
   font-weight: 700;
-  color: ${({ rank }) => (rank <= 2 ? '#fff' : '#464a4d')};
+  color: ${({ rank }) => (rank <= 2 ? '#fff' : Color.TEXT_DEFAULT)};
   background-color: ${({ rank }) => getRankBackgroundColor(rank)};
   border: ${({ rank }) => (rank > 3 ? '1px solid #eaeaea' : 'none')};
   ${rowFlex({ justify: 'center', align: 'center' })}

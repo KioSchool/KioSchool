@@ -116,7 +116,7 @@ const FieldLabel = styled.div`
 const FieldHint = styled.div`
   font-size: 13px;
   font-weight: 400;
-  color: ${Color.TEXT_BODY};
+  color: ${Color.TEXT_SUBTLE};
   line-height: 1.65;
 `;
 
@@ -278,7 +278,7 @@ const ConfettiPiece = styled.i`
 const ThanksCount = styled.div`
   font-size: 14px;
   font-weight: 400;
-  color: ${Color.TEXT_BODY};
+  color: ${Color.TEXT_SUBTLE};
   text-align: center;
   line-height: 1.3;
 `;

@@ -15,23 +15,30 @@ import { productToGaItem } from '@utils/orderBasket';
 
 const PRODUCT_IMAGE_SIZE = 110;
 
+const getProductTextColor = (isSoldOut: boolean, color: string) =>
+  match(isSoldOut)
+    .with(true, () => Color.DISABLED_GREY)
+    .otherwise(() => color);
+
 const ProductName = styled.div<{ isSoldOut: boolean }>`
-  font-size: 18px;
-  color: ${({ isSoldOut }) => (isSoldOut ? '#D1D5D8' : Color.BLACK)};
-  line-height: 1.4;
+  font-size: 16px;
+  font-weight: 700;
+  color: ${({ isSoldOut }) => getProductTextColor(isSoldOut, Color.TEXT_STRONG)};
+  line-height: 1.45;
 `;
 
 const ProductDescription = styled.div<{ isSoldOut: boolean }>`
-  font-size: 14px;
-  color: ${({ isSoldOut }) => (isSoldOut ? '#D1D5D8' : Color.GREY)};
-  line-height: 1.4;
+  font-size: 13px;
+  color: ${({ isSoldOut }) => getProductTextColor(isSoldOut, Color.TEXT_SUBTLE)};
+  line-height: 1.45;
 `;
 
 const ProductPrice = styled.div<{ isSoldOut: boolean }>`
-  font-size: 18px;
-  font-weight: 500;
-  color: ${({ isSoldOut }) => (isSoldOut ? '#D1D5D8' : Color.BLACK)};
-  line-height: 1.4;
+  padding-top: 4px;
+  font-size: 15px;
+  font-weight: 700;
+  color: ${({ isSoldOut }) => getProductTextColor(isSoldOut, Color.TEXT_DEFAULT)};
+  line-height: 1.45;
 `;
 
 const SoldOutOverlay = styled.div`
@@ -40,7 +47,7 @@ const SoldOutOverlay = styled.div`
   left: 0;
   width: ${PRODUCT_IMAGE_SIZE}px;
   height: ${PRODUCT_IMAGE_SIZE}px;
-  border-radius: 10px;
+  border-radius: 12px;
   background-color: rgba(0, 0, 0, 0.4);
   z-index: 10;
   ${rowFlex({ justify: 'center', align: 'center' })}
@@ -54,7 +61,7 @@ const SoldOutText = styled.span`
 
 const Container = styled.div`
   width: auto;
-  padding: 10px 10px 24px;
+  padding: 16px 0 24px;
   ${rowFlex({ justify: 'space-between' })}
 `;
 
@@ -75,19 +82,19 @@ const StyledImage = styled.img`
   width: ${PRODUCT_IMAGE_SIZE}px;
   height: ${PRODUCT_IMAGE_SIZE}px;
   object-fit: cover;
-  border-radius: 10px;
-  border: 0.3px solid #939393;
+  border-radius: 12px;
+  border: 1px solid ${Color.BORDER_GREY};
   box-sizing: border-box;
 `;
 
 const ImageFallback = styled.div`
   width: ${PRODUCT_IMAGE_SIZE}px;
   height: ${PRODUCT_IMAGE_SIZE}px;
-  border-radius: 10px;
-  border: 0.3px solid #939393;
+  border-radius: 12px;
+  border: 1px solid ${Color.BORDER_GREY};
   background: ${Color.LIGHT_GREY};
   font-size: 11px;
-  color: ${Color.GREY};
+  color: ${Color.TEXT_SUBTLE};
   padding: 8px;
   box-sizing: border-box;
   word-break: keep-all;

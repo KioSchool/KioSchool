@@ -8,7 +8,7 @@ import useSuperAdminEmail from '@hooks/super-admin/useSuperAdminEmail';
 const Row = styled.div`
   width: 100%;
   padding: 10px 0;
-  border-bottom: 1px solid #f7f7f7;
+  border-bottom: 1px solid ${Color.LIGHT_GREY};
   ${rowFlex({ align: 'center' })}
 `;
 

@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
+import { Color } from '@resources/colors';
 
 const CardContainer = styled.div`
   width: 295px;
@@ -10,7 +11,7 @@ const CardContainer = styled.div`
   gap: 10px;
   cursor: pointer;
   border-radius: 16px;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   background: rgba(255, 255, 255, 0.5);
   box-shadow: 0 4px 20px 0 rgba(92, 92, 92, 0.05);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -33,7 +34,7 @@ const IconWrapper = styled.div`
 `;
 
 const Label = styled.div`
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   font-size: 20px;
   font-weight: 700;
 

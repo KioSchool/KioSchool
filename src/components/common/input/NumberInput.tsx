@@ -8,8 +8,8 @@ const InputContainer = styled.div<{ disabled?: boolean; maxWidth?: string }>`
   box-sizing: border-box;
   padding: 2px 4px;
   border-radius: 45px;
-  background-color: ${({ disabled }) => (disabled ? '#e8eef2' : '#ffffff')};
-  border: 1px solid #e8eef2;
+  background-color: ${({ disabled }) => (disabled ? Color.BORDER_GREY : '#ffffff')};
+  border: 1px solid ${Color.BORDER_GREY};
   height: 28px;
   width: 100%;
   max-width: ${({ maxWidth }) => maxWidth || '250px'};
@@ -24,7 +24,7 @@ const Input = styled.input<{ disabled?: boolean }>`
   background: none;
   border: none;
   font-size: 13px;
-  color: ${({ disabled }) => (disabled ? '#d1d5d8' : '#464a4d')};
+  color: ${({ disabled }) => (disabled ? Color.DISABLED_GREY : Color.TEXT_DEFAULT)};
 
   &:focus {
     outline: none;
@@ -38,8 +38,8 @@ const Input = styled.input<{ disabled?: boolean }>`
 const MinusButton = styled(RiSubtractFill)<{ disabled?: boolean }>`
   width: 18px;
   height: 18px;
-  color: ${({ disabled }) => (disabled ? '#d1d5d8' : Color.KIO_ORANGE)};
-  background-color: ${({ disabled }) => (disabled ? '#e8eef2' : Color.WHITE)};
+  color: ${({ disabled }) => (disabled ? Color.DISABLED_GREY : Color.KIO_ORANGE)};
+  background-color: ${({ disabled }) => (disabled ? Color.BORDER_GREY : Color.WHITE)};
   border: ${({ disabled }) => (disabled ? 'none' : `1px solid ${Color.KIO_ORANGE}`)};
   border-radius: 50%;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
@@ -49,8 +49,8 @@ const MinusButton = styled(RiSubtractFill)<{ disabled?: boolean }>`
 const PlusButton = styled(RiAddFill)<{ disabled?: boolean }>`
   width: 18px;
   height: 18px;
-  color: ${({ disabled }) => (disabled ? '#d1d5d8' : Color.WHITE)};
-  background-color: ${({ disabled }) => (disabled ? '#e8eef2' : Color.KIO_ORANGE)};
+  color: ${({ disabled }) => (disabled ? Color.DISABLED_GREY : Color.WHITE)};
+  background-color: ${({ disabled }) => (disabled ? Color.BORDER_GREY : Color.KIO_ORANGE)};
   border-radius: 50%;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   flex-shrink: 0;

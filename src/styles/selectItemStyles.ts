@@ -1,5 +1,6 @@
 ﻿import { css } from '@emotion/react';
 import { rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 export const ItemBaseStyle = css`
   height: 24px;
@@ -7,6 +8,6 @@ export const ItemBaseStyle = css`
   gap: 8px;
   box-sizing: border-box;
   cursor: pointer;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   ${rowFlex({ justify: 'flex-start', align: 'center' })};
 `;
