@@ -13,6 +13,8 @@ const FooterHint = styled.span`
   color: ${Color.HEAVY_GREY};
 `;
 
+const Section = styled.div``;
+
 interface RevenueStatsSectionProps {
   revenue: RevenueStats;
   operatedWorkspaces: number;
@@ -20,7 +22,7 @@ interface RevenueStatsSectionProps {
 
 function RevenueStatsSection({ revenue, operatedWorkspaces }: RevenueStatsSectionProps) {
   return (
-    <div>
+    <Section>
       <SectionTitle>매출 & 주문</SectionTitle>
       <StatGrid>
         <StatCard
@@ -72,7 +74,7 @@ function RevenueStatsSection({ revenue, operatedWorkspaces }: RevenueStatsSectio
           footer={<FooterHint>축제 달력에 포함된 운영일이 하루 이상 있는 주점</FooterHint>}
         />
       </StatGrid>
-    </div>
+    </Section>
   );
 }
 

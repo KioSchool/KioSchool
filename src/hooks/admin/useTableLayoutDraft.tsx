@@ -12,7 +12,10 @@ function isSamePosition(a: TablePosition | null, b: TablePosition | null) {
 function useTableLayoutDraft(tables: Table[]) {
   const [draft, setDraft] = useState<DraftMap>(new Map());
 
-  const positionOf = (table: Table) => (draft.has(table.id) ? draft.get(table.id)! : table.position ?? null);
+  const positionOf = (table: Table) => {
+    if (draft.has(table.id)) return draft.get(table.id)!;
+    return table.position ?? null;
+  };
 
   const place = (tableId: number, position: TablePosition | null) => {
     setDraft((previous) => {

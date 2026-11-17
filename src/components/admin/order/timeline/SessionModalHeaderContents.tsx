@@ -47,8 +47,18 @@ const StatusBadge = styled.span<{ variant: 'active' | 'ghost' | 'completed' }>`
   font-weight: 600;
   padding: 2px 8px;
   border-radius: 4px;
-  color: ${({ variant }) => (variant === 'active' ? Color.KIO_ORANGE : variant === 'ghost' ? TIMELINE_COLORS.GHOST_TEXT : TIMELINE_COLORS.TEXT_SECONDARY)};
-  background: ${({ variant }) => (variant === 'active' ? '#fff0e5' : variant === 'ghost' ? TIMELINE_COLORS.GHOST_BG : '#f0f0f0')};
+  color: ${({ variant }) =>
+    match(variant)
+      .with('active', () => Color.KIO_ORANGE)
+      .with('ghost', () => TIMELINE_COLORS.GHOST_TEXT)
+      .with('completed', () => TIMELINE_COLORS.TEXT_SECONDARY)
+      .exhaustive()};
+  background: ${({ variant }) =>
+    match(variant)
+      .with('active', () => '#fff0e5')
+      .with('ghost', () => TIMELINE_COLORS.GHOST_BG)
+      .with('completed', () => '#f0f0f0')
+      .exhaustive()};
 `;
 
 const SummaryStrip = styled.div`

@@ -50,7 +50,7 @@ const ProductLabels = styled.div`
   ${colFlex()}
 `;
 
-const StyledLabel = styled.div<{ size?: number }>`
+const PriceLabel = styled.div<{ size?: number }>`
   color: ${Color.TEXT_SUBTLE};
   font-size: ${({ size }) => size || 13}px;
   white-space: nowrap;
@@ -171,7 +171,7 @@ function ProductCounterBadge({ product }: ProductCounterBadgeProps) {
         <ProductInfoContainer>
           <ProductLabels>
             <ProductName>{product.name}</ProductName>
-            <StyledLabel>{product.price.toLocaleString()}원</StyledLabel>
+            <PriceLabel>{product.price.toLocaleString()}원</PriceLabel>
           </ProductLabels>
           <QuantityControl>
             <DecreaseButton onClick={() => minusQuantity()} />

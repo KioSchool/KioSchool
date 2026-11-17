@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { adminUserAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { layoutParamsAtom, windowWidthAtom, sideNavIsOpenAtom } from '@jotai/atoms';
-import { calculateLayoutScale } from 'src/utils/layout';
+import { calculateLayoutScale } from '@utils/layout';
 import { getPageTitle } from '@@types/guard';
 import { DEFAULT_LAYOUT_WIDTH, SIDE_NAV_WIDTH } from '@constants/layout';
 import { MOBILE_BREAKPOINT, mobileMediaQuery, tabletMediaQuery } from '@styles/globalStyles';

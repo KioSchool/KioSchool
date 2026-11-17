@@ -24,6 +24,8 @@ const FooterHint = styled.span`
   color: ${Color.HEAVY_GREY};
 `;
 
+const Section = styled.div``;
+
 interface ActiveWorkspaceSectionProps {
   insights: DashboardInsights;
   workspaces: WorkspaceStats;
@@ -36,7 +38,7 @@ function ActiveWorkspaceSection({ insights, workspaces }: ActiveWorkspaceSection
     insights.totalOrdersForCancelRate > 0 ? ((insights.cancelledOrdersLast30Days / insights.totalOrdersForCancelRate) * 100).toFixed(1) : '0.0';
 
   return (
-    <div>
+    <Section>
       <SectionTitle>운영 지표 (최근 30일)</SectionTitle>
       <StatGrid>
         <StatCard
@@ -102,7 +104,7 @@ function ActiveWorkspaceSection({ insights, workspaces }: ActiveWorkspaceSection
           }
         />
       </StatGrid>
-    </div>
+    </Section>
   );
 }
 

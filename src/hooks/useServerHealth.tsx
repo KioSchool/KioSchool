@@ -1,11 +1,18 @@
 import { useEffect, useState } from 'react';
-import { userApi } from '../apis/userApi';
+import { userApi } from '@apis/userApi';
 import { HEALTH_CHECK_PATH } from '@constants/network';
 
 interface ServerHealthStatus {
   isServerHealthy: boolean;
   isChecking: boolean;
   error: string | null;
+}
+
+function getServerErrorMessage(error: any): string {
+  if (error.code === 'ECONNABORTED') return '서버 응답 시간이 초과되었습니다.';
+  if (error.code === 'ERR_NETWORK') return '네트워크 연결에 문제가 있습니다.';
+  if (error.response?.status >= 500) return '서버에 일시적인 문제가 발생했습니다.';
+  return '서버에 연결할 수 없습니다.';
 }
 
 function useServerHealth() {
@@ -33,14 +40,7 @@ function useServerHealth() {
 
       return true;
     } catch (error: any) {
-      const errorMessage =
-        error.code === 'ECONNABORTED'
-          ? '서버 응답 시간이 초과되었습니다.'
-          : error.code === 'ERR_NETWORK'
-          ? '네트워크 연결에 문제가 있습니다.'
-          : error.response?.status >= 500
-          ? '서버에 일시적인 문제가 발생했습니다.'
-          : '서버에 연결할 수 없습니다.';
+      const errorMessage = getServerErrorMessage(error);
 
       setStatus((prev) => ({
         ...prev,

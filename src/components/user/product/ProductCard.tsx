@@ -78,7 +78,7 @@ const Contents = styled.div`
   ${rowFlex({ justify: 'flex-end' })}
 `;
 
-const StyledImage = styled.img`
+const ProductImage = styled.img`
   width: ${PRODUCT_IMAGE_SIZE}px;
   height: ${PRODUCT_IMAGE_SIZE}px;
   object-fit: cover;
@@ -220,7 +220,11 @@ function ProductCard({ product, quantity }: ProductCardProps) {
         <ProductPrice isSoldOut={isSoldOut}>{product.price.toLocaleString()}원</ProductPrice>
       </LabelContainer>
       <Contents className="image-container">
-        {imgError ? <ImageFallback>{product.name}</ImageFallback> : <StyledImage src={product.imageUrl} alt={product.name} onError={() => setImgError(true)} />}
+        {imgError ? (
+          <ImageFallback>{product.name}</ImageFallback>
+        ) : (
+          <ProductImage src={product.imageUrl} alt={product.name} onError={() => setImgError(true)} />
+        )}
         {match(product.status)
           .with(ProductStatus.SOLD_OUT, () => (
             <SoldOutOverlay>
