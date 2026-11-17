@@ -6,7 +6,6 @@ import OrderButton from '@components/user/order/OrderButton';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import { Color } from '@resources/colors';
-import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import { userOrderBasketAtom, userProductsAtom, userWorkspaceAtom } from '@jotai/user/atoms';
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect, useMemo, useRef } from 'react';
@@ -17,6 +16,7 @@ import { isApiErrorCode } from '@utils/apiError';
 import { basketToGaItems, calculateBasketTotalAmount, getBasketItemsWithProduct } from '@utils/orderBasket';
 import { trackEvent } from '@utils/analytics';
 import { GA_CURRENCY, GA_EVENT } from '@constants/analytics';
+import { OrderCard, OrderCardDivider, OrderCardTitle } from '@components/user/order/orderCardStyles';
 
 const ORDER_UNAVAILABLE_MESSAGE = '아직 주문을 받을 수 없는 테이블입니다.\n직원에게 테이블 사용 시작을 요청해주세요.';
 
@@ -29,48 +29,34 @@ const Container = styled.div`
 const SubContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
-  padding: 0 20px 120px 20px;
-  gap: 20px;
-  padding-top: 12px;
+  padding: 20px 20px 130px;
+  gap: 10px;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
-const OrderBasketContainer = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  padding: 15px 20px;
-  gap: 10px;
-  border-radius: 9px;
-  border: 0.5px solid #939393;
-  ${colFlex({ align: 'center' })}
+const OrderBasketContainer = styled(OrderCard)`
+  padding: 4px 16px;
 `;
 
 const Header = styled.div`
   box-sizing: border-box;
   width: 100%;
-  padding: 0 10px;
+  padding: 0 2px;
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const Button = styled.button`
-  width: 80px;
-  height: 20px;
-  background: #c2c2c2;
-  color: ${Color.WHITE};
-  font-size: 12px;
+  padding: 4px 0;
+  background: none;
+  color: ${Color.TEXT_SUBTLE};
+  font: inherit;
+  font-size: 13px;
   border: none;
-  font-weight: 600;
-  border-radius: 20px;
-`;
-
-const StyledLabel = styled.div`
-  font-size: 16px;
-  font-weight: 600;
+  cursor: pointer;
 `;
 
 const ProductCounterBadgeContainer = styled.div`
   width: 100%;
-  gap: 10px;
   ${colFlex()}
 `;
 
@@ -173,8 +159,8 @@ function OrderBasket() {
       <OrderStickyNavBar showNavBar={true} workspaceName={workspace.name} tableNo={tableNo} useShareButton={false} />
       <SubContainer>
         <Header>
-          <StyledLabel>장바구니</StyledLabel>
-          <Button onClick={clearOrderBasket}>전체 삭제 </Button>
+          <OrderCardTitle>장바구니</OrderCardTitle>
+          <Button onClick={clearOrderBasket}>전체 삭제</Button>
         </Header>
         <OrderBasketContainer className={'order-basket-content'}>
           {basketItems.map(({ basketItem, product }, index) => {
@@ -183,7 +169,7 @@ function OrderBasket() {
             return (
               <ProductCounterBadgeContainer key={basketItem.productId}>
                 <ProductCounterBadge product={product} />
-                {isShowDivider && <HorizontalDivider />}
+                {isShowDivider && <OrderCardDivider />}
               </ProductCounterBadgeContainer>
             );
           })}

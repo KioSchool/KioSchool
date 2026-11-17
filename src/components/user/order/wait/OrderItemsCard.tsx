@@ -2,9 +2,9 @@ import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 import { OrderProduct } from '@@types/index';
-import { WaitCard, WaitCardTitle } from './waitStyles';
+import { OrderCard, OrderCardDivider, OrderCardTitle, OrderItemName, OrderItemQuantity } from '@components/user/order/orderCardStyles';
 
-const Card = styled(WaitCard)`
+const Card = styled(OrderCard)`
   padding: 18px 20px;
   gap: 10px;
 `;
@@ -13,26 +13,9 @@ const Row = styled.div`
   ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
-const Menu = styled.span`
-  gap: 6px;
-  ${rowFlex({ align: 'center' })}
-`;
-
 const Text = styled.span`
   color: ${Color.TEXT_DEFAULT};
   font-size: 14px;
-`;
-
-const Quantity = styled.span`
-  color: ${Color.TEXT_HINT};
-  font-size: 13px;
-`;
-
-const Divider = styled.hr`
-  width: 100%;
-  margin: 0;
-  border: none;
-  border-top: 1px solid ${Color.BORDER_GREY};
 `;
 
 const TotalLabel = styled.span`
@@ -57,17 +40,17 @@ function OrderItemsCard({ orderProducts, totalPrice }: OrderItemsCardProps) {
 
   return (
     <Card>
-      <WaitCardTitle>주문 내역</WaitCardTitle>
+      <OrderCardTitle>주문 내역</OrderCardTitle>
       {orderProducts.map((product) => (
         <Row key={product.id}>
-          <Menu>
-            <Text>{product.productName}</Text>
-            <Quantity>{product.quantity}개</Quantity>
-          </Menu>
+          <OrderItemName>
+            {product.productName}
+            <OrderItemQuantity>{product.quantity}개</OrderItemQuantity>
+          </OrderItemName>
           <Text>{product.totalPrice.toLocaleString()}원</Text>
         </Row>
       ))}
-      <Divider />
+      <OrderCardDivider />
       <Row>
         <TotalLabel>합계</TotalLabel>
         <TotalValue>{totalPrice.toLocaleString()}원</TotalValue>

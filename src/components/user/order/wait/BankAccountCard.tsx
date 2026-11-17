@@ -3,10 +3,10 @@ import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { Account } from '@@types/index';
 import { copyAccountInfo } from '@utils/payMethods';
+import { OrderCard } from '@components/user/order/orderCardStyles';
 import AccountRows from './AccountRows';
-import { WaitCard } from './waitStyles';
 
-const Card = styled(WaitCard)`
+const Card = styled(OrderCard)`
   padding: 16px;
 `;
 

@@ -1,5 +1,4 @@
 import { Product, ProductStatus } from '@@types/index';
-import HorizontalDivider from '@components/common/divider/HorizontalDivider';
 import OrderFooter from '@components/user/order/OrderFooter';
 import ProductCard from '@components/user/product/ProductCard';
 import styled from '@emotion/styled';
@@ -9,6 +8,7 @@ import { useAtomValue } from 'jotai';
 import _ from 'lodash';
 import { Element } from 'react-scroll';
 import { userCategoriesAtom, userOrderBasketAtom, userProductsAtom } from '@jotai/user/atoms';
+import { OrderCardDivider } from '@components/user/order/orderCardStyles';
 
 const MainContent = styled.div`
   width: 100%;
@@ -29,9 +29,9 @@ const CategoryProduct = styled(Element, {
 `;
 
 const CategoryTitle = styled.div`
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
-  color: ${Color.BLACK};
+  color: ${Color.TEXT_STRONG};
   padding: 10px 0;
 `;
 
@@ -92,7 +92,7 @@ function OrderProductContent() {
                 return (
                   <ProductContainer key={`product${product.id}`} className="product-container">
                     <ProductCard product={product} quantity={quantity} />
-                    {isShowDivider && <HorizontalDivider />}
+                    {isShowDivider && <OrderCardDivider />}
                   </ProductContainer>
                 );
               })}
@@ -111,7 +111,7 @@ function OrderProductContent() {
               return (
                 <ProductContainer key={`product${product.id}`} className="product-container">
                   <ProductCard product={product} quantity={quantity} />
-                  {isShowDivider && <HorizontalDivider />}
+                  {isShowDivider && <OrderCardDivider />}
                 </ProductContainer>
               );
             })}

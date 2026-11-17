@@ -7,10 +7,10 @@ import { rowFlex } from '@styles/flexStyles';
 const MIN_ORDER_COUNT_TO_SHOW = 2;
 
 const Container = styled.button`
-  padding: 0 10px 0 0;
+  padding: 0;
   border: none;
   background: none;
-  color: ${Color.GREY};
+  color: ${Color.TEXT_SUBTLE};
   font: inherit;
   font-size: 13px;
   font-weight: 500;
@@ -22,7 +22,7 @@ const ArrowIcon = styled(RiArrowRightSLine)`
   width: 16px;
   height: 16px;
   flex-shrink: 0;
-  fill: ${Color.GREY};
+  fill: ${Color.TEXT_HINT};
 `;
 
 interface SessionOrderHistoryButtonProps {
