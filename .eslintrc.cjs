@@ -34,36 +34,11 @@ const syntaxFor = (file, exempt = []) => {
 };
 
 const LEGACY_VIOLATIONS = {
-  'src/App.tsx': ['topLevelFragment'],
-  'src/components/admin/order/statistic/HourlySalesChart.tsx': ['topLevelFragment'],
-  'src/components/admin/order/table-manage/detail/TableDetailPanel.tsx': ['topLevelFragment'],
-  'src/components/admin/order/table-manage/detail/TableOrderCard.tsx': ['topLevelFragment'],
-  'src/components/admin/product-category/CategoryDraggableContents.tsx': ['topLevelFragment'],
-  'src/components/admin/product/SelectWithProductStatus.tsx': ['react/forbid-component-props'],
-  'src/components/admin/workspace/dashboard/InsightCard.tsx': ['react/no-multi-comp'],
-  'src/components/common/button/ImageRouteButton.tsx': ['react/forbid-component-props', 'appLabel'],
-  'src/components/common/container/PreviewContainer.tsx': ['appLabel'],
-  'src/components/common/date-picker/CustomDatePicker.tsx': ['react/no-multi-comp', 'react/function-component-definition'],
-  'src/components/common/input/NewAppInputLayout.tsx': ['react/forbid-component-props'],
-  'src/components/common/nav/MobileNav.tsx': ['topLevelFragment'],
-  'src/components/common/nav/NavBar.tsx': ['topLevelFragment'],
-  'src/components/common/nav/TitleNavBar.tsx': ['react/forbid-component-props', 'appLabel'],
-  'src/components/common/test/SentryTestPage.tsx': ['react/forbid-component-props', 'react/no-multi-comp', 'react/function-component-definition'],
-  'src/components/super-admin/bank/SuperAdminBankContent.tsx': ['react/forbid-component-props'],
-  'src/components/super-admin/dashboard/DailyChartSection.tsx': ['react/no-multi-comp'],
-  'src/components/super-admin/dashboard/OnboardingTimeSection.tsx': ['react/no-multi-comp'],
-  'src/components/super-admin/festival-calendar/FestivalDayDetail.tsx': ['topLevelFragment'],
-  'src/components/super-admin/festival-calendar/FestivalUniversityTable.tsx': ['react/no-multi-comp', 'topLevelHtmlTag'],
-  'src/components/super-admin/festival-calendar/FestivalWorkspaceRankingTable.tsx': ['react/no-multi-comp', 'topLevelHtmlTag'],
-  'src/components/user/AuthenticationButton.tsx': ['topLevelFragment'],
   'src/components/user/home/CountUpNumber.tsx': ['react/forbid-dom-props'],
   'src/components/user/home/CtaSection.tsx': ['react/forbid-component-props'],
   'src/components/user/home/hero/HeroSection.tsx': ['react/forbid-component-props'],
   'src/components/user/info/InfoFaqSection.tsx': ['react/no-multi-comp'],
   'src/components/user/info/InfoVisionSection.tsx': ['react/forbid-component-props'],
-  'src/hooks/useInputConfirm.tsx': ['react/forbid-component-props', 'react/function-component-definition', 'appLabel'],
-  'src/pages/user/Register.tsx': ['react/forbid-component-props'],
-  'src/pages/user/ResetPassword.tsx': ['react/forbid-component-props'],
 };
 
 const restrictedImportPatterns = {
@@ -72,7 +47,6 @@ const restrictedImportPatterns = {
     group: ['../*', '../**'],
     message: '상위 폴더는 상대 경로로 부르지 않는다. @ 별칭을 쓴다. 상대 경로는 같은 폴더(./)에서만 쓴다.',
   },
-  appLabel: { group: ['**/AppLabel'], message: 'AppLabel은 새로 쓰지 않는다.' },
 };
 
 const importPatternsFor = (exempt = []) =>

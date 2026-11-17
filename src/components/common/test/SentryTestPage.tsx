@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { RiTestTubeLine, RiBugLine, RiAlarmWarningLine } from '@remixicon/react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import * as Sentry from '@sentry/react';
 import useApi from '@hooks/useApi';
+import SentryThrowingComponent from './SentryThrowingComponent';
+import SentryAsyncErrorComponent from './SentryAsyncErrorComponent';
 
 const Container = styled.div`
   width: 100%;
@@ -98,6 +100,32 @@ const InfoText = styled.p`
   line-height: 1.4;
 `;
 
+const EnvironmentInfoBox = styled(InfoBox)<{ isLocal: boolean }>`
+  background: ${({ isLocal }) => (isLocal ? '#fef3c7' : '#d1fae5')};
+  border-color: ${({ isLocal }) => (isLocal ? '#f59e0b' : '#10b981')};
+`;
+
+const EnvironmentInfoTitle = styled(InfoTitle)<{ isLocal: boolean }>`
+  color: ${({ isLocal }) => (isLocal ? '#92400e' : '#047857')};
+`;
+
+const EnvironmentInfoText = styled(InfoText)<{ isLocal: boolean }>`
+  color: ${({ isLocal }) => (isLocal ? '#b45309' : '#059669')};
+`;
+
+const ReplayInfoBox = styled(InfoBox)`
+  background: #f0f4ff;
+  border-color: #6366f1;
+`;
+
+const ReplayInfoTitle = styled(InfoTitle)`
+  color: #4338ca;
+`;
+
+const ReplayInfoText = styled(InfoText)`
+  color: #5b21b6;
+`;
+
 const CodeBlock = styled.pre`
   background: #1f2937;
   color: #e5e7eb;
@@ -107,21 +135,6 @@ const CodeBlock = styled.pre`
   overflow-x: auto;
   margin: 8px 0;
 `;
-
-// 에러를 발생시키는 컴포넌트들
-const ErrorComponent = () => {
-  throw new Error('테스트용 React 에러입니다!');
-};
-
-const AsyncErrorComponent = () => {
-  React.useEffect(() => {
-    setTimeout(() => {
-      throw new Error('테스트용 비동기 에러입니다!');
-    }, 1000);
-  }, []);
-
-  return <div>비동기 에러가 1초 후에 발생합니다...</div>;
-};
 
 function SentryTestPage() {
   const [showErrorComponent, setShowErrorComponent] = useState(false);
@@ -222,7 +235,7 @@ function SentryTestPage() {
   };
 
   if (showErrorComponent) {
-    return <ErrorComponent />;
+    return <SentryThrowingComponent />;
   }
 
   return (
@@ -230,19 +243,14 @@ function SentryTestPage() {
       <h1>🔧 Sentry 에러 추적 테스트 페이지</h1>
 
       {/* 환경 정보 표시 */}
-      <InfoBox
-        style={{
-          background: isLocal ? '#fef3c7' : '#d1fae5',
-          borderColor: isLocal ? '#f59e0b' : '#10b981',
-        }}
-      >
-        <InfoTitle style={{ color: isLocal ? '#92400e' : '#047857' }}>
+      <EnvironmentInfoBox isLocal={isLocal}>
+        <EnvironmentInfoTitle isLocal={isLocal}>
           🌍 현재 환경: {environment.toUpperCase()} | 🎬 Session Replay: {replayStatus}
-        </InfoTitle>
-        <InfoText style={{ color: isLocal ? '#b45309' : '#059669' }}>
+        </EnvironmentInfoTitle>
+        <EnvironmentInfoText isLocal={isLocal}>
           {isLocal ? '개발환경에서도 Sentry로 전송되어 테스트 가능합니다.' : '프로덕션 환경의 모든 에러가 Sentry로 전송됩니다.'}
-        </InfoText>
-      </InfoBox>
+        </EnvironmentInfoText>
+      </EnvironmentInfoBox>
 
       <InfoBox>
         <InfoTitle>📋 테스트 방법</InfoTitle>
@@ -306,7 +314,7 @@ function SentryTestPage() {
         </TestGrid>
       </TestSection>
 
-      {showAsyncError && <AsyncErrorComponent />}
+      {showAsyncError && <SentryAsyncErrorComponent />}
 
       <TestSection>
         <SectionTitle>확인할 내용</SectionTitle>
@@ -329,9 +337,9 @@ function SentryTestPage() {
 
       <TestSection>
         <SectionTitle>🎬 Session Replay 확인 방법</SectionTitle>
-        <InfoBox style={{ background: '#f0f4ff', borderColor: '#6366f1' }}>
-          <InfoTitle style={{ color: '#4338ca' }}>Sentry 대시보드에서 Session Replay 확인:</InfoTitle>
-          <InfoText style={{ color: '#5b21b6' }}>
+        <ReplayInfoBox>
+          <ReplayInfoTitle>Sentry 대시보드에서 Session Replay 확인:</ReplayInfoTitle>
+          <ReplayInfoText>
             1. Issues → 특정 에러 클릭 → "Replay" 탭 확인
             <br />
             2. Replays → 전체 세션 목록 확인
@@ -341,8 +349,8 @@ function SentryTestPage() {
             4. HTTPS 환경에서만 작동 (localhost도 가능)
             <br />
             ⚠️ Session Replay가 보이지 않으면 브라우저 새로고침 후 다시 테스트하세요
-          </InfoText>
-        </InfoBox>
+          </ReplayInfoText>
+        </ReplayInfoBox>
       </TestSection>
 
       <TestSection>

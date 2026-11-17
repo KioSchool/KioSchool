@@ -1,3 +1,4 @@
+import styled from '@emotion/styled';
 import { Route, Navigate } from 'react-router-dom';
 import Home from '@pages/user/home/Home';
 import AdminHome from '@pages/admin/AdminHome';
@@ -63,6 +64,10 @@ import Privacy from '@pages/user/privacy/Privacy';
 import PcOnlyLayout from '@components/common/layout/PcOnlyLayout';
 import NoZoomLayout from '@components/common/layout/NoZoomLayout';
 
+const Wrapper = styled.div`
+  display: contents;
+`;
+
 function App() {
   useAppShellReveal();
   useSentryContext();
@@ -76,7 +81,7 @@ function App() {
   }
 
   return (
-    <>
+    <Wrapper>
       <AuthErrorListener />
       <ToastContainer
         position="top-right"
@@ -151,7 +156,7 @@ function App() {
       </SentryRoutes>
       <Global styles={globalStyles} />
       <LoadingModal />
-    </>
+    </Wrapper>
   );
 }
 

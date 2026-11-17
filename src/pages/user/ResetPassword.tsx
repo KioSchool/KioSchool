@@ -22,6 +22,10 @@ const ErrorMessage = styled.div`
   color: ${Color.KIO_ORANGE};
 `;
 
+const SendLinkButton = styled(NewCommonButton)`
+  margin-top: 50px;
+`;
+
 function ResetPassword() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -89,9 +93,9 @@ function ResetPassword() {
         <>
           <NewAppInput placeholder={'아이디를 입력해주세요'} ref={idInputRef} label={'아이디'} />
           <NewAppInput placeholder={'이메일을 입력해주세요'} ref={emailInputRef} label={'이메일'} />
-          <NewCommonButton customSize={{ height: 45, width: 350, font: 20 }} onClick={sendResetPasswordLinkHandler} style={{ marginTop: '50px' }}>
+          <SendLinkButton customSize={{ height: 45, width: 350, font: 20 }} onClick={sendResetPasswordLinkHandler}>
             비밀번호 재설정 링크 전송하기
-          </NewCommonButton>
+          </SendLinkButton>
 
           <LinkLabel text={'로그인하기'} href={USER_ROUTES.LOGIN} />
         </>

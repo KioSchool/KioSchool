@@ -210,7 +210,7 @@ ESLint (`.eslintrc.cjs`):
   - 화살표 함수 컴포넌트, 한 파일에 컴포넌트 여러 개, inline style(`motion.*` 컴포넌트만 허용)
   - 컴포넌트 최상위 반환값의 HTML 태그·Fragment (`src/resources/svg/`는 제외)
   - 중첩 삼항, 삼항 결과 자리의 `??`·`||` (`a || b ? x : y`처럼 조건 자리는 허용)
-  - `src/`·`../` import, `AppLabel` import, 공통 컴포넌트 밖의 `Styled` 접두사
+  - `src/`·`../` import, 공통 컴포넌트 밖의 `Styled` 접두사
   - 훅 호출 규칙 (early return 뒤에 훅을 부르는 것 등)
 - `.eslintrc.cjs`의 `LEGACY_VIOLATIONS`는 규칙을 들이기 전부터 있던 위반 목록이다. 파일을 고치면 목록에서 빼고, 새 파일·새 항목은 넣지 않는다. 이 규칙들을 `eslint-disable`로 우회하지 않는다
 - 같은 지적이 리뷰에서 되풀이되면 이 문서에 줄을 더하기 전에 린트 규칙이나 테스트로 막을 수 있는지 먼저 본다

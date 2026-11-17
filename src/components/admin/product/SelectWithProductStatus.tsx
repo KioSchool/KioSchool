@@ -21,8 +21,11 @@ const SelectorButton = styled.button<{ isOpen: boolean }>`
   ${ItemBaseStyle};
 `;
 
-const DropdownList = styled.div`
+const DropdownList = styled.div<{ coords: { top: number; left: number; width: number } }>`
   position: absolute;
+  top: ${({ coords }) => coords.top}px;
+  left: ${({ coords }) => coords.left}px;
+  width: ${({ coords }) => coords.width}px;
   background-color: ${Color.WHITE};
   border: 1px solid ${Color.BORDER_GREY};
   border-radius: 6px;
@@ -145,7 +148,7 @@ function SelectWithProductStatus({ currentStatus, onStatusChange }: SelectWithPr
 
       {isOpen &&
         createPortal(
-          <DropdownList ref={dropdownRef} style={{ top: coords.top, left: coords.left, width: coords.width }}>
+          <DropdownList ref={dropdownRef} coords={coords}>
             {STATUS_OPTIONS.map((option) => (
               <OptionItem key={option.value} onMouseDown={(e) => e.stopPropagation()} onClick={() => handleSelect(option.value)}>
                 <Dot color={option.color} />

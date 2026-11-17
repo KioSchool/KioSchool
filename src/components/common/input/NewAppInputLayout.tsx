@@ -58,6 +58,11 @@ const LinkText = styled.span`
   font-weight: 500;
 `;
 
+const HeaderButton = styled(NewCommonButton)`
+  margin-left: auto;
+  margin-right: 10px;
+`;
+
 export interface InputButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize;
   color?: ButtonColor;
@@ -94,16 +99,9 @@ function NewAppInputLayout({ width, label, buttonProps, linkProps, enterHandler,
           </LinkContainer>
         )}
         {buttonProps && (
-          <NewCommonButton
-            {...buttonProps}
-            size={buttonProps.size || 'xs'}
-            color={buttonProps.color}
-            customSize={buttonProps.customSize}
-            onClick={enterHandler}
-            style={{ marginLeft: 'auto', marginRight: '10px' }}
-          >
+          <HeaderButton {...buttonProps} size={buttonProps.size || 'xs'} color={buttonProps.color} customSize={buttonProps.customSize} onClick={enterHandler}>
             {buttonProps.text}
-          </NewCommonButton>
+          </HeaderButton>
         )}
       </HeaderContainer>
       {children}
