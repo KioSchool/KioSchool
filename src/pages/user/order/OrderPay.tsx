@@ -190,6 +190,7 @@ function OrderPay() {
       <OrderPayContent
         totalAmount={totalAmount}
         summaryText={summaryText}
+        accountHolder={accountInfo?.accountHolder}
         methods={payMethods}
         selected={selectedMethod}
         onSelect={handleMethodSelect}

@@ -30,6 +30,11 @@ const Caption = styled.span`
   line-height: 1.45;
 `;
 
+const AccountHolder = styled.strong`
+  color: ${Color.TEXT_STRONG};
+  font-weight: 700;
+`;
+
 const AmountValue = styled.strong`
   color: ${Color.TEXT_STRONG};
   font-size: 28px;
@@ -108,6 +113,7 @@ const PrivacyLink = styled(Link)`
 export interface OrderPayContentProps {
   totalAmount: number;
   summaryText: string;
+  accountHolder?: string;
   methods: PaymentMethod[];
   selected: PaymentMethod | null;
   onSelect: (method: PaymentMethod) => void;
@@ -125,6 +131,7 @@ const getPreviewTabIndex = (isPreview: boolean) =>
 function OrderPayContent({
   totalAmount,
   summaryText,
+  accountHolder,
   methods,
   selected,
   onSelect,
@@ -143,7 +150,12 @@ function OrderPayContent({
   return (
     <Body>
       <Amount>
-        <Caption>보낼 금액</Caption>
+        {accountHolder && (
+          <Caption>
+            <AccountHolder>{accountHolder}</AccountHolder>님께 보낼 금액
+          </Caption>
+        )}
+        {!accountHolder && <Caption>보낼 금액</Caption>}
         <AmountValue>{totalAmount.toLocaleString()}원</AmountValue>
         <Caption>{summaryText}</Caption>
       </Amount>
