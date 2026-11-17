@@ -72,6 +72,7 @@ src/
 **같은 디렉토리 파일은 반드시 상대 경로(`./Xxx`)로 부른다** — alias로 부르지 않는다.
 
 ```
+@apis/*        → src/apis/*
 @components/*  → src/components/*
 @constants/*   → src/constants/*
 @hooks/*       → src/hooks/*
@@ -201,10 +202,18 @@ src/apis/
 Prettier:
 - `printWidth: 160`, `singleQuote: true`, `trailingComma: "all"`, `tabWidth: 2`, `semi: true`
 
-ESLint:
-- `airbnb-typescript` + `prettier` 기반
+ESLint (`.eslintrc.cjs`):
+- `airbnb-typescript` + `prettier` 기반, `react`·`react-hooks` 플러그인 사용
 - `.tsx` 파일에서 JSX 허용
 - `noUnusedLocals`, `noUnusedParameters`, `noFallthroughCasesInSwitch` 활성화
+- 이 문서의 규칙 중 아래는 ESLint가 error로 막는다. 문서와 린트가 다르면 린트를 따른다
+  - 화살표 함수 컴포넌트, 한 파일에 컴포넌트 여러 개, inline style(`motion.*` 컴포넌트만 허용)
+  - 컴포넌트 최상위 반환값의 HTML 태그·Fragment (`src/resources/svg/`는 제외)
+  - 중첩 삼항, 삼항 결과 자리의 `??`·`||` (`a || b ? x : y`처럼 조건 자리는 허용)
+  - `src/`·`../` import, `AppLabel` import, 공통 컴포넌트 밖의 `Styled` 접두사
+  - 훅 호출 규칙 (early return 뒤에 훅을 부르는 것 등)
+- `.eslintrc.cjs`의 `LEGACY_VIOLATIONS`는 규칙을 들이기 전부터 있던 위반 목록이다. 파일을 고치면 목록에서 빼고, 새 파일·새 항목은 넣지 않는다. 이 규칙들을 `eslint-disable`로 우회하지 않는다
+- 같은 지적이 리뷰에서 되풀이되면 이 문서에 줄을 더하기 전에 린트 규칙이나 테스트로 막을 수 있는지 먼저 본다
 
 ## Git / PR
 
