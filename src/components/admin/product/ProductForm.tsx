@@ -11,6 +11,7 @@ import NewAppInput from '@components/common/input/NewAppInput';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { MAX_PRODUCT_IMAGE_SIZE } from '@constants/data/productData';
 import NewAppTextarea from '@components/common/input/NewAppTextarea';
+import { Color } from '@resources/colors';
 
 const Container = styled.div`
   height: 100%;
@@ -24,7 +25,7 @@ const Container = styled.div`
 const InputContainer = styled.div`
   width: 100%;
   gap: 12px;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   ${colFlex({ justify: 'center', align: 'start' })};
 `;
 

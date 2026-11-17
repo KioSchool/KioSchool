@@ -71,8 +71,8 @@ const colorStyles = (color: ButtonColor) => {
     case 'blue_gray':
       return css`
         background: ${Color.WHITE};
-        color: #464a4d;
-        border: 1px solid #e8eef2;
+        color: ${Color.TEXT_DEFAULT};
+        border: 1px solid ${Color.BORDER_GREY};
 
         &:hover:not(:disabled) {
           //todo: hover 색상 디자이너에게 물어보기
@@ -113,8 +113,8 @@ const StyledButton = styled.button<NewCommonButtonProps>`
   ${({ customColors }) => customColorStyles(customColors)}
 
   &:disabled {
-    background: #e8eef2;
-    color: #d1d5d8;
+    background: ${Color.BORDER_GREY};
+    color: ${Color.DISABLED_GREY};
     border: none;
     cursor: not-allowed;
   }

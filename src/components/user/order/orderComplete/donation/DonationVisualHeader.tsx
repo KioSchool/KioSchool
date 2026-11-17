@@ -62,7 +62,7 @@ const SubLineGroup = styled.div`
 const SubLine = styled.div`
   font-size: 13px;
   font-weight: 400;
-  color: ${Color.TEXT_BODY};
+  color: ${Color.TEXT_SUBTLE};
   line-height: 1.65;
   word-break: keep-all;
 `;

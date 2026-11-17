@@ -9,7 +9,7 @@ export const InsightDesignTokens = {
     padding: '14px 21px',
   },
   text: {
-    primary: '#464a4d',
+    primary: Color.TEXT_DEFAULT,
     muted: '#939393',
   },
   brand: {
@@ -20,14 +20,14 @@ export const InsightDesignTokens = {
     iconBg: Color.KIO_ORANGE_ICON_BG,
   },
   rank: {
-    1: { bg: '#FFE7D3', border: '#FFD4B0', text: '#f7842e', labelText: '#f7842e' },
-    2: { bg: '#FFF3E7', border: '#FFE7D3', text: '#FF9142', labelText: '#FF9142' },
-    3: { bg: '#FFFAF5', border: '#FFF3E7', text: '#464a4d', labelText: '#939393' },
-    4: { bg: '#F7F7F7', border: '#eaeaea', text: '#464a4d', labelText: '#939393' },
+    1: { bg: Color.KIO_ORANGE_ICON_BG, border: '#FFD4B0', text: Color.KIO_ORANGE_DARK, labelText: Color.KIO_ORANGE_DARK },
+    2: { bg: Color.KIO_ORANGE_FAINT, border: Color.KIO_ORANGE_ICON_BG, text: Color.KIO_ORANGE, labelText: Color.KIO_ORANGE },
+    3: { bg: '#FFFAF5', border: Color.KIO_ORANGE_FAINT, text: Color.TEXT_DEFAULT, labelText: '#939393' },
+    4: { bg: Color.LIGHT_GREY, border: '#eaeaea', text: Color.TEXT_DEFAULT, labelText: '#939393' },
   },
   png: {
     size: 1200,
-    background: 'linear-gradient(135deg, #FFE7D3 0%, #FFF3E7 100%)',
+    background: `linear-gradient(135deg, ${Color.KIO_ORANGE_ICON_BG} 0%, ${Color.KIO_ORANGE_FAINT} 100%)`,
     cellAlpha: { 1: 0.85, 2: 0.75, 3: 0.55, 4: 0.4 } as Record<1 | 2 | 3 | 4, number>,
   },
 } as const;

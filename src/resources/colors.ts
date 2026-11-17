@@ -13,7 +13,12 @@ export const Color = {
   BLUE: '#46ADFF',
 
   TEXT_STRONG: '#25282b',
-  TEXT_BODY: '#6b737a',
+  TEXT_DEFAULT: '#464a4d',
+  // 본문보다 옅되 읽어야 하는 텍스트용. 흰 배경 대비 4.91:1로 WCAG AA를 넘는 가장 옅은 값이다
+  TEXT_SUBTLE: '#697278',
+  TEXT_HINT: '#9aa1a6',
+  DISABLED_GREY: '#d1d5d8',
+  GREY_FAINT: '#f0f5f8',
 
   KIO_ORANGE_FAINT: '#FFF3E7',
   GREEN_FAINT: '#EDF9F1',
@@ -26,20 +31,19 @@ export const Color = {
 } as const;
 
 export const OnboardingColor = {
-  EYEBROW_TEXT: '#8d959c',
-  TITLE_TEXT: '#25282b',
+  EYEBROW_TEXT: Color.MUTED_GREY,
+  TITLE_TEXT: Color.TEXT_STRONG,
   BODY_TEXT: '#4f565b',
-  // 본문보다 옅되 읽어야 하는 텍스트용. 흰 배경 대비 4.91:1로 WCAG AA를 넘는 가장 옅은 값이다
-  SUBTLE_TEXT: '#697278',
+  SUBTLE_TEXT: Color.TEXT_SUBTLE,
   MUTED_TEXT: '#7b858c',
   STEP_ACTIVE_BORDER: '#ffd7b8',
   STEP_ACTIVE_BG: '#fffaf5',
-  STEP_INACTIVE_BORDER: '#e8eef2',
-  STEP_INACTIVE_BG: '#ffffff',
-  STEP_COMPLETED_BG: '#edf9f1',
-  STEP_PENDING_BG: '#fff3e7',
+  STEP_INACTIVE_BORDER: Color.BORDER_GREY,
+  STEP_INACTIVE_BG: Color.WHITE,
+  STEP_COMPLETED_BG: Color.GREEN_FAINT,
+  STEP_PENDING_BG: Color.KIO_ORANGE_FAINT,
   STEP_IDLE_BORDER: '#d7dde2',
-  CONNECTOR_IDLE: '#e8eef2',
+  CONNECTOR_IDLE: Color.BORDER_GREY,
 } as const;
 
 export type ColorType = typeof Color[keyof typeof Color];

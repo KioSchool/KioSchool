@@ -13,7 +13,7 @@ const Label = styled.label`
 const Box = styled.div<{ checked: boolean }>`
   width: 24px;
   height: 24px;
-  border: 1px solid ${({ checked }) => (checked ? Color.KIO_ORANGE : '#e5e5e5')};
+  border: 1px solid ${({ checked }) => (checked ? Color.KIO_ORANGE : Color.GREY_ICON_BG)};
   border-radius: 4px;
   background: ${({ checked }) => (checked ? Color.KIO_ORANGE : 'transparent')};
   transition: all 0.15s;
@@ -31,7 +31,7 @@ const HiddenInput = styled.input`
 
 const Text = styled.span<{ $whiteSpace: 'nowrap' | 'pre-line' }>`
   font-size: 14px;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   white-space: ${({ $whiteSpace }) => $whiteSpace};
 `;
 

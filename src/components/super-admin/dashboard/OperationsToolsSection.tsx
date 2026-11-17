@@ -13,7 +13,7 @@ const Card = styled.div`
   box-sizing: border-box;
   padding: 16px;
   background: ${Color.WHITE};
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 12px;
   gap: 12px;
   ${colFlex({ align: 'stretch' })};
@@ -22,7 +22,7 @@ const Card = styled.div`
 const ToolLabel = styled.div`
   font-size: 13px;
   font-weight: 600;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
 `;
 
 const ToolDescription = styled.div`
@@ -46,10 +46,10 @@ const DateInput = styled.input`
   height: 36px;
   padding: 0 10px;
   font-size: 13px;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 8px;
   background: ${Color.WHITE};
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
 `;
 
 const RegenerateButton = styled.button`

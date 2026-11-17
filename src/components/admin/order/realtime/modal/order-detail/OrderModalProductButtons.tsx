@@ -16,14 +16,14 @@ const IconWrapper = styled.div<{ disabled: boolean }>`
   height: 28px;
   cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
   border-radius: 99px;
-  background-color: #f0f5f8;
+  background-color: ${Color.GREY_FAINT};
   ${rowFlex({ justify: 'center', align: 'center' })}
 
   ${(props) =>
     !props.disabled &&
     css`
       &:hover {
-        background-color: #d1d5d8;
+        background-color: ${Color.DISABLED_GREY};
       }
     `}
 `;

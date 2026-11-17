@@ -17,20 +17,20 @@ const PRODUCT_IMAGE_SIZE = 110;
 
 const ProductName = styled.div<{ isSoldOut: boolean }>`
   font-size: 18px;
-  color: ${({ isSoldOut }) => (isSoldOut ? '#D1D5D8' : Color.BLACK)};
+  color: ${({ isSoldOut }) => (isSoldOut ? Color.DISABLED_GREY : Color.BLACK)};
   line-height: 1.4;
 `;
 
 const ProductDescription = styled.div<{ isSoldOut: boolean }>`
   font-size: 14px;
-  color: ${({ isSoldOut }) => (isSoldOut ? '#D1D5D8' : Color.GREY)};
+  color: ${({ isSoldOut }) => (isSoldOut ? Color.DISABLED_GREY : Color.GREY)};
   line-height: 1.4;
 `;
 
 const ProductPrice = styled.div<{ isSoldOut: boolean }>`
   font-size: 18px;
   font-weight: 500;
-  color: ${({ isSoldOut }) => (isSoldOut ? '#D1D5D8' : Color.BLACK)};
+  color: ${({ isSoldOut }) => (isSoldOut ? Color.DISABLED_GREY : Color.BLACK)};
   line-height: 1.4;
 `;
 

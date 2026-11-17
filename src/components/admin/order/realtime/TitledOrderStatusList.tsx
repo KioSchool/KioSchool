@@ -9,10 +9,11 @@ import { areOrdersEquivalent } from '@utils/memoCompareFunction';
 import { match } from 'ts-pattern';
 import { RiInformationFill } from '@remixicon/react';
 import AppTooltip from '@components/common/tooltip/AppToolTip';
+import { Color } from '@resources/colors';
 
 const TitledOrderStatusContainer = styled.div`
   width: 100%;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 16px;
   background: #ffffff50;
   padding: 18px 30px;
@@ -26,7 +27,7 @@ const TitleWrapper = styled.div`
   width: 100%;
   height: 24px;
   gap: 10px;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   ${rowFlex({ justify: 'flex-start', align: 'center' })}
 `;
 
@@ -52,7 +53,7 @@ const EmptyListMessageContainer = styled.div`
 
 const MessageLabel = styled.div`
   font-size: 16px;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
 `;
 
 const TitleLabel = styled.div`

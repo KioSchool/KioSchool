@@ -18,7 +18,7 @@ const Container = styled.div`
   max-width: calc(100vw - 32px);
   gap: 8px;
   background: #ffffff;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 8px;
   box-shadow: 0 4px 20px 0 rgba(92, 92, 92, 0.05);
   ${colFlex({ justify: 'start', align: 'start' })}
@@ -34,10 +34,10 @@ const DateInput = styled.input`
   box-sizing: border-box;
   padding: 0 10px;
   flex: 6;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 4px;
   font-size: 12px;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   line-height: normal;
   outline: none;
   font-family: 'LINE Seed Sans KR', sans-serif;

@@ -19,10 +19,10 @@ const PopupContainer = styled.div`
   white-space: pre-line;
   font-size: 13px;
   background: ${Color.WHITE};
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   padding: 0 12px;
   border-radius: 4px;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 

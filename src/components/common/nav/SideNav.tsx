@@ -18,7 +18,7 @@ const SideNavContainer = styled.nav<{ isOpen: boolean }>`
   z-index: 1011;
   transform: translateX(${(props) => (props.isOpen ? '0' : '-100%')});
   transition: transform 0.3s ease;
-  border-right: 1px solid #e8eef2;
+  border-right: 1px solid ${Color.BORDER_GREY};
   ${colFlex()}
 `;
 
@@ -28,7 +28,7 @@ const NavCategory = styled.div`
 `;
 
 const CategoryTitle = styled.div`
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   font-size: 18px;
   font-weight: 700;
 `;
@@ -39,7 +39,7 @@ const NavItem = styled('li', {
   position: relative;
   list-style: none;
   margin-left: 24px;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   font-size: 16px;
   font-weight: ${(props) => (props.isActive ? 700 : 400)};
   line-height: 1.8;

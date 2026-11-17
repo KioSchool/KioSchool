@@ -27,7 +27,7 @@ export const Field = styled.div`
 `;
 
 export const FieldLabel = styled.label`
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   font-size: 16px;
   font-weight: 700;
 `;
@@ -80,7 +80,7 @@ export const PrivacyContainer = styled.div`
 export const SuccessCard = styled.div`
   width: 100%;
   padding: 48px 32px;
-  border: 1px solid #d4f1e1;
+  border: 1px solid ${Color.GREEN_ICON_BG};
   border-radius: 24px;
   box-sizing: border-box;
   background: ${Color.WHITE};
@@ -95,7 +95,7 @@ export const SuccessIcon = styled(RiCheckboxCircleLine)`
 
 export const SuccessTitle = styled.h2`
   margin: 0;
-  color: #25282b;
+  color: ${Color.TEXT_STRONG};
   font-size: 24px;
 `;
 

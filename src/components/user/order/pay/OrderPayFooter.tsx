@@ -35,13 +35,13 @@ const Button = styled.button`
 
   &:disabled {
     background: ${Color.BORDER_GREY};
-    color: #d1d5d8;
+    color: ${Color.DISABLED_GREY};
     cursor: default;
   }
 `;
 
 const Caption = styled.span`
-  color: #697278;
+  color: ${Color.TEXT_SUBTLE};
   font-size: 12px;
   line-height: 1.45;
 `;

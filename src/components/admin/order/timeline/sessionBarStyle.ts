@@ -1,3 +1,4 @@
+import { Color } from '@resources/colors';
 import { TIMELINE_COLORS } from './timelineConstants';
 
 export interface SessionBarStyle {
@@ -15,8 +16,8 @@ const GHOST_STYLE: SessionBarStyle = {
 const EMPTY_SESSION_STYLE: SessionBarStyle = { backgroundColor: '#d5dbe0', textColor: '#8c9196' };
 
 const COLOR_LEVELS: SessionBarStyle[] = [
-  { backgroundColor: '#ffdec5', textColor: '#464a4d' },
-  { backgroundColor: '#fdc9a5', textColor: '#464a4d' },
+  { backgroundColor: '#ffdec5', textColor: Color.TEXT_DEFAULT },
+  { backgroundColor: '#fdc9a5', textColor: Color.TEXT_DEFAULT },
   { backgroundColor: '#f39048', textColor: '#ffffff' },
   { backgroundColor: '#eb7a28', textColor: '#ffffff' },
   { backgroundColor: '#da6100', textColor: '#ffffff' },

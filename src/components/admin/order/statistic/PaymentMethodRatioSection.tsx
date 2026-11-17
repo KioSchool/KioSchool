@@ -24,7 +24,7 @@ const Content = styled.div`
 
 const Description = styled.p`
   margin: 0;
-  color: ${Color.TEXT_BODY};
+  color: ${Color.TEXT_SUBTLE};
   font-size: 12px;
 `;
 
@@ -76,13 +76,13 @@ const Value = styled.span`
 
 const Status = styled.p`
   margin: 0;
-  color: ${Color.TEXT_BODY};
+  color: ${Color.TEXT_SUBTLE};
   font-size: 14px;
 `;
 
 const ErrorNotice = styled.div`
   gap: 8px;
-  color: ${Color.TEXT_BODY};
+  color: ${Color.TEXT_SUBTLE};
   flex-wrap: wrap;
   ${rowFlex({ align: 'center' })}
 `;

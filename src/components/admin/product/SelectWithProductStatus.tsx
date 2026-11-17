@@ -16,7 +16,7 @@ const Container = styled.div`
 const SelectorButton = styled.button<{ isOpen: boolean }>`
   width: 100%;
   background-color: ${Color.WHITE};
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 6px;
   ${ItemBaseStyle};
 `;
@@ -24,13 +24,13 @@ const SelectorButton = styled.button<{ isOpen: boolean }>`
 const DropdownList = styled.div`
   position: absolute;
   background-color: ${Color.WHITE};
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 6px;
   box-sizing: border-box;
   z-index: 9999;
   overflow: hidden;
   font-size: 12px;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   box-shadow: 0 4px 20px 0 rgba(92, 92, 92, 0.1);
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
@@ -41,7 +41,7 @@ const OptionItem = styled.div`
   ${ItemBaseStyle};
 
   &:not(:first-of-type) {
-    border-top: 1px solid #e8eef2;
+    border-top: 1px solid ${Color.BORDER_GREY};
   }
 
   &:hover {

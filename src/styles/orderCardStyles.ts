@@ -13,7 +13,7 @@ export const CardContainer = styled.div<{ height: number }>`
   min-width: 150px;
   height: ${(props) => props.height}px;
   border-radius: 16px;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   padding: 12px 15px;
 
   &:hover {
@@ -86,14 +86,14 @@ export const CardText = styled.span<CardTextProps>`
   height: ${(props) => props.height || 'auto'};
   font-size: ${(props) => props.size}px;
   font-weight: ${(props) => props.weight || 400};
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
   cursor: pointer;
   background-color: transparent;
 `;
 
 export const HorizontalLine = styled.hr`
   width: 100%;
-  border: 0.8px solid #e8eef2;
+  border: 0.8px solid ${Color.BORDER_GREY};
 `;
 
 export const HeaderContainer = styled.div``;

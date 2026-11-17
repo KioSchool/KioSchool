@@ -32,7 +32,7 @@ export const datePickerStyles = css`
   /* 요일 이름 (월, 화, 수...) */
   .react-datepicker__day-name {
     flex: 1;
-    color: #d1d5d8;
+    color: ${Color.DISABLED_GREY};
     line-height: 20px;
     margin: 0;
     font-size: 10px;
@@ -57,7 +57,7 @@ export const datePickerStyles = css`
     flex: 1;
     margin: 0;
     height: 36px;
-    color: #464a4d;
+    color: ${Color.TEXT_DEFAULT};
     font-size: 12px;
     position: relative;
     z-index: 1;
@@ -95,7 +95,7 @@ export const datePickerStyles = css`
   /* 범위 내 날짜 텍스트 색상 */
   .react-datepicker__day--in-range,
   .react-datepicker__day--in-selecting-range {
-    color: #464a4d !important;
+    color: ${Color.TEXT_DEFAULT} !important;
   }
 
   /* 선택된 날짜/시작일/종료일 텍스트 색상 */
@@ -164,13 +164,13 @@ export const datePickerStyles = css`
 
   /* 다른 월의 날짜 */
   .react-datepicker__day--outside-month {
-    color: #d1d5d8 !important;
+    color: ${Color.DISABLED_GREY} !important;
   }
 
   /* 다른 월의 범위 내 날짜 텍스트 색상 */
   .react-datepicker__day--outside-month.react-datepicker__day--in-range,
   .react-datepicker__day--outside-month.react-datepicker__day--in-selecting-range {
-    color: #464a4d !important;
+    color: ${Color.TEXT_DEFAULT} !important;
   }
 
   /* 다른 월의 선택된 날짜/시작일/종료일 텍스트 색상 */
@@ -184,6 +184,6 @@ export const datePickerStyles = css`
   /* 키보드로 선택된 날짜 */
   .react-datepicker__day--keyboard-selected {
     background-color: transparent;
-    color: #464a4d;
+    color: ${Color.TEXT_DEFAULT};
   }
 `;

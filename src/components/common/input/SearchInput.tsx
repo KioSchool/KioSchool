@@ -8,7 +8,7 @@ const Container = styled.div`
   width: 100%;
   height: 50px;
   background-color: ${Color.WHITE};
-  border-bottom: 0.5px solid #e8eef2;
+  border-bottom: 0.5px solid ${Color.BORDER_GREY};
   box-sizing: border-box;
   padding: 0 20px;
   gap: 20px;
@@ -20,10 +20,10 @@ const Input = styled.input`
   border: none;
   outline: none;
   font-size: 16px;
-  color: #464a4d;
+  color: ${Color.TEXT_DEFAULT};
 
   &::placeholder {
-    color: #d1d5d8;
+    color: ${Color.DISABLED_GREY};
   }
 `;
 
@@ -32,7 +32,7 @@ const IconSearch = styled(RiSearchLine, {
 })<{ isActive: boolean }>`
   width: 20px;
   height: 20px;
-  color: ${({ isActive }) => (isActive ? Color.KIO_ORANGE : '#d1d5d8')};
+  color: ${({ isActive }) => (isActive ? Color.KIO_ORANGE : Color.DISABLED_GREY)};
   transition: color 0.2s ease;
 `;
 

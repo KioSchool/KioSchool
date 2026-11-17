@@ -13,7 +13,7 @@ const List = styled.div`
 `;
 
 const Card = styled.div<{ active: boolean }>`
-  background: ${({ active }) => (active ? '#FFF3E7' : Color.WHITE)};
+  background: ${({ active }) => (active ? Color.KIO_ORANGE_FAINT : Color.WHITE)};
   border: 1px solid ${({ active }) => (active ? Color.KIO_ORANGE : '#f0f0f0')};
   border-radius: 10px;
   padding: 12px 14px;

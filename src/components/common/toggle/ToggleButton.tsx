@@ -15,14 +15,14 @@ const ToggleBackground = styled.div`
   position: absolute;
   inset: 0;
   background-color: ${Color.WHITE};
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 40px;
 `;
 
 const ToggleSlider = styled.div<{ checked: boolean }>`
   position: absolute;
   inset: 0;
-  background-color: ${({ checked }) => (checked ? Color.KIO_ORANGE : '#e8eef2')};
+  background-color: ${({ checked }) => (checked ? Color.KIO_ORANGE : Color.BORDER_GREY)};
   border-radius: 40px;
   padding: 12px 50px 14px;
   ${({ checked }) => (checked ? 'left: 42.65%; right: 0;' : 'left: 0; right: 42.65%;')}
@@ -33,7 +33,7 @@ const ToggleSlider = styled.div<{ checked: boolean }>`
 const ToggleText = styled.p<{ checked: boolean }>`
   font-weight: 700;
   font-size: 12px;
-  color: ${({ checked }) => (checked ? Color.WHITE : '#d1d5d8')};
+  color: ${({ checked }) => (checked ? Color.WHITE : Color.DISABLED_GREY)};
 `;
 
 interface ToggleButtonProps {

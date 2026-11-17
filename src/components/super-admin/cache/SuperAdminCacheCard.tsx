@@ -9,7 +9,7 @@ import { Color } from '@resources/colors';
 
 const Card = styled.div`
   width: 100%;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 12px;
   background: ${Color.WHITE};
   overflow: hidden;
@@ -44,7 +44,7 @@ const HeaderActions = styled.div`
 const Divider = styled.div`
   width: 100%;
   height: 1px;
-  background: #e8eef2;
+  background: ${Color.BORDER_GREY};
 `;
 
 const KeyList = styled.div`

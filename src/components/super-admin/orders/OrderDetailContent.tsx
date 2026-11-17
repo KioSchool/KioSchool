@@ -68,7 +68,7 @@ const InfoBlock = styled.div`
 
 const InfoRow = styled.div`
   width: 100%;
-  border-bottom: 1px solid #f7f7f7;
+  border-bottom: 1px solid ${Color.LIGHT_GREY};
   &:last-of-type {
     border-bottom: none;
   }

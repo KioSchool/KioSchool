@@ -2,7 +2,6 @@ import { RefObject } from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { match } from 'ts-pattern';
-import { RiArrowRightSLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { PaymentMethod } from '@@types/index';
@@ -26,7 +25,7 @@ const Amount = styled.div`
 `;
 
 const Caption = styled.span`
-  color: #697278;
+  color: ${Color.TEXT_SUBTLE};
   font-size: 13px;
   line-height: 1.45;
 `;
@@ -36,17 +35,6 @@ const AmountValue = styled.strong`
   font-size: 28px;
   font-weight: 700;
   line-height: 1.45;
-`;
-
-const Summary = styled.button`
-  margin: 0;
-  padding: 0;
-  gap: 4px;
-  border: none;
-  background: none;
-  font: inherit;
-  cursor: pointer;
-  ${rowFlex({ align: 'center' })}
 `;
 
 const Section = styled.div`
@@ -70,7 +58,7 @@ const Empty = styled.div`
   height: 102px;
   border-radius: 10px;
   background: ${Color.LIGHT_GREY};
-  color: #697278;
+  color: ${Color.TEXT_SUBTLE};
   font-size: 13px;
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
@@ -105,13 +93,13 @@ const NameCaption = styled.div`
 `;
 
 const Hint = styled.span`
-  color: #697278;
+  color: ${Color.TEXT_SUBTLE};
   font-size: 12px;
   line-height: 1.45;
 `;
 
 const PrivacyLink = styled(Link)`
-  color: #9aa1a6;
+  color: ${Color.TEXT_HINT};
   font-size: 12px;
   line-height: 1.45;
   text-decoration: underline;
@@ -126,7 +114,6 @@ export interface OrderPayContentProps {
   // 불러오는 동안 '계좌 없음' 안내가 잠깐 보이지 않게 빈 자리만 둔다
   isLoading?: boolean;
   customerNameRef?: RefObject<HTMLInputElement>;
-  onSummaryClick?: () => void;
   isPreview?: boolean;
 }
 
@@ -143,7 +130,6 @@ function OrderPayContent({
   onSelect,
   isLoading = false,
   customerNameRef,
-  onSummaryClick,
   isPreview = false,
 }: OrderPayContentProps) {
   const apps = methods.filter(isPayApp);
@@ -159,10 +145,7 @@ function OrderPayContent({
       <Amount>
         <Caption>보낼 금액</Caption>
         <AmountValue>{totalAmount.toLocaleString()}원</AmountValue>
-        <Summary type="button" onClick={onSummaryClick} tabIndex={tabIndex}>
-          <Caption>{summaryText}</Caption>
-          <RiArrowRightSLine size={14} color="#9aa1a6" />
-        </Summary>
+        <Caption>{summaryText}</Caption>
       </Amount>
       <Section>
         <SectionTitle>송금 방법</SectionTitle>

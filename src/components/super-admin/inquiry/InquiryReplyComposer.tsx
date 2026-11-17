@@ -81,7 +81,7 @@ const PreviewFrame = styled.iframe`
   width: 100%;
   height: 440px;
   box-sizing: border-box;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   border-radius: 8px;
   background: #f6f7f9;
 `;

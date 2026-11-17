@@ -12,7 +12,7 @@ const OrderProductContainer = styled.div`
   padding: 2px 30px 10px 30px;
   gap: 8px;
   overflow-y: auto;
-  border-bottom: 1px solid #e8eef2;
+  border-bottom: 1px solid ${Color.BORDER_GREY};
   box-sizing: border-box;
   ${colFlex({ justify: 'start' })}
 `;
@@ -52,7 +52,7 @@ const ProductImage = styled.img`
   height: 68px;
   flex-shrink: 0;
   border-radius: 8px;
-  border: 1px solid #e8eef2;
+  border: 1px solid ${Color.BORDER_GREY};
   object-fit: cover;
   background-color: ${Color.LIGHT_GREY};
   user-select: none;

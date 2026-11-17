@@ -93,8 +93,8 @@ const ActionButton = styled.button<{ primary?: boolean }>`
   font-weight: 700;
   cursor: pointer;
   gap: 6px;
-  background-color: ${({ primary }) => (primary ? Color.KIO_ORANGE : '#e8eef2')};
-  color: ${({ primary }) => (primary ? Color.WHITE : '#464a4d')};
+  background-color: ${({ primary }) => (primary ? Color.KIO_ORANGE : Color.BORDER_GREY)};
+  color: ${({ primary }) => (primary ? Color.WHITE : Color.TEXT_DEFAULT)};
   ${rowFlex({ justify: 'center', align: 'center' })};
 
   &:hover {
