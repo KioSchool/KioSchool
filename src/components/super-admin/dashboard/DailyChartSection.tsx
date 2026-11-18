@@ -4,8 +4,8 @@ import { DailyPoint } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
-import { formatCurrency, formatNumber } from '@utils/formatNumber';
 import SectionTitle from './SectionTitle';
+import DailyChartTooltip from './DailyChartTooltip';
 
 const ChartWrap = styled.div`
   background: ${Color.WHITE};
@@ -44,17 +44,6 @@ const ChartLabel = styled.div`
   font-weight: 500;
 `;
 
-const TooltipBox = styled.div`
-  background: ${Color.WHITE};
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 12px;
-  color: ${Color.BLACK};
-  gap: 2px;
-  ${colFlex()}
-`;
-
 type Mode = 'revenue' | 'orders';
 
 const Section = styled.div``;
@@ -63,19 +52,6 @@ interface DailyChartSectionProps {
   data: DailyPoint[];
   mode: Mode;
   onModeChange: (m: Mode) => void;
-}
-
-function CustomTooltip({ active, payload, label }: any) {
-  if (!active || !payload?.length) return null;
-  const item = payload[0];
-  const isRevenue = item.dataKey === 'revenue';
-  const value = isRevenue ? formatCurrency(item.value) : `${formatNumber(item.value)}건`;
-  return (
-    <TooltipBox>
-      <span>{label}</span>
-      <b>{value}</b>
-    </TooltipBox>
-  );
 }
 
 function DailyChartSection({ data, mode, onModeChange }: DailyChartSectionProps) {
@@ -116,7 +92,7 @@ function DailyChartSection({ data, mode, onModeChange }: DailyChartSectionProps)
               width={isRevenue ? 60 : 40}
               tickFormatter={(v) => (isRevenue ? `${Math.round(v / 1000)}k` : `${v}`)}
             />
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip content={<DailyChartTooltip />} />
             <Area type="monotone" dataKey={mode} stroke={Color.KIO_ORANGE} strokeWidth={2} fill="url(#areaGradient)" dot={false} activeDot={{ r: 4 }} />
           </AreaChart>
         </ResponsiveContainer>

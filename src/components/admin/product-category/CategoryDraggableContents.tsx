@@ -18,6 +18,10 @@ const DraggableContainer = styled.div<{ transform?: string; transition?: string;
   touch-action: none;
 `;
 
+const Wrapper = styled.div`
+  display: contents;
+`;
+
 interface DraggableProps {
   category: ProductCategory;
 }
@@ -46,7 +50,7 @@ function CategoryDraggableContents({ category }: DraggableProps) {
   };
 
   return (
-    <>
+    <Wrapper>
       <DraggableContainer
         ref={setNodeRef}
         transform={CSS.Transform.toString(transform)}
@@ -58,7 +62,7 @@ function CategoryDraggableContents({ category }: DraggableProps) {
         <CategoryItem category={category} isDefault={false} deleteHandler={deleteCategoryHandler} />
       </DraggableContainer>
       <ConfirmModal />
-    </>
+    </Wrapper>
   );
 }
 

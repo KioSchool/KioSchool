@@ -64,6 +64,10 @@ const OrderAmount = styled.div<{ isCancelled: boolean }>`
   color: ${Color.GREY};
 `;
 
+const Wrapper = styled.div`
+  display: contents;
+`;
+
 interface TableOrderCardProps {
   order: Order;
 }
@@ -74,7 +78,7 @@ function TableOrderCard({ order }: TableOrderCardProps) {
   const isCancelled = order.status === OrderStatus.CANCELLED;
 
   return (
-    <>
+    <Wrapper>
       <Card isCancelled={isCancelled} onClick={openModal}>
         <OrderMeta>
           #{order.orderNumber} · {formattedTime}
@@ -87,7 +91,7 @@ function TableOrderCard({ order }: TableOrderCardProps) {
         </BottomRow>
       </Card>
       <OrderDetailModal order={order} isModalOpen={isModalOpen} closeModal={closeModal} readOnly />
-    </>
+    </Wrapper>
   );
 }
 

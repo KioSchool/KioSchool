@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { Color } from '@resources/colors';
-import { rowFlex } from './flexStyles';
+import { colFlex, rowFlex } from './flexStyles';
 
 export const datePickerStyles = css`
   /* DatePicker 기본 스타일 */
@@ -186,4 +186,23 @@ export const datePickerStyles = css`
     background-color: transparent;
     color: ${Color.TEXT_DEFAULT};
   }
+`;
+
+export const datePickerPanelStyles = css`
+  box-sizing: border-box;
+  padding: 24px;
+  width: 290px;
+  max-width: calc(100vw - 32px);
+  gap: 8px;
+  background: #ffffff;
+  border: 1px solid ${Color.BORDER_GREY};
+  border-radius: 8px;
+  box-shadow: 0 4px 20px 0 rgba(92, 92, 92, 0.05);
+  ${colFlex({ justify: 'start', align: 'start' })}
+`;
+
+export const datePickerCalendarStyles = css`
+  margin-top: 10px;
+  width: 100%;
+  ${datePickerStyles}
 `;

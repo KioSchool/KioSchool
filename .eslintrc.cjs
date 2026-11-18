@@ -37,28 +37,6 @@ const syntaxFor = (file, exempt = []) => {
 };
 
 const LEGACY_VIOLATIONS = {
-  'src/App.tsx': ['topLevelFragment'],
-  'src/components/admin/order/statistic/HourlySalesChart.tsx': ['topLevelFragment'],
-  'src/components/admin/order/table-manage/detail/TableDetailPanel.tsx': ['topLevelFragment'],
-  'src/components/admin/order/table-manage/detail/TableOrderCard.tsx': ['topLevelFragment'],
-  'src/components/admin/product-category/CategoryDraggableContents.tsx': ['topLevelFragment'],
-  'src/components/admin/product/SelectWithProductStatus.tsx': ['local-rules/style-motion-values-only'],
-  'src/components/admin/workspace/dashboard/InsightCard.tsx': ['react/no-multi-comp'],
-  'src/components/common/button/ImageRouteButton.tsx': ['local-rules/style-motion-values-only', 'appLabel'],
-  'src/components/common/container/PreviewContainer.tsx': ['appLabel'],
-  'src/components/common/date-picker/CustomDatePicker.tsx': ['react/no-multi-comp', 'react/function-component-definition'],
-  'src/components/common/input/NewAppInputLayout.tsx': ['local-rules/style-motion-values-only'],
-  'src/components/common/nav/MobileNav.tsx': ['topLevelFragment'],
-  'src/components/common/nav/NavBar.tsx': ['topLevelFragment'],
-  'src/components/common/nav/TitleNavBar.tsx': ['local-rules/style-motion-values-only', 'appLabel'],
-  'src/components/common/test/SentryTestPage.tsx': ['local-rules/style-motion-values-only', 'react/no-multi-comp', 'react/function-component-definition'],
-  'src/components/super-admin/bank/SuperAdminBankContent.tsx': ['local-rules/style-motion-values-only'],
-  'src/components/super-admin/dashboard/DailyChartSection.tsx': ['react/no-multi-comp'],
-  'src/components/super-admin/dashboard/OnboardingTimeSection.tsx': ['react/no-multi-comp'],
-  'src/components/super-admin/festival-calendar/FestivalDayDetail.tsx': ['topLevelFragment'],
-  'src/components/super-admin/festival-calendar/FestivalUniversityTable.tsx': ['react/no-multi-comp', 'topLevelHtmlTag'],
-  'src/components/super-admin/festival-calendar/FestivalWorkspaceRankingTable.tsx': ['react/no-multi-comp', 'topLevelHtmlTag'],
-  'src/components/user/AuthenticationButton.tsx': ['topLevelFragment'],
   'src/components/user/home/CountUpNumber.tsx': ['react/forbid-dom-props', 'local-rules/style-motion-values-only'],
   'src/components/user/home/CtaSection.tsx': ['local-rules/style-motion-values-only'],
   'src/components/user/home/hero/HeroSection.tsx': ['local-rules/style-motion-values-only'],
@@ -68,9 +46,6 @@ const LEGACY_VIOLATIONS = {
   'src/components/user/info/InfoHowToUseSection.tsx': ['local-rules/style-motion-values-only'],
   'src/components/user/info/InfoTeamSection.tsx': ['local-rules/style-motion-values-only'],
   'src/components/user/info/InfoVisionSection.tsx': ['local-rules/style-motion-values-only'],
-  'src/hooks/useInputConfirm.tsx': ['local-rules/style-motion-values-only', 'react/function-component-definition', 'appLabel'],
-  'src/pages/user/Register.tsx': ['local-rules/style-motion-values-only'],
-  'src/pages/user/ResetPassword.tsx': ['local-rules/style-motion-values-only'],
 };
 
 const restrictedImportPatterns = {
@@ -79,7 +54,6 @@ const restrictedImportPatterns = {
     group: ['../*', '../**'],
     message: '상위 폴더는 상대 경로로 부르지 않는다. @ 별칭을 쓴다. 상대 경로는 같은 폴더(./)에서만 쓴다.',
   },
-  appLabel: { group: ['**/AppLabel'], message: 'AppLabel은 새로 쓰지 않는다.' },
 };
 
 const importPatternsFor = (exempt = []) =>

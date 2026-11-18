@@ -65,6 +65,10 @@ const FooterButton = styled.button<{ variant: 'start' | 'end' }>`
   }
 `;
 
+const Wrapper = styled.div`
+  display: contents;
+`;
+
 function getStepperMinutes({
   isDisabled,
   settingMinutes,
@@ -123,7 +127,7 @@ function TableDetailPanel({ workspaceId, workspaceName, table, orders, refetchTa
   });
 
   return (
-    <>
+    <Wrapper>
       <Panel>
         <ScrollBody>
           <TableDetailHeader table={table} status={status} workspaceId={workspaceId} workspaceName={workspaceName} />
@@ -158,7 +162,7 @@ function TableDetailPanel({ workspaceId, workspaceName, table, orders, refetchTa
       </Panel>
       <EndSessionConfirmModal />
       <EmptySessionConfirmModal />
-    </>
+    </Wrapper>
   );
 }
 

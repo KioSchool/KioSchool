@@ -31,6 +31,10 @@ const SubText = styled.div`
   color: ${Color.GREY};
 `;
 
+const EmptyTossText = styled(SubText)`
+  color: #ccc;
+`;
+
 const TossRow = styled.div`
   gap: 4px;
   ${rowFlex({ align: 'center' })}
@@ -109,7 +113,7 @@ function SuperAdminBankContent(bank: Bank) {
           </TossRow>
         ) : (
           <TossRow>
-            <SubText style={{ color: '#ccc' }}>토스 명칭 없음</SubText>
+            <EmptyTossText>토스 명칭 없음</EmptyTossText>
             <IconButton onClick={handleAddTossName} aria-label="토스 명칭 추가">
               <RiAddLine size={12} />
             </IconButton>

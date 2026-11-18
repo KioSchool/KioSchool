@@ -3,7 +3,6 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import CellularConnectionSvg from '@resources/svg/preview/CellularConnectionSvg';
 import { RiBatteryFill, RiExternalLinkLine, RiWifiFill, RiQrCodeLine } from '@remixicon/react';
-import AppLabel from '@components/common/label/AppLabel';
 import { useParams } from 'react-router-dom';
 import QRCode from 'qrcode';
 
@@ -86,6 +85,13 @@ const LinkContainer = styled.div`
   }
 `;
 
+const StatusTime = styled.label`
+  color: ${Color.BLACK};
+  font-size: 15px;
+  font-weight: 500;
+  user-select: none;
+`;
+
 interface PreviewContainerProps {
   width?: number;
   height?: number;
@@ -122,9 +128,7 @@ function PreviewContainer({ width = 360, height = 700 }: PreviewContainerProps) 
       <DeviceContainer width={width} height={height}>
         <IndicatorContainer>
           <LeftIndicatorContainer>
-            <AppLabel size={15} color={Color.BLACK}>
-              10:15
-            </AppLabel>
+            <StatusTime>10:15</StatusTime>
           </LeftIndicatorContainer>
           <RightIndicatorContainer>
             <CellularConnectionSvg />
