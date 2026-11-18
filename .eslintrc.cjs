@@ -1,3 +1,5 @@
+const COMPONENT_RETURN = 'FunctionDeclaration[id.name=/^[A-Z]/] ReturnStatement:not(:function :function ReturnStatement)';
+
 const restrictedSyntax = {
   ternaryWithNullish: {
     selector: "ConditionalExpression[consequent.operator='??'], ConditionalExpression[alternate.operator='??']",
@@ -8,12 +10,13 @@ const restrictedSyntax = {
     message: '삼항식 안에 ||를 섞지 않는다. 조건을 이름 있는 중간 변수로 빼거나 guard 절 함수로 푼다.',
   },
   topLevelFragment: {
-    selector: 'FunctionDeclaration[id.name=/^[A-Z]/] > BlockStatement > ReturnStatement > JSXFragment',
-    message: '컴포넌트 최상위 반환값은 Styled 컴포넌트로 감싼다. 스타일이 없으면 const Container = styled.div`` 처럼 빈 styled 컴포넌트를 쓴다.',
+    selector: `${COMPONENT_RETURN} > JSXFragment`,
+    message:
+      '컴포넌트가 반환하는 JSX(early return 포함)는 Styled 컴포넌트로 감싼다. 스타일이 없으면 const Container = styled.div`` 처럼 빈 styled 컴포넌트를 쓴다.',
   },
   topLevelHtmlTag: {
-    selector: 'FunctionDeclaration[id.name=/^[A-Z]/] > BlockStatement > ReturnStatement > JSXElement > JSXOpeningElement > JSXIdentifier[name=/^[a-z]/]',
-    message: '컴포넌트 최상위 반환값으로 HTML 태그를 바로 쓰지 않는다. 같은 태그의 Styled 컴포넌트(styled.div 등)로 바꾼다.',
+    selector: `${COMPONENT_RETURN} > JSXElement > JSXOpeningElement > JSXIdentifier[name=/^[a-z]/]`,
+    message: '컴포넌트가 반환하는 JSX(early return 포함)의 맨 바깥에 HTML 태그를 바로 쓰지 않는다. 같은 태그의 Styled 컴포넌트(styled.div 등)로 바꾼다.',
   },
   styledPrefix: {
     selector: 'VariableDeclarator[id.name=/^Styled[A-Z]/]',
