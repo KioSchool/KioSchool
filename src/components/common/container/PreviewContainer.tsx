@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
-import { colFlex, rowFlex } from '@styles/flexStyles';
-import { Color } from '@resources/colors';
-import CellularConnectionSvg from '@resources/svg/preview/CellularConnectionSvg';
 import { RiBatteryFill, RiExternalLinkLine, RiWifiFill, RiQrCodeLine } from '@remixicon/react';
 import { useParams } from 'react-router-dom';
 import QRCode from 'qrcode';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
+import CellularConnectionSvg from '@resources/svg/preview/CellularConnectionSvg';
 
 const Container = styled.div<{ width: number; height: number }>`
   width: ${(props) => props.width}px;

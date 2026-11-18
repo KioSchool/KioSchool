@@ -1,21 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import styled from '@emotion/styled';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { match } from 'ts-pattern';
+import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import PreviewContainer from '@components/common/container/PreviewContainer';
 import AppFaqButton from '@components/common/button/AppFaqButton';
 import AppPopup from '@components/common/popup/AppPopup';
 import { popupDatas } from '@constants/data/popupData';
-import { useAtomValue, useSetAtom } from 'jotai';
 import { adminTablesAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { sideNavIsOpenAtom } from '@jotai/atoms';
 import AdminDashboard from '@components/admin/workspace/dashboard/AdminDashboard';
 import AdminWorkspaceOnboarding from '@components/admin/workspace/onboarding/AdminWorkspaceOnboarding';
 import { isWorkspaceOnboardingCompleted } from '@utils/onboarding';
 import useConfirm from '@hooks/useConfirm';
-import { match } from 'ts-pattern';
 import { trackEvent } from '@utils/analytics';
 import { GA_EVENT } from '@constants/analytics';
 

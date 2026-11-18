@@ -1,10 +1,10 @@
 import { memo } from 'react';
 import styled from '@emotion/styled';
+import { differenceInMinutes } from 'date-fns';
 import { OrderSessionWithOrder, GHOST_TYPE } from '@@types/index';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { getSessionBarStyle } from './sessionBarStyle';
 import { formatMinutesToTime } from '@utils/formatDate';
-import { differenceInMinutes } from 'date-fns';
+import { getSessionBarStyle } from './sessionBarStyle';
 import { TIMELINE_COLORS } from './timelineConstants';
 
 const MIN_BAR_WIDTH_FOR_TEXT = 6;

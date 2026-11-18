@@ -1,10 +1,10 @@
 ﻿import styled from '@emotion/styled';
+import { RiCheckboxCircleFill } from '@remixicon/react';
 import { OrderProduct, Product } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import OrderModalProductButtons from './OrderModalProductButtons';
 import defaultProductImage from '@resources/image/defaultWorkspaceImage.png';
-import { RiCheckboxCircleFill } from '@remixicon/react';
+import OrderModalProductButtons from './OrderModalProductButtons';
 
 const OrderProductContainer = styled.div`
   width: 100%;

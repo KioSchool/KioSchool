@@ -1,10 +1,10 @@
-import { Product } from '@@types/index';
 import styled from '@emotion/styled';
-import { colFlex, rowFlex } from '@styles/flexStyles';
 import { RiAddLine, RiCloseCircleFill, RiSubtractLine } from '@remixicon/react';
+import { useAtom } from 'jotai';
+import { Product } from '@@types/index';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { userOrderBasketAtom } from '@jotai/user/atoms';
-import { useAtom } from 'jotai';
 import { trackEvent } from '@utils/analytics';
 import { GA_CURRENCY, GA_EVENT } from '@constants/analytics';
 import { productToGaItem } from '@utils/orderBasket';

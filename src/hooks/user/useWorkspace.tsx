@@ -1,7 +1,7 @@
+import { useSetAtom } from 'jotai';
 import useApi from '@hooks/useApi';
 import { Account, Workspace } from '@@types/index';
 import { userWorkspaceAccountsAtom, userWorkspaceAtom } from '@jotai/user/atoms';
-import { useSetAtom } from 'jotai';
 
 function useWorkspace() {
   const { userApi } = useApi();

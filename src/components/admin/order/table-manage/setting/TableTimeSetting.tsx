@@ -3,8 +3,8 @@ import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 import ToggleButton from '@components/common/toggle/ToggleButton';
 import NumberInput from '@components/common/input/NumberInput';
-import SettingSection from './SettingSection';
 import { formatMinutesToTime } from '@utils/formatDate';
+import SettingSection from './SettingSection';
 
 const ToggleRow = styled.div`
   width: 100%;

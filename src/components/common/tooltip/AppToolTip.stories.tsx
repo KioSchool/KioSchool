@@ -1,6 +1,6 @@
 ﻿import type { Meta, StoryObj } from '@storybook/react';
-import AppTooltip from './AppToolTip';
 import { RiInformation2Line } from '@remixicon/react';
+import AppTooltip from './AppToolTip';
 
 const meta: Meta<typeof AppTooltip> = {
   title: 'Common/Tooltip/AppTooltip',

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import PageSeo from '@components/common/page/PageSeo';
 import { MotionConfig } from 'framer-motion';
+import PageSeo from '@components/common/page/PageSeo';
 import AppContainer from '@components/common/container/AppContainer';
 import SiteFooter from '@components/common/footer/SiteFooter';
 import { colFlex } from '@styles/flexStyles';

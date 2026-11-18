@@ -1,6 +1,6 @@
+import { useAtomValue } from 'jotai';
 import ContentCard from '@components/common/card/ContentCard';
 import RankedList, { RankedItem } from '@components/common/list/RankedList';
-import { useAtomValue } from 'jotai';
 import { adminDashboardAtom } from '@jotai/admin/atoms';
 
 function TopSellingList() {

@@ -211,6 +211,7 @@ ESLint (`.eslintrc.cjs`):
   - 컴포넌트가 반환하는 JSX의 맨 바깥 HTML 태그·Fragment (early return 포함, `src/resources/svg/`는 제외)
   - 중첩 삼항, 삼항 결과 자리의 `??`·`||` (`a || b ? x : y`처럼 조건 자리는 허용)
   - `src/`·`../` import, 공통 컴포넌트 밖의 `Styled` 접두사
+  - import 순서(서드파티 → `@` 별칭 → 같은 폴더). `eslint --fix`와 커밋 때 lint-staged가 자동으로 맞춘다
   - 훅 호출 규칙 (early return 뒤에 훅을 부르는 것 등)
   - styled 안 배치 순서(일반 속성 → `colFlex`/`rowFlex` → mediaQuery)와 flex 믹스인 앞 빈 줄
 - `.eslintrc.cjs`의 `LEGACY_VIOLATIONS`는 규칙을 들이기 전부터 있던 위반 목록이다. 파일을 고치면 목록에서 빼고, 새 파일·새 항목은 넣지 않는다. 이 규칙들을 `eslint-disable`로 우회하지 않는다

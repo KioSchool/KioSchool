@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import { Color } from '@resources/colors';
-import { rowFlex } from '@styles/flexStyles';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RiArrowLeftLine, RiShareForward2Fill } from '@remixicon/react';
+import { Color } from '@resources/colors';
+import { rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div<{ isShow: boolean }>`
   position: fixed;

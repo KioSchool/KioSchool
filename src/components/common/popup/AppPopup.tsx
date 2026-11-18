@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import usePopup from '@hooks/usePopup';
 import styled from '@emotion/styled';
 import { RiCloseCircleFill } from '@remixicon/react';
+import { useCookies } from 'react-cookie';
+import usePopup from '@hooks/usePopup';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { POPUP_CLOSE_MODE, PopupData } from '@constants/data/popupData';
-import { useCookies } from 'react-cookie';
 
 const Container = styled.div`
   width: 100%;

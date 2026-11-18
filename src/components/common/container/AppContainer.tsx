@@ -1,18 +1,18 @@
 import styled from '@emotion/styled';
-import NavBar from '@components/common/nav/NavBar';
-import { colFlex } from '@styles/flexStyles';
 import { SerializedStyles } from '@emotion/react';
-import { Color } from '@resources/colors';
 import { useLocation } from 'react-router-dom';
 import { useAtomValue, useSetAtom } from 'jotai';
+import { ReactNode, useEffect } from 'react';
+import { match } from 'ts-pattern';
+import NavBar from '@components/common/nav/NavBar';
+import { colFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 import { adminUserAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
 import { layoutParamsAtom, windowWidthAtom, sideNavIsOpenAtom } from '@jotai/atoms';
 import { calculateLayoutScale } from '@utils/layout';
 import { getPageTitle } from '@@types/guard';
 import { DEFAULT_LAYOUT_WIDTH, SIDE_NAV_WIDTH } from '@constants/layout';
 import { MOBILE_BREAKPOINT, mobileMediaQuery, tabletMediaQuery } from '@styles/globalStyles';
-import { ReactNode, useEffect } from 'react';
-import { match } from 'ts-pattern';
 
 export const MainContainer = styled.div<{ backgroundColor?: string; sideNavOffset: number }>`
   width: ${(props) => (props.sideNavOffset > 0 ? `calc(100% - ${props.sideNavOffset}px)` : '100%')};

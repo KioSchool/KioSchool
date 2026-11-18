@@ -1,7 +1,7 @@
 ﻿import styled from '@emotion/styled';
+import { RiCheckboxCircleFill } from '@remixicon/react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import { RiCheckboxCircleFill } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 
 export const CardContainer = styled.div<{ height: number }>`

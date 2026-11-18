@@ -5,7 +5,6 @@ import { Order } from '@@types/index';
 import { GA_EVENT, ORDER_EVENT_LOCATION } from '@constants/analytics';
 import { trackEvent } from '@utils/analytics';
 import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
-import OrderItemList from './OrderItemList';
 import { areOrdersEquivalent } from '@utils/memoCompareFunction';
 import useModal from '@hooks/useModal';
 import { extractMinFromDate } from '@utils/formatDate';
@@ -13,6 +12,7 @@ import useFormattedTime from '@hooks/useFormattedTime';
 import { Color } from '@resources/colors';
 import { CardContainer, CardText, DescriptionContainer, HeaderContainer, HorizontalLine, OrderInfoContainer } from '@styles/orderCardStyles';
 import { ELAPSED_LEVEL_COLOR, ElapsedLevel, getElapsedLevel } from '@utils/orderElapsed';
+import OrderItemList from './OrderItemList';
 
 const ElapsedText = styled(CardText)<{ level: ElapsedLevel }>`
   color: ${({ level }) => ELAPSED_LEVEL_COLOR[level]};

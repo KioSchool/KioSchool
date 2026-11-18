@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import styled from '@emotion/styled';
+import { useAtomValue } from 'jotai';
 import { OrderSessionWithOrder, Product } from '@@types/index';
 import { colFlex } from '@styles/flexStyles';
 import { adminProductsAtom } from '@jotai/admin/atoms';
-import { useAtomValue } from 'jotai';
 import { TIMELINE_COLORS } from './timelineConstants';
 import SessionOrderCard from './SessionOrderCard';
 

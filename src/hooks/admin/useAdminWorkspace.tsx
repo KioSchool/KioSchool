@@ -1,8 +1,8 @@
+import { useNavigate } from 'react-router-dom';
+import { useSetAtom } from 'jotai';
 import useApi from '@hooks/useApi';
 import { FocalPoint, Workspace } from '@@types/index';
-import { useNavigate } from 'react-router-dom';
 import { adminTablesAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
-import { useSetAtom } from 'jotai';
 import { ADMIN_ROUTES, getAdminWorkspacePath } from '@constants/routes';
 import { API_ERROR_CODES } from '@constants/errorCodes';
 import { isApiErrorCode } from '@utils/apiError';

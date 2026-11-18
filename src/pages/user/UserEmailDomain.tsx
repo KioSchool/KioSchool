@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import styled from '@emotion/styled';
 import PaginationSearchBar from '@components/common/pagination/PaginationSearchBar';
 import { colFlex } from '@styles/flexStyles';
-import { useEffect, useState } from 'react';
 import Pagination from '@components/common/pagination/Pagination';
 import AppContainer from '@components/common/container/AppContainer';
 import PaginationSearchContents from '@components/common/pagination/PaginationSearchContents';
@@ -8,10 +10,8 @@ import { EmailDomain, PaginationResponse } from '@@types/index';
 import { defaultPaginationValue } from '@@types/defaultValues';
 import useEmail from '@hooks/user/useEmail';
 import EmailDomainContent from '@components/user/email/EmailDomainContent';
-import { useSearchParams } from 'react-router-dom';
 import RequestDomainPopup from '@components/user/email/RequestDomainPopup';
 import NewCommonButton from '@components/common/button/NewCommonButton';
-import styled from '@emotion/styled';
 
 const RequestContainer = styled.div`
   margin-top: 30px;

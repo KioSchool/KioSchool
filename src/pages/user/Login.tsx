@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import styled from '@emotion/styled';
 import useAuthentication from '@hooks/useAuthentication';
 import { REDIRECT_URL_PARAM, sanitizeRedirectUrl } from '@utils/redirectUrl';
-import styled from '@emotion/styled';
 import AppContainer from '@components/common/container/AppContainer';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';

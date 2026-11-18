@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
+import AppContainer from '@components/common/container/AppContainer';
 import useAuthentication from '@hooks/useAuthentication';
 import { colFlex } from '@styles/flexStyles';
 import NewAppInput from '@components/common/input/NewAppInput';

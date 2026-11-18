@@ -1,6 +1,6 @@
+import { useCallback, useEffect, useState } from 'react';
 import { Order } from '@@types/index';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
-import { useCallback, useEffect, useState } from 'react';
 
 const AUTO_REFRESH_INTERVAL = 60000;
 

@@ -1,10 +1,10 @@
 ﻿import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { RiAddLine, RiSubtractLine } from '@remixicon/react';
+import { useAtomValue } from 'jotai';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 import { orderModalReadOnlyAtom } from '@jotai/atoms';
-import { useAtomValue } from 'jotai';
 
 const ButtonContainer = styled.div`
   gap: 4px;

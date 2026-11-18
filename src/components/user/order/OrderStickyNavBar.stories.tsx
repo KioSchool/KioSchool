@@ -1,6 +1,6 @@
-import OrderStickyNavBar from './OrderStickyNavBar';
 import { BrowserRouter } from 'react-router-dom';
 import { Meta, StoryObj } from '@storybook/react';
+import OrderStickyNavBar from './OrderStickyNavBar';
 
 const meta = {
   title: 'Components/Admin/Order/OrderStickyNavBar',

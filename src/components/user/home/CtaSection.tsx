@@ -9,9 +9,9 @@ import { mobileMediaQuery } from '@styles/globalStyles';
 import { captionTypography, headingTypography, subheadingTypography } from '@styles/landingTypography';
 import { ADMIN_ROUTES, USER_ROUTES } from '@constants/routes';
 import useMarketingLoginStatus from '@hooks/useMarketingLoginStatus';
-import useMouseGlow, { MouseGlow } from './useMouseGlow';
 import { trackEvent } from '@utils/analytics';
 import { GA_EVENT } from '@constants/analytics';
+import useMouseGlow, { MouseGlow } from './useMouseGlow';
 
 const Container = styled.div`
   position: relative;

@@ -1,10 +1,10 @@
 import { memo, useMemo } from 'react';
 import groupBy from 'lodash/groupBy';
 import styled from '@emotion/styled';
-import { colFlex, rowFlex } from '@styles/flexStyles';
-import { OrderSessionWithOrder } from '@@types/index';
 import { addHours, startOfDay } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import { OrderSessionWithOrder } from '@@types/index';
 import SessionBar from './SessionBar';
 import TimeAxis from './TimeAxis';
 import { FALLBACK_WALL_END_HOUR, FALLBACK_WALL_START_HOUR, TIMELINE_COLORS, TIMELINE_START_HOUR } from './timelineConstants';

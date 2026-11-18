@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { RiTestTubeLine, RiBugLine, RiAlarmWarningLine } from '@remixicon/react';
+import * as Sentry from '@sentry/react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import * as Sentry from '@sentry/react';
 import useApi from '@hooks/useApi';
 import SentryThrowingComponent from './SentryThrowingComponent';
 import SentryAsyncErrorComponent from './SentryAsyncErrorComponent';

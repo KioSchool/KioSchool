@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
-import TableOrderCard from './TableOrderCard';
 import { Order, OrderStatus } from '@@types/index';
+import TableOrderCard from './TableOrderCard';
 
 const Container = styled.div`
   width: 100%;

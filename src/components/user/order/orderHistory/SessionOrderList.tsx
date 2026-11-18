@@ -1,5 +1,5 @@
-import { Color } from '@resources/colors';
 import styled from '@emotion/styled';
+import { Color } from '@resources/colors';
 import { Order } from '@@types/index';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { getSessionOrderTotalPrice } from '@utils/sessionOrder';

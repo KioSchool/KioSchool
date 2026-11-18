@@ -1,6 +1,6 @@
+import { useSetAtom } from 'jotai';
 import { Product, ProductCategory } from '@@types/index';
 import useApi from '@hooks/useApi';
-import { useSetAtom } from 'jotai';
 import { userCategoriesAtom, userProductsAtom } from '@jotai/user/atoms';
 
 function useProduct(workspaceId: string | undefined | null) {
