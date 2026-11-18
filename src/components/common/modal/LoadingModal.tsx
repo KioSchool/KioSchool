@@ -27,8 +27,8 @@ const bounce = keyframes`
 `;
 
 const DotsContainer = styled.div`
-  ${rowFlex({ justify: 'center', align: 'center' })}
   gap: 8px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const Dot = styled.div<{ delay: number }>`

@@ -44,7 +44,6 @@ const AddButton = styled.button`
     outline: 2px solid ${Color.KIO_ORANGE};
     outline-offset: -2px;
   }
-
   ${colFlex({ justify: 'center', align: 'center' })};
 `;
 

@@ -112,6 +112,7 @@ module.exports = {
     ],
     'local-rules/style-motion-values-only': 'error',
     'no-nested-ternary': 'error',
+    'local-rules/styled-flex-order': 'error',
     'no-restricted-imports': ['error', { patterns: importPatternsFor() }],
     'no-restricted-syntax': ['error', ...syntaxFor('')],
   },

@@ -18,8 +18,8 @@ const Content = styled.div`
   height: 100%;
   font-size: 12px;
   line-height: 1.8;
-  ${colFlex({ justify: 'center' })}
   flex-wrap: wrap;
+  ${colFlex({ justify: 'center' })}
 `;
 
 function OrderFooter() {

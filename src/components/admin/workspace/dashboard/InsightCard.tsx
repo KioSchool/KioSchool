@@ -70,8 +70,8 @@ const ShareButton = styled.button`
   gap: 4px;
   flex-shrink: 0;
   box-shadow: 0 2px 6px rgba(255, 145, 66, 0.25);
-  ${rowFlex({ align: 'center' })};
   transition: all 0.15s ease;
+  ${rowFlex({ align: 'center' })};
 
   &:hover {
     background: ${InsightDesignTokens.brand.dark};

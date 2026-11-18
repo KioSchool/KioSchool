@@ -38,8 +38,8 @@ const Header = styled.div`
   width: 100%;
   min-height: 120px;
   word-break: keep-all;
-  ${colFlex({ justify: 'center', align: 'center' })}
   gap: 7px;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const Title = styled.div`
