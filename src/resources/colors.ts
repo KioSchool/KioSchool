@@ -47,3 +47,21 @@ export const OnboardingColor = {
 } as const;
 
 export type ColorType = typeof Color[keyof typeof Color];
+
+export const LandingColor = {
+  TEXT: '#191f28',
+  SUB_TEXT: '#4e5968',
+  CAPTION: '#8b95a1',
+  ACCENT: Color.KIO_ORANGE,
+  ACCENT_TEXT: Color.KIO_ORANGE_DARK,
+  SURFACE: '#f7f8fa',
+  LINE: '#e5e8eb',
+  OUTLINE: '#c9ced4',
+  DARK: '#191f28',
+  DARK_SURFACE: 'rgba(255, 255, 255, 0.06)',
+  DARK_LINE: 'rgba(255, 255, 255, 0.14)',
+  DARK_SUB_TEXT: '#b0b8c1',
+  DARK_CAPTION: '#8b95a1',
+  TINT: '#fff4eb',
+  SHADOW: 'rgba(25, 31, 40, 0.1)',
+} as const;
