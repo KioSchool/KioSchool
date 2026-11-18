@@ -8,6 +8,7 @@ import type { PrerenderArguments, PrerenderResult } from 'vite-prerender-plugin'
 import Home from '@pages/user/home/Home';
 import Info from '@pages/user/info/Info';
 import Privacy from '@pages/user/privacy/Privacy';
+import Demo from '@pages/user/demo/Demo';
 import { getMarketingHeadElements, getMarketingSeoByPathname } from '@constants/marketingSeo';
 import { PRERENDERED_PATH_META_NAME } from '@constants/appShell';
 
@@ -122,6 +123,7 @@ export async function prerender({ url }: PrerenderArguments): Promise<PrerenderR
             <Route path="/" element={<Home />} />
             <Route path="/info" element={<Info />} />
             <Route path="/privacy" element={<Privacy />} />
+            <Route path="/demo" element={<Demo />} />
           </Routes>
         </StaticRouter>
       </HelmetProvider>

@@ -93,7 +93,7 @@ const SERVICE_SCHEMA: MarketingServiceSchema = {
   url: `${URLS.EXTERNAL.KIO_SCHOOL}/info`,
 };
 
-export type MarketingSeoKey = 'home' | 'info' | 'privacy';
+export type MarketingSeoKey = 'home' | 'info' | 'privacy' | 'demo';
 
 type MarketingSeoConfig = Record<MarketingSeoKey, MarketingSeoConfigEntry>;
 
@@ -119,11 +119,19 @@ export const MARKETING_SEO: MarketingSeoConfig = {
     ogImageUrl: MARKETING_OG_IMAGE_URL,
     structuredData: [ORGANIZATION_SCHEMA],
   },
+  demo: {
+    title: '1분 체험 | 키오스쿨',
+    description: '7번 테이블 손님 한 팀을 받으며 키오스쿨의 주문 흐름을 직접 눌러 보세요. 가입 없이 1분이면 끝나고, 실제 주문이나 송금은 발생하지 않습니다.',
+    canonicalUrl: `${URLS.EXTERNAL.KIO_SCHOOL}/demo`,
+    ogImageUrl: MARKETING_OG_IMAGE_URL,
+    structuredData: [ORGANIZATION_SCHEMA],
+  },
 };
 
 const MARKETING_SEO_KEY_BY_PATHNAME: Record<string, MarketingSeoKey> = {
   '/info': 'info',
   '/privacy': 'privacy',
+  '/demo': 'demo',
 };
 
 export function getMarketingSeoKeyByPathname(pathname: string): MarketingSeoKey {

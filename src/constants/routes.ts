@@ -8,6 +8,7 @@ export const USER_ROUTES = {
   INFO: '/info',
   CONTACT: '/contact',
   PRIVACY: '/privacy',
+  DEMO: '/demo',
   EMAIL_DOMAINS: '/email-domains',
   MAIL_UNSUBSCRIBE: '/mail/unsubscribe',
 } as const;
@@ -65,6 +66,10 @@ export const SUPER_ADMIN_ROUTES = {
 export const TEST_ROUTES = {
   SENTRY_TEST: '/sentry-test',
 } as const;
+
+export const DEMO_STEP_PARAM = 'step';
+
+export const getDemoPath = (step: number) => `${USER_ROUTES.DEMO}?${DEMO_STEP_PARAM}=${step}`;
 
 export const getAdminWorkspacePath = (workspaceId: string | number) => `/admin/workspace/${workspaceId}`;
 

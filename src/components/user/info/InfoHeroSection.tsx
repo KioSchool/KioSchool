@@ -1,176 +1,195 @@
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { colFlex, rowFlex } from '@styles/flexStyles';
+import { INFO_SECTION_ID, LANDING_BUTTON_LABEL, LANDING_DEMO_PATH, LANDING_STATS } from '@constants/data/landingContent';
+import CountUpValue from '@components/user/landing/CountUpValue';
+import LandingLinkButton from '@components/user/landing/LandingLinkButton';
+import LandingStartButton from '@components/user/landing/LandingStartButton';
+import ProductShot from '@components/user/landing/ProductShot';
+import RevealOnScroll from '@components/user/landing/RevealOnScroll';
+import dashboard from '@resources/image/landing/dashboard.webp';
+import { LandingColor } from '@resources/colors';
+import { rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
-import { captionTypography, displayHeadingTypography, subheadingTypography } from '@styles/landingTypography';
-import { ADMIN_ROUTES, USER_ROUTES } from '@constants/routes';
-import { Color } from '@resources/colors';
-import useMarketingLoginStatus from '@hooks/useMarketingLoginStatus';
+import { LandingInner, landingEyebrowTypography, landingLeadTypography } from '@styles/landingStyles';
 
-const Container = styled.div`
+const DASHBOARD_RATIO = 2360 / 1380;
+
+const TABLE_OF_CONTENTS = [
+  { id: INFO_SECTION_ID.ORDER, label: '손님 주문' },
+  { id: INFO_SECTION_ID.PROCESS, label: '주문 처리' },
+  { id: INFO_SECTION_ID.TABLE, label: '테이블' },
+  { id: INFO_SECTION_ID.LAYOUT, label: '테이블 배치' },
+  { id: INFO_SECTION_ID.MENU, label: '메뉴와 주점' },
+  { id: INFO_SECTION_ID.SETTLEMENT, label: '정산과 기록' },
+  { id: INFO_SECTION_ID.MONEY, label: '돈 흐름' },
+  { id: INFO_SECTION_ID.PREPARATION, label: '준비물' },
+  { id: INFO_SECTION_ID.TEAM, label: '만든 사람들' },
+];
+
+const Section = styled.section`
   width: 100%;
-  padding: 140px 24px 120px;
-  box-sizing: border-box;
-  background: radial-gradient(circle at top, rgba(255, 145, 66, 0.08) 0%, rgba(255, 145, 66, 0.02) 28%, ${Color.WHITE} 70%);
-  ${colFlex({ align: 'center' })};
+  padding: 140px 0 0;
+  background: #ffffff;
+  color: ${LandingColor.TEXT};
+  text-align: center;
 
   ${mobileMediaQuery} {
-    padding: 120px 20px 80px;
+    padding-top: 100px;
   }
 `;
 
-const ContentWrapper = styled(motion.div)`
-  max-width: 960px;
-  width: 100%;
-  ${colFlex({ align: 'center' })};
-`;
+const Content = styled(motion.div)``;
 
-const Eyebrow = styled.span`
-  font-size: 13px;
-  font-weight: 700;
-  color: ${Color.KIO_ORANGE};
-  letter-spacing: 0.08em;
+const Eyebrow = styled.div`
+  ${landingEyebrowTypography}
 `;
 
 const Title = styled.h1`
-  margin-top: 16px;
-  text-align: center;
-  ${displayHeadingTypography};
-`;
-
-const Accent = styled.span`
-  color: ${Color.KIO_ORANGE};
-`;
-
-const Description = styled.p`
-  max-width: 760px;
-  margin-top: 24px;
-  text-align: center;
+  margin: 0;
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
   white-space: pre-line;
-  ${subheadingTypography};
+
+  ${mobileMediaQuery} {
+    font-size: 34px;
+  }
 `;
 
-const FeatureList = styled.div`
+const Lead = styled.p`
+  ${landingLeadTypography}
+  white-space: pre-line;
+`;
+
+const Buttons = styled.div`
   margin-top: 36px;
-  gap: 12px;
+  gap: 10px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
+
+  ${mobileMediaQuery} {
+    & > * {
+      flex: 1;
+    }
+  }
+`;
+
+const TableOfContents = styled.nav`
+  margin-top: 28px;
   flex-wrap: wrap;
-  ${rowFlex({ justify: 'center', align: 'center' })};
+  gap: 6px 22px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 
   ${mobileMediaQuery} {
-    gap: 10px;
+    gap: 6px 14px;
   }
 `;
 
-const FeatureBadge = styled.span`
-  padding: 10px 18px;
-  border-radius: 999px;
-  background: rgba(255, 145, 66, 0.1);
-  color: #3c3530;
-  font-size: 14px;
+const TableOfContentsLink = styled.a`
+  font-size: 15px;
   font-weight: 600;
-`;
-
-const CtaRow = styled.div`
-  margin-top: 40px;
-  gap: 12px;
-  ${rowFlex({ justify: 'center', align: 'center' })};
+  color: ${LandingColor.SUB_TEXT};
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-color: ${LandingColor.OUTLINE};
 
   ${mobileMediaQuery} {
-    gap: 8px;
+    font-size: 14px;
+  }
+`;
+
+const Visual = styled.div`
+  margin-top: 64px;
+
+  ${mobileMediaQuery} {
+    margin-top: 40px;
+  }
+`;
+
+const Stats = styled.div`
+  margin-top: 56px;
+  ${rowFlex({ align: 'flex-start' })}
+
+  ${mobileMediaQuery} {
+    margin-top: 36px;
     flex-wrap: wrap;
-    ${rowFlex({ justify: 'center', align: 'center' })};
+    row-gap: 24px;
   }
 `;
 
-const PrimaryButton = styled(Link)`
-  padding: 18px 48px;
-  background: ${Color.KIO_ORANGE};
-  color: ${Color.WHITE};
-  border-radius: 999px;
-  font-size: 18px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background 0.2s ease;
-
-  &:hover {
-    background: #ffa562;
-  }
-
-  &:active {
-    background: #e87d30;
-    transition: 0ms;
-  }
+const Stat = styled.div`
+  flex: 1;
 
   ${mobileMediaQuery} {
-    padding: 14px 20px;
-    font-size: 14px;
+    flex: 1 1 50%;
   }
 `;
 
-const SecondaryButton = styled(Link)`
-  padding: 18px 48px;
-  background: transparent;
-  color: #6b7684;
-  border: 1px solid #e5e8eb;
-  border-radius: 999px;
-  font-size: 18px;
-  font-weight: 500;
-  text-decoration: none;
-  transition: background 0.2s ease;
+const StatValue = styled.div`
+  ${rowFlex({ justify: 'center', align: 'baseline' })}
+`;
 
-  &:hover {
-    background: #f8f9fa;
-  }
-
-  &:active {
-    background: #f2f4f6;
-    transition: 0ms;
-  }
+const Value = styled(CountUpValue)`
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 
   ${mobileMediaQuery} {
-    padding: 14px 20px;
-    font-size: 14px;
+    font-size: 28px;
   }
 `;
 
-const Reassurance = styled.p`
-  margin-top: 16px;
-  text-align: center;
-  ${captionTypography};
+const Unit = styled.span`
+  margin-left: 2px;
+  font-size: 20px;
+  font-weight: 700;
+  color: ${LandingColor.ACCENT_TEXT};
 `;
 
-const CORE_FEATURES = ['QR 주문', '실시간 주문 관리', '자동 정산', '테이블 관리'];
+const StatLabel = styled.p`
+  margin: 4px 0 0;
+  font-size: 15px;
+  color: ${LandingColor.SUB_TEXT};
+`;
 
 function InfoHeroSection() {
-  const isLoggedIn = useMarketingLoginStatus();
-
   return (
-    <Container>
-      <ContentWrapper initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: 'easeOut' }}>
-        <Eyebrow>ABOUT KIOSCHOOL</Eyebrow>
-        <Title>
-          대학 축제 주점 운영을 위한
-          <br />
-          <Accent>QR 주문 서비스</Accent>
-        </Title>
-        <Description>
-          키오스쿨은 대학 축제 주점 운영에 맞춰 설계된 QR 주문 서비스입니다.
-          {'\n'}
-          손님은 테이블에서 바로 주문하고, 운영팀은 실시간으로 주문을 확인하며, 축제 종료 후에는 정산까지 빠르게 마무리할 수 있습니다.
-        </Description>
-        <FeatureList>
-          {CORE_FEATURES.map((feature) => (
-            <FeatureBadge key={feature}>{feature}</FeatureBadge>
+    <Section>
+      <LandingInner>
+        <Content initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: 'easeOut' }}>
+          <Eyebrow>키오스쿨 소개</Eyebrow>
+          <Title>{'대학 축제 주점을 위한\nQR 주문 서비스'}</Title>
+          <Lead>{'손님 주문부터 입금 확인, 테이블 시간, 마감 정산까지\n키오스쿨로 할 수 있는 일을 하나씩 소개합니다.'}</Lead>
+          <Buttons>
+            <LandingStartButton location="info_hero" />
+            <LandingLinkButton to={LANDING_DEMO_PATH} label={LANDING_BUTTON_LABEL.DEMO} variant="outline" withPlayIcon />
+          </Buttons>
+          <TableOfContents aria-label="소개 목차">
+            {TABLE_OF_CONTENTS.map((item) => (
+              <TableOfContentsLink key={item.id} href={`#${item.id}`}>
+                {item.label}
+              </TableOfContentsLink>
+            ))}
+          </TableOfContents>
+        </Content>
+        <Visual>
+          <RevealOnScroll offsetY={30} delay={0.2}>
+            <ProductShot src={dashboard} alt="주점 대시보드와 손님 메뉴 미리보기" ratio={DASHBOARD_RATIO} />
+          </RevealOnScroll>
+        </Visual>
+        <Stats>
+          {LANDING_STATS.map((stat) => (
+            <Stat key={stat.label}>
+              <StatValue>
+                <Value value={stat.value} format={stat.format} />
+                <Unit>{stat.unit}</Unit>
+              </StatValue>
+              <StatLabel>{stat.label}</StatLabel>
+            </Stat>
           ))}
-        </FeatureList>
-        <CtaRow>
-          <PrimaryButton to={ADMIN_ROUTES.HOME}>{isLoggedIn ? '어드민 홈으로' : '무료로 시작하기'}</PrimaryButton>
-          <SecondaryButton to={USER_ROUTES.CONTACT}>문의하기</SecondaryButton>
-        </CtaRow>
-        <Reassurance>별도 장비 없이 바로 도입할 수 있어요</Reassurance>
-      </ContentWrapper>
-    </Container>
+        </Stats>
+      </LandingInner>
+    </Section>
   );
 }
 

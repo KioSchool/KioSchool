@@ -59,6 +59,18 @@
         word-break: keep-all;
       }
 
+      #app-splash-note-menu {
+        display: none;
+      }
+
+      html[data-app-shell-route='order'] #app-splash-note-menu {
+        display: inline;
+      }
+
+      html[data-app-shell-route='order'] #app-splash-note-default {
+        display: none;
+      }
+
       #app-splash-retry {
         display: none;
         margin: 0;
@@ -98,6 +110,9 @@
         if (prerenderedPath === currentPath) return;
 
         document.documentElement.setAttribute('data-app-shell', '');
+
+        // 손님 주문 경로(/order, /order-basket 등)에서만 메뉴 문구를 보인다.
+        if (/^\/order(-|\/|$)/.test(currentPath)) document.documentElement.setAttribute('data-app-shell-route', 'order');
 
         var SLOW_NETWORK_NOTICE_DELAY_MS = 10000;
         var hasFailed = false;
@@ -148,7 +163,7 @@
     <div id="app-splash" role="status" aria-live="polite">
       <img id="app-splash-logo" src="/logo192.png" alt="" width="56" height="56" aria-hidden="true" />
       <div id="app-splash-spinner" aria-hidden="true"></div>
-      <p id="app-splash-note">메뉴를 불러오는 중이에요</p>
+      <p id="app-splash-note"><span id="app-splash-note-menu">메뉴를 불러오는 중이에요</span><span id="app-splash-note-default">잠시만 기다려 주세요</span></p>
       <button id="app-splash-retry" type="button">새로고침</button>
     </div>
     <div id="kioschool-modal-root"></div>
