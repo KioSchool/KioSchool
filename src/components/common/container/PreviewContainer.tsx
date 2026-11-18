@@ -7,10 +7,10 @@ import { useParams } from 'react-router-dom';
 import QRCode from 'qrcode';
 
 const Container = styled.div<{ width: number; height: number }>`
-  ${colFlex({ justify: 'center', align: 'center' })}
   width: ${(props) => props.width}px;
   height: ${(props) => props.height + 30}px;
   gap: 25px;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const DeviceContainer = styled.div<{ width: number; height: number }>`
@@ -23,21 +23,21 @@ const DeviceContainer = styled.div<{ width: number; height: number }>`
 `;
 
 const IndicatorContainer = styled.div`
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
   width: 100%;
   padding-left: 25px;
   padding-right: 25px;
   box-sizing: border-box;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const LeftIndicatorContainer = styled.div`
-  ${rowFlex({ justify: 'center', align: 'center' })}
   gap: 3px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const RightIndicatorContainer = styled.div`
-  ${rowFlex({ justify: 'center', align: 'center' })}
   gap: 3px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const BatteryIcon = styled(RiBatteryFill)`
@@ -61,12 +61,12 @@ const QRCodeIcon = styled(RiQrCodeLine)`
 `;
 
 const FooterContainer = styled.div`
-  ${rowFlex({ justify: 'center', align: 'center' })}
   width: 100%;
   height: 30px;
   font-size: 15px;
   color: ${Color.GREY};
   gap: 15px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const PreviewContent = styled.iframe`
@@ -77,9 +77,9 @@ const PreviewContent = styled.iframe`
 
 const LinkContainer = styled.div`
   max-width: 350px;
-  ${rowFlex({ justify: 'center', align: 'center' })}
   cursor: pointer;
   gap: 3px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
   &:hover {
     color: ${Color.KIO_ORANGE};
   }

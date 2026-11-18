@@ -9,7 +9,6 @@ const Container = styled.div`
   padding: 0 32px;
   -webkit-font-smoothing: antialiased;
   word-break: keep-all;
-
   ${colFlex({ justify: 'center', align: 'center' })};
 
   ${mobileMediaQuery} {

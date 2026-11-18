@@ -5,16 +5,16 @@ import { RiCheckboxCircleFill } from '@remixicon/react';
 import { expandButtonStyle } from '@styles/buttonStyles';
 
 export const CardContainer = styled.div<{ height: number }>`
-  ${colFlex({
-    justify: 'flex-start',
-    align: 'start',
-  })}
   background-color: ${Color.WHITE};
   min-width: 150px;
   height: ${(props) => props.height}px;
   border-radius: 16px;
   border: 1px solid ${Color.BORDER_GREY};
   padding: 12px 15px;
+  ${colFlex({
+    justify: 'flex-start',
+    align: 'start',
+  })}
 
   &:hover {
     background-color: ${Color.KIO_ORANGE};

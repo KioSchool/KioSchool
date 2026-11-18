@@ -84,7 +84,7 @@ module.exports = {
     },
   },
   extends: ['plugin:import/recommended', 'airbnb-typescript', 'prettier', 'plugin:prettier/recommended'],
-  plugins: ['import', 'prettier', 'react', 'react-hooks'],
+  plugins: ['import', 'prettier', 'react', 'react-hooks', 'local-rules'],
   rules: {
     'react/jsx-filename-extension': 'off',
     'prettier/prettier': ['error', { endOfLine: 'auto' }],
@@ -117,6 +117,7 @@ module.exports = {
       },
     ],
     'no-nested-ternary': 'error',
+    'local-rules/styled-flex-order': 'error',
     'no-restricted-imports': ['error', { patterns: importPatternsFor() }],
     'no-restricted-syntax': ['error', ...syntaxFor('')],
   },

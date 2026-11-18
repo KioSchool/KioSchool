@@ -24,8 +24,8 @@ const EmailLabel = styled.div`
 `;
 
 const LabelContainer = styled.div`
-  ${colFlex({ justify: 'center', align: 'start' })}
   height: 100%;
+  ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
 function EmailDomainContent({ name, domain }: EmailDomain) {

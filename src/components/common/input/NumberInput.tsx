@@ -14,7 +14,6 @@ const InputContainer = styled.div<{ disabled?: boolean; maxWidth?: string }>`
   width: 100%;
   max-width: ${({ maxWidth }) => maxWidth || '250px'};
   user-select: none;
-
   ${rowFlex({ justify: 'space-between', align: 'center' })};
 `;
 
