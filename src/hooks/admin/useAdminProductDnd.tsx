@@ -24,7 +24,8 @@ function useAdminProductDnd(workspaceId: string | undefined) {
 
   const findCategoryOfProduct = (productId: number) => {
     const product = products.find((p) => p.id === productId);
-    return product ? product.productCategory?.id || null : undefined;
+    if (!product) return undefined;
+    return product.productCategory?.id || null;
   };
 
   const handleDragStart = (event: DragStartEvent) => {

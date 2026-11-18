@@ -14,13 +14,15 @@ const TrendRow = styled.div`
   ${rowFlex()}
 `;
 
+const Section = styled.div``;
+
 interface UserStatsSectionProps {
   users: UserStats;
 }
 
 function UserStatsSection({ users }: UserStatsSectionProps) {
   return (
-    <div>
+    <Section>
       <SectionTitle>유저</SectionTitle>
       <StatGrid>
         <StatCard
@@ -57,7 +59,7 @@ function UserStatsSection({ users }: UserStatsSectionProps) {
           value={formatNumber(users.newLast30Days)}
         />
       </StatGrid>
-    </div>
+    </Section>
   );
 }
 

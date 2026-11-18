@@ -74,6 +74,8 @@ const RegenerateButton = styled.button`
   }
 `;
 
+const Section = styled.div``;
+
 function getYesterdayString(): string {
   return format(subDays(new Date(), 1), 'yyyy-MM-dd');
 }
@@ -102,7 +104,7 @@ function OperationsToolsSection() {
   };
 
   return (
-    <div>
+    <Section>
       <SectionTitle>운영 도구</SectionTitle>
       <Card>
         <ToolLabel>인사이트 카드 수동 재생성</ToolLabel>
@@ -114,7 +116,7 @@ function OperationsToolsSection() {
           </RegenerateButton>
         </ControlRow>
       </Card>
-    </div>
+    </Section>
   );
 }
 

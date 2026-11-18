@@ -69,6 +69,8 @@ const ConversionText = styled.div`
   color: ${Color.HEAVY_GREY};
 `;
 
+const Section = styled.div``;
+
 interface FunnelSectionProps {
   funnel: DashboardFunnel;
 }
@@ -82,7 +84,7 @@ function FunnelSection({ funnel }: FunnelSectionProps) {
   ];
 
   return (
-    <div>
+    <Section>
       <SectionTitle>전환 퍼널</SectionTitle>
       <Card>
         {steps.map((step, i) => {
@@ -102,7 +104,7 @@ function FunnelSection({ funnel }: FunnelSectionProps) {
           );
         })}
       </Card>
-    </div>
+    </Section>
   );
 }
 

@@ -8,7 +8,7 @@ import { MAIL_BUTTON_LABEL_MAX_LENGTH, MAIL_BUTTON_URL_MAX_LENGTH } from '@const
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { isMailLinkValid } from '@utils/mailEditor';
-import MailValueMenu from '../MailValueMenu';
+import MailValueMenu from '@components/super-admin/mail/MailValueMenu';
 import { MailButtonAttributes, MailButtonVariant } from './mailEditorExtensions';
 
 const Container = styled.div`

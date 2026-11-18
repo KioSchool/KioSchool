@@ -57,6 +57,8 @@ const TooltipBox = styled.div`
 
 type Mode = 'revenue' | 'orders';
 
+const Section = styled.div``;
+
 interface DailyChartSectionProps {
   data: DailyPoint[];
   mode: Mode;
@@ -85,7 +87,7 @@ function DailyChartSection({ data, mode, onModeChange }: DailyChartSectionProps)
   }));
 
   return (
-    <div>
+    <Section>
       <SectionTitle>일별 추이 (최근 30일)</SectionTitle>
       <ChartWrap>
         <TabRow>
@@ -119,7 +121,7 @@ function DailyChartSection({ data, mode, onModeChange }: DailyChartSectionProps)
           </AreaChart>
         </ResponsiveContainer>
       </ChartWrap>
-    </div>
+    </Section>
   );
 }
 

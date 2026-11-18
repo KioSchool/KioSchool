@@ -17,7 +17,7 @@ const ItemContainer = styled.div`
   ${rowFlex({ justify: 'space-between', align: 'start' })}
 `;
 
-const StyledText = styled.div<{ $isServed: boolean }>`
+const ItemText = styled.div<{ $isServed: boolean }>`
   height: 24px;
   font-size: 12px;
   font-weight: 400;
@@ -25,7 +25,7 @@ const StyledText = styled.div<{ $isServed: boolean }>`
   text-decoration: ${({ $isServed }) => ($isServed ? 'line-through' : 'none')};
 `;
 
-const QuantityText = styled(StyledText)`
+const QuantityText = styled(ItemText)`
   font-weight: 800;
 `;
 
@@ -38,7 +38,7 @@ function OrderItemList({ order }: OrderItemListProps) {
     <ListContainer>
       {order.orderProducts.map((orderProduct) => (
         <ItemContainer key={orderProduct.id}>
-          <StyledText $isServed={orderProduct.isServed}>{orderProduct.productName}</StyledText>
+          <ItemText $isServed={orderProduct.isServed}>{orderProduct.productName}</ItemText>
           <QuantityText $isServed={orderProduct.isServed}>{getDisplayedQuantity(orderProduct)}</QuantityText>
         </ItemContainer>
       ))}

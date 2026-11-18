@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { datePickerStyles } from '@styles/datePickerStyles';
-import CustomSelect from '../select/CustomSelect';
+import CustomSelect from '@components/common/select/CustomSelect';
 import CustomDatePickerHeader from './CustomDatePickerHeader';
 import { RANGE_OPTIONS, TIME_OPTIONS } from '@constants/data/datePickerData';
 import useDateRange from '@hooks/useDateRange';

@@ -158,6 +158,12 @@ function drawGlassCell(ctx: CanvasRenderingContext2D, x: number, y: number, w: n
   ctx.stroke();
 }
 
+function getMetricNote(m: MetricSummary): string | null {
+  if (m.percentile != null) return `상위 ${Math.round(100 - m.percentile)}%`;
+  if (m.milestoneStep != null) return '마일스톤 돌파';
+  return null;
+}
+
 function drawGrid(ctx: CanvasRenderingContext2D, top: MetricSummary[]) {
   const startY = 320;
   const cellW = (SIZE - 80 * 2 - 24) / 2;
@@ -194,7 +200,7 @@ function drawGrid(ctx: CanvasRenderingContext2D, top: MetricSummary[]) {
     ctx.fillText(m.value, x + padX, y + valueY);
 
     // note (caption, bottom) — label과 동일 위계
-    const note = m.percentile != null ? `상위 ${Math.round(100 - m.percentile)}%` : m.milestoneStep != null ? '마일스톤 돌파' : null;
+    const note = getMetricNote(m);
     if (note) {
       ctx.fillStyle = tone.labelText;
       ctx.font = `500 22px ${KO_FONT_STACK}`;

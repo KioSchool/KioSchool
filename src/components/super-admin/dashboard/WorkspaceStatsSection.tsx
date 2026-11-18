@@ -26,6 +26,8 @@ const FooterHint = styled.span`
   color: ${Color.HEAVY_GREY};
 `;
 
+const Section = styled.div``;
+
 interface WorkspaceStatsSectionProps {
   workspaces: WorkspaceStats;
 }
@@ -33,7 +35,7 @@ interface WorkspaceStatsSectionProps {
 function WorkspaceStatsSection({ workspaces }: WorkspaceStatsSectionProps) {
   const completionPercent = `${(workspaces.onboardingCompletionRate * 100).toFixed(1)}%`;
   return (
-    <div>
+    <Section>
       <SectionTitle>워크스페이스</SectionTitle>
       <StatGrid>
         <StatCard
@@ -79,7 +81,7 @@ function WorkspaceStatsSection({ workspaces }: WorkspaceStatsSectionProps) {
           }
         />
       </StatGrid>
-    </div>
+    </Section>
   );
 }
 

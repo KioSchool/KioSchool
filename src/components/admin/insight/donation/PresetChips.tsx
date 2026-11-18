@@ -74,6 +74,20 @@ function formatRevenuePercent(amount: number, revenue: number): string {
   return ratio >= 10 ? `${ratio.toFixed(0)}%` : `${ratio.toFixed(1)}%`;
 }
 
+interface ChipMainLabelParams {
+  isCustom: boolean;
+  showPercent: boolean;
+  amount: number;
+  amountLabel: string;
+  yesterdayRevenue?: number;
+}
+
+function getChipMainLabel({ isCustom, showPercent, amount, amountLabel, yesterdayRevenue }: ChipMainLabelParams): string {
+  if (isCustom) return '자유';
+  if (showPercent) return `어제 매출의 ${formatRevenuePercent(amount, yesterdayRevenue!)}`;
+  return amountLabel;
+}
+
 interface PresetChipsProps {
   selectedAmount: number;
   yesterdayRevenue?: number;
@@ -93,7 +107,7 @@ function PresetChips({ selectedAmount, yesterdayRevenue, onSelect }: PresetChips
         const amountLabel = `${option.amount.toLocaleString()}원`;
 
         const showPercent = usePercentMode && !isCustom;
-        const mainLabel = isCustom ? '자유' : showPercent ? `어제 매출의 ${formatRevenuePercent(option.amount, yesterdayRevenue!)}` : amountLabel;
+        const mainLabel = getChipMainLabel({ isCustom, showPercent, amount: option.amount, amountLabel, yesterdayRevenue });
 
         return (
           <Chip key={option.character} selected={selected} onClick={() => onSelect(option)} type="button">
