@@ -29,6 +29,8 @@ export const GA_EVENT = {
   ORDER_CARD_OPEN: 'order_card_open',
   PRODUCT_SUMMARY_OPEN: 'product_summary_open',
   PRODUCT_SUMMARY_ROW_OPEN: 'product_summary_row_open',
+  DEMO_STEP: 'demo_step',
+  DEMO_COMPLETE: 'demo_complete',
 } as const;
 
 export type GaEventName = typeof GA_EVENT[keyof typeof GA_EVENT];

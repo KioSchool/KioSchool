@@ -1,0 +1,17 @@
+export const DEMO_NOTICE = {
+  ONLY_TABLE_7: '체험에서는 7번 테이블만 바꿀 수 있어요',
+  GUEST_ORDERING: '지금은 손님이 주문하고 있어요',
+  ORDER_PROCESSING: '지금은 주문을 처리할 차례예요',
+  PAST_STEP: '체험에서는 지난 단계로 되돌릴 수 없어요',
+  INVALID_TIME: '이용 시간을 올바르게 입력해 주세요',
+  EMPTY_BASKET: '장바구니에 메뉴를 담아 주세요',
+  EXTEND_FIRST: '먼저 이용 시간을 늘려 보세요',
+  TABLE_7_DONE: '오늘 7번 테이블 손님은 모두 받았어요',
+  PAGE_LOCKED: '체험에서는 주문·테이블·통계 화면만 볼 수 있어요',
+  STATS_LOCKED: '마감 정산은 영업이 끝나면 볼 수 있어요',
+  UNSUPPORTED: '체험에서는 쓸 수 없는 기능이에요',
+  ONLY_OWN_ORDER: '체험에서는 7번 테이블 주문만 처리할 수 있어요',
+  CANCEL_BLOCKED: '체험에서는 주문을 취소할 수 없어요',
+  ONE_ORDER: '체험에서는 주문을 한 번만 넣어요',
+  PAY_APP: '체험이라 송금 앱은 열리지 않아요',
+} as const;
