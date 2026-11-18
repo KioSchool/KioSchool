@@ -148,7 +148,7 @@ export default ExampleCard;
 - 조건부 스타일: props 기반 — `color: ${({ disabled }) => disabled ? Color.GREY : Color.KIO_ORANGE}`
 - 반응형: `mobileMediaQuery` (768px), `tabletMediaQuery` (1200px) from `@styles/globalStyles`
 - **Styled 컴포넌트 내부 배치 순서**: 일반 CSS 속성 → `colFlex`/`rowFlex` → `mediaQuery` (import해서 사용하는 것들은 맨 아래에, flex → mediaQuery 순서). flex 믹스인 앞에 빈 줄을 두지 않는다
-- **inline style 사용 금지** — 레이아웃 스타일은 반드시 Styled 컴포넌트로 정의. framer-motion의 애니메이션 값(`y`, `scale` 등)만 예외 허용
+- **inline style 사용 금지** — 레이아웃 스타일은 반드시 Styled 컴포넌트로 정의. framer-motion의 애니메이션 값(`useMotionValue`·`useTransform`·`useSpring`이 돌려주는 `MotionValue`)만 `style`로 넘길 수 있다
 - **쌩 HTML 태그 JSX 직접 반환 금지** — 컴포넌트 최상위 반환값은 반드시 Styled 컴포넌트를 사용한다. 스타일이 없는 래퍼가 필요하면 `const Section = styled.div\`\`` 처럼 빈 styled 컴포넌트로 감싼다.
 - 폰트: LINE Seed Sans KR (글로벌 적용)
 
@@ -203,18 +203,15 @@ Prettier:
 - `printWidth: 160`, `singleQuote: true`, `trailingComma: "all"`, `tabWidth: 2`, `semi: true`
 
 ESLint (`.eslintrc.cjs`):
-- `airbnb-typescript` + `prettier` 기반, `react`·`react-hooks` 플러그인 사용
+- `airbnb-typescript` + `prettier` 기반, `react`·`react-hooks` 플러그인 사용. 프로젝트 전용 규칙은 `eslint-local-rules.cjs`에 두고 `local-rules/규칙이름`으로 켠다
 - `.tsx` 파일에서 JSX 허용
 - `noUnusedLocals`, `noUnusedParameters`, `noFallthroughCasesInSwitch` 활성화
 - 이 문서의 규칙 중 아래는 ESLint가 error로 막는다. 린트는 최소선이라 통과했다고 규칙을 다 지킨 것은 아니다. 린트가 못 잡는 부분은 이 문서 기준을 따른다
-  - 화살표 함수 컴포넌트, 한 파일에 컴포넌트 여러 개, inline style(`motion.*` 컴포넌트만 허용)
+  - 화살표 함수 컴포넌트, 한 파일에 컴포넌트 여러 개, inline style(컴포넌트의 `style`에는 `MotionValue`만 허용)
   - 컴포넌트가 반환하는 JSX의 맨 바깥 HTML 태그·Fragment (early return 포함, `src/resources/svg/`는 제외)
   - 중첩 삼항, 삼항 결과 자리의 `??`·`||` (`a || b ? x : y`처럼 조건 자리는 허용)
   - `src/`·`../` import, 공통 컴포넌트 밖의 `Styled` 접두사
   - 훅 호출 규칙 (early return 뒤에 훅을 부르는 것 등)
-- 린트와 문서가 어긋나는 곳
-  - `motion.*`에 넘기는 style은 통째로 통과한다. `position`·`top` 같은 정적 값은 문서 기준으로 금지다
-  - `styled(motion.div)`처럼 만든 컴포넌트는 애니메이션 값만 넘겨도 린트가 막는다. 문서 기준으로는 허용이다
 - `.eslintrc.cjs`의 `LEGACY_VIOLATIONS`는 규칙을 들이기 전부터 있던 위반 목록이다. 파일을 고치면 목록에서 빼고, 새 파일·새 항목은 넣지 않는다. 이 규칙들을 `eslint-disable`로 우회하지 않는다
 - 같은 지적이 리뷰에서 되풀이되면 이 문서에 줄을 더하기 전에 린트 규칙이나 테스트로 막을 수 있는지 먼저 본다
 
