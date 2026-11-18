@@ -37,11 +37,15 @@ const syntaxFor = (file, exempt = []) => {
 };
 
 const LEGACY_VIOLATIONS = {
-  'src/components/user/home/CountUpNumber.tsx': ['react/forbid-dom-props'],
-  'src/components/user/home/CtaSection.tsx': ['react/forbid-component-props'],
-  'src/components/user/home/hero/HeroSection.tsx': ['react/forbid-component-props'],
-  'src/components/user/info/InfoFaqSection.tsx': ['react/no-multi-comp'],
-  'src/components/user/info/InfoVisionSection.tsx': ['react/forbid-component-props'],
+  'src/components/user/home/CountUpNumber.tsx': ['react/forbid-dom-props', 'local-rules/style-motion-values-only'],
+  'src/components/user/home/CtaSection.tsx': ['local-rules/style-motion-values-only'],
+  'src/components/user/home/hero/HeroSection.tsx': ['local-rules/style-motion-values-only'],
+  'src/components/user/info/InfoCaseStudiesSection.tsx': ['local-rules/style-motion-values-only'],
+  'src/components/user/info/InfoFaqSection.tsx': ['react/no-multi-comp', 'local-rules/style-motion-values-only'],
+  'src/components/user/info/InfoFeaturesSection.tsx': ['local-rules/style-motion-values-only'],
+  'src/components/user/info/InfoHowToUseSection.tsx': ['local-rules/style-motion-values-only'],
+  'src/components/user/info/InfoTeamSection.tsx': ['local-rules/style-motion-values-only'],
+  'src/components/user/info/InfoVisionSection.tsx': ['local-rules/style-motion-values-only'],
 };
 
 const restrictedImportPatterns = {
@@ -106,19 +110,7 @@ module.exports = {
         forbid: [{ propName: 'style', message: 'inline style을 쓰지 않는다. 스타일은 Styled 컴포넌트에 두고, 값이 바뀌면 props로 넘긴다.' }],
       },
     ],
-    'react/forbid-component-props': [
-      'error',
-      {
-        forbid: [
-          {
-            propName: 'style',
-            allowedForPatterns: ['motion.*'],
-            message:
-              'inline style을 쓰지 않는다. 스타일은 Styled 컴포넌트에 두고, 값이 바뀌면 props로 넘긴다. framer-motion 애니메이션 값만 motion.* 컴포넌트에 허용한다.',
-          },
-        ],
-      },
-    ],
+    'local-rules/style-motion-values-only': 'error',
     'no-nested-ternary': 'error',
     'local-rules/styled-flex-order': 'error',
     'import/order': [
@@ -156,7 +148,7 @@ module.exports = {
         'react/function-component-definition': 'off',
         'react/no-multi-comp': 'off',
         'react/forbid-dom-props': 'off',
-        'react/forbid-component-props': 'off',
+        'local-rules/style-motion-values-only': 'off',
         'no-restricted-syntax': 'off',
       },
     },
