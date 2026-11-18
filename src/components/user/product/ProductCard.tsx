@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Product, ProductStatus } from '@@types/index';
 import styled from '@emotion/styled';
-import { colFlex, rowFlex } from '@styles/flexStyles';
-import { Color } from '@resources/colors';
 import { match } from 'ts-pattern';
 import { RiAddLine, RiSubtractLine } from '@remixicon/react';
 import { css } from '@emotion/react';
-import { userOrderBasketAtom } from '@jotai/user/atoms';
 import { useSetAtom } from 'jotai';
+import { userOrderBasketAtom } from '@jotai/user/atoms';
+import { Color } from '@resources/colors';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Product, ProductStatus } from '@@types/index';
 import { trackEvent } from '@utils/analytics';
 import { GA_CURRENCY, GA_EVENT } from '@constants/analytics';
 import { productToGaItem } from '@utils/orderBasket';

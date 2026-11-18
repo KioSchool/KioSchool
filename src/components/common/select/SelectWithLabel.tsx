@@ -1,7 +1,7 @@
-import SelectWithOptions, { SelectWithOptionsProps } from './SelectWithOptions';
 import styled from '@emotion/styled';
 import { colFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
+import SelectWithOptions, { SelectWithOptionsProps } from './SelectWithOptions';
 
 const Container = styled.div`
   width: 500px;

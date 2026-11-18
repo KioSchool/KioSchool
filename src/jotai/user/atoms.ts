@@ -1,7 +1,7 @@
-import { defaultUserOrderValue, defaultWorkspaceValue } from '@@types/defaultValues';
-import { Account, Order, OrderProductBase, Product, ProductCategory, Workspace } from '@@types/index';
 import { atom } from 'jotai';
 import { atomWithReset, atomWithStorage } from 'jotai/utils';
+import { defaultUserOrderValue, defaultWorkspaceValue } from '@@types/defaultValues';
+import { Account, Order, OrderProductBase, Product, ProductCategory, Workspace } from '@@types/index';
 
 export const userWorkspaceAtom = atom<Workspace>(defaultWorkspaceValue);
 export const userOrderAtom = atom<Order>(defaultUserOrderValue);

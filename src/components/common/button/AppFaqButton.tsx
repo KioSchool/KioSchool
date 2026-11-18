@@ -1,6 +1,6 @@
-import { colFlex } from '@styles/flexStyles';
 import styled from '@emotion/styled';
 import { RiQuestionFill } from '@remixicon/react';
+import { colFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { URLS } from '@constants/urls';
 

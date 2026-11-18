@@ -1,6 +1,6 @@
+import { useSetAtom } from 'jotai';
 import useApi from '@hooks/useApi';
 import { Order, OrderStatus, OrderSessionWithOrder } from '@@types/index';
-import { useSetAtom } from 'jotai';
 import { adminOrdersAtom } from '@jotai/admin/atoms';
 import { notifyActionFailure } from '@utils/actionFailure';
 

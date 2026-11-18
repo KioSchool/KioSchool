@@ -1,7 +1,7 @@
-﻿import { ProductCategory } from '@@types/index';
-import styled from '@emotion/styled';
-import { Color } from '@resources/colors';
+﻿import styled from '@emotion/styled';
 import { RiMenuLine, RiDeleteBinFill } from '@remixicon/react';
+import { ProductCategory } from '@@types/index';
+import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 import { defaultCategoryNotice } from '@constants/data/categoryData';
 

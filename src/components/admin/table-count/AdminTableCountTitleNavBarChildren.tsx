@@ -1,5 +1,5 @@
-import NewCommonButton from '@components/common/button/NewCommonButton';
 import styled from '@emotion/styled';
+import NewCommonButton from '@components/common/button/NewCommonButton';
 import { rowFlex } from '@styles/flexStyles';
 
 interface Props {

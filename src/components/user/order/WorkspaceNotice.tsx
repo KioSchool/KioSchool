@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
+import { RiArrowDownSLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { RiArrowDownSLine } from '@remixicon/react';
 
 const Container = styled.div<{ expanded: boolean }>`
   box-sizing: border-box;

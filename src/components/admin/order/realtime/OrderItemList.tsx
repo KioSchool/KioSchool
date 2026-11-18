@@ -1,5 +1,5 @@
-import { Order } from '@@types/index';
 import styled from '@emotion/styled';
+import { Order } from '@@types/index';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { getDisplayedQuantity } from '@utils/orderProduct';
 import { Color } from '@resources/colors';

@@ -9,16 +9,16 @@ import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import OnboardingActionHighlight from '@components/admin/order/table-manage/common/OnboardingActionHighlight';
 import { ONBOARDING_MIN_TABLE_COUNT } from '@components/admin/workspace/onboarding/onboardingData';
-import SettingSection from './SettingSection';
 import { colFlex } from '@styles/flexStyles';
 import { MAX_TABLE_COUNT } from '@constants/layout';
 import { getAdminWorkspacePath } from '@constants/routes';
 import { getTableStatus, TABLE_STATUS } from '@utils/tableStatus';
 import { notifyActionFailure } from '@utils/actionFailure';
-import TableTimeSetting from './TableTimeSetting';
-import TableQRDownload from './TableQRDownload';
 import NumberInput from '@components/common/input/NumberInput';
 import { Color } from '@resources/colors';
+import TableTimeSetting from './TableTimeSetting';
+import TableQRDownload from './TableQRDownload';
+import SettingSection from './SettingSection';
 
 const Container = styled.div`
   width: 100%;

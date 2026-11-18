@@ -1,6 +1,6 @@
+import styled from '@emotion/styled';
 import { EmailDomain } from '@@types/index';
 import { SubContainer } from '@components/common/container/AppContainer';
-import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 

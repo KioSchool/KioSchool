@@ -1,12 +1,12 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { BrowserRouter } from 'react-router-dom';
-import WorkspaceContent from './WorkspaceContent';
+import { Provider } from 'jotai';
+import { useHydrateAtoms } from 'jotai/utils';
 import { Workspace, UserRole, Product, ProductStatus } from '@@types/index';
 import { defaultWorkspaceSetting } from '@@types/defaultValues';
 import { DEFAULT_FOCAL_POINT } from '@constants/data/workspaceImageData';
 import { adminWorkspacesAtom } from '@jotai/admin/atoms';
-import { Provider } from 'jotai';
-import { useHydrateAtoms } from 'jotai/utils';
+import WorkspaceContent from './WorkspaceContent';
 
 const HydrateAtoms = ({ initialValues, children }: { initialValues: any; children: React.ReactNode }) => {
   useHydrateAtoms(initialValues);

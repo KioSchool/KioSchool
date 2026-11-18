@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
-import { rowFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
+import { rowFlex } from '@styles/flexStyles';
 import { loadingCountAtom } from '@jotai/atoms';
 import { Color } from '@resources/colors';
 

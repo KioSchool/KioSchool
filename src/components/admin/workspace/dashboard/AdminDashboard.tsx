@@ -6,14 +6,14 @@ import { adminDashboardAtom, adminWorkspaceAtom } from '@jotai/admin/atoms';
 import useAdminDashboard from '@hooks/admin/useAdminDashboard';
 import { colFlex } from '@styles/flexStyles';
 import StatCard from '@components/common/card/StatCard';
+import { getBusinessStartDate } from '@utils/dashboard';
+import ShareSupportModal from '@components/admin/insight/ShareSupportModal';
+import { InsightCardResponse } from '@@types/index';
 import NoticeBanner from './NoticeBanner';
 import TopSellingList from './TopSellingList';
 import MemoCard from './MemoCard';
-import { getBusinessStartDate } from '@utils/dashboard';
 import NotionGuideSection from './NotionGuideSection';
 import InsightCard from './InsightCard';
-import ShareSupportModal from '@components/admin/insight/ShareSupportModal';
-import { InsightCardResponse } from '@@types/index';
 
 const DashboardContainer = styled.div`
   width: 800px;

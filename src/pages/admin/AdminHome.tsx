@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useAtomValue } from 'jotai';
+import styled from '@emotion/styled';
 import useAdminUser from '@hooks/admin/useAdminUser';
 import useAcquisitionSurvey from '@hooks/admin/useAcquisitionSurvey';
 import AppContainer from '@components/common/container/AppContainer';
@@ -10,10 +12,8 @@ import AcquisitionSurvey from '@components/admin/acquisition/AcquisitionSurvey';
 import AppPopup from '@components/common/popup/AppPopup';
 import { POPUP_CLOSE_MODE, PopupData } from '@constants/data/popupData';
 import { colFlex } from '@styles/flexStyles';
-import { useAtomValue } from 'jotai';
 import { adminAcquisitionSurveyAtom, adminUserAtom, adminWorkspacesAtom } from '@jotai/admin/atoms';
 import AppFaqButton from '@components/common/button/AppFaqButton';
-import styled from '@emotion/styled';
 import OrderQRNoticePopupContent from '@components/admin/home/OrderQRNoticePopupContent';
 
 const Container = styled.div`

@@ -5,10 +5,10 @@ import { QRCodeCanvas } from 'qrcode.react';
 import { downloadDataUrl, downloadQRGrid } from '@utils/qrCode';
 import { notifyActionFailure } from '@utils/actionFailure';
 import NewCommonButton from '@components/common/button/NewCommonButton';
-import SettingSection from './SettingSection';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Table } from '@@types/index';
+import SettingSection from './SettingSection';
 
 const Row = styled.div`
   width: 100%;

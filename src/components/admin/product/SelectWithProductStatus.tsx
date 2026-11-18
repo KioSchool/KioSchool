@@ -1,11 +1,11 @@
 ﻿import { useState, useRef, useEffect } from 'react';
 import styled from '@emotion/styled';
+import { createPortal } from 'react-dom';
 import { ItemBaseStyle } from '@styles/selectItemStyles';
 import { colFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { DROPDOWN_EVENT_KEY, STATUS_OPTIONS } from '@constants/data/productData';
 import { ProductStatus } from '@@types/index';
-import { createPortal } from 'react-dom';
 
 const Container = styled.div`
   position: relative;

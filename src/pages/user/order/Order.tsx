@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
+import _ from 'lodash';
+import { useAtomValue } from 'jotai';
 import CategoryBadgesContainer from '@components/user/order/CategoryBadgesContainer';
 import useWorkspace from '@hooks/user/useWorkspace';
 import { Product, ProductStatus } from '@@types/index';
-import _ from 'lodash';
 import OrderButton from '@components/user/order/OrderButton';
 import useProduct from '@hooks/user/useProduct';
 import { colFlex } from '@styles/flexStyles';
@@ -12,13 +13,12 @@ import { Color } from '@resources/colors';
 import OrderImageSlider from '@components/user/order/OrderImageSlider';
 import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import WorkspaceNotice from '@components/user/order/WorkspaceNotice';
-import OrderProductContent from './OrderProductContent';
-import { useAtomValue } from 'jotai';
 import { userCategoriesAtom, userOrderBasketAtom, userProductsAtom, userWorkspaceAtom } from '@jotai/user/atoms';
 import { calculateBasketTotalAmount, productsToGaItems } from '@utils/orderBasket';
 import { saveOrderPageHistoryIndex } from '@utils/orderPageHistory';
 import { trackEvent } from '@utils/analytics';
 import { GA_EVENT } from '@constants/analytics';
+import OrderProductContent from './OrderProductContent';
 
 const Container = styled.div`
   width: 100%;

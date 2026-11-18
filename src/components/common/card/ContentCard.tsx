@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
+import { ReactNode } from 'react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { DashboardCardDivider } from '@styles/dashboardStyles';
 import { Color } from '@resources/colors';
-import { ReactNode } from 'react';
 
 const Container = styled.div<{ width?: number; height?: number }>`
   width: ${({ width }) => (width ? `${width}px` : '100%')};

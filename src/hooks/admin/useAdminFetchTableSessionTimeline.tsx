@@ -1,12 +1,12 @@
 import { useState, useEffect, useMemo } from 'react';
 import { format, differenceInMinutes } from 'date-fns';
+import { useAtomValue } from 'jotai';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import useQueryParam from '@hooks/common/useQueryParam';
 import { dateQueryParamConfig } from '@hooks/common/queryParamConfigs';
 import { OrderSessionWithOrder } from '@@types/index';
 import { MIN_VALID_SESSION_MINUTES } from '@components/admin/order/timeline/timelineConstants';
 import { adminWorkspaceAtom } from '@jotai/admin/atoms';
-import { useAtomValue } from 'jotai';
 
 const POLLING_INTERVAL = 5 * 60 * 1000;
 

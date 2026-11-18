@@ -1,6 +1,6 @@
-import TableLayoutCard from './TableLayoutCard';
 import { GHOST_TYPE, Table } from '@@types/index';
 import { TABLE_GRID_CELL_PX } from '@constants/layout';
+import TableLayoutCard from './TableLayoutCard';
 
 const now = Date.now();
 const minutesFromNow = (m: number) => new Date(now + m * 60 * 1000).toISOString();

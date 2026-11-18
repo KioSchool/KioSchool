@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
+import { format } from 'date-fns';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { Order, OrderProduct } from '@@types/index';
-import { format } from 'date-fns';
 import { getOrderStatusLabel } from '@utils/orderStatusConverter';
 import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';
 import useModal from '@hooks/useModal';

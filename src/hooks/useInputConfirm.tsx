@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 import { useRef, useState } from 'react';
+import { RiCloseLargeLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
-import { RiCloseLargeLine } from '@remixicon/react';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import NewAppInput from '@components/common/input/NewAppInput';
 

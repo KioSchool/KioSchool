@@ -1,14 +1,14 @@
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from '@emotion/styled';
-import ProductCounterBadge from '@components/user/product/ProductCounterBadge';
 import _ from 'lodash';
+import { useAtom, useAtomValue } from 'jotai';
+import { useEffect, useMemo, useRef } from 'react';
+import ProductCounterBadge from '@components/user/product/ProductCounterBadge';
 import OrderButton from '@components/user/order/OrderButton';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import OrderStickyNavBar from '@components/user/order/OrderStickyNavBar';
 import { Color } from '@resources/colors';
 import { userOrderBasketAtom, userProductsAtom, userWorkspaceAtom } from '@jotai/user/atoms';
-import { useAtom, useAtomValue } from 'jotai';
-import { useEffect, useMemo, useRef } from 'react';
 import useOrder from '@hooks/user/useOrder';
 import useReturnToOrderPage from '@hooks/user/useReturnToOrderPage';
 import { API_ERROR_CODES } from '@constants/errorCodes';

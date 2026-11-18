@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
-import { Color } from '@resources/colors';
-import { rowFlex } from '@styles/flexStyles';
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { RiSearchLine } from '@remixicon/react';
+import { rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 const SearchIcon = styled(RiSearchLine, {
   shouldForwardProp: (prop) => prop !== 'isFocused',

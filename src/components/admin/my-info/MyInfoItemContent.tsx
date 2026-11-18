@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import { colFlex } from '@styles/flexStyles';
 import { ReactNode } from 'react';
+import { colFlex } from '@styles/flexStyles';
 
 const ItemContainer = styled.div`
   width: 160px;

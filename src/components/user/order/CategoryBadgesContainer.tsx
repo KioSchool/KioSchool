@@ -1,11 +1,11 @@
 import { useRef } from 'react';
 import styled from '@emotion/styled';
+import { Link } from 'react-scroll';
 import { Product, ProductCategory } from '@@types/index';
 import { rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 
 import { scrollToCategoryBadge } from '@utils/categoryTracking';
-import { Link } from 'react-scroll';
 
 const Container = styled.div`
   width: 100%;

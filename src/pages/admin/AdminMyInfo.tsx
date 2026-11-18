@@ -1,10 +1,10 @@
+import { useEffect } from 'react';
+import { useAtomValue } from 'jotai';
 import AppContainer from '@components/common/container/AppContainer';
 import MyInfoContent from '@components/admin/my-info/MyInfoContent';
 import useAdminUser from '@hooks/admin/useAdminUser';
-import { useEffect } from 'react';
 import { colFlex } from '@styles/flexStyles';
 import { adminUserAtom } from '@jotai/admin/atoms';
-import { useAtomValue } from 'jotai';
 
 function AdminMyInfo() {
   const { fetchAdminUser } = useAdminUser();

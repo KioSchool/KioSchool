@@ -1,7 +1,7 @@
 import { ChangeEvent, useRef } from 'react';
 import styled from '@emotion/styled';
-import { colFlex, rowFlex } from '@styles/flexStyles';
 import { RiCameraFill } from '@remixicon/react';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 
 const ImageInputContainer = styled.div`

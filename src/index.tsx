@@ -1,18 +1,18 @@
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import { BrowserRouter, createRoutesFromChildren, matchRoutes, Routes, useLocation, useNavigationType } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
 import * as Sentry from '@sentry/react';
 import React from 'react';
 import { HelmetProvider } from 'react-helmet-async';
-import SentryErrorFallback from './components/common/fallback/SentryErrorFallback';
 import { URLS } from '@constants/urls';
 import type { SentryEnvironment } from '@constants/sentry';
 import { SENTRY_CONFIG } from '@constants/sentry';
 import { isReportableError } from '@utils/sentryErrorFilter';
 import { initAnalytics } from '@utils/analytics';
 import { captureAcquisitionContext } from '@utils/acquisitionContext';
+import SentryErrorFallback from './components/common/fallback/SentryErrorFallback';
+import App from './App';
 
 const environment = import.meta.env.VITE_ENVIRONMENT as SentryEnvironment;
 const gaId = import.meta.env.VITE_GA_ID;

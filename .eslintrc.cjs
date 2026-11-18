@@ -118,6 +118,17 @@ module.exports = {
     ],
     'no-nested-ternary': 'error',
     'local-rules/styled-flex-order': 'error',
+    'import/order': [
+      'error',
+      {
+        groups: [['builtin', 'external'], 'internal', ['parent', 'sibling', 'index']],
+        pathGroups: [
+          { pattern: '@@types/**', group: 'internal' },
+          { pattern: '@{apis,components,constants,hooks,jotai,pages,resources,styles,utils}/**', group: 'internal' },
+        ],
+        pathGroupsExcludedImportTypes: ['builtin'],
+      },
+    ],
     'no-restricted-imports': ['error', { patterns: importPatternsFor() }],
     'no-restricted-syntax': ['error', ...syntaxFor('')],
   },

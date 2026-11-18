@@ -1,8 +1,8 @@
+import { useNavigate } from 'react-router-dom';
+import { useSetAtom } from 'jotai';
 import useApi from '@hooks/useApi';
 import { Product, ProductCategory, ProductStatus } from '@@types/index';
-import { useNavigate } from 'react-router-dom';
 import { adminCategoriesAtom, adminProductsAtom } from '@jotai/admin/atoms';
-import { useSetAtom } from 'jotai';
 import { getAdminProductsPath } from '@constants/routes';
 import { notifyActionFailure } from '@utils/actionFailure';
 

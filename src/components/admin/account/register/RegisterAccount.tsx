@@ -1,13 +1,13 @@
-import SelectWithOptions from '@components/common/select/SelectWithOptions';
-import useAdminUser from '@hooks/admin/useAdminUser';
 import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
+import { useAtomValue, useSetAtom } from 'jotai';
+import SelectWithOptions from '@components/common/select/SelectWithOptions';
+import useAdminUser from '@hooks/admin/useAdminUser';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import NewAppInput from '@components/common/input/NewAppInput';
 import { adminBanksAtom } from '@jotai/admin/atoms';
 import { externalSidebarAtom } from '@jotai/atoms';
 import { normalizeAccountNumber } from '@utils/formatNumber';
-import { useAtomValue, useSetAtom } from 'jotai';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
 import { ACCOUNT_INFO, ACCOUNT_REGISTER_PAY_APP_HINT, ACCOUNT_REGISTER_RESULT } from '@constants/data/accountData';
