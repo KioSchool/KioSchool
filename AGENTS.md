@@ -206,14 +206,17 @@ ESLint (`.eslintrc.cjs`):
 - `airbnb-typescript` + `prettier` 기반, `react`·`react-hooks` 플러그인 사용
 - `.tsx` 파일에서 JSX 허용
 - `noUnusedLocals`, `noUnusedParameters`, `noFallthroughCasesInSwitch` 활성화
-- 이 문서의 규칙 중 아래는 ESLint가 error로 막는다. 문서와 린트가 다르면 린트를 따른다
+- 이 문서의 규칙 중 아래는 ESLint가 error로 막는다. 린트는 최소선이라 통과했다고 규칙을 다 지킨 것은 아니다. 린트가 못 잡는 부분은 이 문서 기준을 따른다
   - 화살표 함수 컴포넌트, 한 파일에 컴포넌트 여러 개, inline style(`motion.*` 컴포넌트만 허용)
-  - 컴포넌트 최상위 반환값의 HTML 태그·Fragment (`src/resources/svg/`는 제외)
+  - 컴포넌트가 반환하는 JSX의 맨 바깥 HTML 태그·Fragment (early return 포함, `src/resources/svg/`는 제외)
   - 중첩 삼항, 삼항 결과 자리의 `??`·`||` (`a || b ? x : y`처럼 조건 자리는 허용)
   - `src/`·`../` import, 공통 컴포넌트 밖의 `Styled` 접두사
   - import 순서(서드파티 → `@` 별칭 → 같은 폴더). `eslint --fix`와 커밋 때 lint-staged가 자동으로 맞춘다
   - 훅 호출 규칙 (early return 뒤에 훅을 부르는 것 등)
   - styled 안 배치 순서(일반 속성 → `colFlex`/`rowFlex` → mediaQuery)와 flex 믹스인 앞 빈 줄 — 프로젝트 전용 규칙은 `eslint-local-rules.cjs`에 둔다
+- 린트와 문서가 어긋나는 곳
+  - `motion.*`에 넘기는 style은 통째로 통과한다. `position`·`top` 같은 정적 값은 문서 기준으로 금지다
+  - `styled(motion.div)`처럼 만든 컴포넌트는 애니메이션 값만 넘겨도 린트가 막는다. 문서 기준으로는 허용이다
 - `.eslintrc.cjs`의 `LEGACY_VIOLATIONS`는 규칙을 들이기 전부터 있던 위반 목록이다. 파일을 고치면 목록에서 빼고, 새 파일·새 항목은 넣지 않는다. 이 규칙들을 `eslint-disable`로 우회하지 않는다
 - 같은 지적이 리뷰에서 되풀이되면 이 문서에 줄을 더하기 전에 린트 규칙이나 테스트로 막을 수 있는지 먼저 본다
 
