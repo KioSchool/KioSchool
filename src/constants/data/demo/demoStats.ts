@@ -1,29 +1,29 @@
 import { PaymentMethod } from '@@types/index';
 
-// 축제 하루를 마감한 통계(데모 주점 통계 화면 값). 체험에서 넣은 주문은 여기에 더해 보여 준다
+// 축제 하루를 마감한 통계(랜딩 '자동 정산' 그림과 같은 값). 체험에서 넣은 주문은 여기에 더해 보여 준다
 export const DEMO_CLOSING_STATS = {
-  orderCount: 85,
-  revenue: 784500,
-  productCount: 212,
-  previousRevenue: 491500,
-  previousOrderCount: 50,
-  tableTurnoverRate: 3.6,
-  averageStayMinutes: 72,
+  orderCount: 120,
+  revenue: 1010000,
+  productCount: 282,
+  previousRevenue: 733500,
+  previousOrderCount: 89,
+  tableTurnoverRate: 3.5,
+  averageStayMinutes: 71,
   userOrderHour: 20,
   hourly: [
-    { hour: 18, orderCount: 21, revenue: 185500 },
-    { hour: 19, orderCount: 6, revenue: 51000 },
-    { hour: 20, orderCount: 10, revenue: 75500 },
-    { hour: 21, orderCount: 16, revenue: 132500 },
-    { hour: 22, orderCount: 18, revenue: 208500 },
-    { hour: 23, orderCount: 14, revenue: 131500 },
+    { hour: 18, orderCount: 17, revenue: 167000 },
+    { hour: 19, orderCount: 21, revenue: 131500 },
+    { hour: 20, orderCount: 33, revenue: 275500 },
+    { hour: 21, orderCount: 26, revenue: 252500 },
+    { hour: 22, orderCount: 19, revenue: 157500 },
+    { hour: 23, orderCount: 4, revenue: 26000 },
   ],
   quantityByProduct: [
-    { productId: 1, quantity: 52 },
-    { productId: 5, quantity: 46 },
-    { productId: 4, quantity: 41 },
-    { productId: 3, quantity: 37 },
-    { productId: 6, quantity: 36 },
+    { productId: 1, quantity: 98 },
+    { productId: 5, quantity: 71 },
+    { productId: 4, quantity: 40 },
+    { productId: 6, quantity: 37 },
+    { productId: 3, quantity: 36 },
   ],
   reorderRateByProduct: [
     { productId: 4, value: 38 },
@@ -33,8 +33,8 @@ export const DEMO_CLOSING_STATS = {
     { productId: 6, value: 18 },
   ],
   paymentCounts: [
-    { paymentMethod: PaymentMethod.TOSS, count: 45 },
-    { paymentMethod: PaymentMethod.KAKAOPAY, count: 22 },
-    { paymentMethod: PaymentMethod.BANK_TRANSFER, count: 18 },
+    { paymentMethod: PaymentMethod.TOSS, count: 62 },
+    { paymentMethod: PaymentMethod.KAKAOPAY, count: 31 },
+    { paymentMethod: PaymentMethod.BANK_TRANSFER, count: 27 },
   ],
 };
