@@ -7,7 +7,7 @@ import { StarterKit } from '@tiptap/starter-kit';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { isMailLinkValid } from '@utils/mailEditor';
-import MailValueMenu from '../MailValueMenu';
+import MailValueMenu from '@components/super-admin/mail/MailValueMenu';
 import { MailAlign, MailButton, MailHeading, MailMarkdown, MailSignature, MailValueHighlight } from './mailEditorExtensions';
 import MailButtonPanel from './MailButtonPanel';
 import MailEditorToolbar, { MailEditorPanel } from './MailEditorToolbar';

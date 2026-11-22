@@ -20,8 +20,8 @@ const EmblaViewport = styled.div`
 `;
 
 const ImageContainer = styled.div`
-  ${rowFlex({ align: 'center' })}
   touch-action: pan-y pinch-zoom;
+  ${rowFlex({ align: 'center' })}
 `;
 
 const ImageContent = styled.img<{ objectPosition: string }>`

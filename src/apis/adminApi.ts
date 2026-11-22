@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { setupApiInterceptors } from 'src/utils/apiInterceptors';
+import { setupApiInterceptors } from '@utils/apiInterceptors';
 import { URLS } from '@constants/urls';
 import { API_TIMEOUT_MS } from '@constants/network';
 

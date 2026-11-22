@@ -1,6 +1,6 @@
+import { useSetAtom } from 'jotai';
 import { PaginationResponse, EmailDomain } from '@@types/index';
 import useApi from '@hooks/useApi';
-import { useSetAtom } from 'jotai';
 import { superAdminEmailDomainPaginationResponseAtom } from '@jotai/super-admin/atoms';
 import { API_ERROR_CODES } from '@constants/errorCodes';
 import { getApiErrorMessage, isApiErrorCode } from '@utils/apiError';

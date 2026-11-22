@@ -1,6 +1,6 @@
+import styled from '@emotion/styled';
 import { Order } from '@@types/index';
 import OrderSessionDetailCard from './OrderSessionDetailCard';
-import styled from '@emotion/styled';
 
 const Container = styled.div`
   max-height: 350px;

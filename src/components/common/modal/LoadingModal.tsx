@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
-import { rowFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
+import { rowFlex } from '@styles/flexStyles';
 import { loadingCountAtom } from '@jotai/atoms';
 import { Color } from '@resources/colors';
 
@@ -27,8 +27,8 @@ const bounce = keyframes`
 `;
 
 const DotsContainer = styled.div`
-  ${rowFlex({ justify: 'center', align: 'center' })}
   gap: 8px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const Dot = styled.div<{ delay: number }>`

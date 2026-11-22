@@ -1,15 +1,15 @@
 import { memo } from 'react';
 import styled from '@emotion/styled';
+import { match } from 'ts-pattern';
+import { RiInformationFill } from '@remixicon/react';
 import { Order, OrderStatus } from '@@types/index';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { areOrdersEquivalent } from '@utils/memoCompareFunction';
+import AppTooltip from '@components/common/tooltip/AppToolTip';
+import { Color } from '@resources/colors';
 import NotPaidOrderCard from './NotPaidOrderCard';
 import PaidOrderCard from './PaidOrderCard';
 import ServedOrderCard from './ServedOrderCard';
-import { areOrdersEquivalent } from '@utils/memoCompareFunction';
-import { match } from 'ts-pattern';
-import { RiInformationFill } from '@remixicon/react';
-import AppTooltip from '@components/common/tooltip/AppToolTip';
-import { Color } from '@resources/colors';
 
 const TitledOrderStatusContainer = styled.div`
   width: 100%;

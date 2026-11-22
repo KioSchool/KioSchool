@@ -1,9 +1,9 @@
-import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
 import { useRef } from 'react';
-import useAdminProducts from '@hooks/admin/useAdminProducts';
 import { useNavigate, useParams } from 'react-router-dom';
 import { RiArrowRightLine } from '@remixicon/react';
+import useAdminProducts from '@hooks/admin/useAdminProducts';
+import AppContainer from '@components/common/container/AppContainer';
 import CategoryDragAndDropContent from '@components/admin/product-category/CategoryDragAndDropContent';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';

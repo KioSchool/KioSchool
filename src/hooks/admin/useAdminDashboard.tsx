@@ -1,7 +1,7 @@
+import { useSetAtom } from 'jotai';
 import useApi from '@hooks/useApi';
 import { DashboardResponse } from '@@types/index';
 import { adminDashboardAtom } from '@jotai/admin/atoms';
-import { useSetAtom } from 'jotai';
 
 function useAdminDashboard() {
   const { adminApi } = useApi();

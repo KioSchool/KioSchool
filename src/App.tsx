@@ -1,4 +1,8 @@
+import styled from '@emotion/styled';
 import { Route, Navigate } from 'react-router-dom';
+import { Global } from '@emotion/react';
+import { ToastContainer } from 'react-toastify';
+import { SentryRoutes } from 'src';
 import Home from '@pages/user/home/Home';
 import AdminHome from '@pages/admin/AdminHome';
 import Login from '@pages/user/Login';
@@ -9,7 +13,6 @@ import Order from '@pages/user/order/Order';
 import AdminAccount from '@pages/admin/AdminAccount';
 import LoadingModal from '@components/common/modal/LoadingModal';
 import AuthErrorListener from '@components/common/AuthErrorListener';
-import { Global } from '@emotion/react';
 import { globalStyles } from '@styles/globalStyles';
 import OrderBasket from '@pages/user/order/OrderBasket';
 import OrderPay from '@pages/user/order/OrderPay';
@@ -42,7 +45,6 @@ import SuperAdminMailCampaignList from '@pages/super-admin/SuperAdminMailCampaig
 import SuperAdminMailCampaignNew from '@pages/super-admin/SuperAdminMailCampaignNew';
 import SuperAdminMailCampaignDetail from '@pages/super-admin/SuperAdminMailCampaignDetail';
 import MailUnsubscribe from '@pages/user/mail/MailUnsubscribe';
-import { ToastContainer } from 'react-toastify';
 import useNetworkStatusNotifier from '@hooks/useNetworkStatusNotifier';
 import useServerHealth from '@hooks/useServerHealth';
 import useScrollToTop from '@hooks/useScrollToTop';
@@ -53,7 +55,6 @@ import ServerErrorFallback from '@components/common/fallback/ServerErrorFallback
 import OrderWait from '@pages/user/order/OrderWait';
 import AdminTotalOrder from '@pages/admin/order/AdminTotalOrder';
 import SentryTestPage from '@components/common/test/SentryTestPage';
-import { SentryRoutes } from 'src';
 import { ADMIN_ROUTES, ORDER_ROUTES, SUPER_ADMIN_ROUTES, TEST_ROUTES, USER_ROUTES } from '@constants/routes';
 import AdminOrderTimeline from '@pages/admin/order/AdminOrderTimeline';
 import AdminTableRealtime from '@pages/admin/table/AdminTableRealtime';
@@ -63,6 +64,10 @@ import Privacy from '@pages/user/privacy/Privacy';
 import Demo from '@pages/user/demo/Demo';
 import PcOnlyLayout from '@components/common/layout/PcOnlyLayout';
 import NoZoomLayout from '@components/common/layout/NoZoomLayout';
+
+const Wrapper = styled.div`
+  display: contents;
+`;
 
 function App() {
   useAppShellReveal();
@@ -77,7 +82,7 @@ function App() {
   }
 
   return (
-    <>
+    <Wrapper>
       <AuthErrorListener />
       <ToastContainer
         position="top-right"
@@ -153,7 +158,7 @@ function App() {
       </SentryRoutes>
       <Global styles={globalStyles} />
       <LoadingModal />
-    </>
+    </Wrapper>
   );
 }
 

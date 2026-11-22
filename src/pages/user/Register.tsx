@@ -43,6 +43,10 @@ const ErrorMessage = styled.div`
   color: ${Color.KIO_ORANGE};
 `;
 
+const LoginLink = styled(LinkLabel)`
+  margin-top: 20px;
+`;
+
 function Register() {
   const { checkDuplicateId, registerUser, sendVerifyMail, verifyUser } = useRegister();
   const userNameInputRef = useRef<HTMLInputElement>(null);
@@ -289,7 +293,7 @@ function Register() {
           <ErrorMessageContainer>{errorMessage && <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>}</ErrorMessageContainer>
           <NewCommonButton size={'sm'}>회원가입</NewCommonButton>
         </FormContainer>
-        <LinkLabel text={'로그인하기'} href={USER_ROUTES.LOGIN} style={{ marginTop: '20px' }} />
+        <LoginLink text={'로그인하기'} href={USER_ROUTES.LOGIN} />
         <RegisterLegalLinks />
       </>
     </AppContainer>

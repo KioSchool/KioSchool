@@ -9,7 +9,7 @@ import {
   landingButtonMobileStyle,
 } from '@styles/landingButtonStyles';
 
-const StyledButton = styled('button', { shouldForwardProp: (prop) => !LANDING_BUTTON_FORWARD_BLOCKED_PROPS.includes(prop) })<{
+const Button = styled('button', { shouldForwardProp: (prop) => !LANDING_BUTTON_FORWARD_BLOCKED_PROPS.includes(prop) })<{
   variant: LandingButtonVariant;
   size: LandingButtonSize;
 }>`
@@ -28,9 +28,9 @@ interface LandingButtonProps {
 
 function LandingButton({ label, onClick, variant = 'primary', size = 'medium' }: LandingButtonProps) {
   return (
-    <StyledButton type="button" variant={variant} size={size} onClick={onClick}>
+    <Button type="button" variant={variant} size={size} onClick={onClick}>
       {label}
-    </StyledButton>
+    </Button>
   );
 }
 

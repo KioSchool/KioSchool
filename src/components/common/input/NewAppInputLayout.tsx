@@ -1,9 +1,9 @@
 ﻿import React, { ReactNode } from 'react';
 import styled from '@emotion/styled';
+import { RiShareBoxLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
-import { RiShareBoxLine } from '@remixicon/react';
 import NewCommonButton, { CustomButtonSize } from '@components/common/button/NewCommonButton';
 import { ButtonColor, ButtonSize } from '@@types/index';
 
@@ -58,6 +58,11 @@ const LinkText = styled.span`
   font-weight: 500;
 `;
 
+const HeaderButton = styled(NewCommonButton)`
+  margin-left: auto;
+  margin-right: 10px;
+`;
+
 export interface InputButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize;
   color?: ButtonColor;
@@ -94,16 +99,9 @@ function NewAppInputLayout({ width, label, buttonProps, linkProps, enterHandler,
           </LinkContainer>
         )}
         {buttonProps && (
-          <NewCommonButton
-            {...buttonProps}
-            size={buttonProps.size || 'xs'}
-            color={buttonProps.color}
-            customSize={buttonProps.customSize}
-            onClick={enterHandler}
-            style={{ marginLeft: 'auto', marginRight: '10px' }}
-          >
+          <HeaderButton {...buttonProps} size={buttonProps.size || 'xs'} color={buttonProps.color} customSize={buttonProps.customSize} onClick={enterHandler}>
             {buttonProps.text}
-          </NewCommonButton>
+          </HeaderButton>
         )}
       </HeaderContainer>
       {children}

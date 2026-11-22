@@ -6,12 +6,12 @@ import { TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
 import { adminWorkspaceAtom, TableView } from '@jotai/admin/atoms';
 import { useTableSession } from '@hooks/admin/useTableSession';
 import { getTableStatus } from '@utils/tableStatus';
+import { Order, Table } from '@@types/index';
 import TableDetailHeader from './TableDetailHeader';
 import TableUsageSummary from './TableUsageSummary';
 import TableSessionStepper from './TableSessionStepper';
 import TableOrderCardList from './TableOrderCardList';
 import TableInactivePanel from './TableInactivePanel';
-import { Order, Table } from '@@types/index';
 
 const FALLBACK_SESSION_LIMIT_MINUTES = 60;
 
@@ -63,6 +63,10 @@ const FooterButton = styled.button<{ variant: 'start' | 'end' }>`
   &:hover {
     background-color: ${({ variant }) => (variant === 'end' ? '#fcfcfc' : '#ffaf70')};
   }
+`;
+
+const Wrapper = styled.div`
+  display: contents;
 `;
 
 function getStepperMinutes({
@@ -123,7 +127,7 @@ function TableDetailPanel({ workspaceId, workspaceName, table, orders, refetchTa
   });
 
   return (
-    <>
+    <Wrapper>
       <Panel>
         <ScrollBody>
           <TableDetailHeader table={table} status={status} workspaceId={workspaceId} workspaceName={workspaceName} />
@@ -158,7 +162,7 @@ function TableDetailPanel({ workspaceId, workspaceName, table, orders, refetchTa
       </Panel>
       <EndSessionConfirmModal />
       <EmptySessionConfirmModal />
-    </>
+    </Wrapper>
   );
 }
 

@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
+import { RiCloseLine } from '@remixicon/react';
+import { useAtom, useAtomValue } from 'jotai';
+import { Location } from 'react-router-dom';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery, tabletMediaQuery } from '@styles/globalStyles';
 import { Color } from '@resources/colors';
-import { RiCloseLine } from '@remixicon/react';
-import { useAtom, useAtomValue } from 'jotai';
 import { externalSidebarAtom, layoutScaleAtom } from '@jotai/atoms';
 import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
-import { Location } from 'react-router-dom';
 import { NAVBAR_HEIGHT, NAVBAR_HEIGHT_MOBILE } from '@constants/layout';
 
 const Container = styled.div``;

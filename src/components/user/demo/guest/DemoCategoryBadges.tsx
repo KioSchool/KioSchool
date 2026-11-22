@@ -16,9 +16,9 @@ const Container = styled.div`
   gap: 8px;
   overflow-x: auto;
   white-space: nowrap;
-  ${rowFlex({ align: 'center' })}
   border-top: 6px solid ${Color.LIGHT_GREY};
   border-bottom: 1px solid ${Color.LIGHT_GREY};
+  ${rowFlex({ align: 'center' })}
 
   &::-webkit-scrollbar {
     display: none;

@@ -1,12 +1,12 @@
-import { Product, ProductStatus } from '@@types/index';
-import OrderFooter from '@components/user/order/OrderFooter';
-import ProductCard from '@components/user/product/ProductCard';
 import styled from '@emotion/styled';
-import { Color } from '@resources/colors';
-import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
 import _ from 'lodash';
 import { Element } from 'react-scroll';
+import { Product, ProductStatus } from '@@types/index';
+import OrderFooter from '@components/user/order/OrderFooter';
+import ProductCard from '@components/user/product/ProductCard';
+import { Color } from '@resources/colors';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { userCategoriesAtom, userOrderBasketAtom, userProductsAtom } from '@jotai/user/atoms';
 import { OrderCardDivider } from '@components/user/order/orderCardStyles';
 

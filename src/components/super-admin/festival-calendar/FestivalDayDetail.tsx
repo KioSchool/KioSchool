@@ -9,6 +9,10 @@ import { formatCurrency, formatNumber } from '@utils/formatNumber';
 import { getAdminWorkspacePath } from '@constants/routes';
 import useSuperAdminFestivalCalendar from '@hooks/super-admin/useSuperAdminFestivalCalendar';
 
+const Wrapper = styled.div`
+  display: contents;
+`;
+
 type SortKey = 'totalOrders' | 'totalRevenue';
 
 const DaySummary = styled.div`
@@ -294,7 +298,7 @@ function FestivalDayDetail({ workspaces: initialWorkspaces, onExclusionChanged }
   const sorted = [...activeWorkspaces].sort((a, b) => b[sortKey] - a[sortKey]);
 
   return (
-    <>
+    <Wrapper>
       <DaySummary>
         <SummaryItem>
           <SummaryLabel>총 주문</SummaryLabel>
@@ -401,7 +405,7 @@ function FestivalDayDetail({ workspaces: initialWorkspaces, onExclusionChanged }
             ))}
         </ExcludedSection>
       )}
-    </>
+    </Wrapper>
   );
 }
 

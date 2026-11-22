@@ -1,16 +1,16 @@
-import { Order } from '@@types/index';
 import styled from '@emotion/styled';
+import { createPortal } from 'react-dom';
+import { useEffect } from 'react';
+import { useSetAtom } from 'jotai';
+import { Order } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
+import useModal from '@hooks/useModal';
+import { orderModalReadOnlyAtom } from '@jotai/atoms';
 import OrderModalFooterContents from './OrderModalFooterContents';
 import OrderModalMainContents from './OrderModalMainContents';
 import OrderModalHeaderContents from './OrderModalHeaderContents';
-import { createPortal } from 'react-dom';
-import { useEffect } from 'react';
-import useModal from '@hooks/useModal';
-import { orderModalReadOnlyAtom } from '@jotai/atoms';
-import { useSetAtom } from 'jotai';
 
 const DetailModalContainer = styled.div``;
 

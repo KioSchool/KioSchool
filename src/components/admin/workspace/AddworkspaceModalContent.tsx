@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
+import { RiCloseLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import useAdminUser from '@hooks/admin/useAdminUser';
 import NewCommonButton from '@components/common/button/NewCommonButton';
-import { RiCloseLine } from '@remixicon/react';
 
 const ModalContentContainer = styled.form`
   position: fixed;

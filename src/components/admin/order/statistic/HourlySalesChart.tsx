@@ -55,6 +55,10 @@ const revenueYAxisFormatter = (value: number) => (value >= 10000 ? `${(value / 1
 
 const orderCountYAxisFormatter = (value: number) => `${value}건`;
 
+const Wrapper = styled.div`
+  display: contents;
+`;
+
 interface HourlySalesChartProps {
   salesByHour: HourlySales[];
 }
@@ -67,7 +71,7 @@ function HourlySalesChart({ salesByHour }: HourlySalesChartProps) {
   }
 
   return (
-    <>
+    <Wrapper>
       <ChartContainer>
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={salesByHour} margin={{ top: 5, right: 60, left: 60, bottom: 5 }}>
@@ -97,7 +101,7 @@ function HourlySalesChart({ salesByHour }: HourlySalesChartProps) {
           <LegendTitle>시간대별 주문 건수</LegendTitle>
         </LegendItem>
       </Legend>
-    </>
+    </Wrapper>
   );
 }
 

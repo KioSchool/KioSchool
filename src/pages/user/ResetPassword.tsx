@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import AppContainer from '@components/common/container/AppContainer';
 import styled from '@emotion/styled';
+import AppContainer from '@components/common/container/AppContainer';
 import useAuthentication from '@hooks/useAuthentication';
 import { colFlex } from '@styles/flexStyles';
 import NewAppInput from '@components/common/input/NewAppInput';
@@ -22,6 +22,10 @@ const ErrorMessage = styled.div`
   color: ${Color.KIO_ORANGE};
 `;
 
+const SendLinkButton = styled(NewCommonButton)`
+  margin-top: 50px;
+`;
+
 function ResetPassword() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -30,37 +34,6 @@ function ResetPassword() {
 
   const idInputRef = useRef<HTMLInputElement>(null);
   const emailInputRef = useRef<HTMLInputElement>(null);
-
-  const sendResetPasswordLinkHandler = () => {
-    const id = idInputRef.current?.value;
-    const email = emailInputRef.current?.value;
-    if (!id || !email) {
-      alert('아이디와 이메일을 입력해주세요');
-      return;
-    }
-
-    sendResetPasswordLink(id, email)
-      .then(() => {
-        alert('비밀번호 재설정 링크를 전송했습니다. 회원가입 하신 이메일을 확인해주세요.');
-      })
-      .catch((error) => alert(getApiErrorMessage(error, '비밀번호 재설정 링크를 전송하지 못했습니다. 잠시 후 다시 시도해 주세요.')));
-  };
-
-  if (!code) {
-    return (
-      <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} customGap={'20px'} useTitle={false} useFullHeight={true}>
-        <>
-          <NewAppInput placeholder={'아이디를 입력해주세요'} ref={idInputRef} label={'아이디'} />
-          <NewAppInput placeholder={'이메일을 입력해주세요'} ref={emailInputRef} label={'이메일'} />
-          <NewCommonButton customSize={{ height: 45, width: 350, font: 20 }} onClick={sendResetPasswordLinkHandler} style={{ marginTop: '50px' }}>
-            비밀번호 재설정 링크 전송하기
-          </NewCommonButton>
-
-          <LinkLabel text={'로그인하기'} href={USER_ROUTES.LOGIN} />
-        </>
-      </AppContainer>
-    );
-  }
 
   const [userPasswordInput, setUserPasswordInput] = useState<string>('');
   const [checkUserPasswordInput, setCheckUserPasswordInput] = useState<string>('');
@@ -98,6 +71,37 @@ function ResetPassword() {
       setErrorMessage('');
     }
   }, [userPasswordInput, checkUserPasswordInput]);
+
+  const sendResetPasswordLinkHandler = () => {
+    const id = idInputRef.current?.value;
+    const email = emailInputRef.current?.value;
+    if (!id || !email) {
+      alert('아이디와 이메일을 입력해주세요');
+      return;
+    }
+
+    sendResetPasswordLink(id, email)
+      .then(() => {
+        alert('비밀번호 재설정 링크를 전송했습니다. 회원가입 하신 이메일을 확인해주세요.');
+      })
+      .catch((error) => alert(getApiErrorMessage(error, '비밀번호 재설정 링크를 전송하지 못했습니다. 잠시 후 다시 시도해 주세요.')));
+  };
+
+  if (!code) {
+    return (
+      <AppContainer useFlex={colFlex({ justify: 'center', align: 'center' })} customGap={'20px'} useTitle={false} useFullHeight={true}>
+        <>
+          <NewAppInput placeholder={'아이디를 입력해주세요'} ref={idInputRef} label={'아이디'} />
+          <NewAppInput placeholder={'이메일을 입력해주세요'} ref={emailInputRef} label={'이메일'} />
+          <SendLinkButton customSize={{ height: 45, width: 350, font: 20 }} onClick={sendResetPasswordLinkHandler}>
+            비밀번호 재설정 링크 전송하기
+          </SendLinkButton>
+
+          <LinkLabel text={'로그인하기'} href={USER_ROUTES.LOGIN} />
+        </>
+      </AppContainer>
+    );
+  }
 
   const resetPasswordHandler = () => {
     if (!userPasswordInput || !isAblePassword) {

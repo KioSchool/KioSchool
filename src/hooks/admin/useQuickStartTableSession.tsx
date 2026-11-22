@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import useAdminTable from './useAdminTable';
 import { GA_EVENT, TABLE_SESSION_ACTION } from '@constants/analytics';
 import { TABLE_VIEW, TableView } from '@jotai/admin/atoms';
 import { trackEvent } from '@utils/analytics';
+import useAdminTable from './useAdminTable';
 
 const QUICK_START_LOCATION: Record<TableView, string> = {
   [TABLE_VIEW.LIST]: 'list_row',

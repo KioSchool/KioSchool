@@ -7,10 +7,10 @@ import { rowFlex, colFlex } from '@styles/flexStyles';
 import { MODAL_ROOT_KEY } from '@hooks/useModal';
 import useShareCard from '@hooks/admin/useShareCard';
 import useInsightDiscordReport from '@hooks/admin/useInsightDiscordReport';
-import { renderInsightCardToDataUrl } from './insightCardRenderer';
-import DonationSection from './DonationSection';
 import { InsightCardResponse } from '@@types/index';
 import { Color } from '@resources/colors';
+import { renderInsightCardToDataUrl } from './insightCardRenderer';
+import DonationSection from './DonationSection';
 import { InsightDesignTokens } from './insightDesignTokens';
 
 const Overlay = styled.div`

@@ -19,7 +19,7 @@ const PLAY_ICON_COLORS: Record<LandingButtonVariant, { circle: string; triangle:
   outlineOnDark: { circle: LandingColor.ACCENT, triangle: '#ffffff' },
 };
 
-const StyledLink = styled(Link, { shouldForwardProp: (prop) => !LANDING_BUTTON_FORWARD_BLOCKED_PROPS.includes(prop) })<{
+const ButtonLink = styled(Link, { shouldForwardProp: (prop) => !LANDING_BUTTON_FORWARD_BLOCKED_PROPS.includes(prop) })<{
   variant: LandingButtonVariant;
   size: LandingButtonSize;
 }>`
@@ -42,10 +42,10 @@ function LandingLinkButton({ to, label, variant = 'primary', size = 'medium', wi
   const playIconColors = PLAY_ICON_COLORS[variant];
 
   return (
-    <StyledLink to={to} variant={variant} size={size} onClick={onClick}>
+    <ButtonLink to={to} variant={variant} size={size} onClick={onClick}>
       {withPlayIcon && <PlayIcon circleColor={playIconColors.circle} triangleColor={playIconColors.triangle} />}
       {label}
-    </StyledLink>
+    </ButtonLink>
   );
 }
 

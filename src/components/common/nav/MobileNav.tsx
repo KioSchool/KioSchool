@@ -69,6 +69,10 @@ const NavLink = styled(Link)`
   }
 `;
 
+const Wrapper = styled.div`
+  display: contents;
+`;
+
 interface MobileNavProps {
   isOpen: boolean;
   onClose: () => void;
@@ -76,7 +80,7 @@ interface MobileNavProps {
 
 function MobileNav({ isOpen, onClose }: MobileNavProps) {
   return (
-    <>
+    <Wrapper>
       <Menu isOpen={isOpen}>
         <MenuHeader>
           <CloseButton onClick={onClose}>
@@ -100,7 +104,7 @@ function MobileNav({ isOpen, onClose }: MobileNavProps) {
         </NavLink>
       </Menu>
       <Overlay isOpen={isOpen} onClick={onClose} />
-    </>
+    </Wrapper>
   );
 }
 

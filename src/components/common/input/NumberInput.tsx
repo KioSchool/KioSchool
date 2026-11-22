@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import { Color } from '@resources/colors';
 import { RiAddFill, RiSubtractFill } from '@remixicon/react';
-import { rowFlex } from '@styles/flexStyles';
 import { useState } from 'react';
+import { Color } from '@resources/colors';
+import { rowFlex } from '@styles/flexStyles';
 
 const InputContainer = styled.div<{ disabled?: boolean; maxWidth?: string }>`
   box-sizing: border-box;
@@ -14,7 +14,6 @@ const InputContainer = styled.div<{ disabled?: boolean; maxWidth?: string }>`
   width: 100%;
   max-width: ${({ maxWidth }) => maxWidth || '250px'};
   user-select: none;
-
   ${rowFlex({ justify: 'space-between', align: 'center' })};
 `;
 

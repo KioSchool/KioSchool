@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useAtom, useAtomValue } from 'jotai';
+import { DragEndEvent, DragOverEvent, DragStartEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { arrayMove } from '@dnd-kit/sortable';
 import { adminCategoriesAtom, adminProductsAtom } from '@jotai/admin/atoms';
 import { Product } from '@@types/index';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
-import { DragEndEvent, DragOverEvent, DragStartEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
-import { arrayMove } from '@dnd-kit/sortable';
 
 function useAdminProductDnd(workspaceId: string | undefined) {
   const { reorderProducts } = useAdminProducts(workspaceId);
@@ -24,7 +24,8 @@ function useAdminProductDnd(workspaceId: string | undefined) {
 
   const findCategoryOfProduct = (productId: number) => {
     const product = products.find((p) => p.id === productId);
-    return product ? product.productCategory?.id || null : undefined;
+    if (!product) return undefined;
+    return product.productCategory?.id || null;
   };
 
   const handleDragStart = (event: DragStartEvent) => {

@@ -6,6 +6,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { formatNumber } from '@utils/formatNumber';
 import SectionTitle from './SectionTitle';
+import OnboardingTimeTooltip from './OnboardingTimeTooltip';
 
 const Section = styled.div``;
 
@@ -53,21 +54,6 @@ const StatValue = styled.div`
   color: ${Color.BLACK};
 `;
 
-const TooltipBox = styled.div`
-  background: ${Color.WHITE};
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 12px;
-  color: ${Color.BLACK};
-  gap: 2px;
-  ${colFlex()}
-`;
-
-const TooltipLabel = styled.span``;
-
-const TooltipValue = styled.b``;
-
 const MINUTES_PER_HOUR = 60;
 const MINUTES_PER_DAY = 1440;
 
@@ -75,22 +61,6 @@ function formatMinutes(minutes: number): string {
   if (minutes < MINUTES_PER_HOUR) return `${Math.round(minutes)}분`;
   if (minutes < MINUTES_PER_DAY) return `${(minutes / MINUTES_PER_HOUR).toFixed(1)}시간`;
   return `${(minutes / MINUTES_PER_DAY).toFixed(1)}일`;
-}
-
-interface CustomTooltipProps {
-  active?: boolean;
-  payload?: Array<{ value: number }>;
-  label?: string;
-}
-
-function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
-  if (!active || !payload?.length) return null;
-  return (
-    <TooltipBox>
-      <TooltipLabel>{label}</TooltipLabel>
-      <TooltipValue>{formatNumber(payload[0].value)}명</TooltipValue>
-    </TooltipBox>
-  );
 }
 
 interface OnboardingTimeSectionProps {
@@ -121,7 +91,7 @@ function OnboardingTimeSection({ stats }: OnboardingTimeSectionProps) {
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
             <XAxis dataKey="label" tick={{ fontSize: 10, fill: Color.GREY }} tickLine={false} axisLine={false} />
             <YAxis tick={{ fontSize: 10, fill: Color.GREY }} tickLine={false} axisLine={false} width={36} allowDecimals={false} />
-            <Tooltip content={<CustomTooltip />} cursor={{ fill: '#fdf3ee' }} />
+            <Tooltip content={<OnboardingTimeTooltip />} cursor={{ fill: '#fdf3ee' }} />
             <Bar dataKey="count" fill={Color.KIO_ORANGE} radius={[4, 4, 0, 0]} maxBarSize={48} />
           </BarChart>
         </ResponsiveContainer>

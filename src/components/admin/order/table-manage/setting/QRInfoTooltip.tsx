@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import { rowFlex } from '@styles/flexStyles';
 import { RiInformationFill } from '@remixicon/react';
-import { Color } from '@resources/colors';
 import { useState } from 'react';
+import { rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
 
 const Container = styled.div`
   position: absolute;

@@ -1,17 +1,16 @@
 import styled from '@emotion/styled';
+import { RiBatteryFill, RiExternalLinkLine, RiWifiFill, RiQrCodeLine } from '@remixicon/react';
+import { useParams } from 'react-router-dom';
+import QRCode from 'qrcode';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import CellularConnectionSvg from '@resources/svg/preview/CellularConnectionSvg';
-import { RiBatteryFill, RiExternalLinkLine, RiWifiFill, RiQrCodeLine } from '@remixicon/react';
-import AppLabel from '@components/common/label/AppLabel';
-import { useParams } from 'react-router-dom';
-import QRCode from 'qrcode';
 
 const Container = styled.div<{ width: number; height: number }>`
-  ${colFlex({ justify: 'center', align: 'center' })}
   width: ${(props) => props.width}px;
   height: ${(props) => props.height + 30}px;
   gap: 25px;
+  ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
 const DeviceContainer = styled.div<{ width: number; height: number }>`
@@ -24,21 +23,21 @@ const DeviceContainer = styled.div<{ width: number; height: number }>`
 `;
 
 const IndicatorContainer = styled.div`
-  ${rowFlex({ justify: 'space-between', align: 'center' })}
   width: 100%;
   padding-left: 25px;
   padding-right: 25px;
   box-sizing: border-box;
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const LeftIndicatorContainer = styled.div`
-  ${rowFlex({ justify: 'center', align: 'center' })}
   gap: 3px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const RightIndicatorContainer = styled.div`
-  ${rowFlex({ justify: 'center', align: 'center' })}
   gap: 3px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const BatteryIcon = styled(RiBatteryFill)`
@@ -62,12 +61,12 @@ const QRCodeIcon = styled(RiQrCodeLine)`
 `;
 
 const FooterContainer = styled.div`
-  ${rowFlex({ justify: 'center', align: 'center' })}
   width: 100%;
   height: 30px;
   font-size: 15px;
   color: ${Color.GREY};
   gap: 15px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const PreviewContent = styled.iframe`
@@ -78,12 +77,19 @@ const PreviewContent = styled.iframe`
 
 const LinkContainer = styled.div`
   max-width: 350px;
-  ${rowFlex({ justify: 'center', align: 'center' })}
   cursor: pointer;
   gap: 3px;
+  ${rowFlex({ justify: 'center', align: 'center' })}
   &:hover {
     color: ${Color.KIO_ORANGE};
   }
+`;
+
+const StatusTime = styled.label`
+  color: ${Color.BLACK};
+  font-size: 15px;
+  font-weight: 500;
+  user-select: none;
 `;
 
 interface PreviewContainerProps {
@@ -122,9 +128,7 @@ function PreviewContainer({ width = 360, height = 700 }: PreviewContainerProps) 
       <DeviceContainer width={width} height={height}>
         <IndicatorContainer>
           <LeftIndicatorContainer>
-            <AppLabel size={15} color={Color.BLACK}>
-              10:15
-            </AppLabel>
+            <StatusTime>10:15</StatusTime>
           </LeftIndicatorContainer>
           <RightIndicatorContainer>
             <CellularConnectionSvg />

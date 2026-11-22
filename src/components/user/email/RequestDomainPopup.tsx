@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import { useRef } from 'react';
+import { RiCloseCircleFill } from '@remixicon/react';
 import { colFlex } from '@styles/flexStyles';
 import NewAppInput from '@components/common/input/NewAppInput';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import usePopup from '@hooks/usePopup';
-import { RiCloseCircleFill } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import { getRequestDomainPopupResult, validateRequestDomainPopupForm } from '@utils/requestDomainPopup';
 

@@ -4,8 +4,8 @@ import { getOrderStatusLabel } from '@utils/orderStatusConverter';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { formatDate } from '@utils/formatDate';
-import { TIMELINE_COLORS } from './timelineConstants';
 import defaultProductImage from '@resources/image/defaultWorkspaceImage.png';
+import { TIMELINE_COLORS } from './timelineConstants';
 
 const Card = styled.div`
   width: 100%;

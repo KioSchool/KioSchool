@@ -1,11 +1,11 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
+import { RiCalendarLine } from '@remixicon/react';
 import { OrderStatus, OrdersFilter } from '@@types/index';
 import { ORDER_STATUSES, STATUS_LABELS } from '@constants/data/orderStatus';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
-import { RiCalendarLine } from '@remixicon/react';
 import CustomDatePicker from '@components/common/date-picker/CustomDatePicker';
 
 const WORKSPACE_ID_DEBOUNCE_MS = 400;

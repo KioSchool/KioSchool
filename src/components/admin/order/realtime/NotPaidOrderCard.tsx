@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import { Order } from '@@types/index';
 import { useParams } from 'react-router-dom';
+import { Order } from '@@types/index';
 import { GA_EVENT, ORDER_EVENT_LOCATION } from '@constants/analytics';
 import { trackEvent } from '@utils/analytics';
 import OrderDetailModal from '@components/admin/order/realtime/modal/order-detail/OrderDetailModal';

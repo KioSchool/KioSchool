@@ -1,11 +1,11 @@
 import { useRef } from 'react';
 import styled from '@emotion/styled';
+import { Link } from 'react-scroll';
 import { Product, ProductCategory } from '@@types/index';
 import { rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 
 import { scrollToCategoryBadge } from '@utils/categoryTracking';
-import { Link } from 'react-scroll';
 
 const Container = styled.div`
   width: 100%;
@@ -15,9 +15,9 @@ const Container = styled.div`
   gap: 8px;
   overflow-x: auto;
   white-space: nowrap;
-  ${rowFlex({ align: 'center' })}
   border-top: 6px solid ${Color.LIGHT_GREY};
   border-bottom: 1px solid ${Color.LIGHT_GREY};
+  ${rowFlex({ align: 'center' })}
 
   &::-webkit-scrollbar {
     display: none;

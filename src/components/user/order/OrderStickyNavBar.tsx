@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import { Color } from '@resources/colors';
-import { rowFlex } from '@styles/flexStyles';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RiArrowLeftLine, RiShareForward2Fill } from '@remixicon/react';
+import { Color } from '@resources/colors';
+import { rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div<{ isShow: boolean }>`
   position: fixed;
@@ -13,8 +13,8 @@ const Container = styled.div<{ isShow: boolean }>`
   transition: transform 0.1s ease-in-out;
   transform: translateY(${({ isShow }) => (isShow ? '0' : '-100%')});
   z-index: 1000;
-  ${rowFlex({ justify: 'center', align: 'center' })}
   border-bottom: 6px solid ${Color.LIGHT_GREY};
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const ContentsContainer = styled.div`

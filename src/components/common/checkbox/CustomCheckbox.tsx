@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
+import { RiCheckLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
-import { RiCheckLine } from '@remixicon/react';
 
 const Label = styled.label`
   cursor: pointer;

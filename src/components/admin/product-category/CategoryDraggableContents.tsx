@@ -1,14 +1,14 @@
-import { ProductCategory } from '@@types/index';
-import useAdminProducts from '@hooks/admin/useAdminProducts';
-import useConfirm from '@hooks/useConfirm';
 import { useParams } from 'react-router-dom';
-import CategoryItem from './CategoryItem';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import styled from '@emotion/styled';
+import useConfirm from '@hooks/useConfirm';
+import useAdminProducts from '@hooks/admin/useAdminProducts';
+import { ProductCategory } from '@@types/index';
 import { API_ERROR_CODES } from '@constants/errorCodes';
 import { isApiErrorCode } from '@utils/apiError';
 import { notifyActionFailure } from '@utils/actionFailure';
+import CategoryItem from './CategoryItem';
 
 const DraggableContainer = styled.div<{ transform?: string; transition?: string; isDragging?: boolean }>`
   transform: ${({ transform }) => transform};
@@ -16,6 +16,10 @@ const DraggableContainer = styled.div<{ transform?: string; transition?: string;
   z-index: ${({ isDragging }) => (isDragging ? 999 : 'auto')};
   opacity: ${({ isDragging }) => (isDragging ? 0 : 1)};
   touch-action: none;
+`;
+
+const Wrapper = styled.div`
+  display: contents;
 `;
 
 interface DraggableProps {
@@ -46,7 +50,7 @@ function CategoryDraggableContents({ category }: DraggableProps) {
   };
 
   return (
-    <>
+    <Wrapper>
       <DraggableContainer
         ref={setNodeRef}
         transform={CSS.Transform.toString(transform)}
@@ -58,7 +62,7 @@ function CategoryDraggableContents({ category }: DraggableProps) {
         <CategoryItem category={category} isDefault={false} deleteHandler={deleteCategoryHandler} />
       </DraggableContainer>
       <ConfirmModal />
-    </>
+    </Wrapper>
   );
 }
 

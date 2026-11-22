@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { RiArrowDownSLine, RiArrowUpSLine } from '@remixicon/react';
 import styled from '@emotion/styled';
 import { FestivalWorkspaceRankItem } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { formatCurrency, formatNumber } from '@utils/formatNumber';
 import { getAdminWorkspacePath } from '@constants/routes';
+import FestivalSortArrow from './FestivalSortArrow';
 
 type SortKey = keyof Pick<FestivalWorkspaceRankItem, 'workspaceName' | 'festivalDays' | 'totalOrders' | 'totalRevenue' | 'averageOrderAmount'>;
 type SortDir = 'asc' | 'desc';
@@ -118,16 +118,6 @@ const EmptyRow = styled.div`
   ${colFlex({ align: 'center' })}
 `;
 
-interface SortArrowProps {
-  col: SortKey;
-  sortKey: SortKey;
-  sortDir: SortDir;
-}
-
-function SortArrow({ col, sortKey, sortDir }: SortArrowProps) {
-  return <span className="sort-arrow">{sortKey === col && sortDir === 'asc' ? <RiArrowUpSLine size={12} /> : <RiArrowDownSLine size={12} />}</span>;
-}
-
 interface FestivalWorkspaceRankingTableProps {
   workspaces: FestivalWorkspaceRankItem[];
 }
@@ -159,23 +149,23 @@ function FestivalWorkspaceRankingTable({ workspaces }: FestivalWorkspaceRankingT
       <TableHeader>
         <SortableHeaderCell active={sortKey === 'workspaceName'} onClick={() => handleSort('workspaceName')}>
           주점
-          <SortArrow col="workspaceName" sortKey={sortKey} sortDir={sortDir} />
+          <FestivalSortArrow col="workspaceName" sortKey={sortKey} sortDir={sortDir} />
         </SortableHeaderCell>
         <SortableHeaderCell active={sortKey === 'festivalDays'} onClick={() => handleSort('festivalDays')}>
           축제 일수
-          <SortArrow col="festivalDays" sortKey={sortKey} sortDir={sortDir} />
+          <FestivalSortArrow col="festivalDays" sortKey={sortKey} sortDir={sortDir} />
         </SortableHeaderCell>
         <SortableHeaderCell active={sortKey === 'totalOrders'} onClick={() => handleSort('totalOrders')}>
           총 주문
-          <SortArrow col="totalOrders" sortKey={sortKey} sortDir={sortDir} />
+          <FestivalSortArrow col="totalOrders" sortKey={sortKey} sortDir={sortDir} />
         </SortableHeaderCell>
         <SortableHeaderCell active={sortKey === 'totalRevenue'} onClick={() => handleSort('totalRevenue')}>
           총 매출
-          <SortArrow col="totalRevenue" sortKey={sortKey} sortDir={sortDir} />
+          <FestivalSortArrow col="totalRevenue" sortKey={sortKey} sortDir={sortDir} />
         </SortableHeaderCell>
         <SortableHeaderCell active={sortKey === 'averageOrderAmount'} onClick={() => handleSort('averageOrderAmount')}>
           평균 주문금액
-          <SortArrow col="averageOrderAmount" sortKey={sortKey} sortDir={sortDir} />
+          <FestivalSortArrow col="averageOrderAmount" sortKey={sortKey} sortDir={sortDir} />
         </SortableHeaderCell>
       </TableHeader>
       {sorted.length === 0 ? (

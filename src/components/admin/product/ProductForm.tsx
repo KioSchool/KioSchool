@@ -1,7 +1,7 @@
 ﻿import { ChangeEvent, useEffect, useReducer } from 'react';
 import styled from '@emotion/styled';
-import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { adminCategoriesAtom } from '@jotai/admin/atoms';
 import { ProductActionType, ProductStateType } from '@@types/index';
 import { defaultProductEditValue } from '@@types/defaultValues';

@@ -92,7 +92,6 @@ const SkipButton = styled.button`
   &:disabled {
     cursor: not-allowed;
   }
-
   ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 

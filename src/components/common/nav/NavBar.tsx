@@ -86,6 +86,10 @@ export const NavLinkItem = styled(Link)`
   ${navBarLabelStyle}
 `;
 
+const Wrapper = styled.div`
+  display: contents;
+`;
+
 interface NavBarProps {
   useBackground?: boolean;
 }
@@ -109,7 +113,7 @@ function NavBar({ useBackground = false }: NavBarProps) {
   };
 
   return (
-    <>
+    <Wrapper>
       <NavContainer useBackground={useBackground} className={'nav-container'}>
         <LeftSection>
           {isShowHamburger && <AdminHamburgerButton className={'hamburger-button'} onClick={handleHamburgerClick} />}
@@ -140,7 +144,7 @@ function NavBar({ useBackground = false }: NavBarProps) {
 
       {!isShowHamburger && <MobileNav isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />}
       {isShowHamburger && <SideNav isOpen={isSideNavOpen} {...sideNavConfig} />}
-    </>
+    </Wrapper>
   );
 }
 

@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import { Color } from '@resources/colors';
-import { rowFlex } from '@styles/flexStyles';
 import { RiSearchLine } from '@remixicon/react';
 import { ChangeEvent } from 'react';
+import { Color } from '@resources/colors';
+import { rowFlex } from '@styles/flexStyles';
 
 const Container = styled.div`
   width: 100%;

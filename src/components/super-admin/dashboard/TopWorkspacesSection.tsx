@@ -71,6 +71,8 @@ const Revenue = styled.div`
   flex-shrink: 0;
 `;
 
+const Section = styled.div``;
+
 interface TopWorkspacesSectionProps {
   items: WorkspaceRankItem[];
 }
@@ -79,7 +81,7 @@ function TopWorkspacesSection({ items }: TopWorkspacesSectionProps) {
   if (items.length === 0) return null;
 
   return (
-    <div>
+    <Section>
       <SectionTitle>매출 상위 워크스페이스 (최근 30일)</SectionTitle>
       <Card>
         {items.map((item, idx) => (
@@ -94,7 +96,7 @@ function TopWorkspacesSection({ items }: TopWorkspacesSectionProps) {
           </Row>
         ))}
       </Card>
-    </div>
+    </Section>
   );
 }
 

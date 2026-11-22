@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import OnboardingHeader from '@components/onboarding/OnboardingHeader';
 import { ADMIN_ROUTES } from '@constants/routes';
 import { OnboardingColor } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   width: 100%;

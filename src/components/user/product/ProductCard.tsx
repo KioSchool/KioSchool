@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Product, ProductStatus } from '@@types/index';
 import styled from '@emotion/styled';
-import { colFlex, rowFlex } from '@styles/flexStyles';
-import { Color } from '@resources/colors';
 import { match } from 'ts-pattern';
 import { RiAddLine, RiSubtractLine } from '@remixicon/react';
 import { css } from '@emotion/react';
-import { userOrderBasketAtom } from '@jotai/user/atoms';
 import { useSetAtom } from 'jotai';
+import { userOrderBasketAtom } from '@jotai/user/atoms';
+import { Color } from '@resources/colors';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Product, ProductStatus } from '@@types/index';
 import { trackEvent } from '@utils/analytics';
 import { GA_CURRENCY, GA_EVENT } from '@constants/analytics';
 import { productToGaItem } from '@utils/orderBasket';
@@ -78,7 +78,7 @@ const Contents = styled.div`
   ${rowFlex({ justify: 'flex-end' })}
 `;
 
-const StyledImage = styled.img`
+const ProductImage = styled.img`
   width: ${PRODUCT_IMAGE_SIZE}px;
   height: ${PRODUCT_IMAGE_SIZE}px;
   object-fit: cover;
@@ -220,7 +220,11 @@ function ProductCard({ product, quantity }: ProductCardProps) {
         <ProductPrice isSoldOut={isSoldOut}>{product.price.toLocaleString()}원</ProductPrice>
       </LabelContainer>
       <Contents className="image-container">
-        {imgError ? <ImageFallback>{product.name}</ImageFallback> : <StyledImage src={product.imageUrl} alt={product.name} onError={() => setImgError(true)} />}
+        {imgError ? (
+          <ImageFallback>{product.name}</ImageFallback>
+        ) : (
+          <ProductImage src={product.imageUrl} alt={product.name} onError={() => setImgError(true)} />
+        )}
         {match(product.status)
           .with(ProductStatus.SOLD_OUT, () => (
             <SoldOutOverlay>

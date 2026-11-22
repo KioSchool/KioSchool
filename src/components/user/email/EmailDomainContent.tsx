@@ -1,6 +1,6 @@
+import styled from '@emotion/styled';
 import { EmailDomain } from '@@types/index';
 import { SubContainer } from '@components/common/container/AppContainer';
-import styled from '@emotion/styled';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 
@@ -24,8 +24,8 @@ const EmailLabel = styled.div`
 `;
 
 const LabelContainer = styled.div`
-  ${colFlex({ justify: 'center', align: 'start' })}
   height: 100%;
+  ${colFlex({ justify: 'center', align: 'start' })}
 `;
 
 function EmailDomainContent({ name, domain }: EmailDomain) {

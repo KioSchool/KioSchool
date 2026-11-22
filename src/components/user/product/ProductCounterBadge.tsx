@@ -1,10 +1,10 @@
-import { Product } from '@@types/index';
 import styled from '@emotion/styled';
-import { colFlex, rowFlex } from '@styles/flexStyles';
 import { RiAddLine, RiCloseCircleFill, RiSubtractLine } from '@remixicon/react';
+import { useAtom } from 'jotai';
+import { Product } from '@@types/index';
+import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
 import { userOrderBasketAtom } from '@jotai/user/atoms';
-import { useAtom } from 'jotai';
 import { trackEvent } from '@utils/analytics';
 import { GA_CURRENCY, GA_EVENT } from '@constants/analytics';
 import { productToGaItem } from '@utils/orderBasket';
@@ -50,7 +50,7 @@ const ProductLabels = styled.div`
   ${colFlex()}
 `;
 
-const StyledLabel = styled.div<{ size?: number }>`
+const PriceLabel = styled.div<{ size?: number }>`
   color: ${Color.TEXT_SUBTLE};
   font-size: ${({ size }) => size || 13}px;
   white-space: nowrap;
@@ -171,7 +171,7 @@ function ProductCounterBadge({ product }: ProductCounterBadgeProps) {
         <ProductInfoContainer>
           <ProductLabels>
             <ProductName>{product.name}</ProductName>
-            <StyledLabel>{product.price.toLocaleString()}원</StyledLabel>
+            <PriceLabel>{product.price.toLocaleString()}원</PriceLabel>
           </ProductLabels>
           <QuantityControl>
             <DecreaseButton onClick={() => minusQuantity()} />

@@ -1,12 +1,12 @@
 import { Checkbox } from '@mui/material';
-import NewCommonButton from '@components/common/button/NewCommonButton';
 import styled from '@emotion/styled';
 import { RiAddFill, RiSubtractFill } from '@remixicon/react';
-import { Color } from '@resources/colors';
-import { colFlex, rowFlex } from '@styles/flexStyles';
 import { useAtomValue } from 'jotai';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import { Color } from '@resources/colors';
+import NewCommonButton from '@components/common/button/NewCommonButton';
 import { adminWorkspaceAtom } from '@jotai/admin/atoms';
 import useAdminWorkspace from '@hooks/admin/useAdminWorkspace';
 import { notifyActionFailure } from '@utils/actionFailure';

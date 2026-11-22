@@ -73,7 +73,7 @@ const Contents = styled.div`
   ${rowFlex({ justify: 'flex-end' })}
 `;
 
-const StyledImage = styled.img`
+const ProductImage = styled.img`
   width: ${PRODUCT_IMAGE_SIZE}px;
   height: ${PRODUCT_IMAGE_SIZE}px;
   object-fit: cover;
@@ -182,7 +182,7 @@ function DemoProductCard({ product, quantity }: DemoProductCardProps) {
         <ProductPrice isSoldOut={isSoldOut}>{product.price.toLocaleString()}원</ProductPrice>
       </LabelContainer>
       <Contents>
-        <StyledImage src={product.imageUrl} alt={product.name} />
+        <ProductImage src={product.imageUrl} alt={product.name} />
         {match(isSoldOut)
           .with(true, () => (
             <SoldOutOverlay>

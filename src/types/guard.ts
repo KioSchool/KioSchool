@@ -1,5 +1,5 @@
-import { ROUTES_PATH_KR_MAP } from '@constants/data/urlMapData';
 import { matchPath } from 'react-router-dom';
+import { ROUTES_PATH_KR_MAP } from '@constants/data/urlMapData';
 import { RangeCategory } from './datePicker';
 
 type AppPath = keyof typeof ROUTES_PATH_KR_MAP;

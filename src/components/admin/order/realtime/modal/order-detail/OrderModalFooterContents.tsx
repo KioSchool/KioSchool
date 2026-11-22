@@ -1,10 +1,10 @@
-import { OrderStatus } from '@@types/index';
 import styled from '@emotion/styled';
+import { useParams } from 'react-router-dom';
+import { useAtomValue } from 'jotai';
+import { OrderStatus } from '@@types/index';
 import useAdminOrder from '@hooks/admin/useAdminOrder';
 import { rowFlex } from '@styles/flexStyles';
-import { useParams } from 'react-router-dom';
 import { orderModalReadOnlyAtom } from '@jotai/atoms';
-import { useAtomValue } from 'jotai';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { GA_EVENT, ORDER_EVENT_LOCATION } from '@constants/analytics';
 import { trackEvent } from '@utils/analytics';

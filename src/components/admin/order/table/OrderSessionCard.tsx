@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Order } from '@@types/index';
 import styled from '@emotion/styled';
+import { RiTimeFill } from '@remixicon/react';
+import { format } from 'date-fns/format';
+import { Order } from '@@types/index';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color } from '@resources/colors';
-import OrderSessionDetailCardList from './OrderSessionDetailCardList';
-import { RiTimeFill } from '@remixicon/react';
 import { formatDate, calculateDuration } from '@utils/formatDate';
-import { format } from 'date-fns/format';
+import OrderSessionDetailCardList from './OrderSessionDetailCardList';
 
 const Container = styled.div<{ isOpen: boolean }>`
   width: 100%;

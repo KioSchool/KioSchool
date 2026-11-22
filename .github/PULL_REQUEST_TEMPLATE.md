@@ -2,7 +2,6 @@
 <details>
 <summary>체크리스트 확인하기</summary>
 
- - [ ] AppLabel 컴포넌트를 사용하는 부분이 없는가?
  - [ ] ternary 연산자를 사용하는 부분이 존재하지 않는가?
  - [ ] Framentation을 사용하는 부분이 존재하지 않는가?
  - [ ] 공통컴포넌트가 아닌 부분에서 Styled prefix를 사용하는 부분이 있는가?

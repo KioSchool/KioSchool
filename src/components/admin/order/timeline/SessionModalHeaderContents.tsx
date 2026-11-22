@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
+import { RiCloseLargeLine } from '@remixicon/react';
+import { differenceInMinutes, format } from 'date-fns';
+import { match } from 'ts-pattern';
 import { GHOST_TYPE, OrderSessionWithOrder } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { RiCloseLargeLine } from '@remixicon/react';
-import { differenceInMinutes, format } from 'date-fns';
 import { expandButtonStyle } from '@styles/buttonStyles';
 import { formatMinutesToTime } from '@utils/formatDate';
 import { TIMELINE_COLORS, SESSION_MESSAGES, GHOST_MESSAGES } from './timelineConstants';
-import { match } from 'ts-pattern';
 
 const ModalHeader = styled.div`
   padding: 20px 30px 0 30px;
@@ -47,8 +47,18 @@ const StatusBadge = styled.span<{ variant: 'active' | 'ghost' | 'completed' }>`
   font-weight: 600;
   padding: 2px 8px;
   border-radius: 4px;
-  color: ${({ variant }) => (variant === 'active' ? Color.KIO_ORANGE : variant === 'ghost' ? TIMELINE_COLORS.GHOST_TEXT : TIMELINE_COLORS.TEXT_SECONDARY)};
-  background: ${({ variant }) => (variant === 'active' ? '#fff0e5' : variant === 'ghost' ? TIMELINE_COLORS.GHOST_BG : '#f0f0f0')};
+  color: ${({ variant }) =>
+    match(variant)
+      .with('active', () => Color.KIO_ORANGE)
+      .with('ghost', () => TIMELINE_COLORS.GHOST_TEXT)
+      .with('completed', () => TIMELINE_COLORS.TEXT_SECONDARY)
+      .exhaustive()};
+  background: ${({ variant }) =>
+    match(variant)
+      .with('active', () => '#fff0e5')
+      .with('ghost', () => TIMELINE_COLORS.GHOST_BG)
+      .with('completed', () => '#f0f0f0')
+      .exhaustive()};
 `;
 
 const SummaryStrip = styled.div`

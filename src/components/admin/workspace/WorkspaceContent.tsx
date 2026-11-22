@@ -1,14 +1,14 @@
-import { Workspace } from '@@types/index';
 import styled from '@emotion/styled';
+import { RiArrowRightSLine, RiDeleteBinLine } from '@remixicon/react';
+import { useNavigate } from 'react-router-dom';
+import { format } from 'date-fns';
+import { Workspace } from '@@types/index';
 import useAdminUser from '@hooks/admin/useAdminUser';
 import useConfirm from '@hooks/useConfirm';
-import { RiArrowRightSLine, RiDeleteBinLine } from '@remixicon/react';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { Color, OnboardingColor } from '@resources/colors';
 import { mobileMediaQuery } from '@styles/globalStyles';
-import { useNavigate } from 'react-router-dom';
 import { getAdminWorkspacePath } from '@constants/routes';
-import { format } from 'date-fns';
 import { DEFAULT_FOCAL_POINT } from '@constants/data/workspaceImageData';
 import { toObjectPosition } from '@utils/imageFocalPoint';
 import defaultWorkspaceImage from '@resources/image/defaultWorkspaceImage.png';
@@ -49,7 +49,6 @@ const WorkspaceCard = styled.div`
     outline: 2px solid ${Color.KIO_ORANGE};
     outline-offset: 2px;
   }
-
   ${colFlex()}
 `;
 

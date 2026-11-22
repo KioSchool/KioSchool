@@ -1,5 +1,5 @@
-import { PaginationResponse } from '@@types/index';
 import styled from '@emotion/styled';
+import { PaginationResponse } from '@@types/index';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 

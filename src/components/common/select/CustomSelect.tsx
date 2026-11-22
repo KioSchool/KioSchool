@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import styled from '@emotion/styled';
-import { Color } from '@resources/colors';
 import { RiArrowDownSLine } from '@remixicon/react';
+import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const SelectContainer = styled.div<{ width?: string; flex?: string }>`

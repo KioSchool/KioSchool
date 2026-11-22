@@ -13,8 +13,8 @@ const Container = styled.div<{ isShow: boolean }>`
   transition: transform 0.1s ease-in-out;
   transform: translateY(${({ isShow }) => Number(!isShow) * -100}%);
   z-index: 1000;
-  ${rowFlex({ justify: 'center', align: 'center' })}
   border-bottom: 6px solid ${Color.LIGHT_GREY};
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const ContentsContainer = styled.div`
