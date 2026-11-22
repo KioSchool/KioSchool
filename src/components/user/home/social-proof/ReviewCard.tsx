@@ -7,7 +7,7 @@ const Card = styled.div`
   height: 100%;
   padding: 40px;
   border-radius: 16px;
-  background: ${LandingColor.SURFACE};
+  background: ${LandingColor.TINT};
   ${colFlex()}
 
   ${mobileMediaQuery} {

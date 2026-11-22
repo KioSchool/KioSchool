@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
+import { RiArrowRightSLine } from '@remixicon/react';
 import RevealOnScroll from '@components/user/landing/RevealOnScroll';
 import SectionHeading from '@components/user/landing/SectionHeading';
-import kioCheck from '@resources/image/landing/kio-check.webp';
+import { LandingColor } from '@resources/colors';
+import qrStand from '@resources/image/landing/qr-stand.svg';
 import stepOrder from '@resources/image/landing/step-order.webp';
 import stepProducts from '@resources/image/landing/step-products.webp';
 import stepRegister from '@resources/image/landing/step-register.webp';
@@ -36,11 +38,32 @@ const ProductsImage = styled.img`
 `;
 
 const OrderScene = styled.div`
-  gap: 36px;
+  gap: 30px;
   ${rowFlex({ align: 'center' })}
 
   ${mobileMediaQuery} {
-    gap: 16px;
+    gap: 4px;
+  }
+`;
+
+const QrStandImage = styled.img`
+  width: 170px;
+  display: block;
+
+  ${mobileMediaQuery} {
+    width: 116px;
+  }
+`;
+
+const SceneArrow = styled(RiArrowRightSLine)`
+  width: 24px;
+  height: 24px;
+  flex: none;
+  color: ${LandingColor.OUTLINE};
+
+  ${mobileMediaQuery} {
+    width: 16px;
+    height: 16px;
   }
 `;
 
@@ -51,16 +74,7 @@ const OrderImage = styled.img`
   box-shadow: none;
 
   ${mobileMediaQuery} {
-    width: 150px;
-  }
-`;
-
-const CharacterImage = styled.img`
-  width: 146px;
-  display: block;
-
-  ${mobileMediaQuery} {
-    width: 104px;
+    width: 136px;
   }
 `;
 
@@ -83,8 +97,9 @@ function HowItWorksSection() {
           <RevealOnScroll delay={STEP_STAGGER_SECONDS * 2}>
             <StepRow step={3} title="축제 시작" description={'QR 코드를 테이블에 부착하면 준비가 끝납니다.\n손님이 스캔하면 주문이 바로 접수됩니다.'}>
               <OrderScene>
+                <QrStandImage src={qrStand} alt="테이블에 놓인 QR 스탠드" loading="lazy" />
+                <SceneArrow aria-hidden />
                 <OrderImage src={stepOrder} alt="손님이 메뉴를 담은 주문 화면" loading="lazy" />
-                <CharacterImage src={kioCheck} alt="주문 완료를 알리는 키오짱" loading="lazy" />
               </OrderScene>
             </StepRow>
           </RevealOnScroll>

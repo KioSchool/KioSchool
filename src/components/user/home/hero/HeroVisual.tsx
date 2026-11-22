@@ -16,14 +16,14 @@ const Container = styled(motion.div)`
   ${mobileMediaQuery} {
     flex: none;
     height: auto;
-    padding: 0 0 120px 64px;
+    padding: 0 0 247px;
   }
 `;
 
 const Laptop = styled.div`
   position: absolute;
   top: 24px;
-  right: 0;
+  right: 40px;
   width: 100%;
 
   ${mobileMediaQuery} {
@@ -34,14 +34,13 @@ const Laptop = styled.div`
 const Phone = styled.div`
   position: absolute;
   top: 150px;
-  left: -40px;
+  right: 0;
   width: 204px;
 
   ${mobileMediaQuery} {
     top: auto;
     bottom: 0;
-    left: 0;
-    width: 132px;
+    width: 140px;
   }
 `;
 
