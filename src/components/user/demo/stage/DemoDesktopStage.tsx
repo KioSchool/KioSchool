@@ -52,11 +52,22 @@ const activeLabelStyle = css`
 `;
 
 const DeviceLabel = styled.div<{ isActive: boolean }>`
+  min-height: 28px;
+  gap: 8px;
   font-size: 15px;
   font-weight: 600;
   color: ${LandingColor.CAPTION};
-  text-align: center;
+  ${rowFlex({ justify: 'center', align: 'center' })}
   ${({ isActive }) => isActive && activeLabelStyle}
+`;
+
+const TurnBadge = styled.span`
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: ${LandingColor.TINT};
+  font-size: 13px;
+  font-weight: 700;
+  color: ${LandingColor.ACCENT_TEXT};
 `;
 
 function DemoDesktopStage() {
@@ -75,7 +86,7 @@ function DemoDesktopStage() {
           <DemoDeviceFrame device="guest" shape="phone" designWidth={DEMO_GUEST_DESIGN.width} designHeight={DEMO_GUEST_DESIGN.height}>
             <DemoGuestScreen />
           </DemoDeviceFrame>
-          <DeviceLabel isActive={isGuestTurn}>손님 폰{isGuestTurn && ' · 지금 차례'}</DeviceLabel>
+          <DeviceLabel isActive={isGuestTurn}>손님 폰{isGuestTurn && <TurnBadge>이 화면에서 해 보세요</TurnBadge>}</DeviceLabel>
         </PhoneColumn>
         <LaptopColumn>
           <DemoDeviceFrame
@@ -88,8 +99,8 @@ function DemoDesktopStage() {
             <DemoAdminScreen />
           </DemoDeviceFrame>
           <DeviceLabel isActive={isAdminTurn}>
-            운영진 화면 · 노트북
-            {isAdminTurn && ' · 지금 차례'}
+            운영진 화면
+            {isAdminTurn && <TurnBadge>이 화면에서 해 보세요</TurnBadge>}
           </DeviceLabel>
         </LaptopColumn>
       </Devices>
