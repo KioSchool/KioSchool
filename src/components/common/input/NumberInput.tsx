@@ -4,13 +4,13 @@ import { useState } from 'react';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 
-const InputContainer = styled.div<{ disabled?: boolean; maxWidth?: string }>`
+const InputContainer = styled.div<{ disabled?: boolean; maxWidth?: string; height?: number }>`
   box-sizing: border-box;
   padding: 2px 4px;
   border-radius: 45px;
   background-color: ${({ disabled }) => (disabled ? Color.BORDER_GREY : '#ffffff')};
   border: 1px solid ${Color.BORDER_GREY};
-  height: 28px;
+  height: ${({ height }) => (height ? `${height}px` : '28px')};
   width: 100%;
   max-width: ${({ maxWidth }) => maxWidth || '250px'};
   user-select: none;
@@ -64,9 +64,10 @@ interface NumberInputProps {
   disabled?: boolean;
   readOnly?: boolean;
   maxWidth?: string;
+  height?: number;
 }
 
-function NumberInput({ value, formatter, onChange, onIncrement, onDecrement, disabled = false, readOnly = false, maxWidth }: NumberInputProps) {
+function NumberInput({ value, formatter, onChange, onIncrement, onDecrement, disabled = false, readOnly = false, maxWidth, height }: NumberInputProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [internalValue, setInternalValue] = useState(String(value));
 
@@ -115,7 +116,7 @@ function NumberInput({ value, formatter, onChange, onIncrement, onDecrement, dis
   };
 
   return (
-    <InputContainer disabled={disabled} maxWidth={maxWidth}>
+    <InputContainer disabled={disabled} maxWidth={maxWidth} height={height}>
       {onDecrement && <MinusButton disabled={disabled} onMouseDown={preventTextSelection} onClick={disabled ? undefined : onDecrement} />}
       <Input
         type="text"

@@ -13,9 +13,9 @@ import SetProductConditionSelect from './SetProductConditionSelect';
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: minmax(180px, 1.1fr) 130px minmax(180px, 1fr) auto;
-  gap: 12px;
-  padding: 14px;
+  grid-template-columns: minmax(210px, 1.5fr) 116px minmax(150px, 0.9fr) auto;
+  gap: 10px;
+  padding: 12px;
   border: 1px solid ${Color.BORDER_GREY};
   border-radius: 14px;
   background: ${Color.WHITE};
@@ -28,9 +28,13 @@ const Field = styled.label`
 `;
 
 const Label = styled.span`
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  color: ${Color.MUTED_GREY};
+  color: ${Color.TEXT_SUBTLE};
+`;
+
+const ComponentNameInput = styled(NewAppInput)`
+  font-size: 13px;
 `;
 
 const Actions = styled.div`
@@ -96,14 +100,20 @@ function SetProductComponentRow({
     <Container>
       <Field>
         <Label>구성품명</Label>
-        <NewAppInput height={42} value={component.name} placeholder="예: 족발 소" onChange={(event) => onChange({ ...component, name: event.target.value })} />
+        <ComponentNameInput
+          height={42}
+          value={component.name}
+          placeholder="예: 족발 소"
+          onChange={(event) => onChange({ ...component, name: event.target.value })}
+        />
       </Field>
 
       <Field>
         <Label>세트 1개당 수량</Label>
         <NumberInput
           value={component.quantity}
-          maxWidth="130px"
+          maxWidth="116px"
+          height={42}
           onChange={(quantity) => onChange({ ...component, quantity: Math.max(quantity, MIN_SET_COMPONENT_QUANTITY) })}
           onIncrement={() => onChange({ ...component, quantity: component.quantity + 1 })}
           onDecrement={() => onChange({ ...component, quantity: Math.max(component.quantity - 1, MIN_SET_COMPONENT_QUANTITY) })}
