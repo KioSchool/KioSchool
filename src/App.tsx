@@ -61,6 +61,7 @@ import AdminTableRealtime from '@pages/admin/table/AdminTableRealtime';
 import Info from '@pages/user/info/Info';
 import Contact from '@pages/user/contact/Contact';
 import Privacy from '@pages/user/privacy/Privacy';
+import Demo from '@pages/user/demo/Demo';
 import PcOnlyLayout from '@components/common/layout/PcOnlyLayout';
 import NoZoomLayout from '@components/common/layout/NoZoomLayout';
 
@@ -99,6 +100,7 @@ function App() {
         <Route path={USER_ROUTES.INFO} element={<Info />} />
         <Route path={USER_ROUTES.CONTACT} element={<Contact />} />
         <Route path={USER_ROUTES.PRIVACY} element={<Privacy />} />
+        <Route path={USER_ROUTES.DEMO} element={<Demo />} />
         <Route path={USER_ROUTES.MAIL_UNSUBSCRIBE} element={<MailUnsubscribe />} />
 
         <Route element={<NoZoomLayout />}>

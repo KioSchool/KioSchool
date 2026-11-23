@@ -2,206 +2,180 @@ import { useRef } from 'react';
 import styled from '@emotion/styled';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { colFlex, rowFlex } from '@styles/flexStyles';
-import { mobileMediaQuery } from '@styles/globalStyles';
-import { displayHeadingTypography, subheadingTypography } from '@styles/landingTypography';
-import { Color } from '@resources/colors';
-import { ADMIN_ROUTES, USER_ROUTES } from '@constants/routes';
-import useMarketingLoginStatus from '@hooks/useMarketingLoginStatus';
-import useMouseGlow, { MouseGlow } from '@components/user/home/useMouseGlow';
-import { trackEvent } from '@utils/analytics';
-import { GA_EVENT } from '@constants/analytics';
+import { USER_ROUTES } from '@constants/routes';
+import { LANDING_BUTTON_LABEL } from '@constants/data/landingContent';
+import LandingStartButton from '@components/user/landing/LandingStartButton';
+import useMouseGlow, { MouseGlow } from '@components/user/landing/useMouseGlow';
 import cloud1 from '@resources/image/home/cloud1.png';
 import cloud2 from '@resources/image/home/cloud2.png';
-import HeroMockup from './HeroMockup';
+import { LandingColor } from '@resources/colors';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import { mobileMediaQuery } from '@styles/globalStyles';
+import { LandingInner, landingEyebrowTypography, landingLeadTypography } from '@styles/landingStyles';
+import { DEMO_ENTRY } from '@constants/analytics';
+import LandingDemoButton from '@components/user/landing/LandingDemoButton';
+import HeroVisual from './HeroVisual';
 import ScrollIndicator from './ScrollIndicator';
 
-const Container = styled.div`
+const CLOUD_SCROLL_RANGE = [0, 500];
+const CLOUD_LEFT_SHIFT = [0, -80];
+const CLOUD_RIGHT_SHIFT = [0, -40];
+const LEAD_RGB: [number, number, number] = [78, 89, 104];
+const ACCENT_RGB: [number, number, number] = [255, 145, 66];
+const KIO_GLOW_BLUR = 24;
+const KIO_GLOW_ALPHA = 0.5;
+
+function lerpRgb(from: [number, number, number], to: [number, number, number], ratio: number) {
+  const channels = from.map((value, index) => Math.round(value + (to[index] - value) * ratio));
+  return `rgb(${channels.join(', ')})`;
+}
+
+const Section = styled.div`
   position: relative;
   width: 100%;
-  min-height: 100vh;
-  padding: 120px 24px 80px;
-  box-sizing: border-box;
-  background: radial-gradient(ellipse at 50% 30%, rgba(255, 145, 66, 0.03) 0%, ${Color.WHITE} 70%);
   overflow: hidden;
-  -webkit-font-smoothing: antialiased;
-  word-break: keep-all;
-  ${colFlex({ justify: 'flex-start', align: 'center' })};
-
-  ${mobileMediaQuery} {
-    padding: 100px 20px 60px;
-  }
+  background: #ffffff;
+  color: ${LandingColor.TEXT};
 `;
 
-const ContentWrapper = styled(motion.div)`
-  z-index: 1;
-  ${colFlex({ align: 'center' })};
+const CloudLeft = styled(motion.div)`
+  position: absolute;
+  top: 4%;
+  left: 2%;
+  pointer-events: none;
 `;
 
-const MainCopy = styled.h1`
-  text-align: center;
-  ${displayHeadingTypography};
-`;
-
-const OrangeText = styled.span`
-  color: ${Color.KIO_ORANGE};
-`;
-
-const SubCopy = styled.p`
-  margin-top: 20px;
-  text-align: center;
-  ${subheadingTypography};
-`;
-
-const KioHighlight = styled.span`
-  transition: color 0.15s ease, text-shadow 0.15s ease;
-  color: var(--kio-color, inherit);
-  text-shadow: var(--kio-shadow, none);
-`;
-
-const MobileOnlyBreak = styled.br`
-  display: none;
-
-  ${mobileMediaQuery} {
-    display: block;
-  }
-`;
-
-const CtaRow = styled.div`
-  margin-top: 36px;
-  gap: 12px;
-  ${rowFlex({ justify: 'center', align: 'center' })};
-
-  ${mobileMediaQuery} {
-    gap: 8px;
-    ${rowFlex({ justify: 'center', align: 'center' })};
-  }
-`;
-
-const CtaButton = styled(Link)`
-  padding: 18px 48px;
-  background: ${Color.KIO_ORANGE};
-  color: ${Color.WHITE};
-  border-radius: 999px;
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background 0.2s ease;
-
-  &:hover {
-    background: #ffa562;
-  }
-
-  &:active {
-    background: #e87d30;
-    transition: 0ms;
-  }
-
-  ${mobileMediaQuery} {
-    padding: 14px 20px;
-    font-size: 14px;
-    white-space: nowrap;
-  }
-`;
-
-const SecondaryButton = styled(Link)`
-  padding: 18px 48px;
-  background: transparent;
-  color: #6b7684;
-  border-radius: 999px;
-  font-size: 18px;
-  font-weight: 500;
-  border: 1px solid #e5e8eb;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background 0.2s ease;
-
-  &:hover {
-    background: #f8f9fa;
-  }
-
-  &:active {
-    background: #f2f4f6;
-    transition: 0ms;
-  }
-
-  ${mobileMediaQuery} {
-    padding: 14px 20px;
-    font-size: 14px;
-    white-space: nowrap;
-  }
+const CloudRight = styled(motion.div)`
+  position: absolute;
+  top: 10%;
+  right: 2%;
+  pointer-events: none;
 `;
 
 const CloudImage = styled.img`
-  position: absolute;
-  pointer-events: none;
+  display: block;
   opacity: 0.12;
 `;
 
-const SUB_COPY_COLOR: [number, number, number] = [107, 118, 132];
-const KIO_ORANGE_RGB: [number, number, number] = [255, 145, 66];
+const Layout = styled.div`
+  position: relative;
+  padding: 120px 0 120px;
+  gap: 48px;
+  ${rowFlex({ align: 'center' })}
 
-function lerpRgb(a: [number, number, number], b: [number, number, number], t: number) {
-  return `rgb(${Math.round(a[0] + (b[0] - a[0]) * t)}, ${Math.round(a[1] + (b[1] - a[1]) * t)}, ${Math.round(a[2] + (b[2] - a[2]) * t)})`;
-}
+  ${mobileMediaQuery} {
+    padding: 96px 0 72px;
+    gap: 40px;
+    ${colFlex({ align: 'stretch' })}
+  }
+`;
+
+const Text = styled(motion.div)`
+  width: 500px;
+  flex: none;
+
+  ${mobileMediaQuery} {
+    width: 100%;
+  }
+`;
+
+const Eyebrow = styled.div`
+  ${landingEyebrowTypography}
+`;
+
+const Title = styled.h1`
+  margin: 0;
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+
+  ${mobileMediaQuery} {
+    font-size: 36px;
+  }
+`;
+
+const Accent = styled.span`
+  color: ${LandingColor.ACCENT_TEXT};
+`;
+
+const Lead = styled.p`
+  ${landingLeadTypography}
+`;
+
+const KioHighlight = styled(motion.span)``;
+
+const Buttons = styled.div`
+  margin-top: 36px;
+  gap: 10px;
+  ${rowFlex({ align: 'center' })}
+
+  ${mobileMediaQuery} {
+    margin-top: 28px;
+
+    & > * {
+      flex: 1;
+    }
+  }
+`;
+
+const InfoLink = styled(Link)`
+  display: inline-block;
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: ${LandingColor.SUB_TEXT};
+  text-decoration: none;
+`;
 
 function HeroSection() {
-  const isLoggedIn = useMarketingLoginStatus();
   const containerRef = useRef<HTMLDivElement>(null);
   const kioRef = useRef<HTMLSpanElement>(null);
   const { mousePos, isHovering, intensity, handleMouseMove, handleMouseEnter, handleMouseLeave } = useMouseGlow(containerRef, kioRef);
   const { scrollY } = useScroll();
-  const cloud1Y = useTransform(scrollY, [0, 500], [0, -80]);
-  const cloud2Y = useTransform(scrollY, [0, 500], [0, -40]);
+  const cloudLeftY = useTransform(scrollY, CLOUD_SCROLL_RANGE, CLOUD_LEFT_SHIFT);
+  const cloudRightY = useTransform(scrollY, CLOUD_SCROLL_RANGE, CLOUD_RIGHT_SHIFT);
+  const kioColor = lerpRgb(LEAD_RGB, ACCENT_RGB, intensity);
+  const kioShadow = `0 0 ${KIO_GLOW_BLUR * intensity}px rgba(255, 145, 66, ${KIO_GLOW_ALPHA * intensity})`;
 
   return (
-    <Container ref={containerRef} onMouseMove={handleMouseMove} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    <Section ref={containerRef} onMouseMove={handleMouseMove} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <MouseGlow x={mousePos.x} y={mousePos.y} visible={isHovering} />
-      <motion.div style={{ position: 'absolute', top: '4%', left: '2%', y: cloud1Y }}>
+      <CloudLeft style={{ y: cloudLeftY }}>
         <CloudImage src={cloud1} alt="" width={240} />
-      </motion.div>
-      <motion.div style={{ position: 'absolute', top: '10%', right: '2%', y: cloud2Y }}>
+      </CloudLeft>
+      <CloudRight style={{ y: cloudRightY }}>
         <CloudImage src={cloud2} alt="" width={260} />
-      </motion.div>
-
-      <ContentWrapper initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4, ease: 'easeOut' }}>
-        <MainCopy>
-          축제는 <OrangeText>즐기라고</OrangeText>
-          <MobileOnlyBreak /> 있는 거니까
-        </MainCopy>
-        <SubCopy>
-          QR 주문, 실시간 주문 관리, 자동 정산까지
-          <br />
-          주점 운영의 모든 것을{' '}
-          <KioHighlight
-            ref={kioRef}
-            style={
-              {
-                '--kio-color': lerpRgb(SUB_COPY_COLOR, KIO_ORANGE_RGB, intensity),
-                '--kio-shadow': `0 0 ${24 * intensity}px rgba(255, 145, 66, ${0.5 * intensity})`,
-              } as React.CSSProperties
-            }
-          >
-            키오스쿨
-          </KioHighlight>
-          이 대신할게요
-        </SubCopy>
-        <CtaRow>
-          <CtaButton
-            to={ADMIN_ROUTES.HOME}
-            onClick={() => trackEvent(GA_EVENT.CTA_CLICK, { location: 'hero', label: isLoggedIn ? 'admin_home' : 'start_free' })}
-          >
-            {isLoggedIn ? '어드민 홈으로' : '무료로 시작하기'}
-          </CtaButton>
-          <SecondaryButton to={USER_ROUTES.INFO}>서비스 알아보기</SecondaryButton>
-        </CtaRow>
-      </ContentWrapper>
-
-      <HeroMockup />
+      </CloudRight>
+      <LandingInner>
+        <Layout>
+          <Text initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4, ease: 'easeOut' }}>
+            <Eyebrow>대학 축제 주점 주문 서비스</Eyebrow>
+            <Title>
+              축제는 <Accent>즐기라고</Accent>
+              <br />
+              있는 거니까
+            </Title>
+            <Lead>
+              QR 주문, 실시간 주문 관리, 자동 정산까지
+              <br />
+              주점 운영의 모든 것을{' '}
+              <KioHighlight ref={kioRef} animate={{ color: kioColor, textShadow: kioShadow }} transition={{ duration: 0.15 }}>
+                키오스쿨
+              </KioHighlight>
+              이 대신할게요
+            </Lead>
+            <Buttons>
+              <LandingStartButton location="hero" />
+              <LandingDemoButton entry={DEMO_ENTRY.HERO} variant="outline" />
+            </Buttons>
+            <InfoLink to={USER_ROUTES.INFO}>{LANDING_BUTTON_LABEL.INFO} ›</InfoLink>
+          </Text>
+          <HeroVisual />
+        </Layout>
+      </LandingInner>
       <ScrollIndicator />
-    </Container>
+    </Section>
   );
 }
 

@@ -36,17 +36,7 @@ const syntaxFor = (file, exempt = []) => {
     .map(([, rule]) => rule);
 };
 
-const LEGACY_VIOLATIONS = {
-  'src/components/user/home/CountUpNumber.tsx': ['react/forbid-dom-props', 'local-rules/style-motion-values-only'],
-  'src/components/user/home/CtaSection.tsx': ['local-rules/style-motion-values-only'],
-  'src/components/user/home/hero/HeroSection.tsx': ['local-rules/style-motion-values-only'],
-  'src/components/user/info/InfoCaseStudiesSection.tsx': ['local-rules/style-motion-values-only'],
-  'src/components/user/info/InfoFaqSection.tsx': ['react/no-multi-comp', 'local-rules/style-motion-values-only'],
-  'src/components/user/info/InfoFeaturesSection.tsx': ['local-rules/style-motion-values-only'],
-  'src/components/user/info/InfoHowToUseSection.tsx': ['local-rules/style-motion-values-only'],
-  'src/components/user/info/InfoTeamSection.tsx': ['local-rules/style-motion-values-only'],
-  'src/components/user/info/InfoVisionSection.tsx': ['local-rules/style-motion-values-only'],
-};
+const LEGACY_VIOLATIONS = {};
 
 const restrictedImportPatterns = {
   srcPath: { group: ['src/*'], message: 'src/ 경로로 부르지 않는다. @components, @utils 같은 @ 별칭을 쓴다.' },

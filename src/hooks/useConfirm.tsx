@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import { RiCloseLargeLine } from '@remixicon/react';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { mobileMediaQuery } from '@styles/globalStyles';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 
 const Container = styled.div`
@@ -20,6 +21,13 @@ const SubContainer = styled.div`
   color: ${Color.WHITE};
   position: relative;
   ${colFlex({ justify: 'space-between', align: 'center' })}
+
+  ${mobileMediaQuery} {
+    width: calc(100% - 40px);
+    max-width: 340px;
+    height: auto;
+    gap: 20px;
+  }
 `;
 
 const CloseButton = styled(RiCloseLargeLine)`
@@ -33,27 +41,56 @@ const CloseButton = styled(RiCloseLargeLine)`
   &:hover {
     transform: scale(1.1);
   }
+
+  ${mobileMediaQuery} {
+    top: -56px;
+    right: 0;
+  }
 `;
 
 const TextContainer = styled.div`
   gap: 14px;
   ${colFlex({ align: 'center' })}
+
+  ${mobileMediaQuery} {
+    gap: 8px;
+    text-align: center;
+  }
 `;
 
 const ButtonContainer = styled.div`
   gap: 12px;
   ${rowFlex({ justify: 'space-between' })}
+
+  ${mobileMediaQuery} {
+    width: 100%;
+
+    & > button {
+      flex: 1;
+      height: 48px;
+    }
+  }
 `;
 
 const TitleLabel = styled.div`
   font-size: 40px;
   font-weight: 700;
+
+  ${mobileMediaQuery} {
+    font-size: 20px;
+    line-height: 1.4;
+  }
 `;
 
 const DescriptionLabel = styled.div`
   font-size: 20px;
   font-weight: 700;
   padding: 12px 0;
+
+  ${mobileMediaQuery} {
+    padding: 0;
+    font-size: 15px;
+  }
 `;
 
 interface ConfirmProps {

@@ -8,6 +8,7 @@ export const USER_ROUTES = {
   INFO: '/info',
   CONTACT: '/contact',
   PRIVACY: '/privacy',
+  DEMO: '/demo',
   EMAIL_DOMAINS: '/email-domains',
   MAIL_UNSUBSCRIBE: '/mail/unsubscribe',
 } as const;
@@ -65,6 +66,16 @@ export const SUPER_ADMIN_ROUTES = {
 export const TEST_ROUTES = {
   SENTRY_TEST: '/sentry-test',
 } as const;
+
+export const DEMO_STEP_PARAM = 'step';
+
+export const DEMO_ENTRY_PARAM = 'from';
+
+export const getDemoEntryPath = (entry: string, step?: number) => {
+  const params = new URLSearchParams({ [DEMO_ENTRY_PARAM]: entry });
+  if (step !== undefined) params.set(DEMO_STEP_PARAM, String(step));
+  return `${USER_ROUTES.DEMO}?${params.toString()}`;
+};
 
 export const getAdminWorkspacePath = (workspaceId: string | number) => `/admin/workspace/${workspaceId}`;
 

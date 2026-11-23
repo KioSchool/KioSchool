@@ -1,126 +1,104 @@
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
-import { colFlex, rowFlex } from '@styles/flexStyles';
-import { mobileMediaQuery } from '@styles/globalStyles';
-import { captionTypography, eyebrowTypography, headingTypography } from '@styles/landingTypography';
-import { Color } from '@resources/colors';
+import { INFO_SECTION_ID } from '@constants/data/landingContent';
+import SectionHeading from '@components/user/landing/SectionHeading';
 import ahyoung from '@resources/image/info/ahyoung.webp';
+import jin from '@resources/image/info/jin.webp';
 import jiwon from '@resources/image/info/jiwon.webp';
 import sungjong from '@resources/image/info/sungjong.webp';
-import jin from '@resources/image/info/jin.webp';
+import { LandingColor } from '@resources/colors';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import { mobileMediaQuery } from '@styles/globalStyles';
+import { LandingInner, LandingSection } from '@styles/landingStyles';
+import TeamMemberCard from './TeamMemberCard';
 
-const Container = styled.div`
-  width: 100%;
-  padding: 120px 24px;
-  background: #f8f9fa;
-  ${colFlex({ align: 'center' })};
+const TEAM_MEMBERS = [
+  { photo: jin, name: '박지인', role: '리더 · 백엔드', bio: '안정적인 서비스를 설계합니다' },
+  { photo: sungjong, name: '이성종', role: '프론트엔드 리드', bio: '사용자 경험을 개선합니다' },
+  { photo: jiwon, name: '정지원', role: '프론트엔드', bio: '사용자 경험을 개선합니다' },
+  { photo: ahyoung, name: '서아영', role: '디자인', bio: '화면의 복잡함을 덜어냅니다' },
+];
 
-  ${mobileMediaQuery} {
-    padding: 80px 20px;
-  }
-`;
+const VISION_PARAGRAPHS = [
+  '키오스쿨은 대학 축제 주점 운영의 불편함에서 시작했습니다. 수기 주문, 수동 정산, 부족한 인력 때문에 축제를 준비한 학생들이 정작 축제를 즐기지 못하는 문제를 해결하고 싶었습니다.',
+  '운영의 부담은 키오스쿨이 덜고, 축제를 준비한 사람도 축제를 즐길 수 있는 환경을 만들어 가고 있습니다.',
+];
 
-const SectionLabel = styled.span`
-  margin-bottom: 8px;
-  ${eyebrowTypography};
-`;
-
-const SectionTitle = styled.h2`
-  text-align: center;
-  ${headingTypography};
-`;
-
-const TeamGrid = styled.div`
-  margin-top: 48px;
-  gap: 32px;
-  flex-wrap: wrap;
-  ${rowFlex({ justify: 'center' })};
+const Vision = styled.div`
+  gap: 80px;
+  ${rowFlex({ align: 'flex-start' })}
 
   ${mobileMediaQuery} {
     gap: 24px;
+    ${colFlex({ align: 'stretch' })}
   }
 `;
 
-const MemberCard = styled.div`
-  width: 160px;
-  text-align: center;
-  ${colFlex({ align: 'center' })};
+const VisionHeading = styled.div`
+  width: 460px;
+  flex: none;
+
+  ${mobileMediaQuery} {
+    width: 100%;
+  }
 `;
 
-const ProfileCircle = styled.div`
-  width: 128px;
-  height: 128px;
-  border-radius: 30%;
-  margin-bottom: 16px;
-  overflow: hidden;
-  ${colFlex({ justify: 'center', align: 'center' })};
+const VisionText = styled(motion.div)`
+  flex: 1;
+  gap: 16px;
+  ${colFlex()}
 `;
 
-const ProfileImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+const VisionParagraph = styled.p`
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.7;
+  color: ${LandingColor.SUB_TEXT};
+
+  ${mobileMediaQuery} {
+    font-size: 16px;
+  }
 `;
 
-const MemberName = styled.span`
-  font-size: 16px;
-  font-weight: 700;
-  color: #191f28;
-`;
+const Members = styled.div`
+  margin-top: 72px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
 
-const MemberRole = styled.span`
-  font-size: 13px;
-  font-weight: 500;
-  color: ${Color.KIO_ORANGE};
-  margin-top: 4px;
+  ${mobileMediaQuery} {
+    margin-top: 40px;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
 `;
-
-const MemberBio = styled.span`
-  margin-top: 6px;
-  ${captionTypography};
-`;
-
-const TEAM_MEMBERS = [
-  { name: '박지인', role: 'Backend', bio: '안정적인 서비스를 설계합니다', image: jin },
-  { name: '정지원', role: 'Frontend', bio: '사용자 경험을 개선합니다', image: jiwon },
-  { name: '이성종', role: 'Frontend', bio: '사용자 경험을 개선합니다', image: sungjong },
-  { name: '서아영', role: 'Design', bio: '화면의 복잡함을 덜어냅니다', image: ahyoung },
-];
 
 function InfoTeamSection() {
   return (
-    <Container>
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-        style={{ textAlign: 'center' }}
-      >
-        <SectionLabel>TEAM</SectionLabel>
-        <SectionTitle>만든 사람들</SectionTitle>
-      </motion.div>
-      <TeamGrid>
-        {TEAM_MEMBERS.map((member, index) => (
-          <motion.div
-            key={member.name}
-            initial={{ opacity: 0, y: 16 }}
+    <LandingSection id={INFO_SECTION_ID.TEAM} tone="white">
+      <LandingInner>
+        <Vision>
+          <VisionHeading>
+            <SectionHeading eyebrow="만든 사람들" titleLines={['모든 대학 축제가', '즐거운 경험이 되도록']} />
+          </VisionHeading>
+          <VisionText
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.1, ease: 'easeOut' }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
           >
-            <MemberCard>
-              <ProfileCircle>
-                <ProfileImage src={member.image} alt={`${member.name} 프로필`} />
-              </ProfileCircle>
-              <MemberName>{member.name}</MemberName>
-              <MemberRole>{member.role}</MemberRole>
-              <MemberBio>{member.bio}</MemberBio>
-            </MemberCard>
-          </motion.div>
-        ))}
-      </TeamGrid>
-    </Container>
+            {VISION_PARAGRAPHS.map((paragraph) => (
+              <VisionParagraph key={paragraph}>{paragraph}</VisionParagraph>
+            ))}
+          </VisionText>
+        </Vision>
+        <Members>
+          {TEAM_MEMBERS.map((member, index) => (
+            <TeamMemberCard key={member.name} order={index} photo={member.photo} name={member.name} role={member.role} bio={member.bio} />
+          ))}
+        </Members>
+      </LandingInner>
+    </LandingSection>
   );
 }
 

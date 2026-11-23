@@ -29,6 +29,11 @@ export const GA_EVENT = {
   ORDER_CARD_OPEN: 'order_card_open',
   PRODUCT_SUMMARY_OPEN: 'product_summary_open',
   PRODUCT_SUMMARY_ROW_OPEN: 'product_summary_row_open',
+  DEMO_STEP: 'demo_step',
+  DEMO_STEP_DONE: 'demo_step_done',
+  DEMO_ACTION: 'demo_action',
+  DEMO_LEAVE: 'demo_leave',
+  DEMO_COMPLETE: 'demo_complete',
 } as const;
 
 export type GaEventName = typeof GA_EVENT[keyof typeof GA_EVENT];
@@ -61,3 +66,28 @@ export const ORDER_EVENT_LOCATION = {
 } as const;
 
 export const GA_CURRENCY = 'KRW';
+
+/** 체험(/demo) 안 조작. `demo_action` 이벤트의 `action` 값 */
+export const DEMO_ACTION = {
+  SKIP: 'skip',
+  RESTART: 'restart',
+  VIEW_GUEST: 'view_guest',
+  VIEW_ADMIN: 'view_admin',
+  OVERVIEW: 'overview',
+  INTRO_START: 'intro_start',
+  PEEK_VIEW: 'peek_view',
+} as const;
+
+export type DemoAction = typeof DEMO_ACTION[keyof typeof DEMO_ACTION];
+
+/** 체험에 들어온 곳. 랜딩 링크가 `?from=`으로 넘기고 체험 이벤트의 `entry`에 싣는다. 값이 없으면 direct */
+export const DEMO_ENTRY = {
+  HERO: 'hero',
+  BANNER: 'banner',
+  FEATURE: 'feature',
+  CTA: 'cta',
+  INFO: 'info',
+  DIRECT: 'direct',
+} as const;
+
+export type DemoEntry = typeof DEMO_ENTRY[keyof typeof DEMO_ENTRY];
