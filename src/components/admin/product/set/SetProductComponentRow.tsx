@@ -80,6 +80,7 @@ function SetProductComponentRow({ component, products, canDelete, onChange, onDe
         <ComponentNameInput
           aria-label="구성품명"
           height={42}
+          width="100%"
           value={component.name}
           placeholder="예: 족발 소"
           onChange={(event) => onChange({ ...component, name: event.target.value })}
