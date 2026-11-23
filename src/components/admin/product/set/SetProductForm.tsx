@@ -92,6 +92,12 @@ function createInitialValue(initialValues?: SetProductFormInitialValue): SetProd
   };
 }
 
+function getSubmitButtonText(mode: 'ADD' | 'EDIT', isSubmitting: boolean) {
+  if (isSubmitting) return '저장 중...';
+  if (mode === 'EDIT') return '변경 완료';
+  return '세트 추가';
+}
+
 function SetProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onDelete }: SetProductFormProps) {
   const categories = useAtomValue(adminCategoriesAtom);
   const products = useAtomValue(adminProductsAtom);
@@ -194,7 +200,7 @@ function SetProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, 
             취소
           </NewCommonButton>
           <NewCommonButton type="submit" size="sm" disabled={isSubmitting}>
-            {isSubmitting ? '저장 중...' : mode === 'EDIT' ? '변경 완료' : '세트 추가'}
+            {getSubmitButtonText(mode, isSubmitting)}
           </NewCommonButton>
         </SubmitActions>
       </Footer>
