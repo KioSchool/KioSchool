@@ -17,8 +17,8 @@ const Backdrop = styled.div`
 `;
 
 const Dialog = styled.div`
-  width: min(1080px, calc(100vw - 72px));
-  height: min(820px, calc(100vh - 72px));
+  width: min(1160px, calc(100vw - 72px));
+  height: min(780px, calc(100vh - 72px));
   overflow: hidden;
   border-radius: 22px;
   background: ${Color.WHITE};
@@ -28,32 +28,15 @@ const Dialog = styled.div`
 
 const Header = styled.header`
   flex-shrink: 0;
-  padding: 22px 28px 18px;
+  padding: 22px 28px;
   border-bottom: 1px solid ${Color.BORDER_GREY};
-  ${rowFlex({ justify: 'space-between', align: 'flex-start' })}
-`;
-
-const Heading = styled.div`
-  gap: 4px;
-  ${colFlex()}
-`;
-
-const Eyebrow = styled.span`
-  font-size: 12px;
-  font-weight: 700;
-  color: ${Color.KIO_ORANGE};
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
 `;
 
 const Title = styled.h2`
   margin: 0;
   font-size: 24px;
   color: ${Color.TEXT_STRONG};
-`;
-
-const Description = styled.p`
-  margin: 0;
-  font-size: 13px;
-  color: ${Color.MUTED_GREY};
 `;
 
 const CloseButton = styled.button`
@@ -75,19 +58,16 @@ const CloseButton = styled.button`
 const Content = styled.div`
   flex: 1;
   min-height: 0;
-  overflow-y: auto;
-  padding: 28px;
+  overflow: hidden;
 `;
 
 interface ProductEditorModalProps {
-  eyebrow: string;
   title: string;
-  description: string;
   children: ReactNode;
   onClose: () => void;
 }
 
-function ProductEditorModal({ eyebrow, title, description, children, onClose }: ProductEditorModalProps) {
+function ProductEditorModal({ title, children, onClose }: ProductEditorModalProps) {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose();
@@ -105,11 +85,7 @@ function ProductEditorModal({ eyebrow, title, description, children, onClose }: 
     <Backdrop role="presentation">
       <Dialog role="dialog" aria-modal="true" aria-label={title}>
         <Header>
-          <Heading>
-            <Eyebrow>{eyebrow}</Eyebrow>
-            <Title>{title}</Title>
-            <Description>{description}</Description>
-          </Heading>
+          <Title>{title}</Title>
           <CloseButton type="button" aria-label="편집 창 닫기" onClick={onClose}>
             <RiCloseLine size={22} />
           </CloseButton>

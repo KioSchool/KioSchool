@@ -134,12 +134,7 @@ function AdminProduct() {
         </DndContext>
 
         {editorState && (
-          <ProductEditorModal
-            eyebrow={isSetEditor ? 'SET MENU' : 'MENU'}
-            title={editorTitle}
-            description={isSetEditor ? '가격과 제공 구성, 품절 상태를 연결할 일반 메뉴를 설정합니다.' : '손님 주문 화면에 보일 메뉴 정보를 설정합니다.'}
-            onClose={handleCloseEditor}
-          >
+          <ProductEditorModal title={editorTitle} onClose={handleCloseEditor}>
             {editorState.mode === 'ADD' ? (
               <ProductAdd productType={editorState.productType} onClose={handleCloseEditor} />
             ) : (
