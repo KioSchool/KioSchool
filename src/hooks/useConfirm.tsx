@@ -5,8 +5,10 @@ import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 
+const CONFIRM_MODAL_Z_INDEX = 1300;
+
 const Container = styled.div`
-  z-index: 1011;
+  z-index: ${CONFIRM_MODAL_Z_INDEX};
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.6);
