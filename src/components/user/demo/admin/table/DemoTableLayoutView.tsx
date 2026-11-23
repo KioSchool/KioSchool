@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 import styled from '@emotion/styled';
 import { Table } from '@@types/index';
-import { DEMO_TABLE_NUMBER } from '@constants/data/demo/demoSeed';
 import { TABLE_CROP_MARGIN_CELLS, TABLE_GRID_SIZE, TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
 import TableLayoutCanvas, { GridCropBounds } from '@components/admin/order/table-manage/layout/TableLayoutCanvas';
 import TableLayoutCard from '@components/admin/order/table-manage/layout/TableLayoutCard';
 import UnplacedTableStrip from '@components/admin/order/table-manage/layout/UnplacedTableStrip';
 import { colFlex } from '@styles/flexStyles';
+import { getDemoTableFocus } from '@utils/demo/demoFocus';
 
 const Container = styled.div`
   width: 100%;
@@ -40,11 +40,6 @@ function getCropBounds(placedTables: Table[]): GridCropBounds {
   };
 }
 
-const getFocusName = (tableNumber: number) => {
-  if (tableNumber !== DEMO_TABLE_NUMBER) return undefined;
-  return 'table-7';
-};
-
 interface DemoTableLayoutViewProps {
   tables: Table[];
   visibleTableNumbers: Set<number> | null;
@@ -66,7 +61,7 @@ function DemoTableLayoutView({ tables, visibleTableNumbers, selectedTableNumber,
   };
 
   const renderCard = (table: Table) => (
-    <CardSlot data-demo-table={table.tableNumber} data-demo-focus={getFocusName(table.tableNumber)}>
+    <CardSlot data-demo-table={table.tableNumber} data-demo-focus={getDemoTableFocus(table.tableNumber)}>
       <TableLayoutCard
         table={table}
         orderCount={table.orderSession?.orderCount ?? 0}

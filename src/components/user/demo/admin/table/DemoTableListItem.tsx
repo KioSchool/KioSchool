@@ -3,7 +3,6 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { match } from 'ts-pattern';
 import { Table } from '@@types/index';
-import { DEMO_TABLE_NUMBER } from '@constants/data/demo/demoSeed';
 import { TABLE_LIST_GRID_TEMPLATE } from '@constants/layout';
 import ProgressRing, { RING_SIZE_ROW_PX } from '@components/admin/order/table-manage/common/ProgressRing';
 import StatusBadge from '@components/admin/order/table-manage/common/StatusBadge';
@@ -11,6 +10,7 @@ import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
 import { getTableStatus, TABLE_STATUS, TableStatus } from '@utils/tableStatus';
 import { formatSessionStartLabel, formatSessionTimeLabel, getElapsedPercent } from '@utils/tableTime';
+import { getDemoTableFocus } from '@utils/demo/demoFocus';
 
 const SELECTED_OUTLINE_PX = 2;
 const STATUS_BAR_WIDTH_PX = 3;
@@ -152,11 +152,6 @@ const getRingColor = (status: TableStatus) =>
     .with(TABLE_STATUS.EXCEEDED, () => Color.RED)
     .otherwise(() => Color.KIO_ORANGE);
 
-const getFocusName = (tableNumber: number) => {
-  if (tableNumber !== DEMO_TABLE_NUMBER) return undefined;
-  return 'table-7';
-};
-
 interface DemoTableListItemProps {
   table: Table;
   isSelected: boolean;
@@ -180,7 +175,7 @@ function DemoTableListItem({ table, isSelected, onSelect, onQuickStart }: DemoTa
       isSelected={isSelected}
       status={status}
       data-demo-table-row={table.tableNumber}
-      data-demo-focus={getFocusName(table.tableNumber)}
+      data-demo-focus={getDemoTableFocus(table.tableNumber)}
     >
       <TableNumber status={status}>{table.tableNumber}</TableNumber>
       <ProgressRing size={RING_SIZE_ROW_PX} percent={getElapsedPercent(session)} fillColor={getRingColor(status)} holeColor={Color.WHITE} />

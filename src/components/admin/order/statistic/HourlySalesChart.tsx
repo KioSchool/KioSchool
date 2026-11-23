@@ -59,12 +59,20 @@ const Wrapper = styled.div`
   display: contents;
 `;
 
+// recharts YAxis 기본 폭이 60이다. 폰 폭(체험)에서는 좌우 여백 60+60 때문에 막대가 가운데로 몰려 여백과 축 폭을 줄인다
+const CHART_LAYOUT = {
+  default: { margin: { top: 5, right: 60, left: 60, bottom: 5 }, revenueAxisWidth: 60, orderCountAxisWidth: 60 },
+  mobile: { margin: { top: 5, right: 4, left: 0, bottom: 5 }, revenueAxisWidth: 46, orderCountAxisWidth: 36 },
+};
+
 interface HourlySalesChartProps {
   salesByHour: HourlySales[];
+  isMobile?: boolean;
 }
 
-function HourlySalesChart({ salesByHour }: HourlySalesChartProps) {
+function HourlySalesChart({ salesByHour, isMobile = false }: HourlySalesChartProps) {
   const hasData = salesByHour.some((item) => item.revenue > 0 || item.orderCount > 0);
+  const layout = isMobile ? CHART_LAYOUT.mobile : CHART_LAYOUT.default;
 
   if (!hasData) {
     return <FallbackContainer>아직 시간대별 매출 데이터가 없어요</FallbackContainer>;
@@ -74,11 +82,11 @@ function HourlySalesChart({ salesByHour }: HourlySalesChartProps) {
     <Wrapper>
       <ChartContainer>
         <ResponsiveContainer width="100%" height="100%">
-          <ComposedChart data={salesByHour} margin={{ top: 5, right: 60, left: 60, bottom: 5 }}>
+          <ComposedChart data={salesByHour} margin={layout.margin}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="hour" tickFormatter={xAxisFormatter} />
-            <YAxis yAxisId="revenue" tickFormatter={revenueYAxisFormatter} />
-            <YAxis yAxisId="orderCount" orientation="right" tickFormatter={orderCountYAxisFormatter} />
+            <YAxis yAxisId="revenue" width={layout.revenueAxisWidth} tickFormatter={revenueYAxisFormatter} />
+            <YAxis yAxisId="orderCount" orientation="right" width={layout.orderCountAxisWidth} tickFormatter={orderCountYAxisFormatter} />
             <Tooltip
               labelFormatter={(hour) => `${hour}시`}
               formatter={(value: number, name: string) => {

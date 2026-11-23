@@ -8,6 +8,7 @@ import { LandingColor } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import DemoChapterProgress from './DemoChapterProgress';
+import DemoPcOnlyNote from './mobile/DemoPcOnlyNote';
 
 const Container = styled.div`
   width: 100%;
@@ -103,15 +104,12 @@ const Buttons = styled.div`
   }
 `;
 
-const MobileNote = styled.p`
+const MobileNote = styled.div`
   display: none;
 
   ${mobileMediaQuery} {
     display: block;
-    margin: 12px 0 0;
-    font-size: 13px;
-    line-height: 1.5;
-    color: ${LandingColor.CAPTION};
+    margin-top: 20px;
   }
 `;
 
@@ -125,7 +123,7 @@ function DemoEndCard() {
 
   return (
     <Container>
-      <DemoChapterProgress currentChapter={DEMO_CHAPTERS.length} stepNumber={null} />
+      <DemoChapterProgress currentChapter={DEMO_CHAPTERS.length} />
       <Card>
         <Eyebrow>체험 완료</Eyebrow>
         <Title>7번 테이블 손님 한 팀을 끝까지 받아 봤어요</Title>
@@ -141,11 +139,13 @@ function DemoEndCard() {
             </DoneItem>
           ))}
         </DoneList>
+        <MobileNote>
+          <DemoPcOnlyNote />
+        </MobileNote>
         <Buttons>
           <LandingStartButton location="demo_end" />
           <LandingButton label="처음부터 다시" variant="outline" onClick={handleRestart} />
         </Buttons>
-        <MobileNote>운영진 화면은 노트북에서 씁니다.</MobileNote>
       </Card>
     </Container>
   );

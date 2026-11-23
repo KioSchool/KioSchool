@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { OrderProduct } from '@@types/index';
@@ -21,7 +22,19 @@ const ModalOverlay = styled.div`
   z-index: 2000;
 `;
 
-const ModalContainer = styled.div`
+const mobileModalStyle = css`
+  justify-content: flex-start;
+  top: auto;
+  bottom: 0;
+  left: 0;
+  transform: none;
+  width: 100%;
+  max-height: 92%;
+  border-width: 1px 0 0;
+  border-radius: 16px 16px 0 0;
+`;
+
+const ModalContainer = styled.div<{ isMobile: boolean }>`
   position: fixed;
   top: 50%;
   left: 50%;
@@ -36,11 +49,16 @@ const ModalContainer = styled.div`
   gap: 12px;
   box-shadow: 0 4px 20px 0 rgba(92, 92, 92, 0.05);
   ${colFlex({ justify: 'center' })}
+  ${({ isMobile }) => isMobile && mobileModalStyle}
 `;
 
 const ModalLayer = styled.div``;
 
-function DemoOrderDetailModal() {
+interface DemoOrderDetailModalProps {
+  isMobile?: boolean;
+}
+
+function DemoOrderDetailModal({ isMobile = false }: DemoOrderDetailModalProps) {
   const { orders, openedOrderId, adminPage } = useAtomValue(demoStateAtom);
   const dispatch = useSetAtom(demoStateAtom);
   const setReadOnly = useSetAtom(orderModalReadOnlyAtom);
@@ -75,9 +93,9 @@ function DemoOrderDetailModal() {
   return (
     <ModalLayer>
       <ModalOverlay onClick={close} />
-      <ModalContainer data-demo-modal role="dialog" aria-modal="true">
+      <ModalContainer data-demo-modal role="dialog" aria-modal="true" isMobile={isMobile}>
         <DemoOrderModalHeader order={order} isReadOnly={isReadOnly} onClose={close} onUnsupported={() => dispatch({ type: 'UNSUPPORTED' })} />
-        <DemoOrderModalMain order={order} isReadOnly={isReadOnly} onServe={handleServe} />
+        <DemoOrderModalMain order={order} isReadOnly={isReadOnly} onServe={handleServe} isMobile={isMobile} />
         <DemoOrderModalFooter
           orderStatus={order.status}
           isReadOnly={isReadOnly}

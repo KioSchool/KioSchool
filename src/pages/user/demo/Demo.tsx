@@ -14,6 +14,7 @@ import { LandingInner } from '@styles/landingStyles';
 const DemoApp = lazy(() => import('@components/user/demo/DemoApp'));
 
 const Wrapper = styled.div`
+  box-sizing: border-box;
   min-height: 100vh;
   padding-bottom: 96px;
   background: #ffffff;

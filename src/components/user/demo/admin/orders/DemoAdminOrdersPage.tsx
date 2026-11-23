@@ -1,15 +1,17 @@
+import { useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { OrderStatus } from '@@types/index';
+import { DEMO_USER_ORDER_ID } from '@constants/data/demo/demoSeed';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import { demoStateAtom } from '@jotai/user/demoAtoms';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import DemoOrderStatusList from './DemoOrderStatusList';
 import DemoTableUsageBar from './DemoTableUsageBar';
 
-const ListContainer = styled.div`
-  width: 95%;
-  gap: 20px;
+const ListContainer = styled.div<{ isMobile: boolean }>`
+  width: ${({ isMobile }) => (isMobile ? '100%' : '95%')};
+  gap: ${({ isMobile }) => (isMobile ? 12 : 20)}px;
   ${colFlex({ justify: 'center', align: 'center' })}
 `;
 
@@ -24,21 +26,36 @@ const SummarySlot = styled.div`
   min-width: 0;
 `;
 
-function DemoAdminOrdersPage() {
-  const { orders } = useAtomValue(demoStateAtom);
+interface DemoAdminOrdersPageProps {
+  isMobile?: boolean;
+}
+
+function DemoAdminOrdersPage({ isMobile = false }: DemoAdminOrdersPageProps) {
+  const { orders, step } = useAtomValue(demoStateAtom);
   const dispatch = useSetAtom(demoStateAtom);
+  const containerRef = useRef<HTMLDivElement>(null);
   const byOldest = [...orders].sort((a, b) => a.createdAt.localeCompare(b.createdAt));
   const ordersOf = (status: OrderStatus) => byOldest.filter((order) => order.status === status);
+  const userOrderStatus = orders.find((order) => order.id === DEMO_USER_ORDER_ID)?.status;
+
+  // 폰은 주문판 줄마다 옆으로 넘겨 보므로, 손님이 방금 넣은 주문이 맨 오른쪽에 가려지지 않게 그 카드로 넘겨 둔다
+  useEffect(() => {
+    if (!isMobile) return;
+    const card = containerRef.current?.querySelector(`[data-demo-order="${DEMO_USER_ORDER_ID}"]`);
+    card?.scrollIntoView({ block: 'nearest', inline: 'center' });
+  }, [isMobile, step, userOrderStatus]);
 
   return (
-    <ListContainer>
+    <ListContainer ref={containerRef} isMobile={isMobile} data-demo-region>
       <TopRow>
         <SummarySlot>
           <DemoTableUsageBar />
         </SummarySlot>
-        <NewCommonButton size="sm" onClick={() => dispatch({ type: 'UNSUPPORTED' })}>
-          상품별 주문량
-        </NewCommonButton>
+        {!isMobile && (
+          <NewCommonButton size="sm" onClick={() => dispatch({ type: 'UNSUPPORTED' })}>
+            상품별 주문량
+          </NewCommonButton>
+        )}
       </TopRow>
       <DemoOrderStatusList
         orders={ordersOf(OrderStatus.NOT_PAID)}

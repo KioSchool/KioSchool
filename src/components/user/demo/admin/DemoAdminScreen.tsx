@@ -1,10 +1,10 @@
-import { MouseEvent } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtomValue } from 'jotai';
 import { match } from 'ts-pattern';
 import { DemoAdminPage } from '@constants/data/demo/demoSteps';
 import { DEFAULT_LAYOUT_WIDTH, SIDE_NAV_WIDTH } from '@constants/layout';
+import useDemoLinkBlock from '@hooks/user/useDemoLinkBlock';
 import { demoStateAtom } from '@jotai/user/demoAtoms';
 import { Color } from '@resources/colors';
 import { colFlex } from '@styles/flexStyles';
@@ -61,14 +61,7 @@ const SubContainer = styled.div`
 
 function DemoAdminScreen() {
   const { adminPage, isSideNavOpen } = useAtomValue(demoStateAtom);
-  const dispatch = useSetAtom(demoStateAtom);
-
-  // 가져다 쓴 실제 컴포넌트 안의 링크를 누르면 체험 밖으로 나가므로 막는다
-  const handleLinkClick = (event: MouseEvent<HTMLDivElement>) => {
-    if (!(event.target as HTMLElement).closest('a')) return;
-    event.preventDefault();
-    dispatch({ type: 'UNSUPPORTED' });
-  };
+  const handleLinkClick = useDemoLinkBlock();
 
   return (
     <Screen data-admin-page={adminPage} onClickCapture={handleLinkClick}>

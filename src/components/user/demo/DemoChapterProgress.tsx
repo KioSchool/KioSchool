@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { DEMO_CHAPTERS, DEMO_STEPS } from '@constants/data/demo/demoSteps';
+import { DEMO_CHAPTERS } from '@constants/data/demo/demoSteps';
 import { LandingColor } from '@resources/colors';
 import { DEMO_STAGE_WIDTH } from '@styles/demoStyles';
 import { rowFlex } from '@styles/flexStyles';
@@ -79,29 +79,11 @@ const Name = styled.span<{ state: ChapterState }>`
   }
 `;
 
-const MobileCaption = styled.div`
-  display: none;
-
-  ${mobileMediaQuery} {
-    margin-top: 10px;
-    font-size: 14px;
-    font-weight: 700;
-    color: ${LandingColor.TEXT};
-    ${rowFlex({ justify: 'space-between', align: 'center' })}
-  }
-`;
-
-const StepCount = styled.span`
-  font-weight: 600;
-  color: ${LandingColor.CAPTION};
-`;
-
 interface DemoChapterProgressProps {
   currentChapter: number;
-  stepNumber: number | null;
 }
 
-function DemoChapterProgress({ currentChapter, stepNumber }: DemoChapterProgressProps) {
+function DemoChapterProgress({ currentChapter }: DemoChapterProgressProps) {
   return (
     <Container>
       <Chapters aria-label="체험 진행 단계">
@@ -118,14 +100,6 @@ function DemoChapterProgress({ currentChapter, stepNumber }: DemoChapterProgress
           );
         })}
       </Chapters>
-      {stepNumber !== null && (
-        <MobileCaption>
-          {currentChapter + 1} {DEMO_CHAPTERS[currentChapter]}
-          <StepCount>
-            {stepNumber} / {DEMO_STEPS.length}
-          </StepCount>
-        </MobileCaption>
-      )}
     </Container>
   );
 }

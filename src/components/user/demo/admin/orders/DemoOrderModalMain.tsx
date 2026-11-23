@@ -9,10 +9,32 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 
 const PRODUCT_MAP = Object.fromEntries(DEMO_PRODUCTS.map((product) => [product.id, product]));
 
-const ModalContent = styled.div`
+const mobileContentStyle = css`
+  flex: 1 1 auto;
+  min-height: 0;
+`;
+
+const ModalContent = styled.div<{ isMobile: boolean }>`
   color: ${Color.TEXT_DEFAULT};
   gap: 10px;
   ${colFlex({ justify: 'start', align: 'start' })}
+  ${({ isMobile }) => isMobile && mobileContentStyle}
+`;
+
+// 폰 아래 창에서는 상품 목록의 고정 높이(385px)를 풀어 내용만큼만 쓰고, 넘치면 목록만 스크롤해 아래 버튼이 늘 보이게 한다
+const mobileListStyle = css`
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+
+  & > div {
+    height: auto;
+  }
+`;
+
+const ListSlot = styled.div<{ isMobile: boolean }>`
+  width: 100%;
+  ${({ isMobile }) => isMobile && mobileListStyle}
 `;
 
 const TitleContainer = styled.div`
@@ -57,9 +79,10 @@ interface DemoOrderModalMainProps {
   order: Order;
   isReadOnly: boolean;
   onServe: (orderProduct: OrderProduct, delta: number) => void;
+  isMobile?: boolean;
 }
 
-function DemoOrderModalMain({ order, isReadOnly, onServe }: DemoOrderModalMainProps) {
+function DemoOrderModalMain({ order, isReadOnly, onServe, isMobile = false }: DemoOrderModalMainProps) {
   const isPaidStatus = order.status === OrderStatus.PAID;
   const isAllServed = order.orderProducts.every((orderProduct) => orderProduct.isServed);
   const statusLabel = match(isAllServed)
@@ -77,18 +100,20 @@ function DemoOrderModalMain({ order, isReadOnly, onServe }: DemoOrderModalMainPr
   };
 
   return (
-    <ModalContent>
+    <ModalContent isMobile={isMobile}>
       <TitleContainer>
         <MainLabel>{`주문 상품 ${order.orderProducts.length}개`}</MainLabel>
         {isPaidStatus && <StatusLabelContainer isServed={isAllServed}>{statusLabel}</StatusLabelContainer>}
       </TitleContainer>
-      <OrderModalProductList
-        orderProducts={order.orderProducts}
-        productMap={PRODUCT_MAP}
-        isPaidStatus={isPaidStatus}
-        onIncrease={handleIncrease}
-        onDecrease={handleDecrease}
-      />
+      <ListSlot isMobile={isMobile}>
+        <OrderModalProductList
+          orderProducts={order.orderProducts}
+          productMap={PRODUCT_MAP}
+          isPaidStatus={isPaidStatus}
+          onIncrease={handleIncrease}
+          onDecrease={handleDecrease}
+        />
+      </ListSlot>
       <TotalLabelContainer>
         <MainLabel>총 결제 금액</MainLabel>
         <MainLabel>{`${order.totalPrice.toLocaleString()}원`}</MainLabel>

@@ -3,7 +3,6 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { Table } from '@@types/index';
-import { DEMO_TABLE_NUMBER } from '@constants/data/demo/demoSeed';
 import { TABLE_VIEW_HEIGHT_PX } from '@constants/layout';
 import TableInactivePanel from '@components/admin/order/table-manage/detail/TableInactivePanel';
 import TableSessionStepper from '@components/admin/order/table-manage/detail/TableSessionStepper';
@@ -12,6 +11,7 @@ import useConfirm from '@hooks/useConfirm';
 import { demoStateAtom } from '@jotai/user/demoAtoms';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { getDemoTableFocus } from '@utils/demo/demoFocus';
 import { getTableEndBlockMessage } from '@utils/demo/demoReducer';
 import { getTableStatus } from '@utils/tableStatus';
 import DemoTableDetailHeader from './DemoTableDetailHeader';
@@ -20,7 +20,13 @@ import DemoTableOrderCardList from './DemoTableOrderCardList';
 const DEFAULT_TIME_LIMIT = 10;
 const MIN_TIME_LIMIT = 1;
 
-const Panel = styled.div`
+const mobilePanelStyle = css`
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+`;
+
+const Panel = styled.div<{ isMobile: boolean }>`
   width: 100%;
   height: ${TABLE_VIEW_HEIGHT_PX}px;
   box-sizing: border-box;
@@ -29,6 +35,7 @@ const Panel = styled.div`
   overflow: hidden;
   background-color: ${Color.WHITE};
   ${colFlex()};
+  ${({ isMobile }) => isMobile && mobilePanelStyle}
 `;
 
 const ScrollBody = styled.div`
@@ -87,41 +94,23 @@ const StartButton = styled.button`
 
 const PanelGroup = styled.div`
   width: 100%;
+  height: 100%;
 `;
 
 const StepperArea = styled.div`
   width: 100%;
 `;
 
-// useConfirm 창은 캔버스 가운데 800×176이고 닫기 아이콘이 100px 위에 있다. 폰 확대가 둘 다 담도록 조금 넓게 잡는다
-const CONFIRM_FOCUS_WIDTH_PX = 820;
-const CONFIRM_FOCUS_HEIGHT_PX = 380;
-
-const ConfirmFocusArea = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: ${CONFIRM_FOCUS_WIDTH_PX}px;
-  height: ${CONFIRM_FOCUS_HEIGHT_PX}px;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-`;
-
-const getTableFocus = (tableNumber: number, part: string) => {
-  if (tableNumber !== DEMO_TABLE_NUMBER) return undefined;
-  return `table-7-${part}`;
-};
-
 interface DemoTableDetailPanelProps {
   table: Table;
+  isMobile?: boolean;
 }
 
-function DemoTableDetailPanel({ table }: DemoTableDetailPanelProps) {
+function DemoTableDetailPanel({ table, isMobile = false }: DemoTableDetailPanelProps) {
   const state = useAtomValue(demoStateAtom);
   const { orders } = state;
   const dispatch = useSetAtom(demoStateAtom);
   const [minutes, setMinutes] = useState(DEFAULT_TIME_LIMIT);
-  const [isConfirming, setIsConfirming] = useState(false);
   const status = getTableStatus(table);
   const session = table.orderSession;
   const sessionOrders = orders
@@ -136,9 +125,7 @@ function DemoTableDetailPanel({ table }: DemoTableDetailPanelProps) {
 
   const handleEndClick = async () => {
     if (!getTableEndBlockMessage(state, table.tableNumber)) {
-      setIsConfirming(true);
       const confirmed = await confirm();
-      setIsConfirming(false);
       if (!confirmed) return;
     }
     dispatch({ type: 'TABLE_END', tableNumber: table.tableNumber, now: Date.now() });
@@ -146,12 +133,12 @@ function DemoTableDetailPanel({ table }: DemoTableDetailPanelProps) {
 
   return (
     <PanelGroup>
-      <Panel>
+      <Panel isMobile={isMobile}>
         <ScrollBody>
           <DemoTableDetailHeader table={table} status={status} />
           {session && <TableUsageSummary session={session} status={status} />}
           {session && (
-            <StepperArea data-demo-focus={getTableFocus(table.tableNumber, 'extend')}>
+            <StepperArea data-demo-focus={getDemoTableFocus(table.tableNumber, 'extend')}>
               <TableSessionStepper
                 minutes={minutes}
                 onChangeMinutes={setMinutes}
@@ -168,14 +155,14 @@ function DemoTableDetailPanel({ table }: DemoTableDetailPanelProps) {
           {!session && <TableInactivePanel />}
         </ScrollBody>
         {session && (
-          <EndButton type="button" data-demo-focus={getTableFocus(table.tableNumber, 'action')} onClick={handleEndClick}>
+          <EndButton type="button" data-demo-focus={getDemoTableFocus(table.tableNumber, 'action')} onClick={handleEndClick}>
             사용 종료
           </EndButton>
         )}
         {!session && (
           <StartButton
             type="button"
-            data-demo-focus={getTableFocus(table.tableNumber, 'action')}
+            data-demo-focus={getDemoTableFocus(table.tableNumber, 'action')}
             onClick={() => dispatch({ type: 'TABLE_START', tableNumber: table.tableNumber, now: Date.now() })}
           >
             사용 시작
@@ -183,7 +170,6 @@ function DemoTableDetailPanel({ table }: DemoTableDetailPanelProps) {
         )}
       </Panel>
       <ConfirmModal />
-      {isConfirming && <ConfirmFocusArea data-demo-focus={getTableFocus(table.tableNumber, 'confirm')} />}
     </PanelGroup>
   );
 }

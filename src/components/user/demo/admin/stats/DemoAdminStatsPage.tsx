@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { format } from 'date-fns';
 import { useAtomValue, useSetAtom } from 'jotai';
@@ -19,12 +20,19 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { getDemoClosingStatistics } from '@utils/demo/demoStatistics';
 import { formatMinutesToTime } from '@utils/formatDate';
 
-const Container = styled.div`
+const mobileContainerStyle = css`
+  width: 100%;
+  gap: 12px;
+  padding-top: 0;
+`;
+
+const Container = styled.div<{ isMobile: boolean }>`
   width: 95%;
   flex: 1;
   gap: 20px;
   padding-top: 25px;
   ${colFlex({ align: 'center' })}
+  ${({ isMobile }) => isMobile && mobileContainerStyle}
 `;
 
 const FilterContainer = styled.div`
@@ -44,11 +52,11 @@ const UpdateLabel = styled.span`
   color: #939393;
 `;
 
-const StatCardGrid = styled.div`
+const StatCardGrid = styled.div<{ isMobile: boolean }>`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(${({ isMobile }) => (isMobile ? 2 : 4)}, minmax(0, 1fr));
+  gap: ${({ isMobile }) => (isMobile ? 8 : 12)}px;
 
   & > * {
     min-width: 0;
@@ -56,10 +64,10 @@ const StatCardGrid = styled.div`
   }
 `;
 
-const SectionRow = styled.div`
+const SectionRow = styled.div<{ isMobile: boolean }>`
   width: 100%;
   display: grid;
-  grid-template-columns: minmax(0, 7fr) minmax(0, 3fr);
+  grid-template-columns: ${({ isMobile }) => (isMobile ? 'minmax(0, 1fr)' : 'minmax(0, 7fr) minmax(0, 3fr)')};
   gap: 12px;
 
   & > * {
@@ -82,7 +90,11 @@ const getDirectionLabel = (difference: number) => {
   return '감소';
 };
 
-function DemoAdminStatsPage() {
+interface DemoAdminStatsPageProps {
+  isMobile?: boolean;
+}
+
+function DemoAdminStatsPage({ isMobile = false }: DemoAdminStatsPageProps) {
   const state = useAtomValue(demoStateAtom);
   const dispatch = useSetAtom(demoStateAtom);
   const [now] = useState(() => Date.now());
@@ -93,21 +105,23 @@ function DemoAdminStatsPage() {
   const stayLabel = formatMinutesToTime(statistics.averageStayTimeMinutes);
 
   return (
-    <Container>
+    <Container isMobile={isMobile} data-demo-region>
       <FilterContainer>
         <CustomSelect value={dateLabel} triggerLabel={dateLabel} highlightOnSelect={true} width="160px">
           <CustomDatePicker mode="single" selectedDate={new Date(now)} onDateChange={() => dispatch({ type: 'UNSUPPORTED' })} />
         </CustomSelect>
-        <UpdateInfo>
-          <UpdateLabel>
-            {`최종 업데이트 ${format(new Date(now), 'HH:mm')} · `}
-            {STATISTICS_POLLING_MINUTES}분마다 자동 갱신
-          </UpdateLabel>
-          <RefreshSpinIcon isLoading={false} onClick={() => undefined} />
-        </UpdateInfo>
+        {!isMobile && (
+          <UpdateInfo>
+            <UpdateLabel>
+              {`최종 업데이트 ${format(new Date(now), 'HH:mm')} · `}
+              {STATISTICS_POLLING_MINUTES}분마다 자동 갱신
+            </UpdateLabel>
+            <RefreshSpinIcon isLoading={false} onClick={() => undefined} />
+          </UpdateInfo>
+        )}
       </FilterContainer>
-      <SectionRow>
-        <StatCardGrid>
+      <SectionRow isMobile={isMobile}>
+        <StatCardGrid isMobile={isMobile}>
           <StatCard
             title="총 주문 건수"
             height={ORDER_STATISTICS_SUMMARY_CARD_HEIGHT}
@@ -144,9 +158,9 @@ function DemoAdminStatsPage() {
         </StatCardGrid>
         <PaymentMethodRatioSection statistics={paymentMethodStatistics} isLoading={false} hasError={false} onRetry={() => undefined} />
       </SectionRow>
-      <SectionRow>
+      <SectionRow isMobile={isMobile}>
         <ContentCard title="시간대별 추이" showDivider={false}>
-          <HourlySalesChart salesByHour={statistics.salesByHour} />
+          <HourlySalesChart salesByHour={statistics.salesByHour} isMobile={isMobile} />
         </ContentCard>
         <PopularProductsSection popularProducts={statistics.popularProducts} />
       </SectionRow>

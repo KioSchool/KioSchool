@@ -5,13 +5,14 @@ import { LandingColor } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 
 const DEVICE_TABS: { device: DemoDevice; label: string }[] = [
-  { device: 'guest', label: '손님 화면' },
-  { device: 'admin', label: '운영진 화면' },
+  { device: 'guest', label: '손님 폰' },
+  { device: 'admin', label: '운영진' },
 ];
 
 const Tabs = styled.div`
-  height: 40px;
-  margin-bottom: 12px;
+  flex: 1;
+  min-width: 0;
+  height: 44px;
   padding: 4px;
   border-radius: 10px;
   background: #f2f4f6;
@@ -34,6 +35,7 @@ const Tab = styled.button<{ isSelected: boolean }>`
   font-family: inherit;
   font-size: 14px;
   font-weight: 600;
+  white-space: nowrap;
   color: ${LandingColor.CAPTION};
   cursor: pointer;
   ${({ isSelected }) => isSelected && selectedTabStyle}

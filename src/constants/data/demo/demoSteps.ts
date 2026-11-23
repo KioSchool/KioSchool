@@ -33,6 +33,15 @@ export const DEMO_STEPS: DemoStep[] = [
   { chapter: 4, device: 'admin', adminPage: 'stats', guide: '영업이 끝났어요. 오늘 매출과 시간대별 주문을 확인해 보세요' },
 ];
 
+export const DEMO_ADMIN_PAGE_SHORT_LABEL: Record<DemoAdminPage, string> = {
+  table: '테이블 관리',
+  orders: '주문 조회',
+  stats: '주문 통계',
+};
+
+// 중간 단계로 바로 들어왔을 때 '앞 단계(…)는 대신 해 두었습니다'에 쓰는 단계 이름
+export const DEMO_STEP_SHORT_NAMES = ['사용 시작', '주문', '송금', '입금 확인', '서빙 완료', '시간 늘리기', '사용 종료', '마감 정산'];
+
 export const DEMO_FINISHED_STEP = DEMO_STEPS.length + 1;
 
 export const getDemoStep = (step: number) => DEMO_STEPS[Math.min(Math.max(step, 1), DEMO_STEPS.length) - 1];

@@ -41,7 +41,7 @@ function DemoAdminTablePage() {
   const quickStart = (tableNumber: number) => dispatch({ type: 'TABLE_START', tableNumber, now: Date.now() });
 
   return (
-    <Page>
+    <Page data-demo-region>
       <DemoTableTopBar filterType={filterType} filterCounts={counts} onChangeFilter={setFilterType} />
       <Container>
         {match(tableViewMode)

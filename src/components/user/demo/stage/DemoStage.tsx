@@ -1,7 +1,7 @@
 import { match } from 'ts-pattern';
+import DemoMobileStage from '@components/user/demo/mobile/DemoMobileStage';
 import useIsMobile from '@hooks/useIsMobile';
 import DemoDesktopStage from './DemoDesktopStage';
-import DemoMobileStage from './DemoMobileStage';
 
 function DemoStage() {
   const isMobile = useIsMobile();
