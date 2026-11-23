@@ -62,8 +62,9 @@ const ComponentList = styled.div`
 
 const Notice = styled.div`
   padding: 12px 14px;
+  border: 1px solid ${Color.KIO_ORANGE_ICON_BG};
   border-radius: 10px;
-  background: ${Color.BLUE_FAINT};
+  background: ${Color.KIO_ORANGE_FAINT};
   font-size: 12px;
   line-height: 1.5;
   color: ${Color.TEXT_DEFAULT};
