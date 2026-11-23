@@ -153,16 +153,6 @@ function SetProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, 
     }));
   };
 
-  const handleMoveComponent = (index: number, direction: -1 | 1) => {
-    setValue((previous) => {
-      const nextComponents = [...previous.components];
-      const targetIndex = index + direction;
-      if (targetIndex < 0 || targetIndex >= nextComponents.length) return previous;
-      [nextComponents[index], nextComponents[targetIndex]] = [nextComponents[targetIndex], nextComponents[index]];
-      return { ...previous, components: nextComponents };
-    });
-  };
-
   const handleDeleteComponent = (index: number) => {
     setValue((previous) => ({ ...previous, components: previous.components.filter((_, itemIndex) => itemIndex !== index) }));
   };
@@ -210,7 +200,6 @@ function SetProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, 
             products={products}
             onAdd={handleAddComponent}
             onChange={handleChangeComponent}
-            onMove={handleMoveComponent}
             onDelete={handleDeleteComponent}
           />
           <SetProductPriceFields value={value} onChange={setValue} />

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { RiArrowDownSLine, RiArrowUpSLine, RiDeleteBinLine } from '@remixicon/react';
+import { RiDeleteBinLine } from '@remixicon/react';
 
 import NewAppInput from '@components/common/input/NewAppInput';
 import NumberInput from '@components/common/input/NumberInput';
@@ -13,24 +13,17 @@ import SetProductConditionSelect from './SetProductConditionSelect';
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: minmax(210px, 1.5fr) 116px minmax(150px, 0.9fr) auto;
-  gap: 10px;
-  padding: 12px;
-  border: 1px solid ${Color.BORDER_GREY};
-  border-radius: 14px;
+  grid-template-columns: minmax(0, 1.35fr) 112px minmax(0, 1.1fr) 32px;
+  gap: 12px;
+  padding: 12px 14px;
+  border-top: 1px solid ${Color.BORDER_GREY};
   background: ${Color.WHITE};
+  align-items: center;
 `;
 
 const Field = styled.label`
   min-width: 0;
-  gap: 6px;
   ${colFlex()}
-`;
-
-const Label = styled.span`
-  font-size: 11px;
-  font-weight: 700;
-  color: ${Color.TEXT_SUBTLE};
 `;
 
 const ComponentNameInput = styled(NewAppInput)`
@@ -38,10 +31,7 @@ const ComponentNameInput = styled(NewAppInput)`
 `;
 
 const Actions = styled.div`
-  gap: 4px;
-  align-self: end;
-  padding-bottom: 3px;
-  ${rowFlex({ align: 'center' })}
+  ${rowFlex({ justify: 'center', align: 'center' })}
 `;
 
 const IconButton = styled.button`
@@ -67,6 +57,8 @@ const IconButton = styled.button`
 `;
 
 const DeleteButton = styled(IconButton)`
+  border: none;
+
   &:hover:not(:disabled) {
     border-color: ${Color.RED};
     color: ${Color.RED};
@@ -76,31 +68,17 @@ const DeleteButton = styled(IconButton)`
 interface SetProductComponentRowProps {
   component: SetProductComponentFormValue;
   products: AdminProduct[];
-  canMoveUp: boolean;
-  canMoveDown: boolean;
   canDelete: boolean;
   onChange: (component: SetProductComponentFormValue) => void;
-  onMoveUp: () => void;
-  onMoveDown: () => void;
   onDelete: () => void;
 }
 
-function SetProductComponentRow({
-  component,
-  products,
-  canMoveUp,
-  canMoveDown,
-  canDelete,
-  onChange,
-  onMoveUp,
-  onMoveDown,
-  onDelete,
-}: SetProductComponentRowProps) {
+function SetProductComponentRow({ component, products, canDelete, onChange, onDelete }: SetProductComponentRowProps) {
   return (
     <Container>
       <Field>
-        <Label>구성품명</Label>
         <ComponentNameInput
+          aria-label="구성품명"
           height={42}
           value={component.name}
           placeholder="예: 족발 소"
@@ -109,7 +87,6 @@ function SetProductComponentRow({
       </Field>
 
       <Field>
-        <Label>세트 1개당 수량</Label>
         <NumberInput
           value={component.quantity}
           maxWidth="116px"
@@ -121,7 +98,6 @@ function SetProductComponentRow({
       </Field>
 
       <Field>
-        <Label>연결 상품</Label>
         <SetProductConditionSelect
           products={products}
           value={component.conditionProductId}
@@ -130,12 +106,6 @@ function SetProductComponentRow({
       </Field>
 
       <Actions>
-        <IconButton type="button" aria-label="위로 이동" disabled={!canMoveUp} onClick={onMoveUp}>
-          <RiArrowUpSLine size={18} />
-        </IconButton>
-        <IconButton type="button" aria-label="아래로 이동" disabled={!canMoveDown} onClick={onMoveDown}>
-          <RiArrowDownSLine size={18} />
-        </IconButton>
         <DeleteButton type="button" aria-label="구성품 삭제" disabled={!canDelete} onClick={onDelete}>
           <RiDeleteBinLine size={16} />
         </DeleteButton>

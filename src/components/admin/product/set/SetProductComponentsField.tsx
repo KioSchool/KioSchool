@@ -15,7 +15,6 @@ const Section = styled.section`
 `;
 
 const Header = styled.div`
-  gap: 16px;
   ${rowFlex({ justify: 'space-between', align: 'flex-start' })}
 `;
 
@@ -38,6 +37,7 @@ const Description = styled.p`
 `;
 
 const AddButton = styled.button`
+  align-self: flex-start;
   flex-shrink: 0;
   padding: 8px 12px;
   border: 1px solid ${Color.KIO_ORANGE};
@@ -55,15 +55,32 @@ const AddButton = styled.button`
   }
 `;
 
+const Table = styled.div`
+  overflow: hidden;
+  border: 1px solid ${Color.BORDER_GREY};
+  border-radius: 14px;
+  ${colFlex()}
+`;
+
+const TableHeader = styled.div`
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) 112px minmax(0, 1.1fr) 32px;
+  gap: 12px;
+  padding: 12px 14px;
+  background: ${Color.LIGHT_GREY};
+  font-size: 11px;
+  font-weight: 700;
+  color: ${Color.TEXT_SUBTLE};
+`;
+
 const ComponentList = styled.div`
-  gap: 10px;
   ${colFlex()}
 `;
 
 const Notice = styled.div`
-  padding: 12px 14px;
-  border: 1px solid ${Color.KIO_ORANGE_ICON_BG};
-  border-radius: 10px;
+  margin: 0 14px 14px;
+  padding: 11px 12px;
+  border-radius: 8px;
   background: ${Color.KIO_ORANGE_FAINT};
   font-size: 12px;
   line-height: 1.5;
@@ -75,11 +92,10 @@ interface SetProductComponentsFieldProps {
   products: AdminProduct[];
   onAdd: () => void;
   onChange: (index: number, component: SetProductComponentFormValue) => void;
-  onMove: (index: number, direction: -1 | 1) => void;
   onDelete: (index: number) => void;
 }
 
-function SetProductComponentsField({ components, products, onAdd, onChange, onMove, onDelete }: SetProductComponentsFieldProps) {
+function SetProductComponentsField({ components, products, onAdd, onChange, onDelete }: SetProductComponentsFieldProps) {
   return (
     <Section>
       <Header>
@@ -87,30 +103,34 @@ function SetProductComponentsField({ components, products, onAdd, onChange, onMo
           <Title>제공 구성</Title>
           <Description>실제로 내주는 구성품을 입력하고, 품절 상태를 따라갈 일반 메뉴를 연결해주세요.</Description>
         </Heading>
-        <AddButton type="button" onClick={onAdd}>
-          <RiAddLine size={16} />
-          구성품 추가
-        </AddButton>
       </Header>
 
-      <Notice>연결 상품이 품절되면 세트도 자동으로 품절됩니다. 연결하지 않은 구성품은 운영자가 직접 판매 상태를 관리합니다.</Notice>
+      <Table>
+        <TableHeader>
+          <span>구성품</span>
+          <span>수량</span>
+          <span>연결 메뉴</span>
+          <span />
+        </TableHeader>
+        <ComponentList>
+          {components.map((component, index) => (
+            <SetProductComponentRow
+              key={component.key}
+              component={component}
+              products={products}
+              canDelete={components.length > 1}
+              onChange={(nextComponent) => onChange(index, nextComponent)}
+              onDelete={() => onDelete(index)}
+            />
+          ))}
+        </ComponentList>
+        <Notice>연결 메뉴가 품절되면 세트도 자동으로 품절됩니다. 연결하지 않은 구성품은 세트 판매 상태에 영향을 주지 않습니다.</Notice>
+      </Table>
 
-      <ComponentList>
-        {components.map((component, index) => (
-          <SetProductComponentRow
-            key={component.key}
-            component={component}
-            products={products}
-            canMoveUp={index > 0}
-            canMoveDown={index < components.length - 1}
-            canDelete={components.length > 1}
-            onChange={(nextComponent) => onChange(index, nextComponent)}
-            onMoveUp={() => onMove(index, -1)}
-            onMoveDown={() => onMove(index, 1)}
-            onDelete={() => onDelete(index)}
-          />
-        ))}
-      </ComponentList>
+      <AddButton type="button" onClick={onAdd}>
+        <RiAddLine size={16} />
+        구성 추가
+      </AddButton>
     </Section>
   );
 }
