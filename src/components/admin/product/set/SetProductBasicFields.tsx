@@ -45,6 +45,10 @@ const ImageField = styled.div`
     align-items: flex-start;
   }
 
+  .image-label-container > div {
+    font-size: 14px;
+  }
+
   .image,
   .upload-image-wrapper {
     border-radius: 16px;
@@ -69,7 +73,7 @@ const BasicRow = styled.div`
 const FieldGrid = styled.div`
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 18px 16px;
+  gap: 10px 16px;
 
   ${mobileMediaQuery} {
     grid-template-columns: minmax(0, 1fr);
@@ -94,6 +98,11 @@ const FieldLabel = styled.span`
   font-size: 14px;
   font-weight: 700;
   color: ${Color.TEXT_STRONG};
+`;
+
+const DescriptionInput = styled(NewAppTextarea)`
+  padding: 13px 30px;
+  border-radius: 25px;
 `;
 
 interface SetProductBasicFieldsProps {
@@ -140,12 +149,12 @@ function SetProductBasicFields({ value, categories, onChange, onImageChange }: S
             </Field>
             <WideField>
               <FieldLabel>세트 설명</FieldLabel>
-              <NewAppTextarea
+              <DescriptionInput
                 value={value.description}
                 maxLength={30}
                 placeholder="손님이 제공 구성을 알 수 있게 적어주세요."
                 width="100%"
-                height={100}
+                height={50}
                 onChange={(event) => onChange({ ...value, description: event.target.value })}
               />
             </WideField>
