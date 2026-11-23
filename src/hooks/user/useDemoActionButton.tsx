@@ -9,7 +9,7 @@ function useDemoActionButton() {
   const dispatch = useSetAtom(demoStateAtom);
   const { label, variant } = match(step === DEMO_STEP.CLOSING)
     .with(true, () => ({ label: '다 봤어요', variant: 'primary' as LandingButtonVariant }))
-    .otherwise(() => ({ label: '대신 해 주기', variant: 'secondary' as LandingButtonVariant }));
+    .otherwise(() => ({ label: '건너뛰기', variant: 'secondary' as LandingButtonVariant }));
 
   const handleClick = () => {
     dispatch({ type: 'DO_FOR_ME', now: Date.now() });

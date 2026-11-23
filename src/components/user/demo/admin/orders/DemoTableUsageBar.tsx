@@ -65,7 +65,11 @@ const LinkArrow = styled(RiArrowRightSLine)`
   height: ${ICON_SIZE_PX}px;
 `;
 
-function DemoTableUsageBar() {
+interface DemoTableUsageBarProps {
+  hasTableLink?: boolean;
+}
+
+function DemoTableUsageBar({ hasTableLink = true }: DemoTableUsageBarProps) {
   const { tables } = useAtomValue(demoStateAtom);
   const dispatch = useSetAtom(demoStateAtom);
   const tablesInUseCount = tables.filter((table) => getTableStatus(table) !== TABLE_STATUS.EMPTY).length;
@@ -92,10 +96,12 @@ function DemoTableUsageBar() {
           </span>
         </Message>
       )}
-      <TableLink type="button" onClick={() => dispatch({ type: 'ADMIN_PAGE', page: 'table' })}>
-        테이블 관리
-        <LinkArrow />
-      </TableLink>
+      {hasTableLink && (
+        <TableLink type="button" onClick={() => dispatch({ type: 'ADMIN_PAGE', page: 'table' })}>
+          테이블 관리
+          <LinkArrow />
+        </TableLink>
+      )}
     </Container>
   );
 }

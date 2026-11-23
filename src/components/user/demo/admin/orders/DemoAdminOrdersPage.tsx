@@ -49,7 +49,8 @@ function DemoAdminOrdersPage({ isMobile = false }: DemoAdminOrdersPageProps) {
     <ListContainer ref={containerRef} isMobile={isMobile} data-demo-region>
       <TopRow>
         <SummarySlot>
-          <DemoTableUsageBar />
+          {/* 폰에는 운영진 메뉴가 없어 테이블 관리로 가면 주문판으로 돌아올 길이 없다 */}
+          <DemoTableUsageBar hasTableLink={!isMobile} />
         </SummarySlot>
         {!isMobile && (
           <NewCommonButton size="sm" onClick={() => dispatch({ type: 'UNSUPPORTED' })}>

@@ -9,7 +9,7 @@ import { colFlex, rowFlex } from '@styles/flexStyles';
 import { LANDING_BUTTON_VARIANT_STYLE, landingButtonBaseStyle } from '@styles/landingButtonStyles';
 import DemoPcOnlyNote from './DemoPcOnlyNote';
 
-const SKIP_LINE = "막히면 아래 '대신 해 주기'로 넘어갈 수 있습니다.";
+const SKIP_LINE = "막히면 아래 '건너뛰기'로 넘어갈 수 있습니다.";
 
 const Overlay = styled.div`
   position: absolute;
