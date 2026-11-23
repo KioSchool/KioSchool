@@ -31,6 +31,7 @@ export function createEmptySetComponent(key: string): SetProductComponentFormVal
 }
 
 export function validateSetProductForm(value: SetProductFormValue): string | null {
+  if (!value.image.url && !value.image.file) return '세트 이미지를 등록해주세요.';
   if (!value.name.trim() || !value.description.trim()) return '세트 이름과 설명을 입력해주세요.';
 
   const originalPrice = parseSetPrice(value.originalPrice);
