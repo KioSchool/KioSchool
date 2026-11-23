@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
-import { LANDING_BUTTON_LABEL, LANDING_DEMO_PATH } from '@constants/data/landingContent';
-import LandingLinkButton from '@components/user/landing/LandingLinkButton';
 import RevealOnScroll from '@components/user/landing/RevealOnScroll';
 import { LandingColor } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { LandingInner, landingEyebrowTypography } from '@styles/landingStyles';
+import { DEMO_ENTRY } from '@constants/analytics';
+import LandingDemoButton from '@components/user/landing/LandingDemoButton';
 
 const Section = styled.section`
   width: 100%;
@@ -94,7 +94,7 @@ function DemoBanner() {
               </Description>
             </Text>
             <Action>
-              <LandingLinkButton to={LANDING_DEMO_PATH} label={LANDING_BUTTON_LABEL.DEMO} size="large" withPlayIcon />
+              <LandingDemoButton entry={DEMO_ENTRY.BANNER} size="large" />
               <Caption>회원가입 없이 바로 시작돼요</Caption>
             </Action>
           </Banner>

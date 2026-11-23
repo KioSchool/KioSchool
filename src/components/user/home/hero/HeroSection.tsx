@@ -3,8 +3,7 @@ import styled from '@emotion/styled';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { USER_ROUTES } from '@constants/routes';
-import { LANDING_BUTTON_LABEL, LANDING_DEMO_PATH } from '@constants/data/landingContent';
-import LandingLinkButton from '@components/user/landing/LandingLinkButton';
+import { LANDING_BUTTON_LABEL } from '@constants/data/landingContent';
 import LandingStartButton from '@components/user/landing/LandingStartButton';
 import useMouseGlow, { MouseGlow } from '@components/user/landing/useMouseGlow';
 import cloud1 from '@resources/image/home/cloud1.png';
@@ -13,6 +12,8 @@ import { LandingColor } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { LandingInner, landingEyebrowTypography, landingLeadTypography } from '@styles/landingStyles';
+import { DEMO_ENTRY } from '@constants/analytics';
+import LandingDemoButton from '@components/user/landing/LandingDemoButton';
 import HeroVisual from './HeroVisual';
 import ScrollIndicator from './ScrollIndicator';
 
@@ -166,7 +167,7 @@ function HeroSection() {
             </Lead>
             <Buttons>
               <LandingStartButton location="hero" />
-              <LandingLinkButton to={LANDING_DEMO_PATH} label={LANDING_BUTTON_LABEL.DEMO} variant="outline" withPlayIcon />
+              <LandingDemoButton entry={DEMO_ENTRY.HERO} variant="outline" />
             </Buttons>
             <InfoLink to={USER_ROUTES.INFO}>{LANDING_BUTTON_LABEL.INFO} ›</InfoLink>
           </Text>

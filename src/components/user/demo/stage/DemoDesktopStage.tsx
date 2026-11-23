@@ -10,6 +10,7 @@ import { demoStateAtom } from '@jotai/user/demoAtoms';
 import { LandingColor } from '@resources/colors';
 import { DEMO_ADMIN_DESIGN, DEMO_GUEST_DESIGN, DEMO_STAGE_WIDTH } from '@styles/demoStyles';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { recordDemoTap } from '@utils/demo/demoAnalytics';
 import DemoActions from './DemoActions';
 import DemoDeviceFrame from './DemoDeviceFrame';
 
@@ -81,7 +82,7 @@ function DemoDesktopStage() {
       <GuideArea>
         <DemoGuide stepNumber={state.step} text={step.guide} />
       </GuideArea>
-      <Devices>
+      <Devices onClickCapture={recordDemoTap}>
         <PhoneColumn>
           <DemoDeviceFrame device="guest" shape="phone" designWidth={DEMO_GUEST_DESIGN.width} designHeight={DEMO_GUEST_DESIGN.height}>
             <DemoGuestScreen />

@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useAtomValue } from 'jotai';
 import { match } from 'ts-pattern';
+import { DEMO_ACTION } from '@constants/analytics';
 import { DemoDevice, getDemoStep } from '@constants/data/demo/demoSteps';
 import DemoGuide from '@components/user/demo/DemoGuide';
 import DemoGuestScreen from '@components/user/demo/guest/DemoGuestScreen';
 import { demoStateAtom } from '@jotai/user/demoAtoms';
 import { colFlex } from '@styles/flexStyles';
+import { recordDemoTap, trackDemoAction } from '@utils/demo/demoAnalytics';
 import DemoMobileAdminScreen from './DemoMobileAdminScreen';
 import DemoMobileBottomBar from './DemoMobileBottomBar';
 import DemoMobileDeviceBar from './DemoMobileDeviceBar';
@@ -55,6 +57,28 @@ function DemoMobileStage() {
     setIsOverviewOpen(false);
   }, [state.step, step.device]);
 
+  const handleChangeView = (device: DemoDevice) => {
+    if (device === view) return;
+    trackDemoAction(
+      match(device)
+        .with('guest', () => DEMO_ACTION.VIEW_GUEST)
+        .with('admin', () => DEMO_ACTION.VIEW_ADMIN)
+        .exhaustive(),
+      state.step,
+    );
+    setView(device);
+  };
+
+  const handleOpenOverview = () => {
+    trackDemoAction(DEMO_ACTION.OVERVIEW, state.step);
+    setIsOverviewOpen(true);
+  };
+
+  const handleShowGuest = () => {
+    trackDemoAction(DEMO_ACTION.PEEK_VIEW, state.step);
+    setView('guest');
+  };
+
   return (
     <Container>
       <DemoMobileHeader chapter={step.chapter} stepNumber={state.step} />
@@ -62,16 +86,16 @@ function DemoMobileStage() {
         <DemoGuide stepNumber={state.step} text={step.guide} />
       </GuideArea>
       <Screen>
-        <DemoMobileDeviceBar view={view} adminPage={state.adminPage} onOpenOverview={() => setIsOverviewOpen(true)} />
-        <DeviceBody data-demo-device={view}>
+        <DemoMobileDeviceBar view={view} adminPage={state.adminPage} onOpenOverview={handleOpenOverview} />
+        <DeviceBody data-demo-device={view} onClickCapture={recordDemoTap}>
           {match(view)
             .with('guest', () => <DemoGuestScreen />)
             .with('admin', () => <DemoMobileAdminScreen />)
             .exhaustive()}
-          <DemoMobileGuestPeek isAdminView={view === 'admin'} onShowGuest={() => setView('guest')} />
+          <DemoMobileGuestPeek isAdminView={view === 'admin'} onShowGuest={handleShowGuest} />
         </DeviceBody>
       </Screen>
-      <DemoMobileBottomBar view={view} onChangeView={setView} />
+      <DemoMobileBottomBar view={view} onChangeView={handleChangeView} />
       {isOverviewOpen && <DemoMobileOverview onClose={() => setIsOverviewOpen(false)} />}
       <DemoMobileIntroSheet />
     </Container>

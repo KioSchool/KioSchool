@@ -69,7 +69,13 @@ export const TEST_ROUTES = {
 
 export const DEMO_STEP_PARAM = 'step';
 
-export const getDemoPath = (step: number) => `${USER_ROUTES.DEMO}?${DEMO_STEP_PARAM}=${step}`;
+export const DEMO_ENTRY_PARAM = 'from';
+
+export const getDemoEntryPath = (entry: string, step?: number) => {
+  const params = new URLSearchParams({ [DEMO_ENTRY_PARAM]: entry });
+  if (step !== undefined) params.set(DEMO_STEP_PARAM, String(step));
+  return `${USER_ROUTES.DEMO}?${params.toString()}`;
+};
 
 export const getAdminWorkspacePath = (workspaceId: string | number) => `/admin/workspace/${workspaceId}`;
 

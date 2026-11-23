@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
-import { INFO_SECTION_ID, LANDING_BUTTON_LABEL, LANDING_DEMO_PATH, LANDING_STATS } from '@constants/data/landingContent';
+import { INFO_SECTION_ID, LANDING_STATS } from '@constants/data/landingContent';
 import CountUpValue from '@components/user/landing/CountUpValue';
-import LandingLinkButton from '@components/user/landing/LandingLinkButton';
 import LandingStartButton from '@components/user/landing/LandingStartButton';
 import ProductShot from '@components/user/landing/ProductShot';
 import RevealOnScroll from '@components/user/landing/RevealOnScroll';
@@ -11,6 +10,8 @@ import { LandingColor } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { LandingInner, landingEyebrowTypography, landingLeadTypography } from '@styles/landingStyles';
+import { DEMO_ENTRY } from '@constants/analytics';
+import LandingDemoButton from '@components/user/landing/LandingDemoButton';
 
 const DASHBOARD_RATIO = 2360 / 1380;
 
@@ -162,7 +163,7 @@ function InfoHeroSection() {
           <Lead>{'손님 주문부터 입금 확인, 테이블 시간, 마감 정산까지\n키오스쿨로 할 수 있는 일을 하나씩 소개합니다.'}</Lead>
           <Buttons>
             <LandingStartButton location="info_hero" />
-            <LandingLinkButton to={LANDING_DEMO_PATH} label={LANDING_BUTTON_LABEL.DEMO} variant="outline" withPlayIcon />
+            <LandingDemoButton entry={DEMO_ENTRY.INFO} variant="outline" />
           </Buttons>
           <TableOfContents aria-label="소개 목차">
             {TABLE_OF_CONTENTS.map((item) => (

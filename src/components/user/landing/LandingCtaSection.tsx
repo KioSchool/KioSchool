@@ -2,14 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { motion, useInView } from 'framer-motion';
 import Typewriter from 'typewriter-effect';
-import { LANDING_BUTTON_LABEL, LANDING_DEMO_PATH } from '@constants/data/landingContent';
 import { LandingColor } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { LandingInner, landingLeadTypography, landingTitleTypography } from '@styles/landingStyles';
-import LandingLinkButton from './LandingLinkButton';
+import { DEMO_ENTRY } from '@constants/analytics';
 import LandingStartButton from './LandingStartButton';
 import useMouseGlow, { MouseGlow } from './useMouseGlow';
+import LandingDemoButton from './LandingDemoButton';
 
 const BRAND_NAME = '키오스쿨';
 const KIO_GLOW_BLUR = 28;
@@ -138,7 +138,7 @@ function LandingCtaSection({ location }: LandingCtaSectionProps) {
           >
             <Buttons>
               <LandingStartButton location={location} size="large" />
-              <LandingLinkButton to={LANDING_DEMO_PATH} label={LANDING_BUTTON_LABEL.DEMO} variant="outlineOnDark" size="large" withPlayIcon />
+              <LandingDemoButton entry={DEMO_ENTRY.CTA} variant="outlineOnDark" size="large" />
             </Buttons>
             <Note>별도 비용 없이 시작할 수 있어요</Note>
           </motion.div>

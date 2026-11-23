@@ -1,7 +1,4 @@
-import { USER_ROUTES } from '@constants/routes';
 import { formatKoreanRevenue } from '@utils/formatKoreanRevenue';
-
-export const LANDING_DEMO_PATH = USER_ROUTES.DEMO;
 
 export const LANDING_BUTTON_LABEL = {
   START: '무료로 시작하기',

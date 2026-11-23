@@ -2,13 +2,15 @@ import { ReactNode } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
-import { getDemoPath } from '@constants/routes';
+import { DEMO_ENTRY, GA_EVENT } from '@constants/analytics';
+import { getDemoEntryPath } from '@constants/routes';
 import RevealOnScroll from '@components/user/landing/RevealOnScroll';
 import SectionHeading from '@components/user/landing/SectionHeading';
 import { LandingColor } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { mobileMediaQuery } from '@styles/globalStyles';
 import { LandingInner, LandingSection, LandingTone, landingBodyTypography } from '@styles/landingStyles';
+import { trackEvent } from '@utils/analytics';
 
 export type FeatureLayout = 'row' | 'column';
 
@@ -86,7 +88,12 @@ function FeatureSection({ eyebrow, titleLines, description, layout, tone, demoSt
             <SectionHeading eyebrow={eyebrow} titleLines={titleLines} />
             <RevealOnScroll delay={0.1}>
               <Description>{description}</Description>
-              <DemoLink to={getDemoPath(demoStep)}>이 장면 체험해보기 ›</DemoLink>
+              <DemoLink
+                to={getDemoEntryPath(DEMO_ENTRY.FEATURE, demoStep)}
+                onClick={() => trackEvent(GA_EVENT.CTA_CLICK, { location: DEMO_ENTRY.FEATURE, label: `demo_step_${demoStep}` })}
+              >
+                이 장면 체험해보기 ›
+              </DemoLink>
             </RevealOnScroll>
           </Text>
           <Visual>

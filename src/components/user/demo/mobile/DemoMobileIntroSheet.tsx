@@ -1,12 +1,14 @@
 import { useId, useState } from 'react';
 import styled from '@emotion/styled';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { DEMO_ACTION } from '@constants/analytics';
 import { DEMO_CHAPTERS, DEMO_STEP, DEMO_STEP_SHORT_NAMES, getDemoStep } from '@constants/data/demo/demoSteps';
 import { DEMO_TABLE_NUMBER } from '@constants/data/demo/demoSeed';
 import { demoMobileIntroSeenAtom, demoStateAtom } from '@jotai/user/demoAtoms';
 import { LandingColor } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { LANDING_BUTTON_VARIANT_STYLE, landingButtonBaseStyle } from '@styles/landingButtonStyles';
+import { trackDemoAction } from '@utils/demo/demoAnalytics';
 import DemoPcOnlyNote from './DemoPcOnlyNote';
 
 const SKIP_LINE = "막히면 아래 '건너뛰기'로 넘어갈 수 있습니다.";
@@ -135,6 +137,11 @@ function DemoMobileIntroSheet() {
 
   if (isSeen) return null;
 
+  const handleStart = () => {
+    trackDemoAction(DEMO_ACTION.INTRO_START, step);
+    setIsSeen(true);
+  };
+
   const handleRestart = () => {
     dispatch({ type: 'RESTART', now: Date.now(), step: DEMO_STEP.START });
     setIsSeen(true);
@@ -161,7 +168,7 @@ function DemoMobileIntroSheet() {
         <NoteArea>
           <DemoPcOnlyNote />
         </NoteArea>
-        <StartButton type="button" onClick={() => setIsSeen(true)}>
+        <StartButton type="button" onClick={handleStart}>
           {content.startLabel}
         </StartButton>
         {isMidwayEntry && (
