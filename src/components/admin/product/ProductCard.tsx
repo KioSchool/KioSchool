@@ -125,15 +125,9 @@ const Price = styled.strong<{ isSellable: boolean }>`
 `;
 
 const StatusControl = styled.div`
-  width: 124px;
+  width: 190px;
   flex-shrink: 0;
-  gap: 7px;
   ${colFlex({ align: 'center' })}
-`;
-
-const StatusControlLabel = styled.span`
-  font-size: 11px;
-  color: ${Color.MUTED_GREY};
 `;
 
 interface ProductCardProps {
@@ -228,7 +222,6 @@ function ProductCard({ product, onClick, showStatusSelector = true }: ProductCar
 
       {showStatusSelector && (
         <StatusControl onClick={(event) => event.stopPropagation()}>
-          <StatusControlLabel>{isSetProduct ? '직접 판매 상태' : '판매 상태'}</StatusControlLabel>
           <SelectWithProductStatus currentStatus={product.status} onStatusChange={handleStatusChange} />
         </StatusControl>
       )}
