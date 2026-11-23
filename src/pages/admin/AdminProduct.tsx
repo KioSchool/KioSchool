@@ -8,6 +8,7 @@ import ProductCard from '@components/admin/product/ProductCard';
 import ProductDroppableContainer from '@components/admin/product/ProductDroppableContainer';
 import ProductEdit from '@components/admin/product/ProductEdit';
 import ProductEditorModal from '@components/admin/product/ProductEditorModal';
+import ProductListPreview from '@components/admin/product/ProductListPreview';
 import { ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardingData';
 import OnboardingStepHint from '@components/admin/workspace/onboarding/OnboardingStepHint';
 import NewCommonButton from '@components/common/button/NewCommonButton';
@@ -17,6 +18,7 @@ import useAdminProducts from '@hooks/admin/useAdminProducts';
 import useConfirm from '@hooks/useConfirm';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
+import { tabletMediaQuery } from '@styles/globalStyles';
 import { ProductType } from '@@types/index';
 
 const Container = styled.div`
@@ -35,6 +37,33 @@ const ProductAddButtonContainer = styled.div`
 const AddButtonGroup = styled.div`
   gap: 8px;
   ${rowFlex({ align: 'center' })}
+`;
+
+const ContentLayout = styled.div`
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  width: 95%;
+  gap: 24px;
+  align-items: start;
+
+  ${tabletMediaQuery} {
+    grid-template-columns: minmax(0, 1fr);
+  }
+`;
+
+const CategoryList = styled.div`
+  min-width: 0;
+  gap: 14px;
+  ${colFlex()}
+`;
+
+const PreviewColumn = styled.div`
+  position: sticky;
+  top: 24px;
+
+  ${tabletMediaQuery} {
+    position: static;
+  }
 `;
 
 const DragHintText = styled.div`
@@ -120,15 +149,22 @@ function AdminProduct() {
         </ProductAddButtonContainer>
 
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={handleDragStart} onDragOver={handleDragOver} onDragEnd={handleDragEnd}>
-          {categories.map((category) => (
-            <ProductDroppableContainer
-              key={category.id || 'default'}
-              categoryId={category.id}
-              categoryName={category.name}
-              products={products.filter((p) => (p.productCategory?.id || null) === category.id)}
-              onProductClick={handleOpenEditProduct}
-            />
-          ))}
+          <ContentLayout>
+            <CategoryList>
+              {categories.map((category) => (
+                <ProductDroppableContainer
+                  key={category.id || 'default'}
+                  categoryId={category.id}
+                  categoryName={category.name}
+                  products={products.filter((product) => (product.productCategory?.id || null) === category.id)}
+                  onProductClick={handleOpenEditProduct}
+                />
+              ))}
+            </CategoryList>
+            <PreviewColumn>
+              <ProductListPreview categories={categories} products={products} />
+            </PreviewColumn>
+          </ContentLayout>
 
           <DragOverlay>{activeProduct ? <ProductCard product={activeProduct} showStatusSelector={false} /> : null}</DragOverlay>
         </DndContext>

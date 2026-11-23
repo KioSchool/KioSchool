@@ -8,14 +8,14 @@ import ProductSortableItem from './ProductSortableItem';
 
 const Container = styled.div`
   box-sizing: border-box;
-  width: 95%;
+  width: 100%;
   padding: 22px 26px 26px;
   gap: 16px;
   border: 1px solid ${Color.BORDER_GREY};
   border-radius: 16px;
   background: ${Color.WHITE};
   box-shadow: 0 4px 20px 0 rgba(92, 92, 92, 0.05) outset;
-  ${colFlex({ justify: 'center', align: 'center' })};
+  ${colFlex({ justify: 'center' })};
 `;
 
 const CategoryTitle = styled.div`

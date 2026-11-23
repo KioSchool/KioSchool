@@ -5,7 +5,7 @@ import { RiAddLine } from '@remixicon/react';
 import defaultProductImage from '@resources/image/defaultWorkspaceImage.png';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { AdminProduct, ProductCategory, ProductStatus, ProductType } from '@@types/index';
+import { AdminProduct, ProductStatus, ProductType } from '@@types/index';
 
 const Container = styled.aside`
   gap: 14px;
@@ -185,7 +185,7 @@ const Empty = styled.div`
 `;
 
 interface ProductListPreviewProps {
-  categories: ProductCategory[];
+  categories: Array<{ id: number | null; name: string }>;
   products: AdminProduct[];
 }
 
@@ -206,7 +206,12 @@ function ProductListPreview({ categories, products }: ProductListPreviewProps) {
         <ScreenTitle>메뉴를 선택해주세요</ScreenTitle>
         <CategoryTabs>
           {categories.map((category) => (
-            <CategoryButton type="button" key={category.id} isSelected={category.id === activeCategoryId} onClick={() => setSelectedCategoryId(category.id)}>
+            <CategoryButton
+              type="button"
+              key={category.id ?? 'default'}
+              isSelected={category.id === activeCategoryId}
+              onClick={() => setSelectedCategoryId(category.id)}
+            >
               {category.name}
             </CategoryButton>
           ))}
