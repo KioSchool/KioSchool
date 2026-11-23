@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 
 import useAdminProducts from '@hooks/admin/useAdminProducts';
+import useConfirm from '@hooks/useConfirm';
 import defaultProductImage from '@resources/image/defaultWorkspaceImage.png';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
@@ -154,6 +155,12 @@ function getSoldOutLabel(productNames: string[]): string {
 function ProductCard({ product, onClick, showStatusSelector = true }: ProductCardProps) {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const { editProductStatus } = useAdminProducts(workspaceId);
+  const { ConfirmModal, confirm } = useConfirm({
+    title: '연결된 세트도 함께 품절됩니다.',
+    description: '',
+    okText: '품절 처리',
+    cancelText: '취소',
+  });
   const [imageFailed, setImageFailed] = useState(false);
   const adminProduct = isAdminProduct(product) ? product : null;
   const effectiveStatus = adminProduct?.effectiveStatus ?? product.status;
@@ -168,8 +175,20 @@ function ProductCard({ product, onClick, showStatusSelector = true }: ProductCar
   const originalPrice = adminProduct?.originalPrice;
   const discountPrice = adminProduct?.discountPrice ?? 0;
 
-  const handleStatusChange = (newStatus: ProductStatus) => {
-    editProductStatus(product.id, newStatus);
+  const handleStatusChange = async (newStatus: ProductStatus) => {
+    if (newStatus === product.status) return;
+
+    const affectedSets = adminProduct?.linkedSets.filter((linkedSet) => linkedSet.effectiveStatus === ProductStatus.SELLING) ?? [];
+    if (newStatus === ProductStatus.SOLD_OUT && affectedSets.length > 0) {
+      const setNames = affectedSets.map((linkedSet) => linkedSet.name).join(', ');
+      const userConfirmed = await confirm({
+        title: `${product.name} 품절 시 세트 ${affectedSets.length}개도 멈춥니다.`,
+        description: `${setNames}\n메뉴를 다시 판매하면 다른 조건이 충족된 세트는 자동으로 복구됩니다.`,
+      });
+      if (!userConfirmed) return;
+    }
+
+    await editProductStatus(product.id, newStatus);
   };
 
   return (
@@ -213,6 +232,7 @@ function ProductCard({ product, onClick, showStatusSelector = true }: ProductCar
           <SelectWithProductStatus currentStatus={product.status} onStatusChange={handleStatusChange} />
         </StatusControl>
       )}
+      <ConfirmModal />
     </Container>
   );
 }
