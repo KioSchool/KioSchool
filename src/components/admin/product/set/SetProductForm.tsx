@@ -30,7 +30,7 @@ const Body = styled.div`
   min-height: 0;
 
   ${tabletMediaQuery} {
-    grid-template-columns: minmax(0, 1fr) 330px;
+    grid-template-columns: minmax(0, 1fr);
   }
 `;
 
@@ -46,6 +46,10 @@ const PreviewArea = styled.div`
   padding: 28px 24px;
   border-left: 1px solid ${Color.BORDER_GREY};
   ${rowFlex({ justify: 'center', align: 'flex-start' })}
+
+  ${tabletMediaQuery} {
+    display: none;
+  }
 `;
 
 const Footer = styled.div`

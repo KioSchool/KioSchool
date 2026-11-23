@@ -11,7 +11,7 @@ import { MAX_PRODUCT_IMAGE_SIZE } from '@constants/data/productData';
 import { adminCategoriesAtom } from '@jotai/admin/atoms';
 import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
-import { tabletMediaQuery } from '@styles/globalStyles';
+import { mobileMediaQuery, tabletMediaQuery } from '@styles/globalStyles';
 import { ProductStateType } from '@@types/index';
 
 import ProductCustomerPreview from './ProductCustomerPreview';
@@ -29,7 +29,7 @@ const Body = styled.div`
   min-height: 0;
 
   ${tabletMediaQuery} {
-    grid-template-columns: minmax(0, 1fr) 330px;
+    grid-template-columns: minmax(0, 1fr);
   }
 `;
 
@@ -45,6 +45,10 @@ const PreviewArea = styled.div`
   padding: 28px 24px;
   border-left: 1px solid ${Color.BORDER_GREY};
   ${rowFlex({ justify: 'center', align: 'flex-start' })}
+
+  ${tabletMediaQuery} {
+    display: none;
+  }
 `;
 
 const Section = styled.section`
@@ -87,10 +91,25 @@ const ImageField = styled.div`
   }
 `;
 
+const BasicRow = styled.div`
+  display: grid;
+  grid-template-columns: 132px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+
+  ${mobileMediaQuery} {
+    grid-template-columns: minmax(0, 1fr);
+  }
+`;
+
 const FieldGrid = styled.div`
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 18px 16px;
+
+  ${mobileMediaQuery} {
+    grid-template-columns: minmax(0, 1fr);
+  }
 `;
 
 const Field = styled.label`
@@ -101,6 +120,10 @@ const Field = styled.label`
 
 const WideField = styled(Field)`
   grid-column: 1 / -1;
+
+  ${mobileMediaQuery} {
+    grid-column: auto;
+  }
 `;
 
 const FieldLabel = styled.span`
@@ -256,66 +279,62 @@ function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onD
         <Fields>
           <Section>
             <SectionHeading>
-              <SectionTitle>메뉴 사진</SectionTitle>
-              <SectionDescription>손님이 메뉴를 쉽게 알아볼 수 있는 정사각형 사진을 등록해주세요.</SectionDescription>
-            </SectionHeading>
-            <ImageField>
-              <AppImageInput title="대표 이미지" url={value.image.url} file={value.image.file} onImageChange={handleImageChange} width={176} height={176} />
-            </ImageField>
-          </Section>
-
-          <Section>
-            <SectionHeading>
               <SectionTitle>메뉴 정보</SectionTitle>
-              <SectionDescription>주문 화면에 표시할 이름, 카테고리, 가격과 설명을 입력해주세요.</SectionDescription>
+              <SectionDescription>주문 화면에 표시할 사진, 이름, 카테고리, 가격과 설명을 입력해주세요.</SectionDescription>
             </SectionHeading>
-            <FieldGrid>
-              <Field>
-                <FieldLabel>메뉴명</FieldLabel>
-                <NewAppInput
-                  value={value.name}
-                  maxLength={12}
-                  placeholder="최대 12자"
-                  width="100%"
-                  onChange={(event) => setValue((previous) => ({ ...previous, name: event.target.value }))}
-                />
-              </Field>
-              <Field>
-                <FieldLabel>카테고리</FieldLabel>
-                <SelectWithOptions
-                  options={productCategories}
-                  value={value.productCategory.id}
-                  width="100%"
-                  onChange={(event) => {
-                    const category = productCategories.find((item) => String(item.id) === event.target.value);
-                    setValue((previous) => ({
-                      ...previous,
-                      productCategory: { id: event.target.value, name: category?.name ?? '기본메뉴' },
-                    }));
-                  }}
-                />
-              </Field>
-              <WideField>
-                <FieldLabel>판매가</FieldLabel>
-                <NewAppInput
-                  value={value.price}
-                  inputMode="numeric"
-                  placeholder="가격을 입력해주세요."
-                  width="100%"
-                  onChange={(event) => setValue((previous) => ({ ...previous, price: event.target.value.replace(/[^0-9]/g, '') }))}
-                />
-              </WideField>
-              <WideField>
-                <FieldLabel>메뉴 설명</FieldLabel>
-                <NewAppTextarea
-                  value={value.description}
-                  maxLength={30}
-                  placeholder="최대 30자까지 가능합니다."
-                  width="100%"
-                  onChange={(event) => setValue((previous) => ({ ...previous, description: event.target.value }))}
-                />
-              </WideField>
-            </FieldGrid>
+            <BasicRow>
+              <ImageField>
+                <AppImageInput title="사진" url={value.image.url} file={value.image.file} onImageChange={handleImageChange} width={132} height={132} />
+              </ImageField>
+              <FieldGrid>
+                <WideField>
+                  <FieldLabel>메뉴명</FieldLabel>
+                  <NewAppInput
+                    value={value.name}
+                    maxLength={12}
+                    placeholder="최대 12자"
+                    width="100%"
+                    onChange={(event) => setValue((previous) => ({ ...previous, name: event.target.value }))}
+                  />
+                </WideField>
+                <Field>
+                  <FieldLabel>카테고리</FieldLabel>
+                  <SelectWithOptions
+                    options={productCategories}
+                    value={value.productCategory.id}
+                    width="100%"
+                    onChange={(event) => {
+                      const category = productCategories.find((item) => String(item.id) === event.target.value);
+                      setValue((previous) => ({
+                        ...previous,
+                        productCategory: { id: event.target.value, name: category?.name ?? '기본메뉴' },
+                      }));
+                    }}
+                  />
+                </Field>
+                <Field>
+                  <FieldLabel>판매가</FieldLabel>
+                  <NewAppInput
+                    value={value.price}
+                    inputMode="numeric"
+                    placeholder="가격을 입력해주세요."
+                    width="100%"
+                    onChange={(event) => setValue((previous) => ({ ...previous, price: event.target.value.replace(/[^0-9]/g, '') }))}
+                  />
+                </Field>
+                <WideField>
+                  <FieldLabel>메뉴 설명</FieldLabel>
+                  <NewAppTextarea
+                    value={value.description}
+                    maxLength={30}
+                    placeholder="최대 30자까지 가능합니다."
+                    width="100%"
+                    height={100}
+                    onChange={(event) => setValue((previous) => ({ ...previous, description: event.target.value }))}
+                  />
+                </WideField>
+              </FieldGrid>
+            </BasicRow>
           </Section>
         </Fields>
 
