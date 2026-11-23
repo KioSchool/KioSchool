@@ -13,6 +13,7 @@ import { ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardi
 import OnboardingStepHint from '@components/admin/workspace/onboarding/OnboardingStepHint';
 import NewCommonButton from '@components/common/button/NewCommonButton';
 import AppContainer from '@components/common/container/AppContainer';
+import { API_ERROR_CODES } from '@constants/errorCodes';
 import useAdminProductDnd from '@hooks/admin/useAdminProductDnd';
 import useAdminProducts from '@hooks/admin/useAdminProducts';
 import useConfirm from '@hooks/useConfirm';
@@ -20,6 +21,8 @@ import { Color } from '@resources/colors';
 import { colFlex, rowFlex } from '@styles/flexStyles';
 import { tabletMediaQuery } from '@styles/globalStyles';
 import { ProductType } from '@@types/index';
+import { notifyActionFailure } from '@utils/actionFailure';
+import { getApiErrorDetails, isApiErrorCode } from '@utils/apiError';
 
 const Container = styled.div`
   width: 100%;
@@ -112,15 +115,46 @@ function AdminProduct() {
   };
 
   const handleDeleteProduct = async (productId: number) => {
-    const userInput = await confirm();
+    const product = products.find((item) => item.id === productId);
+    if (!product) return;
+
+    if (product.linkedSets.length > 0) {
+      await confirm({
+        title: '연결된 세트가 있어 삭제할 수 없습니다.',
+        description: `${product.linkedSets.map((linkedSet) => linkedSet.name).join(', ')}에서 연결 상품으로 사용하고 있습니다.`,
+        okText: '확인',
+        cancelText: undefined,
+      });
+      return;
+    }
+
+    const userInput = await confirm({
+      title: `${product.name} 메뉴를 삭제하시겠습니까?`,
+      description: '삭제한 메뉴는 되돌릴 수 없습니다.',
+      okText: '삭제하기',
+      cancelText: '취소',
+    });
     if (!userInput) return;
 
-    const isDeleted = await deleteProduct(productId);
-    if (!isDeleted) return;
+    try {
+      await deleteProduct(productId);
+      alert('상품이 삭제되었습니다.');
+      handleCloseEditor();
+    } catch (error) {
+      if (isApiErrorCode(error, API_ERROR_CODES.PRODUCT_USED_AS_SET_CONDITION)) {
+        const linkedSets = getApiErrorDetails(error)?.linkedSets ?? [];
+        const linkedSetNames = linkedSets.map((linkedSet) => linkedSet.name).join(', ');
+        await confirm({
+          title: '연결된 세트가 있어 삭제할 수 없습니다.',
+          description: linkedSetNames ? `${linkedSetNames}에서 연결 상품으로 사용하고 있습니다.` : '연결된 세트의 제공 구성을 먼저 변경해주세요.',
+          okText: '확인',
+          cancelText: undefined,
+        });
+        return;
+      }
 
-    await fetchProducts();
-    alert('상품이 삭제되었습니다.');
-    handleCloseEditor();
+      notifyActionFailure(error, '상품을 삭제하지 못했습니다. 잠시 후 다시 시도해 주세요.');
+    }
   };
 
   const handleOpenEditProduct = (productId: number) => {

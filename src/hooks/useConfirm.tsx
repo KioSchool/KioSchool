@@ -54,6 +54,8 @@ const DescriptionLabel = styled.div`
   font-size: 20px;
   font-weight: 700;
   padding: 12px 0;
+  text-align: center;
+  white-space: pre-line;
 `;
 
 interface ConfirmProps {
@@ -63,12 +65,17 @@ interface ConfirmProps {
   cancelText?: string;
 }
 
-function useConfirm({ title, description, okText, cancelText }: ConfirmProps) {
-  const [promise, setPromise] = useState<any>(null);
+interface PendingConfirm {
+  resolve: (value: boolean | null) => void;
+  options: ConfirmProps;
+}
 
-  const confirm = () =>
-    new Promise((resolve) => {
-      setPromise({ resolve });
+function useConfirm(initialOptions: ConfirmProps) {
+  const [promise, setPromise] = useState<PendingConfirm | null>(null);
+
+  const confirm = (overrides?: Partial<ConfirmProps>) =>
+    new Promise<boolean | null>((resolve) => {
+      setPromise({ resolve, options: { ...initialOptions, ...overrides } });
     });
 
   const handleClose = () => {
@@ -93,6 +100,7 @@ function useConfirm({ title, description, okText, cancelText }: ConfirmProps) {
   // 매 렌더 새 컴포넌트 타입이 되면 열린 모달이 리마운트돼 클릭이 유실된다 — promise가 바뀔 때만 재생성
   const ConfirmModal = useCallback(() => {
     if (promise === null) return null;
+    const { title, description, okText, cancelText } = promise.options;
 
     return (
       <Container className={'confirm-container'}>
@@ -115,7 +123,7 @@ function useConfirm({ title, description, okText, cancelText }: ConfirmProps) {
         </SubContainer>
       </Container>
     );
-  }, [promise, title, description, okText, cancelText]);
+  }, [promise]);
 
   return { ConfirmModal, confirm };
 }

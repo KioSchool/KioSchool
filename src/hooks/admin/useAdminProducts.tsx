@@ -14,7 +14,7 @@ function useAdminProducts(workspaceId: string | undefined | null) {
   const setProductCategories = useSetAtom(adminCategoriesAtom);
 
   const fetchProducts = () => {
-    adminApi
+    return adminApi
       .get<AdminProduct[]>('/products', {
         params: {
           workspaceId: workspaceId,
@@ -87,8 +87,7 @@ function useAdminProducts(workspaceId: string | undefined | null) {
         status,
       })
       .then((response) => {
-        fetchProducts();
-        return response.data;
+        return fetchProducts().then(() => response.data);
       })
       .catch((error) => {
         notifyActionFailure(error, '상품 판매 상태를 바꾸지 못했습니다. 잠시 후 다시 시도해 주세요.');
@@ -105,11 +104,6 @@ function useAdminProducts(workspaceId: string | undefined | null) {
       })
       .then(() => {
         setProducts((prev) => prev.filter((item) => item.id !== productId));
-        return true;
-      })
-      .catch((error) => {
-        notifyActionFailure(error, '상품을 삭제하지 못했습니다. 잠시 후 다시 시도해 주세요.');
-        return false;
       });
 
   const fetchCategories = () => {
