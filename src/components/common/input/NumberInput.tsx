@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { RiAddFill, RiSubtractFill } from '@remixicon/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Color } from '@resources/colors';
 import { rowFlex } from '@styles/flexStyles';
 
@@ -34,25 +34,43 @@ const Input = styled.input<{ disabled?: boolean }>`
   }
 `;
 
-const MinusButton = styled(RiSubtractFill)<{ disabled?: boolean }>`
-  width: 18px;
-  height: 18px;
-  color: ${({ disabled }) => (disabled ? Color.DISABLED_GREY : Color.KIO_ORANGE)};
-  background-color: ${({ disabled }) => (disabled ? Color.BORDER_GREY : Color.WHITE)};
-  border: ${({ disabled }) => (disabled ? 'none' : `1px solid ${Color.KIO_ORANGE}`)};
-  border-radius: 50%;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+const StepButton = styled.button`
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
+  padding: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  ${rowFlex({ justify: 'center', align: 'center' })}
+
+  &:disabled {
+    border-color: ${Color.BORDER_GREY};
+    background: ${Color.BORDER_GREY};
+    color: ${Color.DISABLED_GREY};
+    cursor: not-allowed;
+  }
 `;
 
-const PlusButton = styled(RiAddFill)<{ disabled?: boolean }>`
-  width: 18px;
-  height: 18px;
-  color: ${({ disabled }) => (disabled ? Color.DISABLED_GREY : Color.WHITE)};
-  background-color: ${({ disabled }) => (disabled ? Color.BORDER_GREY : Color.KIO_ORANGE)};
-  border-radius: 50%;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-  flex-shrink: 0;
+const MinusButton = styled(StepButton)`
+  border: 1px solid ${Color.KIO_ORANGE};
+  background: ${Color.WHITE};
+  color: ${Color.KIO_ORANGE};
+`;
+
+const PlusButton = styled(StepButton)`
+  border: 1px solid ${Color.KIO_ORANGE};
+  background: ${Color.KIO_ORANGE};
+  color: ${Color.WHITE};
+`;
+
+const MinusIcon = styled(RiSubtractFill)`
+  width: 14px;
+  height: 14px;
+`;
+
+const PlusIcon = styled(RiAddFill)`
+  width: 14px;
+  height: 14px;
 `;
 
 interface NumberInputProps {
@@ -65,11 +83,27 @@ interface NumberInputProps {
   readOnly?: boolean;
   maxWidth?: string;
   height?: number;
+  ariaLabel?: string;
 }
 
-function NumberInput({ value, formatter, onChange, onIncrement, onDecrement, disabled = false, readOnly = false, maxWidth, height }: NumberInputProps) {
+function NumberInput({
+  value,
+  formatter,
+  onChange,
+  onIncrement,
+  onDecrement,
+  disabled = false,
+  readOnly = false,
+  maxWidth,
+  height,
+  ariaLabel,
+}: NumberInputProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [internalValue, setInternalValue] = useState(String(value));
+
+  useEffect(() => {
+    if (!isEditing) setInternalValue(String(value));
+  }, [isEditing, value]);
 
   const handleFocus = () => {
     if (readOnly || disabled) return;
@@ -117,9 +151,14 @@ function NumberInput({ value, formatter, onChange, onIncrement, onDecrement, dis
 
   return (
     <InputContainer disabled={disabled} maxWidth={maxWidth} height={height}>
-      {onDecrement && <MinusButton disabled={disabled} onMouseDown={preventTextSelection} onClick={disabled ? undefined : onDecrement} />}
+      {onDecrement && (
+        <MinusButton type="button" aria-label="수량 줄이기" disabled={disabled} onMouseDown={preventTextSelection} onClick={onDecrement}>
+          <MinusIcon />
+        </MinusButton>
+      )}
       <Input
         type="text"
+        aria-label={ariaLabel}
         value={getDisplayValue()}
         onChange={handleChange}
         onFocus={handleFocus}
@@ -128,7 +167,11 @@ function NumberInput({ value, formatter, onChange, onIncrement, onDecrement, dis
         disabled={disabled}
         readOnly={readOnly}
       />
-      {onIncrement && <PlusButton disabled={disabled} onMouseDown={preventTextSelection} onClick={disabled ? undefined : onIncrement} />}
+      {onIncrement && (
+        <PlusButton type="button" aria-label="수량 늘리기" disabled={disabled} onMouseDown={preventTextSelection} onClick={onIncrement}>
+          <PlusIcon />
+        </PlusButton>
+      )}
     </InputContainer>
   );
 }

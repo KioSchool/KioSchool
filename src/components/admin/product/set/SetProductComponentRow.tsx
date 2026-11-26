@@ -21,7 +21,7 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const Field = styled.label`
+const Field = styled.div`
   min-width: 0;
   ${colFlex()}
 `;
@@ -89,6 +89,7 @@ function SetProductComponentRow({ component, products, canDelete, onChange, onDe
 
       <Field>
         <NumberInput
+          ariaLabel="세트 1개당 수량"
           value={component.quantity}
           maxWidth="116px"
           height={42}
