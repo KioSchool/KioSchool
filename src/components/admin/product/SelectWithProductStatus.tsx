@@ -10,7 +10,7 @@ const Container = styled.div`
   padding: 3px;
   border-radius: 10px;
   box-sizing: border-box;
-  background: ${Color.WHITE};
+  background: ${Color.LIGHT_GREY};
   gap: 2px;
   ${rowFlex({ align: 'center' })}
 `;
@@ -28,8 +28,8 @@ const StatusButton = styled.button<{ status: ProductStatus; isSelected: boolean 
   padding: 0 7px;
   border: none;
   border-radius: 8px;
-  background: ${Color.WHITE};
-  box-shadow: ${({ status, isSelected }) => (isSelected && status !== ProductStatus.SELLING ? '0 1px 4px rgba(37, 40, 43, 0.12)' : 'none')};
+  background: ${({ isSelected }) => (isSelected ? Color.WHITE : 'transparent')};
+  box-shadow: ${({ isSelected }) => (isSelected ? '0 2px 8px rgba(37, 40, 43, 0.12)' : 'none')};
   font-size: 11px;
   font-weight: 700;
   color: ${({ status, isSelected }) => getStatusColor(status, isSelected)};
