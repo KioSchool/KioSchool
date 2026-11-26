@@ -83,6 +83,10 @@ const FieldGrid = styled.div`
 const Field = styled.label`
   min-width: 0;
   gap: 7px;
+
+  > div {
+    gap: 0;
+  }
   ${colFlex()}
 `;
 
