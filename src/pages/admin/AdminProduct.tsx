@@ -1,24 +1,28 @@
-import { useEffect } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
-import styled from '@emotion/styled';
-import { useSetAtom } from 'jotai';
 import { closestCenter, DndContext, DragOverlay } from '@dnd-kit/core';
-import useAdminProducts from '@hooks/admin/useAdminProducts';
-import useAdminProductDnd from '@hooks/admin/useAdminProductDnd';
-import { colFlex, rowFlex } from '@styles/flexStyles';
-import { externalSidebarAtom } from '@jotai/atoms';
-import { RIGHT_SIDEBAR_ACTION } from '@@types/index';
-import useConfirm from '@hooks/useConfirm';
-import AppContainer from '@components/common/container/AppContainer';
-import NewCommonButton from '@components/common/button/NewCommonButton';
-import RightSidebarModal from '@components/common/modal/RightSidebarModal';
+import { useEffect, useState } from 'react';
+import styled from '@emotion/styled';
+import { useParams } from 'react-router-dom';
+
 import ProductAdd from '@components/admin/product/ProductAdd';
-import ProductEdit from '@components/admin/product/ProductEdit';
-import ProductDroppableContainer from '@components/admin/product/ProductDroppableContainer';
 import ProductCard from '@components/admin/product/ProductCard';
-import { Color } from '@resources/colors';
-import OnboardingStepHint from '@components/admin/workspace/onboarding/OnboardingStepHint';
+import ProductDroppableContainer from '@components/admin/product/ProductDroppableContainer';
+import ProductEdit from '@components/admin/product/ProductEdit';
+import ProductEditorModal from '@components/admin/product/ProductEditorModal';
+import ProductListPreview from '@components/admin/product/ProductListPreview';
 import { ONBOARDING_STEP } from '@components/admin/workspace/onboarding/onboardingData';
+import OnboardingStepHint from '@components/admin/workspace/onboarding/OnboardingStepHint';
+import NewCommonButton from '@components/common/button/NewCommonButton';
+import AppContainer from '@components/common/container/AppContainer';
+import { API_ERROR_CODES } from '@constants/errorCodes';
+import useAdminProductDnd from '@hooks/admin/useAdminProductDnd';
+import useAdminProducts from '@hooks/admin/useAdminProducts';
+import useConfirm from '@hooks/useConfirm';
+import { Color } from '@resources/colors';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import { tabletMediaQuery } from '@styles/globalStyles';
+import { ProductType } from '@@types/index';
+import { notifyActionFailure } from '@utils/actionFailure';
+import { getApiErrorDetails, isApiErrorCode } from '@utils/apiError';
 
 const Container = styled.div`
   width: 100%;
@@ -31,6 +35,38 @@ const ProductAddButtonContainer = styled.div`
   width: 95%;
   padding-bottom: 24px;
   ${rowFlex({ justify: 'space-between', align: 'end' })}
+`;
+
+const AddButtonGroup = styled.div`
+  gap: 8px;
+  ${rowFlex({ align: 'center' })}
+`;
+
+const ContentLayout = styled.div`
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  width: 95%;
+  gap: 24px;
+  align-items: start;
+
+  ${tabletMediaQuery} {
+    grid-template-columns: minmax(0, 1fr);
+  }
+`;
+
+const CategoryList = styled.div`
+  min-width: 0;
+  gap: 14px;
+  ${colFlex()}
+`;
+
+const PreviewColumn = styled.div`
+  position: sticky;
+  top: 24px;
+
+  ${tabletMediaQuery} {
+    position: static;
+  }
 `;
 
 const DragHintText = styled.div`
@@ -49,14 +85,14 @@ const DragHintText = styled.div`
   }
 `;
 
+type ProductEditorState = { mode: 'ADD'; productType: ProductType } | { mode: 'EDIT'; productId: number; productType: ProductType } | null;
+
 function AdminProduct() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const location = useLocation();
+  const [editorState, setEditorState] = useState<ProductEditorState>(null);
 
   const { fetchProducts, fetchCategories, deleteProduct } = useAdminProducts(workspaceId);
   const { products, categories, activeProduct, sensors, handleDragStart, handleDragOver, handleDragEnd } = useAdminProductDnd(workspaceId);
-
-  const setExternalSidebar = useSetAtom(externalSidebarAtom);
 
   const { ConfirmModal, confirm } = useConfirm({
     title: `해당 상품을 삭제하시겠습니까?`,
@@ -70,37 +106,65 @@ function AdminProduct() {
     fetchCategories();
   }, []);
 
-  const handleOpenAddProduct = () => {
-    setExternalSidebar({
-      location: location,
-      title: '상품 추가',
-      subtitle: '*편집 중 창을 닫지 마세요.',
-      action: RIGHT_SIDEBAR_ACTION.OPEN,
-      content: <ProductAdd />,
-    });
+  const handleOpenAddProduct = (productType: ProductType) => {
+    setEditorState({ mode: 'ADD', productType });
+  };
+
+  const handleCloseEditor = () => {
+    setEditorState(null);
   };
 
   const handleDeleteProduct = async (productId: number) => {
-    const userInput = await confirm();
+    const product = products.find((item) => item.id === productId);
+    if (!product) return;
+
+    if (product.linkedSets.length > 0) {
+      await confirm({
+        title: '연결된 세트가 있어 삭제할 수 없습니다.',
+        description: `${product.linkedSets.map((linkedSet) => linkedSet.name).join(', ')}에서 연결 상품으로 사용하고 있습니다.`,
+        okText: '확인',
+        cancelText: undefined,
+      });
+      return;
+    }
+
+    const userInput = await confirm({
+      title: `${product.name} 메뉴를 삭제하시겠습니까?`,
+      description: '삭제한 메뉴는 되돌릴 수 없습니다.',
+      okText: '삭제하기',
+      cancelText: '취소',
+    });
     if (!userInput) return;
 
-    const isDeleted = await deleteProduct(productId);
-    if (!isDeleted) return;
+    try {
+      await deleteProduct(productId);
+      alert('상품이 삭제되었습니다.');
+      handleCloseEditor();
+    } catch (error) {
+      if (isApiErrorCode(error, API_ERROR_CODES.PRODUCT_USED_AS_SET_CONDITION)) {
+        const linkedSets = getApiErrorDetails(error)?.linkedSets ?? [];
+        const linkedSetNames = linkedSets.map((linkedSet) => linkedSet.name).join(', ');
+        await confirm({
+          title: '연결된 세트가 있어 삭제할 수 없습니다.',
+          description: linkedSetNames ? `${linkedSetNames}에서 연결 상품으로 사용하고 있습니다.` : '연결된 세트의 제공 구성을 먼저 변경해주세요.',
+          okText: '확인',
+          cancelText: undefined,
+        });
+        return;
+      }
 
-    await fetchProducts();
-    alert('상품이 삭제되었습니다.');
-    setExternalSidebar({ action: RIGHT_SIDEBAR_ACTION.CLOSE });
+      notifyActionFailure(error, '상품을 삭제하지 못했습니다. 잠시 후 다시 시도해 주세요.');
+    }
   };
 
   const handleOpenEditProduct = (productId: number) => {
-    setExternalSidebar({
-      location: location,
-      title: '상품 편집',
-      subtitle: '*편집 중 창을 닫지 마세요.',
-      action: RIGHT_SIDEBAR_ACTION.OPEN,
-      content: <ProductEdit productId={productId} onDelete={() => handleDeleteProduct(productId)} />,
-    });
+    const product = products.find((item) => item.id === productId);
+    if (!product) return;
+    setEditorState({ mode: 'EDIT', productId, productType: product.type });
   };
+
+  const isSetEditor = editorState?.productType === ProductType.SET;
+  const editorTitle = editorState?.mode === 'EDIT' ? `${isSetEditor ? '세트 메뉴' : '일반 메뉴'} 수정` : `${isSetEditor ? '세트 메뉴' : '일반 메뉴'} 추가`;
 
   return (
     <AppContainer useFlex={colFlex({ justify: 'start', align: 'center' })}>
@@ -108,26 +172,46 @@ function AdminProduct() {
         <OnboardingStepHint step={ONBOARDING_STEP.MENU} width="95%" />
         <ProductAddButtonContainer>
           <DragHintText>상품 카드를 드래그하여 순서를 변경하거나 카테고리를 변경할 수 있습니다.</DragHintText>
-          <NewCommonButton size="sm" onClick={handleOpenAddProduct}>
-            상품 추가
-          </NewCommonButton>
+          <AddButtonGroup>
+            <NewCommonButton size="sm" color="blue_gray" onClick={() => handleOpenAddProduct(ProductType.SINGLE)}>
+              일반 메뉴 추가
+            </NewCommonButton>
+            <NewCommonButton size="sm" onClick={() => handleOpenAddProduct(ProductType.SET)}>
+              세트 메뉴 추가
+            </NewCommonButton>
+          </AddButtonGroup>
         </ProductAddButtonContainer>
 
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={handleDragStart} onDragOver={handleDragOver} onDragEnd={handleDragEnd}>
-          {categories.map((category) => (
-            <ProductDroppableContainer
-              key={category.id || 'default'}
-              categoryId={category.id}
-              categoryName={category.name}
-              products={products.filter((p) => (p.productCategory?.id || null) === category.id)}
-              onProductClick={handleOpenEditProduct}
-            />
-          ))}
+          <ContentLayout>
+            <CategoryList>
+              {categories.map((category) => (
+                <ProductDroppableContainer
+                  key={category.id || 'default'}
+                  categoryId={category.id}
+                  categoryName={category.name}
+                  products={products.filter((product) => (product.productCategory?.id || null) === category.id)}
+                  onProductClick={handleOpenEditProduct}
+                />
+              ))}
+            </CategoryList>
+            <PreviewColumn>
+              <ProductListPreview categories={categories} products={products} />
+            </PreviewColumn>
+          </ContentLayout>
 
           <DragOverlay>{activeProduct ? <ProductCard product={activeProduct} showStatusSelector={false} /> : null}</DragOverlay>
         </DndContext>
 
-        <RightSidebarModal useExternalControl={{ location: location }} />
+        {editorState && (
+          <ProductEditorModal title={editorTitle} onClose={handleCloseEditor}>
+            {editorState.mode === 'ADD' ? (
+              <ProductAdd productType={editorState.productType} onClose={handleCloseEditor} />
+            ) : (
+              <ProductEdit productId={editorState.productId} onDelete={() => handleDeleteProduct(editorState.productId)} onClose={handleCloseEditor} />
+            )}
+          </ProductEditorModal>
+        )}
         <ConfirmModal />
       </Container>
     </AppContainer>

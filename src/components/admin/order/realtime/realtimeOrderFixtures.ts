@@ -1,4 +1,4 @@
-import { Order, OrderStatus, Product, ProductStatus } from '@@types/index';
+import { AdminProduct, Order, OrderStatus, ProductStatus, ProductType } from '@@types/index';
 
 const MS_PER_MINUTE = 60_000;
 const FIXTURE_TIMESTAMP = '2026-10-17T18:00:00';
@@ -8,13 +8,19 @@ function toLocalIsoString(date: Date) {
   return new Date(date.getTime() - offsetMs).toISOString().replace('Z', '');
 }
 
-function createFixtureProduct(id: number, name: string, price: number): Product {
+function createFixtureProduct(id: number, name: string, price: number): AdminProduct {
   return {
     id,
     name,
     description: '',
     price,
     status: ProductStatus.SELLING,
+    effectiveStatus: ProductStatus.SELLING,
+    type: ProductType.SINGLE,
+    originalPrice: null,
+    discountPrice: null,
+    components: [],
+    linkedSets: [],
     imageUrl: '',
     createdAt: FIXTURE_TIMESTAMP,
     updatedAt: FIXTURE_TIMESTAMP,
@@ -22,7 +28,7 @@ function createFixtureProduct(id: number, name: string, price: number): Product 
   };
 }
 
-export const FIXTURE_PRODUCTS: Product[] = [
+export const FIXTURE_PRODUCTS: AdminProduct[] = [
   createFixtureProduct(9001, '닭꼬치', 4000),
   createFixtureProduct(9002, '김치전', 12000),
   createFixtureProduct(9003, '모둠 감자튀김', 9000),

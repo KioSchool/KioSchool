@@ -1,234 +1,366 @@
-﻿import { ChangeEvent, useEffect, useReducer } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import styled from '@emotion/styled';
 import { useAtomValue } from 'jotai';
-import { colFlex, rowFlex } from '@styles/flexStyles';
-import { adminCategoriesAtom } from '@jotai/admin/atoms';
-import { ProductActionType, ProductStateType } from '@@types/index';
-import { defaultProductEditValue } from '@@types/defaultValues';
-import SelectWithOptions from '@components/common/select/SelectWithOptions';
+
+import NewCommonButton from '@components/common/button/NewCommonButton';
 import AppImageInput from '@components/common/input/AppImageInput';
 import NewAppInput from '@components/common/input/NewAppInput';
-import NewCommonButton from '@components/common/button/NewCommonButton';
-import { MAX_PRODUCT_IMAGE_SIZE } from '@constants/data/productData';
 import NewAppTextarea from '@components/common/input/NewAppTextarea';
+import SelectWithOptions from '@components/common/select/SelectWithOptions';
+import { MAX_PRODUCT_IMAGE_SIZE } from '@constants/data/productData';
+import { adminCategoriesAtom } from '@jotai/admin/atoms';
 import { Color } from '@resources/colors';
+import { colFlex, rowFlex } from '@styles/flexStyles';
+import { mobileMediaQuery, tabletMediaQuery } from '@styles/globalStyles';
+import { ProductStateType } from '@@types/index';
 
-const Container = styled.div`
+import ProductCustomerPreview from './ProductCustomerPreview';
+
+const Form = styled.form`
   height: 100%;
-  gap: 24px;
-  overflow-y: auto;
-  padding-top: 24px;
-  padding-bottom: 100px;
-  ${colFlex({ justify: 'space-between', align: 'center' })};
+  min-height: 0;
+  ${colFlex()}
 `;
 
-const InputContainer = styled.div`
-  width: 100%;
-  gap: 12px;
-  color: ${Color.TEXT_DEFAULT};
-  ${colFlex({ justify: 'center', align: 'start' })};
-`;
+const Body = styled.div`
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  flex: 1;
+  min-height: 0;
 
-const InputLabel = styled.div`
-  width: 100%;
-  font-size: 16px;
-  font-weight: 700;
-  ${colFlex({ justify: 'center', align: 'start' })};
-`;
-
-const InputColContainer = styled.div`
-  width: 100%;
-  gap: 4px;
-  ${colFlex({ justify: 'center', align: 'center' })};
-`;
-
-const SubmitContainer = styled.div`
-  width: 100%;
-  gap: 10px;
-  padding-top: 20px;
-  ${rowFlex({ justify: 'center', align: 'center' })};
-`;
-
-function reducer(state: any, action: ProductActionType) {
-  switch (action.type) {
-    case 'PRODUCT_NAME_INPUT':
-      return { ...state, name: action.payload };
-    case 'PRODUCT_DESCRIPTION_INPUT':
-      return { ...state, description: action.payload };
-    case 'PRODUCT_PRICE_INPUT':
-      return { ...state, price: action.payload };
-    case 'PRODUCT_CATEGORY_INPUT':
-      const isFirstRendered = typeof action.payload === 'object';
-      if (isFirstRendered) return { ...state, productCategory: action.payload };
-      return { ...state, productCategory: { ...state.productCategory, id: action.payload } };
-    case 'PRODUCT_IMAGE_INPUT':
-      return { ...state, image: action.payload };
-    case 'PRODUCT_ID_INPUT':
-      return { ...state, id: action.payload };
-    default:
-      throw new Error('Unhandled action');
+  ${tabletMediaQuery} {
+    grid-template-columns: minmax(0, 1fr);
   }
+`;
+
+const Fields = styled.div`
+  overflow-y: auto;
+  padding: 28px 32px 40px;
+  gap: 26px;
+  ${colFlex()}
+`;
+
+const PreviewArea = styled.div`
+  overflow-y: auto;
+  padding: 28px 24px;
+  border-left: 1px solid ${Color.BORDER_GREY};
+  ${rowFlex({ justify: 'center', align: 'flex-start' })}
+
+  ${tabletMediaQuery} {
+    display: none;
+  }
+`;
+
+const Section = styled.section`
+  gap: 16px;
+  ${colFlex()}
+`;
+
+const SectionHeading = styled.div`
+  gap: 4px;
+  ${colFlex()}
+`;
+
+const SectionTitle = styled.h3`
+  margin: 0;
+  font-size: 18px;
+  color: ${Color.TEXT_STRONG};
+`;
+
+const SectionDescription = styled.p`
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: ${Color.TEXT_SUBTLE};
+`;
+
+const ImageField = styled.div`
+  align-self: flex-start;
+
+  .app-image-input {
+    align-items: flex-start;
+  }
+
+  .image,
+  .upload-image-wrapper {
+    border-radius: 16px;
+  }
+
+  .image {
+    object-fit: cover;
+  }
+`;
+
+const BasicRow = styled.div`
+  display: grid;
+  grid-template-columns: 132px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+
+  ${mobileMediaQuery} {
+    grid-template-columns: minmax(0, 1fr);
+  }
+`;
+
+const FieldGrid = styled.div`
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 18px 16px;
+
+  ${mobileMediaQuery} {
+    grid-template-columns: minmax(0, 1fr);
+  }
+`;
+
+const Field = styled.label`
+  min-width: 0;
+  gap: 7px;
+  ${colFlex()}
+`;
+
+const WideField = styled(Field)`
+  grid-column: 1 / -1;
+
+  ${mobileMediaQuery} {
+    grid-column: auto;
+  }
+`;
+
+const FieldLabel = styled.span`
+  font-size: 14px;
+  font-weight: 700;
+  color: ${Color.TEXT_STRONG};
+`;
+
+const Footer = styled.footer`
+  flex-shrink: 0;
+  min-height: 76px;
+  padding: 16px 28px;
+  border-top: 1px solid ${Color.BORDER_GREY};
+  box-sizing: border-box;
+  background: ${Color.WHITE};
+  ${rowFlex({ justify: 'space-between', align: 'center' })}
+`;
+
+const RequiredNotice = styled.span`
+  font-size: 12px;
+  color: ${Color.TEXT_SUBTLE};
+`;
+
+const DeleteButton = styled.button`
+  padding: 8px 4px;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 700;
+  color: ${Color.RED};
+  cursor: pointer;
+`;
+
+const Actions = styled.div`
+  gap: 8px;
+  margin-left: auto;
+  ${rowFlex({ align: 'center' })}
+`;
+
+interface ProductFormState {
+  id?: number;
+  name: string;
+  description: string;
+  price: string;
+  productCategory: {
+    id: number | string;
+    name: string;
+  };
+  image: {
+    url: string;
+    file: File | null;
+  };
 }
 
 interface ProductFormProps {
   mode: 'ADD' | 'EDIT';
   workspaceId: string | undefined;
-  initialValues?: ProductStateType | any;
+  initialValues?: {
+    id: number;
+    name: string;
+    description: string;
+    price: number;
+    imageUrl: string;
+    productCategory: { id: number; name: string } | null;
+  };
   onSubmit: (formData: ProductStateType, file: File | null) => Promise<void>;
   onCancel: () => void;
   onDelete?: () => void;
 }
 
+function createInitialState(initialValues?: ProductFormProps['initialValues']): ProductFormState {
+  if (!initialValues) {
+    return {
+      name: '',
+      description: '',
+      price: '',
+      productCategory: { id: 'null', name: '기본메뉴' },
+      image: { url: '', file: null },
+    };
+  }
+
+  return {
+    id: initialValues.id,
+    name: initialValues.name,
+    description: initialValues.description,
+    price: String(initialValues.price),
+    productCategory: initialValues.productCategory ?? { id: 'null', name: '기본메뉴' },
+    image: { url: initialValues.imageUrl, file: null },
+  };
+}
+
+function getSubmitButtonText(mode: 'ADD' | 'EDIT', isSubmitting: boolean) {
+  if (isSubmitting) return '저장 중...';
+  if (mode === 'EDIT') return '변경 완료';
+  return '메뉴 추가';
+}
+
 function ProductForm({ mode, workspaceId, initialValues, onSubmit, onCancel, onDelete }: ProductFormProps) {
   const productCategories = useAtomValue(adminCategoriesAtom);
+  const [value, setValue] = useState<ProductFormState>(() => createInitialState(initialValues));
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const selectedCategory = productCategories.find((category) => String(category.id) === String(value.productCategory.id));
+  const categoryName = selectedCategory?.name ?? '기본메뉴';
+  const price = Number(value.price) || 0;
 
-  const initialState = initialValues || {
-    ...defaultProductEditValue,
-    productCategory: { id: 'null', name: '' },
-  };
-
-  const [state, dispatch] = useReducer(reducer, initialState);
-
-  useEffect(() => {
-    if (initialValues) {
-      dispatch({ type: 'PRODUCT_NAME_INPUT', payload: initialValues.name });
-      dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: initialValues.description });
-      dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: initialValues.price });
-      dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: initialValues.productCategory });
-      dispatch({ type: 'PRODUCT_IMAGE_INPUT', payload: { url: initialValues.imageUrl, file: null } });
-      dispatch({ type: 'PRODUCT_ID_INPUT', payload: initialValues.id });
-    }
-  }, [initialValues]);
-
-  const isPriceNumeric = (price: string | number) => /^\d+$/.test(String(price).trim());
-
-  const handleSubmit = async () => {
-    if (!state.name || !state.description) {
-      alert('상품 이름 및 설명을 입력해주세요');
-      return;
-    }
-
-    if (!isPriceNumeric(state.price)) {
-      alert('상품 가격은 숫자만 입력해주세요.');
-      return;
-    }
-
-    if (state.price < 0) {
-      alert('가격은 음수가 될 수 없습니다.');
-      return;
-    }
-
-    if (!state.image?.url && !state.image?.file) {
-      alert('이미지를 확인해주세요');
-      return;
-    }
-
-    if (state.name.length > 12) {
-      alert('상품 이름은 12자 이하로 입력해주세요');
-      return;
-    }
-
-    if (state.description.length > 30) {
-      alert('상품 설명은 30자 이하로 입력해주세요');
-      return;
-    }
-
-    const formData: ProductStateType = {
-      productId: state.id ? String(state.id) : undefined,
-      name: state.name,
-      description: state.description,
-      price: state.price,
-      workspaceId: workspaceId,
-      productCategoryId: state.productCategory?.id,
-    };
-
-    await onSubmit(formData, state.image?.file);
-  };
-
-  const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files?.length) return;
-
-    const newFile = event.target.files[0];
-    if (newFile.size > MAX_PRODUCT_IMAGE_SIZE) {
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (file.size > MAX_PRODUCT_IMAGE_SIZE) {
       alert('상품 이미지는 5MB 이하로 업로드 가능합니다.');
       return;
     }
 
-    const newFileURL = URL.createObjectURL(newFile);
-    dispatch({ type: 'PRODUCT_IMAGE_INPUT', payload: { url: newFileURL, file: newFile } });
+    setValue((previous) => ({ ...previous, image: { url: URL.createObjectURL(file), file } }));
   };
 
-  const isEditMode = mode === 'EDIT';
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (isSubmitting) return;
+    if (!value.name.trim() || !value.description.trim()) {
+      alert('상품 이름 및 설명을 입력해주세요.');
+      return;
+    }
+    if (!/^\d+$/.test(value.price.trim())) {
+      alert('상품 가격은 숫자만 입력해주세요.');
+      return;
+    }
+    if (!value.image.url && !value.image.file) {
+      alert('상품 이미지를 등록해주세요.');
+      return;
+    }
 
-  const secondaryButtonText = isEditMode ? '삭제' : '취소';
-  const secondaryButtonHandler = isEditMode ? onDelete : onCancel;
+    const formData: ProductStateType = {
+      productId: value.id ? String(value.id) : undefined,
+      name: value.name.trim(),
+      description: value.description.trim(),
+      price,
+      workspaceId,
+      productCategoryId: value.productCategory.id,
+    };
 
-  const primaryButtonText = isEditMode ? '변경 완료' : '추가 완료';
+    setIsSubmitting(true);
+    try {
+      await onSubmit(formData, value.image.file);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
-    <Container>
-      <InputContainer>
-        <InputColContainer>
-          <InputLabel>카테고리</InputLabel>
-          <SelectWithOptions
-            options={productCategories}
-            value={state.productCategory?.id || ''}
-            onChange={(event: ChangeEvent<HTMLSelectElement>) => {
-              dispatch({ type: 'PRODUCT_CATEGORY_INPUT', payload: event.target.value });
-            }}
-            width={'100%'}
-          />
-        </InputColContainer>
+    <Form onSubmit={handleSubmit}>
+      <Body>
+        <Fields>
+          <Section>
+            <SectionHeading>
+              <SectionTitle>메뉴 정보</SectionTitle>
+              <SectionDescription>주문 화면에 표시할 사진, 이름, 카테고리, 가격과 설명을 입력해주세요.</SectionDescription>
+            </SectionHeading>
+            <BasicRow>
+              <ImageField>
+                <AppImageInput title="사진" url={value.image.url} file={value.image.file} onImageChange={handleImageChange} width={132} height={132} />
+              </ImageField>
+              <FieldGrid>
+                <WideField>
+                  <FieldLabel>메뉴명</FieldLabel>
+                  <NewAppInput
+                    value={value.name}
+                    maxLength={12}
+                    placeholder="최대 12자"
+                    width="100%"
+                    onChange={(event) => setValue((previous) => ({ ...previous, name: event.target.value }))}
+                  />
+                </WideField>
+                <Field>
+                  <FieldLabel>카테고리</FieldLabel>
+                  <SelectWithOptions
+                    options={productCategories}
+                    value={value.productCategory.id}
+                    width="100%"
+                    onChange={(event) => {
+                      const category = productCategories.find((item) => String(item.id) === event.target.value);
+                      setValue((previous) => ({
+                        ...previous,
+                        productCategory: { id: event.target.value, name: category?.name ?? '기본메뉴' },
+                      }));
+                    }}
+                  />
+                </Field>
+                <Field>
+                  <FieldLabel>판매가</FieldLabel>
+                  <NewAppInput
+                    value={value.price}
+                    inputMode="numeric"
+                    placeholder="가격을 입력해주세요."
+                    width="100%"
+                    onChange={(event) => setValue((previous) => ({ ...previous, price: event.target.value.replace(/[^0-9]/g, '') }))}
+                  />
+                </Field>
+                <WideField>
+                  <FieldLabel>메뉴 설명</FieldLabel>
+                  <NewAppTextarea
+                    value={value.description}
+                    maxLength={30}
+                    placeholder="최대 30자까지 가능합니다."
+                    width="100%"
+                    height={100}
+                    onChange={(event) => setValue((previous) => ({ ...previous, description: event.target.value }))}
+                  />
+                </WideField>
+              </FieldGrid>
+            </BasicRow>
+          </Section>
+        </Fields>
 
-        <InputColContainer>
-          <InputLabel>상품명</InputLabel>
-          <NewAppInput
-            placeholder={'최대 12자까지 가능합니다.'}
-            value={state.name}
-            onChange={(event: ChangeEvent<HTMLInputElement>) => {
-              dispatch({ type: 'PRODUCT_NAME_INPUT', payload: event.target?.value });
-            }}
-            width={'100%'}
-          />
-        </InputColContainer>
+        <PreviewArea>
+          <ProductCustomerPreview name={value.name} description={value.description} categoryName={categoryName} imageUrl={value.image.url} salePrice={price} />
+        </PreviewArea>
+      </Body>
 
-        <InputColContainer>
-          <InputLabel>상품 가격</InputLabel>
-          <NewAppInput
-            value={state.price}
-            onChange={(event: ChangeEvent<HTMLInputElement>) => {
-              dispatch({ type: 'PRODUCT_PRICE_INPUT', payload: event.target?.value });
-            }}
-            width={'100%'}
-          />
-        </InputColContainer>
-
-        <InputColContainer>
-          <AppImageInput title={'상품 사진'} url={state.image?.url} file={state.image?.file} onImageChange={onImageChange} width={224} height={224} />
-        </InputColContainer>
-
-        <InputColContainer>
-          <InputLabel>상품 설명</InputLabel>
-          <NewAppTextarea
-            placeholder={'최대 30자까지 가능합니다.'}
-            value={state.description}
-            onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
-              dispatch({ type: 'PRODUCT_DESCRIPTION_INPUT', payload: event.target?.value });
-            }}
-            width={'100%'}
-          />
-        </InputColContainer>
-      </InputContainer>
-
-      <SubmitContainer>
-        <NewCommonButton onClick={secondaryButtonHandler} customSize={{ width: 106, height: 40 }} color="blue_gray">
-          {secondaryButtonText}
-        </NewCommonButton>
-        <NewCommonButton onClick={handleSubmit} customSize={{ width: 106, height: 40 }}>
-          {primaryButtonText}
-        </NewCommonButton>
-      </SubmitContainer>
-    </Container>
+      <Footer>
+        {mode === 'EDIT' && onDelete ? (
+          <DeleteButton type="button" onClick={onDelete}>
+            메뉴 삭제
+          </DeleteButton>
+        ) : (
+          <RequiredNotice>* 모든 정보를 입력해야 저장할 수 있어요.</RequiredNotice>
+        )}
+        <Actions>
+          <NewCommonButton type="button" size="sm" color="blue_gray" onClick={onCancel}>
+            취소
+          </NewCommonButton>
+          <NewCommonButton type="submit" size="sm" disabled={isSubmitting}>
+            {getSubmitButtonText(mode, isSubmitting)}
+          </NewCommonButton>
+        </Actions>
+      </Footer>
+    </Form>
   );
 }
 
