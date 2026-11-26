@@ -176,8 +176,8 @@ function ProductCard({ product, onClick, showStatusSelector = true }: ProductCar
     if (newStatus === ProductStatus.SOLD_OUT && affectedSets.length > 0) {
       const setNames = affectedSets.map((linkedSet) => linkedSet.name).join(', ');
       const userConfirmed = await confirm({
-        title: `${product.name} 품절 시 세트 ${affectedSets.length}개도 멈춥니다.`,
-        description: `${setNames}\n메뉴를 다시 판매하면 다른 조건이 충족된 세트는 자동으로 복구됩니다.`,
+        title: `${product.name} 품절 시 세트 ${affectedSets.length}개도 품절됩니다.`,
+        description: `${setNames}\n메뉴를 다시 판매하면 다른 조건이 충족된 세트는 자동으로 판매 상태가 복구됩니다.`,
       });
       if (!userConfirmed) return;
     }

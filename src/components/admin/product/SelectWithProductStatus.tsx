@@ -10,16 +10,10 @@ const Container = styled.div`
   padding: 3px;
   border-radius: 10px;
   box-sizing: border-box;
-  background: ${Color.LIGHT_GREY};
+  background: ${Color.WHITE};
   gap: 2px;
   ${rowFlex({ align: 'center' })}
 `;
-
-function getStatusBackground(status: ProductStatus, isSelected: boolean) {
-  if (!isSelected) return 'transparent';
-  if (status === ProductStatus.SELLING) return Color.KIO_ORANGE_FAINT;
-  return Color.WHITE;
-}
 
 function getStatusColor(status: ProductStatus, isSelected: boolean) {
   if (!isSelected) return Color.TEXT_HINT;
@@ -34,7 +28,7 @@ const StatusButton = styled.button<{ status: ProductStatus; isSelected: boolean 
   padding: 0 7px;
   border: none;
   border-radius: 8px;
-  background: ${({ status, isSelected }) => getStatusBackground(status, isSelected)};
+  background: ${Color.WHITE};
   box-shadow: ${({ status, isSelected }) => (isSelected && status !== ProductStatus.SELLING ? '0 1px 4px rgba(37, 40, 43, 0.12)' : 'none')};
   font-size: 11px;
   font-weight: 700;
